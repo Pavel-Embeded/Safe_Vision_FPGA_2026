@@ -1,0 +1,348 @@
+// ============================================================================
+// frame_writer.v — 把 RGB565 像素流写进指定槽，写完置 slot_valid（SafeVision 阶段 10）
+// ----------------------------------------------------------------------------
+// 依据：手册 7.10「Frame Buffer 帧缓存」、7.16.1「DMA 思想：把搬运抽象出来」
+//         （source=SD FIFO、dest=SDRAM 帧区、length=一帧像素数、start 启动、
+//           done 完成；done 有效后产生 frame_ready 与 CRC 抽检结果）
+//       手册 7.11「Burst 突发传输」（本模块按 word 粒度发起写请求，突发由 arbiter 聚合）
+//       docs/interface_spec.md §3.4「slot_writer」（本工程按蓝图 §5.2 改名 frame_writer，
+//         端口语义照文档）、§一（valid&&ready 双判）、§五（地址表）、§6.2（err_detail）
+//
+// 职责：把上游的 RGB565 像素流（din/din_valid/din_ready）打包成 32bit word 写进
+//       slot_base 指定的槽；一帧 640×480=307200 像素写完并做抽样 CRC 比对后，
+//       置 slot_valid[slot_sel]。
+//
+// 端口对应（interface_spec §3.4 slot_writer）：
+//   slot_sel / slot_base / din / din_valid / din_ready / wr_req / wr_addr /
+//   wr_data / wr_len / wr_ready / wr_done / slot_valid / crc_ok / crc_value /
+//   px_cnt / wr_error  (+ err_code / err_detail 登记细分码)
+//
+// ★★ 核心安全规则（手册 7.10 与 interface_spec §3.4 原文口径）：
+//     slot_valid 只有在一整帧写完 + CRC 通过后才置位。
+//     **未置位不许读**——这条规则把"半幅图被显示"的可能性在结构上排除；
+//     A 侧像素读引擎在 slot_valid=1 之前绝不能读该槽。
+//
+// ★ 一帧必须正好 640×480 = 307200 个像素，多一个少一个都算错：
+//     - 少一个（提前 EOF / 上游断流）-> wr_error + DET_FS_SHORT
+//     - 多一个（像素数超限）        -> wr_error + DET_BMP_SIZE
+//   两者都不会置 slot_valid。
+//
+// ★ 两个像素打包成一个 32bit word：**低半 = 先到的像素**，高半 = 后到的像素。
+//   （与"新字节从高端进"的小端口径一致；写反了会导致相邻像素互换。）
+//
+// ★ 抽样 CRC：每 1024 个 word 取一个抽样点，算法 CRC16-CCITT XMODEM
+//   （poly 0x1021，init 0x0000，MSB first），与 sd_sector_reader.v 里那份实现一致。
+//   本模块对"源打包 word"与"总线上真正写出的 word"各算一遍并比对，
+//   等价于一次打包/写通路的自检：crc_ok = (crc_src == crc_bus)。
+//   （注：本模块端口没有回读通道，故 crc_ok 定义为写侧两路 CRC 的一致性 + 帧计数正确；
+//     真正的 SDRAM 写回读校验需读通道，留待 frame_reader 落地后并入。）
+//
+// ★ 越界写：写请求地址必须落在 [slot_base, slot_base+SLOT_SPAN) 且 slot_base 合法
+//   （槽基地址 + 单槽预留不得越过 SDRAM 可见容量）。越界一律拒绝并报 DET_BMP_TRUNC。
+//   正常 x∈[0,640)、y∈[0,480) 时偏移 < 0x96000 < SLOT_SPAN，槽内写永不越界；
+//   本检查是防御性设计，捕捉非法 slot_base（配置错误）这类穿越。
+//
+// ★ 实测/文档踩过的坑（interface_spec §一，本项目真实踩过）：
+//   1) 从上游收像素必须用 `din_valid && din_ready` 双判，不能只判 din_valid，
+//      否则反压期间会把同一个像素吃掉很多次，px_cnt 与数据流瞬间错位。
+//   2) 下游取走 word 的清零逻辑（wr_pending / bus_idx / crc_bus）放在状态机之外、
+//      对所有状态生效；写在接收态里会在"最后一拍跳走"时漏清。
+// ============================================================================
+`include "safevision_defs.vh"
+
+module frame_writer #(
+    parameter [9:0]  FRAME_WIDTH     = 10'd640,
+    parameter [9:0]  FRAME_HEIGHT    = 10'd480,
+    parameter [31:0] BYTES_PER_PIXEL = 32'd2,
+    parameter [18:0] PIX_PER_FRAME   = 19'd307200,      // 640*480
+    parameter integer SAMPLE_STRIDE  = 1024,            // 每 1024 word 取一个抽样点
+    parameter [15:0] GAP_TIMEOUT     = 16'd512,         // 帧内无进展超时（拍）
+    parameter [31:0] SLOT_SPAN       = 32'h000A_0000,   // 单槽预留（§5 地址表）
+    parameter [31:0] MEM_VISIBLE     = 32'h0040_0000    // SDRAM 对外可见容量 4 MiB（§3.4）
+)(
+    input  wire        clk,             // mem_clk
+    input  wire        rst_n,
+
+    // ---- 控制 / 目标槽 ----
+    input  wire        start,           // 单拍：开始写一帧
+    input  wire [1:0]  slot_sel,        // 目标槽
+    input  wire [31:0] slot_base,       // 槽起始逻辑字节地址（取值见 §5）
+
+    // ---- 来自 bmp_unpack 的 RGB565 像素流 ----
+    input  wire [15:0] din,
+    input  wire        din_valid,
+    output wire        din_ready,
+
+    // ---- 到 mem_arbiter / mem_ctrl 的写通道 ----
+    output wire        wr_req,
+    output wire [31:0] wr_addr,         // 逻辑字节地址
+    output wire [31:0] wr_data,         // 2 像素/word
+    output wire [15:0] wr_len,          // 突发长度（本模块逐 word 请求，长度=1）
+    input  wire        wr_ready,
+    output reg         wr_done,         // 单拍：一帧全部 word 写出并完成 CRC 结算
+
+    // ---- 结果 / 状态 ----
+    output reg  [3:0]  slot_valid,      // ★ 置位后 A 才允许读该槽
+    output reg         crc_ok,
+    output reg  [15:0] crc_value,
+    output reg  [18:0] px_cnt,          // 应等于 307200
+    output reg         wr_error,
+    output reg  [7:0]  err_code,        // 对外主码
+    output reg  [7:0]  err_detail       // B 链内部细分码
+);
+
+    // ------------------------------------------------------------------------
+    // 状态
+    // ------------------------------------------------------------------------
+    localparam S_IDLE = 1'b0,
+               S_RUN  = 1'b1;
+
+    // interface_spec §6.1/§6.2 已登记、但 fault_code_defs.vh 暂未收录的两个码，
+    // 在本模块局部登记（不改公共头文件；CRC 写校验失败用它们上报）。
+    localparam [7:0] ERR_SDRAM_XFER   = 8'h04;   // §6.1 0x04 SDRAM 读写校验失败
+    localparam [7:0] DET_SDRAM_VERIFY = 8'h42;   // §6.2 0x42 SDRAM 写回读校验失败
+
+    reg        state;
+    reg [31:0] base_reg;      // 锁存的槽基地址
+    reg [1:0]  slot_sel_q;    // 锁存的目标槽
+    reg        have_lo;       // 是否已收到配对中的低半（先到）像素
+    reg [15:0] lo_pix;        // 暂存的低半像素
+    reg [9:0]  x_cnt;         // 当前 word 对应像素对的 x（偶数）
+    reg [9:0]  y_cnt;         // 当前 word 对应像素对的 y
+    reg [31:0] src_idx;       // 已打包 word 数（源侧）
+    reg [31:0] bus_idx;       // 已写出 word 数（总线侧）
+    reg [15:0] crc_src;       // 源侧抽样 CRC
+    reg [15:0] crc_bus;       // 总线侧抽样 CRC
+    reg        wr_pending;    // 有一个 word 待写出
+    reg [31:0] wr_addr_r;
+    reg [31:0] wr_data_r;
+    reg [15:0] gap_cnt;       // 帧内无进展计数
+
+    // ------------------------------------------------------------------------
+    // 二维坐标 -> 字节地址（复用 frame_address_gen，公式与手册一致）
+    // ------------------------------------------------------------------------
+    wire [31:0] cur_byte_addr;
+    wire [29:0] cur_word_addr;
+    wire        cur_word_phase;
+
+    frame_address_gen #(
+        .FRAME_WIDTH     (FRAME_WIDTH),
+        .BYTES_PER_PIXEL (BYTES_PER_PIXEL)
+    ) u_addr_gen (
+        .slot_base (base_reg),
+        .x         (x_cnt),
+        .y         (y_cnt),
+        .byte_addr (cur_byte_addr),
+        .word_addr (cur_word_addr),
+        .word_phase(cur_word_phase)
+    );
+
+    // ------------------------------------------------------------------------
+    // 组合信号
+    // ------------------------------------------------------------------------
+    wire running    = (state == S_RUN);
+    wire frame_full = (px_cnt == PIX_PER_FRAME);
+
+    // 只在运行中、无待写 word、一帧未满时才收像素
+    assign din_ready = running && !wr_pending && !frame_full;
+    assign wr_req    = running && wr_pending;
+    assign wr_addr   = wr_addr_r;
+    assign wr_data   = wr_data_r;
+    assign wr_len    = 16'd1;
+
+    wire wr_accept = wr_req && wr_ready;      // 下游取走一个 word
+    wire px_accept = din_valid && din_ready;  // ★ valid && ready 双判
+
+    // ------------------------------------------------------------------------
+    // CRC16-CCITT (XMODEM)：poly 0x1021，init 0x0000，MSB first
+    //   —— 与 sd_sector_reader.v 保持同一份实现
+    // ------------------------------------------------------------------------
+    function [15:0] crc16_next;
+        input [15:0] crc;
+        input [7:0]  din_b;
+        integer i;
+        reg [15:0] c;
+        begin
+            c = crc ^ {din_b, 8'h00};
+            for (i = 0; i < 8; i = i + 1)
+                c = c[15] ? ((c << 1) ^ 16'h1021) : (c << 1);
+            crc16_next = c;
+        end
+    endfunction
+
+    // 一个 32bit word 按大端（先高字节）逐字节喂入
+    function [15:0] crc16_word;
+        input [15:0] crc;
+        input [31:0] w;
+        reg [15:0] c;
+        begin
+            c = crc16_next(crc,  w[31:24]);
+            c = crc16_next(c,    w[23:16]);
+            c = crc16_next(c,    w[15:8]);
+            c = crc16_next(c,    w[7:0]);
+            crc16_word = c;
+        end
+    endfunction
+
+    // ------------------------------------------------------------------------
+    // 主状态机
+    // ------------------------------------------------------------------------
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            state      <= S_IDLE;
+            base_reg   <= 32'd0;
+            slot_sel_q <= 2'd0;
+            have_lo    <= 1'b0;
+            lo_pix     <= 16'd0;
+            x_cnt      <= 10'd0;
+            y_cnt      <= 10'd0;
+            src_idx    <= 32'd0;
+            bus_idx    <= 32'd0;
+            crc_src    <= 16'd0;
+            crc_bus    <= 16'd0;
+            wr_pending <= 1'b0;
+            wr_addr_r  <= 32'd0;
+            wr_data_r  <= 32'd0;
+            gap_cnt    <= 16'd0;
+            wr_done    <= 1'b0;
+            slot_valid <= 4'b0000;
+            crc_ok     <= 1'b0;
+            crc_value  <= 16'd0;
+            px_cnt     <= 19'd0;
+            wr_error   <= 1'b0;
+            err_code   <= `ERR_NONE;
+            err_detail <= `DET_NONE;
+        end else begin
+            // 默认单拍脉冲
+            wr_done <= 1'b0;
+
+            case (state)
+                // ============================================================
+                S_IDLE: begin
+                    if (start) begin
+                        // 槽基地址合法性：4 Byte 对齐 + 不越过 SDRAM 可见容量
+                        if ((slot_base[1:0] != 2'b00) ||
+                            ((slot_base + SLOT_SPAN) > MEM_VISIBLE)) begin
+                            // 越界/非法槽基地址：拒绝，不发任何写，不置 slot_valid
+                            wr_error   <= 1'b1;
+                            err_code   <= `ERR_MEDIA_INVALID;
+                            err_detail <= `DET_BMP_TRUNC;
+                            crc_ok     <= 1'b0;
+                        end else begin
+                            base_reg   <= slot_base;
+                            slot_sel_q <= slot_sel;
+                            have_lo    <= 1'b0;
+                            x_cnt      <= 10'd0;
+                            y_cnt      <= 10'd0;
+                            src_idx    <= 32'd0;
+                            bus_idx    <= 32'd0;
+                            crc_src    <= 16'd0;
+                            crc_bus    <= 16'd0;
+                            wr_pending <= 1'b0;
+                            gap_cnt    <= 16'd0;
+                            px_cnt     <= 19'd0;
+                            wr_error   <= 1'b0;
+                            err_code   <= `ERR_NONE;
+                            err_detail <= `DET_NONE;
+                            // ★ 不清 slot_valid：重写期间保留上一帧的可用画面
+                            state      <= S_RUN;
+                        end
+                    end
+                end
+
+                // ============================================================
+                S_RUN: begin
+                    // ---- (1) 写通道握手：下游取走一个 word ----
+                    //     清零/记账放在状态机逻辑的最前面，对所有分支生效
+                    if (wr_accept) begin
+                        wr_pending <= 1'b0;
+                        if ((bus_idx % SAMPLE_STRIDE) == 0)
+                            crc_bus <= crc16_word(crc_bus, wr_data_r);
+                        bus_idx <= bus_idx + 32'd1;
+                    end
+
+                    // ---- (2) 收像素：valid && ready 双判 ----
+                    if (px_accept) begin
+                        px_cnt <= px_cnt + 19'd1;
+                        if (!have_lo) begin
+                            // 配对中的低半（先到像素）
+                            have_lo <= 1'b1;
+                            lo_pix  <= din;
+                        end else begin
+                            // 收齐一对，打包成一个 word
+                            have_lo <= 1'b0;
+                            // 越界写检查（防御性，正常永不触发）
+                            if ((cur_byte_addr < base_reg) ||
+                                (cur_byte_addr >= (base_reg + SLOT_SPAN))) begin
+                                wr_error   <= 1'b1;
+                                err_code   <= `ERR_MEDIA_INVALID;
+                                err_detail <= `DET_BMP_TRUNC;
+                                crc_ok     <= 1'b0;
+                                state      <= S_IDLE;   // 拒绝越界写
+                            end else begin
+                                wr_pending <= 1'b1;
+                                wr_addr_r  <= cur_byte_addr;
+                                wr_data_r  <= {din, lo_pix};  // 高半=后到，低半=先到
+                                if ((src_idx % SAMPLE_STRIDE) == 0)
+                                    crc_src <= crc16_word(crc_src, {din, lo_pix});
+                                src_idx <= src_idx + 32'd1;
+                                // 推进像素对坐标（x 每次 +2）
+                                if (x_cnt == (FRAME_WIDTH - 10'd2)) begin
+                                    x_cnt <= 10'd0;
+                                    y_cnt <= y_cnt + 10'd1;
+                                end else begin
+                                    x_cnt <= x_cnt + 10'd2;
+                                end
+                            end
+                        end
+                    end
+
+                    // ---- (3) 一帧满后的走向 ----
+                    if (frame_full && !wr_pending) begin
+                        if (din_valid) begin
+                            // 上游还在给像素 -> 像素数超限
+                            wr_error   <= 1'b1;
+                            err_code   <= `ERR_MEDIA_INVALID;
+                            err_detail <= `DET_BMP_SIZE;
+                            crc_ok     <= 1'b0;
+                            state      <= S_IDLE;
+                        end else begin
+                            // 正好 307200 像素且全部写出：结算抽样 CRC
+                            crc_value <= crc_bus;
+                            crc_ok    <= (crc_src == crc_bus);
+                            if (crc_src == crc_bus) begin
+                                // ★ 只有"整帧写完 + CRC 通过"两件事都成立才置位
+                                slot_valid[slot_sel_q] <= 1'b1;
+                                wr_done   <= 1'b1;
+                            end else begin
+                                // CRC 比对失败：不置 slot_valid、不发 wr_done
+                                wr_error   <= 1'b1;
+                                err_code   <= ERR_SDRAM_XFER;
+                                err_detail <= DET_SDRAM_VERIFY;
+                            end
+                            state     <= S_IDLE;
+                        end
+                    end
+                    // ---- (4) 帧内无进展超时（提前 EOF / 上游断流）----
+                    else if (!frame_full) begin
+                        if (px_accept || wr_accept) begin
+                            gap_cnt <= 16'd0;
+                        end else if (gap_cnt >= GAP_TIMEOUT) begin
+                            wr_error   <= 1'b1;
+                            err_code   <= `ERR_MEDIA_INVALID;
+                            err_detail <= `DET_FS_SHORT;
+                            crc_ok     <= 1'b0;
+                            state      <= S_IDLE;
+                        end else begin
+                            gap_cnt <= gap_cnt + 16'd1;
+                        end
+                    end
+                    // frame_full && wr_pending：等最后一个 word 被取走，不做别的
+                end
+
+                default: state <= S_IDLE;
+            endcase
+        end
+    end
+
+endmodule

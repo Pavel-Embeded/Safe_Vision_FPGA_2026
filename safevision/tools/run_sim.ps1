@@ -1,0 +1,129 @@
+# ============================================================================
+# run_sim.ps1 - SafeVision B-chain regression (ModelSim)
+# ----------------------------------------------------------------------------
+# Layout follows the "blueprint" repo tree:
+#     rtl/include/      shared defs (safevision_defs.vh, fault_code_defs.vh)
+#     rtl/common/       platform-independent helpers (CDC / FIFO / UART / skid)
+#     rtl/storage/      SPI / SD / FAT32 / file stream / file index
+#     rtl/media/        RAW / BMP / WAV parsers
+#     rtl/memory/       SDRAM wrapper / frame buffer / arbiter / frame swap / DMA
+#     verification/     unit testbenches + models   (work/ is created here)
+#     tools/            this script
+#
+# Usage (PowerShell):
+#     powershell -ExecutionPolicy Bypass -File f:\...\safevision\tools\run_sim.ps1
+#
+# NOTE 1: keep this file ASCII-only. PowerShell 5.1 reads .ps1 as ANSI when there
+#         is no BOM, so multi-byte (Chinese) comments can swallow following quote
+#         characters and break parsing. Chinese comments live in the RTL files.
+# NOTE 2: +define+SIM_FAST_TO scales the SD timeouts down so that the timeout
+#         exit branches can actually be reached in acceptable sim time.
+#         Those scaled values are SIMULATION ONLY - the product values in
+#         safevision_defs.vh must be re-measured on the real board.
+# ============================================================================
+
+# ModelSim install path (change if needed)
+$MSIM_BIN = "D:\modeltech64_10.7\win64"
+$env:PATH += ";$MSIM_BIN"
+
+$SV = Split-Path $PSScriptRoot -Parent
+Set-Location (Join-Path $SV "verification")
+
+$INC = "+incdir+../rtl/include"
+$DEF = "+define+SIM_FAST_TO"
+
+$RTL = @(
+    # ---- common ----
+    "../rtl/common/uart_tx.v",
+    "../rtl/common/rv_skid_buffer.v",
+    "../rtl/common/sync_fifo.v",
+    "../rtl/common/fifo_health_monitor.v",
+    "../rtl/common/error_report.v",
+    "../rtl/common/shift_reg.v",
+    "../rtl/common/spi_byte_rx.v",
+    # ---- storage ----
+    "../rtl/storage/spi_master.v",
+    "../rtl/storage/sd_initializer.v",
+    "../rtl/storage/sd_sector_reader.v",
+    "../rtl/storage/fat32_boot_parser.v",
+    "../rtl/storage/fat32_directory_scanner.v",
+    "../rtl/storage/fat32_cluster_walker.v",
+    "../rtl/storage/file_streamer.v",
+    "../rtl/storage/file_index.v",
+    # ---- media ----
+    "../rtl/media/bmp_parser.v",
+    "../rtl/media/bmp_unpack.v",
+    "../rtl/media/wav_reader.v",
+    # ---- memory ----
+    "../rtl/memory/mem_ctrl.v",
+    "../rtl/memory/frame_address_gen.v",
+    "../rtl/memory/frame_writer.v",
+    "../rtl/memory/frame_buffer_manager.v",
+    "../rtl/memory/memory_arbiter.v",
+    "../rtl/memory/video_read_dma.v",
+    "../rtl/memory/frame_swap_ctrl.v",
+    "../rtl/memory/frame_swap_cdc.v",
+    "../rtl/memory/memory_bandwidth_monitor.v"
+)
+
+$SIM = @(
+    "models/sd_spi_card_model.sv",
+    "models/sdram_model.sv",
+    "unit/tb_sd_sector_reader.sv",
+    "unit/tb_sd_initializer.sv",
+    "unit/tb_fat32_boot_parser.sv",
+    "unit/tb_fat32_directory_scanner.sv",
+    "unit/tb_file_streamer.sv",
+    "unit/tb_bmp_parser.sv",
+    "unit/tb_file_index.sv",
+    "unit/tb_common_fifo.sv",
+    "unit/tb_media.sv",
+    "unit/tb_mem_write.sv",
+    "unit/tb_frame_swap.sv"
+)
+
+$TBS = @(
+    "tb_sd_sector_reader",
+    "tb_sd_initializer",
+    "tb_fat32_boot_parser",
+    "tb_fat32_directory_scanner",
+    "tb_file_streamer",
+    "tb_bmp_parser",
+    "tb_file_index",
+    "tb_common_fifo",
+    "tb_media",
+    "tb_mem_write",
+    "tb_frame_swap"
+)
+
+Write-Output "=== vlib work ==="
+vlib work
+
+Write-Output "=== vlog ($DEF) ==="
+vlog $DEF $INC $RTL $SIM
+if ($LASTEXITCODE -ne 0) {
+    Write-Output "COMPILE FAILED"
+    exit 1
+}
+
+$total_pass = 0
+$total_fail = 0
+foreach ($tb in $TBS) {
+    Write-Output ""
+    Write-Output "=== vsim $tb ==="
+    $out = vsim -c -do "run -all; quit -f" $tb 2>&1 | Out-String
+    $p = ([regex]::Matches($out, "\[PASS\]")).Count
+    $f = ([regex]::Matches($out, "\[FAIL\]")).Count
+    $total_pass += $p
+    $total_fail += $f
+    Write-Output ("  -> PASS=$p FAIL=$f")
+    if ($f -ne 0) {
+        ($out -split "`n") | Select-String -Pattern "\[FAIL\]"
+    }
+}
+
+Write-Output ""
+Write-Output "============================================"
+Write-Output ("  TOTAL PASS=$total_pass FAIL=$total_fail")
+Write-Output "============================================"
+if ($total_fail -ne 0) { exit 1 }
