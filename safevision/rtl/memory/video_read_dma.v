@@ -64,9 +64,9 @@ module video_read_dma #(
     // ------------------------------------------------------------------------
     // 常量（640×480 RGB565，2 Byte/pixel）
     // ------------------------------------------------------------------------
-    localparam integer FRAME_W     = 640;
-    localparam integer FRAME_H     = 480;
-    localparam [31:0]  FRAME_BYTES = FRAME_W * FRAME_H * 2;        // 614400
+    localparam integer FRAME_W     = `SV_FRAME_WIDTH;
+    localparam integer FRAME_H     = `SV_FRAME_HEIGHT;
+    localparam [31:0]  FRAME_BYTES = FRAME_W * FRAME_H * `SV_RGB565_BYTES_PER_PX;   // 614400
     localparam [31:0]  BURST_BYTES = BURST_WORDS * 4;             // 突发字节数
     localparam [15:0]  HIGH_WATER  = PIX_DEPTH - BURST_WORDS * 2; // 预留整突发像素的空间
 

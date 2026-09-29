@@ -1,5 +1,5 @@
 // ============================================================================
-// sdram_model.sv — SDRAM 行为级仿真模型（★ 仅仿真，不综合）
+// frame_memory_model.sv — SDRAM 行为级仿真模型（★ 仅仿真，不综合）
 // ----------------------------------------------------------------------------
 // 依据：手册 7.9「阶段 9：SDRAM 原理」、7.10「Frame Buffer 帧缓存」
 //       docs/interface_spec.md §3.4（mem_ctrl 接口）与 §一（只传逻辑字节地址）
@@ -36,7 +36,7 @@
 //      真实刷新由官方 IP 承担。
 // ============================================================================
 
-module sdram_model #(
+module frame_memory_model #(
     parameter integer ADDR_BITS   = 21,   // 字地址位宽 -> 2^21 = 2M words = 8 MiB
     parameter integer INIT_CYCLES = 200,  // 上电到 init_done 的固定拍数（可参数化）
     parameter integer RD_LATENCY  = 2     // 读命令到 rdata_valid 的拍数（简化，非真实 CL）
@@ -143,7 +143,7 @@ module sdram_model #(
 
     // ------------------------------------------------------------------------
     // Backdoor 读：供 testbench 校验"写进去的数据在正确的 word 地址上"
-    //   用法： sdram_model u_sdram(...);  u_sdram.peek_word(word_addr, value);
+    //   用法： frame_memory_model u_sdram(...);  u_sdram.peek_word(word_addr, value);
     //   word_addr 为字地址（与端口 addr 同口径）
     // ------------------------------------------------------------------------
     task peek_word;

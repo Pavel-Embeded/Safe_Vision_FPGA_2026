@@ -29,8 +29,8 @@
 // ============================================================================
 
 module frame_address_gen #(
-    parameter [9:0]  FRAME_WIDTH     = 10'd640,  // 行内像素数（不是行步长字节数！）
-    parameter [31:0] BYTES_PER_PIXEL = 32'd2     // RGB565 = 2 Byte/pixel
+    parameter [9:0]  FRAME_WIDTH     = `SV_FRAME_WIDTH,  // 行内像素数（不是行步长字节数！）
+    parameter [31:0] BYTES_PER_PIXEL = `SV_RGB565_BYTES_PER_PX   // RGB565 = 2 Byte/pixel
 )(
     input  wire [31:0] slot_base,     // 槽起始逻辑字节地址（取自 §5 地址表）
     input  wire [9:0]  x,             // 行内坐标 0..639

@@ -369,7 +369,7 @@ FIFO 上有几个旗标，但**真正有用的是 `almost_full`，不是 `full`*
 
 还有一个反直觉的点：**FIFO 里"有数据"不等于"这个数据在这一拍有效"**。同步读（非 FWFT）模式下 `rd_en` 拉高后数据至少晚一拍才出现，叠加异步 FIFO 的同步延迟会更晚。老版例程"读地址一到就当作有效像素"就是这么错的，表现是画面整体右移。我们选 **FWFT**（不空时数据已经在输出端）从结构上消灭这个问题，但仍然要看水位——空了就会输出重复数据或者黑边。
 
-**对应模块**：`rtl/common/sync_fifo.v`（同域 FIFO，带 `almost_full/almost_empty/data_count`）、`rtl/common/rv_skid_buffer.v`（切开上游到下游的 `ready` 长组合路径）、`rtl/common/fifo_health_monitor.v`（记录历史最低水位与 underflow/overflow 次数）。
+**对应模块**：`rtl/common/sync_fifo.v`（同域 FIFO，带 `almost_full/almost_empty/data_count`）、`rtl/common/rv_skid_buffer.v`（切开上游到下游的 `ready` 长组合路径）、`rtl/memory/fifo_health_monitor.v`（记录历史最低水位与 underflow/overflow 次数）。
 
 > 跨时钟域的异步 FIFO 在真实板上用安路的软 FIFO IP，不由我们手写——手写异步 FIFO 是典型的"看起来对、跑起来偶发丢数"，不值得在比赛里冒险。
 
@@ -389,7 +389,7 @@ SRAM 是"给地址就出数据"。**SDRAM 不是**。它内部按 **Bank / Row /
 1. **同一行内连续访问极快**（不用再 ACT/PRE），**跨行必须先 PRE 再 ACT**，开销很大。这直接解释了下一节的"突发传输"。
 2. **REFRESH 不可省**。省掉的后果不是"马上错"，而是"跑两小时后偶发一位错"——这是最难查的一类故障。
 
-本项目的边界划得很清楚：**第一版不手写 SDRAM PHY**，直接跑通官方 Demo、用官方 IP wrapper，B 链的边界止于 wrapper 的请求/响应接口和**逻辑字节地址**。业务模块里**禁止出现裸物理地址运算**（否则换 wrapper 版本时全链地址都要改）。这部分对应 `rtl/memory/mem_ctrl.v` + 仿真用的 `verification/models/sdram_model.sv`。
+本项目的边界划得很清楚：**第一版不手写 SDRAM PHY**，直接跑通官方 Demo、用官方 IP wrapper，B 链的边界止于 wrapper 的请求/响应接口和**逻辑字节地址**。业务模块里**禁止出现裸物理地址运算**（否则换 wrapper 版本时全链地址都要改）。这部分对应 `rtl/memory/mem_ctrl.v` + 仿真用的 `verification/models/frame_memory_model.sv`。
 
 ### 12.3 帧缓存与地址映射（阶段 10）
 
@@ -458,7 +458,7 @@ SRAM 是"给地址就出数据"。**SDRAM 不是**。它内部按 **Bank / Row /
 
 还有一个容易被忽略的取舍：**即使最终输出画布是 1280×720，显示读流量也不随输出分辨率线性增长**。因为图片是一比一显示在 640×480 画布上，背景、OSD、应急图形都由逻辑实时生成，不从 SDRAM 读整幅 720p 帧。这个取舍在答辩时要主动讲。
 
-**对应模块**：`rtl/memory/memory_bandwidth_monitor.v` + `rtl/common/fifo_health_monitor.v`。
+**对应模块**：`rtl/memory/memory_bandwidth_monitor.v` + `rtl/memory/fifo_health_monitor.v`。
 
 ### 12.6 仲裁：同一时刻谁先读内存（阶段 13）
 

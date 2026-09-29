@@ -1,12 +1,12 @@
 // ============================================================================
-// wav_reader.v — WAV 容器解析 + 16bit 双声道 PCM 输出（SafeVision B04 · rtl/media）
+// wav_parser.v — WAV 容器解析 + 16bit 双声道 PCM 输出（SafeVision B04 · rtl/media）
 // ----------------------------------------------------------------------------
 // 依据：手册 7.16.3「媒体格式学习顺序」、8.6「从 I²S 音频到 HDMI 音频链（必须改写）」
 //       及其后的「技术纠错：音频不走外部 I²S Codec」：
 //         B 从 TF 卡读出 WAV，解析 RIFF / fmt / data 得到 48 kHz、16 bit、双声道
 //         PCM；"fmt 与 data 之间的未知块按 chunk size 跳过并做边界检查"；
 //         "WAV 接受条件由 B 保证"。B 的职责止于"提供正确的 PCM 样本"。
-//       docs/interface_spec.md §3.6「wav_reader」、§七 决策 D-7
+//       docs/interface_spec.md §3.6「wav_parser」、§七 决策 D-7
 //
 // 上游：file_streamer 的字节流（data/valid/ready/sof/eof），与 bmp_parser 分时复用。
 // 下游：pcm_ring（经异步 FIFO 跨域）。B04 不做 48 kHz 节拍 / 仲裁 / 打包。
@@ -36,7 +36,7 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module wav_reader (
+module wav_parser (
     input  wire        clk,
     input  wire        rst_n,
 

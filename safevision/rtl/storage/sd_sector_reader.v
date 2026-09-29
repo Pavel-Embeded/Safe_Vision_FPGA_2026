@@ -90,22 +90,6 @@ module sd_sector_reader (
     assign spi_tx_data  = bdata;
 
     // ------------------------------------------------------------------------
-    // CRC16-CCITT (XMODEM)：poly 0x1021，init 0x0000，MSB first
-    // ------------------------------------------------------------------------
-    function [15:0] crc16_next;
-        input [15:0] crc;
-        input [7:0]  din;
-        integer i;
-        reg [15:0] c;
-        begin
-            c = crc ^ {din, 8'h00};
-            for (i = 0; i < 8; i = i + 1)
-                c = c[15] ? ((c << 1) ^ 16'h1021) : (c << 1);
-            crc16_next = c;
-        end
-    endfunction
-
-    // ------------------------------------------------------------------------
     // 寄存器
     // ------------------------------------------------------------------------
     reg  [3:0]  mstate;
@@ -119,6 +103,21 @@ module sd_sector_reader (
     reg  [31:0] to_data;       // 【独立超时 2】数据令牌/卡忙
 
     wire [15:0] crc_rx_next = {crc_rx[7:0], brdata};
+
+    // ------------------------------------------------------------------------
+    // CRC16-CCITT (XMODEM)：poly 0x1021，init 0x0000，MSB first
+    // ★ 算法实现在 rtl/common/crc16_ccitt.v —— 此前本模块与 frame_writer.v
+    //   各写了一份同名函数，两处必须永远一致（CRC 口径不一致是最难查的 bug），
+    //   故抽成公共模块，本处只做例化。
+    //   纯组合步进器：收到一个字节时把 crc_acc <= crc_next_val 即可。
+    //   （例化放在寄存器声明之后，避免 vlog 把前置引用误判为隐式网线。）
+    // ------------------------------------------------------------------------
+    wire [15:0] crc_next_val;
+    crc16_ccitt u_crc16 (
+        .crc_in  (crc_acc),
+        .data    (brdata),
+        .crc_out (crc_next_val)
+    );
 
     assign rd_ready   = (mstate == S_IDLE);
     assign data       = dbyte;
@@ -321,7 +320,7 @@ module sd_sector_reader (
                 end else if (bdone) begin
                     dbyte    <= brdata;
                     dvalid   <= 1'b1;
-                    crc_acc  <= crc16_next(crc_acc, brdata);
+                    crc_acc  <= crc_next_val;
                     byte_cnt <= byte_cnt + 10'd1;
                 end else if (bstate == B_IDLE) begin
                     // 下游未 ready 时不发 0xFF，SCLK 停住，卡被自然暂停

@@ -51,14 +51,14 @@
 `include "safevision_defs.vh"
 
 module frame_writer #(
-    parameter [9:0]  FRAME_WIDTH     = 10'd640,
-    parameter [9:0]  FRAME_HEIGHT    = 10'd480,
-    parameter [31:0] BYTES_PER_PIXEL = 32'd2,
-    parameter [18:0] PIX_PER_FRAME   = 19'd307200,      // 640*480
+    parameter [9:0]  FRAME_WIDTH     = `SV_FRAME_WIDTH,
+    parameter [9:0]  FRAME_HEIGHT    = `SV_FRAME_HEIGHT,
+    parameter [31:0] BYTES_PER_PIXEL = `SV_RGB565_BYTES_PER_PX,
+    parameter [18:0] PIX_PER_FRAME   = `SV_FRAME_PIXELS,      // 640*480
     parameter integer SAMPLE_STRIDE  = 1024,            // 每 1024 word 取一个抽样点
     parameter [15:0] GAP_TIMEOUT     = 16'd512,         // 帧内无进展超时（拍）
-    parameter [31:0] SLOT_SPAN       = 32'h000A_0000,   // 单槽预留（§5 地址表）
-    parameter [31:0] MEM_VISIBLE     = 32'h0040_0000    // SDRAM 对外可见容量 4 MiB（§3.4）
+    parameter [31:0] SLOT_SPAN       = `SV_IMG_ALIGN_BYTES,     // 单槽预留（§5 地址表）
+    parameter [31:0] MEM_VISIBLE     = `SV_MEM_VISIBLE_BYTES    // SDRAM 对外可见容量 4 MiB（§3.4）
 )(
     input  wire        clk,             // mem_clk
     input  wire        rst_n,
@@ -154,35 +154,27 @@ module frame_writer #(
     wire px_accept = din_valid && din_ready;  // ★ valid && ready 双判
 
     // ------------------------------------------------------------------------
-    // CRC16-CCITT (XMODEM)：poly 0x1021，init 0x0000，MSB first
-    //   —— 与 sd_sector_reader.v 保持同一份实现
+    // CRC16-CCITT (XMODEM) 抽样校验：算法实现集中在 rtl/common/crc16_ccitt.v
+    //   （此前本模块与 sd_sector_reader.v 各写了一份同名函数，两处口径必须
+    //     永远一致，故抽为公共模块；改算法只需改那一处。）
+    //   一个 32bit word 按大端（先高字节）逐字节喂入 = 级联 4 级。
     // ------------------------------------------------------------------------
-    function [15:0] crc16_next;
-        input [15:0] crc;
-        input [7:0]  din_b;
-        integer i;
-        reg [15:0] c;
-        begin
-            c = crc ^ {din_b, 8'h00};
-            for (i = 0; i < 8; i = i + 1)
-                c = c[15] ? ((c << 1) ^ 16'h1021) : (c << 1);
-            crc16_next = c;
-        end
-    endfunction
+    // 源侧打包 word（高半=后到，低半=先到），两处引用同一根线，避免写反
+    wire [31:0] px_pair = {din, lo_pix};
 
-    // 一个 32bit word 按大端（先高字节）逐字节喂入
-    function [15:0] crc16_word;
-        input [15:0] crc;
-        input [31:0] w;
-        reg [15:0] c;
-        begin
-            c = crc16_next(crc,  w[31:24]);
-            c = crc16_next(c,    w[23:16]);
-            c = crc16_next(c,    w[15:8]);
-            c = crc16_next(c,    w[7:0]);
-            crc16_word = c;
-        end
-    endfunction
+    wire [15:0] crc_bus_w1, crc_bus_w2, crc_bus_w3;
+    wire [15:0] crc_bus_next;
+    crc16_ccitt u_crc_bus_0 (.crc_in(crc_bus),    .data(wr_data_r[31:24]), .crc_out(crc_bus_w1));
+    crc16_ccitt u_crc_bus_1 (.crc_in(crc_bus_w1), .data(wr_data_r[23:16]), .crc_out(crc_bus_w2));
+    crc16_ccitt u_crc_bus_2 (.crc_in(crc_bus_w2), .data(wr_data_r[15:8]),  .crc_out(crc_bus_w3));
+    crc16_ccitt u_crc_bus_3 (.crc_in(crc_bus_w3), .data(wr_data_r[7:0]),   .crc_out(crc_bus_next));
+
+    wire [15:0] crc_src_w1, crc_src_w2, crc_src_w3;
+    wire [15:0] crc_src_next;
+    crc16_ccitt u_crc_src_0 (.crc_in(crc_src),    .data(px_pair[31:24]), .crc_out(crc_src_w1));
+    crc16_ccitt u_crc_src_1 (.crc_in(crc_src_w1), .data(px_pair[23:16]), .crc_out(crc_src_w2));
+    crc16_ccitt u_crc_src_2 (.crc_in(crc_src_w2), .data(px_pair[15:8]),  .crc_out(crc_src_w3));
+    crc16_ccitt u_crc_src_3 (.crc_in(crc_src_w3), .data(px_pair[7:0]),   .crc_out(crc_src_next));
 
     // ------------------------------------------------------------------------
     // 主状态机
@@ -257,7 +249,7 @@ module frame_writer #(
                     if (wr_accept) begin
                         wr_pending <= 1'b0;
                         if ((bus_idx % SAMPLE_STRIDE) == 0)
-                            crc_bus <= crc16_word(crc_bus, wr_data_r);
+                            crc_bus <= crc_bus_next;
                         bus_idx <= bus_idx + 32'd1;
                     end
 
@@ -282,9 +274,9 @@ module frame_writer #(
                             end else begin
                                 wr_pending <= 1'b1;
                                 wr_addr_r  <= cur_byte_addr;
-                                wr_data_r  <= {din, lo_pix};  // 高半=后到，低半=先到
+                                wr_data_r  <= px_pair;       // 高半=后到，低半=先到
                                 if ((src_idx % SAMPLE_STRIDE) == 0)
-                                    crc_src <= crc16_word(crc_src, {din, lo_pix});
+                                    crc_src <= crc_src_next;
                                 src_idx <= src_idx + 32'd1;
                                 // 推进像素对坐标（x 每次 +2）
                                 if (x_cnt == (FRAME_WIDTH - 10'd2)) begin

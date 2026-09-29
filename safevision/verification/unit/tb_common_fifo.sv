@@ -4,7 +4,7 @@
 // 被测（5 个 RTL）：
 //   rtl/common/rv_skid_buffer.v
 //   rtl/common/sync_fifo.v
-//   rtl/common/fifo_health_monitor.v
+//   rtl/memory/fifo_health_monitor.v
 //   rtl/memory/memory_bandwidth_monitor.v
 //   rtl/common/error_report.v
 //

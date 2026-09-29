@@ -17,8 +17,10 @@
 `ifndef SAFEVISION_DEFS_VH
 `define SAFEVISION_DEFS_VH
 
-// 错误码单独登记，这里一并引入，调用方只需 include 本文件
+// 错误码、像素格式、事件码各自单独登记；调用方只需 include 本文件
 `include "fault_code_defs.vh"
+`include "pixel_format_defs.vh"
+`include "event_code_defs.vh"
 
 // ---------------------------------------------------------------------------
 // 1. SD SPI 命令索引

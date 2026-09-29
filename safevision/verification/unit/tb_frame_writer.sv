@@ -1,12 +1,12 @@
 // ============================================================================
-// tb_mem_write.sv — 阶段 9/10：frame_writer -> mem_ctrl -> SDRAM 写通路
+// tb_frame_writer.sv — 阶段 9/10：frame_writer -> mem_ctrl -> SDRAM 写通路
 // ----------------------------------------------------------------------------
 // 被测：rtl/memory/frame_writer.v + rtl/memory/frame_address_gen.v
-//       + rtl/memory/mem_ctrl.v + models/sdram_model.sv
+//       + rtl/memory/mem_ctrl.v + models/frame_memory_model.sv
 //
 // 数据通路（单时钟 mem_clk）：
-//   TB 像素流 -> frame_writer -> (wr_req/addr/data) -> mem_ctrl -> sdram_model
-//   sdram_model 提供 backdoor 读 peek_word()，TB 用它抽查"写进去的 word"。
+//   TB 像素流 -> frame_writer -> (wr_req/addr/data) -> mem_ctrl -> frame_memory_model
+//   frame_memory_model 提供 backdoor 读 peek_word()，TB 用它抽查"写进去的 word"。
 //
 // 测试卷：
 //   T1 正常一帧(307200 px)：slot_valid 置位 + crc_ok + px_cnt=307200，
@@ -22,12 +22,13 @@
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
-module tb_mem_write;
+module tb_frame_writer;
 
     // ---- 冻结地址表（interface_spec §5）----
-    localparam [31:0] IMG0_BASE = 32'h0000_0000;
-    localparam [31:0] IMG2_BASE = 32'h0014_0000;
-    localparam [31:0] IMG3_BASE = 32'h001E_0000;
+    // 地址取自唯一的冻结地址表（rtl/include/pixel_format_defs.vh），别在 TB 里再抄一遍
+    localparam [31:0] IMG0_BASE = `SV_IMG0_BASE;
+    localparam [31:0] IMG2_BASE = `SV_IMG2_BASE;
+    localparam [31:0] IMG3_BASE = `SV_IMG3_BASE;
     localparam [31:0] BAD_BASE  = 32'h003F_0000;   // 0x3F0000 + 0xA0000 = 0x490000 > 4MiB
 
     localparam integer FRAME_W = 640;
@@ -145,7 +146,7 @@ module tb_mem_write;
         .sdram_init_done   (sd_initdone)
     );
 
-    sdram_model u_sdram (
+    frame_memory_model u_sdram (
         .clk        (clk),
         .rst_n      (rst_n),
         .req        (sd_req),
@@ -169,7 +170,7 @@ module tb_mem_write;
     always @(posedge clk) begin
         if (fw_wr_done) wr_done_seen = wr_done_seen + 1;
         if (rst_n && mon_en) begin
-            if (fw_slot_valid[0] && (fw_px_cnt !== 19'd307200)) early_viol = early_viol + 1;
+            if (fw_slot_valid[0] && (fw_px_cnt !== `SV_FRAME_PIXELS)) early_viol = early_viol + 1;
             if (fw_slot_valid[0] && !fw_crc_ok)                  early_viol = early_viol + 1;
         end
     end
@@ -275,7 +276,7 @@ module tb_mem_write;
         check(fw_wr_done === 1'b1 || wr_done_seen > 0, "T1 wr_done 产生");
         check(fw_slot_valid[0] === 1'b1, "T1 slot_valid[0] 置位");
         check(fw_crc_ok === 1'b1,        "T1 crc_ok 通过");
-        check(fw_px_cnt === 19'd307200,  "T1 px_cnt=307200");
+        check(fw_px_cnt === `SV_FRAME_PIXELS,  "T1 px_cnt=307200");
         check(fw_wr_error === 1'b0,      "T1 无写错误");
         check(fw_slot_valid[3:1] === 3'b000, "T1 其他槽未置位");
 

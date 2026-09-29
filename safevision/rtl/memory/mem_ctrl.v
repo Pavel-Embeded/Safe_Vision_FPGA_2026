@@ -15,7 +15,7 @@
 //     等）内**禁止裸物理地址运算**。物理地址转换只发生在本模块内。
 //     换 SDRAM IP 或 wrapper 版本时，全链地址无需改动。
 //
-// ★ 说明：本 wrapper 以行为级 sdram_model 为后端完成仿真验证；上板时把
+// ★ 说明：本 wrapper 以行为级 frame_memory_model 为后端完成仿真验证；上板时把
 //   sdram_* 这一组端口接到安路官方 SDRAM IP 的请求/响应接口即可（手册 7.9：
 //   最终使用官方 IP wrapper）。IP 版本与参数以 APUG011 与板级报告为准。
 //

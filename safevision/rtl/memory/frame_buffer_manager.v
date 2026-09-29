@@ -63,16 +63,19 @@ module frame_buffer_manager (
     // ------------------------------------------------------------------------
     // 冻结地址表（interface_spec §五）——唯一落点，全部 localparam
     // ------------------------------------------------------------------------
-    localparam [31:0] IMG0_BASE       = 32'h0000_0000;   // 第 1 幅 RGB565
-    localparam [31:0] IMG1_BASE       = 32'h000A_0000;   // 第 2 幅
-    localparam [31:0] IMG2_BASE       = 32'h0014_0000;   // 第 3 幅
-    localparam [31:0] IMG3_BASE       = 32'h001E_0000;   // 第 4 幅
-    localparam [31:0] AUDIO_RING_BASE = 32'h0028_0000;   // 256 KiB 音频环
-    localparam [31:0] WORK_BASE       = 32'h002C_0000;   // 工作区
+    // ★ 地址与容量的【唯一来源】是 rtl/include/pixel_format_defs.vh（冻结地址表）。
+    //   这里保留模块内部的短名字，但取值必须来自 `SV_*，禁止再写裸十六进制：
+    //   否则冻结地址表就出现第二份副本，改一处漏一处。
+    localparam [31:0] IMG0_BASE       = `SV_IMG0_BASE;        // 第 1 幅 RGB565
+    localparam [31:0] IMG1_BASE       = `SV_IMG1_BASE;        // 第 2 幅
+    localparam [31:0] IMG2_BASE       = `SV_IMG2_BASE;        // 第 3 幅
+    localparam [31:0] IMG3_BASE       = `SV_IMG3_BASE;        // 第 4 幅
+    localparam [31:0] AUDIO_RING_BASE = `SV_AUDIO_RING_BASE;  // 256 KiB 音频环
+    localparam [31:0] WORK_BASE       = `SV_WORK_BASE;        // 工作区
 
-    localparam [31:0] SLOT_STRIDE     = 32'h000A_0000;   // 槽间距（640 KiB）
-    localparam [31:0] LINE_STRIDE    = 32'd1280;         // 每行 640×2 Byte
-    localparam [31:0] FRAME_BYTES    = 32'd614400;       // 640×480×2
+    localparam [31:0] SLOT_STRIDE     = `SV_IMG_ALIGN_BYTES;   // 槽间距（640 KiB）
+    localparam [31:0] LINE_STRIDE     = `SV_FRAME_STRIDE_BYTES; // 每行 640×2 = 1280 Byte
+    localparam [31:0] FRAME_BYTES     = `SV_FRAME_BYTES;        // 640×480×2 = 614400
 
     // 槽 -> 基地址（用常量，不用裸数）
     function [31:0] slot_base_of;

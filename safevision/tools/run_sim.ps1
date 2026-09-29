@@ -37,10 +37,12 @@ $RTL = @(
     "../rtl/common/uart_tx.v",
     "../rtl/common/rv_skid_buffer.v",
     "../rtl/common/sync_fifo.v",
-    "../rtl/common/fifo_health_monitor.v",
+    "../rtl/memory/fifo_health_monitor.v",
     "../rtl/common/error_report.v",
     "../rtl/common/shift_reg.v",
     "../rtl/common/spi_byte_rx.v",
+    "../rtl/common/crc16_ccitt.v",
+    "../rtl/common/crc7.v",
     # ---- storage ----
     "../rtl/storage/spi_master.v",
     "../rtl/storage/sd_initializer.v",
@@ -53,7 +55,7 @@ $RTL = @(
     # ---- media ----
     "../rtl/media/bmp_parser.v",
     "../rtl/media/bmp_unpack.v",
-    "../rtl/media/wav_reader.v",
+    "../rtl/media/wav_parser.v",
     # ---- memory ----
     "../rtl/memory/mem_ctrl.v",
     "../rtl/memory/frame_address_gen.v",
@@ -68,18 +70,22 @@ $RTL = @(
 
 $SIM = @(
     "models/sd_spi_card_model.sv",
-    "models/sdram_model.sv",
+    "models/frame_memory_model.sv",
     "unit/tb_sd_sector_reader.sv",
     "unit/tb_sd_initializer.sv",
     "unit/tb_fat32_boot_parser.sv",
     "unit/tb_fat32_directory_scanner.sv",
+    "unit/tb_fat32_cluster_walker.sv",
     "unit/tb_file_streamer.sv",
     "unit/tb_bmp_parser.sv",
     "unit/tb_file_index.sv",
     "unit/tb_common_fifo.sv",
-    "unit/tb_media.sv",
-    "unit/tb_mem_write.sv",
-    "unit/tb_frame_swap.sv"
+    "unit/tb_crc.sv",
+    "unit/tb_bmp_unpack.sv",
+    "unit/tb_wav_parser.sv",
+    "unit/tb_frame_writer.sv",
+    "unit/tb_memory_arbiter.sv",
+    "unit/tb_frame_swap_ctrl.sv"
 )
 
 $TBS = @(
@@ -87,13 +93,17 @@ $TBS = @(
     "tb_sd_initializer",
     "tb_fat32_boot_parser",
     "tb_fat32_directory_scanner",
+    "tb_fat32_cluster_walker",
     "tb_file_streamer",
     "tb_bmp_parser",
     "tb_file_index",
     "tb_common_fifo",
-    "tb_media",
-    "tb_mem_write",
-    "tb_frame_swap"
+    "tb_crc",
+    "tb_bmp_unpack",
+    "tb_wav_parser",
+    "tb_frame_writer",
+    "tb_memory_arbiter",
+    "tb_frame_swap_ctrl"
 )
 
 Write-Output "=== vlib work ==="

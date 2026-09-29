@@ -17,7 +17,7 @@
 | 阶段 5（CMD17 单扇区读 + CRC16） | 已完成并仿真通过 |
 | 阶段 6 首块（FAT32 挂载与 BPB 解析 `fat32_boot_parser`） | 已完成并仿真通过 |
 | 阶段 6 第二块（根目录遍历 `fat32_directory_scanner`） | 已完成并仿真通过 |
-| 阶段 7 第一块（簇链跟踪 `fat32_cluster_walker`） | 已完成并仿真通过 |
+| 阶段 7 第一块（簇链跟踪 `fat32_cluster_walker`） | 已完成并仿真通过（v1.7 起有专属 TB，此前只随编译） |
 | 阶段 7 第二块（字节流 `file_streamer`） | 已完成并仿真通过 |
 | 阶段 7 第三块（BMP 头校验 `bmp_parser`） | 已完成并仿真通过 |
 | 阶段 6 剩余（编号扫描 + 索引表 `file_index`） | 已完成并仿真通过 |
@@ -30,13 +30,13 @@
 | 阶段 14（双缓冲与槽所有权 `frame_buffer_manager`） | 已完成并仿真通过 |
 | 阶段 15（帧交换握手 `frame_swap_ctrl` + `frame_swap_cdc`） | 已完成并仿真通过 |
 | 阶段 16（错误上报 `error_report`） | 已完成并仿真通过（五类故障注入待整机） |
-| **目录树与命名按《工业级模块化架构蓝图》§4 对齐** | **已完成**（见 interface_spec「命名迁移表」） |
-| 媒体格式层（`bmp_unpack` BGR→RGB565 / `wav_reader`） | 已完成并仿真通过 |
+| **目录树与命名按《工业级模块化架构蓝图》§4 对齐** | **已完成**（v1.7 逐项核对收尾：修掉最后 4 处重命名 + 补 2 个头文件与 2 个 CRC 通用件；见 interface_spec「命名迁移表」）。另修掉"同一个常量在 4 个模块各存一份副本"的结构性问题（改地址现在只改 `rtl/include/pixel_format_defs.vh`） |
+| 媒体格式层（`bmp_unpack` BGR→RGB565 / `wav_parser`） | 已完成并仿真通过 |
 | 板级顶层 `top_stage5_sector_rd.v`（阶段 5 最小验证） | 未开始（见 §2.3） |
 | 整机集成（`safevision_core` / `safevision_top`） | 未开始（A 负责） |
 | **上板实测** | **未开始（等板子）** |
 
-仿真回归：`safevision\tools\run_sim.ps1`，**457 项断言全部 PASS**：
+仿真回归：`safevision\tools\run_sim.ps1`，**502 项断言全部 PASS**（15 个 testbench）：
 
 | testbench | 覆盖 | 断言数 |
 |---|---|---|
@@ -44,14 +44,21 @@
 | `tb_sd_initializer.sv` | 慢卡 / v1.x 卡 / 拔卡 / 恢复 | 20 |
 | `tb_fat32_boot_parser.sv` | BPB 解析 + 3 个负向分支 | 26 |
 | `tb_fat32_directory_scanner.sv` | 跳过规则 + 跨簇 + 判环 + 越界 + 反压 | 57 |
+| `tb_fat32_cluster_walker.sv` | 正常跳簇 / EOC 边界（0x0FFFFFF8 与 0x0FFFFFF7）/ 越界 / **跨 FAT 扇区寻址** / 判环 / SD 错透传 / 读超时 / done 单拍 | 33 |
 | `tb_file_streamer.sv` | 簇链→字节流 + 跨簇 + 成环 + 越界 + 反压 + 空文件 | 49 |
 | `tb_bmp_parser.sv` | BMP 头 5 类校验 + 调色板跳过 + top-down + 反压 | 41 |
 | `tb_file_index.sv` | 乱序→升序 / 只留最小 4 幅 / 不足 4 幅 / 非法名 / WAV 配对与串号 | 60 |
 | `tb_common_fifo.sv` | skid 反压保持 / FIFO 水位与 almost_full / 最低水位 / underflow / 带宽 / 错误不丢 | 58 |
-| `tb_media.sv` | BMP BGR→RGB565 纯色与邻色 / 行填充 / 双向方向 / 反压 / 像素数不足与超限；WAV 未知块跳过 / 样本打包顺序 / 四类拒收 | 75 |
-| `tb_mem_write.sv` | 一帧写入 + 四个角与中点地址抽查 / 多一个少一个 / slot_valid 时序 / 越界 | 28 |
-| `tb_frame_swap.sv` | 仲裁最坏场景与防饥饿 / 帧交换四态 / 两类超时 / CDC mailbox | 30 |
-| **合计** | | **457** |
+| `tb_crc.sv` | CRC16 XMODEM 标准向量与 4 级级联等价 / **CRC7 反推 CMD0=0x4A、CMD8=0x43 并与宏对照** | 12 |
+| `tb_bmp_unpack.sv` | BMP BGR→RGB565 纯色与邻色 / 行填充 / 双向方向 / 反压 / 像素数不足与超限 | 44 |
+| `tb_wav_parser.sv` | WAV 未知块跳过 / 样本打包顺序 / 四类拒收 | 31 |
+| `tb_frame_writer.sv` | 一帧写入 + 四个角与中点地址抽查 / 多一个少一个 / slot_valid 时序 / 越界 | 28 |
+| `tb_memory_arbiter.sv` | 仲裁最坏场景与防饥饿 / 单次占用上限 / 三类 starvation 计数为 0 | 7 |
+| `tb_frame_swap_ctrl.sv` | 帧交换四态 / 两类超时进 SAFE / 原子切换 / CDC mailbox 预稳定 | 23 |
+| **合计** | | **502** |
+
+> v1.7 的 4 处拆分类改动（`tb_frame_swap`→2 个、`tb_media`→2 个）**只搬位置、不改断言**，
+> 拆分前后断言数逐项守恒（30→7+23，75→44+31）。
 
 ---
 
@@ -213,14 +220,14 @@
 | 引脚约束 | `pin.adc` 还没写 | 见 §1.3 |
 | 根目录簇链跟随 | **已解决**：阶段 7 抽出 `fat32_cluster_walker.v`，`fat32_directory_scanner` 与 `file_streamer` 共用同一份 | 已完成 |
 | `file_index` | **已完成**：编号扫描 + 数字后缀排序 + 索引表冻结 + WAV 配对 | 已完成 |
-| **SDRAM 真实 IP 未接** | 仿真用行为模型 `verification/models/sdram_model.sv`（不建模 tRCD/CL/tRP/tRFC 与刷新，**不能用于长稳评估**）。真实 PHY 按手册 7.9「第一版不要手写，直接跑通官方 Demo」用安路官方 IP，替换 `mem_ctrl` 内部实现即可 | 板到后（M-10/M-11） |
+| **SDRAM 真实 IP 未接** | 仿真用行为模型 `verification/models/frame_memory_model.sv`（不建模 tRCD/CL/tRP/tRFC 与刷新，**不能用于长稳评估**）。真实 PHY 按手册 7.9「第一版不要手写，直接跑通官方 Demo」用安路官方 IP，替换 `mem_ctrl` 内部实现即可 | 板到后（M-10/M-11） |
 | **异步 FIFO 用官方 IP** | `sync_fifo.v` 只覆盖同域；跨时钟域（`mem_clk→pixel_clk`、`mem_clk→audio_clk`）用安路软 FIFO（`SHOW_AHEAD=Enable`、`OUT_REG=Disable`）。**禁止手写异步 FIFO** | 整机集成时 |
-| **音频链 B04 还剩两块** | `wav_reader` **已完成**；还差 `pcm_ring`（SDRAM `AUDIO_RING` 环形缓冲，解耦慢读与连续消费）与 `audio_cdc_fifo`（`mem_clk→audio_clk`，用安路软 FIFO FWFT）。手册 8.6 要求音频必须走 HDMI 数据岛，**不走外部 I²S Codec** | 见 §三 |
-| **媒体格式层** | **已收尾**：`bmp_unpack`（BGR888→RGB565、行填充、方向归一化，`ROUNDING` 参数待 O-1 定夺）与 `wav_reader`（RIFF 解析 + 未知块跳过）。顺带补登记了 `ERR_WAV`(0x07) 与 `DET_WAV_*`(0x71–0x76) —— 原先只写在 interface_spec，代码里缺 | 已完成 |
+| **音频链 B04 还剩两块** | `wav_parser` **已完成**；还差 `pcm_ring`（SDRAM `AUDIO_RING` 环形缓冲，解耦慢读与连续消费）与 `audio_cdc_fifo`（`mem_clk→audio_clk`，用安路软 FIFO FWFT）。手册 8.6 要求音频必须走 HDMI 数据岛，**不走外部 I²S Codec** | 见 §三 |
+| **媒体格式层** | **已收尾**：`bmp_unpack`（BGR888→RGB565、行填充、方向归一化，`ROUNDING` 参数待 O-1 定夺）与 `wav_parser`（RIFF 解析 + 未知块跳过）。顺带补登记了 `ERR_WAV`(0x07) 与 `DET_WAV_*`(0x71–0x76) —— 原先只写在 interface_spec，代码里缺 | 已完成 |
 | **WAV 出错后不排空** | 出错即停收，交上层 abort / 回退提示音（手册 D-7 要求"回退提示音"）。当前实现不主动排空剩余字节 | 整机集成时确认 |
 | `bmp_unpack` 的舍入方式未定 | `ROUNDING` 参数（0=截断 / 1=舍入+饱和）已做成参数，等 A/C 一起定（interface_spec 待确认项 O-1） | 与 A/C 定 |
 | `bmp_parser` 坏文件要排空整条流 | 校验不通过时当前实现会把该文件剩余字节全部排空（只丢不外送），坏文件大时浪费时间。可加一个 `abort` 输入让上游提前收工 | 有空再做 |
-| **帧交换未与 A 联仿** | `frame_swap_ctrl` / `frame_swap_cdc` 只做了 B 侧自测（30 项断言），没有和 A 的像素域一起跑过。这是 A/B 第一次真正协同，**建议优先联调** | 与 A 约定时间 |
+| **帧交换未与 A 联仿** | `frame_swap_ctrl` / `frame_swap_cdc` 只做了 B 侧自测（23 项断言），没有和 A 的像素域一起跑过。这是 A/B 第一次真正协同，**建议优先联调** | 与 A 约定时间 |
 | **整机集成未做** | `safevision_core.v`（子系统互连）与 `safevision_top.v`（板级）由 A 负责；B 侧模块已就绪但还没接进子系统 | A 负责 |
 | **蓝图对齐后遗留** | `rtl/common/shift_reg.v` / `spi_byte_rx.v` 是阶段 1 教学件、产品链未例化，蓝图无对应项，暂放 `rtl/common/` | 有空再清理 |
 
@@ -234,4 +241,6 @@
 | — | 阶段 6 首块 `fat32_boot_parser` + 四类异常分支测试通过后更新 |
 | — | 阶段 6 第二块 `fat32_directory_scanner` 通过后更新（回归 116 项；登记两条真实踩坑：字节消费必须 `valid && ready` 门控、FAT 入口是小端且高 4 bit 需掩掉） |
 | — | 阶段 7 通过后更新（回归 206 项）。同时按《工业级模块化架构蓝图》§4 全仓改名：`rtl/{include,common,storage,media}` + `verification/{unit,models}` + `tools`，回归全绿未回归。新登记三条踩坑：清零逻辑要放状态机之外、文件末字节落在扇区末字节时的同拍判定、BMP 字段同为小端 |
-| — | **阶段 8–16 + 阶段 6 收尾通过后更新（回归 382 项）**。新增 `rtl/memory/` 全套（SDRAM wrapper、帧缓存地址、帧写入、仲裁、DMA 读、双缓冲、帧交换、带宽监视）、`rtl/common/`（切分缓冲、同步 FIFO、FIFO 健康度、错误上报）、`sdram_model.sv` 行为模型、`file_index.v`。新增 §2.5 存储链实测项 M-10~M-19、§2.6 排查顺序扩到 11 条、"未完成项"表补上 SDRAM 真实 IP / 异步 FIFO / 音频链 / 帧交换联调 / 整机集成 |
+| — | **阶段 8–16 + 阶段 6 收尾通过后更新（回归 382 项）**。新增 `rtl/memory/` 全套（SDRAM wrapper、帧缓存地址、帧写入、仲裁、DMA 读、双缓冲、帧交换、带宽监视）、`rtl/common/`（切分缓冲、同步 FIFO、FIFO 健康度、错误上报）、`frame_memory_model.sv` 行为模型、`file_index.v`。新增 §2.5 存储链实测项 M-10~M-19、§2.6 排查顺序扩到 11 条、"未完成项"表补上 SDRAM 真实 IP / 异步 FIFO / 音频链 / 帧交换联调 / 整机集成 |
+| — | **阶段 8–16 全部落地 + 媒体层收尾后更新（回归 457 项）**。补 `bmp_unpack` / `wav_parser` / `file_index` / `error_report`，补登记 `ERR_WAV` 与 `DET_WAV_*` 错误码 |
+| — | **v1.7：按蓝图 §4 逐项核对命名后更新（回归 502 项 / 15 个 TB）**。① 重命名 4 处（`wav_parser`、`memory/fifo_health_monitor`、`frame_memory_model`、`tb_frame_writer`）；② 补 `rtl/include/pixel_format_defs.vh`（**冻结地址表唯一来源**）与 `event_code_defs.vh`；③ **修掉"同一个常量在 4 个模块各存一份副本"**（帧几何/地址表全部改为引用 `` `SV_`` 宏，parameter 保留）；④ 补 `rtl/common/crc16_ccitt.v` / `crc7.v`，`sd_sector_reader` 与 `frame_writer` 各自那份重复的 CRC 函数删掉改为例化；⑤ 新增 `tb_crc`(12)、`tb_fat32_cluster_walker`(33，**该模块的判 EOC/越界/判环三条收尾分支此前从未被仿真跑过**)；⑥ 按蓝图拆 TB：`tb_frame_swap`→`tb_memory_arbiter`+`tb_frame_swap_ctrl`，`tb_media`→`tb_bmp_unpack`+`tb_wav_parser`（只搬位置不改断言）。**概念更正**：此前说的"宏与 parameter 命名冲突"是误判——宏只在写成 `` `名字 `` 时展开，两者不会冲突（已编译验证） |
