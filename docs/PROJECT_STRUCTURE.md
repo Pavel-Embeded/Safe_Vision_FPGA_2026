@@ -3,7 +3,7 @@
 本页是仓库目录导航。`[现有]` 表示盘点时已存在；`[新建]` 表示这次创建的管理骨架；`[规划]` 表示只确定落点，未实现 RTL/IP；`[骨架]` 表示已建目录但只含 README/占位说明，没有任何功能代码。手册 V2.0 的第 2、6–12、17 章决定三条链、接口先行、分层测试和交付证据；目录粒度、板级适配层、评审模板是本项目的工程化补充。
 
 ```text
-Safe_Vision_FPGA_2026/
+<仓库根>/
 ├─ README.md                         项目入口、当前能力与使用顺序
 ├─ .gitignore                        只跟踪源码、文档和可复核证据
 ├─ .github/                          PR/缺陷/任务模板
@@ -70,4 +70,4 @@ Safe_Vision_FPGA_2026/
 > 它们被项目规则、`README.md`、`docs/architecture/module_registry.md` 等多处按此路径引用，
 > 搬动会打断引用，且它们本身就是 B 链的交付物。
 
-树上标 `[规划]` / `[骨架]` 的目录（`rtl/{video,audio,control,safety,top}`、`platform/`、`build/`、`assets/`、`verification/{subsystem,system,board}`、`evidence/`）目前只有 README 或占位说明，没有任何功能代码；依据蓝图 §4.1「不要一开始创建 150 个空 RTL」，先建落点和命名计划，不生成假 RTL。
+树上标 `[规划]` / `[骨架]` 的目录（`rtl/{video,audio,control,safety,top}`、`platform/`、`build/`、`assets/`、`verification/{subsystem,system,board}`、`evidence/`）目前只有 README 或占位说明，没有任何功能代码；本项目自定原则「不要一开始创建一堆空 RTL」，先建落点和命名计划，不生成假 RTL。

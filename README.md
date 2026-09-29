@@ -60,12 +60,13 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 
 ## 二、目录结构
 
-结构对齐《工业级模块化架构蓝图》§4 的仓库树约定；`rtl/` 按"平台无关件 / 存储 / 媒体 /
+结构以 [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) 为准（由队友的项目管理架构确立，
+原引自《工业级模块化架构蓝图》§4，**2026-09-29 起蓝图不再作为结构依据**）；`rtl/` 按"平台无关件 / 存储 / 媒体 /
 内存"分层，`verification/` 单元测试与模型分开，`docs/` 只放文档。标 `[骨架]` 的目录
 只有 README 或占位说明，尚无功能代码。
 
 ```
-Safe_Vision_FPGA_2026/
+<仓库根>/
 ├─ .github/                         PR / 缺陷 / 工作项模板（骨架）
 ├─ .gitignore                       白名单：只跟踪源码、文档与可复核证据
 ├─ README.md                        项目入口、能力与阅读顺序
@@ -142,7 +143,7 @@ Safe_Vision_FPGA_2026/
 │      └─ check_repo.ps1            目录与 run_sim 引用自检（不需要 ModelSim）
 ```
 
-**为什么同时有 `.v` 和 `.sv`**（按蓝图规定，不是随手选的）：
+**为什么同时有 `.v` 和 `.sv`**（项目自定约定，出自早期架构评审，不是随手选的）：
 
 | 位置 | 扩展名 | 语言子集 | 理由 |
 |---|---|---|---|
@@ -151,16 +152,16 @@ Safe_Vision_FPGA_2026/
 | `verification/**` | `.sv` | 允许 SystemVerilog | TB 不综合，只跑在 ModelSim 里，不受 TD 限制；`vlog` 按扩展名自动选语言版本 |
 
 > 说实话：目前 `.sv` 文件的内容**几乎全是 Verilog-2001 写法**（全仓只有一个 `fork/join`，
-> 而它本身就是 Verilog-2001 就有的）。扩展名按蓝图分工走了，内容是保守派写法——
+> 而它本身就是 Verilog-2001 就有的）。扩展名按这个分工走了，内容是保守派写法——
 > 这是可接受的，但别因为看到 `.sv` 就以为里面有 `logic`/`always_ff` 或断言。
 > **新增 RTL 一律 `.v`；不要把 `.sv` 放进 `rtl/`**（那会进 TD 综合）。
 
-**已建骨架、尚无功能代码**（依据蓝图 §4.1「不要一开始创建 150 个空 RTL」）：
+**已建骨架、尚无功能代码**（项目自定原则：先建落点和命名计划，不生成假 RTL）：
 `rtl/{video,audio,control,safety,top}`、`platform/`、`build/`、`assets/`、
 `verification/{subsystem,system,board}`、`evidence/` 都只放 README 或占位说明，没有功能
 RTL。A 链（视频与顶层集成）与 C 链（控制与音频）各自独立实现。
 
-**有意不创建**（同样依据蓝图 §4.1 与 §19「三人团队不要模仿大公司堆叠复杂框架」）：
+**有意不创建**（同样出自项目自定原则「三人团队不要模仿大公司堆叠复杂框架」）：
 `rtl/csr/`（CSR 总线）、`rtl/diagnostics/`、`rtl/platform/`（板级适配已放在
 `safevision/platform/`）、formal 验证、nightly CI、HIL、release manifest、HAL、
 Codec I²C 控制。理由留档在 [interface_spec.md](docs/interface_spec.md) 的命名迁移表下方。
@@ -169,8 +170,8 @@ Codec I²C 控制。理由留档在 [interface_spec.md](docs/interface_spec.md) 
 
 ## 三、怎么跑仿真
 
-环境：ModelSim SE-64 10.7（脚本里默认路径 `D:\modeltech64_10.7\win64`，换机器改
-[run_sim.ps1](safevision/tools/run_sim.ps1) 顶部的 `$MSIM_BIN`）。
+环境：ModelSim SE-64 10.7（脚本顶部的 `$MSIM_BIN` 指向 ModelSim 安装目录，**换机器必须改它**，
+见 [run_sim.ps1](safevision/tools/run_sim.ps1)）。
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1
@@ -201,7 +202,7 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 |---|---|
 | 手册学习阶段 1–16 | **全部落地并仿真通过** |
 | 媒体格式层（BMP 解析/解包、WAV 解析） | 已完成并仿真通过 |
-| 目录树与命名对蓝图 §4 | 已完成（含"同一常量多副本"的结构性收敛） |
+| 目录树与命名 | 已按本项目结构（PROJECT_STRUCTURE.md）核对完成（含"同一常量多副本"的结构性收敛） |
 | 仿真回归 | **502 项断言 / 15 个 testbench / 2 个行为模型，全 PASS** |
 | 板级顶层 `top_stage5_sector_rd.v` | 未开始（见待办清单 §2.3） |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | 未开始（见待办清单 §1.3） |
@@ -225,7 +226,7 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 > 它们是多处引用的交付物，搬动会打断引用。
 
 另外 `interface_spec.md` 里的**命名迁移表**是手册旧名 ↔ 工程名的对应关系，以及
-"有意不采纳蓝图"的留档，改目录结构时一并维护。
+"有意不采纳的部分"的留档，改目录结构时一并维护。
 
 ---
 

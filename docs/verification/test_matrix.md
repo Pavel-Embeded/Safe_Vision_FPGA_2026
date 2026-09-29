@@ -11,7 +11,7 @@
 | `tb_common_fifo.sv`、`tb_crc.sv` | FIFO/反压/错误、CRC7 与 CRC16 | 行为模型仿真 |
 | `tb_frame_writer.sv`、`tb_memory_arbiter.sv`、`tb_frame_swap_ctrl.sv` | 帧写/仲裁/帧交换 | SDRAM 行为模型仿真 |
 
-现有 B 回归为 **502 项断言 / 15 个 Testbench / 2 个行为模型**，`run_sim.ps1` 输出 `TOTAL PASS=502 FAIL=0`。`run_sim.ps1` 写死 `D:\modeltech64_10.7\win64`，换机器需改顶部路径后重跑，并把日志放 `evidence/sim/`。
+现有 B 回归为 **502 项断言 / 15 个 Testbench / 2 个行为模型**，`run_sim.ps1` 输出 `TOTAL PASS=502 FAIL=0`。`run_sim.ps1` 顶部的 `$MSIM_BIN` 是本机 ModelSim 路径，换机器需改后重跑，并把日志放 `evidence/sim/`。
 
 ## 待新增验证门槛
 

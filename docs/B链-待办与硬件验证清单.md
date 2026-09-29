@@ -6,8 +6,8 @@
 
 > ★ **本文件属于"文档三件套"，改代码后必须同步**：阶段状态、回归断言数、已知未完成项
 > 有任何变化，都要回来改这里（触发条件表见 [interface_spec.md](interface_spec.md) 的
-> 「文档同步义务」）。开发功能以《赛题一对标学习与开发手册_V2.0.pdf》为准，目录结构以
-> 《工业级模块化架构蓝图.pdf》§4 为准；这两份 PDF 在工作区根目录、不进仓库。
+> 「文档同步义务」）。开发功能以《赛题一对标学习与开发手册_V2.0.pdf》为准（工作区根目录、
+> 不进仓库）；**目录结构以本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) 为准**。
 
 ---
 
@@ -35,7 +35,7 @@
 | 阶段 14（双缓冲与槽所有权 `frame_buffer_manager`） | 已完成并仿真通过 |
 | 阶段 15（帧交换握手 `frame_swap_ctrl` + `frame_swap_cdc`） | 已完成并仿真通过 |
 | 阶段 16（错误上报 `error_report`） | 已完成并仿真通过（五类故障注入待整机） |
-| **目录树与命名按《工业级模块化架构蓝图》§4 对齐** | **已完成**（v1.7 逐项核对收尾：修掉最后 4 处重命名 + 补 2 个头文件与 2 个 CRC 通用件；见 interface_spec「命名迁移表」）。另修掉"同一个常量在 4 个模块各存一份副本"的结构性问题（改地址现在只改 `rtl/include/pixel_format_defs.vh`） |
+| **目录树与命名已按本项目结构核对完成** | **已完成**（v1.7 逐项核对收尾：修掉最后 4 处重命名 + 补 2 个头文件与 2 个 CRC 通用件；v1.8 引入队友的目录骨架。见 interface_spec「命名迁移表」）。另修掉"同一个常量在 4 个模块各存一份副本"的结构性问题（改地址现在只改 `rtl/include/pixel_format_defs.vh`） |
 | 媒体格式层（`bmp_unpack` BGR→RGB565 / `wav_parser`） | 已完成并仿真通过 |
 | 目录骨架与管理文档（`.github/` + `docs/` 子目录 + `evidence/` + `platform/` 等） | **已建立骨架**（v1.8 引入队友的项目管理覆盖包）。只有 README 占位与命名计划，**无功能代码**；落点规则见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) |
 | 目录自检脚本 `safevision/tools/check_repo.ps1` | 已接入（不需要 ModelSim，输出 `LAYOUT PASS` 才算过） |
@@ -150,8 +150,8 @@
       rtl/storage/sd_sector_reader.v
       rtl/top/top_stage5_sector_rd.v   ← 还没写，见 §2.3 待办
       ```
-      > 路径按《工业级模块化架构蓝图》§4：`rtl/include/` 放头文件、`rtl/storage/` 放
-      > SPI/SD/FAT、板级顶层将来放 `rtl/top/`（该目录现在还没建，写顶层时新建）。
+      > 路径按本项目结构（[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)）：`rtl/include/` 放头文件、
+      > `rtl/storage/` 放 SPI/SD/FAT、板级顶层将来放 `rtl/top/`（该目录现在还没建，写顶层时新建）。
       > 旧文档里的 `rtl/sd/` `rtl/common/safevision_defs.vh` 是 v1.5 改名前的路径，已作废。
 - [ ] 约束文件：按 §1.3 的表写 `pin.adc`，时序约束 `timing.sdc` 先只写
       `create_clock -name clk -period 20 [get_ports {clk}]`（50MHz）
@@ -240,7 +240,7 @@
 | `bmp_parser` 坏文件要排空整条流 | 校验不通过时当前实现会把该文件剩余字节全部排空（只丢不外送），坏文件大时浪费时间。可加一个 `abort` 输入让上游提前收工 | 有空再做 |
 | **帧交换未与 A 联仿** | `frame_swap_ctrl` / `frame_swap_cdc` 只做了 B 侧自测（23 项断言），没有和 A 的像素域一起跑过。这是 A/B 第一次真正协同，**建议优先联调** | 与 A 约定时间 |
 | **整机集成未做** | `safevision_core.v`（子系统互连）与 `safevision_top.v`（板级）由 A 负责；B 侧模块已就绪但还没接进子系统 | A 负责 |
-| **蓝图对齐后遗留** | `rtl/common/shift_reg.v` / `spi_byte_rx.v` 是阶段 1 教学件、产品链未例化，蓝图无对应项，暂放 `rtl/common/` | 有空再清理 |
+| **结构对齐后遗留** | `rtl/common/shift_reg.v` / `spi_byte_rx.v` 是阶段 1 教学件、产品链未例化，现结构无对应项，暂放 `rtl/common/` | 有空再清理 |
 
 ---
 
@@ -257,3 +257,4 @@
 | — | **v1.7：按蓝图 §4 逐项核对命名后更新（回归 502 项 / 15 个 TB）**。① 重命名 4 处（`wav_parser`、`memory/fifo_health_monitor`、`frame_memory_model`、`tb_frame_writer`）；② 补 `rtl/include/pixel_format_defs.vh`（**冻结地址表唯一来源**）与 `event_code_defs.vh`；③ **修掉"同一个常量在 4 个模块各存一份副本"**（帧几何/地址表全部改为引用 `` `SV_`` 宏，parameter 保留）；④ 补 `rtl/common/crc16_ccitt.v` / `crc7.v`，`sd_sector_reader` 与 `frame_writer` 各自那份重复的 CRC 函数删掉改为例化；⑤ 新增 `tb_crc`(12)、`tb_fat32_cluster_walker`(33，**该模块的判 EOC/越界/判环三条收尾分支此前从未被仿真跑过**)；⑥ 按蓝图拆 TB：`tb_frame_swap`→`tb_memory_arbiter`+`tb_frame_swap_ctrl`，`tb_media`→`tb_bmp_unpack`+`tb_wav_parser`（只搬位置不改断言）。**概念更正**：此前说的"宏与 parameter 命名冲突"是误判——宏只在写成 `` `名字 `` 时展开，两者不会冲突（已编译验证） |
 | — | **补交付口径与文档同步规则**。① 新增"文档同步义务"说明（本文件属文档三件套，状态/回归数/未完成项变化必须回来改）；② 补一份真正的 `README.md`（目录结构、跑仿真方法、状态总览、硬约定、有意未创建的目录）；③ 修正 §2.2 里 v1.5 改名前的过期路径（`rtl/common/safevision_defs.vh` → `rtl/include/…`、`rtl/sd/` → `rtl/storage/`）；④ 把"开发基准＝手册 V2.0 / 结构基准＝蓝图 §4"写进 interface_spec 与项目规则文件 |
 | — | **v1.8：引入队友的项目管理覆盖包（目录骨架 + 管理文档），并把它的过期内容改对**。新增 `.github/` 模板、`docs/` 六个子目录（architecture/interfaces/requirements/management/verification/release）、`evidence/` 七类证据索引、`safevision/{platform,build,assets}`、`rtl/{video,audio,control,safety,top}`、`verification/{subsystem,system,board}`、`tools/check_repo.ps1` —— **全部只有 README 占位，无功能代码**。`.gitignore` 换成覆盖包版本（白名单加 `!/.github/` `!/evidence/`，多排除 `*.lic`/`*.key`/`*.pem`）。**接口/RTL/TB/回归数一字未变，仍 502 项断言 / 15 个 TB**，目录自检 `LAYOUT PASS`。覆盖包是按旧快照（48 文件 / 27 RTL）做的，带进来的过期内容已逐项改对：**27→29 个 RTL、11→15 个 TB、457→502 项断言**、`fifo_health_monitor` 归 `memory/`、`wav_reader`→`wav_parser`、`sdram_model`→`frame_memory_model`、`tb_media`/`tb_mem_write`/`tb_frame_swap` 拆名、并作废"待办清单仍有 `rtl/sd` 旧路径"的指控（v1.7 已修）。另修 `interface_spec` §3.1 的 `rtl/sd/spi_master.v` → `rtl/storage/…` 与 `bmp_unpack.v` 注释里的 `tb_media` → `tb_bmp_unpack` |
+| — | **结构基准变更 + 全仓文档去绝对路径**。① **《工业级模块化架构蓝图.pdf》不再作为结构依据**，改以本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) 为准，蓝图降为历史设计参考（迁移表/变更历史里的"蓝图 §x"是历史出处）；② 清掉覆盖包带进来的本机绝对路径——文档里的 ModelSim 安装路径改为按变量名 `$MSIM_BIN` 描述，文档树根由 `Safe_Vision_FPGA_2026/` 改为 `<仓库根>/`，`run_sim.ps1` 用法注释与原理讲解里的 `f:\...\` 占位改为相对路径。新约定：**文档里只用仓库相对路径** |

@@ -11,7 +11,7 @@
 #     tools/            this script
 #
 # Usage (PowerShell):
-#     powershell -ExecutionPolicy Bypass -File f:\...\safevision\tools\run_sim.ps1
+#     powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_sim.ps1
 #
 # NOTE 1: keep this file ASCII-only. PowerShell 5.1 reads .ps1 as ANSI when there
 #         is no BOM, so multi-byte (Chinese) comments can swallow following quote

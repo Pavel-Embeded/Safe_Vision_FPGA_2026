@@ -549,8 +549,9 @@ IDLE --frame_ready & crc_ok--> WAIT_VBLANK --frame_start--> COMMIT --swap_ack-->
    - **[management/adr/](management/adr/)** —— 架构决策记录（如 ADR-0001 可移植核心与板级适配分层）
    - `evidence/` —— 原始证据落盘处（仿真日志、波形、实测数据、综合报告），见 [evidence/README.md](../evidence/README.md)
 
-> 开发功能以《赛题一对标学习与开发手册_V2.0.pdf》为准，目录结构以《工业级模块化架构
-> 蓝图.pdf》§4 为准。这两份 PDF 在工作区根目录、**不进仓库**（体积大且版权在赛方）。
+> 开发功能以《赛题一对标学习与开发手册_V2.0.pdf》为准（工作区根目录，**不进仓库**）。
+> 目录结构以本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) 为准；《工业级模块化架构
+> 蓝图.pdf》**2026-09-29 起不再作为结构依据**，只作历史设计参考（也留在工作区根目录）。
 >
 > ★ 上面第 4 点那套骨架的目录**大部分只有 README 占位，没有功能代码**。判断"做完没有"
 > 要看验证证据，不能看目录存在。
@@ -558,7 +559,7 @@ IDLE --frame_ready & crc_ok--> WAIT_VBLANK --frame_start--> COMMIT --swap_ack-->
 ### 13.3 怎么跑仿真
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File f:\...\safevision\tools\run_sim.ps1
+powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_sim.ps1
 ```
 
 脚本会依次编译并运行全部 testbench，每条断言打印 `[PASS]`/`[FAIL]`，最后给出失败项计数。**失败数必须是 0**。
