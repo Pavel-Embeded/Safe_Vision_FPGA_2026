@@ -91,6 +91,19 @@ docs/
 └── B链-待办与硬件验证清单.md           板子到货后照着做的实测清单与排查顺序
 ```
 
+**为什么同时有 `.v` 和 `.sv`**（按蓝图规定，不是随手选的）：
+
+| 位置 | 扩展名 | 语言子集 | 理由 |
+|---|---|---|---|
+| `rtl/**` | `.v` | **Verilog-2001 子集** | 要过安路 TD 的综合/布线。TD 对 SystemVerilog 只部分支持且有版本差异，用厂商保证支持的子集才不会出现"仿真过了、综合报错或综合出不同电路"。另外 `wire`/`reg` 比 `logic` 更能让人看出"这是网线还是寄存器" |
+| `rtl/include/**` | `.vh` | 宏定义 | 头文件 |
+| `verification/**` | `.sv` | 允许 SystemVerilog | TB 不综合，只跑在 ModelSim 里，不受 TD 限制；`vlog` 按扩展名自动选语言版本 |
+
+> 说实话：目前 `.sv` 文件的内容**几乎全是 Verilog-2001 写法**（全仓只有一个 `fork/join`，
+> 而它本身就是 Verilog-2001 就有的）。扩展名按蓝图分工走了，内容是保守派写法——
+> 这是可接受的，但别因为看到 `.sv` 就以为里面有 `logic`/`always_ff` 或断言。
+> **新增 RTL 一律 `.v`；不要把 `.sv` 放进 `rtl/`**（那会进 TD 综合）。
+
 **有意未创建**（不是缺陷，见蓝图 §4.1「不要一开始创建 150 个空 RTL」）：
 `rtl/video/` `rtl/control/` `rtl/audio/` `rtl/csr/` `rtl/top/` `rtl/diagnostics/`
 `rtl/platform/`，以及 formal / nightly CI / HIL / release manifest。
@@ -166,6 +179,8 @@ powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1
 
 ## 七、分支与协作
 
+- 远端仓库：<https://github.com/Pavel-Embeded/Safe_Vision_FPGA_2026>，分支 `main`
+  （2026-09-29 由 `desktop-tutorial` 改名而来；旧地址会重定向，但本地 `origin` 已指向新地址）。
 - 主分支 `main`。B 链改动直接进 `main`；A / C 各自有自己的目录，互不改动对方文件。
 - 提交信息用 ASCII（避免控制台编码乱码），内容说明"为什么改"而不只是"改了什么"。
 - 接口变更走 interface_spec 的变更历史表登记，并在表里注明版本号。
