@@ -4,7 +4,7 @@
 // 被测：rtl/storage/fat32_cluster_walker.v
 //
 // 依据：手册 7.6「FAT32 要回答的是：一个文件占用了哪些簇、按什么顺序串起来」
-//       《工业级模块化架构蓝图》§5.2「fat32_cluster_walker.v — FAT 簇链、
+//       「fat32_cluster_walker.v — FAT 簇链、
 //         EOF、环/坏簇/越界检测」、docs/interface_spec.md §6.2（err_detail）
 //
 // ★ 为什么必须单独测这个模块：

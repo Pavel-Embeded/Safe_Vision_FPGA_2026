@@ -60,8 +60,8 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 
 ## 二、目录结构
 
-结构以 [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) 为准（由队友的项目管理架构确立，
-原引自《工业级模块化架构蓝图》§4，**2026-09-29 起蓝图不再作为结构依据**）；`rtl/` 按"平台无关件 / 存储 / 媒体 /
+结构以 [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) 为准（由队友的项目管理架构确立）；
+`rtl/` 按"平台无关件 / 存储 / 媒体 /
 内存"分层，`verification/` 单元测试与模型分开，`docs/` 只放文档。标 `[骨架]` 的目录
 只有 README 或占位说明，尚无功能代码。
 

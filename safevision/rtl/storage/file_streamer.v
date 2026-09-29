@@ -2,10 +2,10 @@
 // file_streamer.v — 文件字节流（SafeVision 阶段 7 · rtl/storage）
 // ----------------------------------------------------------------------------
 // 依据：手册 7.6 / 7.7「把 (首簇, 文件大小) 变成连续字节流」
-//       《工业级模块化架构蓝图》§5.2：
+//       本模块职责与接口：
 //         file_streamer.v — 输出统一 byte valid/ready/sof/eof/error
-//       蓝图 §7.1「File Stream」接口：data[7:0], valid, ready, sof, eof, error
-//       蓝图 §7.2「可反压流」统一规则
+//       「File Stream」接口：data[7:0], valid, ready, sof, eof, error
+//       「可反压流」统一规则
 //
 // 输入：(first_clus, file_size) —— 来自 fat32_directory_scanner / 索引表
 // 输出：一串字节，带 sof / eof / error
@@ -48,7 +48,7 @@ module file_streamer (
     output reg  [31:0] bytes_rd,       // 已发出的字节数（与电脑端比对用）
     output reg  [3:0]  dbg_state,
 
-    // ---- 字节流输出（蓝图 §7.2 可反压流）----
+    // ---- 字节流输出（可反压流）----
     output reg  [7:0]  data,
     output reg         valid,
     input  wire        ready,

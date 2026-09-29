@@ -5,7 +5,6 @@
 //   rtl/memory/frame_buffer_manager.v   （冻结地址表 / active 原子切换）
 //   rtl/memory/frame_swap_ctrl.v        （交换握手 FSM + 超时保护）
 //   rtl/memory/frame_swap_cdc.v         （B 域 -> A 域 payload 跨域）
-//   （对应蓝图 verification/unit/tb_frame_swap_ctrl.sv）
 //
 // 依据：
 //   设计手册 7.14（帧交换握手与原子切换）/ 7.15（跨域 payload 稳定性）。

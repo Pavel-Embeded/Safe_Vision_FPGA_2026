@@ -5,13 +5,13 @@
 //       7.3   SD 卡基础（扇区、CMD0/CMD8/ACMD41/CMD58/CMD17）
 //       7.4   Timeout 工程意识（各等待态独立超时出口）
 //       6.2   错误码表（对外主码 + B 链内部细分码）
-//       《工业级模块化架构蓝图》§4 的 rtl/include/ 约定：
+//       本工程 rtl/include/ 约定：
 //         safevision_defs.vh  通用定义（本文件）
 //         fault_code_defs.vh  错误码登记（本文件已包含，单条 include 即可）
 //         pixel_format_defs.vh / event_code_defs.vh 留给 A / C 链登记
 // 对接：docs/interface_spec.md §3.1
 //
-// ★ 蓝图 §3.3 配置管理：禁止把 74_250_000、500ms 计数值、帧基地址等
+// ★ 配置管理约定：禁止把 74_250_000、500ms 计数值、帧基地址等
 //   magic number 散落在 RTL 内。本文件就是这些常数的唯一落点。
 // ============================================================================
 `ifndef SAFEVISION_DEFS_VH

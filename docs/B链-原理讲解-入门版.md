@@ -550,8 +550,7 @@ IDLE --frame_ready & crc_ok--> WAIT_VBLANK --frame_start--> COMMIT --swap_ack-->
    - `evidence/` —— 原始证据落盘处（仿真日志、波形、实测数据、综合报告），见 [evidence/README.md](../evidence/README.md)
 
 > 开发功能以《赛题一对标学习与开发手册_V2.0.pdf》为准（工作区根目录，**不进仓库**）。
-> 目录结构以本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) 为准；《工业级模块化架构
-> 蓝图.pdf》**2026-09-29 起不再作为结构依据**，只作历史设计参考（也留在工作区根目录）。
+> 目录结构以本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) 为准。
 >
 > ★ 上面第 4 点那套骨架的目录**大部分只有 README 占位，没有功能代码**。判断"做完没有"
 > 要看验证证据，不能看目录存在。

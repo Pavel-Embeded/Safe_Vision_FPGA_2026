@@ -10,7 +10,7 @@
 // 职责：把业务侧的逻辑【字节地址】转成模型/IP 需要的【字地址】（addr >> 2），
 //       按 ready 握手转发请求，并在请求长时间得不到响应时拉高 mem_error。
 //
-// ★ 硬规定（interface_spec §一 / 蓝图 D-4）：
+// ★ 硬规定（interface_spec §一）：
 //     对外只暴露逻辑字节地址，业务模块（frame_writer / pcm_ring / frame_reader
 //     等）内**禁止裸物理地址运算**。物理地址转换只发生在本模块内。
 //     换 SDRAM IP 或 wrapper 版本时，全链地址无需改动。

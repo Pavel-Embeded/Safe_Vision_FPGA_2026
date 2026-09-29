@@ -10,7 +10,7 @@
 |---|---|
 | 项目 | 安视 SafeVision · 赛题一 HDMI 多媒体播放与应急视听疏散终端 |
 | 平台 | 康芯 HX4S20C 开发板 / 安路 EG4S20BG256 |
-| 版本 | v1.8（阶段 1–16 已实现并通过仿真；命名对蓝图 §4 核对完成；目录骨架按队友覆盖包建立） |
+| 版本 | v1.8（阶段 1–16 已实现并通过仿真；命名已按本仓库结构核对完成；目录骨架按队友覆盖包建立） |
 | 负责人 | B 队员（数据存储链 / 数据搬运） |
 | 依据 | 赛题一官方选题指南；《赛选手册 V2.0》第 6/7/10 章 |
 | 维护规则 | 接口先于联调存在；改接口必同步改文档并通知对方；信号名、有效电平、时钟域、延迟、异常策略五者必须写清 |
@@ -32,22 +32,19 @@
 ——功能取舍、阶段节奏、验收口径一律以它为准。
 **结构基准**：本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)（由队友的项目管理架构
 确立，`v1.8` 起生效）——新增文件前先确认它落在哪个目录。
-★ **2026-09-29 起《工业级模块化架构蓝图.pdf》不再作为结构依据**，只作历史设计参考
-（下面迁移表与变更历史里的"蓝图 §x"都是当时的出处记录，不代表当前约束）。
 本项目**有意不做**的部分见下方"仍未采纳的部分"。
 
 ### 命名迁移表（手册名 → 工程名）
 
 > 迁移表必须保留下来，便于把手册需求、旧提交和新模块对应起来。
 > v1.5 起 B 链文件名与 module 名已对齐；**v1.8 起该"对齐基准"是本仓库的
-> [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，不再引用蓝图**（下表里的"蓝图 §4"
-> 是当时的历史出处）。
+> [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，不再引用外部架构文档**。
 > **对外契约（信号名、错误码）不随改名变化**，A / C 侧无需改动。
 
 | 手册 / 旧名 | 工程名（现结构） | 说明 |
 |---|---|---|
 | `rtl/common/sd_defines.vh` | `rtl/include/safevision_defs.vh` + `rtl/include/fault_code_defs.vh` | 通用定义与错误码登记拆开，`safevision_defs.vh` 已 include 后者 |
-| `rtl/stage1/shift_reg.v` | `rtl/common/shift_reg.v` | 阶段 1 教学件，**产品链未例化**；蓝图无对应项，暂放 common |
+| `rtl/stage1/shift_reg.v` | `rtl/common/shift_reg.v` | 阶段 1 教学件，**产品链未例化**；原结构无对应项，暂放 common |
 | `rtl/stage1/spi_byte_rx.v` | `rtl/common/spi_byte_rx.v` | 同上 |
 | `rtl/common/uart_tx.v` | `rtl/common/uart_tx.v` | 不变 |
 | `rtl/sd/spi_master.v` | `rtl/storage/spi_master.v` | 仅目录变，名字保留 |
@@ -57,7 +54,7 @@
 | `rtl/fs/dir_scan.v` | `rtl/storage/fat32_directory_scanner.v` | |
 | （新增） | `rtl/storage/fat32_cluster_walker.v` | 簇链跟踪，被下面两者共用 |
 | `file_stream`（原计划） | `rtl/storage/file_streamer.v` | |
-| `bmp_check`（原计划） | `rtl/media/bmp_parser.v` | 蓝图把媒体解析放在 `rtl/media/` |
+| `bmp_check`（原计划） | `rtl/media/bmp_parser.v` | 媒体解析归 `rtl/media/` |
 | `safevision/sim/tb_stage5.v` | `verification/unit/tb_sd_sector_reader.sv` | |
 | `safevision/sim/tb_stage4_timeout.v` | `verification/unit/tb_sd_initializer.sv` | |
 | `safevision/sim/tb_stage6_mount.v` | `verification/unit/tb_fat32_boot_parser.sv` | |
@@ -65,29 +62,29 @@
 | `safevision/sim/sd_card_model.v` | `verification/models/sd_spi_card_model.sv` | |
 | `safevision/sim/run_sim.ps1` | `safevision/tools/run_sim.ps1` | work/ 库建在 `verification/` 下 |
 
-#### v1.7 追加的重命名（按蓝图 §4 逐项核对后修掉的最后 4 处不一致）
+#### v1.7 追加的重命名（按现结构逐项核对后修掉的最后 4 处不一致）
 
-| 旧名 | 工程名（蓝图 §4） | 说明 |
+| 旧名 | 工程名（现结构） | 说明 |
 |---|---|---|
-| `rtl/media/wav_reader.v` | `rtl/media/wav_parser.v` | 蓝图 media 下统一用 `*_parser`（`bmp_parser`/`wav_parser`），`wav_reader` 是唯一例外 |
+| `rtl/media/wav_reader.v` | `rtl/media/wav_parser.v` | media 下统一用 `*_parser`（`bmp_parser`/`wav_parser`），`wav_reader` 是唯一例外 |
 | `rtl/common/fifo_health_monitor.v` | `rtl/memory/fifo_health_monitor.v` | 它监测的是帧缓冲/FIFO 水位，属 memory 分类，不是平台无关件 |
 | `verification/models/sdram_model.sv` | `verification/models/frame_memory_model.sv` | 它建的是"帧缓存视图"（8 MiB/2M×32bit），不是 SDRAM 器件模型 |
 | `verification/unit/tb_mem_write.sv` | `verification/unit/tb_frame_writer.sv` | 被测件已叫 `frame_writer`，TB 同名；`tb_mem_write` 是阶段 9 的旧称 |
 
-#### v1.7 新增文件（补蓝图缺口，不是改名）
+#### v1.7 新增文件（补结构缺口，不是改名）
 
-| 新增 | 蓝图出处 | 说明 |
+| 新增 | 落点 | 说明 |
 |---|---|---|
-| `rtl/include/pixel_format_defs.vh` | §4 `rtl/include/` | 像素格式 + 帧几何 + **冻结四槽地址表**的唯一来源（见 §五） |
-| `rtl/include/event_code_defs.vh` | §4 `rtl/include/` | 事件码/源标识定义（与 `fault_code_defs.vh` 分工：后者是错误码，前者是正常事件） |
-| `rtl/common/crc16_ccitt.v` | §4 `rtl/common/` | CRC16-CCITT(XMODEM) 字节步进。此前 `sd_sector_reader` 与 `frame_writer` **各写了一份同名函数**，收敛成一份 |
-| `rtl/common/crc7.v` | §4 `rtl/common/` | SD 命令 CRC7 字节步进，配 `tb_crc` 把 `SD_CRC_CMD0/8` 两个魔数钉死在对数上 |
-| `verification/unit/tb_crc.sv` | §4 `verification/unit/` | CRC7/CRC16 单元测试（12 项） |
-| `verification/unit/tb_memory_arbiter.sv` | §4 `verification/unit/` | 由 `tb_frame_swap.sv` 拆出（仲裁部分 7 项） |
-| `verification/unit/tb_frame_swap_ctrl.sv` | §4 `verification/unit/` | 由 `tb_frame_swap.sv` 拆出（帧交换+跨域 23 项） |
-| `verification/unit/tb_bmp_unpack.sv` | §4 `verification/unit/` | 由 `tb_media.sv` 拆出（BMP 解包 44 项） |
-| `verification/unit/tb_wav_parser.sv` | §4 `verification/unit/` | 由 `tb_media.sv` 拆出（WAV 解析 31 项） |
-| `verification/unit/tb_fat32_cluster_walker.sv` | §4 `verification/unit/` | 新增：`fat32_cluster_walker` 此前只随编译、**判 EOC/越界/判环三条收尾分支从未被仿真跑过**（33 项） |
+| `rtl/include/pixel_format_defs.vh` | `rtl/include/` | 像素格式 + 帧几何 + **冻结四槽地址表**的唯一来源（见 §五） |
+| `rtl/include/event_code_defs.vh` | `rtl/include/` | 事件码/源标识定义（与 `fault_code_defs.vh` 分工：后者是错误码，前者是正常事件） |
+| `rtl/common/crc16_ccitt.v` | `rtl/common/` | CRC16-CCITT(XMODEM) 字节步进。此前 `sd_sector_reader` 与 `frame_writer` **各写了一份同名函数**，收敛成一份 |
+| `rtl/common/crc7.v` | `rtl/common/` | SD 命令 CRC7 字节步进，配 `tb_crc` 把 `SD_CRC_CMD0/8` 两个魔数钉死在对数上 |
+| `verification/unit/tb_crc.sv` | `verification/unit/` | CRC7/CRC16 单元测试（12 项） |
+| `verification/unit/tb_memory_arbiter.sv` | `verification/unit/` | 由 `tb_frame_swap.sv` 拆出（仲裁部分 7 项） |
+| `verification/unit/tb_frame_swap_ctrl.sv` | `verification/unit/` | 由 `tb_frame_swap.sv` 拆出（帧交换+跨域 23 项） |
+| `verification/unit/tb_bmp_unpack.sv` | `verification/unit/` | 由 `tb_media.sv` 拆出（BMP 解包 44 项） |
+| `verification/unit/tb_wav_parser.sv` | `verification/unit/` | 由 `tb_media.sv` 拆出（WAV 解析 31 项） |
+| `verification/unit/tb_fat32_cluster_walker.sv` | `verification/unit/` | 新增：`fat32_cluster_walker` 此前只随编译、**判 EOC/越界/判环三条收尾分支从未被仿真跑过**（33 项） |
 
 > 拆分类改动（`tb_frame_swap`→2 个、`tb_media`→2 个）**只搬位置、不改断言**：
 > 断言名字与判据逐字保留，拆分前后合计断言数不变（30 → 7+23，75 → 44+31）。
@@ -98,7 +95,7 @@
 落点规则见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，理由见
 [ADR-0001](management/adr/0001-layout.md)（"只创建目录及说明，不生成假 RTL"）。
 ★ **目录存在 ≠ 功能已实现**；判断完成度以验证证据为准。
-`rtl/safety/` 是蓝图之外的补充（把看门狗/故障/应急从 `control` 分出，明确归 C）。
+`rtl/safety/` 是本项目在结构之外的补充（把看门狗/故障/应急从 `control` 分出，明确归 C）。
 
 **仍未采纳的部分（有意为之，不视为缺陷）**：150+ 个文件里的大部分实现、
 formal（SymbiYosys）、nightly CI、HIL 自动化、release manifest、CSR 总线、
@@ -118,7 +115,7 @@ HAL 抽象层、Codec I²C 配置，以及 `rtl/csr/` `rtl/diagnostics/` `rtl/pl
 | 地址 | **只传逻辑字节地址**（32bit）。物理 32bit word 地址由 `mem_ctrl` wrapper 内部转换，业务模块内**禁止**裸物理地址运算 | 7.6.2 |
 | 像素格式 | RGB565，16 bit，2 byte/pixel | 7.6.2 |
 | 命名 | snake_case，无前缀；`_n` 后缀表低有效 | 10.2.4 |
-| 语言子集 | **`rtl/**` 一律 `.v` + Verilog-2001 子集**（要过安路 TD 综合，TD 只部分支持 SystemVerilog）；**`verification/**` 用 `.sv`**、允许 SystemVerilog（TB 不综合）；`rtl/include/**` 用 `.vh`。**禁止把 `.sv` 放进 `rtl/`**。注：当前 `.sv` 文件内容实际都是 Verilog-2001 写法，扩展名按这个分工走 | 项目自定约定（原引自蓝图 §4，已固化） |
+| 语言子集 | **`rtl/**` 一律 `.v` + Verilog-2001 子集**（要过安路 TD 综合，TD 只部分支持 SystemVerilog）；**`verification/**` 用 `.sv`**、允许 SystemVerilog（TB 不综合）；`rtl/include/**` 用 `.vh`。**禁止把 `.sv` 放进 `rtl/`**。注：当前 `.sv` 文件内容实际都是 Verilog-2001 写法，扩展名按这个分工走 | 项目自定约定（已固化） |
 | 错误上报 | 统一走 `error_report` → Control Event Interface（`evt_type` / `evt_value` / `evt_valid` / `evt_full`），溢出计数在 C 侧 | 10.2.4 |
 
 ### CDC 约定
@@ -385,7 +382,7 @@ sel_wav_valid       out  1     同编号 WAV 存在
 
 ### 3.3 格式层（学习阶段 7）
 
-#### fat32_cluster_walker（阶段 7 新增，蓝图 §5.2）
+#### fat32_cluster_walker（阶段 7 新增）
 
 ```text
 时钟域 : sys_clk
@@ -417,10 +414,10 @@ total_clus[31:0]    in   32    来自 fat32_boot_parser
   bug（v1.4 时确实是各写了一份），阶段 7 收敛成同一个模块。
 ★ 与 sd_sector_reader 的抢占：walker 与 file_streamer 分时复用同一个读口，
   由 walker 的 busy 做总线选择——walk 期间 file_streamer 不发读请求。
-  正式顶层由 file_request_arbiter 统一调度（蓝图 §5.2）。
+  正式顶层由 file_request_arbiter 统一调度。
 ```
 
-#### file_streamer（阶段 7 落地；原 `file_stream`，按蓝图 §5.2 改名）
+#### file_streamer（阶段 7 落地；原 `file_stream` 改名）
 
 ```text
 时钟域 : sys_clk
@@ -444,7 +441,7 @@ sof                 out  1     与第一个字节同拍（原 file_start）
 eof                 out  1     与最后一个字节同拍（原 file_end）
 
 约定：valid && ready 同拍才推进一个字节；
-      **valid=1 且 ready=0 时 data/sof/eof 必须保持**（蓝图 §7.2）；
+      **valid=1 且 ready=0 时 data/sof/eof 必须保持**；
       file_size = 0 时一个字节都不发，也不发 sof/eof
 
 ★ 跳簇不在本模块里：一个簇读完，拉一拍 walker.start，等 walker.done
@@ -464,7 +461,7 @@ eof                 out  1     与最后一个字节同拍（原 file_end）
   访问 FAT 表会与数据扇区读抢占 sd_sector_reader，必须串行化。
 ```
 
-#### bmp_parser（阶段 7 落地；原 `bmp_check`，按蓝图 §5.2 改名）
+#### bmp_parser（阶段 7 落地；原 `bmp_check` 改名）
 
 ```text
 时钟域 : sys_clk
@@ -918,7 +915,7 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | D-6 | 音频 CDC FIFO 读出方式 | **FWFT**，与像素 FIFO 统一 | 与 D-2 同理；全链只保留一种 FIFO 语义，降低 A/C 双方理解成本与出错面 | v1.1 |
 | D-7 | WAV 接受条件 | 只收 **PCM format code 1 / 48 kHz / 16 bit / 立体声**；其余一律对外码 `0x07` 并回退提示音 | 手册 8.6 明确该接受条件由 B 保证；采样率不符时无法用 48 kHz 节拍播放 | v1.1 |
 | D-8 | 音频环形缓冲实现位置 | 放在 SDRAM `AUDIO_RING` 区（`0x280000`，256 KiB），B 独占读写 | 手册 7.16.3 与 2-3 地址表；SD 慢读与 48 kHz 连续消费必须解耦 | v1.1 |
-| D-9 | "命名冲突"的定性与处理范围 | 只修**真不一致**（4 处文件名/归类与蓝图 §4 不符）+ 补蓝图缺口（2 个头文件、2 个 CRC 通用件）；**不做**全量照搬蓝图目录树。并且把"同一个常量有多份副本"当作比"名字"更严重的问题来修 | ① 宏与裸标识符是两个命名空间（`` `FRAME_WIDTH `` 与 `parameter FRAME_WIDTH` 不会编译冲突），所以"命名冲突"这个说法本身需要更正；② 同一个地址/几何量有 4 份副本，改一处漏一处才是真正的上板风险；③ 蓝图 §4.1 自己反对一次建 150 个空 RTL | v1.7 |
+| D-9 | "命名冲突"的定性与处理范围 | 只修**真不一致**（4 处文件名/归类与现结构不符）+ 补结构缺口（2 个头文件、2 个 CRC 通用件）；**不做**全量照搬参考目录树。并且把"同一个常量有多份副本"当作比"名字"更严重的问题来修 | ① 宏与裸标识符是两个命名空间（`` `FRAME_WIDTH `` 与 `parameter FRAME_WIDTH` 不会编译冲突），所以"命名冲突"这个说法本身需要更正；② 同一个地址/几何量有 4 份副本，改一处漏一处才是真正的上板风险；③ 本项目自定原则反对一次建 150 个空 RTL | v1.7 |
 | D-10 | 公共 CRC 的形态 | `crc16_ccitt` / `crc7` 都做成**纯组合、无状态**的"下一拍值"步进器，不挂 valid/ready | 两个调用方用法不同：`sd_sector_reader` 逐字节收（1 级），`frame_writer` 一次吃 4 字节（4 级级联）；带状态就会有一方不得不在外面再拼时序。要流式使用，外面挂一个累加寄存器即可 | v1.7 |
 
 ### 被否决的方案（留档，避免重开讨论）
@@ -960,7 +957,7 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | v1.2 | — | **落地阶段 1–5 实现**（`safevision/rtl`）：`spi_master` 的 `cs_n` 由输出改为**输入**、`clk_div` 放宽到 16bit；新增「SD 控制器 ↔ spi_master 字节总线」共用接口约定与两条实测踩坑记录（位计数口径、轮询态首发字节）；新增 `uart_tx` 登记；O-4 给出超时初值；O-11 登记 CMD18 未实现。仿真回归 13 项全通过（`safevision/sim/run_sim.ps1`） | B |
 | v1.3 | — | **阶段 6 首块落地**：新增 `rtl/fs/fat32_boot_parser.v`（BPB 解析 + FAT32 判别位 + 派生地址计算），补全 §6.2 的 FAT/目录/簇链/BMP 细分码定义；卡模型升级为支持**多扇区内容**（`vol` 数组 + `mk_fat32_dbr`/`vol_set_le` 工具）；新增 `tb_fat32_boot_parser.v`（26 项断言，含签名错/非 FAT32/每扇区非 512 三个负向分支与恢复测试）。三个 testbench 合计 59 项断言全通过。新增 `docs/B链-待办与硬件验证清单.md`、`docs/B链-原理讲解-入门版.md` | B |
 | v1.4 | — | **阶段 6 第二块落地**：新增 `rtl/fs/fat32_directory_scanner.v`（根目录遍历 + 四类跳过规则 + 跨扇区/跨簇 + 判环越界）；新增 `tb_fat32_directory_scanner.v`（57 项断言）。**接口修正**：`fat32_directory_scanner.ent_name` 由 `[10:0]`（11 bit，明显笔误）改为 `[87:0]`（11 Byte = 88 bit）；明确 `ent_index` 为"含跳过项的槽位号"、`scan_done` 为"结束即置位（成败都算）"、`dir_bad` 只表示结构异常。**新增全链约定**：从 `sd_sector_reader` 收字节必须用 `data_valid && data_ready` 门控。**新增实测踩坑**：FAT 入口是小端、高 4 bit 保留位需掩掉。卡模型新增 `mk_dir_entry` / `mk_dir_fill` 目录项构造工具。四个 testbench 合计 **116 项断言全通过** | B |
-| v1.5 | — | **命名按《工业级模块化架构蓝图》§4 对齐**（新增「命名迁移表」）：目录树改为 `rtl/{include,common,storage,media}` + `verification/{unit,models}` + `tools`；`sd_init_fsm`→`sd_initializer`、`sd_sector_rd`→`sd_sector_reader`、`fat32_mount`→`fat32_boot_parser`、`dir_scan`→`fat32_directory_scanner`、`sd_card_model`→`sd_spi_card_model`；`sd_defines.vh` 拆成 `safevision_defs.vh` + `fault_code_defs.vh`。**阶段 7 落地**：新增 `fat32_cluster_walker.v`（簇链跟踪，被 `fat32_directory_scanner` 与 `file_streamer` **共用同一份**，消除 v1.4 的重复判环逻辑）、`file_streamer.v`（接管原 `file_stream`）、`media/bmp_parser.v`（接管原 `bmp_check`）。新增 TB：`tb_file_streamer.sv`(49 项)、`tb_bmp_parser.sv`(41 项)。**新增实测踩坑 3 条**：① 下游取走字节的清零逻辑必须放在状态机之外，否则扇区末字节锁存后 `valid` 永不清、死等兜底超时；② 文件末字节正好落在扇区末字节时 `stop_pending` 要按同拍值判定，否则白跳一次簇、误报 `DET_FS_SHORT`；③ BMP 多字节字段同为小端。六个 testbench 合计 **206 项断言全通过** | B |
+| v1.5 | — | **命名对齐**（新增「命名迁移表」）：目录树改为 `rtl/{include,common,storage,media}` + `verification/{unit,models}` + `tools`；`sd_init_fsm`→`sd_initializer`、`sd_sector_rd`→`sd_sector_reader`、`fat32_mount`→`fat32_boot_parser`、`dir_scan`→`fat32_directory_scanner`、`sd_card_model`→`sd_spi_card_model`；`sd_defines.vh` 拆成 `safevision_defs.vh` + `fault_code_defs.vh`。**阶段 7 落地**：新增 `fat32_cluster_walker.v`（簇链跟踪，被 `fat32_directory_scanner` 与 `file_streamer` **共用同一份**，消除 v1.4 的重复判环逻辑）、`file_streamer.v`（接管原 `file_stream`）、`media/bmp_parser.v`（接管原 `bmp_check`）。新增 TB：`tb_file_streamer.sv`(49 项)、`tb_bmp_parser.sv`(41 项)。**新增实测踩坑 3 条**：① 下游取走字节的清零逻辑必须放在状态机之外，否则扇区末字节锁存后 `valid` 永不清、死等兜底超时；② 文件末字节正好落在扇区末字节时 `stop_pending` 要按同拍值判定，否则白跳一次簇、误报 `DET_FS_SHORT`；③ BMP 多字节字段同为小端。六个 testbench 合计 **206 项断言全通过** | B |
 | v1.6 | — | **阶段 8–16 落地**（B 链主体完成）。新增 `rtl/memory/`：`mem_ctrl.v`（SDRAM IP wrapper，对外只暴露逻辑字节地址）、`frame_address_gen.v`（`slot_base+(y*W+x)*BPP`，行步长参数化）、`frame_writer.v`（一帧严格 307200 像素 + 抽样 CRC + `slot_valid`）、`frame_buffer_manager.v`（冻结地址表全 `localparam`，原子提交 `active_slot/slot_base/generation`）、`memory_arbiter.v`（固定优先级 + 单次占用上限 + 最长等待提权，防饥饿）、`video_read_dma.v`（水位驱动突发预取）、`frame_swap_ctrl.v`（`IDLE→WAIT_VBLANK→COMMIT→WAIT_ACK`，超时进 SAFE 保持画面）、`frame_swap_cdc.v`（toggle 同步 + mailbox 锁存）、`memory_bandwidth_monitor.v`。新增 `rtl/common/`：`rv_skid_buffer.v`、`sync_fifo.v`（`almost_full` 反压）、`fifo_health_monitor.v`（历史最低水位 + underflow/overflow）、`error_report.v`。新增 `verification/models/frame_memory_model.sv`（行为级，8 MiB/2M×32bit）。**阶段 6 收尾**：`file_index.v`（编号扫描 + 数字后缀排序 + 索引表冻结，新增 `idx_clear` 输入用于重扫）。新增 TB：`tb_file_index`(60)、`tb_common_fifo`(58)、`tb_frame_writer`(28)、`tb_frame_swap`(30)。**媒体格式层收尾**：`media/bmp_unpack.v`（BGR888→RGB565，`ROUNDING` 参数对应待确认项 O-1，行步长按公式算，`top_down` 双向统一成左上原点，按"像素数 == w×h"收尾）、`media/wav_parser.v`（RIFF/fmt/data 小端解析，**fmt 与 data 之间的未知块按 chunk size 跳过**，只收 PCM/2ch/48k/16bit）。新增 `tb_media`(75)。**错误码补登记**：`ERR_WAV`(0x07) 与 `DET_WAV_*`(0x71–0x76) 原先只写在本文档 §6.1/§6.2/D-7，代码里缺，已补进 `rtl/include/fault_code_defs.vh`（此前 `wav_parser` 只能临时用 `ERR_MEDIA_INVALID`，现已对齐文档）。十一个 testbench 合计 **457 项断言全通过** | B |
-| v1.7 | — | **按蓝图 §4 逐项核对命名，修掉最后 7 处真不一致 + 补 10 个缺口**（详见「命名迁移表」下的两个子表）。**重命名 4 处**：`wav_reader`→`media/wav_parser`、`fifo_health_monitor` 从 `common/` 移到 `memory/`、`sdram_model`→`models/frame_memory_model`、`tb_mem_write`→`tb_frame_writer`（文件+module+全仓引用+TB+脚本一次改净，对外契约不变）。**补头文件**：`rtl/include/pixel_format_defs.vh`（像素格式+帧几何+**冻结四槽地址表唯一来源**）、`rtl/include/event_code_defs.vh`。**★ 真正的结构性问题（比"名字"严重）**：同一个常量在 4 个模块里各存了一份副本——`frame_buffer_manager`（7 个地址+SLOT/LINE/FRAME 步长）、`frame_writer`（帧几何 6 个）、`frame_address_gen`（2 个）、`video_read_dma`（3 个），另有 `tb_frame_writer` 抄了两处期望值。现已全部改为引用 `` `SV_`` 宏，**parameter 一律保留**（几何量必须能被顶层覆盖），改地址从此只改一个文件。**★ 概念更正**：此前把这件事描述为"宏与 parameter 命名冲突"是**错的**——Verilog 宏只在写成 `` `名字 `` 时才展开，裸标识符不进宏展开，两者不会编译冲突（已用编译验证）；加 `SV_` 前缀是为了可读性。真正的问题是常量多副本。**补公共件**：`rtl/common/crc16_ccitt.v`、`rtl/common/crc7.v`（纯组合无状态步进器，见 D-10），并让 `sd_sector_reader`（删掉自己那份 `crc16_next` 函数，改例化 1 级）与 `frame_writer`（删掉 `crc16_next`+`crc16_word` 两个函数，改为大端 4 级级联）复用同一份实现。**补 TB**：新增 `tb_crc`(12，把 `SD_CRC_CMD0/8` 的 0x4A/0x43 反推出来钉死在对数上，并验 CRC16 XMODEM 标准向量 `123456789`→0x31C3)、`tb_fat32_cluster_walker`(33，`fat32_cluster_walker` 此前只随编译，**判 EOC/越界/判环三条收尾分支从未被仿真跑过**，本 TB 用伪 FAT 扇区直接驱动并覆盖跨扇区寻址)。**按蓝图拆 TB**（只搬位置不改断言）：`tb_frame_swap`→`tb_memory_arbiter`(7)+`tb_frame_swap_ctrl`(23)，`tb_media`→`tb_bmp_unpack`(44)+`tb_wav_parser`(31)。**回归 502 项断言 / 15 个 testbench 全通过**。另：把交付口径写成显式规则——新增「文档同步义务」表（本文档 + 待办清单 + 原理讲解 + README 四者的更新触发条件）、补一份真正的 `README.md`（仓库结构、跑仿真方法、状态总览、硬约定）、并把"开发基准＝手册 V2.0 / 结构基准＝蓝图 §4 / 三份文档必须同步"写进项目规则文件，避免后续会话遗忘。另补 §一「语言子集」一行（**`rtl/**` 一律 `.v` + Verilog-2001 子集，`verification/**` 用 `.sv` 允许 SystemVerilog**，依据蓝图 §4 原文），并登记远端仓库改名：`desktop-tutorial` → `Safe_Vision_FPGA_2026` | B |
-| v1.8 | — | **引入队友的项目管理覆盖包（目录骨架 + 管理文档），并把它的过期内容改对**。新增骨架目录：`.github/`（PR/缺陷/工作项模板）、`docs/{architecture,interfaces,requirements,management,verification,release}/`、`evidence/`（需求→测试→原始证据，7 类索引）、`safevision/{platform,build,assets}`、`safevision/rtl/{video,audio,control,safety,top}`、`safevision/verification/{subsystem,system,board}`、`safevision/tools/check_repo.ps1`（目录与 `run_sim.ps1` 引用自检，不需要 ModelSim）；`rtl/safety/` 是蓝图之外的补充（看门狗/故障/应急从 `control` 分出）。**这些目录只有 README 与命名计划，没有任何功能代码**（ADR-0001「只创建目录及说明，不生成假 RTL」）；文件落点规则见新增的 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)。`.gitignore` 换为覆盖包版本：白名单增加 `!/.github/` `!/evidence/`，新增排除 `*.lic` `*.key` `*.pem` `__pycache__/`，并允许 `evidence/**` 下的 `.log`/`.vcd` 原始证据进库。**接口契约、地址表、错误码、RTL 与 TB 全部未变，回归仍 502 项断言 / 15 个 testbench 全通过**（目录自检 `LAYOUT PASS`）。**★ 覆盖包按旧快照（48 个跟踪文件 / 27 个 RTL）制作，带进来的文档有多处过期，已逐项改对**：`module_registry.md` 里 `rtl/common/fifo_health_monitor.v`→`rtl/memory/…`、`rtl/media/wav_reader.v`→`wav_parser.v`，并补登 `crc16_ccitt.v`/`crc7.v`/`pixel_format_defs.vh`/`event_code_defs.vh`（RTL 27→29）；`test_matrix.md` 的 `tb_media`→`tb_bmp_unpack`+`tb_wav_parser`、`tb_mem_write`/`tb_frame_swap`→`tb_frame_writer`/`tb_memory_arbiter`/`tb_frame_swap_ctrl` 并补 `tb_fat32_cluster_walker`/`tb_crc`（TB 11→15）；`system_design.md` 的 `sdram_model.sv`→`frame_memory_model.sv`；`traceability.md` 的 `wav_reader`→`wav_parser`；断言数 457→502；`WORK_ITEMS.md` 里"待办清单仍有旧路径"的指控已作废（v1.7 已修）。另修本文件 §3.1 的 `实现: rtl/sd/spi_master.v` → `rtl/storage/spi_master.v`（真实过期路径），以及 `bmp_unpack.v` 注释里指向已不存在 TB 的 `tb_media` → `tb_bmp_unpack`。**另（同日追加）**：① **结构基准变更**——《工业级模块化架构蓝图.pdf》**不再作为结构依据**，改以本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) 为准（蓝图降为历史设计参考；迁移表与变更历史里的"蓝图 §x"均属历史出处记录）；② **全仓文档去绝对路径**：覆盖包带进来的本机路径（如 `D:\modeltech64_10.7\win64`）改为按变量名 `$MSIM_BIN` 描述，文档树根由队友本地的 `Safe_Vision_FPGA_2026/` 改为 `<仓库根>/`，`f:\...\` 占位路径改为相对路径。约定：**文档里只用仓库相对路径** | B |
+| v1.7 | — | **逐项核对命名，修掉最后 7 处真不一致 + 补 10 个缺口**（详见「命名迁移表」下的两个子表）。**重命名 4 处**：`wav_reader`→`media/wav_parser`、`fifo_health_monitor` 从 `common/` 移到 `memory/`、`sdram_model`→`models/frame_memory_model`、`tb_mem_write`→`tb_frame_writer`（文件+module+全仓引用+TB+脚本一次改净，对外契约不变）。**补头文件**：`rtl/include/pixel_format_defs.vh`（像素格式+帧几何+**冻结四槽地址表唯一来源**）、`rtl/include/event_code_defs.vh`。**★ 真正的结构性问题（比"名字"严重）**：同一个常量在 4 个模块里各存了一份副本——`frame_buffer_manager`（7 个地址+SLOT/LINE/FRAME 步长）、`frame_writer`（帧几何 6 个）、`frame_address_gen`（2 个）、`video_read_dma`（3 个），另有 `tb_frame_writer` 抄了两处期望值。现已全部改为引用 `` `SV_`` 宏，**parameter 一律保留**（几何量必须能被顶层覆盖），改地址从此只改一个文件。**★ 概念更正**：此前把这件事描述为"宏与 parameter 命名冲突"是**错的**——Verilog 宏只在写成 `` `名字 `` 时才展开，裸标识符不进宏展开，两者不会编译冲突（已用编译验证）；加 `SV_` 前缀是为了可读性。真正的问题是常量多副本。**补公共件**：`rtl/common/crc16_ccitt.v`、`rtl/common/crc7.v`（纯组合无状态步进器，见 D-10），并让 `sd_sector_reader`（删掉自己那份 `crc16_next` 函数，改例化 1 级）与 `frame_writer`（删掉 `crc16_next`+`crc16_word` 两个函数，改为大端 4 级级联）复用同一份实现。**补 TB**：新增 `tb_crc`(12，把 `SD_CRC_CMD0/8` 的 0x4A/0x43 反推出来钉死在对数上，并验 CRC16 XMODEM 标准向量 `123456789`→0x31C3)、`tb_fat32_cluster_walker`(33，`fat32_cluster_walker` 此前只随编译，**判 EOC/越界/判环三条收尾分支从未被仿真跑过**，本 TB 用伪 FAT 扇区直接驱动并覆盖跨扇区寻址)。**拆分 TB**（只搬位置不改断言）：`tb_frame_swap`→`tb_memory_arbiter`(7)+`tb_frame_swap_ctrl`(23)，`tb_media`→`tb_bmp_unpack`(44)+`tb_wav_parser`(31)。**回归 502 项断言 / 15 个 testbench 全通过**。另：把交付口径写成显式规则——新增「文档同步义务」表（本文档 + 待办清单 + 原理讲解 + README 四者的更新触发条件）、补一份真正的 `README.md`（仓库结构、跑仿真方法、状态总览、硬约定）、并把"开发基准＝手册 V2.0 / 三份文档必须同步"写进项目规则文件，避免后续会话遗忘。另补 §一「语言子集」一行（**`rtl/**` 一律 `.v` + Verilog-2001 子集，`verification/**` 用 `.sv` 允许 SystemVerilog**），并登记远端仓库改名：`desktop-tutorial` → `Safe_Vision_FPGA_2026` | B |
+| v1.8 | — | **引入队友的项目管理覆盖包（目录骨架 + 管理文档），并把它的过期内容改对**。新增骨架目录：`.github/`（PR/缺陷/工作项模板）、`docs/{architecture,interfaces,requirements,management,verification,release}/`、`evidence/`（需求→测试→原始证据，7 类索引）、`safevision/{platform,build,assets}`、`safevision/rtl/{video,audio,control,safety,top}`、`safevision/verification/{subsystem,system,board}`、`safevision/tools/check_repo.ps1`（目录与 `run_sim.ps1` 引用自检，不需要 ModelSim）；`rtl/safety/` 是结构之外的补充（看门狗/故障/应急从 `control` 分出）。**这些目录只有 README 与命名计划，没有任何功能代码**（ADR-0001「只创建目录及说明，不生成假 RTL」）；文件落点规则见新增的 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)。`.gitignore` 换为覆盖包版本：白名单增加 `!/.github/` `!/evidence/`，新增排除 `*.lic` `*.key` `*.pem` `__pycache__/`，并允许 `evidence/**` 下的 `.log`/`.vcd` 原始证据进库。**接口契约、地址表、错误码、RTL 与 TB 全部未变，回归仍 502 项断言 / 15 个 testbench 全通过**（目录自检 `LAYOUT PASS`）。**★ 覆盖包按旧快照（48 个跟踪文件 / 27 个 RTL）制作，带进来的文档有多处过期，已逐项改对**：`module_registry.md` 里 `rtl/common/fifo_health_monitor.v`→`rtl/memory/…`、`rtl/media/wav_reader.v`→`wav_parser.v`，并补登 `crc16_ccitt.v`/`crc7.v`/`pixel_format_defs.vh`/`event_code_defs.vh`（RTL 27→29）；`test_matrix.md` 的 `tb_media`→`tb_bmp_unpack`+`tb_wav_parser`、`tb_mem_write`/`tb_frame_swap`→`tb_frame_writer`/`tb_memory_arbiter`/`tb_frame_swap_ctrl` 并补 `tb_fat32_cluster_walker`/`tb_crc`（TB 11→15）；`system_design.md` 的 `sdram_model.sv`→`frame_memory_model.sv`；`traceability.md` 的 `wav_reader`→`wav_parser`；断言数 457→502；`WORK_ITEMS.md` 里"待办清单仍有旧路径"的指控已作废（v1.7 已修）。另修本文件 §3.1 的 `实现: rtl/sd/spi_master.v` → `rtl/storage/spi_master.v`（真实过期路径），以及 `bmp_unpack.v` 注释里指向已不存在 TB 的 `tb_media` → `tb_bmp_unpack`。**另（同日追加）**：① **结构基准变更**——结构基准改为本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，原参照物作废，且全仓对它的引用（含 RTL 头注释、模块小节标题、表头列名与历史行里的出处标注）已一并清除；② **全仓文档去绝对路径**：覆盖包带进来的本机路径（如 `D:\modeltech64_10.7\win64`）改为按变量名 `$MSIM_BIN` 描述，文档树根由队友本地的 `Safe_Vision_FPGA_2026/` 改为 `<仓库根>/`，`f:\...\` 占位路径改为相对路径。约定：**文档里只用仓库相对路径** | B |

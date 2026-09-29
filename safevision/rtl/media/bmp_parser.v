@@ -2,9 +2,9 @@
 // bmp_parser.v — BMP 头严格校验（SafeVision 阶段 7 · rtl/media）
 // ----------------------------------------------------------------------------
 // 依据：手册 7.6.1 的 BMP 校验清单
-//       《工业级模块化架构蓝图》§5.2：
+//       本模块职责与接口：
 //         bmp_parser.v — Header、BGR、bottom-up、行 padding 转换
-//       蓝图 §7.1「Image Stream」接口
+//       「Image Stream」接口
 //
 // 只做"头"这一半：把 DIB 头读完、逐条核对，合格才让像素数据继续往下走。
 // BGR 换序 / bottom-up 翻行 / 行 padding 属于 bmp_unpack（阶段 8），不在本模块。

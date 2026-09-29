@@ -5,7 +5,7 @@
 //         （source=SD FIFO、dest=SDRAM 帧区、length=一帧像素数、start 启动、
 //           done 完成；done 有效后产生 frame_ready 与 CRC 抽检结果）
 //       手册 7.11「Burst 突发传输」（本模块按 word 粒度发起写请求，突发由 arbiter 聚合）
-//       docs/interface_spec.md §3.4「slot_writer」（本工程按蓝图 §5.2 改名 frame_writer，
+//       docs/interface_spec.md §3.4「slot_writer」（本工程按新结构改名 frame_writer，
 //         端口语义照文档）、§一（valid&&ready 双判）、§五（地址表）、§6.2（err_detail）
 //
 // 职责：把上游的 RGB565 像素流（din/din_valid/din_ready）打包成 32bit word 写进
