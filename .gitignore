@@ -1,53 +1,43 @@
-# ============================================================================
-# SafeVision 赛题一 · 仓库忽略规则
-# ----------------------------------------------------------------------------
-# 命名依据：《工业级模块化架构蓝图》§4 的仓库树约定 —— 仓库只放"人写的"东西，
-#          工具安装包、厂商例程、数据手册、仿真中间产物一律不进版本库。
-#
-# ★ 采用"白名单"写法：顶层除 safevision/ 和 docs/ 外全部忽略。
-#   这样即使以后有人往工作区里丢了几 GB 的安装包，也不会被误提交。
-#   工作区里那些不进仓库的东西（共约 6.9 GB）：
-#     1_安路开发工具和常用软件   (4.5 GB)  安路 TD 安装包与驱动
-#     2_Example                (970 MB)  厂商示例工程
-#     7_lab_ex_2026_nosoft     (1.2 GB)  赛方参考例程（手册要求不得照抄）
-#     3_原理图 / 4_芯片手册 / 6_EG4S20数据手册 / 8_FPGA学习资料 / 9_康芯使用手册
-#     *.pdf / *.docx                      赛方手册、选题指南、原理图
-# ============================================================================
-
-# ---- 白名单：只放行工程源码与文档 ----
+# Source and evidence allowlist. Large vendor packages and personal references stay outside Git.
 /*
 !/.gitignore
 !/README.md
-!/safevision/
+!/.github/
 !/docs/
+!/safevision/
+!/evidence/
 
-# ---- 仿真中间产物：可随时重新生成，不进库 ----
-safevision/verification/work/
-safevision/verification/work_*/
-*.vcd
+# Regenerable simulation and synthesis output.
+/safevision/verification/work/
+/safevision/verification/work_*/
+/safevision/build/out/
+/safevision/platform/**/generated/
 *.wlf
 transcript
 modelsim.ini
 *.qpg
 *.mkf
-
-# ---- 安路 TD / 综合工具输出 ----
-# ★ 注意：pin.adc（引脚约束）与 timing.sdc（时序约束）是【源文件】，必须进仓库，
-#   所以这里不忽略 *.adc / *.sdc —— 只忽略工具生成的中间产物。
 *.bit
 *.fs
-*.sdc.bak
-*.log
 *.ngd
 *.prj
 *.al
+*.sdc.bak
 
-# ---- Windows / 编辑器垃圾 ----
-Thumbs.db
-Desktop.ini
-desktop.ini
-~$*
+# Evidence logs, reports, waveforms and media are intentionally allowed.
+*.log
+*.vcd
+!evidence/**/*.log
+!evidence/**/*.vcd
+
+# Never commit licenses, credentials, caches or editor debris.
+*.lic
+*.key
+*.pem
 *.tmp
 *.bak
+Thumbs.db
+Desktop.ini
 .vscode/
 .idea/
+__pycache__/

@@ -541,9 +541,19 @@ IDLE --frame_ready & crc_ok--> WAIT_VBLANK --frame_start--> COMMIT --swap_ack-->
 1. **[interface_spec.md](interface_spec.md)** —— 接口冻结依据。**改接口必须先改它**，并通知对接人。里面还有一张「命名迁移表」，把手册里的老名字和现在的工程文件对应起来；另有一张「文档同步义务」表，写清了什么改动必须同步哪份文档。
 2. **[B链-待办与硬件验证清单.md](B链-待办与硬件验证清单.md)** —— 板子到货后照着它逐项做（M-1~M-19 实测项 + 上板排查顺序）。
 3. **本文档** —— 概念层面讲清"为什么这么设计"。
+4. **管理类文档**（2026-09-29 由队友的项目管理覆盖包引入）：
+   - **[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)** —— 哪个文件该放哪个目录（落点规则）
+   - **[architecture/module_registry.md](architecture/module_registry.md)** —— 模块清单：**新增模块先登记再写代码**
+   - **[management/WORK_ITEMS.md](management/WORK_ITEMS.md)** —— 三链当前工作项与优先级
+   - **[verification/test_matrix.md](verification/test_matrix.md)** —— 验证矩阵：已有 TB 与待补门槛
+   - **[management/adr/](management/adr/)** —— 架构决策记录（如 ADR-0001 可移植核心与板级适配分层）
+   - `evidence/` —— 原始证据落盘处（仿真日志、波形、实测数据、综合报告），见 [evidence/README.md](../evidence/README.md)
 
 > 开发功能以《赛题一对标学习与开发手册_V2.0.pdf》为准，目录结构以《工业级模块化架构
 > 蓝图.pdf》§4 为准。这两份 PDF 在工作区根目录、**不进仓库**（体积大且版权在赛方）。
+>
+> ★ 上面第 4 点那套骨架的目录**大部分只有 README 占位，没有功能代码**。判断"做完没有"
+> 要看验证证据，不能看目录存在。
 
 ### 13.3 怎么跑仿真
 
@@ -554,6 +564,16 @@ powershell -ExecutionPolicy Bypass -File f:\...\safevision\tools\run_sim.ps1
 脚本会依次编译并运行全部 testbench，每条断言打印 `[PASS]`/`[FAIL]`，最后给出失败项计数。**失败数必须是 0**。
 
 新增模块时，把文件加进 `tools/run_sim.ps1` 的 `$RTL` / `$SIM` / `$TBS` 三个列表即可。
+**只把文件放进目录而不加进列表，等于死文件**（曾经真实发生过：两个 CRC 通用件建好了却没进编译列表）。
+
+改完目录或脚本，可以先跑一个**不需要 ModelSim** 的自检：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
+```
+
+它核对必需目录/文件是否存在，并解析 `run_sim.ps1` 里的 `$RTL/$SIM/$TBS` 引用有没有断链，
+输出 `LAYOUT PASS` 才算通过。它查不到"文件建好但没进列表"这类反向问题，所以两个都要跑。
 
 > 脚本里有个坑要注意：**这个 `.ps1` 必须保持纯 ASCII 注释**。PowerShell 5.1 在没有 BOM 时按 ANSI 解码，中文注释会把后面的引号"吃掉"导致解析失败。中文注释写在 RTL 文件里。
 

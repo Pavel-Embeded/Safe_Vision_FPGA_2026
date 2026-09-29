@@ -10,7 +10,7 @@
 |---|---|
 | 项目 | 安视 SafeVision · 赛题一 HDMI 多媒体播放与应急视听疏散终端 |
 | 平台 | 康芯 HX4S20C 开发板 / 安路 EG4S20BG256 |
-| 版本 | v1.7（阶段 1–16 已实现并通过仿真；命名按《工业级模块化架构蓝图》§4 逐项核对完成） |
+| 版本 | v1.8（阶段 1–16 已实现并通过仿真；命名对蓝图 §4 核对完成；目录骨架按队友覆盖包建立） |
 | 负责人 | B 队员（数据存储链 / 数据搬运） |
 | 依据 | 赛题一官方选题指南；《赛选手册 V2.0》第 6/7/10 章 |
 | 维护规则 | 接口先于联调存在；改接口必同步改文档并通知对方；信号名、有效电平、时钟域、延迟、异常策略五者必须写清 |
@@ -26,6 +26,7 @@
 | [B链-待办与硬件验证清单.md](B链-待办与硬件验证清单.md) | 阶段状态、回归断言数、已知未完成项发生变化；新增实测项或排查条目 |
 | [B链-原理讲解-入门版.md](B链-原理讲解-入门版.md) | 设计取舍发生变化，或新增了值得交接给下一位的概念解释 |
 | [../README.md](../README.md) | 目录结构或回归数变化时，同步"当前状态"表与目录树 |
+| 管理类文档（[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)、[architecture/module_registry.md](architecture/module_registry.md)、[verification/test_matrix.md](verification/test_matrix.md)、[requirements/traceability.md](requirements/traceability.md)） | 模块新增或删除、完成状态变化、验证矩阵变化时同步。**新增模块必须先登记 `module_registry.md`（状态/负责人/接口/测试）再写代码** |
 
 **开发基准**：《赛题一对标学习与开发手册_V2.0.pdf》（工作区根目录，不进仓库）
 ——功能取舍、阶段节奏、验收口径一律以它为准。
@@ -86,9 +87,18 @@
 > 拆分类改动（`tb_frame_swap`→2 个、`tb_media`→2 个）**只搬位置、不改断言**：
 > 断言名字与判据逐字保留，拆分前后合计断言数不变（30 → 7+23，75 → 44+31）。
 
-**未采纳蓝图的部分（有意为之，不视为缺陷）**：150+ 文件的完整目录树、formal
-（SymbiYosys）、nightly 多随机种子 CI、HIL 自动化、release manifest、CSR 总线、
-HAL 抽象层、Codec I²C 配置。理由见蓝图 §4.1「不要一开始创建 150 个空 RTL」与
+**目录骨架（2026-09-29 由队友的项目管理覆盖包引入）**：`rtl/{video,audio,control,safety,top}`、
+`platform/`、`build/`、`assets/`、`verification/{subsystem,system,board}`、`evidence/`、
+`.github/` 已建为**骨架**——只有 README/占位说明与命名计划，**没有任何功能代码**。
+落点规则见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，理由见
+[ADR-0001](management/adr/0001-layout.md)（"只创建目录及说明，不生成假 RTL"）。
+★ **目录存在 ≠ 功能已实现**；判断完成度以验证证据为准。
+`rtl/safety/` 是蓝图之外的补充（把看门狗/故障/应急从 `control` 分出，明确归 C）。
+
+**仍未采纳蓝图的部分（有意为之，不视为缺陷）**：150+ 个文件里的大部分实现、
+formal（SymbiYosys）、nightly 多随机种子 CI、HIL 自动化、release manifest、CSR 总线、
+HAL 抽象层、Codec I²C 配置，以及蓝图里的 `rtl/csr/` `rtl/diagnostics/` `rtl/platform/`
+（板级适配改放 `safevision/platform/`）。理由见蓝图 §4.1「不要一开始创建 150 个空 RTL」与
 §19「对三人团队而言，最合适的目标不是模仿大公司堆叠复杂框架」。
 
 ---
@@ -163,7 +173,7 @@ audio_clk 域  audio_cdc_fifo → [C] audio_scheduler（48 kHz 节拍取样本�
 ```text
 时钟域 : sys_clk
 职责   : SPI mode0 字节级全双工收发（不含任何 SD 协议语义）
-实现   : safevision/rtl/sd/spi_master.v
+实现   : safevision/rtl/storage/spi_master.v
 
 clk                 in   1     sys_clk
 rst_n               in   1     同步复位，低有效
@@ -948,3 +958,4 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | v1.5 | — | **命名按《工业级模块化架构蓝图》§4 对齐**（新增「命名迁移表」）：目录树改为 `rtl/{include,common,storage,media}` + `verification/{unit,models}` + `tools`；`sd_init_fsm`→`sd_initializer`、`sd_sector_rd`→`sd_sector_reader`、`fat32_mount`→`fat32_boot_parser`、`dir_scan`→`fat32_directory_scanner`、`sd_card_model`→`sd_spi_card_model`；`sd_defines.vh` 拆成 `safevision_defs.vh` + `fault_code_defs.vh`。**阶段 7 落地**：新增 `fat32_cluster_walker.v`（簇链跟踪，被 `fat32_directory_scanner` 与 `file_streamer` **共用同一份**，消除 v1.4 的重复判环逻辑）、`file_streamer.v`（接管原 `file_stream`）、`media/bmp_parser.v`（接管原 `bmp_check`）。新增 TB：`tb_file_streamer.sv`(49 项)、`tb_bmp_parser.sv`(41 项)。**新增实测踩坑 3 条**：① 下游取走字节的清零逻辑必须放在状态机之外，否则扇区末字节锁存后 `valid` 永不清、死等兜底超时；② 文件末字节正好落在扇区末字节时 `stop_pending` 要按同拍值判定，否则白跳一次簇、误报 `DET_FS_SHORT`；③ BMP 多字节字段同为小端。六个 testbench 合计 **206 项断言全通过** | B |
 | v1.6 | — | **阶段 8–16 落地**（B 链主体完成）。新增 `rtl/memory/`：`mem_ctrl.v`（SDRAM IP wrapper，对外只暴露逻辑字节地址）、`frame_address_gen.v`（`slot_base+(y*W+x)*BPP`，行步长参数化）、`frame_writer.v`（一帧严格 307200 像素 + 抽样 CRC + `slot_valid`）、`frame_buffer_manager.v`（冻结地址表全 `localparam`，原子提交 `active_slot/slot_base/generation`）、`memory_arbiter.v`（固定优先级 + 单次占用上限 + 最长等待提权，防饥饿）、`video_read_dma.v`（水位驱动突发预取）、`frame_swap_ctrl.v`（`IDLE→WAIT_VBLANK→COMMIT→WAIT_ACK`，超时进 SAFE 保持画面）、`frame_swap_cdc.v`（toggle 同步 + mailbox 锁存）、`memory_bandwidth_monitor.v`。新增 `rtl/common/`：`rv_skid_buffer.v`、`sync_fifo.v`（`almost_full` 反压）、`fifo_health_monitor.v`（历史最低水位 + underflow/overflow）、`error_report.v`。新增 `verification/models/frame_memory_model.sv`（行为级，8 MiB/2M×32bit）。**阶段 6 收尾**：`file_index.v`（编号扫描 + 数字后缀排序 + 索引表冻结，新增 `idx_clear` 输入用于重扫）。新增 TB：`tb_file_index`(60)、`tb_common_fifo`(58)、`tb_frame_writer`(28)、`tb_frame_swap`(30)。**媒体格式层收尾**：`media/bmp_unpack.v`（BGR888→RGB565，`ROUNDING` 参数对应待确认项 O-1，行步长按公式算，`top_down` 双向统一成左上原点，按"像素数 == w×h"收尾）、`media/wav_parser.v`（RIFF/fmt/data 小端解析，**fmt 与 data 之间的未知块按 chunk size 跳过**，只收 PCM/2ch/48k/16bit）。新增 `tb_media`(75)。**错误码补登记**：`ERR_WAV`(0x07) 与 `DET_WAV_*`(0x71–0x76) 原先只写在本文档 §6.1/§6.2/D-7，代码里缺，已补进 `rtl/include/fault_code_defs.vh`（此前 `wav_parser` 只能临时用 `ERR_MEDIA_INVALID`，现已对齐文档）。十一个 testbench 合计 **457 项断言全通过** | B |
 | v1.7 | — | **按蓝图 §4 逐项核对命名，修掉最后 7 处真不一致 + 补 10 个缺口**（详见「命名迁移表」下的两个子表）。**重命名 4 处**：`wav_reader`→`media/wav_parser`、`fifo_health_monitor` 从 `common/` 移到 `memory/`、`sdram_model`→`models/frame_memory_model`、`tb_mem_write`→`tb_frame_writer`（文件+module+全仓引用+TB+脚本一次改净，对外契约不变）。**补头文件**：`rtl/include/pixel_format_defs.vh`（像素格式+帧几何+**冻结四槽地址表唯一来源**）、`rtl/include/event_code_defs.vh`。**★ 真正的结构性问题（比"名字"严重）**：同一个常量在 4 个模块里各存了一份副本——`frame_buffer_manager`（7 个地址+SLOT/LINE/FRAME 步长）、`frame_writer`（帧几何 6 个）、`frame_address_gen`（2 个）、`video_read_dma`（3 个），另有 `tb_frame_writer` 抄了两处期望值。现已全部改为引用 `` `SV_`` 宏，**parameter 一律保留**（几何量必须能被顶层覆盖），改地址从此只改一个文件。**★ 概念更正**：此前把这件事描述为"宏与 parameter 命名冲突"是**错的**——Verilog 宏只在写成 `` `名字 `` 时才展开，裸标识符不进宏展开，两者不会编译冲突（已用编译验证）；加 `SV_` 前缀是为了可读性。真正的问题是常量多副本。**补公共件**：`rtl/common/crc16_ccitt.v`、`rtl/common/crc7.v`（纯组合无状态步进器，见 D-10），并让 `sd_sector_reader`（删掉自己那份 `crc16_next` 函数，改例化 1 级）与 `frame_writer`（删掉 `crc16_next`+`crc16_word` 两个函数，改为大端 4 级级联）复用同一份实现。**补 TB**：新增 `tb_crc`(12，把 `SD_CRC_CMD0/8` 的 0x4A/0x43 反推出来钉死在对数上，并验 CRC16 XMODEM 标准向量 `123456789`→0x31C3)、`tb_fat32_cluster_walker`(33，`fat32_cluster_walker` 此前只随编译，**判 EOC/越界/判环三条收尾分支从未被仿真跑过**，本 TB 用伪 FAT 扇区直接驱动并覆盖跨扇区寻址)。**按蓝图拆 TB**（只搬位置不改断言）：`tb_frame_swap`→`tb_memory_arbiter`(7)+`tb_frame_swap_ctrl`(23)，`tb_media`→`tb_bmp_unpack`(44)+`tb_wav_parser`(31)。**回归 502 项断言 / 15 个 testbench 全通过**。另：把交付口径写成显式规则——新增「文档同步义务」表（本文档 + 待办清单 + 原理讲解 + README 四者的更新触发条件）、补一份真正的 `README.md`（仓库结构、跑仿真方法、状态总览、硬约定）、并把"开发基准＝手册 V2.0 / 结构基准＝蓝图 §4 / 三份文档必须同步"写进项目规则文件，避免后续会话遗忘。另补 §一「语言子集」一行（**`rtl/**` 一律 `.v` + Verilog-2001 子集，`verification/**` 用 `.sv` 允许 SystemVerilog**，依据蓝图 §4 原文），并登记远端仓库改名：`desktop-tutorial` → `Safe_Vision_FPGA_2026` | B |
+| v1.8 | — | **引入队友的项目管理覆盖包（目录骨架 + 管理文档），并把它的过期内容改对**。新增骨架目录：`.github/`（PR/缺陷/工作项模板）、`docs/{architecture,interfaces,requirements,management,verification,release}/`、`evidence/`（需求→测试→原始证据，7 类索引）、`safevision/{platform,build,assets}`、`safevision/rtl/{video,audio,control,safety,top}`、`safevision/verification/{subsystem,system,board}`、`safevision/tools/check_repo.ps1`（目录与 `run_sim.ps1` 引用自检，不需要 ModelSim）；`rtl/safety/` 是蓝图之外的补充（看门狗/故障/应急从 `control` 分出）。**这些目录只有 README 与命名计划，没有任何功能代码**（ADR-0001「只创建目录及说明，不生成假 RTL」）；文件落点规则见新增的 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)。`.gitignore` 换为覆盖包版本：白名单增加 `!/.github/` `!/evidence/`，新增排除 `*.lic` `*.key` `*.pem` `__pycache__/`，并允许 `evidence/**` 下的 `.log`/`.vcd` 原始证据进库。**接口契约、地址表、错误码、RTL 与 TB 全部未变，回归仍 502 项断言 / 15 个 testbench 全通过**（目录自检 `LAYOUT PASS`）。**★ 覆盖包按旧快照（48 个跟踪文件 / 27 个 RTL）制作，带进来的文档有多处过期，已逐项改对**：`module_registry.md` 里 `rtl/common/fifo_health_monitor.v`→`rtl/memory/…`、`rtl/media/wav_reader.v`→`wav_parser.v`，并补登 `crc16_ccitt.v`/`crc7.v`/`pixel_format_defs.vh`/`event_code_defs.vh`（RTL 27→29）；`test_matrix.md` 的 `tb_media`→`tb_bmp_unpack`+`tb_wav_parser`、`tb_mem_write`/`tb_frame_swap`→`tb_frame_writer`/`tb_memory_arbiter`/`tb_frame_swap_ctrl` 并补 `tb_fat32_cluster_walker`/`tb_crc`（TB 11→15）；`system_design.md` 的 `sdram_model.sv`→`frame_memory_model.sv`；`traceability.md` 的 `wav_reader`→`wav_parser`；断言数 457→502；`WORK_ITEMS.md` 里"待办清单仍有旧路径"的指控已作废（v1.7 已修）。另修本文件 §3.1 的 `实现: rtl/sd/spi_master.v` → `rtl/storage/spi_master.v`（真实过期路径），以及 `bmp_unpack.v` 注释里指向已不存在 TB 的 `tb_media` → `tb_bmp_unpack` | B |
