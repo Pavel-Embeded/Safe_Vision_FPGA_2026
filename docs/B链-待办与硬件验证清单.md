@@ -2,7 +2,12 @@
 
 > 用途：板子还没到，把"现在就能做"和"板到之后必须做"分开列清楚，避免到货后手忙脚乱。
 > 维护：每完成一项打勾，并注明日期与实测数据。
-> 关联文档：[interface_spec.md](interface_spec.md)（接口冻结依据）、[B链-原理讲解-入门版.md](B链-原理讲解-入门版.md)
+> 关联文档：[../README.md](../README.md)（仓库总览）、[interface_spec.md](interface_spec.md)（接口冻结依据）、[B链-原理讲解-入门版.md](B链-原理讲解-入门版.md)
+
+> ★ **本文件属于"文档三件套"，改代码后必须同步**：阶段状态、回归断言数、已知未完成项
+> 有任何变化，都要回来改这里（触发条件表见 [interface_spec.md](interface_spec.md) 的
+> 「文档同步义务」）。开发功能以《赛题一对标学习与开发手册_V2.0.pdf》为准，目录结构以
+> 《工业级模块化架构蓝图.pdf》§4 为准；这两份 PDF 在工作区根目录、不进仓库。
 
 ---
 
@@ -133,15 +138,19 @@
 ### 2.2 建第一块可下载的工程（阶段 5 最小验证）
 
 - [ ] 新建 TD 工程，器件选 **EG4S20BG256**（Family = EG4）
-- [ ] 加文件（注意 **include 路径** 要指向 `rtl/common`，否则 `safevision_defs.vh` 找不到）：
+- [ ] 加文件（注意 **include 路径** 要指向 `rtl/include`，否则 `safevision_defs.vh` 找不到）：
       ```
-      rtl/common/safevision_defs.vh   (头文件，加到工程 include 路径)
+      rtl/include/safevision_defs.vh   (头文件，加到工程 include 路径；它会 include 同目录的
+                                        fault_code_defs.vh / pixel_format_defs.vh / event_code_defs.vh)
       rtl/common/uart_tx.v
-      rtl/sd/spi_master.v
-      rtl/sd/sd_initializer.v
-      rtl/sd/sd_sector_reader.v
+      rtl/storage/spi_master.v
+      rtl/storage/sd_initializer.v
+      rtl/storage/sd_sector_reader.v
       rtl/top/top_stage5_sector_rd.v   ← 还没写，见 §2.3 待办
       ```
+      > 路径按《工业级模块化架构蓝图》§4：`rtl/include/` 放头文件、`rtl/storage/` 放
+      > SPI/SD/FAT、板级顶层将来放 `rtl/top/`（该目录现在还没建，写顶层时新建）。
+      > 旧文档里的 `rtl/sd/` `rtl/common/safevision_defs.vh` 是 v1.5 改名前的路径，已作废。
 - [ ] 约束文件：按 §1.3 的表写 `pin.adc`，时序约束 `timing.sdc` 先只写
       `create_clock -name clk -period 20 [get_ports {clk}]`（50MHz）
 - [ ] 综合 + 布局布线，看报告：时序是否收敛、有无多驱动/未约束端口警告
@@ -244,3 +253,4 @@
 | — | **阶段 8–16 + 阶段 6 收尾通过后更新（回归 382 项）**。新增 `rtl/memory/` 全套（SDRAM wrapper、帧缓存地址、帧写入、仲裁、DMA 读、双缓冲、帧交换、带宽监视）、`rtl/common/`（切分缓冲、同步 FIFO、FIFO 健康度、错误上报）、`frame_memory_model.sv` 行为模型、`file_index.v`。新增 §2.5 存储链实测项 M-10~M-19、§2.6 排查顺序扩到 11 条、"未完成项"表补上 SDRAM 真实 IP / 异步 FIFO / 音频链 / 帧交换联调 / 整机集成 |
 | — | **阶段 8–16 全部落地 + 媒体层收尾后更新（回归 457 项）**。补 `bmp_unpack` / `wav_parser` / `file_index` / `error_report`，补登记 `ERR_WAV` 与 `DET_WAV_*` 错误码 |
 | — | **v1.7：按蓝图 §4 逐项核对命名后更新（回归 502 项 / 15 个 TB）**。① 重命名 4 处（`wav_parser`、`memory/fifo_health_monitor`、`frame_memory_model`、`tb_frame_writer`）；② 补 `rtl/include/pixel_format_defs.vh`（**冻结地址表唯一来源**）与 `event_code_defs.vh`；③ **修掉"同一个常量在 4 个模块各存一份副本"**（帧几何/地址表全部改为引用 `` `SV_`` 宏，parameter 保留）；④ 补 `rtl/common/crc16_ccitt.v` / `crc7.v`，`sd_sector_reader` 与 `frame_writer` 各自那份重复的 CRC 函数删掉改为例化；⑤ 新增 `tb_crc`(12)、`tb_fat32_cluster_walker`(33，**该模块的判 EOC/越界/判环三条收尾分支此前从未被仿真跑过**)；⑥ 按蓝图拆 TB：`tb_frame_swap`→`tb_memory_arbiter`+`tb_frame_swap_ctrl`，`tb_media`→`tb_bmp_unpack`+`tb_wav_parser`（只搬位置不改断言）。**概念更正**：此前说的"宏与 parameter 命名冲突"是误判——宏只在写成 `` `名字 `` 时展开，两者不会冲突（已编译验证） |
+| — | **补交付口径与文档同步规则**。① 新增"文档同步义务"说明（本文件属文档三件套，状态/回归数/未完成项变化必须回来改）；② 补一份真正的 `README.md`（目录结构、跑仿真方法、状态总览、硬约定、有意未创建的目录）；③ 修正 §2.2 里 v1.5 改名前的过期路径（`rtl/common/safevision_defs.vh` → `rtl/include/…`、`rtl/sd/` → `rtl/storage/`）；④ 把"开发基准＝手册 V2.0 / 结构基准＝蓝图 §4"写进 interface_spec 与项目规则文件 |
