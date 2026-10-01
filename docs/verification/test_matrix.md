@@ -17,6 +17,7 @@
 
 | ID | 层 | 判据 | 主责 |
 |---|---|---|---|
+| TC-A-CLOCK | unit/static/board | `tb_clock_reset_ctrl.sv` 检查九路复位异步断言、各域两拍同步释放、锁定丢失与局部复位隔离；板级另核 PLL 频率、约束、STA 和上电波形 | A |
 | TC-A-TIMING | unit/board | 各模式行/场周期、de/x/y 与实机输出 | A |
 | TC-AB-PIXEL | subsystem/board | 固定帧首像素、数据/同步对齐、欠载安全色 | A+B |
 | TC-AB-SWAP | subsystem/board | 仅消隐期切槽；超时保持旧帧；无撕裂 | A+B |
@@ -27,3 +28,5 @@
 | TC-R-LONG | system/board | 视频 60 分钟、音频 30 分钟、计数和水位原始序列 | A+B+C |
 
 编号为工程补充，最终与手册固定 TC 编号映射后再冻结；当前没有填入“通过”的证据。
+
+TC-A-CLOCK 的 TB 源文件与 `safevision/tools/run_clock_sim.ps1` 已建立；当前机器未找到 ModelSim/iverilog，因此仅有静态文件检查，不能把该项计为仿真通过。既有 B 回归 502 项/15 TB 是历史记录，本次未重跑。

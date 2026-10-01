@@ -10,7 +10,7 @@
 |---|---|
 | 项目 | 安视 SafeVision · 赛题一 HDMI 多媒体播放与应急视听疏散终端 |
 | 平台 | 康芯 HX4S20C 开发板 / 安路 EG4S20BG256 |
-| 版本 | v1.8（阶段 1–16 已实现并通过仿真；命名已按本仓库结构核对完成；目录骨架按队友覆盖包建立） |
+| 版本 | v1.9（保留 v1.8 B 链接口；新增 A 的板级时钟复位接口定义，代码与板级验证状态另见模块登记表） |
 | 负责人 | B 队员（数据存储链 / 数据搬运） |
 | 依据 | 赛题一官方选题指南；《赛选手册 V2.0》第 6/7/10 章 |
 | 维护规则 | 接口先于联调存在；改接口必同步改文档并通知对方；信号名、有效电平、时钟域、延迟、异常策略五者必须写清 |
@@ -91,7 +91,7 @@
 
 **目录骨架（2026-09-29 由队友的项目管理覆盖包引入）**：`rtl/{video,audio,control,safety,top}`、
 `platform/`、`build/`、`assets/`、`verification/{subsystem,system,board}`、`evidence/`、
-`.github/` 已建为**骨架**——只有 README/占位说明与命名计划，**没有任何功能代码**。
+`.github/` 当时建为**骨架**。2026-09-30 起仅 `platform/anlogic_eg4s20_hx4s20c/rtl/clock/` 有复位功能 RTL；A 其他新模块文件夹仍只有 README。
 落点规则见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，理由见
 [ADR-0001](management/adr/0001-layout.md)（"只创建目录及说明，不生成假 RTL"）。
 ★ **目录存在 ≠ 功能已实现**；判断完成度以验证证据为准。
@@ -117,6 +117,33 @@ HAL 抽象层、Codec I²C 配置，以及 `rtl/csr/` `rtl/diagnostics/` `rtl/pl
 | 命名 | snake_case，无前缀；`_n` 后缀表低有效 | 10.2.4 |
 | 语言子集 | **`rtl/**` 一律 `.v` + Verilog-2001 子集**（要过安路 TD 综合，TD 只部分支持 SystemVerilog）；**`verification/**` 用 `.sv`**、允许 SystemVerilog（TB 不综合）；`rtl/include/**` 用 `.vh`。**禁止把 `.sv` 放进 `rtl/`**。注：当前 `.sv` 文件内容实际都是 Verilog-2001 写法，扩展名按这个分工走 | 项目自定约定（已固化） |
 | 错误上报 | 统一走 `error_report` → Control Event Interface（`evt_type` / `evt_value` / `evt_valid` / `evt_full`），溢出计数在 C 侧 | 10.2.4 |
+
+### A 板级时钟复位接口（v1.9 增补，不改变 B 链既有端口）
+
+`platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_reset_ctrl.v` 接收 TD PLL 输出的时钟与 `locked`，只产生低有效复位，**不生成、分频或切换时钟**。PLL 实例、引脚和约束尚未接入。手册表 6-2 的 `board_clk=50 MHz`、`sys_clk=100 MHz`、`mem_clk=125 MHz`、`pixel_clk_base=25.175 MHz`、`pixel_clk_hd=74.25 MHz`、`serial_clk=5×pixel_clk`、`audio_mclk=12.288 MHz` 是目标而非实测；当前工程仅冻结 `sys_clk/mem_clk/pixel_clk` 三个业务频率，视频模式和 HDMI PHY 方案确认前不作无毛刺时钟切换。
+
+| 输入 | 有效电平 / 所在域 | 用途 |
+|---|---|---|
+| `board_rst_n` | 低有效，异步 | 板级全局复位源；低电平异步断言全部输出复位 |
+| `sys_clk`、`mem_clk`、`pixel_clk`、`serial_clk`、`audio_clk` | 各自 PLL 输出 | 仅给对应复位同步器采样；时钟本身不在本模块内产生 |
+| `sys_pll_locked`、`mem_pll_locked`、`video_pll_locked`、`audio_pll_locked` | 高有效，异步锁定电平 | 对应域释放许可；同一 PLL 供多个域时可连接同一个 `locked` |
+| `media_reset_req` | 高有效，`sys_clk` 域保持电平 | 仅复位媒体业务；跨域发起者须先完成 CDC，不可送单拍脉冲 |
+| `memory_client_reset_req` | 高有效，`mem_clk` 域保持电平 | 仅复位 SDRAM 客户端，保留 `mem_rst_n` 与 SDRAM IP 刷新 |
+| `hdmi_reinit_req` | 高有效，跨像素/串行域保持电平 | 只复位 HDMI 前级与串行路径；控制源须做跨域握手并稳定保持到两域均已复位 |
+| `audio_reset_req` | 高有效，`audio_clk` 域保持电平 | 只复位音频消费链 |
+
+| 输出 | 所在域 / 释放延迟 | 所属逻辑与异常策略 |
+|---|---|---|
+| `sys_rst_n` | `sys_clk`，RTL 第 2 拍释放 | 控制、故障锁存；不受 `media_reset_req` 影响 |
+| `mem_rst_n` | `mem_clk`，RTL 第 2 拍释放 | SDRAM PHY/仲裁基础域；不受客户端局部复位影响 |
+| `pixel_rst_n` | `pixel_clk`，RTL 第 2 拍释放 | Video Timing、安全画面；媒体/HDMI 局部复位不影响 |
+| `serial_rst_n` | `serial_clk`，RTL 第 2 拍释放 | 串行时钟域基础复位；HDMI 重初始化不改变此基础许可 |
+| `audio_rst_n` | `audio_clk`，RTL 第 2 拍释放 | 音频消费；音频 PLL 掉锁或 `audio_reset_req` 均复位，不牵连视频 |
+| `media_rst_n` | `sys_clk`，RTL 第 2 拍释放 | SD/文件/媒体业务局部复位；不复位视频时序、安全画面、HDMI PHY |
+| `memory_client_rst_n` | `mem_clk`，RTL 第 2 拍释放 | 帧缓存客户端局部复位；不复位 SDRAM IP |
+| `hdmi_pixel_rst_n`、`hdmi_serial_rst_n` | 各自像素/串行域，RTL 第 2 拍释放 | HDMI 重初始化分域复位；不复位 `pixel_rst_n` 的视频时序 |
+
+`locked` 拉低或相应请求拉高时，相关复位异步立即断言；各自释放条件恢复后，RTL 名义上在该域第 2 个上升沿释放。异步变化靠近采样边沿时，物理释放时刻受亚稳态与 recovery/removal 约束影响，仍须 STA 和板测核实。PLL 锁定不能证明输出频率正确；最终需 TD IP 配置、约束、STA、板级波形与上电录像。板级音频时钟由 A 接入平台，C 负责音频链消费与节拍接口。
 
 ### CDC 约定
 
@@ -752,7 +779,7 @@ track_change           out  1     音轨切换事件（toggle）
 
 ```text
 === PCM Sample Interface（B→C）===
-audio_clk           in   1     C 提供（audio_mclk 12.288 MHz = 256 × Fs）
+audio_clk           in   1     C 在 B→C 接口处分发；物理源由 A 平台 PLL 提供（audio_mclk 12.288 MHz = 256 × Fs）
 pcm_l[15:0]         out  16    左声道，有符号
 pcm_r[15:0]         out  16    右声道，有符号
 pcm_valid           out  1     与 pcm_l / pcm_r 同拍有效（FWFT，等效 !empty）
@@ -961,3 +988,4 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | v1.6 | — | **阶段 8–16 落地**（B 链主体完成）。新增 `rtl/memory/`：`mem_ctrl.v`（SDRAM IP wrapper，对外只暴露逻辑字节地址）、`frame_address_gen.v`（`slot_base+(y*W+x)*BPP`，行步长参数化）、`frame_writer.v`（一帧严格 307200 像素 + 抽样 CRC + `slot_valid`）、`frame_buffer_manager.v`（冻结地址表全 `localparam`，原子提交 `active_slot/slot_base/generation`）、`memory_arbiter.v`（固定优先级 + 单次占用上限 + 最长等待提权，防饥饿）、`video_read_dma.v`（水位驱动突发预取）、`frame_swap_ctrl.v`（`IDLE→WAIT_VBLANK→COMMIT→WAIT_ACK`，超时进 SAFE 保持画面）、`frame_swap_cdc.v`（toggle 同步 + mailbox 锁存）、`memory_bandwidth_monitor.v`。新增 `rtl/common/`：`rv_skid_buffer.v`、`sync_fifo.v`（`almost_full` 反压）、`fifo_health_monitor.v`（历史最低水位 + underflow/overflow）、`error_report.v`。新增 `verification/models/frame_memory_model.sv`（行为级，8 MiB/2M×32bit）。**阶段 6 收尾**：`file_index.v`（编号扫描 + 数字后缀排序 + 索引表冻结，新增 `idx_clear` 输入用于重扫）。新增 TB：`tb_file_index`(60)、`tb_common_fifo`(58)、`tb_frame_writer`(28)、`tb_frame_swap`(30)。**媒体格式层收尾**：`media/bmp_unpack.v`（BGR888→RGB565，`ROUNDING` 参数对应待确认项 O-1，行步长按公式算，`top_down` 双向统一成左上原点，按"像素数 == w×h"收尾）、`media/wav_parser.v`（RIFF/fmt/data 小端解析，**fmt 与 data 之间的未知块按 chunk size 跳过**，只收 PCM/2ch/48k/16bit）。新增 `tb_media`(75)。**错误码补登记**：`ERR_WAV`(0x07) 与 `DET_WAV_*`(0x71–0x76) 原先只写在本文档 §6.1/§6.2/D-7，代码里缺，已补进 `rtl/include/fault_code_defs.vh`（此前 `wav_parser` 只能临时用 `ERR_MEDIA_INVALID`，现已对齐文档）。十一个 testbench 合计 **457 项断言全通过** | B |
 | v1.7 | — | **逐项核对命名，修掉最后 7 处真不一致 + 补 10 个缺口**（详见「命名迁移表」下的两个子表）。**重命名 4 处**：`wav_reader`→`media/wav_parser`、`fifo_health_monitor` 从 `common/` 移到 `memory/`、`sdram_model`→`models/frame_memory_model`、`tb_mem_write`→`tb_frame_writer`（文件+module+全仓引用+TB+脚本一次改净，对外契约不变）。**补头文件**：`rtl/include/pixel_format_defs.vh`（像素格式+帧几何+**冻结四槽地址表唯一来源**）、`rtl/include/event_code_defs.vh`。**★ 真正的结构性问题（比"名字"严重）**：同一个常量在 4 个模块里各存了一份副本——`frame_buffer_manager`（7 个地址+SLOT/LINE/FRAME 步长）、`frame_writer`（帧几何 6 个）、`frame_address_gen`（2 个）、`video_read_dma`（3 个），另有 `tb_frame_writer` 抄了两处期望值。现已全部改为引用 `` `SV_`` 宏，**parameter 一律保留**（几何量必须能被顶层覆盖），改地址从此只改一个文件。**★ 概念更正**：此前把这件事描述为"宏与 parameter 命名冲突"是**错的**——Verilog 宏只在写成 `` `名字 `` 时才展开，裸标识符不进宏展开，两者不会编译冲突（已用编译验证）；加 `SV_` 前缀是为了可读性。真正的问题是常量多副本。**补公共件**：`rtl/common/crc16_ccitt.v`、`rtl/common/crc7.v`（纯组合无状态步进器，见 D-10），并让 `sd_sector_reader`（删掉自己那份 `crc16_next` 函数，改例化 1 级）与 `frame_writer`（删掉 `crc16_next`+`crc16_word` 两个函数，改为大端 4 级级联）复用同一份实现。**补 TB**：新增 `tb_crc`(12，把 `SD_CRC_CMD0/8` 的 0x4A/0x43 反推出来钉死在对数上，并验 CRC16 XMODEM 标准向量 `123456789`→0x31C3)、`tb_fat32_cluster_walker`(33，`fat32_cluster_walker` 此前只随编译，**判 EOC/越界/判环三条收尾分支从未被仿真跑过**，本 TB 用伪 FAT 扇区直接驱动并覆盖跨扇区寻址)。**拆分 TB**（只搬位置不改断言）：`tb_frame_swap`→`tb_memory_arbiter`(7)+`tb_frame_swap_ctrl`(23)，`tb_media`→`tb_bmp_unpack`(44)+`tb_wav_parser`(31)。**回归 502 项断言 / 15 个 testbench 全通过**。另：把交付口径写成显式规则——新增「文档同步义务」表（本文档 + 待办清单 + 原理讲解 + README 四者的更新触发条件）、补一份真正的 `README.md`（仓库结构、跑仿真方法、状态总览、硬约定）、并把"开发基准＝手册 V2.0 / 三份文档必须同步"写进项目规则文件，避免后续会话遗忘。另补 §一「语言子集」一行（**`rtl/**` 一律 `.v` + Verilog-2001 子集，`verification/**` 用 `.sv` 允许 SystemVerilog**），并登记远端仓库改名：`desktop-tutorial` → `Safe_Vision_FPGA_2026` | B |
 | v1.8 | — | **引入队友的项目管理覆盖包（目录骨架 + 管理文档），并把它的过期内容改对**。新增骨架目录：`.github/`（PR/缺陷/工作项模板）、`docs/{architecture,interfaces,requirements,management,verification,release}/`、`evidence/`（需求→测试→原始证据，7 类索引）、`safevision/{platform,build,assets}`、`safevision/rtl/{video,audio,control,safety,top}`、`safevision/verification/{subsystem,system,board}`、`safevision/tools/check_repo.ps1`（目录与 `run_sim.ps1` 引用自检，不需要 ModelSim）；`rtl/safety/` 是结构之外的补充（看门狗/故障/应急从 `control` 分出）。**这些目录只有 README 与命名计划，没有任何功能代码**（ADR-0001「只创建目录及说明，不生成假 RTL」）；文件落点规则见新增的 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)。`.gitignore` 换为覆盖包版本：白名单增加 `!/.github/` `!/evidence/`，新增排除 `*.lic` `*.key` `*.pem` `__pycache__/`，并允许 `evidence/**` 下的 `.log`/`.vcd` 原始证据进库。**接口契约、地址表、错误码、RTL 与 TB 全部未变，回归仍 502 项断言 / 15 个 testbench 全通过**（目录自检 `LAYOUT PASS`）。**★ 覆盖包按旧快照（48 个跟踪文件 / 27 个 RTL）制作，带进来的文档有多处过期，已逐项改对**：`module_registry.md` 里 `rtl/common/fifo_health_monitor.v`→`rtl/memory/…`、`rtl/media/wav_reader.v`→`wav_parser.v`，并补登 `crc16_ccitt.v`/`crc7.v`/`pixel_format_defs.vh`/`event_code_defs.vh`（RTL 27→29）；`test_matrix.md` 的 `tb_media`→`tb_bmp_unpack`+`tb_wav_parser`、`tb_mem_write`/`tb_frame_swap`→`tb_frame_writer`/`tb_memory_arbiter`/`tb_frame_swap_ctrl` 并补 `tb_fat32_cluster_walker`/`tb_crc`（TB 11→15）；`system_design.md` 的 `sdram_model.sv`→`frame_memory_model.sv`；`traceability.md` 的 `wav_reader`→`wav_parser`；断言数 457→502；`WORK_ITEMS.md` 里"待办清单仍有旧路径"的指控已作废（v1.7 已修）。另修本文件 §3.1 的 `实现: rtl/sd/spi_master.v` → `rtl/storage/spi_master.v`（真实过期路径），以及 `bmp_unpack.v` 注释里指向已不存在 TB 的 `tb_media` → `tb_bmp_unpack`。**另（同日追加）**：① **结构基准变更**——结构基准改为本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，原参照物作废，且全仓对它的引用（含 RTL 头注释、模块小节标题、表头列名与历史行里的出处标注）已一并清除；② **全仓文档去绝对路径**：覆盖包带进来的本机路径（如 `D:\modeltech64_10.7\win64`）改为按变量名 `$MSIM_BIN` 描述，文档树根由队友本地的 `Safe_Vision_FPGA_2026/` 改为 `<仓库根>/`，`f:\...\` 占位路径改为相对路径。约定：**文档里只用仓库相对路径** | B |
+| v1.9 | 2026-09-30 | 增补 A 板级 `clock_reset_ctrl` 的信号名、有效电平、时钟域、两拍释放和局部复位隔离；保持 B 链接口不变。PLL/IP 与板级时序待接入验证。 | A |

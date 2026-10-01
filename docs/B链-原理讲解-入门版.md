@@ -265,7 +265,7 @@ FIFO 有两种常见模式，差别在"数据什么时候出现在输出端"：
 ① 上电
    板载晶振给 FPGA 一个 50MHz 时钟
    PLL（锁相环，一种"倍频器"）把它变成 100MHz / 125MHz / 25MHz 等几路
-   FPGA 等所有 PLL 都稳定了，才放开复位
+   每个时钟域等本域 PLL 锁定后，才经本域复位同步器放开该域复位；其他域可独立恢复
 
 ② FPGA 跟卡对暗号
    CMD0 → CMD8 → 反复 ACMD41 → CMD58
@@ -530,7 +530,7 @@ IDLE --frame_ready & crc_ok--> WAIT_VBLANK --frame_start--> COMMIT --swap_ack-->
 
 | | 负责范围 | 关键文件 |
 |---|---|---|
-| **A** | 视频时序、帧读取、OSD、应急图形、HDMI、顶层集成 | `rtl/video/*`、`rtl/top/safevision_core.v` |
+| **A** | 视频时序、帧读取、OSD、应急图形、HDMI、顶层集成 | `rtl/video/*/`、`rtl/top/safevision_core/safevision_core.v`（规划落点） |
 | **B（我）** | SPI / SD / FAT32 / 文件流 / 媒体解析 / SDRAM / 帧缓存 / 仲裁 / DMA | `rtl/storage/*`、`rtl/media/*`、`rtl/memory/*` |
 | **C** | 输入处理、事件优先级、应急状态机、Watchdog、Fail-Safe、音频 | `rtl/control/*`、`rtl/audio/*` |
 

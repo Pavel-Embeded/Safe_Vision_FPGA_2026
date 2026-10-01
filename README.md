@@ -122,19 +122,19 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 │  │  │   ├─ frame_swap_cdc.v       toggle 同步 + mailbox 锁存
 │  │  │   ├─ memory_bandwidth_monitor.v 带宽计数器
 │  │  │   └─ fifo_health_monitor.v  历史最低水位 + underflow/overflow
-│  │  ├─ video/                     [骨架] A：时序、帧读取、合成与 OSD
+│  │  ├─ video/                     [模块目录] A：时序、帧读取、合成与 OSD；功能 RTL 待写
 │  │  ├─ audio/                     [骨架] C：音频调度与优先级
 │  │  ├─ control/                   [骨架] C：按键、播放状态、事件
 │  │  ├─ safety/                    [骨架] C：故障、看门狗与降级控制
-│  │  └─ top/                       [骨架] A：不含板级引脚的系统核心
-│  ├─ platform/                     [骨架] 板级适配层
-│  │  ├─ anlogic_eg4s20_hx4s20c/    [骨架] 板级顶层、IP、约束、TD 工程
+│  │  └─ top/                       [模块目录] A：safevision_core/，功能 RTL 待写
+│  ├─ platform/                     [部分 RTL] 板级适配层
+│  │  ├─ anlogic_eg4s20_hx4s20c/    [部分 RTL] clock/ 复位控制；PLL/顶层/约束待接
 │  │  └─ sim/                       [骨架] 非厂商仿真适配层
 │  ├─ build/                        [骨架] 文件清单、参数配置、构建说明
 │  ├─ assets/                       [骨架] 可再生字体、图案、SD 测试素材说明
 │  ├─ verification/
 │  │  ├─ models/                    行为级模型（sd_spi_card_model.sv / frame_memory_model.sv）
-│  │  ├─ unit/                      单元测试台（15 个，每个被测件一个，断言名即规格）
+│  │  ├─ unit/                      单元测试台（B 历史 15 个 + A clock 新增 1 个）
 │  │  ├─ subsystem/                 [骨架] SD→帧缓存、缓存→HDMI 等联调
 │  │  ├─ system/                    [骨架] 三链整机、故障与长稳
 │  │  └─ board/                     [骨架] 上板步骤与采集脚本
@@ -156,10 +156,7 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 > 这是可接受的，但别因为看到 `.sv` 就以为里面有 `logic`/`always_ff` 或断言。
 > **新增 RTL 一律 `.v`；不要把 `.sv` 放进 `rtl/`**（那会进 TD 综合）。
 
-**已建骨架、尚无功能代码**（项目自定原则：先建落点和命名计划，不生成假 RTL）：
-`rtl/{video,audio,control,safety,top}`、`platform/`、`build/`、`assets/`、
-`verification/{subsystem,system,board}`、`evidence/` 都只放 README 或占位说明，没有功能
-RTL。A 链（视频与顶层集成）与 C 链（控制与音频）各自独立实现。
+**A 模块目录与当前代码**：`rtl/video/` 下按 Video Timing、Pattern Generator、Graphics ROM、OSD、Pipeline、Frame Reader、Compositor、Safe Scene、Emergency MUX、CDC 建立独立文件夹；`rtl/top/safevision_core/` 已建。板级 `rtl/` 下已建 `clock/`、`pixel_fifo/`、`hdmi/`、`chipwatcher/`、`safevision_top/`，`ip/` 下已建 PLL/FIFO/BRAM/HDMI 落点。只有 `platform/.../rtl/clock/` 有 `reset_sync.v` 与 `clock_reset_ctrl.v` 功能 RTL；其余 A 目录只有 README。详细路径见 [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)。C 的骨架、`build/`、`assets/`、`verification/{subsystem,system,board}`、`evidence/` 仍是规划落点。
 
 **有意不创建**（同样出自项目自定原则「三人团队不要模仿大公司堆叠复杂框架」）：
 `rtl/csr/`（CSR 总线）、`rtl/diagnostics/`、`rtl/platform/`（板级适配已放在
@@ -183,7 +180,13 @@ powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1
 > ★ 维护脚本时注意：**`run_sim.ps1` 必须保持纯 ASCII 注释**。PowerShell 5.1 在没有 BOM
 > 时按 ANSI 解码 `.ps1`，中文注释会把后面的引号"吃掉"导致解析失败。中文注释写在 RTL 里。
 
-新增模块 / 新增 testbench 时，把文件分别加进脚本的 `$RTL` / `$SIM` / `$TBS` 三个列表。
+新增 **B 链**模块 / testbench 时，把文件分别加进本脚本的 `$RTL` / `$SIM` / `$TBS` 三个列表。A clock 的 RTL/TB 使用独立入口，不改变已记录的 B 回归口径：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_clock_sim.ps1 -ModelSimBin <ModelSim的win64目录>
+```
+
+当前机器尚未安装可用的 ModelSim/iverilog；A clock 测试源已写，但本次未运行仿真。
 
 **现有 B 回归**与目录自检（目录自检不需要 ModelSim）：
 
@@ -203,11 +206,12 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | 手册学习阶段 1–16 | **全部落地并仿真通过** |
 | 媒体格式层（BMP 解析/解包、WAV 解析） | 已完成并仿真通过 |
 | 目录树与命名 | 已按本项目结构（PROJECT_STRUCTURE.md）核对完成（含"同一常量多副本"的结构性收敛） |
-| 仿真回归 | **502 项断言 / 15 个 testbench / 2 个行为模型，全 PASS** |
+| B 链历史仿真回归 | **502 项断言 / 15 个 testbench / 2 个行为模型，全 PASS；本次未重跑** |
 | 板级顶层 `top_stage5_sector_rd.v` | 未开始（见待办清单 §2.3） |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | 未开始（见待办清单 §1.3） |
 | 上板实测（M-1 ~ M-19） | **未开始，等板子** |
 | 整机集成 `safevision_core.v` / `safevision_top.v` | A 负责 |
+| A 板级时钟复位 | `reset_sync.v` 与 `clock_reset_ctrl.v` 已写；PLL IP/约束/板级实测待完成 |
 
 各 testbench 的覆盖与断言数见 [B链-待办与硬件验证清单.md](docs/B链-待办与硬件验证清单.md) §零。
 

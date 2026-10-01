@@ -1,6 +1,6 @@
 # 项目目录与文件归属
 
-本页是仓库目录导航。`[现有]` 表示盘点时已存在；`[新建]` 表示这次创建的管理骨架；`[规划]` 表示只确定落点，未实现 RTL/IP；`[骨架]` 表示已建目录但只含 README/占位说明，没有任何功能代码。手册 V2.0 的第 2、6–12、17 章决定三条链、接口先行、分层测试和交付证据；目录粒度、板级适配层、评审模板是本项目的工程化补充。
+本页是仓库目录导航。`[现有]` 表示盘点时已存在；`[规划]` 表示只确定落点，未实现 RTL/IP；`[骨架]` 表示已建目录但只含 README/占位说明，没有任何功能代码。2026-09-30 新增 A 的逐模块文件夹，只有板级 `rtl/clock/` 含复位 RTL。手册 V2.0 的第 2、6–12、17 章决定三条链、接口先行、分层测试和交付证据；目录粒度、板级适配层、评审模板是本项目的工程化补充。
 
 ```text
 <仓库根>/
@@ -24,13 +24,13 @@
 │  │  ├─ storage/                    [现有] SPI、SD、FAT32、文件流
 │  │  ├─ media/                      [现有] BMP/WAV 解析与像素转换
 │  │  ├─ memory/                     [现有] 帧缓存、仲裁、DMA、交换
-│  │  ├─ video/                      [规划] A：时序、帧读取、合成与 OSD
+│  │  ├─ video/                      [规划] A：时序、帧读取、合成与 OSD；逐模块 README
 │  │  ├─ audio/                      [规划] C：音频调度与优先级
 │  │  ├─ control/                    [规划] C：按键、播放状态、事件
 │  │  ├─ safety/                     [规划] C：故障、看门狗与降级控制
-│  │  └─ top/                        [规划] A：不含板级引脚的系统核心
+│  │  └─ top/                        [规划] A：safevision_core/；不含板级引脚
 │  ├─ platform/
-│  │  ├─ anlogic_eg4s20_hx4s20c/    [规划] 板级顶层、IP、约束、TD 工程
+│  │  ├─ anlogic_eg4s20_hx4s20c/    [部分 RTL] clock/ 复位控制；PLL/顶层/约束待接入
 │  │  └─ sim/                        [规划] 非厂商仿真适配层
 │  ├─ build/                         [骨架] 文件清单、参数配置、构建说明
 │  ├─ verification/
@@ -63,11 +63,22 @@
 | 单元/联调/整机测试 | `safevision/verification/{unit,subsystem,system,board}` | 开发者写、跨链复核 |
 | 原始测试结果 | `evidence/<类型>` | 执行者落盘，C 维护索引 |
 
-每个待实现目录的 README 列出推荐文件名与边界。`module_registry.md` 对所有现有 RTL 文件逐一登记（29 个 `.v` 与 4 个 `.vh`），不能把“有目录”误认为“有功能”。目录的依赖关系和接口规则见 [系统架构](architecture/system_design.md)。
+### A 模块文件夹（目录存在不等于实现）
+
+| 分类 | 已建模块文件夹 | 当前代码 |
+|---|---|---|
+| `safevision/rtl/video/` | `video_timing/`、`pattern_generator/`、`graphics_rom/`、`osd_overlay/`、`video_pipeline/`、`frame_reader/`、`video_compositor/`、`safe_scene_gen/`、`emergency_mux/`、`video_cdc/` | 均仅 README；B 已有的 `rtl/memory/frame_swap_cdc.v` 不移动 |
+| `safevision/rtl/top/` | `safevision_core/` | 仅 README |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/` | `clock/`、`pixel_fifo/`、`hdmi/`、`chipwatcher/`、`safevision_top/` | 仅 `clock/reset_sync.v` 与 `clock/clock_reset_ctrl.v` 为功能 RTL；其余仅 README |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/ip/` | `pll/`、`pixel_fifo/`、`graphics_bram/`、`hdmi/` | 均仅 README；无生成的 IP 配置 |
+
+模块文件在相应文件夹内；新增端口先更新 `docs/interface_spec.md` 和 `docs/architecture/module_registry.md`，再更新显式文件表。板级时钟由官方 TD PLL IP 产生，现有 `clock/` Verilog 只实现复位许可和分域释放。
+
+每个待实现目录的 README 列出用途与边界。`module_registry.md` 登记原有 B 链 29 个 `.v`、新增 A clock 的 2 个 `.v` 与 4 个 `.vh`；目录存在不代表功能已实现或验证。目录的依赖关系和接口规则见 [系统架构](architecture/system_design.md)。
 
 > ★ **B 链三份文档暂时留在 `docs/` 根目录，不要搬进任何子目录**：
 > `docs/interface_spec.md`、`docs/B链-待办与硬件验证清单.md`、`docs/B链-原理讲解-入门版.md`。
 > 它们被项目规则、`README.md`、`docs/architecture/module_registry.md` 等多处按此路径引用，
 > 搬动会打断引用，且它们本身就是 B 链的交付物。
 
-树上标 `[规划]` / `[骨架]` 的目录（`rtl/{video,audio,control,safety,top}`、`platform/`、`build/`、`assets/`、`verification/{subsystem,system,board}`、`evidence/`）目前只有 README 或占位说明，没有任何功能代码；本项目自定原则「不要一开始创建一堆空 RTL」，先建落点和命名计划，不生成假 RTL。
+树上标 `[规划]` / `[骨架]` 的 A 视频、顶层及 IP 目录目前只有 README；`platform/.../rtl/clock/` 有两个面向综合的复位 RTL，尚未通过 TD 综合或仿真。C 目录、build、assets、verification 的规划目录和 evidence 仍是骨架。本项目自定原则是先建落点和命名计划，不生成假 RTL。
