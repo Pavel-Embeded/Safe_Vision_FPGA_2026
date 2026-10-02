@@ -29,6 +29,10 @@ module tb_top_stage5_sector_rd;
     localparam integer HALF_NS  = BIT_NS / 2;
     localparam integer NBYTES   = 512;
     localparam [31:0]  LBA      = 32'd1000;
+    // 注：本 TB 显式给 DUT 传 TARGET_LBA，所以它验证的是"给定的 LBA 原样送出"这条通用性质，
+    //     与 DUT 的默认值无关。板上实际构建把默认值改成了 32'd8192（分区首扇区/FAT32 DBR，
+    //     内容非零、便于逐字节比对；原因见 top_stage5_sector_rd.v 文件头）。
+    //     这里刻意保留 1000，不动任何断言。
 
     // ------------------------------------------------------------------------
     // 时钟与复位：20 ns -> 50 MHz（与板载晶振同频）

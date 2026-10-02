@@ -814,7 +814,7 @@ track_id[7:0] / audio_underflow（计数器，C 侧）
 `platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v`，
 不带引脚的可移植装配才是 `rtl/top/safevision_core/`。
 
-功能：上电延时 → `sd_initializer` 初始化 → 读 `rd_addr = 32'd1000` 单扇区 →
+功能：上电延时 → `sd_initializer` 初始化 → 读 `rd_addr = TARGET_LBA` 单扇区 →
 512 Byte 按序灌 `uart_tx`（115200 8N1）。LED 显示序列状态码。
 
 | 端口 | 方向 | 引脚 | 原理图网络名 | 说明 |
@@ -828,8 +828,18 @@ track_id[7:0] / audio_underflow（计数器，C 侧）
 | `uart_txd` | out | D12 | `TXD` | 已确认：FPGA 发送（板载 CH340G，见下方） |
 | `led[3:0]` | out | A4 / A3 / C10 / B12 | `LED0`…`LED3` | 状态码 1/2/3/4/5/8，失败显示错误主码低 4 位 |
 
-参数：`CLK_FREQ`（默认 50 MHz）、`BAUD`（115200）、`TARGET_LBA`（1000）、
+参数：`CLK_FREQ`（默认 50 MHz）、`BAUD`（115200）、`TARGET_LBA`（默认 `32'd8192`）、
 `POWERUP_CYC`（50 ms 上电等待）。
+
+★ **`TARGET_LBA` 的默认值为什么是 8192 而不是 1000**：`TARGET_LBA` 是**读哪个扇区**的参数，
+它是 SD 卡上的**块地址**（SDHC）或字节地址（SDSC，模块内部左移 9 位）。原本按手册初稿取
+1000，但实测本机这张 TF 卡的**分区从物理扇区 8192 开始**，于是 LBA 1000 落在
+"MBR 之后、分区之前"的未分配空隙里 —— **读出来是 512 个 0x00**，两边都全零会让
+"逐字节比对"失去证明力。改成 **8192 = 分区首扇区 = FAT32 引导扇区（DBR）**：内容非零且
+可识别（`eb 58 90 "MSDOS5.0"`…结尾 `55 aa`）。电脑侧参考值（512 B，SHA-256
+`E4704165…C426EEE`）存于 `evidence/board/lba8192_pc_20261002.bin`。
+注意 Windows 的**卷句柄偏移是从分区开头算的**，所以物理 LBA 8192 = 卷偏移 0（不需要管理员
+权限即可读）；直接用 `\\.\G:` 偏移 512000 读到的**不是** LBA 1000。
 
 ★ **时钟取舍（bring-up 专用，不代表产品时钟方案）**：本顶层全部逻辑跑板载 50 MHz，
 不经 PLL。原因是 bring-up 阶段先排除"IP 配置错"这一层变量。由此：
@@ -1047,4 +1057,5 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | v1.8 | — | **引入队友的项目管理覆盖包（目录骨架 + 管理文档），并把它的过期内容改对**。新增骨架目录：`.github/`（PR/缺陷/工作项模板）、`docs/{architecture,interfaces,requirements,management,verification,release}/`、`evidence/`（需求→测试→原始证据，7 类索引）、`safevision/{platform,build,assets}`、`safevision/rtl/{video,audio,control,safety,top}`、`safevision/verification/{subsystem,system,board}`、`safevision/tools/check_repo.ps1`（目录与 `run_sim.ps1` 引用自检，不需要 ModelSim）；`rtl/safety/` 是结构之外的补充（看门狗/故障/应急从 `control` 分出）。**这些目录只有 README 与命名计划，没有任何功能代码**（ADR-0001「只创建目录及说明，不生成假 RTL」）；文件落点规则见新增的 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)。`.gitignore` 换为覆盖包版本：白名单增加 `!/.github/` `!/evidence/`，新增排除 `*.lic` `*.key` `*.pem` `__pycache__/`，并允许 `evidence/**` 下的 `.log`/`.vcd` 原始证据进库。**接口契约、地址表、错误码、RTL 与 TB 全部未变，回归仍 502 项断言 / 15 个 testbench 全通过**（目录自检 `LAYOUT PASS`）。**★ 覆盖包按旧快照（48 个跟踪文件 / 27 个 RTL）制作，带进来的文档有多处过期，已逐项改对**：`module_registry.md` 里 `rtl/common/fifo_health_monitor.v`→`rtl/memory/…`、`rtl/media/wav_reader.v`→`wav_parser.v`，并补登 `crc16_ccitt.v`/`crc7.v`/`pixel_format_defs.vh`/`event_code_defs.vh`（RTL 27→29）；`test_matrix.md` 的 `tb_media`→`tb_bmp_unpack`+`tb_wav_parser`、`tb_mem_write`/`tb_frame_swap`→`tb_frame_writer`/`tb_memory_arbiter`/`tb_frame_swap_ctrl` 并补 `tb_fat32_cluster_walker`/`tb_crc`（TB 11→15）；`system_design.md` 的 `sdram_model.sv`→`frame_memory_model.sv`；`traceability.md` 的 `wav_reader`→`wav_parser`；断言数 457→502；`WORK_ITEMS.md` 里"待办清单仍有旧路径"的指控已作废（v1.7 已修）。另修本文件 §3.1 的 `实现: rtl/sd/spi_master.v` → `rtl/storage/spi_master.v`（真实过期路径），以及 `bmp_unpack.v` 注释里指向已不存在 TB 的 `tb_media` → `tb_bmp_unpack`。**另（同日追加）**：① **结构基准变更**——结构基准改为本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，原参照物作废，且全仓对它的引用（含 RTL 头注释、模块小节标题、表头列名与历史行里的出处标注）已一并清除；② **全仓文档去绝对路径**：覆盖包带进来的本机路径（如 `D:\modeltech64_10.7\win64`）改为按变量名 `$MSIM_BIN` 描述，文档树根由队友本地的 `Safe_Vision_FPGA_2026/` 改为 `<仓库根>/`，`f:\...\` 占位路径改为相对路径。约定：**文档里只用仓库相对路径** | B |
 | v1.9 | 2026-09-30 | 增补 A 板级 `clock_reset_ctrl` 的信号名、有效电平、时钟域、两拍释放和局部复位隔离；保持 B 链接口不变。PLL/IP 与板级时序待接入验证。 | A |
 | v1.10 | 2026-10-02 | **新增 §3.7 板级 bring-up 顶层 `top_stage5_sector_rd`**（阶段 5 最小验证，不属产品链）：端口 / 引脚 / 网络名对照表、`CLK_FREQ/BAUD/TARGET_LBA/POWERUP_CYC` 参数、**50 MHz 不接 PLL 的 bring-up 取舍**（`SD_DIV_INIT=124` → 200 kHz、`SD_DIV_FAST=1` → 12.5 MHz、超时拍数墙上时间翻倍）、两 SD 模块共用一条 SPI 总线的 `init_done` 二选一与 `sd_ncs` 取与、以及 UART 反压握手口径。**B 链既有端口、地址表、错误码一字未变。** 同时写入 `pin.adc` / `timing.sdc`（引脚逐个按 `2_FPGA.pdf` / `6_EX_DEVICE.pdf` 核对，并与厂商同器件例程交叉验证）；`uart_txd = D12`（网络名 `TXD`）**已由开发板手册的串口引脚分配表 + 图2-10 CH340G 原理图确认为 FPGA 发送脚**（板载 USB-UART，无需外接模块）。新增 `tb_top_stage5_sector_rd.sv`（T1–T4，顶层仿真：完整命令序列 / CMD17 参数 1000 / 512 Byte 逐字节与卡模型一致 / 顶层到成功态），B 回归升至 **507 项断言 / 16 个 testbench**。另把 `run_sim.ps1` 的 ModelSim 路径改为 `-ModelSimBin` 参数 + `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，删除写死的本机路径）。
-**★ 同日修复 TD 综合才暴露的多驱动问题**：`sd_initializer.v` 与 `sd_sector_reader.v` 的 `bdata` 同时被「字节引擎」和「主状态机」两个 `always` 块赋值（字节引擎复位分支多写了一次 `bdata <= 8'hFF`）。**ModelSim 编译/仿真都不报错**（两个 always 块写同一 reg 在仿真里只是竞争），TD 综合 elaborate 时直接报 `HDL-8007 net 'bdata[7]' is constantly driven from multiple places` 并把该模块降级成黑盒。已把该复位赋值收归主状态机（单一驱动源），全仓静态复查确认没有同类问题。**接口与行为不变**，回归仍 507 项全 PASS | B |
+**★ 同日修复 TD 综合才暴露的多驱动问题**：`sd_initializer.v` 与 `sd_sector_reader.v` 的 `bdata` 同时被「字节引擎」和「主状态机」两个 `always` 块赋值（字节引擎复位分支多写了一次 `bdata <= 8'hFF`）。**ModelSim 编译/仿真都不报错**（两个 always 块写同一 reg 在仿真里只是竞争），TD 综合 elaborate 时直接报 `HDL-8007 net 'bdata[7]' is constantly driven from multiple places` 并把该模块降级成黑盒。已把该复位赋值收归主状态机（单一驱动源），全仓静态复查确认没有同类问题。**接口与行为不变**，回归仍 507 项全 PASS。
+**另（同日追加）**：`TARGET_LBA` 的**默认值从 `32'd1000` 改为 `32'd8192`**（端口/参数名/位宽都没变，只改默认值）：实测本机 TF 卡的**分区从物理扇区 8192 开始**，原定的 LBA 1000 落在分区前的空隙里、读出来是 512 个 `0x00`，两边全零会让逐字节比对失去证明力；改用分区首扇区 = FAT32 引导扇区（非零、可识别）。电脑侧参考值存 `evidence/board/lba8192_pc_20261002.bin`。同时修正待办清单 M-5 的预期值（bring-up 跑 50 MHz，SCLK 应为 200 kHz / 12.5 MHz，是 400 kHz / 25 MHz 的一半）。 | B |

@@ -9,11 +9,22 @@
 // 定位：这是【接引脚、不属产品链】的 bring-up 顶层，**不是** A 的产品顶层
 //       safevision_top.v（那个负责视频/HDMI/SDRAM/音频）。本文件只做一件事：
 //
-//         上电等待 → SD 初始化(CMD0/CMD8/ACMD41/CMD58) → 读 LBA=1000 单扇区
+//         上电等待 → SD 初始化(CMD0/CMD8/ACMD41/CMD58) → 读 LBA=8192 单扇区
 //         → 512 Byte 按序经 UART 发出（115200 8N1）
 //
 //       目的是在板子上复现 tb_sd_sector_reader.sv 已经仿真过的路径，并与电脑侧
-//       保存的 lba1000_pc.bin 逐字节比对（见待办清单 M-9）。
+//       读出的参考文件逐字节比对（见待办清单 M-9）。
+//
+// ★ 为什么 TARGET_LBA 用 8192 而不是手册最初写的 1000：
+//   实测这张 TF 卡的分区从【物理扇区 8192】开始（分区表 FAT32 XINT13，起始 8192），
+//   所以物理 LBA 1000 落在"MBR 之后、分区之前"的未分配空隙里 —— 读出来是 512 个 0x00。
+//   两边都是全零，"逐字节比对"就几乎证明不了数据通路（万一坏成常数 0 也会"通过"）。
+//   物理 LBA 8192 正好是分区的第一个扇区 = FAT32 引导扇区（DBR），内容非零且可识别：
+//   开头 eb 58 90 "MSDOS5.0"、第 11-12 字节 00 02（512 B/扇区）、结尾 55 aa。
+//   错一个字节都看得出来，是强得多的验收基准。
+//   ★ 电脑侧参考值：物理 LBA 8192 = 【卷偏移 0】（Windows 卷句柄是从分区开头算偏移的，
+//     所以 `\\.\G:` 偏移 0 就是它，不需要管理员）。已存为
+//     evidence/board/lba8192_pc_20261002.bin（512 B，SHA-256 E4704165…C426EEE）。
 //
 // ★ 时钟取舍（重要，勿当成产品时钟方案）：
 //   板载 50 MHz 晶振经 R7 进 FPGA（原理图网络名 FPGA_GCLK）。
@@ -57,7 +68,7 @@
 module top_stage5_sector_rd #(
     parameter integer CLK_FREQ    = 50_000_000,     // 板载晶振频率（R7）
     parameter integer BAUD        = 115200,
-    parameter [31:0]  TARGET_LBA  = 32'd1000,       // 与电脑侧 lba1000_pc.bin 对应
+    parameter [31:0]  TARGET_LBA  = 32'd8192,       // 分区首扇区/FAT32 DBR；电脑侧参考值见文件头
     parameter [23:0]  POWERUP_CYC = 24'd2_500_000   // 上电等待 50ms @50MHz
 )(
     // ---- 板级引脚（引脚号见同目录 constraints/pin.adc）----

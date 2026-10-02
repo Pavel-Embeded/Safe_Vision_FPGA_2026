@@ -90,9 +90,18 @@
 - [ ] 用 `7_lab_ex_2026_nosoft\example\lab_ex4_tf\doc\convert\convert_images_to_bmp.py`
       把几张图转成 **640×480、24bit、非压缩 BMP**
 - [ ] 准备 4 张 + 1 张故意做坏的图（比如把 BMP 头改几个字节），用于验证"坏图跳过不中断扫描"
-- [ ] **用电脑侧工具读出 LBA=1000 的内容并保存**（阶段 5 比对要用）：
-      Windows 下可用 HxD（磁盘 → 打开物理磁盘 → 定位到 1000×512 = 512000 字节偏移）
-      建议保存为 `lba1000_pc.bin`，后面和 FPGA 回传的 512 字节逐字节比对
+- [x] **电脑侧参考扇区已读出并保存**（2026-10-02 完成）：`evidence/board/lba8192_pc_20261002.bin`
+      （512 B，SHA-256 `E4704165…C426EEE`）。
+      ★ **原计划的 LBA 1000 要换掉**：实测这张 TF 卡的分区从**物理扇区 8192**（4 MB）开始，
+      所以 **LBA 1000 落在"MBR 之后、分区之前"的空隙里，读出来是 512 个 0x00** ——
+      两边都全零的话"逐字节比对"几乎证明不了数据通路（数据通路坏成常数 0 也会"通过"）。
+      因此改用 **LBA 8192 = 分区首扇区 = FAT32 引导扇区（DBR）**：内容非零且可识别
+      （开头 `eb 58 90 "MSDOS5.0"`、第 11–12 字节 `00 02` = 512 B/扇区、结尾 `55 aa`）。
+      `top_stage5_sector_rd.v` 的 `TARGET_LBA` 默认值已相应改为 `32'd8192`。
+      ★ **读法（重要）**：Windows 的**卷句柄偏移是从分区开头算的**，所以物理 LBA 8192 正好
+      等于**卷 `G:` 的偏移 0**，不需要管理员权限；反过来，用 `\\.\G:` 偏移 512000 读到的
+      **不是** LBA 1000（那是分区内的另一个位置）。若要按原计划读物理 LBA 1000，得用
+      HxD「打开物理磁盘」或管理员权限，但因为预计全 0，不作为主基准。
 
 ### 1.3 做引脚规划（查原理图，不写代码）
 
@@ -182,16 +191,20 @@
 
 #### 上板步骤（位流已就绪，2026-10-02）
 
-1. 插好 TF 卡。建议先按 §1.2 用 HxD 读出 **LBA = 1000** 的内容存成 `lba1000_pc.bin`
-   （1000 × 512 = 字节偏移 **512000**），后面要逐字节比。
+1. 插好 TF 卡。参考值**已经读好了**：`evidence/board/lba8192_pc_20261002.bin`
+   （物理 **LBA 8192** = 卷 `G:` 偏移 0 = FAT32 引导扇区，512 B，SHA-256 `E4704165…C426EEE`）。
 2. 下载器接好、TD 能识别到器件（§2.1）。
-3. TD 里下载 `phy_1` 的位流（或直接用 `safevision_Runs/best_result/safevision.bit`）。
+3. **先重新综合**（`TARGET_LBA` 默认值刚从 `1000` 改成 `8192`，现有的
+   `safevision_Runs/best_result/safevision.bit` 还是旧值那次构建的产物，不能直接用）：
+   syn_1 → phy_1 → 生成位流，然后在 TD 里下载。
 4. **先看板上 4 个 LED**（`led[3:0]` 的状态码，按 A4/A3/C10/B12 = LED1..LED4）：
    `1` 上电等待 → `2` 发初始化 → `3` 等 `init_done` → `4` 发读请求 → `5` 传输中 → `8` 成功。
    其它值＝失败，显示的是**错误主码低 4 位**，排查见 §2.6 第 12 条。
 5. 插 USB 线 → 电脑上会多出一个 COM 口（板载 CH340G）→ 串口工具设 **115200 8N1**，
    应收到 **512 个字节**。**不需要外接 USB-TTL 模块，也不需要接杜邦线**（D12 已确认是 FPGA 发送脚）。
-6. 与 `lba1000_pc.bin` **逐字节比对**，一个字节都不能差（M-9 = 阶段 5 验收）。
+6. 与 `evidence/board/lba8192_pc_20261002.bin` **逐字节比对**（512 B，SHA-256 `E4704165…C426EEE`），
+   一个字节都不能差（M-9 = 阶段 5 验收）。第一眼可以先认开头：`eb 58 90` + `MSDOS5.0` 文本，
+   结尾 `55 aa`。
 7. 想再跑一轮：**按复位键**（KEY_1 = A2）。本顶层跑一轮就停在成功/失败态，不会循环。
 
 > UART 一个字节都没收到时，先看 LED 有没有到 `8`：到了 `8` 说明 SD 那一侧已经没问题，
@@ -213,7 +226,7 @@
 - [x] **板级顶层** `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`
       ——阶段 5 最小验证专用（**2026-10-02 已写**），功能：
       - 上电延时 → 拉高 `init_start` → 等 `init_done`
-      - `init_done` 后自动发起一次 `rd_en`，`rd_addr = 32'd1000`
+      - `init_done` 后自动发起一次 `rd_en`，`rd_addr = TARGET_LBA`（默认 `32'd8192` = 分区首扇区/FAT32 DBR）
       - 把 512 字节按顺序灌进 `uart_tx`（115200）
       - 状态码输出到 LED（`led[3:0]`：1/2/3/4/5/8，失败显示错误主码低 4 位）
       > 它直接接引脚、不属产品链，所以放 `platform/.../rtl/`（这里才是板级层）。
@@ -233,11 +246,11 @@
 | M-2 | 数据令牌等待耗时 | 同上，抓 `S_TOKEN` 状态的计数值 | `SD_TO_DATA`、O-4 |
 | M-3 | ACMD41 轮询总时长 | 抓从第一次 ACMD41 到 ready 的拍数（不同品牌卡差异很大） | `SD_TO_ACMD41`、O-4 |
 | M-4 | 上电到 `init_done` 的时间 | 示波器或 LED 翻转计时 | 启动速度留证（E04） |
-| M-5 | 实际 SCLK 频率 | 示波器量 `sd_dclk`，确认初始化段 ≈400kHz、数据段 ≈25MHz | 接口文档备注 |
+| M-5 | 实际 SCLK 频率 | 示波器量 `sd_dclk`。★ 注意 bring-up 版跑 50 MHz（不接 PLL），所以**初始化段应为 200 kHz、数据段 12.5 MHz**（= `safevision_defs.vh` 里按 100 MHz 推导的 400 kHz / 25 MHz 的**一半**；`SD_DIV_INIT=124` / `SD_DIV_FAST=1`）。整机接 PLL 后再按 400 kHz / 25 MHz 复核 | 接口文档备注 |
 | M-6 | **连读 100 次** | 同一 LBA 连续读 100 次，UART 每次都回传，电脑脚本比对 | 手册 7.5 过关标准 |
 | M-7 | **多卡兼容** | 至少 3 张不同品牌/容量的卡都跑通 | 兼容性留证 |
 | M-8 | 拔卡 / 坏卡行为 | 运行中拔卡，确认有限时间内进错误态且不挂死；插回后能恢复 | 手册 7.4 过关标准 |
-| M-9 | 单扇区读 + 电脑侧比对 | 与 `lba1000_pc.bin` 逐字节比对，**一个字节都不能差** | 阶段 5 验收 |
+| M-9 | 单扇区读 + 电脑侧比对 | 与 `evidence/board/lba8192_pc_20261002.bin`（物理 LBA 8192，512 B）逐字节比对，**一个字节都不能差** | 阶段 5 验收 |
 
 > **M-3 特别提醒**：不同品牌卡的 ACMD41 轮询时长差异可达几十倍，这也是为什么
 > 现在的超时值只是"推导 + 裕量"，必须实测后才敢冻结。
@@ -335,3 +348,4 @@
 | 2026-10-02 | **板级 bring-up 第一版落地**：① 新增板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（上电延时 → SD 初始化 → 读 LBA=1000 → 512 Byte 经 UART 回传；两 SD 模块共用一份 `spi_master`，按 `init_done` 二选一；**不接 PLL，全跑板载 50 MHz**）；② 新增 `constraints/pin.adc`（引脚逐个按 `2_FPGA.pdf` / `6_EX_DEVICE.pdf` 核对，并与厂商同器件例程交叉验证）与 `constraints/timing.sdc`（单一 50 MHz：`create_clock -period 20`）；③ TD 工程 `safevision.al` 把 `TOP_MODULE` 从 `crc7` 改为 `top_stage5_sector_rd`，加入顶层与 `reset_sync.v`，并把两约束挂到 `constraint_1`；④ **新增顶层 TB `tb_top_stage5_sector_rd.sv`**（T1 完整命令序列 / T2 CMD17 参数 1000 / T3 512 Byte 经 UART 逐字节与卡模型一致 / T4 顶层进成功态）→ 回归 **502 → 507 项断言 / 15 → 16 个 TB，全 PASS**；⑤ **`run_sim.ps1` 的 ModelSim 路径改为 `-ModelSimBin` 参数 + `MSIM_BIN` 环境变量**（与 `run_clock_sim.ps1` 同口径，删掉写死的本机路径；`check_repo.ps1` 的自检正则同时扩到 `../platform/`）。**待办**：`uart_txd` 物理落点复核（暂取 D12）、TD 里确认依赖分析没误标 `AutoExcluded` |
 | 2026-10-02 | **第一次在 TD 里跑依赖分析 + 综合，暴露并修掉一个真 bug**：① **TD 报 `HDL-8007 net 'bdata[7]' is constantly driven from multiple places`**（`sd_initializer.v(120)` + `sd_sector_reader.v(137)`）——这两个模块的 `bdata` 本应只由主状态机驱动，但字节引擎的复位分支里多写了一次 `bdata <= 8'hFF`，两个 `always` 块写同一个 `reg`。**ModelSim 编译/仿真都不报错（回归 507 项全绿也带着它走），TD elaborate 直接把两个模块降级成黑盒**。已把该复位赋值收归主状态机；另写了一遍全仓静态复查（同一 `reg` 出现在 >1 个 `always`/`initial` 块）确认其余 29 个 RTL 没有同类问题。② **`AutoExcluded` 已核对**：`safevision_Runs/syn_1/run.log` 显示 `elaborate -top top_stage5_sector_rd` 把闭包内 7 个模块全部 elaborate 到了，没有被误排除（只有 `crc7.v` 被排除，而它只被 `tb_crc` 用，正确）。③ **`uart_txd = D12` 确认**：开发板手册《HX4S20开发板手册-HDL版2410.pdf》的串口引脚表（`RXD=F12`/`TXD=D12`）+ 图2-10 CH340G 原理图（CH340 pin2→网络 `RXD`、pin3→网络 `TXD`，**两线交叉**）证明网络名按 FPGA 视角命名，`D12` 是 FPGA 发送脚、对接**板载 USB-UART**，**不需要外接 USB-TTL 模块**。④ 新增排查条目 §2.6-13（多驱动只在 TD 报、仿真不报）。⑤ `.gitignore` 增加 TD 运行产物 `*_Runs/` 与 `*.logw` |
 | 2026-10-02 | **TD 全流程跑通，位流已生成，可以上板**：修掉多驱动问题后重新综合 → 布局 → 布线 → 位流**一次通过**。**Setup WNS +11.297 ns / Hold WNS +0.046 ns，违反端点 0**（906 端点 / 3480 路径）；50 MHz 约束下报告 **Fmax 114.9 MHz**（余量很大，说明 bring-up 这版逻辑很浅）；资源 **IO 11/188、LUT 814/19600、REG 434/19600、BRAM 0、DSP 0、slices 436（4.45%）**；IO 计数 11 与顶层 11 个端口一致 ⇒ **`pin.adc` 已生效**。`syn_1/run.log` 中 `HDL-8007/9007` 与 `remains a black box` **全部消失**（对比同日早先那次失败的 elaborate）。**原始报告留证**：新建 `evidence/reports/` 条目 TC-Q-STA，复制了 TD 布线后 STA 原文（`final_timing.rpt`）、布线/布局 QoR、综合日志、综合后资源，并在 `evidence/reports/INDEX.md` 记录 SHA-256 与结论（`.bit` 因全局忽略不进仓库，只记存在与生成时间）。**新增 §2.2「上板步骤」**（7 步：插卡 → 下载 → 看 LED 状态码 → 插 USB 开 COM 口 115200 8N1 收 512 Byte → 与 `lba1000_pc.bin` 逐字节比对 → 按复位键重跑）。**唯一遗留的隐患**：Hold（removal）余量 0.046 ns 很薄，源头是 `reset_sync` 输出的复位树，以后在复位域加寄存器或提频需重测；`uart_txd` 等 I/O 路径仍故意未约束（等 M-5/M-6 实测） |
+| 2026-10-02 | **改掉比对基准：LBA 1000 → LBA 8192**。读卡器（`Get-Disk` 磁盘 2，卷 `G:` 标签 `HX4S20C`，FAT32，7.38 GB）实测：分区**从物理扇区 8192 开始**，所以原定的**物理 LBA 1000 落在分区前的空隙里、读出来是 512 个 `0x00`** —— 两边全零会让逐字节比对失去证明力。改用**分区首扇区 = FAT32 引导扇区（DBR）**：内容非零、可识别（`eb 58 90 "MSDOS5.0"`…`55 aa`）。参考值存 `evidence/board/lba8192_pc_20261002.bin`（512 B，SHA-256 `E4704165…C426EEE`），已在 `evidence/board/INDEX.md` 记条目 **REF-LBA8192**（含设备、分区表、读法与两个概念陷阱）。`top_stage5_sector_rd.v` 的 `TARGET_LBA` 默认值改为 `32'd8192`；`tb_top_stage5_sector_rd.sv` **刻意保留 1000**（它显式传参，验的是"给定 LBA 原样送出"这条通用性质，断言一字未动），回归仍 **507/507 PASS**。**同时修正 M-5 的预期值**：bring-up 跑 50 MHz 不接 PLL，SCLK 应为**初始化段 200 kHz / 数据段 12.5 MHz**（是 `safevision_defs.vh` 按 100 MHz 推导的 400 kHz / 25 MHz 的一半）。**与此同时 `TC-Q-STA` 那份证据对应的是 LBA=1000 的构建，需要重新综合一次以对齐。** |

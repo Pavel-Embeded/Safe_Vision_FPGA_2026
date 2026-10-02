@@ -220,7 +220,7 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | B 链仿真回归 | **507 项断言 / 16 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
 | 板级顶层 `top_stage5_sector_rd.v` | **已写并仿真通过**（`tb_top_stage5_sector_rd`，5 项断言）；**未上板** |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来自开发板手册官方表 + 原理图 + 厂商例程，三处一致）；`uart_txd=D12` 已确认为 FPGA 发送脚，板载 USB-UART 可直接用 |
-| TD 工程 `project/safevision.al` | **全流程已跑通**：综合 → 布局 → 布线 → 位流一次通过；**时序收敛**（Setup WNS +11.297 ns / Hold WNS +0.046 ns，违反端点 0，50 MHz 下 Fmax 114.9 MHz），资源 IO 11/188、LUT 814/19600、REG 434/19600。原始报告见 [evidence/reports/INDEX.md](evidence/reports/INDEX.md)（TC-Q-STA）。**位流已生成，可下载上板** |
+| TD 工程 `project/safevision.al` | **全流程已跑通**（`TARGET_LBA=1000` 那次构建）：综合 → 布局 → 布线 → 位流一次通过；**时序收敛**（Setup WNS +11.297 ns / Hold WNS +0.046 ns，违反端点 0，50 MHz 下 Fmax 114.9 MHz），资源 IO 11/188、LUT 814/19600、REG 434/19600。原始报告见 [evidence/reports/INDEX.md](evidence/reports/INDEX.md)（TC-Q-STA）。★ `TARGET_LBA` 默认值已改为 `8192`（分区首扇区/FAT32 DBR，内容非零、比对才有意义），**需重新综合一次**再下载 |
 | 上板实测（M-1 ~ M-19） | **未开始，等板子**。上板步骤见 [B链-待办与硬件验证清单.md](docs/B链-待办与硬件验证清单.md) §2.2 |
 | 整机集成 `safevision_core.v` / `safevision_top.v` | A 负责 |
 | A 板级时钟复位 | `reset_sync.v` 与 `clock_reset_ctrl.v` 已写并仿真通过（88 项）；PLL IP/约束/板级实测待完成 |
