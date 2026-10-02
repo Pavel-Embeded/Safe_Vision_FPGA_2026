@@ -558,8 +558,13 @@ IDLE --frame_ready & crc_ok--> WAIT_VBLANK --frame_start--> COMMIT --swap_ack-->
 ### 13.3 怎么跑仿真
 
 ```powershell
+$env:MSIM_BIN = "D:\path\to\modeltech64_10.7\win64"
 powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_sim.ps1
+# 或者：... -File .\safevision\tools\run_sim.ps1 -ModelSimBin <win64目录>
 ```
+
+ModelSim 的安装目录从 `-ModelSimBin` 参数或 `MSIM_BIN` 环境变量拿，**脚本里不写死任何本机路径**
+（换机器只要设这两者之一）。这与 A 的 `run_clock_sim.ps1` 是同一套口径。
 
 脚本会依次编译并运行全部 testbench，每条断言打印 `[PASS]`/`[FAIL]`，最后给出失败项计数。**失败数必须是 0**。
 
@@ -590,9 +595,36 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 
 ### 13.5 上板的第一件事
 
-不是跑整机，而是 §2.2 里那块"阶段 5 最小验证"：只做 `SD → UART → 电脑逐字节比对`。这一步过了，说明 SPI 位序、SCLK 相位、CRC 都没有问题，后面所有问题都可以排除掉一大类。
+不是跑整机，而是 §2.2 里那块"阶段 5 最小验证"：只做 `SD → UART → 电脑逐字节比对`。
+**这块的板级顶层已经写好了**：`platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`，
+配套 `constraints/pin.adc` 与 `timing.sdc` 也已按原理图核对完，TD 工程里 `TOP_MODULE` 也已指向它。
 
-如果这一步没过，按 [B链-待办与硬件验证清单.md](B链-待办与硬件验证清单.md) §2.5 的排查顺序一条条找，不要跳着猜。
+顶层只做四件事：上电等待 → 初始化 SD → 读 LBA=1000 一个扇区 → 把 512 Byte 从 UART 发出去。
+看 LED 就能知道卡在哪一步：`1` 上电等待、`2` 发初始化、`3` 等初始化完成、`4` 发读请求、
+`5` 传输中、`8` 成功；其它值表示失败，显示的是错误主码低 4 位。
+
+三个值得知道的设计选择（都不是随便定的）：
+
+1. **全跑 50 MHz，不接 PLL**。板上晶振经 R7 进 FPGA 就是 50 MHz。bring-up 阶段先用最少的
+   依赖把链路跑通——PLL 配错、锁不定这类问题会伪装成"SD 读不出来"，先把这一层排除掉。
+   代价是 SPI 时钟变慢（初始化段从 400 kHz 变 200 kHz，仍在规范允许的 100–400 kHz 内），
+   超时的墙上时间翻倍（只会更宽松）。产品链的 100 MHz 是后面整机集成时 A 用 PLL 的事。
+2. **两个 SD 模块共用一条 SPI 总线**。`sd_initializer` 和 `sd_sector_reader` 各自都带一套
+   "发字节/收字节"的小引擎，但同一时刻只有一个在动，所以顶层用 `init_done` 做二选一，
+   把选中的那一方的 `tx_valid/tx_data` 接到唯一的 `spi_master`。两个都是低有效的片选直接**相与**，
+   谁拉低就低、都空闲就高。
+3. **UART 比 SD 慢两个数量级，靠 `ready` 顶住**。115200 下一个字节要 87 us，512 Byte 要 44.6 ms，
+   而 SD 读一个扇区远快于此。所以顶层的连接就是一句话：
+   `uart_tx_valid = reader 的 data_valid & uart 的 tx_ready`，同时 `reader 的 data_ready = uart_tx_valid`。
+   两者同拍握手一拍：UART 收下字节后立刻离开空闲态（`tx_ready` 变低），reader 下一拍清 `data_valid`，
+   既不会重复发也不会丢。reader 在 `S_DATA` 会停住 SCLK 等下游，而这个状态本身没有超时计数器
+   （超时只挂在等响应和等数据令牌上），所以"发得慢"不会被误判成超时。
+
+**上板前必须先确认一件事**：`uart_txd` 现在指派的是 `D12`（原理图上唯一叫 `TXD` 的 FPGA 网络），
+但没能在现有原理图分册里追到它到底接到哪个连接器。接线前先确认；如果 D12 引不出来，
+改用备用引脚 `GPIOA_0 = H13`（在 J1 那个 IDC40 排针上），改 `pin.adc` 一行即可。
+
+如果这一步没过，按 [B链-待办与硬件验证清单.md](B链-待办与硬件验证清单.md) §2.6 的排查顺序一条条找，不要跳着猜。
 
 ### 13.6 还没做完的（别当成 bug）
 

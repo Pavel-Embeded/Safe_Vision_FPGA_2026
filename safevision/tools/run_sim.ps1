@@ -12,6 +12,10 @@
 #
 # Usage (PowerShell):
 #     powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_sim.ps1
+#     powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_sim.ps1 -ModelSimBin D:\path\to\win64
+#   The ModelSim win64 directory comes from -ModelSimBin, or from the MSIM_BIN
+#   environment variable when the parameter is omitted. Same convention as
+#   run_clock_sim.ps1. No machine-specific path is hard-coded here.
 #
 # NOTE 1: keep this file ASCII-only. PowerShell 5.1 reads .ps1 as ANSI when there
 #         is no BOM, so multi-byte (Chinese) comments can swallow following quote
@@ -22,9 +26,14 @@
 #         safevision_defs.vh must be re-measured on the real board.
 # ============================================================================
 
-# ModelSim install path (change if needed)
-$MSIM_BIN = "D:\modeltech64_10.7\win64"
-$env:PATH += ";$MSIM_BIN"
+# ModelSim install path: -ModelSimBin, or MSIM_BIN env var. No baked-in default.
+param([string]$ModelSimBin = $env:MSIM_BIN)
+
+if ([string]::IsNullOrWhiteSpace($ModelSimBin)) {
+    [Console]::Error.WriteLine('Set MSIM_BIN or pass -ModelSimBin with the ModelSim win64 directory.')
+    exit 2
+}
+$env:PATH += ";$ModelSimBin"
 
 $SV = Split-Path $PSScriptRoot -Parent
 Set-Location (Join-Path $SV "verification")
@@ -65,7 +74,10 @@ $RTL = @(
     "../rtl/memory/video_read_dma.v",
     "../rtl/memory/frame_swap_ctrl.v",
     "../rtl/memory/frame_swap_cdc.v",
-    "../rtl/memory/memory_bandwidth_monitor.v"
+    "../rtl/memory/memory_bandwidth_monitor.v",
+    # ---- platform bring-up top (touches pins, so it lives under platform/) ----
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v"
 )
 
 $SIM = @(
@@ -85,7 +97,8 @@ $SIM = @(
     "unit/tb_wav_parser.sv",
     "unit/tb_frame_writer.sv",
     "unit/tb_memory_arbiter.sv",
-    "unit/tb_frame_swap_ctrl.sv"
+    "unit/tb_frame_swap_ctrl.sv",
+    "unit/tb_top_stage5_sector_rd.sv"
 )
 
 $TBS = @(
@@ -103,7 +116,8 @@ $TBS = @(
     "tb_wav_parser",
     "tb_frame_writer",
     "tb_memory_arbiter",
-    "tb_frame_swap_ctrl"
+    "tb_frame_swap_ctrl",
+    "tb_top_stage5_sector_rd"
 )
 
 Write-Output "=== vlib work ==="

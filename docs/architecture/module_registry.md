@@ -46,10 +46,20 @@
 
 | 文件 | 状态 | 负责人 | 接口与作用 | 测试 |
 |---|---|---|---|---|
-| `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v` | RTL 已写，待仿真/综合/板测 | A | `clk`、异步低有效 `async_rst_n` 输入；本域低有效 `rst_n` 输出；默认两级同步释放 | `tb_clock_reset_ctrl.sv` 已写未运行 |
-| `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_reset_ctrl.v` | RTL 已写，待仿真/综合/板测 | A | 板级复位、各 PLL 锁定及分区复位请求输入；九路按域复位输出；不生成时钟 | `tb_clock_reset_ctrl.sv` 已写未运行 |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v` | RTL 已写，本机已仿真通过（clock 88 项；另被板级顶层 TB 复用） | A | `clk`、异步低有效 `async_rst_n` 输入；本域低有效 `rst_n` 输出；默认两级同步释放 | `tb_clock_reset_ctrl.sv` 88 项通过 |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_reset_ctrl.v` | RTL 已写，本机已仿真通过（clock 88 项）；未上板 | A | 板级复位、各 PLL 锁定及分区复位请求输入；九路按域复位输出；不生成时钟 | `tb_clock_reset_ctrl.sv` 88 项通过 |
 
 安路 PLL 的实际 IP 配置、端口、引脚与约束尚未提供，`clock/` 目录的 RTL 只承担可综合的复位控制；频率生成须待 TD IP 接入。A 的其他模块目录是落点，不表示有功能 RTL。
+
+## 板级 bring-up 顶层与约束（2026-10-02 登记）
+
+| 文件 | 状态 | 负责人 | 接口与作用 | 测试 |
+|---|---|---|---|---|
+| `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v` | RTL 已写，仿真通过；**未上板** | B（A 复核板级落点） | 接引脚的阶段 5 最小验证顶层：`clk`(R7, 50 MHz) / `rst_n`(A2) / `sd_ncs`·`sd_dclk`·`sd_mosi`·`sd_miso` / `uart_txd`(D12) / `led[3:0]`；内部例化 `sd_initializer` + `sd_sector_reader`（**共用一份 `spi_master`，按 `init_done` 二选一**）+ `uart_tx` + `reset_sync`；上电延时 → 初始化 → 读 LBA=1000 → 512 Byte 经 UART 回传。接口与时钟取舍见 interface_spec §3.7 | `tb_top_stage5_sector_rd.sv`（T1–T4 已通过） |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/pin.adc` | 已写，待上板 / 综合核对 | B | 引脚约束，按 `2_FPGA.pdf`（引脚分布）与 `6_EX_DEVICE.pdf`（SD/LED/KEY 页）逐脚核对，并与厂商同器件例程交叉验证。`uart_txd` 落点待复核 | 综合报告 |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/timing.sdc` | 已写（第一版：单一 50 MHz 时钟域） | B | `create_clock -name clk -period 20 -waveform {0 10}`；本顶层不接 PLL，无需派生时钟或跨域分组 | STA |
+
+`project/safevision.al` 已把 `TOP_MODULE` 设为 `top_stage5_sector_rd`，并加入 `reset_sync.v`、`top_stage5_sector_rd.v` 与 `constraint_1` 的 `pin.adc`/`timing.sdc`。打开工程后仍须在 TD 里确认依赖分析没有把 `spi_master` / `sd_initializer` / `sd_sector_reader` / `uart_tx` / `crc7` / `crc16_ccitt` 标成 `AutoExcluded`。
 
 ## 待实现模块命名（不是空 RTL）
 

@@ -10,7 +10,7 @@
 |---|---|
 | 项目 | 安视 SafeVision · 赛题一 HDMI 多媒体播放与应急视听疏散终端 |
 | 平台 | 康芯 HX4S20C 开发板 / 安路 EG4S20BG256 |
-| 版本 | v1.9（保留 v1.8 B 链接口；新增 A 的板级时钟复位接口定义，代码与板级验证状态另见模块登记表） |
+| 版本 | v1.10（保留 v1.9 接口；新增 §3.7 板级 bring-up 顶层 `top_stage5_sector_rd` 的端口 / 引脚 / 时钟取舍，B 链既有端口未变） |
 | 负责人 | B 队员（数据存储链 / 数据搬运） |
 | 依据 | 赛题一官方选题指南；《赛选手册 V2.0》第 6/7/10 章 |
 | 维护规则 | 接口先于联调存在；改接口必同步改文档并通知对方；信号名、有效电平、时钟域、延迟、异常策略五者必须写清 |
@@ -807,6 +807,54 @@ track_id[7:0] / audio_underflow（计数器，C 侧）
 
 ---
 
+### 3.7 板级 bring-up 顶层 `top_stage5_sector_rd`（阶段 5 最小验证，不属产品链）
+
+定位：**接引脚、只用于阶段 5 上板验证**的最小顶层，放
+`platform/anlogic_eg4s20_hx4s20c/rtl/`。它不是产品顶层——产品顶层是 A 的
+`platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v`，
+不带引脚的可移植装配才是 `rtl/top/safevision_core/`。
+
+功能：上电延时 → `sd_initializer` 初始化 → 读 `rd_addr = 32'd1000` 单扇区 →
+512 Byte 按序灌 `uart_tx`（115200 8N1）。LED 显示序列状态码。
+
+| 端口 | 方向 | 引脚 | 原理图网络名 | 说明 |
+|---|---|---|---|---|
+| `clk` | in | R7 | `FPGA_GCLK` | 板载 50 MHz 晶振（本顶层**不接 PLL**） |
+| `rst_n` | in | A2 | `KEY_1` | 独立按键，低有效；经 `reset_sync` 两级释放 |
+| `sd_dclk` | out | A14 | `FPGA_SD_CLK` | SPI SCLK |
+| `sd_mosi` | out | A13 | `FPGA_SD_CMD` | SPI MOSI |
+| `sd_miso` | in | B14 | `FPGA_SD_D0` | SPI MISO |
+| `sd_ncs` | out | A12 | `FPGA_SD_D3` | CD/DAT3 当 SPI 片选（低有效） |
+| `uart_txd` | out | D12 | `TXD` | **待复核**：见下方说明 |
+| `led[3:0]` | out | A4 / A3 / C10 / B12 | `LED0`…`LED3` | 状态码 1/2/3/4/5/8，失败显示错误主码低 4 位 |
+
+参数：`CLK_FREQ`（默认 50 MHz）、`BAUD`（115200）、`TARGET_LBA`（1000）、
+`POWERUP_CYC`（50 ms 上电等待）。
+
+★ **时钟取舍（bring-up 专用，不代表产品时钟方案）**：本顶层全部逻辑跑板载 50 MHz，
+不经 PLL。原因是 bring-up 阶段先排除"IP 配置错"这一层变量。由此：
+`spi_master` 的 SCLK 由 `clk_div` 决定（`SD_DIV_INIT=124` → 200 kHz，仍在规范的
+100–400 kHz 内；`SD_DIV_FAST=1` → 12.5 MHz）；`safevision_defs.vh` 的超时拍数按
+100 MHz 推导，50 MHz 下墙上时间翻倍（只会更宽松）。产品链仍按 §一 的
+`sys_clk=100MHz / mem_clk=125MHz / pixel_clk=25.175MHz`，PLL 由 TD IP 提供。
+
+★ **两个 SD 模块共用一条 SPI 总线**：`sd_initializer` 与 `sd_sector_reader` 各带一套
+字节引擎，顶层用 `init_done` 做二选一（初始化段归 initializer，之后归 reader），
+`spi_rx_*` 广播给两者（另一个停在 `B_IDLE` 不会误吞）；`sd_ncs` 取两路低有效片选的与。
+
+★ **UART 反压**：`uart_tx_valid = rd_data_valid & uart_ready`，
+`rd_data_ready = uart_tx_valid`（同拍握手一拍）。UART 115200 每字节约 87 us，
+512 Byte 约 44.6 ms，reader 的 `S_DATA` 停 SCLK 等下游且该状态本身无超时计数器，
+所以慢发不会被误判成超时。
+
+`uart_txd = D12` 是原理图上唯一命名为 `TXD` 的 FPGA 网络，但未能在现有原理图分册中
+追到它落到哪个物理连接器。**上板接线前需确认**；若 D12 不可达，备用引脚是
+`GPIOA_0 = H13`（在 J1 / IDC40 排针上）。引脚依据：`2_FPGA.pdf`（引脚分布）、
+`6_EX_DEVICE.pdf`（SD/LED/KEY 页），并与厂商同器件（EG4S20BG256）例程
+`7_lab_ex_2026_nosoft/example/lab_ex4_tf` 的 `pin.adc` 交叉核对。
+
+---
+
 ## 四、与 A / C 的边界
 
 ### 4.1 Pixel FIFO（mem_clk → pixel_clk）
@@ -989,3 +1037,4 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | v1.7 | — | **逐项核对命名，修掉最后 7 处真不一致 + 补 10 个缺口**（详见「命名迁移表」下的两个子表）。**重命名 4 处**：`wav_reader`→`media/wav_parser`、`fifo_health_monitor` 从 `common/` 移到 `memory/`、`sdram_model`→`models/frame_memory_model`、`tb_mem_write`→`tb_frame_writer`（文件+module+全仓引用+TB+脚本一次改净，对外契约不变）。**补头文件**：`rtl/include/pixel_format_defs.vh`（像素格式+帧几何+**冻结四槽地址表唯一来源**）、`rtl/include/event_code_defs.vh`。**★ 真正的结构性问题（比"名字"严重）**：同一个常量在 4 个模块里各存了一份副本——`frame_buffer_manager`（7 个地址+SLOT/LINE/FRAME 步长）、`frame_writer`（帧几何 6 个）、`frame_address_gen`（2 个）、`video_read_dma`（3 个），另有 `tb_frame_writer` 抄了两处期望值。现已全部改为引用 `` `SV_`` 宏，**parameter 一律保留**（几何量必须能被顶层覆盖），改地址从此只改一个文件。**★ 概念更正**：此前把这件事描述为"宏与 parameter 命名冲突"是**错的**——Verilog 宏只在写成 `` `名字 `` 时才展开，裸标识符不进宏展开，两者不会编译冲突（已用编译验证）；加 `SV_` 前缀是为了可读性。真正的问题是常量多副本。**补公共件**：`rtl/common/crc16_ccitt.v`、`rtl/common/crc7.v`（纯组合无状态步进器，见 D-10），并让 `sd_sector_reader`（删掉自己那份 `crc16_next` 函数，改例化 1 级）与 `frame_writer`（删掉 `crc16_next`+`crc16_word` 两个函数，改为大端 4 级级联）复用同一份实现。**补 TB**：新增 `tb_crc`(12，把 `SD_CRC_CMD0/8` 的 0x4A/0x43 反推出来钉死在对数上，并验 CRC16 XMODEM 标准向量 `123456789`→0x31C3)、`tb_fat32_cluster_walker`(33，`fat32_cluster_walker` 此前只随编译，**判 EOC/越界/判环三条收尾分支从未被仿真跑过**，本 TB 用伪 FAT 扇区直接驱动并覆盖跨扇区寻址)。**拆分 TB**（只搬位置不改断言）：`tb_frame_swap`→`tb_memory_arbiter`(7)+`tb_frame_swap_ctrl`(23)，`tb_media`→`tb_bmp_unpack`(44)+`tb_wav_parser`(31)。**回归 502 项断言 / 15 个 testbench 全通过**。另：把交付口径写成显式规则——新增「文档同步义务」表（本文档 + 待办清单 + 原理讲解 + README 四者的更新触发条件）、补一份真正的 `README.md`（仓库结构、跑仿真方法、状态总览、硬约定）、并把"开发基准＝手册 V2.0 / 三份文档必须同步"写进项目规则文件，避免后续会话遗忘。另补 §一「语言子集」一行（**`rtl/**` 一律 `.v` + Verilog-2001 子集，`verification/**` 用 `.sv` 允许 SystemVerilog**），并登记远端仓库改名：`desktop-tutorial` → `Safe_Vision_FPGA_2026` | B |
 | v1.8 | — | **引入队友的项目管理覆盖包（目录骨架 + 管理文档），并把它的过期内容改对**。新增骨架目录：`.github/`（PR/缺陷/工作项模板）、`docs/{architecture,interfaces,requirements,management,verification,release}/`、`evidence/`（需求→测试→原始证据，7 类索引）、`safevision/{platform,build,assets}`、`safevision/rtl/{video,audio,control,safety,top}`、`safevision/verification/{subsystem,system,board}`、`safevision/tools/check_repo.ps1`（目录与 `run_sim.ps1` 引用自检，不需要 ModelSim）；`rtl/safety/` 是结构之外的补充（看门狗/故障/应急从 `control` 分出）。**这些目录只有 README 与命名计划，没有任何功能代码**（ADR-0001「只创建目录及说明，不生成假 RTL」）；文件落点规则见新增的 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)。`.gitignore` 换为覆盖包版本：白名单增加 `!/.github/` `!/evidence/`，新增排除 `*.lic` `*.key` `*.pem` `__pycache__/`，并允许 `evidence/**` 下的 `.log`/`.vcd` 原始证据进库。**接口契约、地址表、错误码、RTL 与 TB 全部未变，回归仍 502 项断言 / 15 个 testbench 全通过**（目录自检 `LAYOUT PASS`）。**★ 覆盖包按旧快照（48 个跟踪文件 / 27 个 RTL）制作，带进来的文档有多处过期，已逐项改对**：`module_registry.md` 里 `rtl/common/fifo_health_monitor.v`→`rtl/memory/…`、`rtl/media/wav_reader.v`→`wav_parser.v`，并补登 `crc16_ccitt.v`/`crc7.v`/`pixel_format_defs.vh`/`event_code_defs.vh`（RTL 27→29）；`test_matrix.md` 的 `tb_media`→`tb_bmp_unpack`+`tb_wav_parser`、`tb_mem_write`/`tb_frame_swap`→`tb_frame_writer`/`tb_memory_arbiter`/`tb_frame_swap_ctrl` 并补 `tb_fat32_cluster_walker`/`tb_crc`（TB 11→15）；`system_design.md` 的 `sdram_model.sv`→`frame_memory_model.sv`；`traceability.md` 的 `wav_reader`→`wav_parser`；断言数 457→502；`WORK_ITEMS.md` 里"待办清单仍有旧路径"的指控已作废（v1.7 已修）。另修本文件 §3.1 的 `实现: rtl/sd/spi_master.v` → `rtl/storage/spi_master.v`（真实过期路径），以及 `bmp_unpack.v` 注释里指向已不存在 TB 的 `tb_media` → `tb_bmp_unpack`。**另（同日追加）**：① **结构基准变更**——结构基准改为本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)，原参照物作废，且全仓对它的引用（含 RTL 头注释、模块小节标题、表头列名与历史行里的出处标注）已一并清除；② **全仓文档去绝对路径**：覆盖包带进来的本机路径（如 `D:\modeltech64_10.7\win64`）改为按变量名 `$MSIM_BIN` 描述，文档树根由队友本地的 `Safe_Vision_FPGA_2026/` 改为 `<仓库根>/`，`f:\...\` 占位路径改为相对路径。约定：**文档里只用仓库相对路径** | B |
 | v1.9 | 2026-09-30 | 增补 A 板级 `clock_reset_ctrl` 的信号名、有效电平、时钟域、两拍释放和局部复位隔离；保持 B 链接口不变。PLL/IP 与板级时序待接入验证。 | A |
+| v1.10 | 2026-10-02 | **新增 §3.7 板级 bring-up 顶层 `top_stage5_sector_rd`**（阶段 5 最小验证，不属产品链）：端口 / 引脚 / 网络名对照表、`CLK_FREQ/BAUD/TARGET_LBA/POWERUP_CYC` 参数、**50 MHz 不接 PLL 的 bring-up 取舍**（`SD_DIV_INIT=124` → 200 kHz、`SD_DIV_FAST=1` → 12.5 MHz、超时拍数墙上时间翻倍）、两 SD 模块共用一条 SPI 总线的 `init_done` 二选一与 `sd_ncs` 取与、以及 UART 反压握手口径。**B 链既有端口、地址表、错误码一字未变。** 同时写入 `pin.adc` / `timing.sdc`（引脚逐个按 `2_FPGA.pdf` / `6_EX_DEVICE.pdf` 核对，并与厂商同器件例程交叉验证）；`uart_txd = D12`（网络名 `TXD`）到物理连接器的落点**待用户复核**，备用 `GPIOA_0 = H13`。新增 `tb_top_stage5_sector_rd.sv`（T1–T4，顶层仿真：完整命令序列 / CMD17 参数 1000 / 512 Byte 逐字节与卡模型一致 / 顶层到成功态），B 回归升至 **507 项断言 / 16 个 testbench**。另把 `run_sim.ps1` 的 ModelSim 路径改为 `-ModelSimBin` 参数 + `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，删除写死的本机路径） | B |

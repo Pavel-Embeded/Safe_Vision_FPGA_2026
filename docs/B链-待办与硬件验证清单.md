@@ -39,12 +39,13 @@
 | 媒体格式层（`bmp_unpack` BGR→RGB565 / `wav_parser`） | 已完成并仿真通过 |
 | 目录骨架与管理文档（`.github/` + `docs/` 子目录 + `evidence/` + `platform/` 等） | **已建立骨架**（v1.8 引入队友的项目管理覆盖包）。只有 README 占位与命名计划，**无功能代码**；落点规则见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) |
 | 目录自检脚本 `safevision/tools/check_repo.ps1` | 已接入（不需要 ModelSim，输出 `LAYOUT PASS` 才算过） |
-| 板级 TD 工程 `platform/anlogic_eg4s20_hx4s20c/project/safevision.al` | **已建立**（器件 EG4S20BG256；33 条设计文件已加入且**全是相对路径**）。**待办**：设 TOP_MODULE（现落在 `crc7`）、写 `pin.adc`/`timing.sdc` 并加入 `constraint_1` |
-| 板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（阶段 5 最小验证） | 未开始（见 §2.3） |
+| 板级 TD 工程 `platform/anlogic_eg4s20_hx4s20c/project/safevision.al` | **已建立并配好第一版**（器件 EG4S20BG256；35 条设计文件已加入且**全是相对路径**；`TOP_MODULE` 已设为 `top_stage5_sector_rd`；`constraint_1` 已挂 `pin.adc` + `timing.sdc`）。**待办**：在 TD 里打开后确认依赖分析没把用到的模块标 `AutoExcluded`，再综合/布线 |
+| 板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（阶段 5 最小验证） | **已写并仿真通过**（`tb_top_stage5_sector_rd`，5 项断言）；**未上板** |
+| 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写**（引脚按 `2_FPGA.pdf` / `6_EX_DEVICE.pdf` 逐脚核对，并与厂商同器件例程交叉验证；`timing.sdc` 为单一 50 MHz 时钟域第一版）。**待办**：`uart_txd` 的物理落点（D12，网络名 `TXD`）需用户复核 |
 | 整机集成（`safevision_core` / `safevision_top`） | 未开始（A 负责） |
 | **上板实测** | **未开始（等板子）** |
 
-仿真回归：`safevision\tools\run_sim.ps1`，**502 项断言全部 PASS**（15 个 testbench）：
+仿真回归：`safevision\tools\run_sim.ps1`，**507 项断言全部 PASS**（16 个 testbench）：
 
 | testbench | 覆盖 | 断言数 |
 |---|---|---|
@@ -63,7 +64,8 @@
 | `tb_frame_writer.sv` | 一帧写入 + 四个角与中点地址抽查 / 多一个少一个 / slot_valid 时序 / 越界 | 28 |
 | `tb_memory_arbiter.sv` | 仲裁最坏场景与防饥饿 / 单次占用上限 / 三类 starvation 计数为 0 | 7 |
 | `tb_frame_swap_ctrl.sv` | 帧交换四态 / 两类超时进 SAFE / 原子切换 / CDC mailbox 预稳定 | 23 |
-| **合计** | | **502** |
+| `tb_top_stage5_sector_rd.sv` | **板级 bring-up 顶层**：自动初始化序列 / CMD17 参数 1000 / 512 Byte 经 UART 逐字节与卡模型一致 / 顶层进成功态 | 5 |
+| **合计** | | **507** |
 
 > v1.7 的 4 处拆分类改动（`tb_frame_swap`→2 个、`tb_media`→2 个）**只搬位置、不改断言**，
 > 拆分前后断言数逐项守恒（30→7+23，75→44+31）。
@@ -93,18 +95,25 @@
 
 ### 1.3 做引脚规划（查原理图，不写代码）
 
-参考 `3_原理图\开发板原理图\` 下的 PDF，把下面这些端口的位置先抄进一张表：
+**2026-10-02 已完成**。引脚逐个按原理图核对：`2_FPGA.pdf`（FPGA 引脚分布，
+引脚号 ↔ 网络名）、`6_EX_DEVICE.pdf`（SD 卡座 / LED / 独立按键 页）；
+并与厂商同器件（EG4S20BG256）例程 `7_lab_ex_2026_nosoft/example/lab_ex4_tf` 的
+`pin.adc` 交叉验证（`clk` / `sd_*` 两处完全一致）。结果已写入
+`safevision/platform/anlogic_eg4s20_hx4s20c/constraints/pin.adc`：
 
-| 信号 | 原理图来源 | 说明 |
-|---|---|---|
-| `clk` | `2_FPGA.pdf` | 板载晶振，本轮用 50MHz 输入给 PLL |
-| `rst_n` | `4_GPIO.pdf` | 复位按键，注意板上有没有外部上拉 |
-| `sd_ncs / sd_dclk / sd_mosi / sd_miso` | `6_EX_DEVICE.pdf` | TF 卡座，**注意 MISO 是否需要外部上拉** |
-| `uart_txd` | `4_GPIO.pdf` | 选一个空闲 IO 接到 USB-串口模块的 RXD |
-| `led[3:0]`（可选） | `4_GPIO.pdf` | 用来显示状态码，比 UART 更直观 |
+| 端口 | FPGA 引脚 | 原理图网络名 | 依据 | 说明 |
+|---|---|---|---|---|
+| `clk` | **R7** | `FPGA_GCLK` | `2_FPGA.pdf` | 板载 50 MHz 晶振；bring-up 不接 PLL |
+| `rst_n` | **A2** | `KEY_1` | `2_FPGA.pdf` + `6_EX_DEVICE.pdf` | 独立按键，低有效；板上已有 10K 上拉，约束里再加内部 PULLUP |
+| `sd_dclk` | **A14** | `FPGA_SD_CLK` | 两张图一致 | SPI SCLK |
+| `sd_mosi` | **A13** | `FPGA_SD_CMD` | 两张图一致 | SPI MOSI |
+| `sd_miso` | **B14** | `FPGA_SD_D0` | 两张图一致 | SPI MISO；**外部上拉情况未在可读的原理图文本中确认**，暂按厂商例程取 `PULLTYPE = NONE` |
+| `sd_ncs` | **A12** | `FPGA_SD_D3` | 两张图一致 | CD/DAT3 当 SPI 片选（低有效） |
+| `led[3:0]` | **A4 / A3 / C10 / B12** | `LED0`…`LED3` | `2_FPGA.pdf` + `6_EX_DEVICE.pdf` | 显示顶层状态码 |
+| `uart_txd` | **D12**（待复核） | `TXD` | `2_FPGA.pdf` | ★ 全板唯一命名为 `TXD` 的 FPGA 网络，但在现有原理图分册中**没追到它落到哪个物理连接器**；备用引脚 `GPIOA_0 = H13`（在 J1 / IDC40 排针上，与 5V/3V3 一起引出） |
 
 **为什么现在做**：引脚资源紧张（BG256 封装，最多 193 个用户 IO），事后硬塞容易冲突。
-把表填好后，`pin.adc` 的编写就只是抄写，不会卡住进度。
+表已填好，`pin.adc` 是照抄结果。
 
 ### 1.4 复习手册的过关自测（建议逐条打勾）
 
@@ -140,14 +149,16 @@
 
 ### 2.2 建第一块可下载的工程（阶段 5 最小验证）
 
-- [x] **工程已建好**：`safevision/platform/anlogic_eg4s20_hx4s20c/project/safevision.al`
+- [x] **工程已建好并配好第一版**：`safevision/platform/anlogic_eg4s20_hx4s20c/project/safevision.al`
       （TD 6.2，器件 **EG4S20BG256**，`IncludeDir = ../../../rtl/include`）。
-      33 条设计文件已加入，**全部是相对路径**（`../../../rtl/...`），队友 clone 后直接可用，
-      不需要重新添加文件。
-- [ ] ★ **确认 TOP_MODULE 指向板级顶层**。工程刚建时顶层默认落在 `crc7` 上，TD 做依赖分析
-      时把其余 32 个模块全标了 `AutoExcluded`——**这时候点综合只会综合出一个 8 行的 CRC 模块**。
-      综合前务必在 TD 里确认顶层是板级顶层。
-- [ ] **把约束文件加进 FileSet `constraint_1`（ConstrainFiles）**：`pin.adc` + `timing.sdc`。
+      35 条设计文件已加入（含板级顶层与 `reset_sync.v`），**全部是相对路径**（`../../../rtl/...`），
+      队友 clone 后直接可用，不需要重新添加文件；`TOP_MODULE = top_stage5_sector_rd`，
+      `constraint_1` 已挂 `pin.adc` + `timing.sdc`。
+- [x] ★ **确认 TOP_MODULE 指向板级顶层**（2026-10-02 已在 `.al` 里写入）。工程刚建时顶层默认落在 `crc7` 上，
+      TD 做依赖分析时把其余 32 个模块全标了 `AutoExcluded`——**这时候点综合只会综合出一个 8 行的 CRC 模块**。
+      **仍需在 TD GUI 里点一次依赖分析/自动包含，确认 `spi_master` / `sd_initializer` / `sd_sector_reader` /
+      `uart_tx` / `crc7` / `crc16_ccitt` / `reset_sync` 都没有被标成 `AutoExcluded`**。
+- [x] **把约束文件加进 FileSet `constraint_1`（ConstrainFiles）**：`pin.adc` + `timing.sdc`（2026-10-02 已在 `.al` 里登记）。
       源文件放 `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/`。加进去之前，
       综合/布线是不带任何引脚与时序约束的。
 - [ ] 综合 + 布局布线，看报告：时序是否收敛、有无多驱动/未约束端口警告
@@ -165,16 +176,20 @@
 
 ### 2.3 还没写的东西（板到之前最好补上）
 
-- [ ] **板级顶层** `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`
-      ——阶段 5 最小验证专用，功能：
+- [x] **板级顶层** `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`
+      ——阶段 5 最小验证专用（**2026-10-02 已写**），功能：
       - 上电延时 → 拉高 `init_start` → 等 `init_done`
       - `init_done` 后自动发起一次 `rd_en`，`rd_addr = 32'd1000`
       - 把 512 字节按顺序灌进 `uart_tx`（115200）
-      - 状态码输出到 LED / 数码管（`dbg_state` 直连即可）
+      - 状态码输出到 LED（`led[3:0]`：1/2/3/4/5/8，失败显示错误主码低 4 位）
       > 它直接接引脚、不属产品链，所以放 `platform/.../rtl/`（这里才是板级层）。
       > 产品顶层是 A 侧的 `platform/.../rtl/safevision_top.v`；不带引脚的可移植 core
       > 才是 `rtl/top/safevision_core.v`。
-- [ ] 写完后在仿真里先跑通（把 UART 输出接到一个 UART 接收模型，确认 512 字节顺序正确）
+      > ★ 它**不接 PLL**，全部逻辑跑板载 50 MHz（bring-up 先排除 IP 变量）；取舍见
+      > [interface_spec.md](interface_spec.md) §3.7。
+- [x] 写完后在仿真里先跑通（把 UART 输出接到一个 UART 接收模型，确认 512 字节顺序正确）
+      ——**2026-10-02 已做**：`tb_top_stage5_sector_rd.sv`（T1 完整命令序列 / T2 CMD17 参数 1000 /
+      T3 512 Byte 经 UART 逐字节与卡模型一致 / T4 顶层进成功态），5 项断言全通过。
 
 ### 2.4 必做的实测项（每一项都要回填到 [interface_spec.md](interface_spec.md)）
 
@@ -228,6 +243,12 @@
 9. **画面偶发花屏、而且是跑一段时间才出现** → 先查 FIFO 最低水位是不是贴地（`fifo_health_monitor.min_level`），再查 SDRAM 刷新是否被省掉
 10. **画面上下错位 / 一半旧一半新** → 帧交换没有在垂直消隐期原子切换，或者 `active_slot` 与 `slot_base` 不是同时更新的
 11. **帧写入把显示读饿死** → 查仲裁的两条硬约束（单次占用上限、最长等待提升）有没有实现
+12. **LED 卡住 / UART 一个字节都收不到** → 先看板上 `led[3:0]` 的状态码：
+    `1` 上电等待、`2` 发初始化请求、`3` 等 `init_done`、`4` 发读请求、`5` 传输中、`8` 成功；
+    其余值表示失败，显示的是**错误主码低 4 位**。
+    - 卡在 `3`：SD 初始化没过 → 按上面第 1–4 条查（SCLK、CMD0 的 CRC=0x95、CMD8 的 CRC=0x87）
+    - 到 `8` 但电脑收不到：多半是 `uart_txd` 引脚的物理落点（见 §1.3 待复核项）或串口工具设置
+      （**115200 8N1**，FPGA 的 TX 要接 USB-串口模块的 **RXD**，别接反）
 
 ---
 
@@ -237,8 +258,9 @@
 |---|---|---|
 | CMD18 多扇区读 | `sd_sector_reader` 目前只支持 CMD17，`rd_len` 必须为 1，否则明确报错。多扇区读需要额外的 STOP_TRANSMISSION。连带影响：`fat32_directory_scanner` 现在只能"一个扇区一次 CMD17"，根目录越大读得越碎 | 带宽优化阶段（对应 O-11） |
 | 超时值未实测 | `safevision_defs.vh` 里的超时是"规范推导 + 裕量"，仿真时用 `SIM_FAST_TO` 缩小以便跑到超时分支 | 板到后执行 M-1~M-3 |
-| 板级顶层 | `top_stage5_sector_rd.v` 还没写 | 见 §2.3 |
-| 引脚约束 | `pin.adc` 还没写 | 见 §1.3 |
+| 板级顶层 | **已解决**：`top_stage5_sector_rd.v` 已写，并新增 `tb_top_stage5_sector_rd.sv` 在仿真里跑通（5 项断言）；仍未上板 | 已做 |
+| 引脚约束 | **已解决**：`pin.adc` 与 `timing.sdc` 已写并登记进 TD 工程；`uart_txd` 的物理落点待用户复核 | 已做 |
+| `uart_txd` 物理落点 | `pin.adc` 暂取 `D12`（原理图网络名 `TXD`），但没在现有原理图分册中追到它接到哪个连接器；`uart_txd` 备用 `GPIOA_0 = H13`（J1/IDC40）。**接线前需确认**，改一行即可 | 上板前 |
 | 根目录簇链跟随 | **已解决**：阶段 7 抽出 `fat32_cluster_walker.v`，`fat32_directory_scanner` 与 `file_streamer` 共用同一份 | 已完成 |
 | `file_index` | **已完成**：编号扫描 + 数字后缀排序 + 索引表冻结 + WAV 配对 | 已完成 |
 | **SDRAM 真实 IP 未接** | 仿真用行为模型 `verification/models/frame_memory_model.sv`（不建模 tRCD/CL/tRP/tRFC 与刷新，**不能用于长稳评估**）。真实 PHY 按手册 7.9「第一版不要手写，直接跑通官方 Demo」用安路官方 IP，替换 `mem_ctrl` 内部实现即可 | 板到后（M-10/M-11） |
@@ -268,3 +290,4 @@
 | — | **补交付口径与文档同步规则**。① 新增"文档同步义务"说明（本文件属文档三件套，状态/回归数/未完成项变化必须回来改）；② 补一份真正的 `README.md`（目录结构、跑仿真方法、状态总览、硬约定、有意未创建的目录）；③ 修正 §2.2 里 v1.5 改名前的过期路径（`rtl/common/safevision_defs.vh` → `rtl/include/…`、`rtl/sd/` → `rtl/storage/`）；④ 把"开发基准＝手册 V2.0 / 结构基准＝仓库目录结构"写进 interface_spec 与项目规则文件 |
 | — | **v1.8：引入队友的项目管理覆盖包（目录骨架 + 管理文档），并把它的过期内容改对**。新增 `.github/` 模板、`docs/` 六个子目录（architecture/interfaces/requirements/management/verification/release）、`evidence/` 七类证据索引、`safevision/{platform,build,assets}`、`rtl/{video,audio,control,safety,top}`、`verification/{subsystem,system,board}`、`tools/check_repo.ps1` —— **全部只有 README 占位，无功能代码**。`.gitignore` 换成覆盖包版本（白名单加 `!/.github/` `!/evidence/`，多排除 `*.lic`/`*.key`/`*.pem`）。**接口/RTL/TB/回归数一字未变，仍 502 项断言 / 15 个 TB**，目录自检 `LAYOUT PASS`。覆盖包是按旧快照（48 文件 / 27 RTL）做的，带进来的过期内容已逐项改对：**27→29 个 RTL、11→15 个 TB、457→502 项断言**、`fifo_health_monitor` 归 `memory/`、`wav_reader`→`wav_parser`、`sdram_model`→`frame_memory_model`、`tb_media`/`tb_mem_write`/`tb_frame_swap` 拆名、并作废"待办清单仍有 `rtl/sd` 旧路径"的指控（v1.7 已修）。另修 `interface_spec` §3.1 的 `rtl/sd/spi_master.v` → `rtl/storage/…` 与 `bmp_unpack.v` 注释里的 `tb_media` → `tb_bmp_unpack` |
 | — | **结构基准变更 + 全仓文档去绝对路径 + 清除旧参照物引用**。① **结构基准改为本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)**，原参照物作废，全仓对它的引用（RTL 头注释、模块小节标题、表头列名、历史行里的出处标注）已一并清除；② 清掉覆盖包带进来的本机绝对路径——文档里的 ModelSim 安装路径改为按变量名 `$MSIM_BIN` 描述，文档树根由 `Safe_Vision_FPGA_2026/` 改为 `<仓库根>/`，`run_sim.ps1` 用法注释与原理讲解里的 `f:\...\` 占位改为相对路径。新约定：**文档里只用仓库相对路径** |
+| 2026-10-02 | **板级 bring-up 第一版落地**：① 新增板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（上电延时 → SD 初始化 → 读 LBA=1000 → 512 Byte 经 UART 回传；两 SD 模块共用一份 `spi_master`，按 `init_done` 二选一；**不接 PLL，全跑板载 50 MHz**）；② 新增 `constraints/pin.adc`（引脚逐个按 `2_FPGA.pdf` / `6_EX_DEVICE.pdf` 核对，并与厂商同器件例程交叉验证）与 `constraints/timing.sdc`（单一 50 MHz：`create_clock -period 20`）；③ TD 工程 `safevision.al` 把 `TOP_MODULE` 从 `crc7` 改为 `top_stage5_sector_rd`，加入顶层与 `reset_sync.v`，并把两约束挂到 `constraint_1`；④ **新增顶层 TB `tb_top_stage5_sector_rd.sv`**（T1 完整命令序列 / T2 CMD17 参数 1000 / T3 512 Byte 经 UART 逐字节与卡模型一致 / T4 顶层进成功态）→ 回归 **502 → 507 项断言 / 15 → 16 个 TB，全 PASS**；⑤ **`run_sim.ps1` 的 ModelSim 路径改为 `-ModelSimBin` 参数 + `MSIM_BIN` 环境变量**（与 `run_clock_sim.ps1` 同口径，删掉写死的本机路径；`check_repo.ps1` 的自检正则同时扩到 `../platform/`）。**待办**：`uart_txd` 物理落点复核（暂取 D12）、TD 里确认依赖分析没误标 `AutoExcluded` |

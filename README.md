@@ -128,13 +128,18 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 │  │  ├─ safety/                    [骨架] C：故障、看门狗与降级控制
 │  │  └─ top/                       [模块目录] A：safevision_core/，功能 RTL 待写
 │  ├─ platform/                     [部分 RTL] 板级适配层
-│  │  ├─ anlogic_eg4s20_hx4s20c/    [部分 RTL] clock/ 复位控制；PLL/顶层/约束待接
+│  │  ├─ anlogic_eg4s20_hx4s20c/
+│  │  │  ├─ rtl/clock/              复位控制（reset_sync / clock_reset_ctrl，A）
+│  │  │  ├─ rtl/top_stage5_sector_rd.v  板级 bring-up 顶层（接引脚，阶段 5 最小验证，不接 PLL）
+│  │  │  ├─ constraints/            pin.adc + timing.sdc（已按原理图核对）
+│  │  │  ├─ project/safevision.al   TD 6.2 工程（TOP_MODULE 已指向 bring-up 顶层）
+│  │  │  └─ ip/ rtl/{pixel_fifo,hdmi,chipwatcher,safevision_top}/   [骨架] 待接
 │  │  └─ sim/                       [骨架] 非厂商仿真适配层
 │  ├─ build/                        [骨架] 文件清单、参数配置、构建说明
 │  ├─ assets/                       [骨架] 可再生字体、图案、SD 测试素材说明
 │  ├─ verification/
 │  │  ├─ models/                    行为级模型（sd_spi_card_model.sv / frame_memory_model.sv）
-│  │  ├─ unit/                      单元测试台（B 历史 15 个 + A clock 新增 1 个）
+│  │  ├─ unit/                      单元测试台（B 16 个 + A clock 1 个；含板级顶层 TB）
 │  │  ├─ subsystem/                 [骨架] SD→帧缓存、缓存→HDMI 等联调
 │  │  ├─ system/                    [骨架] 三链整机、故障与长稳
 │  │  └─ board/                     [骨架] 上板步骤与采集脚本
@@ -156,7 +161,7 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 > 这是可接受的，但别因为看到 `.sv` 就以为里面有 `logic`/`always_ff` 或断言。
 > **新增 RTL 一律 `.v`；不要把 `.sv` 放进 `rtl/`**（那会进 TD 综合）。
 
-**A 模块目录与当前代码**：`rtl/video/` 下按 Video Timing、Pattern Generator、Graphics ROM、OSD、Pipeline、Frame Reader、Compositor、Safe Scene、Emergency MUX、CDC 建立独立文件夹；`rtl/top/safevision_core/` 已建。板级 `rtl/` 下已建 `clock/`、`pixel_fifo/`、`hdmi/`、`chipwatcher/`、`safevision_top/`，`ip/` 下已建 PLL/FIFO/BRAM/HDMI 落点。只有 `platform/.../rtl/clock/` 有 `reset_sync.v` 与 `clock_reset_ctrl.v` 功能 RTL；其余 A 目录只有 README。详细路径见 [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)。C 的骨架、`build/`、`assets/`、`verification/{subsystem,system,board}`、`evidence/` 仍是规划落点。
+**A 模块目录与当前代码**：`rtl/video/` 下按 Video Timing、Pattern Generator、Graphics ROM、OSD、Pipeline、Frame Reader、Compositor、Safe Scene、Emergency MUX、CDC 建立独立文件夹；`rtl/top/safevision_core/` 已建。板级 `rtl/` 下已建 `clock/`、`pixel_fifo/`、`hdmi/`、`chipwatcher/`、`safevision_top/`，`ip/` 下已建 PLL/FIFO/BRAM/HDMI 落点。`platform/.../rtl/clock/` 有 `reset_sync.v` 与 `clock_reset_ctrl.v` 功能 RTL；`platform/.../rtl/top_stage5_sector_rd.v`（B 的阶段 5 板级 bring-up 顶层）与 `constraints/{pin.adc,timing.sdc}` 也已落地；其余 A 目录只有 README。详细路径见 [PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)。C 的骨架、`build/`、`assets/`、`verification/{subsystem,system,board}`、`evidence/` 仍是规划落点。
 
 **有意不创建**（同样出自项目自定原则「三人团队不要模仿大公司堆叠复杂框架」）：
 `rtl/csr/`（CSR 总线）、`rtl/diagnostics/`、`rtl/platform/`（板级适配已放在
@@ -167,11 +172,16 @@ Codec I²C 控制。理由留档在 [interface_spec.md](docs/interface_spec.md) 
 
 ## 三、怎么跑仿真
 
-环境：ModelSim SE-64 10.7（脚本顶部的 `$MSIM_BIN` 指向 ModelSim 安装目录，**换机器必须改它**，
-见 [run_sim.ps1](safevision/tools/run_sim.ps1)）。
+环境：ModelSim SE-64 10.7。ModelSim 的 `win64` 目录从 `-ModelSimBin` 参数拿，
+省略时回退到 `MSIM_BIN` 环境变量——**脚本里不再写死任何本机路径**，
+两个入口（`run_sim.ps1` / `run_clock_sim.ps1`）用同一套口径：
 
 ```powershell
+# 任一方式：
+$env:MSIM_BIN = "D:\path\to\modeltech64_10.7\win64"
 powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1
+
+powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1 -ModelSimBin D:\path\to\modeltech64_10.7\win64
 ```
 
 脚本会 `vlib work` → 编译全部 RTL 与 testbench → 逐个 `vsim` 运行 → 汇总
@@ -180,13 +190,14 @@ powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1
 > ★ 维护脚本时注意：**`run_sim.ps1` 必须保持纯 ASCII 注释**。PowerShell 5.1 在没有 BOM
 > 时按 ANSI 解码 `.ps1`，中文注释会把后面的引号"吃掉"导致解析失败。中文注释写在 RTL 里。
 
-新增 **B 链**模块 / testbench 时，把文件分别加进本脚本的 `$RTL` / `$SIM` / `$TBS` 三个列表。A clock 的 RTL/TB 使用独立入口，不改变已记录的 B 回归口径：
+新增 **B 链**模块 / testbench（含板级 bring-up 顶层）时，把文件分别加进本脚本的
+`$RTL` / `$SIM` / `$TBS` 三个列表，否则文件等于死文件。
+
+A clock 的 RTL/TB 用独立入口（同一套 `-ModelSimBin` / `MSIM_BIN` 口径），并已在本机运行通过（`clock/reset checks: 88 pass, 0 fail`）：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_clock_sim.ps1 -ModelSimBin <ModelSim的win64目录>
 ```
-
-当前机器尚未安装可用的 ModelSim/iverilog；A clock 测试源已写，但本次未运行仿真。
 
 **现有 B 回归**与目录自检（目录自检不需要 ModelSim）：
 
@@ -206,12 +217,13 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | 手册学习阶段 1–16 | **全部落地并仿真通过** |
 | 媒体格式层（BMP 解析/解包、WAV 解析） | 已完成并仿真通过 |
 | 目录树与命名 | 已按本项目结构（PROJECT_STRUCTURE.md）核对完成（含"同一常量多副本"的结构性收敛） |
-| B 链历史仿真回归 | **502 项断言 / 15 个 testbench / 2 个行为模型，全 PASS；本次未重跑** |
-| 板级顶层 `top_stage5_sector_rd.v` | 未开始（见待办清单 §2.3） |
-| 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | 未开始（见待办清单 §1.3） |
+| B 链仿真回归 | **507 项断言 / 16 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
+| 板级顶层 `top_stage5_sector_rd.v` | **已写并仿真通过**（`tb_top_stage5_sector_rd`，5 项断言）；**未上板** |
+| 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写**（引脚按原理图逐脚核对）；`uart_txd` 物理落点待复核 |
+| TD 工程 `project/safevision.al` | `TOP_MODULE` 已指向 bring-up 顶层，约束已挂 `constraint_1`；待综合/布线 |
 | 上板实测（M-1 ~ M-19） | **未开始，等板子** |
 | 整机集成 `safevision_core.v` / `safevision_top.v` | A 负责 |
-| A 板级时钟复位 | `reset_sync.v` 与 `clock_reset_ctrl.v` 已写；PLL IP/约束/板级实测待完成 |
+| A 板级时钟复位 | `reset_sync.v` 与 `clock_reset_ctrl.v` 已写并仿真通过（88 项）；PLL IP/约束/板级实测待完成 |
 
 各 testbench 的覆盖与断言数见 [B链-待办与硬件验证清单.md](docs/B链-待办与硬件验证清单.md) §零。
 

@@ -7,6 +7,9 @@ $required = @(
     'docs/verification/test_matrix.md', 'safevision/rtl/top/README.md',
     'safevision/rtl/video/README.md', 'safevision/rtl/control/README.md',
     'safevision/platform/anlogic_eg4s20_hx4s20c/constraints/README.md',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/constraints/pin.adc',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/constraints/timing.sdc',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v',
     'safevision/rtl/storage/spi_master.v',
     'safevision/verification/unit/tb_sd_sector_reader.sv',
     'safevision/verification/unit/tb_clock_reset_ctrl.sv',
@@ -48,7 +51,7 @@ foreach ($rel in $aModuleDirs) {
 $runner = Join-Path $root 'safevision/tools/run_sim.ps1'
 if (Test-Path -LiteralPath $runner) {
     $sv = Join-Path $root 'safevision'
-    foreach ($m in [regex]::Matches([IO.File]::ReadAllText($runner), '"(\.\./rtl/[^\"]+|models/[^\"]+|unit/[^\"]+)"')) {
+    foreach ($m in [regex]::Matches([IO.File]::ReadAllText($runner), '"(\.\./(?:rtl|platform)/[^\"]+|models/[^\"]+|unit/[^\"]+)"')) {
         $rel = $m.Groups[1].Value
         $base = Join-Path $sv 'verification'
         if (-not (Test-Path -LiteralPath (Join-Path $base $rel))) { $missing += "run_sim: $rel" }
