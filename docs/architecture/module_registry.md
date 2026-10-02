@@ -59,7 +59,7 @@
 | `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/pin.adc` | 已写，待综合 / 上板核对 | B | 引脚约束。来源：开发板手册官方引脚表（串口 / LED / 按键）+ `2_FPGA.pdf` / `6_EX_DEVICE.pdf` + 厂商同器件例程，三处一致。`uart_txd = D12` 已确认是 FPGA 发送脚（板载 CH340G，无需外接 USB-TTL） | 综合报告 |
 | `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/timing.sdc` | 已写（第一版：单一 50 MHz 时钟域） | B | `create_clock -name clk -period 20 -waveform {0 10}`；本顶层不接 PLL，无需派生时钟或跨域分组 | STA |
 
-`project/safevision.al` 已把 `TOP_MODULE` 设为 `top_stage5_sector_rd`，并加入 `reset_sync.v`、`top_stage5_sector_rd.v` 与 `constraint_1` 的 `pin.adc`/`timing.sdc`。**2026-10-02 已在 TD 里跑过依赖分析 + elaborate**：`safevision_Runs/syn_1/run.log` 显示顶层闭包内的 7 个模块全部 elaborate 到了，没有被误排除（只有 `crc7.v` 被排除，而它只被 `tb_crc` 使用，正确）。同一次 elaborate 报出 `sd_initializer` / `sd_sector_reader` 的 `bdata` 多驱动（`HDL-8007`）**并把两个模块降级成黑盒**——已修（详见 interface_spec v1.10 变更历史）。**该次综合未通过，需重新综合**。
+`project/safevision.al` 已把 `TOP_MODULE` 设为 `top_stage5_sector_rd`，并加入 `reset_sync.v`、`top_stage5_sector_rd.v` 与 `constraint_1` 的 `pin.adc`/`timing.sdc`。**2026-10-02 已在 TD 里跑通完整流程**：修掉 `sd_initializer` / `sd_sector_reader` 的 `bdata` 多驱动（`HDL-8007`，详见 interface_spec v1.10 变更历史）后，综合 → 布局 → 布线 → 位流**一次通过**；**时序收敛**（Setup WNS +11.297 ns / Hold WNS +0.046 ns，违反端点 0，50 MHz 约束下 Fmax 114.9 MHz），资源 IO 11/188、LUT 814/19600、REG 434/19600、BRAM/DSP 0。`syn_1/run.log` 中不再有 `black box`。原始报告留证于 `evidence/reports/`（索引条目 TC-Q-STA）。**位流可下载，尚未上板**（上板步骤见待办清单 §2.2）。
 
 ## 待实现模块命名（不是空 RTL）
 

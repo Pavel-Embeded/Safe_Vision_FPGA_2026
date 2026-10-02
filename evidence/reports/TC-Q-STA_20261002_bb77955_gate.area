@@ -1,0 +1,43 @@
+standard
+***Report Model: top_stage5_sector_rd Device: EG4S20BG256***
+
+IO Statistics
+#IO                        11   out of    188    5.85%
+  #input                    3
+  #output                   8
+  #inout                    0
+
+LUT Statistics
+#Total_luts               608
+  #lut4                   555
+  #lut5                    53
+  #lut6                     0
+  #lut5_mx41                0
+  #lut4_alu1b               0
+
+Utilization Statistics
+#lut                      814   out of  19600    4.15%
+#reg                      434   out of  19600    2.21%
+#bram                       0   out of     64    0.00%
+  #bram9k                   0
+  #fifo9k                   0
+#bram32k                    0   out of     16    0.00%
+#dsp                        0   out of     29    0.00%
+#pad                       11   out of    188    5.85%
+  #ireg                     0
+  #oreg                     4
+  #treg                     0
+#pll                        0   out of      4    0.00%
+#gclk                       0   out of     16    0.00%
+
+Report Hierarchy Area:
++----------------------------------------------------------------------------------------+
+|Instance             |Module               |lut     |ripple  |seq     |bram    |dsp     |
++----------------------------------------------------------------------------------------+
+|top                  |top_stage5_sector_rd |711     |103     |438     |0       |0       |
+|  u_sd_initializer   |sd_initializer       |286     |36      |162     |0       |0       |
+|  u_sd_sector_reader |sd_sector_reader     |277     |29      |166     |0       |0       |
+|  u_spi_master       |spi_master           |61      |5       |42      |0       |0       |
+|  u_uart_tx          |uart_tx              |50      |9       |31      |0       |0       |
+|  u_reset_sync       |reset_sync           |0       |0       |2       |0       |0       |
++----------------------------------------------------------------------------------------+

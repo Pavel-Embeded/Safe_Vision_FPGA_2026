@@ -27,6 +27,7 @@
 | TC-C-SAFE | subsystem/system | 媒体复位不影响安全画面；首故障保留 | A+C |
 | TC-AC-AUDIO | subsystem/board | HDMI PCM/报警优先、欠载零样本、兼容显示器 | A+C |
 | TC-Q-STA | static | WNS/WHS 与约束覆盖、资源预算 | A |
+| **TC-Q-STA（B 的 bring-up 顶层实跑，2026-10-02）** | static | `top_stage5_sector_rd` + `pin.adc` + `timing.sdc` 的综合→布局→布线→位流全流程通过：Setup WNS +11.297 ns / Hold WNS +0.046 ns、违反端点 0、Fmax 114.9 MHz；资源 IO 11/188、LUT 814/19600、REG 434/19600。原始报告见 `evidence/reports/`（索引 TC-Q-STA）。**未覆盖**：I/O delay（故意留空，待 M-5/M-6 实测） | B |
 | TC-R-LONG | system/board | 视频 60 分钟、音频 30 分钟、计数和水位原始序列 | A+B+C |
 
 编号为工程补充，最终与手册固定 TC 编号映射后再冻结；当前没有填入“通过”的证据。

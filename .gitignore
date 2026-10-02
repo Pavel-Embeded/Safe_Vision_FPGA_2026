@@ -34,6 +34,9 @@ modelsim.ini
 #   TD 每次综合/布线会生成 <工程名>_Runs/<run>/（run.bat / *.tcl / settings.cfg /
 #   *.prj / .temp.f / run.log ...），全部可再生，不进仓库。
 /safevision/**/*_Runs/
+#   TD 导出报告的默认落点是工程目录下的 report.txt，同样是可再生的中间输出；
+#   要留证的正式报告请按 evidence/reports/INDEX.md 的命名规则复制进 evidence/reports/。
+/safevision/platform/**/project/report.txt
 
 # Evidence logs, reports, waveforms and media are intentionally allowed.
 *.log
