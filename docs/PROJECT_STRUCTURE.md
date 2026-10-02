@@ -42,7 +42,7 @@
 │  │  ├─ models/                      [现有] SD/SDRAM 行为模型
 │  │  ├─ subsystem/                  [规划] SD→帧缓存、缓存→HDMI 等
 │  │  ├─ system/                     [规划] 三链整机、故障与长稳
-│  │  └─ board/                      [规划] 上板步骤、采集脚本
+│  │  └─ board/                      [部分] 上板采集脚本 `capture_uart_512.ps1`（阶段 5 的 UART 回传比对）
 │  ├─ assets/                        [骨架] 可再生字体、图案、SD 测试素材说明
 │  └─ tools/                          [现有] B 仿真脚本；新增结构自检
 └─ evidence/                         [骨架] 需求→测试→原始证据与索引

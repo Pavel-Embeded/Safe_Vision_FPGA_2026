@@ -142,7 +142,7 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 │  │  ├─ unit/                      单元测试台（B 16 个 + A clock 1 个；含板级顶层 TB）
 │  │  ├─ subsystem/                 [骨架] SD→帧缓存、缓存→HDMI 等联调
 │  │  ├─ system/                    [骨架] 三链整机、故障与长稳
-│  │  └─ board/                     [骨架] 上板步骤与采集脚本
+│  │  └─ board/                     上板采集脚本（capture_uart_512.ps1：UART 512 Byte 回传 + 与参考值比对）
 │  └─ tools/
 │      ├─ run_sim.ps1               B 链回归：编译 + 跑全部 testbench + 汇总断言数
 │      └─ check_repo.ps1            目录与 run_sim 引用自检（不需要 ModelSim）
