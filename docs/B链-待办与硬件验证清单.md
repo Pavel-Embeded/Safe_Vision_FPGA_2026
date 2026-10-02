@@ -39,7 +39,8 @@
 | 媒体格式层（`bmp_unpack` BGR→RGB565 / `wav_parser`） | 已完成并仿真通过 |
 | 目录骨架与管理文档（`.github/` + `docs/` 子目录 + `evidence/` + `platform/` 等） | **已建立骨架**（v1.8 引入队友的项目管理覆盖包）。只有 README 占位与命名计划，**无功能代码**；落点规则见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) |
 | 目录自检脚本 `safevision/tools/check_repo.ps1` | 已接入（不需要 ModelSim，输出 `LAYOUT PASS` 才算过） |
-| 板级顶层 `top_stage5_sector_rd.v`（阶段 5 最小验证） | 未开始（见 §2.3） |
+| 板级 TD 工程 `platform/anlogic_eg4s20_hx4s20c/project/safevision.al` | **已建立**（器件 EG4S20BG256；33 条设计文件已加入且**全是相对路径**）。**待办**：设 TOP_MODULE（现落在 `crc7`）、写 `pin.adc`/`timing.sdc` 并加入 `constraint_1` |
+| 板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（阶段 5 最小验证） | 未开始（见 §2.3） |
 | 整机集成（`safevision_core` / `safevision_top`） | 未开始（A 负责） |
 | **上板实测** | **未开始（等板子）** |
 
@@ -139,31 +140,40 @@
 
 ### 2.2 建第一块可下载的工程（阶段 5 最小验证）
 
-- [ ] 新建 TD 工程，器件选 **EG4S20BG256**（Family = EG4）
-- [ ] 加文件（注意 **include 路径** 要指向 `rtl/include`，否则 `safevision_defs.vh` 找不到）：
-      ```
-      rtl/include/safevision_defs.vh   (头文件，加到工程 include 路径；它会 include 同目录的
-                                        fault_code_defs.vh / pixel_format_defs.vh / event_code_defs.vh)
-      rtl/common/uart_tx.v
-      rtl/storage/spi_master.v
-      rtl/storage/sd_initializer.v
-      rtl/storage/sd_sector_reader.v
-      rtl/top/top_stage5_sector_rd.v   ← 还没写，见 §2.3 待办
-      ```
-      > 路径按本项目结构（[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)）：`rtl/include/` 放头文件、
-      > `rtl/storage/` 放 SPI/SD/FAT、板级顶层将来放 `rtl/top/`（该目录现在还没建，写顶层时新建）。
-      > 旧文档里的 `rtl/sd/` `rtl/common/safevision_defs.vh` 是 v1.5 改名前的路径，已作废。
-- [ ] 约束文件：按 §1.3 的表写 `pin.adc`，时序约束 `timing.sdc` 先只写
-      `create_clock -name clk -period 20 [get_ports {clk}]`（50MHz）
+- [x] **工程已建好**：`safevision/platform/anlogic_eg4s20_hx4s20c/project/safevision.al`
+      （TD 6.2，器件 **EG4S20BG256**，`IncludeDir = ../../../rtl/include`）。
+      33 条设计文件已加入，**全部是相对路径**（`../../../rtl/...`），队友 clone 后直接可用，
+      不需要重新添加文件。
+- [ ] ★ **确认 TOP_MODULE 指向板级顶层**。工程刚建时顶层默认落在 `crc7` 上，TD 做依赖分析
+      时把其余 32 个模块全标了 `AutoExcluded`——**这时候点综合只会综合出一个 8 行的 CRC 模块**。
+      综合前务必在 TD 里确认顶层是板级顶层。
+- [ ] **把约束文件加进 FileSet `constraint_1`（ConstrainFiles）**：`pin.adc` + `timing.sdc`。
+      源文件放 `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/`。加进去之前，
+      综合/布线是不带任何引脚与时序约束的。
 - [ ] 综合 + 布局布线，看报告：时序是否收敛、有无多驱动/未约束端口警告
+
+> 路径按本项目结构（[PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)）：头文件在 `rtl/include/`，
+> SPI/SD/FAT 在 `rtl/storage/`；**板级顶层、约束、IP、TD 工程统一归
+> `safevision/platform/anlogic_eg4s20_hx4s20c/`**（其下 `rtl/` / `constraints/` / `ip/` / `project/`）。
+> 只有**不带引脚的可移植 core** 才放 `rtl/top/`。
+> 旧文档里的 `rtl/sd/`、`rtl/common/safevision_defs.vh`、`rtl/top/top_stage5_sector_rd.v`
+> 都是引入新结构之前的路径，**已作废**。
+>
+> ★ 工程文件（`.al`）是**源文件**、必须版本管理：`.gitignore` 早先误把 `*.al` 当生成物忽略，
+> 会让整个工程文件静默进不了仓库，现已修正。TD 的运行期垃圾（`*.lock.f`、`log/`、`td_*.logw`）
+> 已单独忽略。
 
 ### 2.3 还没写的东西（板到之前最好补上）
 
-- [ ] `rtl/top/top_stage5_sector_rd.v`——板级顶层，功能：
+- [ ] **板级顶层** `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`
+      ——阶段 5 最小验证专用，功能：
       - 上电延时 → 拉高 `init_start` → 等 `init_done`
       - `init_done` 后自动发起一次 `rd_en`，`rd_addr = 32'd1000`
       - 把 512 字节按顺序灌进 `uart_tx`（115200）
       - 状态码输出到 LED / 数码管（`dbg_state` 直连即可）
+      > 它直接接引脚、不属产品链，所以放 `platform/.../rtl/`（这里才是板级层）。
+      > 产品顶层是 A 侧的 `platform/.../rtl/safevision_top.v`；不带引脚的可移植 core
+      > 才是 `rtl/top/safevision_core.v`。
 - [ ] 写完后在仿真里先跑通（把 UART 输出接到一个 UART 接收模型，确认 512 字节顺序正确）
 
 ### 2.4 必做的实测项（每一项都要回填到 [interface_spec.md](interface_spec.md)）

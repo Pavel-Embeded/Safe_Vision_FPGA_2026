@@ -30,7 +30,9 @@
 │  │  ├─ safety/                     [规划] C：故障、看门狗与降级控制
 │  │  └─ top/                        [规划] A：safevision_core/；不含板级引脚
 │  ├─ platform/
-│  │  ├─ anlogic_eg4s20_hx4s20c/    [部分 RTL] clock/ 复位控制；PLL/顶层/约束待接入
+│  │  ├─ anlogic_eg4s20_hx4s20c/    [部分实物] 板级层：clock/ 复位控制已落地（`rtl/clock/`）；
+│  │  │                              TD 工程已建（`project/safevision.al`，器件 EG4S20BG256，
+│  │  │                              33 条设计文件为相对路径）；PLL / HDMI / 顶层 RTL / 约束待接入
 │  │  └─ sim/                        [规划] 非厂商仿真适配层
 │  ├─ build/                         [骨架] 文件清单、参数配置、构建说明
 │  ├─ verification/

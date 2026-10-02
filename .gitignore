@@ -21,8 +21,16 @@ modelsim.ini
 *.fs
 *.ngd
 *.prj
-*.al
 *.sdc.bak
+
+# ---- 安路 TD 运行期文件 ----
+# ★★ 注意：*.al 故意【不】在这里 —— 它是 TD 的【工程文件】（设计文件表、顶层模块、
+#    约束集、综合/布线 Run 设置），属于必须版本管理的【源文件】。早先误把它当生成物
+#    忽略了，后果是整个工程文件静默进不了仓库、队友无法打开工程。
+#    这里只忽略 TD 的运行期垃圾：锁文件与日志。
+*.lock.f
+/safevision/log/
+td_*.logw
 
 # Evidence logs, reports, waveforms and media are intentionally allowed.
 *.log
