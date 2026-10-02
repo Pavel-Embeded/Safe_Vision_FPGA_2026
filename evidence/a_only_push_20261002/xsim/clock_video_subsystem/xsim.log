@@ -1,0 +1,88 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct  2 20:19:17 2026
+# Process ID: 22492
+# Current directory: D:/Codex/2026-09-30/sao/work/a_only_publish_20261002/xsim/clock_video_subsystem
+# Command line: xsim.exe -log xsim.log -mode tcl -source {xsim.dir/tb_clock_video_subsystem_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-09-30/sao/work/a_only_publish_20261002/xsim/clock_video_subsystem/xsim.log
+# Journal file: D:/Codex/2026-09-30/sao/work/a_only_publish_20261002/xsim/clock_video_subsystem\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_clock_video_subsystem_sim/xsim_script.tcl
+# xsim {tb_clock_video_subsystem_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 100 fs
+run -all
+******************** : The Attribute            REFCLK_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             FBCLK_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           2.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC0_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to          10.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC1_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           8.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC2_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC3_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC4_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute            REFCLK_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.gen_video_base.u_video_pll.pll_inst.para_int_range_chk is set to           3.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             FBCLK_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.gen_video_base.u_video_pll.pll_inst.para_int_range_chk is set to          17.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC0_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.gen_video_base.u_video_pll.pll_inst.para_int_range_chk is set to           4.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC1_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.gen_video_base.u_video_pll.pll_inst.para_int_range_chk is set to          45.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC2_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.gen_video_base.u_video_pll.pll_inst.para_int_range_chk is set to           9.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC3_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.gen_video_base.u_video_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC4_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.gen_video_base.u_video_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute            REFCLK_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           2.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             FBCLK_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC0_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to          29.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC1_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to          59.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC2_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC3_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC4_DIV on pll instance tb_clock_video_subsystem.u_base.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute            REFCLK_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             FBCLK_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           2.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC0_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to          10.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC1_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           8.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC2_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC3_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC4_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_system_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute            REFCLK_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.gen_video_hd.u_video_pll.pll_inst.para_int_range_chk is set to           4.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             FBCLK_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.gen_video_hd.u_video_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC0_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.gen_video_hd.u_video_pll.pll_inst.para_int_range_chk is set to          89.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC1_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.gen_video_hd.u_video_pll.pll_inst.para_int_range_chk is set to          15.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC2_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.gen_video_hd.u_video_pll.pll_inst.para_int_range_chk is set to           3.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC3_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.gen_video_hd.u_video_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC4_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.gen_video_hd.u_video_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute            REFCLK_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           2.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             FBCLK_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC0_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to          29.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC1_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to          59.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC2_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC3_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+******************** : The Attribute             CLKC4_DIV on pll instance tb_clock_video_subsystem.u_hd.dut.u_clock_gen.u_audio_pll.pll_inst.para_int_range_chk is set to           1.  Legal values for this attribute are           1 to         128.
+MEASURE mode=0 sys: period=10.000000 high=5.000000 low=5.000000 ns cycles=1013
+MEASURE mode=0 mem: period=8.000000 high=4.000000 low=4.000000 ns cycles=1268
+MEASURE mode=0 pixel: period=39.708000 high=19.854000 low=19.854000 ns cycles=256
+MEASURE mode=0 serial: period=7.941600 high=3.970800 low=3.970800 ns cycles=1276
+MEASURE mode=0 audio: period=81.379400 high=40.689700 low=40.689700 ns cycles=124
+MEASURE mode=0 serial/pixel: 255 consecutive pixel periods each contained exactly 5 serial rising edges
+MEASURE mode=1 sys: period=10.000000 high=5.000000 low=5.000000 ns cycles=1003
+MEASURE mode=1 mem: period=8.000000 high=4.000000 low=4.000000 ns cycles=1253
+MEASURE mode=1 pixel: period=13.482000 high=6.741000 low=6.741000 ns cycles=743
+MEASURE mode=1 serial: period=2.696400 high=1.348200 low=1.348200 ns cycles=3718
+MEASURE mode=1 audio: period=81.379400 high=40.689700 low=40.689700 ns cycles=123
+MEASURE mode=1 serial/pixel: 742 consecutive pixel periods each contained exactly 5 serial rising edges
+MEASURE mode=1 sys: period=10.000000 high=5.000000 low=5.000000 ns cycles=1003
+MEASURE mode=1 mem: period=8.000000 high=4.000000 low=4.000000 ns cycles=1253
+MEASURE mode=1 pixel: period=13.482000 high=6.741000 low=6.741000 ns cycles=743
+MEASURE mode=1 serial: period=2.696400 high=1.348200 low=1.348200 ns cycles=3718
+MEASURE mode=1 audio: period=81.379400 high=40.689700 low=40.689700 ns cycles=123
+MEASURE mode=1 serial/pixel: 742 consecutive pixel periods each contained exactly 5 serial rising edges
+PASS clock_video_probe mode=1: five clock periods/duty, 5:1 video, nine resets, soft reset scan, board relock
+MEASURE mode=0 sys: period=10.000000 high=5.000000 low=5.000000 ns cycles=1013
+MEASURE mode=0 mem: period=8.000000 high=4.000000 low=4.000000 ns cycles=1267
+MEASURE mode=0 pixel: period=39.708000 high=19.854000 low=19.854000 ns cycles=256
+MEASURE mode=0 serial: period=7.941600 high=3.970800 low=3.970800 ns cycles=1276
+MEASURE mode=0 audio: period=81.379400 high=40.689700 low=40.689700 ns cycles=124
+MEASURE mode=0 serial/pixel: 255 consecutive pixel periods each contained exactly 5 serial rising edges
+PASS clock_video_probe mode=0: five clock periods/duty, 5:1 video, nine resets, soft reset scan, board relock
+PASS tb_clock_video_subsystem: BASE and HD both verified with TD EG4 PLL models
+$finish called at time : 26059166100 fs : File "D:/Codex/2026-09-30/sao/work/a_only_publish_20261002/repo/safevision/verification/unit/tb_clock_video_subsystem.sv" Line 283
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct  2 20:19:20 2026...

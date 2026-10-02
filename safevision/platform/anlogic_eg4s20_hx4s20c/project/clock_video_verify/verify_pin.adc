@@ -1,0 +1,6 @@
+# TD internal-STA verification top; only the 50 MHz oscillator pin is mapped.
+# R7 is the board clock pin confirmed for this task. No bitgen/download.
+set_pin_assignment { board_clk } { LOCATION = R7; }
+
+# board_rst_n at A2 is intentionally NOT assigned pending board-document
+# confirmation. All reset-request and probe ports are likewise unassigned.

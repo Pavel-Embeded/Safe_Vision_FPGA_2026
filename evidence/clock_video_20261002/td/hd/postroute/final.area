@@ -1,0 +1,113 @@
+standard
+***Report Model: clock_video_verify_top Device: EG4S20BG256***
+
+IO Statistics
+#IO                        23   out of    188   12.23%
+  #input                    6
+  #output                  17
+  #inout                    0
+
+Utilization Statistics
+#lut                      163   out of  19600    0.83%
+#reg                       71   out of  19600    0.36%
+#le                       180
+  #lut only               109   out of    180   60.56%
+  #reg only                17   out of    180    9.44%
+  #lut&reg                 54   out of    180   30.00%
+#bram                       0   out of     64    0.00%
+  #bram9k                   0
+  #fifo9k                   0
+#bram32k                    0   out of     16    0.00%
+#dsp                        0   out of     29    0.00%
+#pad                       23   out of    188   12.23%
+  #ireg                     0
+  #oreg                    17
+  #treg                     0
+#pll                        3   out of      4   75.00%
+#gclk                       3   out of     16   18.75%
+
+
+Detailed IO Report
+
+           Name              Direction    Location    IOStandard    IOType    DriveStrength    PullType    PackReg  
+      audio_reset_req          INPUT        H16        LVCMOS25      PAD           N/A           N/A        NONE    
+         board_clk             INPUT         R7        LVCMOS25      PAD           N/A          PULLUP      NONE    
+        board_rst_n            INPUT        F10        LVCMOS25      PAD           N/A           N/A        NONE    
+      hdmi_reinit_req          INPUT        D12        LVCMOS25      PAD           N/A           N/A        NONE    
+      media_reset_req          INPUT        G14        LVCMOS25      PAD           N/A           N/A        NONE    
+  memory_client_reset_req      INPUT         C8        LVCMOS25      PAD           N/A           N/A        NONE    
+      probe_domain[8]         OUTPUT         B5        LVCMOS25      PAD            8            N/A        OREG    
+      probe_domain[7]         OUTPUT        P12        LVCMOS25      PAD            8            N/A        OREG    
+      probe_domain[6]         OUTPUT        A10        LVCMOS25      PAD            8            N/A        OREG    
+      probe_domain[5]         OUTPUT        N16        LVCMOS25      PAD            8            N/A        OREG    
+      probe_domain[4]         OUTPUT         H5        LVCMOS25      PAD            8            N/A        OREG    
+      probe_domain[3]         OUTPUT         M2        LVCMOS25      PAD            8            N/A        OREG    
+      probe_domain[2]         OUTPUT        M16        LVCMOS25      PAD            8            N/A        OREG    
+      probe_domain[1]         OUTPUT         C2        LVCMOS25      PAD            8            N/A        OREG    
+      probe_domain[0]         OUTPUT         J6        LVCMOS25      PAD            8            N/A        OREG    
+      probe_video[7]          OUTPUT        G16        LVCMOS25      PAD            8            N/A        OREG    
+      probe_video[6]          OUTPUT         D3        LVCMOS25      PAD            8            N/A        OREG    
+      probe_video[5]          OUTPUT         J1        LVCMOS25      PAD            8            N/A        OREG    
+      probe_video[4]          OUTPUT        T13        LVCMOS25      PAD            8            N/A        OREG    
+      probe_video[3]          OUTPUT         D5        LVCMOS25      PAD            8            N/A        OREG    
+      probe_video[2]          OUTPUT        R15        LVCMOS25      PAD            8            N/A        OREG    
+      probe_video[1]          OUTPUT         T8        LVCMOS25      PAD            8            N/A        OREG    
+      probe_video[0]          OUTPUT         B3        LVCMOS25      PAD            8            N/A        OREG    
+
+Report Clock Domain Luts:
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Index   |  Name                                                               |  Frequency   |  LUT As Logic   |  LUT As Shifter   |  LUT As Dram   |  BRAM   |  DSP
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  #1      |  u_subsystem/u_clock_gen/gen_video_hd$u_video_pll/pll_inst.clkc[1]  |  74MHz       |  55             |  0                |  0             |  0      |  0
+  #2      |  u_subsystem/u_clock_gen/gen_video_hd$u_video_pll/pll_inst.clkc[2]  |  370MHz      |  1              |  0                |  0             |  0      |  0
+  #3      |  u_subsystem/u_clock_gen/u_audio_pll/pll_inst.clkc[1]               |  12MHz       |  4              |  0                |  0             |  0      |  0
+  #4      |  u_subsystem/u_clock_gen/u_system_pll/pll_inst.clkc[0]              |  100MHz      |  4              |  0                |  0             |  0      |  0
+  #5      |  u_subsystem/u_clock_gen/u_system_pll/pll_inst.clkc[1]              |  125MHz      |  4              |  0                |  0             |  0      |  0
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Clock Resource Statistics
+Index     ClockNet                                                     Type               DriverType         Driver                                                             Fanout
+#1        pixel_clk                                                    Global             pll                u_subsystem/u_clock_gen/gen_video_hd$u_video_pll/pll_inst.clkc1    31
+#2        u_subsystem/u_clock_gen/u_system_pll/clk0_buf                Global             pll                u_subsystem/u_clock_gen/u_system_pll/pll_inst.clkc0                10
+#3        mem_clk                                                      Global             pll                u_subsystem/u_clock_gen/u_system_pll/pll_inst.clkc1                8
+#4        serial_clk                                                   Global             pll                u_subsystem/u_clock_gen/gen_video_hd$u_video_pll/pll_inst.clkc2    6
+#5        u_subsystem/audio_clk                                        Global             pll                u_subsystem/u_clock_gen/u_audio_pll/pll_inst.clkc1                 4
+#6        board_clk_dup_1                                              Global             io                 board_clk_syn_2.di                                                 3
+#7        u_subsystem/u_clock_gen/gen_video_hd$u_video_pll/clk0_buf    Global             pll                u_subsystem/u_clock_gen/gen_video_hd$u_video_pll/pll_inst.clkc0    0
+#8        u_subsystem/u_clock_gen/u_audio_pll/clk0_buf                 Global             pll                u_subsystem/u_clock_gen/u_audio_pll/pll_inst.clkc0                 0
+
+Report Hierarchy Area:
++-------------------------------------------------------------------------------------------------------------+
+|Instance                       |Module                 |le      |lut     |ripple  |seq     |bram    |dsp     |
++-------------------------------------------------------------------------------------------------------------+
+|top                            |clock_video_verify_top |180     |122     |41      |88      |0       |0       |
+|  u_subsystem                  |clock_video_subsystem  |130     |72      |41      |38      |0       |0       |
+|    u_clock_gen                |clock_gen              |1       |1       |0       |0       |0       |0       |
+|      gen_video_hd$u_video_pll |sv_video_hd_pll        |0       |0       |0       |0       |0       |0       |
+|      u_audio_pll              |sv_audio_pll           |0       |0       |0       |0       |0       |0       |
+|      u_system_pll             |sv_system_pll          |0       |0       |0       |0       |0       |0       |
+|    u_clock_reset_ctrl         |clock_reset_ctrl       |23      |6       |0       |18      |0       |0       |
+|      u_audio_reset            |reset_sync             |3       |1       |0       |2       |0       |0       |
+|      u_hdmi_pixel_reset       |reset_sync             |3       |1       |0       |2       |0       |0       |
+|      u_media_reset            |reset_sync             |4       |3       |0       |2       |0       |0       |
+|      u_memory_client_reset    |reset_sync             |3       |1       |0       |2       |0       |0       |
+|      u_hdmi_serial_reset      |reset_sync             |2       |0       |0       |2       |0       |0       |
+|      u_mem_reset              |reset_sync             |2       |0       |0       |2       |0       |0       |
+|      u_pixel_reset            |reset_sync             |2       |0       |0       |2       |0       |0       |
+|      u_serial_reset           |reset_sync             |2       |0       |0       |2       |0       |0       |
+|      u_sys_reset              |reset_sync             |2       |0       |0       |2       |0       |0       |
+|    u_video_timing             |video_timing           |106     |65      |41      |20      |0       |0       |
++-------------------------------------------------------------------------------------------------------------+
+
+
+DataNet Average Fanout:
+
+   Index     Fanout    Nets  
+    #1         1       121   
+    #2         2        14   
+    #3         3        18   
+    #4         4        7    
+    #5        5-10      27   
+    #6       11-50      2    
+  Average     2.36           

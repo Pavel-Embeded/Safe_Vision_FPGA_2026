@@ -61,4 +61,39 @@ if ($missing.Count -gt 0) {
     $missing | ForEach-Object { Write-Error "MISSING $_" }
     exit 1
 }
+$svARequired = @(
+    'docs/clock_video_change_log.md',
+    'docs/clock_video_implementation.md',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.ipc',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_system_pll.ipc',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_system_pll.v',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_hd_pll.ipc',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_hd_pll.v',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.ipc',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/README.md',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/base.tcl',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/base_postroute.tcl',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/clock_video_verify_top.v',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/hd.tcl',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/hd_postroute.tcl',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/postroute.tcl',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/td_flow.tcl',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/verify_clock.sdc',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/verify_pin.adc',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_gen.v',
+    'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_video_subsystem.v',
+    'safevision/rtl/include/video_mode_defs.vh',
+    'safevision/rtl/video/video_timing/video_timing.v',
+    'safevision/tools/check_pll_profiles.py',
+    'safevision/tools/run_video_clock_sim.ps1',
+    'safevision/tools/run_video_clock_td.ps1',
+    'safevision/verification/unit/tb_clock_video_subsystem.sv',
+    'safevision/verification/unit/tb_frame_swap_real_frame.sv',
+    'safevision/verification/unit/tb_video_timing.sv'
+)
+foreach ($svARel in $svARequired) {
+    if (-not (Test-Path -LiteralPath (Join-Path $root $svARel))) { throw "MISSING A $svARel" }
+}
 Write-Output 'LAYOUT PASS: required paths and run_sim file references exist.'

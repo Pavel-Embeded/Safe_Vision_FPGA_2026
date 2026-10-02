@@ -1,0 +1,3 @@
+TD did not emit report_clock_utilization for this device.
+For EG4S20BG256/TD6.2.168116 the console reports: Device not support command report_clock_utilization.
+Use route.area Clock Resource Statistics and route.clock_summary instead.

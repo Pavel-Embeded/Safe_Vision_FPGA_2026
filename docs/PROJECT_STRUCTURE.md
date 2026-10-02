@@ -86,3 +86,12 @@
 > 搬动会打断引用，且它们本身就是 B 链的交付物。
 
 树上标 `[规划]` / `[骨架]` 的 A 视频、顶层及 IP 目录目前只有 README；`platform/.../rtl/` 已有面向综合的复位 RTL（A，已仿真通过）与板级 bring-up 顶层（B，已仿真通过，未上板），但**尚未通过 TD 综合或上板**。C 目录、build、assets、verification 的规划目录和 evidence 仍是骨架。本项目自定原则是先建落点和命名计划，不生成假 RTL。
+
+
+## A Clock / Video Timing 发布补充（2026-10-02）
+
+本次新增模块化 `video_timing.v`、`video_mode_defs.vh`、`clock_gen.v`、`clock_video_subsystem.v`、四套安路官方 PLL `.v/.ipc`，并加固 A 的 `reset_sync.v`。BASE/HD 按编译参数一致选择扫描几何和视频 PLL；输出五时钟、四锁定许可、九路复位和同拍扫描标签。详细用途、频率和验收边界见 [实施说明](clock_video_implementation.md)，端口/时钟域见 [A接口补充](A_clock_video_interfaces.md)。
+
+新 XSim 入口包含五项测试；帧量级联调测试显式传入 TIMEOUT_N=5,000,000，B 模块默认值与 `safevision_defs.vh` 均保持原版本。本次不改 B/C RTL、原 B 单元测试、原 B 回归入口、B 专用文档或 B 上板工程/证据。共享文档保留最新远程原文，仅追加 A 说明；现有 B 验收记录仍按其原证据判断。
+
+Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内部 STA 的实际 A 输入与本提交一致，但 TD 健康告警仍开放（runner 返回 2）。尚未完成 A 产品顶层、完整 HDMI/Frame Reader/OSD/应急链与 A 板级验证。旧 `clock_video_20261002` 是过滤前工作树历史记录，不能把其中 B 默认超时变更或全工作树文件计数当成本提交内容。当前范围与新回归见 [A发布核对](A_PUSH_SCOPE_20261002.md)。

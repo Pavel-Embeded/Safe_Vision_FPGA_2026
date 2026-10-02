@@ -1,0 +1,102 @@
+[
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\tools\\run_video_clock_sim.ps1",
+    "sha256": "14652c8f5965fd0333cb7a0d1ec5f222bc669d5b78486b2d7a33d9154e1ea1d4"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\verification\\unit\\tb_clock_video_subsystem.sv",
+    "sha256": "f3a9bd15e9eb9c111de323e537cec59ba6bc45785ae13bdabf59511fa3ed9108"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\verification\\unit\\tb_video_timing.sv",
+    "sha256": "11ca7df4624c83ff93158d8e5fd32d51ddc920fb8c44cb446f713508ca5e451d"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\verification\\unit\\tb_clock_reset_ctrl.sv",
+    "sha256": "57236d638dc004bf517d6992d9bc551880801b04f80dd8c915277e9e3cb81fac"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\verification\\unit\\tb_frame_swap_ctrl.sv",
+    "sha256": "96b21c3215a41cd030134e4fa8cc2cec39ae21e44748e41e16f8270624f86059"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\verification\\unit\\tb_frame_swap_real_frame.sv",
+    "sha256": "fe08be554b87a0fcc7e4842f5d23149356882d6e32e663e28ca697cd33942acb"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\rtl\\include\\safevision_defs.vh",
+    "sha256": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\rtl\\include\\video_mode_defs.vh",
+    "sha256": "22f47fde1fe2748470f77a55a81e21ff2490c7f592bab3143086789e40d76c0d"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\rtl\\video\\video_timing\\video_timing.v",
+    "sha256": "c4d17719c2ae6b6839e4a34d45698e0fbd4880284e860d1ed0fab85a197f54aa"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\rtl\\memory\\frame_swap_ctrl.v",
+    "sha256": "f7f59f2fe938708cb93c5892c010403b92804632806a1749fa538e11e867fe96"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\rtl\\memory\\frame_buffer_manager.v",
+    "sha256": "d733ae811058470278c90b764218aa9abbfb04db99114ff0baafcf99d669cb8f"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\rtl\\memory\\frame_swap_cdc.v",
+    "sha256": "30db62b77fdb1058140c6018aa69868c9fa54d4730e730b188d2ac956072fdd2"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\clock\\reset_sync.v",
+    "sha256": "173f77bf2a2d13c6d06fbbd8df751fd880b75d59f668380127078715c1b3a11b"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\clock\\clock_reset_ctrl.v",
+    "sha256": "4dd357b9f92acc1a0854453c023266ac0a0a02609b07739994efa38dfd3acd09"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\clock\\clock_gen.v",
+    "sha256": "d3d9428903ddf761259f7e58fa7c5931e0435e459f6817b74c38d96fad7a6f21"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\clock\\clock_video_subsystem.v",
+    "sha256": "3c9002abba3890d5b12304b5d3afd2868b89de44aff199de3281acf37ec25062"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_system_pll.v",
+    "sha256": "8527a17eac78472ab17b5beee30391dccfbb5ed81021da9b16194c7d3c62a145"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_video_vga_pll.v",
+    "sha256": "98d14a4139f9564d913c574f75d7feb0081d2f42e04a03c0d4e161e5795c52bf"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_video_hd_pll.v",
+    "sha256": "ebf2d44fab1730c98159123b91eefc49615b7a8a52febb90cdffb92824a9a3cf"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_audio_pll.v",
+    "sha256": "f65f6c71e67a7362a43d2f6ffa191b9a390ca57f2c1dff152d98d6ab91cce231"
+  },
+  {
+    "path": "D:\\Anlogic\\TD_6.2.1_Engineer_6.2.168.116\\sim_release\\eg4\\eg_logic_clk.v",
+    "sha256": "686ce0c1e4df0bc3cbe1afc4de359f78da57d5521671cc27b8dc5181412a04f2"
+  },
+  {
+    "path": "D:\\Anlogic\\TD_6.2.1_Engineer_6.2.168.116\\sim_release\\eg4\\eg_phy_pll.v",
+    "sha256": "73671e13f74679ac630f68506ce67408455734b21cacae62aeb94f284d7a8eb8"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\rtl\\include\\fault_code_defs.vh",
+    "sha256": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\rtl\\include\\pixel_format_defs.vh",
+    "sha256": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0"
+  },
+  {
+    "path": "D:\\Codex\\2026-09-30\\sao\\work\\a_only_publish_20261002\\repo\\safevision\\rtl\\include\\event_code_defs.vh",
+    "sha256": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2"
+  }
+]

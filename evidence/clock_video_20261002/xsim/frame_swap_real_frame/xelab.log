@@ -1,0 +1,12 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_frame_swap_real_frame -s tb_frame_swap_real_frame_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_swap_ctrl
+Compiling module work.tb_frame_swap_real_frame
+Built simulation snapshot tb_frame_swap_real_frame_sim

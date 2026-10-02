@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Safe_Vision_FPGA_2026/safevision/rtl/memory/frame_buffer_manager.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_buffer_manager
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Safe_Vision_FPGA_2026/safevision/rtl/memory/frame_swap_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_swap_ctrl
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Safe_Vision_FPGA_2026/safevision/rtl/memory/frame_swap_cdc.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_swap_cdc

@@ -1,5 +1,40 @@
-# PLL IP（A：待接入）
+# 安路 TD 官方 PLL 配置
 
-手册要求使用安路 TD 官方 PLL IP；当前仓库没有可复用的生成配置或工程文件。本文件夹不包含仿真假时钟或手写倍频电路。
+四组 `.v` 与 `.ipc` 由本机 TD 6.2.168116（6.2.1 Engineer）官方 IP Generator 生成，目标 EG4S20BG256，参考输入 50 MHz。保留厂商版权、参数与模拟配置。系统和 VGA/HD 生成于 2026-10-01，音频生成于 2026-10-02。GUI 原始导出在验证工程 `al_ip/`，该重复生成目录由 Git 忽略；本目录是项目使用的唯一源。
 
-接入前须核对 HX4S20C/EG4S20BG256 实物板的输入晶振与复位极性，在 TD 中配置 sys 100 MHz、mem 125 MHz、基础 pixel 25.175 MHz、HD pixel 74.25 MHz、serial=5×pixel、audio_mclk 12.288 MHz 的可实现方案，记录 IP/工具版本、输出端口、locked、相位及模式切换方法，再完成 pin.adc/timing.sdc、STA 和板级测量。A 负责板级接线，C 负责音频时钟消费接口。
+## 参数与实际频率
+
+Normal / CLKC0_EXT：`Fvco = 50 MHz × FBCLK_DIV × CLKC0_DIV / REFCLK_DIV`，`Fi = Fvco / CLKCi_DIV`。GUI 允许分频后参考频率 10–400 MHz，VCO 300–1200 MHz，各整数分频 1–128。下表由理想 50 MHz 输入计算，板晶振误差和 PLL 抖动另计。
+
+| IP | REFCLK_DIV | FBCLK_DIV | C0/C1/C2 除数 | VCO MHz | 输出用途及实际 MHz |
+|---|---:|---:|---|---:|---|
+| sv_system_pll | 1 | 2 | 10 / 8 / 禁用 | 1000 | C0=sys 100；C1=mem 125 |
+| sv_video_vga_pll | 3 | 17 | 4 / 45 / 9 | 1133.333333 | C0=反馈；C1=pixel 25.185185185；C2=serial 125.925925926 |
+| sv_video_hd_pll | 4 | 1 | 89 / 15 / 3 | 1112.5 | C0=反馈；C1=pixel 74.166666667；C2=serial 370.833333333 |
+| sv_audio_pll | 2 | 1 | 29 / 59 / 禁用 | 725 | C0=反馈；C1=audio 12.288135593 |
+
+视频 C1 除数是 C2 的五倍，pixel:serial=1:5。每次构建只例化一种视频 PLL，共用三颗物理 PLL。所有输出零相移；高有效 reset 接 `~board_rst_n`；lock 启用；模拟参数使用向导生成的 Medium 配置。
+
+| 用途 | 手册标称 MHz | 本配置实际 MHz | 误差 ppm |
+|---|---:|---:|---:|
+| VGA pixel | 25.175 | 25.185185185 | +404.575 |
+| HD pixel | 74.25 | 74.166666667 | -1122.334 |
+| audio | 12.288 | 12.288135593 | +11.035 |
+
+上述整数和参考/VCO 限制下，三个标称值无法精确实现；保持视频 5:1 时选用最接近目标的合法频率。标称宏不能代替实际 PLL 时钟约束。VGA 实际约 59.964727 Hz，HD 约 59.932660 Hz；audio/256 约 48000.530 Hz。接收端兼容性、抖动和 HDMI ACR 仍须验证。
+
+## 重新生成
+
+1. TD 打开 EG4S20BG256 工程，Tools → IP Catalog → Clock → PLL。
+2. 用表中模块名导出，输入 50 MHz，Normal，CLKC0 反馈，启用 lock，保持高有效 reset。
+3. Parameters setting 填表中 REFCLK_DIV、FBCLK_DIV、C0/C1/C2；只启用所用输出。
+4. 保持零相移、Medium 带宽，核对摘要后生成。
+5. 将 `.v` 与 `.ipc` 成对复制到本目录，比较 SHA256，重跑 XSim 和两档 TD。不要把 al_ip 的同名副本加入源表。
+
+原理和验收范围见 `docs/clock_video_implementation.md`；验证工程见 `../../project/clock_video_verify/README.md`。生成成功和 lock=1 不证明整机 STA 或显示器兼容性。
+
+## 官方频率限制与补偿模式
+
+[新增/纠正] DS301 v2.7.6 第 3 节引用 EAGLE 系列 DC/AC。DS300 v3.9.4 表 2-14/3-18 指定 PLL 输入/PFD 10–400 MHz、VCO 300–1200 MHz、输出 4–400 MHz；表 3-17 的 EAGLEA_10/20 推荐最大时钟频率为 440 MHz。全部启用输出含反馈 C0 已审计在范围内；HD serial=370.833333 MHz，距离 PLL 输出上限约 29.166667 MHz。
+
+`check_pll_profiles.py` 已实际运行并过滤超出输出范围的整数候选，所选频点及官方文件不变。Normal 与 No Compensation 的 GCLK 延迟补偿不同，不能直接互换以消除 USR-6135；当前配置继续使用 Normal。范围检查不证明实际晶振抖动、锁定、输出电气或 HDMI 接收端兼容性。来源、页码、原文件 SHA-256 见 `evidence/clock_video_20261002/official_spec_review.json`。

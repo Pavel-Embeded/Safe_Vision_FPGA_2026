@@ -1059,3 +1059,12 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | v1.10 | 2026-10-02 | **新增 §3.7 板级 bring-up 顶层 `top_stage5_sector_rd`**（阶段 5 最小验证，不属产品链）：端口 / 引脚 / 网络名对照表、`CLK_FREQ/BAUD/TARGET_LBA/POWERUP_CYC` 参数、**50 MHz 不接 PLL 的 bring-up 取舍**（`SD_DIV_INIT=124` → 200 kHz、`SD_DIV_FAST=1` → 12.5 MHz、超时拍数墙上时间翻倍）、两 SD 模块共用一条 SPI 总线的 `init_done` 二选一与 `sd_ncs` 取与、以及 UART 反压握手口径。**B 链既有端口、地址表、错误码一字未变。** 同时写入 `pin.adc` / `timing.sdc`（引脚逐个按 `2_FPGA.pdf` / `6_EX_DEVICE.pdf` 核对，并与厂商同器件例程交叉验证）；`uart_txd = D12`（网络名 `TXD`）**已由开发板手册的串口引脚分配表 + 图2-10 CH340G 原理图确认为 FPGA 发送脚**（板载 USB-UART，无需外接模块）。新增 `tb_top_stage5_sector_rd.sv`（T1–T4，顶层仿真：完整命令序列 / CMD17 参数 1000 / 512 Byte 逐字节与卡模型一致 / 顶层到成功态），B 回归升至 **507 项断言 / 16 个 testbench**。另把 `run_sim.ps1` 的 ModelSim 路径改为 `-ModelSimBin` 参数 + `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，删除写死的本机路径）。
 **★ 同日修复 TD 综合才暴露的多驱动问题**：`sd_initializer.v` 与 `sd_sector_reader.v` 的 `bdata` 同时被「字节引擎」和「主状态机」两个 `always` 块赋值（字节引擎复位分支多写了一次 `bdata <= 8'hFF`）。**ModelSim 编译/仿真都不报错**（两个 always 块写同一 reg 在仿真里只是竞争），TD 综合 elaborate 时直接报 `HDL-8007 net 'bdata[7]' is constantly driven from multiple places` 并把该模块降级成黑盒。已把该复位赋值收归主状态机（单一驱动源），全仓静态复查确认没有同类问题。**接口与行为不变**，回归仍 507 项全 PASS。
 **另（同日追加）**：`TARGET_LBA` 的**默认值从 `32'd1000` 改为 `32'd8192`**（端口/参数名/位宽都没变，只改默认值）：实测本机 TF 卡的**分区从物理扇区 8192 开始**，原定的 LBA 1000 落在分区前的空隙里、读出来是 512 个 `0x00`，两边全零会让逐字节比对失去证明力；改用分区首扇区 = FAT32 引导扇区（非零、可识别）。电脑侧参考值存 `evidence/board/lba8192_pc_20261002.bin`。同时修正待办清单 M-5 的预期值（bring-up 跑 50 MHz，SCLK 应为 200 kHz / 12.5 MHz，是 400 kHz / 25 MHz 的一半）。 | B |
+
+
+## A Clock / Video Timing 发布补充（2026-10-02）
+
+本次新增模块化 `video_timing.v`、`video_mode_defs.vh`、`clock_gen.v`、`clock_video_subsystem.v`、四套安路官方 PLL `.v/.ipc`，并加固 A 的 `reset_sync.v`。BASE/HD 按编译参数一致选择扫描几何和视频 PLL；输出五时钟、四锁定许可、九路复位和同拍扫描标签。详细用途、频率和验收边界见 [实施说明](clock_video_implementation.md)，端口/时钟域见 [A接口补充](A_clock_video_interfaces.md)。
+
+新 XSim 入口包含五项测试；帧量级联调测试显式传入 TIMEOUT_N=5,000,000，B 模块默认值与 `safevision_defs.vh` 均保持原版本。本次不改 B/C RTL、原 B 单元测试、原 B 回归入口、B 专用文档或 B 上板工程/证据。共享文档保留最新远程原文，仅追加 A 说明；现有 B 验收记录仍按其原证据判断。
+
+Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内部 STA 的实际 A 输入与本提交一致，但 TD 健康告警仍开放（runner 返回 2）。尚未完成 A 产品顶层、完整 HDMI/Frame Reader/OSD/应急链与 A 板级验证。旧 `clock_video_20261002` 是过滤前工作树历史记录，不能把其中 B 默认超时变更或全工作树文件计数当成本提交内容。当前范围与新回归见 [A发布核对](A_PUSH_SCOPE_20261002.md)。

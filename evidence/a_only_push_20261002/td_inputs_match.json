@@ -1,0 +1,152 @@
+[
+  {
+    "mode": "base",
+    "inputs": [
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_system_pll.v",
+        "sha256": "8527a17eac78472ab17b5beee30391dccfbb5ed81021da9b16194c7d3c62a145"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v",
+        "sha256": "98d14a4139f9564d913c574f75d7feb0081d2f42e04a03c0d4e161e5795c52bf"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v",
+        "sha256": "f65f6c71e67a7362a43d2f6ffa191b9a390ca57f2c1dff152d98d6ab91cce231"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_gen.v",
+        "sha256": "d3d9428903ddf761259f7e58fa7c5931e0435e459f6817b74c38d96fad7a6f21"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
+        "sha256": "173f77bf2a2d13c6d06fbbd8df751fd880b75d59f668380127078715c1b3a11b"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_reset_ctrl.v",
+        "sha256": "4dd357b9f92acc1a0854453c023266ac0a0a02609b07739994efa38dfd3acd09"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_video_subsystem.v",
+        "sha256": "3c9002abba3890d5b12304b5d3afd2868b89de44aff199de3281acf37ec25062"
+      },
+      {
+        "path": "safevision/rtl/video/video_timing/video_timing.v",
+        "sha256": "c4d17719c2ae6b6839e4a34d45698e0fbd4880284e860d1ed0fab85a197f54aa"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/clock_video_verify_top.v",
+        "sha256": "1d4457b4413f54421f7e047bb0c28e56e6f44932fe8f517d04744fb4f49f4b06"
+      },
+      {
+        "path": "safevision/rtl/include/video_mode_defs.vh",
+        "sha256": "22f47fde1fe2748470f77a55a81e21ff2490c7f592bab3143086789e40d76c0d"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/verify_clock.sdc",
+        "sha256": "8d04c8465162dbe934bf268ace312828b58e3ea99332d391351704d1c80cdb7b"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/verify_pin.adc",
+        "sha256": "7169cafedfbfb68f969983469c7ecc858c5eb118835369f33454a71c0fd50b85"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/td_flow.tcl",
+        "sha256": "e9ae8949d1df895469b019add2b47b721bda8bc7b3b5eaa67e255ced0947573f"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/postroute.tcl",
+        "sha256": "050ac818cc6334e4dae55056fee1639b9f98e4cc73849103ed0debb67ec4df9a"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/base.tcl",
+        "sha256": "48b500f0c1d255a29ee0b487988413a52c34b9f58bb6d4b3450f76e33705ef2a"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/base_postroute.tcl",
+        "sha256": "e594a63d1357c97f38b834eb62c4d745fc2ad11574c1802a5488addcbfb58735"
+      },
+      {
+        "path": "safevision/tools/run_video_clock_td.ps1",
+        "sha256": "0036be92cc4bf2a5d7f08516ea5124d9f2d77e57d64442edc632273c044b5e30"
+      }
+    ],
+    "all_match": true,
+    "rerun_this_publish": false
+  },
+  {
+    "mode": "hd",
+    "inputs": [
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_system_pll.v",
+        "sha256": "8527a17eac78472ab17b5beee30391dccfbb5ed81021da9b16194c7d3c62a145"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_hd_pll.v",
+        "sha256": "ebf2d44fab1730c98159123b91eefc49615b7a8a52febb90cdffb92824a9a3cf"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v",
+        "sha256": "f65f6c71e67a7362a43d2f6ffa191b9a390ca57f2c1dff152d98d6ab91cce231"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_gen.v",
+        "sha256": "d3d9428903ddf761259f7e58fa7c5931e0435e459f6817b74c38d96fad7a6f21"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
+        "sha256": "173f77bf2a2d13c6d06fbbd8df751fd880b75d59f668380127078715c1b3a11b"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_reset_ctrl.v",
+        "sha256": "4dd357b9f92acc1a0854453c023266ac0a0a02609b07739994efa38dfd3acd09"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_video_subsystem.v",
+        "sha256": "3c9002abba3890d5b12304b5d3afd2868b89de44aff199de3281acf37ec25062"
+      },
+      {
+        "path": "safevision/rtl/video/video_timing/video_timing.v",
+        "sha256": "c4d17719c2ae6b6839e4a34d45698e0fbd4880284e860d1ed0fab85a197f54aa"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/clock_video_verify_top.v",
+        "sha256": "1d4457b4413f54421f7e047bb0c28e56e6f44932fe8f517d04744fb4f49f4b06"
+      },
+      {
+        "path": "safevision/rtl/include/video_mode_defs.vh",
+        "sha256": "22f47fde1fe2748470f77a55a81e21ff2490c7f592bab3143086789e40d76c0d"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/verify_clock.sdc",
+        "sha256": "8d04c8465162dbe934bf268ace312828b58e3ea99332d391351704d1c80cdb7b"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/verify_pin.adc",
+        "sha256": "7169cafedfbfb68f969983469c7ecc858c5eb118835369f33454a71c0fd50b85"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/td_flow.tcl",
+        "sha256": "e9ae8949d1df895469b019add2b47b721bda8bc7b3b5eaa67e255ced0947573f"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/postroute.tcl",
+        "sha256": "050ac818cc6334e4dae55056fee1639b9f98e4cc73849103ed0debb67ec4df9a"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/hd.tcl",
+        "sha256": "12f48448781a6f3921f12d74ab7280943fdf475022f09754d53e3f3073233ea3"
+      },
+      {
+        "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/hd_postroute.tcl",
+        "sha256": "16b18c223927c07f039abe480b233b4db9c1adfb154670a178f5145e39554974"
+      },
+      {
+        "path": "safevision/tools/run_video_clock_td.ps1",
+        "sha256": "0036be92cc4bf2a5d7f08516ea5124d9f2d77e57d64442edc632273c044b5e30"
+      }
+    ],
+    "all_match": true,
+    "rerun_this_publish": false
+  }
+]

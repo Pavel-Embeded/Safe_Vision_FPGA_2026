@@ -55,3 +55,10 @@ Desktop.ini
 .vscode/
 .idea/
 __pycache__/
+
+# A Clock/Video Timing GUI duplicates and temporary sessions.
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/al_ip/
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/.recent_user_depot*
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/.lock.f
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/log/
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/td_*.logw

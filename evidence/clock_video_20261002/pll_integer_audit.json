@@ -1,0 +1,169 @@
+{
+  "result": "PASS",
+  "scope": "integer configuration and documented frequency limits only; excludes physical AC measurements, jitter, PCB and receiver compliance",
+  "frequency_limits": {
+    "source": "DS301 v2.7.6 section 3 -> DS300 v3.9.4 tables 2-14, 3-17, 3-18",
+    "input_pfd_range_hz": [
+      10000000,
+      400000000
+    ],
+    "vco_range_hz": [
+      300000000,
+      1200000000
+    ],
+    "output_range_hz": [
+      4000000,
+      400000000
+    ],
+    "family_recommended_clock_max_hz": 440000000
+  },
+  "profiles": [
+    {
+      "name": "sv_system_pll",
+      "ref_div": 1,
+      "fb_div": 2,
+      "c0_div": 10,
+      "c1_div": 8,
+      "pfd_hz": 50000000.0,
+      "vco_hz": 1000000000.0,
+      "ipc_matches_generated_parameters": true,
+      "output_frequency_limit_checks": [
+        {
+          "output": "C0",
+          "frequency_hz": 100000000.0,
+          "pll_max_margin_hz": 300000000.0,
+          "recommended_clock_max_margin_hz": 340000000.0
+        },
+        {
+          "output": "C1",
+          "frequency_hz": 125000000.0,
+          "pll_max_margin_hz": 275000000.0,
+          "recommended_clock_max_margin_hz": 315000000.0
+        }
+      ],
+      "sys_hz": 100000000.0,
+      "mem_hz": 125000000.0
+    },
+    {
+      "name": "sv_video_vga_pll",
+      "ref_div": 3,
+      "fb_div": 17,
+      "c0_div": 4,
+      "c1_div": 45,
+      "pfd_hz": 16666666.666666666,
+      "vco_hz": 1133333333.3333333,
+      "c2_div": 9,
+      "serial_hz": 125925925.92592593,
+      "ipc_matches_generated_parameters": true,
+      "output_frequency_limit_checks": [
+        {
+          "output": "C0",
+          "frequency_hz": 283333333.3333333,
+          "pll_max_margin_hz": 116666666.66666667,
+          "recommended_clock_max_margin_hz": 156666666.66666666
+        },
+        {
+          "output": "C1",
+          "frequency_hz": 25185185.185185187,
+          "pll_max_margin_hz": 374814814.8148148,
+          "recommended_clock_max_margin_hz": 414814814.8148148
+        },
+        {
+          "output": "C2",
+          "frequency_hz": 125925925.92592593,
+          "pll_max_margin_hz": 274074074.0740741,
+          "recommended_clock_max_margin_hz": 314074074.0740741
+        }
+      ],
+      "target_hz": 25175000,
+      "actual_hz": 25185185.185185187,
+      "actual_fraction_hz": "680000000/27",
+      "offset_ppm": 404.5753797491633,
+      "search": {
+        "unique_vcos": 181,
+        "candidate_frequencies_checked": 4065,
+        "excluded_by_output_frequency": 460,
+        "exact_target_possible": false,
+        "nearest_hz": 25185185.185185187
+      }
+    },
+    {
+      "name": "sv_video_hd_pll",
+      "ref_div": 4,
+      "fb_div": 1,
+      "c0_div": 89,
+      "c1_div": 15,
+      "pfd_hz": 12500000.0,
+      "vco_hz": 1112500000.0,
+      "c2_div": 3,
+      "serial_hz": 370833333.3333333,
+      "ipc_matches_generated_parameters": true,
+      "output_frequency_limit_checks": [
+        {
+          "output": "C0",
+          "frequency_hz": 12500000.0,
+          "pll_max_margin_hz": 387500000.0,
+          "recommended_clock_max_margin_hz": 427500000.0
+        },
+        {
+          "output": "C1",
+          "frequency_hz": 74166666.66666667,
+          "pll_max_margin_hz": 325833333.3333333,
+          "recommended_clock_max_margin_hz": 365833333.3333333
+        },
+        {
+          "output": "C2",
+          "frequency_hz": 370833333.3333333,
+          "pll_max_margin_hz": 29166666.666666668,
+          "recommended_clock_max_margin_hz": 69166666.66666667
+        }
+      ],
+      "target_hz": 74250000,
+      "actual_hz": 74166666.66666667,
+      "actual_fraction_hz": "222500000/3",
+      "offset_ppm": -1122.334455667789,
+      "search": {
+        "unique_vcos": 181,
+        "candidate_frequencies_checked": 4065,
+        "excluded_by_output_frequency": 460,
+        "exact_target_possible": false,
+        "nearest_hz": 74166666.66666667
+      }
+    },
+    {
+      "name": "sv_audio_pll",
+      "ref_div": 2,
+      "fb_div": 1,
+      "c0_div": 29,
+      "c1_div": 59,
+      "pfd_hz": 25000000.0,
+      "vco_hz": 725000000.0,
+      "ipc_matches_generated_parameters": true,
+      "output_frequency_limit_checks": [
+        {
+          "output": "C0",
+          "frequency_hz": 25000000.0,
+          "pll_max_margin_hz": 375000000.0,
+          "recommended_clock_max_margin_hz": 415000000.0
+        },
+        {
+          "output": "C1",
+          "frequency_hz": 12288135.593220338,
+          "pll_max_margin_hz": 387711864.40677965,
+          "recommended_clock_max_margin_hz": 427711864.40677965
+        }
+      ],
+      "target_hz": 12288000,
+      "actual_hz": 12288135.593220338,
+      "actual_fraction_hz": "725000000/59",
+      "offset_ppm": 11.034604519774012,
+      "search": {
+        "unique_vcos": 181,
+        "candidate_frequencies_checked": 21764,
+        "excluded_by_output_frequency": 1404,
+        "exact_target_possible": false,
+        "nearest_hz": 12288135.593220338
+      }
+    }
+  ]
+}

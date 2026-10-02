@@ -1,0 +1,101 @@
+{
+  "reviewed_at": "2026-10-02T15:21:47.876650+08:00",
+  "discovery_page": "https://www.anlogic.com/en/support/tools-downloads",
+  "access": "Links opened in browser, actual PDF URLs verified, downloaded with Python default TLS verification; selected text and rendered pages reviewed.",
+  "sources": [
+    {
+      "file": "DS301_EG4S20_Datasheet_en_v2.7.6.pdf",
+      "url": "https://anlogic.oss-cn-shanghai.aliyuncs.com/web_doc/%E5%B7%A5%E5%85%B7%E4%B8%8E%E8%B5%84%E6%96%99%E4%B8%8B%E8%BD%BD/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/EG4/%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C/DS301_EG4S20_Datasheet_en.pdf",
+      "local_review_copy": "D:\\Codex\\2026-09-30\\sao\\work\\DS301_EG4S20_Datasheet_en_v2.7.6.pdf",
+      "sha256": "1522FEEA49F4277F14B33283D08421E17C616F30577E666614A8F05512A03FA0",
+      "bytes": 1855868,
+      "pdf_pages": 38
+    },
+    {
+      "file": "DS300_Eagle_Datasheet_en_v3.9.4.pdf",
+      "url": "https://anlogic.oss-cn-shanghai.aliyuncs.com/web_doc/%E5%B7%A5%E5%85%B7%E4%B8%8E%E8%B5%84%E6%96%99%E4%B8%8B%E8%BD%BD/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/EG4/%E6%95%B0%E6%8D%AE%E6%89%8B%E5%86%8C/DS300_Eagle_Datasheet_en.pdf",
+      "local_review_copy": "D:\\Codex\\2026-09-30\\sao\\work\\DS300_Eagle_Datasheet_en_v3.9.4.pdf",
+      "sha256": "6D87C11A18F47018A340FE95FE35F4B04F9A8FD07FFBCB04EF9A7D2955437595",
+      "bytes": 4657904,
+      "pdf_pages": 136
+    }
+  ],
+  "applicability": "DS301 v2.7.6 section 3, PDF page 8, refers EG4S20 DC/AC to the EAGLE/EG4X20 family datasheet.",
+  "facts": [
+    {
+      "source": "DS300 v3.9.4",
+      "pdf_page": 42,
+      "printed_page": 37,
+      "table": "2-14",
+      "item": "PLL output range",
+      "mhz": [
+        4,
+        400
+      ]
+    },
+    {
+      "source": "DS300 v3.9.4",
+      "pdf_page": 103,
+      "printed_page": 98,
+      "table": "3-18",
+      "item": "Input/PFD range",
+      "mhz": [
+        10,
+        400
+      ]
+    },
+    {
+      "source": "DS300 v3.9.4",
+      "pdf_page": 103,
+      "printed_page": 98,
+      "table": "3-18",
+      "item": "VCO range",
+      "mhz": [
+        300,
+        1200
+      ]
+    },
+    {
+      "source": "DS300 v3.9.4",
+      "pdf_page": 103,
+      "printed_page": 98,
+      "table": "3-18",
+      "item": "PLL output maximum",
+      "mhz": 400
+    },
+    {
+      "source": "DS300 v3.9.4",
+      "pdf_page": 103,
+      "printed_page": 98,
+      "table": "3-17",
+      "item": "Recommended maximum clock frequency, EAGLEA_10/20 rows",
+      "mhz": 440
+    },
+    {
+      "source": "DS300 v3.9.4",
+      "pdf_page": 104,
+      "printed_page": 99,
+      "table": "3-18 continued",
+      "item": "Lock time maximum",
+      "ms": 15
+    },
+    {
+      "source": "DS300 v3.9.4",
+      "pdf_page": 45,
+      "printed_page": 40,
+      "section": "2.4.3",
+      "item": "Normal compensates GCLK delay; No Compensation uses internal feedback without this compensation."
+    }
+  ],
+  "profile_audit": {
+    "result": "PASS",
+    "video_legal_candidates": 4065,
+    "video_rejected_candidates": 460,
+    "audio_legal_candidates": 21764,
+    "audio_rejected_candidates": 1404
+  },
+  "hdl_or_ip_modified_by_this_review": false,
+  "board_measurements_performed": false,
+  "scope": "Published nominal frequency limits only; recommended family clock frequency is not a per-path timing guarantee or HDMI/PCB qualification.",
+  "language_note": "The download page states that Chinese documents control if translations conflict. Current 400 MHz input limit is stricter than old TN305 500 MHz; the 50 MHz profiles satisfy both."
+}

@@ -1,0 +1,1052 @@
+{
+  "parent": "7c5bee1a7a30b8d168da8fb17747a79e3065ca9d",
+  "base_tree": "74d4052d867b99554d5d9bff2e63a9735f43fcb9",
+  "modified": 15,
+  "added": 156,
+  "deleted": 0,
+  "original_workspace_files_unchanged": true,
+  "original_workspace_head_unchanged": true,
+  "protected_existing_files": 131,
+  "protected_files_unchanged": true,
+  "excluded_local_edits": [
+    "safevision/rtl/memory/frame_swap_ctrl.v",
+    "safevision/rtl/include/safevision_defs.vh",
+    "docs/B链-原理讲解-入门版.md",
+    "docs/B链-待办与硬件验证清单.md"
+  ],
+  "xsim_runner_exit": 0,
+  "xsim_cases": [
+    "video_timing",
+    "clock_reset",
+    "frame_swap_existing",
+    "frame_swap_real_frame",
+    "clock_video_subsystem"
+  ],
+  "pll_audit": "PASS",
+  "structure_check_exit": 0,
+  "td_inputs_per_mode": 17,
+  "td_inputs_unchanged": true,
+  "td_rerun_this_publish": false,
+  "td_health_warnings_open": true,
+  "a_board_verified": false,
+  "scope_hash_exclusions": [
+    "evidence/a_only_push_20261002/push_scope.json",
+    "evidence/a_only_push_20261002/changes.tsv"
+  ],
+  "changes": [
+    {
+      "status": "M",
+      "path": ".gitignore",
+      "git_blob_sha": "c3a44f2d94abc6ad82ed1b23569b3eb7338865bb",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "README.md",
+      "git_blob_sha": "9193bfc30be8b38487492fbc175679684cde1ce0",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "docs/A_PUSH_SCOPE_20261002.md",
+      "git_blob_sha": "31a07e30ba3fcc3851e90f2af5c8dfc35e67e7c4",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "docs/A_clock_video_interfaces.md",
+      "git_blob_sha": "ea5e6051272ed8b422859bc8078d3846ce4023b7",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "docs/PROJECT_STRUCTURE.md",
+      "git_blob_sha": "967fca4e6c63b83a7a6a375cfada14f62d553867",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "docs/architecture/module_registry.md",
+      "git_blob_sha": "2ed9052947b290febe419590004ad4b3ea9e5a5e",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "docs/architecture/system_design.md",
+      "git_blob_sha": "c57897b8b14d962a734335052357f3801ef6c7cf",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "docs/clock_video_change_log.md",
+      "git_blob_sha": "a901b53fb6b2731263ff1f78a9f826510072cfb3",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "docs/clock_video_commit_message.txt",
+      "git_blob_sha": "7de4c12963c7d91943804a41b5b2de196a2e613d",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "docs/clock_video_implementation.md",
+      "git_blob_sha": "bf36d72afb88e51e5d23373cd19eddb437cd8979",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "docs/interface_spec.md",
+      "git_blob_sha": "7b3d415c313ff66a5079329d4fb19650f84dbfee",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "docs/management/WORK_ITEMS.md",
+      "git_blob_sha": "94730a82535b72befc505308033bf67a208b6b03",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "docs/requirements/traceability.md",
+      "git_blob_sha": "98de7386ebeedb439b55b59d25dddfd1920f5b8c",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "docs/verification/test_matrix.md",
+      "git_blob_sha": "16a0f060c6dad5787029e83e0ca14e65ec7e3f1a",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "evidence/README.md",
+      "git_blob_sha": "49f4f25d41985caa80190a04a9309df4e436e9b1",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/README.md",
+      "git_blob_sha": "d8b7b9a1826c4f1391dadc924e9dc8c2a10d0813",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/pll_integer_audit.json",
+      "git_blob_sha": "7558f3c283681d51f523874e1574f0e135a88c0a",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/structure_check.log",
+      "git_blob_sha": "4df14c754508156860bebd739820f78af08a92f8",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/td_inputs_match.json",
+      "git_blob_sha": "1669b130dd357adfe58a5d2a770393100babe720",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/clock_reset/xelab.log",
+      "git_blob_sha": "8dc5aaaa0f9f8ae87134cc5750857502c4d67327",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/clock_reset/xsim.log",
+      "git_blob_sha": "55c4d36692593010fdd119f439907c7153026250",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/clock_reset/xvlog_sv.log",
+      "git_blob_sha": "6519c34af1bbd9f44382b97c08f485d61787d88a",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/clock_reset/xvlog_verilog.log",
+      "git_blob_sha": "afd8231737ca86c3c1a9104c47d979096d1891ef",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/clock_video_subsystem/xelab.log",
+      "git_blob_sha": "0047236c11e554e4af0ec3ac99fa38783e06c1e7",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/clock_video_subsystem/xsim.log",
+      "git_blob_sha": "9b32902639a4946e7771b9512f5fa272e1f87f47",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/clock_video_subsystem/xvlog_sv.log",
+      "git_blob_sha": "2db8f8776f4c339b7bc6ae5ddf6d471c2fce7397",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/clock_video_subsystem/xvlog_verilog.log",
+      "git_blob_sha": "03d0dfa1cd73e6a9dd069cfb21d9f8b5166cdb26",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/frame_swap_existing/xelab.log",
+      "git_blob_sha": "15a764a4ca4391f621d504c87d54b2f2f43c8331",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/frame_swap_existing/xsim.log",
+      "git_blob_sha": "7b48470c2fa2a837dcc8266643525295a23425b3",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/frame_swap_existing/xvlog_sv.log",
+      "git_blob_sha": "20a088f7fbe50fcdc700994347f9ef5d73a2c2b6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/frame_swap_existing/xvlog_verilog.log",
+      "git_blob_sha": "76d2edc17bf30ed5aa190c862a110d37fd03b5eb",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/frame_swap_real_frame/xelab.log",
+      "git_blob_sha": "bfa3ef966451a13dbf18ad2cc248aeb0244c5bb0",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/frame_swap_real_frame/xsim.log",
+      "git_blob_sha": "781a0171b107886efce3100e4c6428f8924c1349",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/frame_swap_real_frame/xvlog_sv.log",
+      "git_blob_sha": "e8fc26372eab00228c3bce17388b8b053139cb87",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/frame_swap_real_frame/xvlog_verilog.log",
+      "git_blob_sha": "65bac40471c4fa40fde4db88ac194c1340f77e16",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/video_timing/xelab.log",
+      "git_blob_sha": "c9849e3a7876cd2045552757835bd46bd32c8de9",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/video_timing/xsim.log",
+      "git_blob_sha": "f1c7726f37fa3f9a3615e03738a71b233c6ecb15",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/video_timing/xvlog_sv.log",
+      "git_blob_sha": "435046c305cef55c010957d4e5edea06264a0676",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim/video_timing/xvlog_verilog.log",
+      "git_blob_sha": "636c68cd3aa5d288ddf5ea97916bdfa7dba8ee04",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/a_only_push_20261002/xsim_input_sha256.json",
+      "git_blob_sha": "cdc06213410cd5b9f886e706ebefd222b88d7ef8",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/README.md",
+      "git_blob_sha": "dc38043e2dfd356006da0bda03b69c08068cd606",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/changes.tsv",
+      "git_blob_sha": "6b5f8239f5b1bac7df3b087ee8631e0248b02a10",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/completion_audit.md",
+      "git_blob_sha": "2f484ff782d8c9499bb6561014d98661bf1b08d0",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/delivery_audit.json",
+      "git_blob_sha": "7c593212230b5ec87609e872e20d7725be0f2ceb",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/delivery_sha256.txt",
+      "git_blob_sha": "4d37d93c8e38c44a8a13c8410025585aa32c99a6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/official_spec_review.json",
+      "git_blob_sha": "9aeab15620a32d734b6df7f483889bacf97066c9",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/pll_config_sha256.txt",
+      "git_blob_sha": "3b278d40148d758cfe88e15b52d0f4f6a7873f03",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/pll_integer_audit.json",
+      "git_blob_sha": "7558f3c283681d51f523874e1574f0e135a88c0a",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/pll_provenance.json",
+      "git_blob_sha": "655e43337f79eb74bc3b346d64b0f2dd3b566dd6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/repository_hdl_sha256.txt",
+      "git_blob_sha": "a9e212ff0fe85a1c1b607d620940ccdacca41140",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/source_sha256.txt",
+      "git_blob_sha": "9023a660a480d15322bfa901603d416077f093b6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/sta_report.md",
+      "git_blob_sha": "a1a201b42353ab37b59610884f728d73f03b6157",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/sta_summary.json",
+      "git_blob_sha": "3a84fe61452a8c3f863f48c3794a18d533c67190",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/flow.console.log",
+      "git_blob_sha": "539e53ae2ebcaef0753af513ea594171f81aa080",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/place.clock_utilization.note",
+      "git_blob_sha": "d84c28a7b2b08238d8260f75c7f5ab3c8aa51e79",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute.console.log",
+      "git_blob_sha": "27b7b88fe9cf997c0c38b045a1dca0a22df0a85e",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute/final.area",
+      "git_blob_sha": "1d690a520da128ab340a3abf47dcd50a19eb7c1f",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute/final.check_timing",
+      "git_blob_sha": "3bce31a5e13ce4154160cc1697ba5e91dc1c252e",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute/final.clock_intersection",
+      "git_blob_sha": "83bf03adcc40d44eaa9ece4d08f479d114a01281",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute/final.clock_summary",
+      "git_blob_sha": "1e284b08990dc2d03a54c73b5bd5913471c34d01",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute/final.derived.sdc",
+      "git_blob_sha": "caae5fcdf4fccf03577786e5265bb20ddac81e27",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute/final.exceptions",
+      "git_blob_sha": "39b76adac3c370c556d4914a4c9ed312c198aba3",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute/final.ignored",
+      "git_blob_sha": "d6f6f1bdd42664f34907d1eec4b3f009e7d6b625",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute/final.status",
+      "git_blob_sha": "d51ec2436af25c007a5e6496189d9e6ead392381",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/postroute/final.timing",
+      "git_blob_sha": "172084e776de525c5d13457218baeb0705314cef",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.area",
+      "git_blob_sha": "1d690a520da128ab340a3abf47dcd50a19eb7c1f",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.check_timing",
+      "git_blob_sha": "3bce31a5e13ce4154160cc1697ba5e91dc1c252e",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.clock_intersection",
+      "git_blob_sha": "dbb7d75472c542c64c279643f713c9ae9c9cd857",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.clock_summary",
+      "git_blob_sha": "f9fbda13dab36df659a8c1ee931c72ba2c77a462",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.db",
+      "git_blob_sha": "f520b0501a616c78c68401f9df1243db8aad4c9c",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.derived.sdc",
+      "git_blob_sha": "caae5fcdf4fccf03577786e5265bb20ddac81e27",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.exceptions",
+      "git_blob_sha": "44f7715c16807c79ad153961a974cb8d4729ef64",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.ignored",
+      "git_blob_sha": "848cfaee6d294792db2c923e7bdd645c12c21b53",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.qor",
+      "git_blob_sha": "b4f1b3dd83b179a0db6a6a4c85956b4d3f124357",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.status",
+      "git_blob_sha": "d51ec2436af25c007a5e6496189d9e6ead392381",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/route.timing",
+      "git_blob_sha": "045631a791468b73474ae3b93e5077a7bff02882",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/source_manifest.txt",
+      "git_blob_sha": "f037bde76c8ea2fd32f16480a6d9e2ab7e1c72eb",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/base/source_sha256.txt",
+      "git_blob_sha": "01c5e5863ee2164b36c8b5426f0a85d85ff906ef",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/README.md",
+      "git_blob_sha": "321ab66218d7e9c01e6b56ea7f91746a961e0973",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/order.clock_tree",
+      "git_blob_sha": "649625d2f8039fa4a9bd93abfd030ce2b2488e19",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/order.console.log",
+      "git_blob_sha": "460d4a0f04169869bc7430f11ee97edcd859b602",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/order_after.check",
+      "git_blob_sha": "3bce31a5e13ce4154160cc1697ba5e91dc1c252e",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/order_after.timing",
+      "git_blob_sha": "1004c6788a63bad428e55bfeab7dfaf51f04bc9a",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/order_base_route.db",
+      "git_blob_sha": "22a0f96a0052356115b64d1184c672fca2880662",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/order_before.check",
+      "git_blob_sha": "753495b7777e16477698ee83cdad3febef394f6d",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/order_before.timing",
+      "git_blob_sha": "1004c6788a63bad428e55bfeab7dfaf51f04bc9a",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/order_experiment.tcl",
+      "git_blob_sha": "82ae831fa6469a1992e81ffbcd15ddd3974f40b0",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/diagnostics/order_input.sdc",
+      "git_blob_sha": "b838e7f25104dc3fa5cd2ec875a500b4b1f242e9",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/flow.console.log",
+      "git_blob_sha": "64f327085dd7c75c97b0dc4f17cac84d90f8f6c5",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/place.clock_utilization.note",
+      "git_blob_sha": "d84c28a7b2b08238d8260f75c7f5ab3c8aa51e79",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute.console.log",
+      "git_blob_sha": "3abbb0e92d9f68f7ffef4e3885e1eed0907c5c09",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute/final.area",
+      "git_blob_sha": "2eee70309c877673dc0c7456367b4c48b8b8a8c6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute/final.check_timing",
+      "git_blob_sha": "ce47f042de0951ca8fd929b53547bd6f7c373c9d",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute/final.clock_intersection",
+      "git_blob_sha": "4b7e36c500c6068968a401bf99d5bd26de3cc17d",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute/final.clock_summary",
+      "git_blob_sha": "644ada5035754e986726f6023abb1e1dc5d7c341",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute/final.derived.sdc",
+      "git_blob_sha": "caae5fcdf4fccf03577786e5265bb20ddac81e27",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute/final.exceptions",
+      "git_blob_sha": "1c1f734c570e90a6a5ff347215ae004f6ee6c6e0",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute/final.ignored",
+      "git_blob_sha": "533a67a97e707b05578e43d3d1b4ae11b6968bc5",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute/final.status",
+      "git_blob_sha": "be9ccf5dc2bc4bbb064cf08c43bd652d451d5bc7",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/postroute/final.timing",
+      "git_blob_sha": "3e49057e7c7a5cfb4a57167bd4acceb7e4c87e3a",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.area",
+      "git_blob_sha": "2eee70309c877673dc0c7456367b4c48b8b8a8c6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.check_timing",
+      "git_blob_sha": "ce47f042de0951ca8fd929b53547bd6f7c373c9d",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.clock_intersection",
+      "git_blob_sha": "d4316b0e25f592b039cfa988d124f336187649f6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.clock_summary",
+      "git_blob_sha": "605f5349e4d4b545402a8065d2c2c2bbd7a403f7",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.db",
+      "git_blob_sha": "2d69838f030fef511eaeb1b644ddf2e781026119",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.derived.sdc",
+      "git_blob_sha": "caae5fcdf4fccf03577786e5265bb20ddac81e27",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.exceptions",
+      "git_blob_sha": "0e0ff1745cb304d9ad53250174f149f538226763",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.ignored",
+      "git_blob_sha": "f627b9ec2c7a326a6baca9b2d130e31f8c14935f",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.qor",
+      "git_blob_sha": "bc62036f785016b0f172660cef701916f2c6cff3",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.status",
+      "git_blob_sha": "be9ccf5dc2bc4bbb064cf08c43bd652d451d5bc7",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/route.timing",
+      "git_blob_sha": "415889625c30e510d63351eb9c6040107fb0a901",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/source_manifest.txt",
+      "git_blob_sha": "d0749ee0bf4410ece0c61b2181ae35a294a25fae",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/hd/source_sha256.txt",
+      "git_blob_sha": "8cda22970a490213d0236374d5380fb08cfd30a5",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/runner_exit.txt",
+      "git_blob_sha": "4c9703eb3cc38d13f4e0f9017530ba0180e38169",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/td/verification_status.txt",
+      "git_blob_sha": "89a60b20ba580bdf568b7001f37827a46f61a6c5",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/clock_reset/xelab.log",
+      "git_blob_sha": "8dc5aaaa0f9f8ae87134cc5750857502c4d67327",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/clock_reset/xsim.log",
+      "git_blob_sha": "7868a748f349112fe63433d14be86039722a39a1",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/clock_reset/xvlog_sv.log",
+      "git_blob_sha": "c0504bbcb8815fe9b2125a62593588befa876f98",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/clock_reset/xvlog_verilog.log",
+      "git_blob_sha": "4a359139d4ae74ba847fad092ea704f28ba70881",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/clock_video_subsystem/xelab.log",
+      "git_blob_sha": "59283dfff21c2270fb15d0b8cb42c9099a7853c4",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/clock_video_subsystem/xsim.log",
+      "git_blob_sha": "ff5de42c18ff4a973d837f0161c68f5fcca10719",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/clock_video_subsystem/xvlog_sv.log",
+      "git_blob_sha": "bb66537cf9c6355ad9effd21a322cd34f21becfd",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/clock_video_subsystem/xvlog_verilog.log",
+      "git_blob_sha": "cc0fc0c361785e8900f81409266fdd5b853fb6dd",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/frame_swap_existing/xelab.log",
+      "git_blob_sha": "15a764a4ca4391f621d504c87d54b2f2f43c8331",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/frame_swap_existing/xsim.log",
+      "git_blob_sha": "d0ed69467df737c2ea52f9855633c550d9477127",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/frame_swap_existing/xvlog_sv.log",
+      "git_blob_sha": "289d4e483304a0f7b148dad6e9eed47eaa707f55",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/frame_swap_existing/xvlog_verilog.log",
+      "git_blob_sha": "164c4d532e37d34b0e5a3294007727b5938c00c9",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/frame_swap_real_frame/xelab.log",
+      "git_blob_sha": "384d2778b2d1b34ec8fa64c9e2fcf6e670eef46b",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/frame_swap_real_frame/xsim.log",
+      "git_blob_sha": "4693de5e985a358d7e5379fe80d11f44cd58d240",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/frame_swap_real_frame/xvlog_sv.log",
+      "git_blob_sha": "f602a9d2fac9149b7fe283abc47e2d81b58c5db6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/frame_swap_real_frame/xvlog_verilog.log",
+      "git_blob_sha": "179dfd88e918b0e25d9a75a80daa8a8f017f6e0b",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/video_timing/xelab.log",
+      "git_blob_sha": "c9849e3a7876cd2045552757835bd46bd32c8de9",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/video_timing/xsim.log",
+      "git_blob_sha": "50dff473c0796b4779cde1fb65b0934059d39eba",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/video_timing/xvlog_sv.log",
+      "git_blob_sha": "9b0978dffbe0e826804d6268be155df92c818fc6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim/video_timing/xvlog_verilog.log",
+      "git_blob_sha": "64e427911cde25d16e64d7c0db42e9ddf7ab7a7d",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "evidence/clock_video_20261002/xsim_report.md",
+      "git_blob_sha": "92004ed7d00dace33002c0e944b45b1345ef23fe",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/README.md",
+      "git_blob_sha": "7e80ad3c8ae8080030e49664fa9f020590d367da",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.ipc",
+      "git_blob_sha": "8e5017509f014b4fc4f1e8667f58b354d018f584",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v",
+      "git_blob_sha": "3465a0f9811520699fa3f29e446665159992ab3d",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_system_pll.ipc",
+      "git_blob_sha": "97c590ece45ffa0a44be5ffe0a66a54761019710",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_system_pll.v",
+      "git_blob_sha": "7e342c9c990f9a1649a4276c7e73e7742021db67",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_hd_pll.ipc",
+      "git_blob_sha": "51b36e2ad09dafc5cd152253f1e8848f614816c5",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_hd_pll.v",
+      "git_blob_sha": "e24b459e0867125ba3a3f8adb6e22a4e18cbafb7",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.ipc",
+      "git_blob_sha": "b3c9b10f36c5cc68680b89b5d2f3c39431b30525",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v",
+      "git_blob_sha": "0f2eab6066271dab4a2de9f9593339b3abd480cb",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/README.md",
+      "git_blob_sha": "b9768ecb4a2311c27469d139e1afb154b978d400",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/base.tcl",
+      "git_blob_sha": "38a84bdbfb8a1be404e6f4c67a31f4958607540f",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/base_postroute.tcl",
+      "git_blob_sha": "ec574165953139b9af1abf930459cd266e000d56",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/clock_video_verify_top.v",
+      "git_blob_sha": "0a1af9ca57b4146046b1e5cea312e178eb886fae",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/hd.tcl",
+      "git_blob_sha": "6922113bf436f0a8d69a53a4453d268d4686bf8a",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/hd_postroute.tcl",
+      "git_blob_sha": "6215eee758090dc0abfeb955318581666be9f228",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/postroute.tcl",
+      "git_blob_sha": "4475db21ef430acdc7da723ff1a2aa521dcdf1a3",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/td_flow.tcl",
+      "git_blob_sha": "c474ca7b48545ff790335f865dcad732d7544c54",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/verify_clock.sdc",
+      "git_blob_sha": "b838e7f25104dc3fa5cd2ec875a500b4b1f242e9",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/verify_pin.adc",
+      "git_blob_sha": "ed8b43df3ecaededffb4edab4460c1bbcb2a99b9",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/README.md",
+      "git_blob_sha": "78a5b0bf56083747b4c21cfcf89b9e076edd1707",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_gen.v",
+      "git_blob_sha": "62447c7146ccec906c513378c5c7f4c5c7308407",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_video_subsystem.v",
+      "git_blob_sha": "2f0a5b27b5505654ad7d11e0a2782846068d9449",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
+      "git_blob_sha": "64dc3be885bc421f3933c87fecd6a7582b5b57f6",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/rtl/include/video_mode_defs.vh",
+      "git_blob_sha": "6becf88162077d0c1986e626f2beaef548c88fcd",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "safevision/rtl/video/video_timing/README.md",
+      "git_blob_sha": "998736e3cb032b10a54ff031d6c359a3958805b1",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/rtl/video/video_timing/video_timing.v",
+      "git_blob_sha": "fe40cb278a30f8c096c5eea137134ca497fc4dcf",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/tools/check_pll_profiles.py",
+      "git_blob_sha": "15ba65ae9656a6a59c0cb6ae335ad6c1eb9a0c07",
+      "mode": "100644"
+    },
+    {
+      "status": "M",
+      "path": "safevision/tools/check_repo.ps1",
+      "git_blob_sha": "895bdb471aa5c64acc01275831193cae3de9b4b0",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/tools/run_video_clock_sim.ps1",
+      "git_blob_sha": "3df02af0ecb709516feb2d8585c327845b4eddf3",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/tools/run_video_clock_td.ps1",
+      "git_blob_sha": "f6ef8dde1ba76c77ff433d414b3331df157c4575",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/verification/unit/tb_clock_video_subsystem.sv",
+      "git_blob_sha": "82588732b3fdfb74d3826104dcff4c66da13aad7",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/verification/unit/tb_frame_swap_real_frame.sv",
+      "git_blob_sha": "829e5bb38ba89d91efbd2589eb97241624c06dc3",
+      "mode": "100644"
+    },
+    {
+      "status": "A",
+      "path": "safevision/verification/unit/tb_video_timing.sv",
+      "git_blob_sha": "69a3ae12d862d3256843bf464dc03f7fa905d8a4",
+      "mode": "100644"
+    }
+  ]
+}
