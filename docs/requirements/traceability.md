@@ -4,7 +4,7 @@
 
 | ID | 目标 | 现有/规划模块 | 计划测试与证据 | 状态 |
 |---|---|---|---|---|
-| B01 | 本地媒体读取、四图识别 | `storage/*`、`media/bmp_*`、`file_index` 现有；板级 `top_stage5_sector_rd` 现有 | TC-B01-01..03、TC-B-TOP；`evidence/{sim,board}` | B 单元源文件与板级 bring-up 顶层现有（顶层 TB 通过）；整项待上板 |
+| B01 | 本地媒体读取、四图识别 | `storage/*`、`media/bmp_*`、`file_index` 现有；板级 `top_stage5_sector_rd` 现有 | TC-B01-01..03、TC-B-TOP；`evidence/{sim,board}` | **阶段 1–5 已上板实测通过**（M-9：512/512 逐字节一致，`evidence/board` 条目 M-9-PASS）；阶段 6–7 的板级验证与"四图识别"仍待做 |
 | B02 | SDRAM 缓存、HDMI 稳定显示 | `memory/*` 现有；`video/*`、板级 HDMI 规划 | TC-B02-01..02；报告/板级/水位 | 未整机集成 |
 | B03 | 按键/自动切换 | `frame_swap_*` 现有；`control/playback_fsm` 规划 | TC-B03-01..02；事件日志/录像 | 未整机集成 |
 | B04 | HDMI 音频 | `media/wav_parser` 现有；PCM 环/调度/HDMI 音频规划 | TC-B04-01..02；两台设备录音/录像 | 未整机集成 |

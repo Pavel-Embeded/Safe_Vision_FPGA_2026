@@ -20,7 +20,7 @@
 |---|---|---|---|
 | TC-A-CLOCK | unit/static/board | `tb_clock_reset_ctrl.sv` 检查九路复位异步断言、各域两拍同步释放、锁定丢失与局部复位隔离；板级另核 PLL 频率、约束、STA 和上电波形 | A |
 | TC-A-TIMING | unit/board | 各模式行/场周期、de/x/y 与实机输出 | A |
-| TC-B-TOP | unit/board | `tb_top_stage5_sector_rd.sv` 检查顶层自动完成初始化、CMD17 参数、512 Byte 经 UART 逐字节一致、顶层进成功态；板级另核实物 UART 回传与电脑侧 `evidence/board/lba8192_pc_20261002.bin`（物理 LBA 8192 = FAT32 引导扇区，512 B）逐字节比对（待办清单 M-9） | B |
+| TC-B-TOP | unit/board | `tb_top_stage5_sector_rd.sv` 检查顶层自动完成初始化、CMD17 参数、512 Byte 经 UART 逐字节一致、顶层进成功态。★ **板级部分已通过（2026-10-02）**：实物 UART 回传 512 Byte 与 `evidence/board/lba8192_pc_20261002.bin`（物理 LBA 8192 = FAT32 引导扇区）**SHA-256 完全相同**，板上 LED 状态码 = `8`；见 `evidence/board/INDEX.md` 条目 M-9-PASS | B ✅ |
 | TC-AB-PIXEL | subsystem/board | 固定帧首像素、数据/同步对齐、欠载安全色 | A+B |
 | TC-AB-SWAP | subsystem/board | 仅消隐期切槽；超时保持旧帧；无撕裂 | A+B |
 | TC-C-CTRL | unit/board | 消抖、事件优先级、模式转移 | C |

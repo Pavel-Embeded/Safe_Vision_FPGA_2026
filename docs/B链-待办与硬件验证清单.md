@@ -19,7 +19,7 @@
 | 阶段 2（SPI 主机） | 已完成并仿真通过 |
 | 阶段 3（SD 初始化 CMD0/CMD8/ACMD41/CMD58） | 已完成并仿真通过 |
 | 阶段 4（每态独立超时） | 已完成并仿真通过 |
-| 阶段 5（CMD17 单扇区读 + CRC16） | 已完成并仿真通过 |
+| 阶段 5（CMD17 单扇区读 + CRC16） | **仿真通过，且上板实测通过**（M-9：512/512 逐字节一致，见 evidence/board 的 M-9-PASS） |
 | 阶段 6 首块（FAT32 挂载与 BPB 解析 `fat32_boot_parser`） | 已完成并仿真通过 |
 | 阶段 6 第二块（根目录遍历 `fat32_directory_scanner`） | 已完成并仿真通过 |
 | 阶段 7 第一块（簇链跟踪 `fat32_cluster_walker`） | 已完成并仿真通过（v1.7 起有专属 TB，此前只随编译） |
@@ -40,10 +40,10 @@
 | 目录骨架与管理文档（`.github/` + `docs/` 子目录 + `evidence/` + `platform/` 等） | **已建立骨架**（v1.8 引入队友的项目管理覆盖包）。只有 README 占位与命名计划，**无功能代码**；落点规则见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) |
 | 目录自检脚本 `safevision/tools/check_repo.ps1` | 已接入（不需要 ModelSim，输出 `LAYOUT PASS` 才算过） |
 | 板级 TD 工程 `platform/anlogic_eg4s20_hx4s20c/project/safevision.al` | **全流程已跑通**（器件 EG4S20BG256；35 条设计文件全为相对路径；`TOP_MODULE = top_stage5_sector_rd`；`constraint_1` 已挂 `pin.adc` + `timing.sdc`）。**综合 → 布局 → 布线 → 位流一次通过**：Setup WNS **+11.297 ns**、Hold WNS **+0.046 ns**、**违反端点 0**（906 端点 / 3480 路径），50 MHz 约束下报告 Fmax **114.9 MHz**；资源 IO 11/188、LUT 814/19600、REG 434/19600、BRAM/DSP 0。位流 `safevision.bit` 已生成。原始报告留证在 [evidence/reports/INDEX.md](../evidence/reports/INDEX.md)（TC-Q-STA） |
-| 板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（阶段 5 最小验证） | **已写并仿真通过**（`tb_top_stage5_sector_rd`，5 项断言）；**未上板** |
+| 板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（阶段 5 最小验证） | **已写、仿真通过、且上板跑通**（`tb_top_stage5_sector_rd` 5 项断言；板上 LED = `8` 成功，M-9 通过） |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来源：开发板手册的串口/LED/按键引脚表 + `2_FPGA.pdf` / `6_EX_DEVICE.pdf` + 厂商同器件例程，三处一致；`timing.sdc` 为单一 50 MHz 时钟域第一版）。`uart_txd = D12` **已确认为 FPGA 发送脚**（板载 CH340G，无需外接 USB-TTL） |
 | 整机集成（`safevision_core` / `safevision_top`） | 未开始（A 负责） |
-| **上板实测** | **未开始（等板子）** |
+| **上板实测** | **已开始**：阶段 5 的 **M-9 通过**（512/512 逐字节一致）；M-5/M-6/M-7/M-8 与阶段 6–16 的板级项待做 |
 
 仿真回归：`safevision\tools\run_sim.ps1`，**507 项断言全部 PASS**（16 个 testbench）：
 
@@ -282,11 +282,11 @@
 | M-2 | 数据令牌等待耗时 | 同上，抓 `S_TOKEN` 状态的计数值 | `SD_TO_DATA`、O-4 |
 | M-3 | ACMD41 轮询总时长 | 抓从第一次 ACMD41 到 ready 的拍数（不同品牌卡差异很大） | `SD_TO_ACMD41`、O-4 |
 | M-4 | 上电到 `init_done` 的时间 | 示波器或 LED 翻转计时 | 启动速度留证（E04） |
-| M-5 | 实际 SCLK 频率 | 示波器量 `sd_dclk`。★ 注意 bring-up 版跑 50 MHz（不接 PLL），所以**初始化段应为 200 kHz、数据段 12.5 MHz**（= `safevision_defs.vh` 里按 100 MHz 推导的 400 kHz / 25 MHz 的**一半**；`SD_DIV_INIT=124` / `SD_DIV_FAST=1`）。整机接 PLL 后再按 400 kHz / 25 MHz 复核 | 接口文档备注 |
+| M-5 | 实际 SCLK 频率 | 示波器量 `sd_dclk`。★ 注意 bring-up 版跑 50 MHz（不接 PLL），所以**初始化段应为 200 kHz、数据段 12.5 MHz**（= `safevision_defs.vh` 里按 100 MHz 推导的 400 kHz / 25 MHz 的**一半**；`SD_DIV_INIT=124` / `SD_DIV_FAST=1`）。整机接 PLL 后再按 400 kHz / 25 MHz 复核。★ **没有示波器也能间接确认晶振频率**：`uart_tx` 的分频是按 50 MHz 算的（`DIV = 50M/115200 = 434`），本次 512 字节在电脑侧按 115200 8N1 **完整无误地收到**（M-9 通过），说明实际时钟频率落在 **±2% 内就是 50 MHz**（否则字节会错位）。`sd_dclk` 的精确频率建议以后用 TD 的 ChipWatcher 抓 `div_cnt`/`sclk_r` 复核，不必强求示波器 | 接口文档备注 |
 | M-6 | **连读 100 次** | 同一 LBA 连续读 100 次，UART 每次都回传，电脑脚本比对 | 手册 7.5 过关标准 |
 | M-7 | **多卡兼容** | 至少 3 张不同品牌/容量的卡都跑通 | 兼容性留证 |
 | M-8 | 拔卡 / 坏卡行为 | 运行中拔卡，确认有限时间内进错误态且不挂死；插回后能恢复 | 手册 7.4 过关标准 |
-| M-9 | 单扇区读 + 电脑侧比对 | 与 `evidence/board/lba8192_pc_20261002.bin`（物理 LBA 8192，512 B）逐字节比对，**一个字节都不能差**。★ 首次采集（2026-10-02）**已证明 FPGA 发出的就是参考原文**（把参考按 UTF-8 文本损失变换后与采集文件逐字节相同），但**串口助手存成了文本**、`≥0x80` 的 141 个字节被换成 `EF BF BD`（512→740 B）⇒ **尚需一次二进制采集**才能正式判定；见 `evidence/board/INDEX.md` 条目 CAP-M9-01 | 阶段 5 验收 |
+| M-9 | 单扇区读 + 电脑侧比对 | ★★ **通过（2026-10-02）**：工具改用 **HEX 文本导出**（无 `EF BF BD`），解码后 512 字节与 `evidence/board/lba8192_pc_20261002.bin` **SHA-256 完全相同**（`e470416567d512c0…`），非零字节 372 个也一致。证据见 `evidence/board/INDEX.md` 条目 **M-9-PASS** | 阶段 5 验收 ✅ |
 
 > **M-3 特别提醒**：不同品牌卡的 ACMD41 轮询时长差异可达几十倍，这也是为什么
 > 现在的超时值只是"推导 + 裕量"，必须实测后才敢冻结。
@@ -396,3 +396,4 @@
 | 2026-10-02 | **改掉比对基准：LBA 1000 → LBA 8192**。读卡器（`Get-Disk` 磁盘 2，卷 `G:` 标签 `HX4S20C`，FAT32，7.38 GB）实测：分区**从物理扇区 8192 开始**，所以原定的**物理 LBA 1000 落在分区前的空隙里、读出来是 512 个 `0x00`** —— 两边全零会让逐字节比对失去证明力。改用**分区首扇区 = FAT32 引导扇区（DBR）**：内容非零、可识别（`eb 58 90 "MSDOS5.0"`…`55 aa`）。参考值存 `evidence/board/lba8192_pc_20261002.bin`（512 B，SHA-256 `E4704165…C426EEE`），已在 `evidence/board/INDEX.md` 记条目 **REF-LBA8192**（含设备、分区表、读法与两个概念陷阱）。`top_stage5_sector_rd.v` 的 `TARGET_LBA` 默认值改为 `32'd8192`；`tb_top_stage5_sector_rd.sv` **刻意保留 1000**（它显式传参，验的是"给定 LBA 原样送出"这条通用性质，断言一字未动），回归仍 **507/507 PASS**。**同时修正 M-5 的预期值**：bring-up 跑 50 MHz 不接 PLL，SCLK 应为**初始化段 200 kHz / 数据段 12.5 MHz**（是 `safevision_defs.vh` 按 100 MHz 推导的 400 kHz / 25 MHz 的一半）。**与此同时 `TC-Q-STA` 那份证据对应的是 LBA=1000 的构建，需要重新综合一次以对齐。** |
 | 2026-10-02 | **上板第一次实测：LED 状态码 = 8（成功），并新增上板采集脚本**。① 位流下载成功后板上 **只有 LED4 长亮**。查原理图「4 bit LED」确认 LED 接法是 `FPGA 引脚 → 1K（RN17）→ LED 阳极 → 阴极 → GND`，即**高电平点亮**；我们的状态码里只有 `4'h8`（`1000`）是最高位亮 ⇒ **LED4 单独亮 = 8 = 成功态**（SD 初始化 + CMD17 读 LBA 8192 + 512 Byte 经 UART 发完 + CRC16 对上）。② 收不到数据的原因定位：电脑上只有 **4 个蓝牙串口**（COM3/4/8/9），**没有 CH340** ⇒ **板载 USB-UART 那个口没插线**（下载位流用的是 USB-JTAG，是另一个口）。③ 新增 **`safevision/verification/board/capture_uart_512.ps1`**：列端口 → 115200 8N1 无流控 → 清残留 → 提示按复位键 → 收满 512 Byte → 存**原始二进制**（默认 `evidence/board/uart_capture_<时间戳>.bin`）→ 与参考值逐字节比对，全对打印 `PASS` 返回 0（已在本机验证端口枚举与错误分支正常）。④ §2.2「上板步骤」补到 8 步 + 新增 **LED 状态码速查表**（含接线极性与位序 `led[3]`→LED4），并写明**两个 USB 口的顺序**和"先让脚本等、再按复位键"（512 Byte 只在复位后发一次、45 ms 发完）。⑤ 「USB 转串口模块不需要买」那条已在 §1.1 划掉。 |
 | 2026-10-02 | **第二次上板：拿到 UART 数据，但被串口工具的文本模式有损转换**。用户用 Serial Debug 助手存出 `Serial Debug 2026-10-02 175226.txt`（740 B），HxD 里出现大量 `EF BF BD`。**严格验证**：把参考 512 字节按"当 UTF-8 文本解码（非法字节→U+FFFD）再编码"变换一次，得到 **740 字节且与采集文件逐字节完全相同** ⇒ **FPGA 发出的就是参考原文，链路全对**；损失全部来自保存方式（参考里 141 个 `≥0x80` 的字节被替换，512→740，不可逆）。可逐字节确认 371 个 `<0x80` 字节；ASCII 串 `MSDOS5.0` / `NO NAME    FAT32` / `BOOTMGR` / `Disk error` / `Press any key to restart` 全对。**M-9 标记为"数据已证明正确、尚需一次二进制采集"**。证据存 `evidence/board/uart_capture_20261002_175226_textmode_mangled.txt`（740 B，SHA-256 `0B350785…`），索引条目 **CAP-M9-01**。新增排查条目 **§2.6-14**（`EF BF BD` 的识别与判定方法），并在 §2.2 第 6 步写明这个坑。 |
+| 2026-10-02 | **★ M-9 通过 —— 阶段 1–5 的实物验收完成**。重新导出改为 **HEX 文本**（无任何 `EF BF BD`），1536 B = 512 个 `XX ` 记号；解码成 512 字节后与参考 `lba8192_pc_20261002.bin` **SHA-256 完全相同**（`e470416567d512c0…`），非零字节 372 个也一致 ⇒ **512/512 逐字节一致**。至此实物验证覆盖：SPI 位序与 SCLK 相位、`CMD0`/`CMD8` 的 CRC7、`CMD55`+`ACMD41`+`CMD58`、`CMD17` 的 LBA 大端字节序、512 Byte 数据通路、CRC16 比对。证据：`evidence/board/uart_capture_20261002_175836.bin`（512 B，与参考同哈希）+ 原始导出 `uart_capture_20261002_175836_hextext.txt`（1536 B），索引条目 **M-9-PASS**。另：**M-5 不再强依赖示波器** —— `uart_tx` 的分频按 50 MHz 算，512 字节能在 115200 下完整收到即说明实际时钟在 ±2% 内就是 50 MHz；`sd_dclk` 精确频率可用 TD 的 ChipWatcher 复核。**下一步候选**：M-6（连读 100 次，需在顶层加连读计数）/ M-7（多卡）/ M-8（拔卡恢复）/ 把 bring-up 顶层往上推一层做阶段 6–7 的板级验证（读 DBR+BPB、扫根目录）/ SDRAM 官方 Demo 读写回环（手册 7.9）。 |
