@@ -596,7 +596,7 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
    这条是 2026-10-02 才补进来的，因为它是**第一次跑 TD 综合才暴露**的：
    `sd_initializer` / `sd_sector_reader` 的 `bdata` 本应只由主状态机驱动，但字节引擎的复位分支
    里也多写了一次 `bdata <= 8'hFF`。**ModelSim 编译和仿真一个警告都不给**（两个 `always` 块写同一个
-   `reg`，仿真里只是竞争，"谁最后写谁赢"），所以全套单元 TB 507 项断言照样全绿；而 TD 一 elaborate
+   `reg`，仿真里只是竞争，"谁最后写谁赢"），所以当时那套单元 TB（507 项断言）照样全绿；而 TD 一 elaborate
    就报 `net 'bdata[7]' is constantly driven from multiple places`，并把整个模块降级成黑盒。
    **推论**：仿真全绿 ≠ 能综合。**改完 RTL 一定要真跑一次 TD 综合**，别只看 ModelSim。
    查法：TD 报的 "found another driver here in 文件(行)"，就是第二个 `always` 块的起始行，

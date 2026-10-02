@@ -15,6 +15,7 @@
 | `safevision/rtl/storage/spi_master.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
 | `safevision/rtl/storage/sd_initializer.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
 | `safevision/rtl/storage/sd_sector_reader.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
+| `safevision/rtl/storage/mbr_parser.v` | **新增（2026-10-02）**，单测通过 | B | **卷基址解析**：读卡 0 号扇区（MBR），给出分区 0 起始物理 LBA（`vol_base_lba`）与扇区数；供板级顶层把"卷内相对 LBA"换算成卡上地址（见 interface_spec §3.2.1） | `tb_mbr_parser.sv`（T1–T4，7 项断言全通过） |
 | `safevision/rtl/storage/fat32_boot_parser.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
 | `safevision/rtl/storage/fat32_directory_scanner.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
 | `safevision/rtl/storage/fat32_cluster_walker.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |

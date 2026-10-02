@@ -102,6 +102,7 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 │  │  │   ├─ spi_master.v           SPI mode0 位引擎（cs_n 是输入，由上层控制）
 │  │  │   ├─ sd_initializer.v       CMD0 → CMD8 → ACMD41 → CMD58，每态独立超时
 │  │  │   ├─ sd_sector_reader.v     CMD17 单扇区读 512 Byte + CRC16 比对
+│  │  │   ├─ mbr_parser.v           MBR 分区表 → 卷基址（分区起始 LBA），供板级顶层换算地址
 │  │  │   ├─ fat32_boot_parser.v    DBR/BPB 解析 + FAT32 判别位 + 派生地址
 │  │  │   ├─ fat32_directory_scanner.v 根目录遍历 + 四类跳过规则 + 跨簇
 │  │  │   ├─ fat32_cluster_walker.v 簇链跟踪（EOC / 越界 / 判环），被下面两者共用
@@ -139,7 +140,7 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 │  ├─ assets/                       [骨架] 可再生字体、图案、SD 测试素材说明
 │  ├─ verification/
 │  │  ├─ models/                    行为级模型（sd_spi_card_model.sv / frame_memory_model.sv）
-│  │  ├─ unit/                      单元测试台（B 16 个 + A clock 1 个；含板级顶层 TB）
+│  │  ├─ unit/                      单元测试台（B 17 个 + A clock 1 个；含板级顶层 TB）
 │  │  ├─ subsystem/                 [骨架] SD→帧缓存、缓存→HDMI 等联调
 │  │  ├─ system/                    [骨架] 三链整机、故障与长稳
 │  │  └─ board/                     上板采集脚本（capture_uart_512.ps1：UART 512 Byte 回传 + 与参考值比对）
@@ -217,7 +218,7 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | 手册学习阶段 1–16 | **全部落地并仿真通过** |
 | 媒体格式层（BMP 解析/解包、WAV 解析） | 已完成并仿真通过 |
 | 目录树与命名 | 已按本项目结构（PROJECT_STRUCTURE.md）核对完成（含"同一常量多副本"的结构性收敛） |
-| B 链仿真回归 | **507 项断言 / 16 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
+| B 链仿真回归 | **514 项断言 / 17 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
 | 板级顶层 `top_stage5_sector_rd.v` | **已写、仿真通过、上板跑通**（板上 LED = `8`；`tb_top_stage5_sector_rd` 5 项断言） |
 | **阶段 1–5 上板验收** | ★ **已通过（2026-10-02）**：实物 UART 回传 512 Byte 与电脑侧参考 **SHA-256 完全相同**（M-9，见 [evidence/board/INDEX.md](evidence/board/INDEX.md) 的 M-9-PASS） |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来自开发板手册官方表 + 原理图 + 厂商例程，三处一致）；`uart_txd=D12` 已确认为 FPGA 发送脚，板载 USB-UART 可直接用 |

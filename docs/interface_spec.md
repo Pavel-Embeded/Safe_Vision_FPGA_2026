@@ -10,7 +10,7 @@
 |---|---|
 | 项目 | 安视 SafeVision · 赛题一 HDMI 多媒体播放与应急视听疏散终端 |
 | 平台 | 康芯 HX4S20C 开发板 / 安路 EG4S20BG256 |
-| 版本 | v1.10（保留 v1.9 接口；新增 §3.7 板级 bring-up 顶层 `top_stage5_sector_rd` 的端口 / 引脚 / 时钟取舍，B 链既有端口未变） |
+| 版本 | v1.11（v1.10 基础上新增 **§3.2.1 卷基址约定** 与 `mbr_parser` 接口；B 链既有端口未变） |
 | 负责人 | B 队员（数据存储链 / 数据搬运） |
 | 依据 | 赛题一官方选题指南；《赛选手册 V2.0》第 6/7/10 章 |
 | 维护规则 | 接口先于联调存在；改接口必同步改文档并通知对方；信号名、有效电平、时钟域、延迟、异常策略五者必须写清 |
@@ -406,6 +406,44 @@ sel_wav_valid       out  1     同编号 WAV 存在
       索引表一经冻结，只有重新扫描才更新；
       扫描全程由 fat32_directory_scanner 的 ent_ready 反压
 ```
+
+### 3.2.1 卷基址约定（v1.11 增补）—— `mbr_parser`
+
+★ **这条约定是板级实测（2026-10-02）逼出来的，改它之前先读完。**
+
+**问题**：FAT32 层（`fat32_boot_parser` / `fat32_directory_scanner` / `fat32_cluster_walker` /
+`file_streamer`）内部一律按 **【卷内相对 LBA】** 工作 —— 卷的第一个扇区记作 0 号扇区
+（`fat32_boot_parser` 里写死 `sd_rd_addr <= 32'd0`，TB 断言 `T11.3 挂载读的是 0 号扇区`
+也是照这个口径写的）。但**真实 TF 卡是分区的**：卡的 0 号扇区是 MBR，真正的 FAT32 卷
+从**分区起始 LBA** 开始。实测 HX4S20C 那张卡的**分区起始 = 物理扇区 8192**
+（`Get-Partition`），直接接上去等于让 FAT32 层去解析 MBR，必然 `mount_error`。
+
+**约定**：
+1. **FAT32 层内部永远不碰分区偏移**，只用卷内相对 LBA（卷 0 号扇区 = 0）。
+2. 卷基址由 `mbr_parser` 解析，**只在板级顶层加一次**：
+   送给 `sd_sector_reader` 的地址 = `FAT32 层的相对 LBA + vol_base_lba`。
+   ⇒ 加两次是最难查的一类错，改这块务必先看本节。
+3. `mbr_parser` 的容错：无 `0x55AA` 签名、或分区项为空（类型=0 / 起始 LBA=0）时
+   **不报错**，按"无分区表"处理（`has_mbr=0`、`vol_base_lba=0`），下游按卷 0 = 卡 0 去试；
+   真是坏卡则由 `fat32_boot_parser` 以 `DET_FAT_BPB` 报错，错误码不丢。
+   只有 SD 层错误（数据令牌超时 / CRC16）才透传成失败。
+
+**接口**：`safevision/rtl/storage/mbr_parser.v`
+
+| 端口 | 方向 | 说明 |
+|---|---|---|
+| `start` | in | 单拍脉冲，触发一次解析 |
+| `parse_done` | out | 电平：解析结束（成败都置位，下次 `start` 清零） |
+| `has_mbr` | out | 1 = 有有效分区表且分区 0 可用 |
+| `vol_base_lba` | out | 卷起始**物理** LBA（无分区表时为 0） |
+| `part_secs` | out | 分区 0 的扇区数（无分区表时为 0） |
+| `err_code` / `err_detail` / `dbg_state` | out | 错误主码 / 细分码 / 状态观测 |
+| `sd_rd_addr/len/en`、`sd_rd_ready`、`sd_data/…_valid/…_ready/…_last`、`sd_rd_done`、`sd_timeout_err`、`sd_crc16_err`、`sd_err_code/detail` | — | **与 `fat32_boot_parser` 完全同一种接法**（同一个 `sd_sector_reader`，顶层做总线复用） |
+
+**读的扇区**：卡的 **0 号扇区（MBR）**；字段偏移与字节序：`446+4` 分区类型、
+`446+8..11` 起始 LBA（**小端**）、`446+12..15` 扇区数（**小端**）、`510/511` = `0x55AA`。
+
+---
 
 ### 3.3 格式层（学习阶段 7）
 
@@ -1059,6 +1097,7 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | v1.10 | 2026-10-02 | **新增 §3.7 板级 bring-up 顶层 `top_stage5_sector_rd`**（阶段 5 最小验证，不属产品链）：端口 / 引脚 / 网络名对照表、`CLK_FREQ/BAUD/TARGET_LBA/POWERUP_CYC` 参数、**50 MHz 不接 PLL 的 bring-up 取舍**（`SD_DIV_INIT=124` → 200 kHz、`SD_DIV_FAST=1` → 12.5 MHz、超时拍数墙上时间翻倍）、两 SD 模块共用一条 SPI 总线的 `init_done` 二选一与 `sd_ncs` 取与、以及 UART 反压握手口径。**B 链既有端口、地址表、错误码一字未变。** 同时写入 `pin.adc` / `timing.sdc`（引脚逐个按 `2_FPGA.pdf` / `6_EX_DEVICE.pdf` 核对，并与厂商同器件例程交叉验证）；`uart_txd = D12`（网络名 `TXD`）**已由开发板手册的串口引脚分配表 + 图2-10 CH340G 原理图确认为 FPGA 发送脚**（板载 USB-UART，无需外接模块）。新增 `tb_top_stage5_sector_rd.sv`（T1–T4，顶层仿真：完整命令序列 / CMD17 参数 1000 / 512 Byte 逐字节与卡模型一致 / 顶层到成功态），B 回归升至 **507 项断言 / 16 个 testbench**。另把 `run_sim.ps1` 的 ModelSim 路径改为 `-ModelSimBin` 参数 + `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，删除写死的本机路径）。
 **★ 同日修复 TD 综合才暴露的多驱动问题**：`sd_initializer.v` 与 `sd_sector_reader.v` 的 `bdata` 同时被「字节引擎」和「主状态机」两个 `always` 块赋值（字节引擎复位分支多写了一次 `bdata <= 8'hFF`）。**ModelSim 编译/仿真都不报错**（两个 always 块写同一 reg 在仿真里只是竞争），TD 综合 elaborate 时直接报 `HDL-8007 net 'bdata[7]' is constantly driven from multiple places` 并把该模块降级成黑盒。已把该复位赋值收归主状态机（单一驱动源），全仓静态复查确认没有同类问题。**接口与行为不变**，回归仍 507 项全 PASS。
 **另（同日追加）**：`TARGET_LBA` 的**默认值从 `32'd1000` 改为 `32'd8192`**（端口/参数名/位宽都没变，只改默认值）：实测本机 TF 卡的**分区从物理扇区 8192 开始**，原定的 LBA 1000 落在分区前的空隙里、读出来是 512 个 `0x00`，两边全零会让逐字节比对失去证明力；改用分区首扇区 = FAT32 引导扇区（非零、可识别）。电脑侧参考值存 `evidence/board/lba8192_pc_20261002.bin`。同时修正待办清单 M-5 的预期值（bring-up 跑 50 MHz，SCLK 应为 200 kHz / 12.5 MHz，是 400 kHz / 25 MHz 的一半）。 | B |
+| v1.11 | 2026-10-02 | **新增 §3.2.1「卷基址约定」与 `rtl/storage/mbr_parser.v`**（阶段 6）。缘由是**板级实测逼出来的**：FAT32 层内部一律用【卷内相对 LBA】（`fat32_boot_parser` 写死读 0 号扇区），但真实 TF 卡是分区的（实测本卡分区起始 = 物理扇区 8192，卡 0 号扇区是 MBR），直连必然 `mount_error`。约定：**FAT32 层不碰分区偏移，卷基址由 `mbr_parser` 解析并只在板级顶层加一次**（`sd_sector_reader` 地址 = 相对 LBA + `vol_base_lba`）。`mbr_parser` 对"无 0x55AA 签名 / 分区项为空 / 起始 LBA=0"三种情况**不报错**，按无分区表回退（`vol_base_lba=0`），只透传 SD 层错误；分区表字段为**小端**（`446+8..11` 起始 LBA、`446+12..15` 扇区数）。新增 `tb_mbr_parser.sv`（T1 有效 MBR / T2 无签名 / T3 空表项 / T4 起始 LBA=0，7 项断言），回归 **507 → 514 项断言 / 16 → 17 个 testbench，全 PASS**。**B 链既有模块的端口与行为一字未变**（不动已绿的 TB，只在顶层做一次加法）。 | B |
 
 
 ## A Clock / Video Timing 发布补充（2026-10-02）

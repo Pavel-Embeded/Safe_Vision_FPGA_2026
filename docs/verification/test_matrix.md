@@ -5,6 +5,7 @@
 | 测试文件 | 覆盖主题 | 当前证明范围 |
 |---|---|---|
 | `tb_sd_initializer.sv`、`tb_sd_sector_reader.sv` | SD 初始化/读扇区 | 行为模型仿真 |
+| `tb_mbr_parser.sv` | MBR 分区表解析 / 卷基址（有效 MBR、无签名、空表项、起始 LBA=0） | 行为模型仿真 |
 | `tb_fat32_boot_parser.sv`、`tb_fat32_directory_scanner.sv`、`tb_fat32_cluster_walker.sv` | 挂载、目录、簇链（EOC/越界/判环） | 行为模型仿真 |
 | `tb_file_streamer.sv`、`tb_file_index.sv` | 簇链流与索引 | 行为模型仿真 |
 | `tb_bmp_parser.sv`、`tb_bmp_unpack.sv`、`tb_wav_parser.sv` | BMP/WAV 解析与像素 | 行为模型仿真 |
@@ -12,7 +13,7 @@
 | `tb_frame_writer.sv`、`tb_memory_arbiter.sv`、`tb_frame_swap_ctrl.sv` | 帧写/仲裁/帧交换 | SDRAM 行为模型仿真 |
 | `tb_top_stage5_sector_rd.sv` | 板级 bring-up 顶层：完整命令序列、CMD17 参数、512 Byte 经 UART 逐字节、顶层进成功态 | SD 行为模型 + UART 接收模型仿真 |
 
-现有 B 回归为 **507 项断言 / 16 个 Testbench / 2 个行为模型**，`run_sim.ps1` 输出 `TOTAL PASS=507 FAIL=0`。`run_sim.ps1` 的 ModelSim 目录来自 `-ModelSimBin` 参数或 `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，脚本里不再写死本机路径）；换机器时设好这两者之一即可重跑，并把日志放 `evidence/sim/`。
+现有 B 回归为 **514 项断言 / 17 个 Testbench / 2 个行为模型**，`run_sim.ps1` 输出 `TOTAL PASS=514 FAIL=0`。`run_sim.ps1` 的 ModelSim 目录来自 `-ModelSimBin` 参数或 `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，脚本里不再写死本机路径）；换机器时设好这两者之一即可重跑，并把日志放 `evidence/sim/`。
 
 ## 待新增验证门槛
 
@@ -32,7 +33,7 @@
 
 编号为工程补充，最终与手册固定 TC 编号映射后再冻结；当前没有填入“通过”的证据。
 
-TC-A-CLOCK 的 TB 源文件与 `safevision/tools/run_clock_sim.ps1` 已建立，并已在本机运行通过（`clock/reset checks: 88 pass, 0 fail`）。既有 B 回归已在本机重跑，**507 项断言 / 16 个 Testbench 全 PASS**（含新增的板级顶层 TB）；本页所有"行为模型仿真"结论仍不等于上板验收。
+TC-A-CLOCK 的 TB 源文件与 `safevision/tools/run_clock_sim.ps1` 已建立，并已在本机运行通过（`clock/reset checks: 88 pass, 0 fail`）。既有 B 回归已在本机重跑，**514 项断言 / 17 个 Testbench 全 PASS**（含板级顶层 TB 与新增的 `tb_mbr_parser`）；本页所有"行为模型仿真"结论仍不等于上板验收。
 
 
 ## A Clock / Video Timing 发布补充（2026-10-02）

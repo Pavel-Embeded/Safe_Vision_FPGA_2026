@@ -45,11 +45,12 @@
 | 整机集成（`safevision_core` / `safevision_top`） | 未开始（A 负责） |
 | **上板实测** | **已开始**：阶段 5 的 **M-9 通过**（512/512 逐字节一致）；M-5/M-6/M-7/M-8 与阶段 6–16 的板级项待做 |
 
-仿真回归：`safevision\tools\run_sim.ps1`，**507 项断言全部 PASS**（16 个 testbench）：
+仿真回归：`safevision\tools\run_sim.ps1`，**514 项断言全部 PASS**（17 个 testbench）：
 
 | testbench | 覆盖 | 断言数 |
 |---|---|---|
 | `tb_sd_sector_reader.sv` | SD 初始化 + CMD17 单扇区读 + 逐字节比对 | 13 |
+| `tb_mbr_parser.sv` | **MBR 分区表 / 卷基址**：有效 MBR（起始 8192 小端）/ 无 0x55AA 签名 / 空表项 / 起始 LBA=0 | 7 |
 | `tb_sd_initializer.sv` | 慢卡 / v1.x 卡 / 拔卡 / 恢复 | 20 |
 | `tb_fat32_boot_parser.sv` | BPB 解析 + 3 个负向分支 | 26 |
 | `tb_fat32_directory_scanner.sv` | 跳过规则 + 跨簇 + 判环 + 越界 + 反压 | 57 |
@@ -65,7 +66,7 @@
 | `tb_memory_arbiter.sv` | 仲裁最坏场景与防饥饿 / 单次占用上限 / 三类 starvation 计数为 0 | 7 |
 | `tb_frame_swap_ctrl.sv` | 帧交换四态 / 两类超时进 SAFE / 原子切换 / CDC mailbox 预稳定 | 23 |
 | `tb_top_stage5_sector_rd.sv` | **板级 bring-up 顶层**：自动初始化序列 / CMD17 参数 1000 / 512 Byte 经 UART 逐字节与卡模型一致 / 顶层进成功态 | 5 |
-| **合计** | | **507** |
+| **合计** | | **514** |
 
 > v1.7 的 4 处拆分类改动（`tb_frame_swap`→2 个、`tb_media`→2 个）**只搬位置、不改断言**，
 > 拆分前后断言数逐项守恒（30→7+23，75→44+31）。
@@ -397,3 +398,4 @@
 | 2026-10-02 | **上板第一次实测：LED 状态码 = 8（成功），并新增上板采集脚本**。① 位流下载成功后板上 **只有 LED4 长亮**。查原理图「4 bit LED」确认 LED 接法是 `FPGA 引脚 → 1K（RN17）→ LED 阳极 → 阴极 → GND`，即**高电平点亮**；我们的状态码里只有 `4'h8`（`1000`）是最高位亮 ⇒ **LED4 单独亮 = 8 = 成功态**（SD 初始化 + CMD17 读 LBA 8192 + 512 Byte 经 UART 发完 + CRC16 对上）。② 收不到数据的原因定位：电脑上只有 **4 个蓝牙串口**（COM3/4/8/9），**没有 CH340** ⇒ **板载 USB-UART 那个口没插线**（下载位流用的是 USB-JTAG，是另一个口）。③ 新增 **`safevision/verification/board/capture_uart_512.ps1`**：列端口 → 115200 8N1 无流控 → 清残留 → 提示按复位键 → 收满 512 Byte → 存**原始二进制**（默认 `evidence/board/uart_capture_<时间戳>.bin`）→ 与参考值逐字节比对，全对打印 `PASS` 返回 0（已在本机验证端口枚举与错误分支正常）。④ §2.2「上板步骤」补到 8 步 + 新增 **LED 状态码速查表**（含接线极性与位序 `led[3]`→LED4），并写明**两个 USB 口的顺序**和"先让脚本等、再按复位键"（512 Byte 只在复位后发一次、45 ms 发完）。⑤ 「USB 转串口模块不需要买」那条已在 §1.1 划掉。 |
 | 2026-10-02 | **第二次上板：拿到 UART 数据，但被串口工具的文本模式有损转换**。用户用 Serial Debug 助手存出 `Serial Debug 2026-10-02 175226.txt`（740 B），HxD 里出现大量 `EF BF BD`。**严格验证**：把参考 512 字节按"当 UTF-8 文本解码（非法字节→U+FFFD）再编码"变换一次，得到 **740 字节且与采集文件逐字节完全相同** ⇒ **FPGA 发出的就是参考原文，链路全对**；损失全部来自保存方式（参考里 141 个 `≥0x80` 的字节被替换，512→740，不可逆）。可逐字节确认 371 个 `<0x80` 字节；ASCII 串 `MSDOS5.0` / `NO NAME    FAT32` / `BOOTMGR` / `Disk error` / `Press any key to restart` 全对。**M-9 标记为"数据已证明正确、尚需一次二进制采集"**。证据存 `evidence/board/uart_capture_20261002_175226_textmode_mangled.txt`（740 B，SHA-256 `0B350785…`），索引条目 **CAP-M9-01**。新增排查条目 **§2.6-14**（`EF BF BD` 的识别与判定方法），并在 §2.2 第 6 步写明这个坑。 |
 | 2026-10-02 | **★ M-9 通过 —— 阶段 1–5 的实物验收完成**。重新导出改为 **HEX 文本**（无任何 `EF BF BD`），1536 B = 512 个 `XX ` 记号；解码成 512 字节后与参考 `lba8192_pc_20261002.bin` **SHA-256 完全相同**（`e470416567d512c0…`），非零字节 372 个也一致 ⇒ **512/512 逐字节一致**。至此实物验证覆盖：SPI 位序与 SCLK 相位、`CMD0`/`CMD8` 的 CRC7、`CMD55`+`ACMD41`+`CMD58`、`CMD17` 的 LBA 大端字节序、512 Byte 数据通路、CRC16 比对。证据：`evidence/board/uart_capture_20261002_175836.bin`（512 B，与参考同哈希）+ 原始导出 `uart_capture_20261002_175836_hextext.txt`（1536 B），索引条目 **M-9-PASS**。另：**M-5 不再强依赖示波器** —— `uart_tx` 的分频按 50 MHz 算，512 字节能在 115200 下完整收到即说明实际时钟在 ±2% 内就是 50 MHz；`sd_dclk` 精确频率可用 TD 的 ChipWatcher 复核。**下一步候选**：M-6（连读 100 次，需在顶层加连读计数）/ M-7（多卡）/ M-8（拔卡恢复）/ 把 bring-up 顶层往上推一层做阶段 6–7 的板级验证（读 DBR+BPB、扫根目录）/ SDRAM 官方 Demo 读写回环（手册 7.9）。 |
+| 2026-10-02 | **★ 为阶段 6–7 板级验证补上"卷基址"这块（`mbr_parser`）—— 这是板级实测逼出来的真缺口**。读代码发现 `fat32_boot_parser` 写死 `sd_rd_addr <= 32'd0`（TB 也有断言 `T11.3 挂载读的是 0 号扇区`），即**整个 FAT32 层假设"卷从 0 号扇区开始"（超级软盘格式）**；但真实 TF 卡是分区的（本卡分区起始 = 物理扇区 8192，卡 0 号扇区是 MBR）⇒ 直接接上去必然 `mount_error`。新增 **`rtl/storage/mbr_parser.v`**：读卡 0 号扇区，按**小端**解析分区 0 的起始 LBA（`446+8..11`）与扇区数（`446+12..15`），给出 `has_mbr` / `vol_base_lba` / `part_secs`；对"无 `0x55AA` 签名 / 分区项为空 / 起始 LBA=0"三种情况**不报错**、按无分区表回退为 0，只透传 SD 层错误。**约定写进 interface_spec §3.2.1**：FAT32 层永远不碰分区偏移，**卷基址只在板级顶层加一次**。新增 `tb_mbr_parser.sv`（T1 有效 MBR 起始 8192 / T2 无签名 / T3 空表项 / T4 起始 LBA=0，**7 项断言**）⇒ 回归 **507 → 514 项断言 / 16 → 17 个 TB，全 PASS**（既有 TB 与 RTL 端口一字未动）。interface_spec 升 **v1.11**。**下一步**：写阶段 6–7 的板级顶层（上电 → init → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner` → UART 回传文本报告比对）。 |

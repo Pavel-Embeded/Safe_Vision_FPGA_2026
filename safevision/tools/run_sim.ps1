@@ -56,6 +56,7 @@ $RTL = @(
     "../rtl/storage/spi_master.v",
     "../rtl/storage/sd_initializer.v",
     "../rtl/storage/sd_sector_reader.v",
+    "../rtl/storage/mbr_parser.v",
     "../rtl/storage/fat32_boot_parser.v",
     "../rtl/storage/fat32_directory_scanner.v",
     "../rtl/storage/fat32_cluster_walker.v",
@@ -84,6 +85,7 @@ $SIM = @(
     "models/sd_spi_card_model.sv",
     "models/frame_memory_model.sv",
     "unit/tb_sd_sector_reader.sv",
+    "unit/tb_mbr_parser.sv",
     "unit/tb_sd_initializer.sv",
     "unit/tb_fat32_boot_parser.sv",
     "unit/tb_fat32_directory_scanner.sv",
@@ -103,6 +105,7 @@ $SIM = @(
 
 $TBS = @(
     "tb_sd_sector_reader",
+    "tb_mbr_parser",
     "tb_sd_initializer",
     "tb_fat32_boot_parser",
     "tb_fat32_directory_scanner",
