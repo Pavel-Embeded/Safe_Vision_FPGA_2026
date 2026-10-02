@@ -39,9 +39,9 @@
 | 媒体格式层（`bmp_unpack` BGR→RGB565 / `wav_parser`） | 已完成并仿真通过 |
 | 目录骨架与管理文档（`.github/` + `docs/` 子目录 + `evidence/` + `platform/` 等） | **已建立骨架**（v1.8 引入队友的项目管理覆盖包）。只有 README 占位与命名计划，**无功能代码**；落点规则见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) |
 | 目录自检脚本 `safevision/tools/check_repo.ps1` | 已接入（不需要 ModelSim，输出 `LAYOUT PASS` 才算过） |
-| 板级 TD 工程 `platform/anlogic_eg4s20_hx4s20c/project/safevision.al` | **已建立并配好第一版**（器件 EG4S20BG256；35 条设计文件已加入且**全是相对路径**；`TOP_MODULE` 已设为 `top_stage5_sector_rd`；`constraint_1` 已挂 `pin.adc` + `timing.sdc`）。**待办**：在 TD 里打开后确认依赖分析没把用到的模块标 `AutoExcluded`，再综合/布线 |
+| 板级 TD 工程 `platform/anlogic_eg4s20_hx4s20c/project/safevision.al` | **已建立并配好第一版**（器件 EG4S20BG256；35 条设计文件已加入且**全是相对路径**；`TOP_MODULE` 已设为 `top_stage5_sector_rd`；`constraint_1` 已挂 `pin.adc` + `timing.sdc`）。**依赖分析已在 TD 里跑过一次**：`run.log` 显示 `elaborate -top top_stage5_sector_rd` 把顶层闭包里的模块（`reset_sync` / `sd_initializer` / `sd_sector_reader` / `crc16_ccitt` / `spi_master` / `uart_tx`）全部 elaborate 到了，没有被误排除。**待办**：修完多驱动问题后重新综合 |
 | 板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（阶段 5 最小验证） | **已写并仿真通过**（`tb_top_stage5_sector_rd`，5 项断言）；**未上板** |
-| 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写**（引脚按 `2_FPGA.pdf` / `6_EX_DEVICE.pdf` 逐脚核对，并与厂商同器件例程交叉验证；`timing.sdc` 为单一 50 MHz 时钟域第一版）。**待办**：`uart_txd` 的物理落点（D12，网络名 `TXD`）需用户复核 |
+| 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来源：开发板手册的串口/LED/按键引脚表 + `2_FPGA.pdf` / `6_EX_DEVICE.pdf` + 厂商同器件例程，三处一致；`timing.sdc` 为单一 50 MHz 时钟域第一版）。`uart_txd = D12` **已确认为 FPGA 发送脚**（板载 CH340G，无需外接 USB-TTL） |
 | 整机集成（`safevision_core` / `safevision_top`） | 未开始（A 负责） |
 | **上板实测** | **未开始（等板子）** |
 
@@ -95,10 +95,12 @@
 
 ### 1.3 做引脚规划（查原理图，不写代码）
 
-**2026-10-02 已完成**。引脚逐个按原理图核对：`2_FPGA.pdf`（FPGA 引脚分布，
-引脚号 ↔ 网络名）、`6_EX_DEVICE.pdf`（SD 卡座 / LED / 独立按键 页）；
-并与厂商同器件（EG4S20BG256）例程 `7_lab_ex_2026_nosoft/example/lab_ex4_tf` 的
-`pin.adc` 交叉验证（`clk` / `sd_*` 两处完全一致）。结果已写入
+**2026-10-02 已完成**。引脚逐个核对，来源按权威性排序：
+① **开发板手册**《HX4S20开发板手册-HDL版2410.pdf》的官方引脚表（串口表 `RXD=F12`/`TXD=D12`、
+独立 LED 表 `LED1..4 = A4/A3/C10/B12`、独立按键表 `KEY1=A2`）；
+② 原理图 `2_FPGA.pdf`（引脚号 ↔ 网络名）、`6_EX_DEVICE.pdf`（SD 卡座 / LED / 按键页）；
+③ 厂商同器件（EG4S20BG256）例程 `7_lab_ex_2026_nosoft/example/lab_ex4_tf` 的 `pin.adc`。
+三者对 `clk` / `sd_*` 完全一致。结果已写入
 `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/pin.adc`：
 
 | 端口 | FPGA 引脚 | 原理图网络名 | 依据 | 说明 |
@@ -110,7 +112,7 @@
 | `sd_miso` | **B14** | `FPGA_SD_D0` | 两张图一致 | SPI MISO；**外部上拉情况未在可读的原理图文本中确认**，暂按厂商例程取 `PULLTYPE = NONE` |
 | `sd_ncs` | **A12** | `FPGA_SD_D3` | 两张图一致 | CD/DAT3 当 SPI 片选（低有效） |
 | `led[3:0]` | **A4 / A3 / C10 / B12** | `LED0`…`LED3` | `2_FPGA.pdf` + `6_EX_DEVICE.pdf` | 显示顶层状态码 |
-| `uart_txd` | **D12**（待复核） | `TXD` | `2_FPGA.pdf` | ★ 全板唯一命名为 `TXD` 的 FPGA 网络，但在现有原理图分册中**没追到它落到哪个物理连接器**；备用引脚 `GPIOA_0 = H13`（在 J1 / IDC40 排针上，与 5V/3V3 一起引出） |
+| `uart_txd` | **D12**（已确认） | `TXD` | 开发板手册串口引脚表 + 图2-10 CH340G 原理图 | ★ **已确认是 FPGA 的发送脚**：板载 USB-UART（CH340G，位号 U41），手册串口引脚表给出 `RXD=F12` / `TXD=D12`；图2-10 显示 CH340G 的 pin2（芯片 TXD）接网络 `RXD`、pin3（芯片 RXD）接网络 `TXD`，**两线交叉**→网络名按 FPGA 视角命名，故 `TXD`(D12) 是 FPGA 输出、驱动 CH340 的输入，**不存在双向争用**。上板只需插 USB 线，开 COM 口 115200 8N1，**不需要外接 USB-TTL 模块** |
 
 **为什么现在做**：引脚资源紧张（BG256 封装，最多 193 个用户 IO），事后硬塞容易冲突。
 表已填好，`pin.adc` 是照抄结果。
@@ -158,6 +160,12 @@
       TD 做依赖分析时把其余 32 个模块全标了 `AutoExcluded`——**这时候点综合只会综合出一个 8 行的 CRC 模块**。
       **仍需在 TD GUI 里点一次依赖分析/自动包含，确认 `spi_master` / `sd_initializer` / `sd_sector_reader` /
       `uart_tx` / `crc7` / `crc16_ccitt` / `reset_sync` 都没有被标成 `AutoExcluded`**。
+      → **2026-10-02 已核对**：`safevision_Runs/syn_1/run.log` 里 `elaborate -top top_stage5_sector_rd`
+      依次 elaborate 了 `top_stage5_sector_rd` / `reset_sync` / `sd_initializer` / `sd_sector_reader` /
+      `crc16_ccitt` / `spi_master(CLK_FREQ=50000000)` / `uart_tx(CLK_FREQ=50000000)`，闭包完整，
+      **没有被误排除**（`.al` 里 `spi_master.v` 仍留着 `AutoExcluded` 标记，但 TD 实际 elaborate 了它，
+      标记与实际不一致属 TD 记账问题，不影响综合；想让它一致就再点一次全量依赖分析）。
+      唯一需要 `crc7.v` 的地方是 `tb_crc`，bring-up 顶层用不到它，被排除是对的。
 - [x] **把约束文件加进 FileSet `constraint_1`（ConstrainFiles）**：`pin.adc` + `timing.sdc`（2026-10-02 已在 `.al` 里登记）。
       源文件放 `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/`。加进去之前，
       综合/布线是不带任何引脚与时序约束的。
@@ -247,8 +255,16 @@
     `1` 上电等待、`2` 发初始化请求、`3` 等 `init_done`、`4` 发读请求、`5` 传输中、`8` 成功；
     其余值表示失败，显示的是**错误主码低 4 位**。
     - 卡在 `3`：SD 初始化没过 → 按上面第 1–4 条查（SCLK、CMD0 的 CRC=0x95、CMD8 的 CRC=0x87）
-    - 到 `8` 但电脑收不到：多半是 `uart_txd` 引脚的物理落点（见 §1.3 待复核项）或串口工具设置
-      （**115200 8N1**，FPGA 的 TX 要接 USB-串口模块的 **RXD**，别接反）
+    - 到 `8` 但电脑收不到：先确认串口工具选的是板载 USB-UART 的那个 COM 口、**115200 8N1**，
+      再看电脑侧有没有别的程序占着该串口；`uart_txd`（D12）已经确认是 FPGA 发送脚（见 §1.3）
+13. ★ **TD 综合报 `net 'xxx' is constantly driven from multiple places`（HDL-8007/9007）**
+    → 不是引脚问题，是 RTL 里**同一个 `reg` 被两个 `always` 块赋值**。
+    **ModelSim 编译和仿真都不报错**（仿真里只是竞争，谁最后写谁赢），所以单元 TB 全绿也可能带着这个错——
+    这正是"必须真跑一次 TD 综合"的理由。
+    真实案例（2026-10-02）：`sd_initializer.v` / `sd_sector_reader.v` 的 `bdata` 本应只由主状态机驱动，
+    但字节引擎的复位分支里多写了一次 `bdata <= 8'hFF`，TD elaborate 直接把该模块降级成黑盒。
+    修法：把那个复位赋值收归主状态机（保证一个 `reg` 只有一个驱动源）。
+    查法：TD 报的 "found another driver here in 文件(行)" 就是第二个 `always` 块的起始行，两边一起看。
 
 ---
 
@@ -259,8 +275,8 @@
 | CMD18 多扇区读 | `sd_sector_reader` 目前只支持 CMD17，`rd_len` 必须为 1，否则明确报错。多扇区读需要额外的 STOP_TRANSMISSION。连带影响：`fat32_directory_scanner` 现在只能"一个扇区一次 CMD17"，根目录越大读得越碎 | 带宽优化阶段（对应 O-11） |
 | 超时值未实测 | `safevision_defs.vh` 里的超时是"规范推导 + 裕量"，仿真时用 `SIM_FAST_TO` 缩小以便跑到超时分支 | 板到后执行 M-1~M-3 |
 | 板级顶层 | **已解决**：`top_stage5_sector_rd.v` 已写，并新增 `tb_top_stage5_sector_rd.sv` 在仿真里跑通（5 项断言）；仍未上板 | 已做 |
-| 引脚约束 | **已解决**：`pin.adc` 与 `timing.sdc` 已写并登记进 TD 工程；`uart_txd` 的物理落点待用户复核 | 已做 |
-| `uart_txd` 物理落点 | `pin.adc` 暂取 `D12`（原理图网络名 `TXD`），但没在现有原理图分册中追到它接到哪个连接器；`uart_txd` 备用 `GPIOA_0 = H13`（J1/IDC40）。**接线前需确认**，改一行即可 | 上板前 |
+| 引脚约束 | **已解决**：`pin.adc` 与 `timing.sdc` 已写并登记进 TD 工程；`uart_txd = D12` 已确认为 FPGA 发送脚 | 已做 |
+| `uart_txd` 物理落点 | **已解决（2026-10-02）**：开发板手册串口引脚表（`RXD=F12`/`TXD=D12`）+ 图2-10 CH340G 原理图（两线交叉）确认 `D12` 是 FPGA 发送脚、对接板载 USB-UART，无需外接 USB-TTL。`pin.adc` 保持不变 | 已完成 |
 | 根目录簇链跟随 | **已解决**：阶段 7 抽出 `fat32_cluster_walker.v`，`fat32_directory_scanner` 与 `file_streamer` 共用同一份 | 已完成 |
 | `file_index` | **已完成**：编号扫描 + 数字后缀排序 + 索引表冻结 + WAV 配对 | 已完成 |
 | **SDRAM 真实 IP 未接** | 仿真用行为模型 `verification/models/frame_memory_model.sv`（不建模 tRCD/CL/tRP/tRFC 与刷新，**不能用于长稳评估**）。真实 PHY 按手册 7.9「第一版不要手写，直接跑通官方 Demo」用安路官方 IP，替换 `mem_ctrl` 内部实现即可 | 板到后（M-10/M-11） |
@@ -291,3 +307,4 @@
 | — | **v1.8：引入队友的项目管理覆盖包（目录骨架 + 管理文档），并把它的过期内容改对**。新增 `.github/` 模板、`docs/` 六个子目录（architecture/interfaces/requirements/management/verification/release）、`evidence/` 七类证据索引、`safevision/{platform,build,assets}`、`rtl/{video,audio,control,safety,top}`、`verification/{subsystem,system,board}`、`tools/check_repo.ps1` —— **全部只有 README 占位，无功能代码**。`.gitignore` 换成覆盖包版本（白名单加 `!/.github/` `!/evidence/`，多排除 `*.lic`/`*.key`/`*.pem`）。**接口/RTL/TB/回归数一字未变，仍 502 项断言 / 15 个 TB**，目录自检 `LAYOUT PASS`。覆盖包是按旧快照（48 文件 / 27 RTL）做的，带进来的过期内容已逐项改对：**27→29 个 RTL、11→15 个 TB、457→502 项断言**、`fifo_health_monitor` 归 `memory/`、`wav_reader`→`wav_parser`、`sdram_model`→`frame_memory_model`、`tb_media`/`tb_mem_write`/`tb_frame_swap` 拆名、并作废"待办清单仍有 `rtl/sd` 旧路径"的指控（v1.7 已修）。另修 `interface_spec` §3.1 的 `rtl/sd/spi_master.v` → `rtl/storage/…` 与 `bmp_unpack.v` 注释里的 `tb_media` → `tb_bmp_unpack` |
 | — | **结构基准变更 + 全仓文档去绝对路径 + 清除旧参照物引用**。① **结构基准改为本仓库 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)**，原参照物作废，全仓对它的引用（RTL 头注释、模块小节标题、表头列名、历史行里的出处标注）已一并清除；② 清掉覆盖包带进来的本机绝对路径——文档里的 ModelSim 安装路径改为按变量名 `$MSIM_BIN` 描述，文档树根由 `Safe_Vision_FPGA_2026/` 改为 `<仓库根>/`，`run_sim.ps1` 用法注释与原理讲解里的 `f:\...\` 占位改为相对路径。新约定：**文档里只用仓库相对路径** |
 | 2026-10-02 | **板级 bring-up 第一版落地**：① 新增板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（上电延时 → SD 初始化 → 读 LBA=1000 → 512 Byte 经 UART 回传；两 SD 模块共用一份 `spi_master`，按 `init_done` 二选一；**不接 PLL，全跑板载 50 MHz**）；② 新增 `constraints/pin.adc`（引脚逐个按 `2_FPGA.pdf` / `6_EX_DEVICE.pdf` 核对，并与厂商同器件例程交叉验证）与 `constraints/timing.sdc`（单一 50 MHz：`create_clock -period 20`）；③ TD 工程 `safevision.al` 把 `TOP_MODULE` 从 `crc7` 改为 `top_stage5_sector_rd`，加入顶层与 `reset_sync.v`，并把两约束挂到 `constraint_1`；④ **新增顶层 TB `tb_top_stage5_sector_rd.sv`**（T1 完整命令序列 / T2 CMD17 参数 1000 / T3 512 Byte 经 UART 逐字节与卡模型一致 / T4 顶层进成功态）→ 回归 **502 → 507 项断言 / 15 → 16 个 TB，全 PASS**；⑤ **`run_sim.ps1` 的 ModelSim 路径改为 `-ModelSimBin` 参数 + `MSIM_BIN` 环境变量**（与 `run_clock_sim.ps1` 同口径，删掉写死的本机路径；`check_repo.ps1` 的自检正则同时扩到 `../platform/`）。**待办**：`uart_txd` 物理落点复核（暂取 D12）、TD 里确认依赖分析没误标 `AutoExcluded` |
+| 2026-10-02 | **第一次在 TD 里跑依赖分析 + 综合，暴露并修掉一个真 bug**：① **TD 报 `HDL-8007 net 'bdata[7]' is constantly driven from multiple places`**（`sd_initializer.v(120)` + `sd_sector_reader.v(137)`）——这两个模块的 `bdata` 本应只由主状态机驱动，但字节引擎的复位分支里多写了一次 `bdata <= 8'hFF`，两个 `always` 块写同一个 `reg`。**ModelSim 编译/仿真都不报错（回归 507 项全绿也带着它走），TD elaborate 直接把两个模块降级成黑盒**。已把该复位赋值收归主状态机；另写了一遍全仓静态复查（同一 `reg` 出现在 >1 个 `always`/`initial` 块）确认其余 29 个 RTL 没有同类问题。② **`AutoExcluded` 已核对**：`safevision_Runs/syn_1/run.log` 显示 `elaborate -top top_stage5_sector_rd` 把闭包内 7 个模块全部 elaborate 到了，没有被误排除（只有 `crc7.v` 被排除，而它只被 `tb_crc` 用，正确）。③ **`uart_txd = D12` 确认**：开发板手册《HX4S20开发板手册-HDL版2410.pdf》的串口引脚表（`RXD=F12`/`TXD=D12`）+ 图2-10 CH340G 原理图（CH340 pin2→网络 `RXD`、pin3→网络 `TXD`，**两线交叉**）证明网络名按 FPGA 视角命名，`D12` 是 FPGA 发送脚、对接**板载 USB-UART**，**不需要外接 USB-TTL 模块**。④ 新增排查条目 §2.6-13（多驱动只在 TD 报、仿真不报）。⑤ `.gitignore` 增加 TD 运行产物 `*_Runs/` 与 `*.logw` |

@@ -219,8 +219,8 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | 目录树与命名 | 已按本项目结构（PROJECT_STRUCTURE.md）核对完成（含"同一常量多副本"的结构性收敛） |
 | B 链仿真回归 | **507 项断言 / 16 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
 | 板级顶层 `top_stage5_sector_rd.v` | **已写并仿真通过**（`tb_top_stage5_sector_rd`，5 项断言）；**未上板** |
-| 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写**（引脚按原理图逐脚核对）；`uart_txd` 物理落点待复核 |
-| TD 工程 `project/safevision.al` | `TOP_MODULE` 已指向 bring-up 顶层，约束已挂 `constraint_1`；待综合/布线 |
+| 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来自开发板手册官方表 + 原理图 + 厂商例程，三处一致）；`uart_txd=D12` 已确认为 FPGA 发送脚，板载 USB-UART 可直接用 |
+| TD 工程 `project/safevision.al` | `TOP_MODULE` 已指向 bring-up 顶层，约束已挂 `constraint_1`；依赖分析已跑过（闭包内 7 个模块全部 elaborate，无误排除）。首次综合报出 `sd_initializer`/`sd_sector_reader` 的 `bdata` 多驱动并已修复，**待重新综合** |
 | 上板实测（M-1 ~ M-19） | **未开始，等板子** |
 | 整机集成 `safevision_core.v` / `safevision_top.v` | A 负责 |
 | A 板级时钟复位 | `reset_sync.v` 与 `clock_reset_ctrl.v` 已写并仿真通过（88 项）；PLL IP/约束/板级实测待完成 |
@@ -260,6 +260,11 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
    禁止出现裸物理地址或第二份地址副本。
 7. **公共算法（`crc16_ccitt.v` / `crc7.v`）只用 `rtl/common/` 那一份**，不要在模块里再写一遍。
 8. **禁止手写异步 FIFO**，跨时钟域用安路软 FIFO IP。
+9. **一个 `reg` 只能有一个驱动源**（同一个 `always` 块），连复位赋值也算。
+   ModelSim 对"两个 `always` 块写同一个 `reg`"**不报错**（仿真里只是竞争），
+   但 TD 综合会报 `net 'x' is constantly driven from multiple places` 并把模块降级成黑盒。
+   **推论：仿真全绿 ≠ 能综合——改完 RTL 一定要真跑一次 TD 综合。**
+   （2026-10-02 真实踩坑：`sd_initializer` / `sd_sector_reader` 的 `bdata`。）
 
 ---
 

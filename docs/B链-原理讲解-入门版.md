@@ -582,7 +582,7 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 
 > 脚本里有个坑要注意：**这个 `.ps1` 必须保持纯 ASCII 注释**。PowerShell 5.1 在没有 BOM 时按 ANSI 解码，中文注释会把后面的引号"吃掉"导致解析失败。中文注释写在 RTL 文件里。
 
-### 13.4 接手时要背下来的 6 条约定
+### 13.4 接手时要背下来的 7 条约定
 
 这些全是实测踩出来的，不是理论：
 
@@ -592,6 +592,15 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 4. **字节数够了也不能中途停读**。`sd_sector_reader` 的 `rd_ready` 只在空闲态有效，中途把 `data_ready` 拉低不放它会永远卡住。正确做法是记下"该收工了"，把本扇区收干净再收工。
 5. **每个等待外部响应的状态都要有独立的超时出口**，禁止全模块共用一个计数器。没有超时在硬件上等于**永久死机**。
 6. **`slot_valid` 未置位不许读那一槽**。这条规则把"半张图进画面"在结构上排除。
+7. ★ **一个 `reg` 只能有一个驱动源（一个 `always` 块）**，连复位赋值也算在内。
+   这条是 2026-10-02 才补进来的，因为它是**第一次跑 TD 综合才暴露**的：
+   `sd_initializer` / `sd_sector_reader` 的 `bdata` 本应只由主状态机驱动，但字节引擎的复位分支
+   里也多写了一次 `bdata <= 8'hFF`。**ModelSim 编译和仿真一个警告都不给**（两个 `always` 块写同一个
+   `reg`，仿真里只是竞争，"谁最后写谁赢"），所以全套单元 TB 507 项断言照样全绿；而 TD 一 elaborate
+   就报 `net 'bdata[7]' is constantly driven from multiple places`，并把整个模块降级成黑盒。
+   **推论**：仿真全绿 ≠ 能综合。**改完 RTL 一定要真跑一次 TD 综合**，别只看 ModelSim。
+   查法：TD 报的 "found another driver here in 文件(行)"，就是第二个 `always` 块的起始行，
+   把那两处对着看，然后把其中一个赋值（通常是复位分支里多余的那次）删掉。
 
 ### 13.5 上板的第一件事
 
@@ -620,9 +629,15 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
    既不会重复发也不会丢。reader 在 `S_DATA` 会停住 SCLK 等下游，而这个状态本身没有超时计数器
    （超时只挂在等响应和等数据令牌上），所以"发得慢"不会被误判成超时。
 
-**上板前必须先确认一件事**：`uart_txd` 现在指派的是 `D12`（原理图上唯一叫 `TXD` 的 FPGA 网络），
-但没能在现有原理图分册里追到它到底接到哪个连接器。接线前先确认；如果 D12 引不出来，
-改用备用引脚 `GPIOA_0 = H13`（在 J1 那个 IDC40 排针上），改 `pin.adc` 一行即可。
+**`uart_txd` 用的是 D12，已经确认过了，不用再猜**：开发板手册的串口引脚表写着
+`RXD = F12` / `TXD = D12`；手册图2-10（CH340G 串口原理图）里，CH340 的 pin2（芯片 TXD，输出）
+接的是网络 `RXD`，pin3（芯片 RXD，输入）接的是网络 `TXD`——**两根线是交叉的**，这说明网络名
+是按 **FPGA 的视角**起的：`RXD`(F12) 是 FPGA 收，`TXD`(D12) 是 **FPGA 发**。
+所以 D12 是输出、对方是输入，**不存在两个输出对着顶**的情况。
+
+还有个好消息：**板上自带 USB 转串口（CH340G），不需要另外买 USB-TTL 模块**。
+操作就是插一根 USB 线到板上那个 USB 口，在电脑上打开新出现的 COM 口，设 **115200 8N1**，
+就能收到 FPGA 发出来的 512 个字节。
 
 如果这一步没过，按 [B链-待办与硬件验证清单.md](B链-待办与硬件验证清单.md) §2.6 的排查顺序一条条找，不要跳着猜。
 

@@ -119,11 +119,16 @@ module sd_initializer (
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             bstate <= B_IDLE;
-            bdata  <= 8'hFF;
             brdata <= 8'h00;
             bdone  <= 1'b0;
         end else begin
-            // 注：bstart 由主状态机单独驱动（单驱动源），本块只读，避免多驱动竞争
+            // 注：bstart 与 bdata 都由主状态机单独驱动（单驱动源），本块只读，
+            //     避免多驱动竞争。
+            // ★ 这两个信号的【复位赋值】也必须只留在主状态机里：早期版本在本块
+            //   复位分支多写了一次 bdata <= 8'hFF，ModelSim 编译/仿真都不报错
+            //   （两个 always 块写同一个 reg 在仿真里只是竞争），但 TD 综合直接
+            //   报 HDL-9007 "net 'bdata[7]' is constantly driven from multiple
+            //   places" 并中止综合。新增驱动源前先想清楚归谁。
             bdone  <= 1'b0;
             case (bstate)
                 B_IDLE : if (bstart) bstate <= B_SEND;
@@ -188,6 +193,7 @@ module sd_initializer (
             to_acmd41   <= 32'd0;
             dbg_state   <= M_IDLE;
             bstart      <= 1'b0;
+            bdata       <= 8'hFF;      // bdata 的唯一驱动源就是本块（见字节引擎注释）
         end else begin
             dbg_state <= mstate;
             bstart    <= 1'b0;      // bstart 只有本块驱动；请求只持续 1 拍

@@ -56,10 +56,10 @@
 | 文件 | 状态 | 负责人 | 接口与作用 | 测试 |
 |---|---|---|---|---|
 | `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v` | RTL 已写，仿真通过；**未上板** | B（A 复核板级落点） | 接引脚的阶段 5 最小验证顶层：`clk`(R7, 50 MHz) / `rst_n`(A2) / `sd_ncs`·`sd_dclk`·`sd_mosi`·`sd_miso` / `uart_txd`(D12) / `led[3:0]`；内部例化 `sd_initializer` + `sd_sector_reader`（**共用一份 `spi_master`，按 `init_done` 二选一**）+ `uart_tx` + `reset_sync`；上电延时 → 初始化 → 读 LBA=1000 → 512 Byte 经 UART 回传。接口与时钟取舍见 interface_spec §3.7 | `tb_top_stage5_sector_rd.sv`（T1–T4 已通过） |
-| `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/pin.adc` | 已写，待上板 / 综合核对 | B | 引脚约束，按 `2_FPGA.pdf`（引脚分布）与 `6_EX_DEVICE.pdf`（SD/LED/KEY 页）逐脚核对，并与厂商同器件例程交叉验证。`uart_txd` 落点待复核 | 综合报告 |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/pin.adc` | 已写，待综合 / 上板核对 | B | 引脚约束。来源：开发板手册官方引脚表（串口 / LED / 按键）+ `2_FPGA.pdf` / `6_EX_DEVICE.pdf` + 厂商同器件例程，三处一致。`uart_txd = D12` 已确认是 FPGA 发送脚（板载 CH340G，无需外接 USB-TTL） | 综合报告 |
 | `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/timing.sdc` | 已写（第一版：单一 50 MHz 时钟域） | B | `create_clock -name clk -period 20 -waveform {0 10}`；本顶层不接 PLL，无需派生时钟或跨域分组 | STA |
 
-`project/safevision.al` 已把 `TOP_MODULE` 设为 `top_stage5_sector_rd`，并加入 `reset_sync.v`、`top_stage5_sector_rd.v` 与 `constraint_1` 的 `pin.adc`/`timing.sdc`。打开工程后仍须在 TD 里确认依赖分析没有把 `spi_master` / `sd_initializer` / `sd_sector_reader` / `uart_tx` / `crc7` / `crc16_ccitt` 标成 `AutoExcluded`。
+`project/safevision.al` 已把 `TOP_MODULE` 设为 `top_stage5_sector_rd`，并加入 `reset_sync.v`、`top_stage5_sector_rd.v` 与 `constraint_1` 的 `pin.adc`/`timing.sdc`。**2026-10-02 已在 TD 里跑过依赖分析 + elaborate**：`safevision_Runs/syn_1/run.log` 显示顶层闭包内的 7 个模块全部 elaborate 到了，没有被误排除（只有 `crc7.v` 被排除，而它只被 `tb_crc` 使用，正确）。同一次 elaborate 报出 `sd_initializer` / `sd_sector_reader` 的 `bdata` 多驱动（`HDL-8007`）**并把两个模块降级成黑盒**——已修（详见 interface_spec v1.10 变更历史）。**该次综合未通过，需重新综合**。
 
 ## 待实现模块命名（不是空 RTL）
 

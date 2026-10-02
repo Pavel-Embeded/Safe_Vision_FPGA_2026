@@ -15,4 +15,5 @@
 
 **已知不一致的现状（2026-10-02 更新）**：① 本文件原记录的"`run_sim.ps1` 顶部的 `$MSIM_BIN` 写死为本机 ModelSim 路径，移植时需参数化并回归"——**已解决**：`run_sim.ps1` 改为 `-ModelSimBin` 参数 + `MSIM_BIN` 环境变量回退，与 `run_clock_sim.ps1` 同口径，脚本里不再有本机路径，并已在参数化后重跑回归（`TOTAL PASS=507 FAIL=0`）。② 接口 O-11 记录的 CMD18 多扇区读未实现仍然成立，此处不按手册样例假定它已支持。③ 现有 `docs/B链-待办与硬件验证清单.md` 的旧路径引用已修正，其 §2.2 写的是 `rtl/include/` 与 `rtl/storage/`，与 `docs/interface_spec.md` 的迁移表一致。
 
-**新增（2026-10-02）**：B 侧板级 bring-up 落地——`platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v` + `constraints/{pin.adc,timing.sdc}` + `tb_top_stage5_sector_rd.sv`，TD 工程 `TOP_MODULE` 与约束已配好。**仍待人工确认**：`uart_txd`（暂取 D12，网络名 `TXD`）到物理连接器的落点；以及在 TD GUI 里确认依赖分析没有把用到的模块标 `AutoExcluded`。这两条不解决，第 8 行"B 板级最小扇区读取"就还不能算可下载。
+**新增（2026-10-02）**：B 侧板级 bring-up 落地——`platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v` + `constraints/{pin.adc,timing.sdc}` + `tb_top_stage5_sector_rd.sv`，TD 工程 `TOP_MODULE` 与约束已配好。两条原"待人工确认"已在同一天解决：① `uart_txd`（D12，网络名 `TXD`）经开发板手册串口引脚表 + 图2-10 CH340G 原理图确认是 **FPGA 发送脚**，对接**板载 USB-UART**（无需外接 USB-TTL）；② `AutoExcluded` 经 `run.log` 核对，顶层闭包内 7 个模块全部 elaborate，无误排除。
+**同一次 TD 综合还暴露并修掉一个真 bug**：`sd_initializer` / `sd_sector_reader` 的 `bdata` 被两个 `always` 块驱动（`HDL-8007`），**ModelSim 完全不报**；已收归单一驱动源，全仓静态复查确认无同类问题。**未决事项**：该次综合未通过，**需要重新综合 + 布局布线**。

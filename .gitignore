@@ -27,10 +27,13 @@ modelsim.ini
 # ★★ 注意：*.al 故意【不】在这里 —— 它是 TD 的【工程文件】（设计文件表、顶层模块、
 #    约束集、综合/布线 Run 设置），属于必须版本管理的【源文件】。早先误把它当生成物
 #    忽略了，后果是整个工程文件静默进不了仓库、队友无法打开工程。
-#    这里只忽略 TD 的运行期垃圾：锁文件与日志。
+#    这里只忽略 TD 的运行期垃圾：锁文件、日志、以及每个 Run 的产物目录。
 *.lock.f
 /safevision/log/
-td_*.logw
+*.logw
+#   TD 每次综合/布线会生成 <工程名>_Runs/<run>/（run.bat / *.tcl / settings.cfg /
+#   *.prj / .temp.f / run.log ...），全部可再生，不进仓库。
+/safevision/**/*_Runs/
 
 # Evidence logs, reports, waveforms and media are intentionally allowed.
 *.log
