@@ -6,6 +6,7 @@ param(
     [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
     [string]$XSimBin = 'D:\Xilinx\Vivado\2018.3\bin',
     [string]$TdRoot = 'D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116',
+    [string]$PythonExe = 'python',
     [string]$RunDir = (Join-Path (Split-Path $PSScriptRoot -Parent) 'verification\work_video_clock'),
     [string]$VideoTb = (Join-Path $RepoRoot 'safevision\verification\unit\tb_video_timing.sv'),
     [string]$RealFrameTb = (Join-Path $RepoRoot 'safevision\verification\unit\tb_frame_swap_real_frame.sv'),
@@ -77,7 +78,7 @@ function Invoke-XSimCase {
         & $xsim "${Top}_sim" -runall --log xsim.log
         if ($LASTEXITCODE -ne 0) { throw "$Name simulation failed ($LASTEXITCODE)" }
         $simLog = Get-Content -LiteralPath 'xsim.log' -Raw
-        if ($simLog -match '(?im)^\s*(\[FAIL\]|FAIL\b|FATAL:|ERROR:|\[RESULT\].*FAILED)') {
+        if ($simLog -match '(?im)^\s*(\[FAIL\]|FAIL\b|FATAL\b|ERROR:|\[RESULT\].*FAILED)') {
             throw "$Name reported failure; inspect $caseDir\xsim.log"
         }
         if (-not $simLog.Contains($PassMarker)) {
@@ -109,5 +110,13 @@ Invoke-XSimCase -Name 'clock_video_subsystem' -Top 'tb_clock_video_subsystem' `
                       $pllAudio, $videoRtl, $resetRtl, $resetCtrlRtl,
                       $clockGenRtl, $subsystemRtl) -SvSources @($IntegrationTb) `
     -PassMarker 'PASS tb_clock_video_subsystem:'
+
+# Negative parameter tests require the exact rejection diagnostic, rather than
+# treating every tool exit or every FATAL as a successful negative test.
+& $PythonExe (Join-Path $RepoRoot 'safevision/tools/run_video_clock_params.py') `
+    --repo-root $RepoRoot --xsim-bin $XSimBin --td-root $TdRoot `
+    --run-dir (Join-Path $RunDir 'parameters')
+if ($LASTEXITCODE -ne 0) { throw "Clock/video parameter suite failed ($LASTEXITCODE)" }
+Write-Output 'PASS all five functional cases and 41 parameter cases'
 
 

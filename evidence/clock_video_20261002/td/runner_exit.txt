@@ -1,3 +1,0 @@
-2
-INTERNAL_TIMING_MET_HEALTH_WARNINGS_OPEN
-Canonical project and current repository sources; output original: D:/Codex/2026-09-30/sao/work/delivery_td

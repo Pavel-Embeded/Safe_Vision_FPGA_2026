@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Safe_Vision_FPGA_2026/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v" into library work
-INFO: [VRFC 10-311] analyzing module reset_sync
-INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Safe_Vision_FPGA_2026/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_reset_ctrl.v" into library work
-INFO: [VRFC 10-311] analyzing module clock_reset_ctrl

@@ -52,12 +52,19 @@ module video_timing #(
     // Valid parameterizations elaborate no initial block, leaving only
     // counters/comparators for TD. 12 bits cover 0..4095; total 4096 is legal.
     generate
-        if (H_ACTIVE <= 0 || V_ACTIVE <= 0 || H_SYNC <= 0 || V_SYNC <= 0 ||
+        if ((^H_ACTIVE === 1'bx) || (^H_FRONT === 1'bx) ||
+            (^H_SYNC === 1'bx) || (^H_BACK === 1'bx) ||
+            (^V_ACTIVE === 1'bx) || (^V_FRONT === 1'bx) ||
+            (^V_SYNC === 1'bx) || (^V_BACK === 1'bx) ||
+            H_ACTIVE <= 0 || V_ACTIVE <= 0 || H_SYNC <= 0 || V_SYNC <= 0 ||
             H_FRONT < 0 || H_BACK < 0 || V_FRONT < 0 || V_BACK < 0 ||
+            // Bound each term so a 32-bit sum cannot wrap into a legal total.
+            H_ACTIVE > 4096 || H_FRONT > 4096 || H_SYNC > 4096 || H_BACK > 4096 ||
+            V_ACTIVE > 4096 || V_FRONT > 4096 || V_SYNC > 4096 || V_BACK > 4096 ||
             H_TOTAL <= 0 || V_TOTAL <= 0 ||
             H_TOTAL > 4096 || V_TOTAL > 4096 ||
-            (HSYNC_ACTIVE != 1'b0 && HSYNC_ACTIVE != 1'b1) ||
-            (VSYNC_ACTIVE != 1'b0 && VSYNC_ACTIVE != 1'b1)) begin : invalid_parameters
+            (HSYNC_ACTIVE !== 1'b0 && HSYNC_ACTIVE !== 1'b1) ||
+            (VSYNC_ACTIVE !== 1'b0 && VSYNC_ACTIVE !== 1'b1)) begin : invalid_parameters
 `ifndef SYNTHESIS
           initial begin
             $display("FATAL video_timing: invalid geometry or sync polarity");

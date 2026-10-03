@@ -72,7 +72,7 @@ module clock_video_subsystem #(
 
     // synthesis translate_off
     initial begin
-        if (VIDEO_MODE_HD != 0 && VIDEO_MODE_HD != 1) begin
+        if (VIDEO_MODE_HD !== 0 && VIDEO_MODE_HD !== 1) begin
             $display("[FAIL] clock_video_subsystem VIDEO_MODE_HD must be 0 or 1");
             $stop;
         end
