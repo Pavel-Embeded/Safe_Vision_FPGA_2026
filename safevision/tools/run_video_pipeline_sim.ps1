@@ -6,7 +6,10 @@ param(
 # Verilog-2001 RTL and SystemVerilog TB are compiled separately.
 # Logs and simulator artifacts remain in RunDir, never in the source list.
 $ErrorActionPreference = 'Stop'
-$RunDir = [IO.Path]::GetFullPath($RunDir)
+# Resolve caller paths before changing to each simulator working directory.
+$RepoRoot = (Resolve-Path -LiteralPath $RepoRoot).Path
+$XSimBin = (Resolve-Path -LiteralPath $XSimBin).Path
+$RunDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($RunDir)
 if ($RunDir -match '[^\x00-\x7f]') { throw 'XSim 2018.3 needs an ASCII RunDir.' }
 $rtl = @(
     (Join-Path $RepoRoot 'safevision/rtl/video/video_pipeline/video_pipeline.v'),

@@ -2,7 +2,7 @@
 // Literal VGA/HD geometry oracle plus indexed history checks. Real scan
 // timing drives a 16-bit RGB565 bundle. Invalid pixels must not alter sync.
 module vp_scan_checker #(
-    parameter integer HD=0, L=4
+    parameter integer HD=0
 )(input wire clk, input wire rst_n, output reg done=0,
   output integer checks=0);
     localparam integer HT=HD?1650:800, VT=HD?750:525;

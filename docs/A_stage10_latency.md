@@ -64,4 +64,12 @@ B 的原 ModelSim 入口 `run_sim.ps1` 保留；新增 `run_b_xsim_compat.ps1` �
 
 TD 6.2.168116 / EG4S20BG256 的独立 stage-10 验证顶层使用现有 BASE/HD 官方视频 PLL、复位同步器、Video Timing、0+1+2+1 流水链与输出观测寄存器。完成布局布线并在新进程重建最终时钟：BASE 的 SWNS/HWNS 为 +35.320/+0.050 ns，HD 为 +8.740/+0.070 ns，STNS/HTNS 均为 0，未定时钟网络为 0；setup/hold/recovery/removal 均有实际分析。
 
-以上是该验证顶层的内部路径结果。已有 PLL 反馈局部网络 CRITICAL-WARNING、clock-definition/dummy-node 检查项仍开放；1 个外部复位输入和 49 个观测输出没有板级 I/O 预算。因此不能称为整机时序签核，也未做本模块的板级烧录测试。本次不上传波形、时序报告、数据库或运行日志。
+重新导入 BASE/HD 最终数据库，实际像素 C1 和 C0 反馈线网均报告 global，反馈详细路由可追踪到全局 clock mesh 和 PLL fbclk；布线 DRC 和 check_design 通过。但 final check_timing 仍报 USR-6135（反馈被判为 local、补偿延迟不可预测），以及 clock-definition/dummy-node 项。隔离实验增加 C0 实际寄存器负载、使用官方支持的 set_clock_route_enforce 均未清除告警；没有把这些实验改进产品 RTL。物理路由与时钟图检查存在不一致，尚无厂商确认的修正或豁免。
+
+当前原板级顶层 top_sdram_loopback 使用原 pin.adc/timing.sdc，45 条源文件实际完成综合、布局、布线、check_design 和 bitgen；生成的本地验证位流为 629,639 字节，编译没有报错，未下载到板。其全局 SWNS/STNS 为 −6.826/−298.836 ns、HWNS/HTNS 为 +0.054/0 ns；自研 C1→C1 组为 +0.102/+0.054 ns、0 违例，负 setup 余量落在现有 SDRAM 硬核 C1↔C2 的 64 个端点。此前队友的同类报告已有此问题，阶段十模块尚未在此顶层例化，不能把这次合编成功当作 SDRAM 全局时序通过。未改硬核 IP、系统 PLL 或添加 false path/multicycle 来消除报告中的违例。
+
+本轮直接读取本机赛方 lab_ex4_tf 原例程随附的 2026-06-05 Routed 报告：SWNS/STNS 为 −6.565/−297.430 ns，也存在同类硬核路径负余量，并另有自研逻辑小幅违例。因此原例程不能作为“全部时序通过”的依据。判断：SDRAM 硬核 STA/采样边沿建模及 TD 的 PLL 反馈检查存在疑点，尚不足以认定功能 IP 有错；控制器主体为厂商加密实现，未取得可验证的修正依据。进一步隔离使用 set_clock_net 声明实际 C0 时钟也未清除 USR-6135，不向产品提交无效修改。
+
+以上证明已分析的阶段十内部路径通过，不是整机时序签核：验证顶层的外部复位输入及 49 个观测输出没有板级 I/O 预算，完整产品顶层尚未实现，本轮未做阶段十板级烧录测试。本次不上传波形、时序报告、数据库或运行日志。
+
+复核修正：仿真入口在切换工作目录前解析 RepoRoot/XSimBin/RunDir；显式使用相对路径实跑两个 TB 仍分别通过 25,124 / 1,657,732 次检查。扫描 TB 移除未使用的 L 参数，固定 1+2+1 链及断言未变。
