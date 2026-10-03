@@ -1,0 +1,1440 @@
+Created by          : Tang Dynasty v6.2.168116
+                    : Copyright (c) 2012-2025 Anlogic Inc.
+Generated           : Fri Oct  2 19:59:40 2026
+
+Top Model           : top_stage6_fat32_mount
+Device              : EG4S20BG256
+Speed               : NA
+STA coverage        : 99.71%
+Constraint File     : F:/workspace/fpga_competition/HX4S20_Contest_202606/safevision/platform/anlogic_eg4s20_hx4s20c/constraints/timing.sdc;
+Confidence          : Routed
+Check Corner        : Both (Slow and Fast)
+CRPR Enabled        : Yes
+Report Scheme       : 10 end point(s) per path group, 1 path(s) per end point
+
+
+Check Status
+-------------
+
+Corner   | Max      Min     
+------------------------------------
+Slow     | yes      yes     
+Fast     | yes      yes     
+
+
+Timing Status
+--------------------
+	SWNS: 6.042ns, STNS: 0.000ns
+	HWNS: 0.030ns, HTNS: 0.000ns
+	Period Check WNS: 0.000ns
+
+
+Clock Summary
+--------------------
+
+       Clock-Id:       C-Freq       Fanout   Clock-Name
+--------------------------------------------------------------------------------
+           clk0:       50.000         1311   clk
+--------------------------------------------------------------------------------
+
+       Name            Type         Rise(ns)   Fall(ns)          C-Period(ns)     C-Freq(MHz)          R-Period(ns)     R-Freq(MHz)         SWNS(ns)   STNS(ns)         HWNS(ns)   HTNS(ns)         Skew(ns)           Fanout        Max-Level        CC-From    CC-To
+       clk0           local            0.000     10.000                20.000          50.000                13.958          71.644            6.042      0.000            0.030      0.000            0.326             1311               12             no       no
+
+Notes
+----------
+C-Period  :  constraint period
+C-Freq    :  constraint freq
+R-Period  :  report min period
+R-Freq    :  report fmax
+CC-From   :  has path(s) from cross-domain clock
+CC-To     :  has path(s) to cross-domain clock
+
+
+*   Clock R-Period data only takes intra-clock timing. SWNS/STNS/HWNS/HTNS take both intra-clock and inter-clock timing.
+*   If there is mismatch between R-Period and SWNS, check inter-clock timing of this clock as capture clock.
+*   SWNS/STNS/HWNS/HTNS of timing exception (SMCP/SMD) only counted in global Timing Status, not counted in Clock Summary.
+
+Intra clock domain timing
+--------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+Path Group     :     clk -> clk
+Type           :     Self
+From Clock     :     clk
+To Clock       :     clk
+Min Period     :     13.958ns
+Fmax           :     71.644MHz
+
+Statistics:
+Max            : SWNS      6.042ns, STNS      0.000ns,         0 Viol Endpoints,      4554 Total Endpoints,     31985 Paths Analyzed
+Min            : HWNS      0.030ns, HTNS      0.000ns,         0 Viol Endpoints,      4554 Total Endpoints,     31985 Paths Analyzed
+----------------------------------------------------------------------------------------------------
+
+Max Paths
+----------------------------------------------------------------------------------------------------
+Slack               : 6.042ns
+Begin Point         : u_fat32_cluster_walker/fat_val_reg[29]_syn_12.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_cluster_walker/err_code_reg[1]_syn_14.d[0] (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 13.678ns (cell 4.847ns (35%), net 8.831ns (65%))
+Clock Skew          : 0.064ns
+Logic Level         : 12 ( LUT2=4  ADDER=4  LUT3=2  LUT5=1  LUT4=1 )
+Max Fanout          : 29
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_cluster_walker/fat_val_reg[29]_syn_12.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x026y016z3          0.146    r     3.868          pin: u_fat32_cluster_walker/fat_val_reg[29]_syn_12.q[0]
+net (fo=4)                              0.912          4.780          net: u_fat32_cluster_walker/bcnt[1],  ../../../../../rtl/storage/fat32_cluster_walker.v(84)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_38.b[0]
+ADDER               x027y014z1          0.627    f     5.407       1  pin: u_fat32_cluster_walker/lt4_syn_38.fco
+net (fo=1)                              0.000          5.407          net: u_fat32_cluster_walker/lt4_syn_9,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_41.fci
+ADDER               x027y015z0          0.073    f     5.480          pin: u_fat32_cluster_walker/lt4_syn_41.fco
+net (fo=1)                              0.000          5.480          net: u_fat32_cluster_walker/lt4_syn_13,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_44.fci
+ADDER               x027y015z1          0.073    f     5.553          pin: u_fat32_cluster_walker/lt4_syn_44.fco
+net (fo=1)                              0.000          5.553          net: u_fat32_cluster_walker/lt4_syn_17,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_47.fci
+ADDER               x027y016z0          0.073    f     5.626          pin: u_fat32_cluster_walker/lt4_syn_47.fco
+net (fo=1)                              0.000          5.626          net: u_fat32_cluster_walker/lt4_syn_21,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_49.fci
+ADDER               x027y016z1          0.144    f     5.770       2  pin: u_fat32_cluster_walker/lt4_syn_49.f[0]
+net (fo=1)                              0.594          6.364          net: u_fat32_cluster_walker/fat_in_win_n1,  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/roote_h_reg[7]_syn_4.d[0]
+LUT2                x027y017z1          0.205    r     6.569       3  pin: u_fat32_boot_parser/roote_h_reg[7]_syn_4.f[0]
+net (fo=29)                             2.457          9.026          net: u_fat32_cluster_walker/fat_in_win,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/mux48_syn_515.d[1]
+LUT2                x018y017z1          0.205    r     9.231       4  pin: u_fat32_cluster_walker/mux48_syn_515.f[1]
+net (fo=4)                              0.826         10.057          net: u_fat32_cluster_walker/fat_val_b6[5],  NOFILE(0)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_87.b[1]
+ADDER               x018y009z1          0.539    f    10.596       5  pin: u_fat32_cluster_walker/lt0_syn_87.fco
+net (fo=1)                              0.000         10.596          net: u_fat32_cluster_walker/lt0_syn_10,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_90.fci
+ADDER               x018y010z0          0.073    f    10.669          pin: u_fat32_cluster_walker/lt0_syn_90.fco
+net (fo=1)                              0.000         10.669          net: u_fat32_cluster_walker/lt0_syn_14,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_93.fci
+ADDER               x018y010z1          0.073    f    10.742          pin: u_fat32_cluster_walker/lt0_syn_93.fco
+net (fo=1)                              0.000         10.742          net: u_fat32_cluster_walker/lt0_syn_18,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_96.fci
+ADDER               x018y011z0          0.073    f    10.815          pin: u_fat32_cluster_walker/lt0_syn_96.fco
+net (fo=1)                              0.000         10.815          net: u_fat32_cluster_walker/lt0_syn_22,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_99.fci
+ADDER               x018y011z1          0.073    f    10.888          pin: u_fat32_cluster_walker/lt0_syn_99.fco
+net (fo=1)                              0.000         10.888          net: u_fat32_cluster_walker/lt0_syn_26,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_102.fci
+ADDER               x018y012z0          0.073    f    10.961          pin: u_fat32_cluster_walker/lt0_syn_102.fco
+net (fo=1)                              0.000         10.961          net: u_fat32_cluster_walker/lt0_syn_30,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_105.fci
+ADDER               x018y012z1          0.073    f    11.034          pin: u_fat32_cluster_walker/lt0_syn_105.fco
+net (fo=1)                              0.000         11.034          net: u_fat32_cluster_walker/lt0_syn_34,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_108.fci
+ADDER               x018y013z0          0.073    f    11.107          pin: u_fat32_cluster_walker/lt0_syn_108.fco
+net (fo=1)                              0.000         11.107          net: u_fat32_cluster_walker/lt0_syn_38,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_111.fci
+ADDER               x018y013z1          0.073    f    11.180          pin: u_fat32_cluster_walker/lt0_syn_111.fco
+net (fo=1)                              0.000         11.180          net: u_fat32_cluster_walker/lt0_syn_42,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_114.fci
+ADDER               x018y014z0          0.073    f    11.253          pin: u_fat32_cluster_walker/lt0_syn_114.fco
+net (fo=1)                              0.000         11.253          net: u_fat32_cluster_walker/lt0_syn_46,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_117.fci
+ADDER               x018y014z1          0.073    f    11.326          pin: u_fat32_cluster_walker/lt0_syn_117.fco
+net (fo=1)                              0.000         11.326          net: u_fat32_cluster_walker/lt0_syn_50,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_120.fci
+ADDER               x018y015z0          0.073    f    11.399          pin: u_fat32_cluster_walker/lt0_syn_120.fco
+net (fo=1)                              0.000         11.399          net: u_fat32_cluster_walker/lt0_syn_54,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_122.fci
+ADDER               x018y015z1          0.144    f    11.543       6  pin: u_fat32_cluster_walker/lt0_syn_122.f[0]
+net (fo=3)                              0.769         12.312          net: u_fat32_cluster_walker/nxt_eoc,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/fat_val_reg[24]_syn_4.c[1]
+LUT5                x020y017z3          0.348    f    12.660       7  pin: u_fat32_cluster_walker/fat_val_reg[24]_syn_4.f[1]
+net (fo=2)                              0.872         13.532          net: u_fat32_cluster_walker/mux44_syn_67,  ../../../../../rtl/storage/fat32_cluster_walker.v(135)
+                                                                      pin: u_fat32_boot_parser/nfat_reg[6]_syn_4.d[1]
+LUT2                x026y018z2          0.262    r    13.794       8  pin: u_fat32_boot_parser/nfat_reg[6]_syn_4.f[1]
+net (fo=3)                              0.456         14.250          net: u_fat32_cluster_walker/mux44_syn_70,  ../../../../../rtl/storage/fat32_cluster_walker.v(135)
+                                                                      pin: u_fat32_boot_parser/sig_h_reg[1]_syn_4.d[1]
+LUT3                x027y019z2          0.262    r    14.512       9  pin: u_fat32_boot_parser/sig_h_reg[1]_syn_4.f[1]
+net (fo=2)                              0.757         15.269          net: u_fat32_cluster_walker/mstate_b1[2]_syn_2,  NOFILE(0)
+                                                                      pin: u_fat32_cluster_walker/mstate_reg[2]_syn_4.a[0]
+LUT4                x026y020z3          0.424    f    15.693      10  pin: u_fat32_cluster_walker/mstate_reg[2]_syn_4.f[0]
+net (fo=1)                              0.594         16.287          net: u_fat32_cluster_walker/mux44_syn_28,  ../../../../../rtl/storage/fat32_cluster_walker.v(135)
+                                                                      pin: u_fat32_boot_parser/sig_h_reg[5]_syn_4.d[0]
+LUT2                x027y020z0          0.205    r    16.492      11  pin: u_fat32_boot_parser/sig_h_reg[5]_syn_4.f[0]
+net (fo=2)                              0.594         17.086          net: u_fat32_cluster_walker/err_code_reg[1]_syn_8,  ../../../../../rtl/storage/fat32_cluster_walker.v(109)
+                                                                      pin: u_fat32_cluster_walker/err_code_reg[1]_syn_14.d[0]
+LUT3 (reg)          x027y021z1          0.314    r    17.400      12  net: u_fat32_cluster_walker/err_code[1],  ../../../../../rtl/storage/fat32_cluster_walker.v(49)
+--------------------------------------------------------------------  ---------------
+Arrival                                               17.400               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_cluster_walker/err_code_reg[1]_syn_14.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  6.042               
+
+Slack               : 6.270ns
+Begin Point         : u_fat32_cluster_walker/fat_val_reg[29]_syn_12.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_cluster_walker/err_code_reg[0]_syn_7.d[1] (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 13.450ns (cell 4.904ns (36%), net 8.546ns (64%))
+Clock Skew          : 0.064ns
+Logic Level         : 12 ( LUT2=4  ADDER=4  LUT3=2  LUT5=1  LUT4=1 )
+Max Fanout          : 29
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_cluster_walker/fat_val_reg[29]_syn_12.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x026y016z3          0.146    r     3.868          pin: u_fat32_cluster_walker/fat_val_reg[29]_syn_12.q[0]
+net (fo=4)                              0.912          4.780          net: u_fat32_cluster_walker/bcnt[1],  ../../../../../rtl/storage/fat32_cluster_walker.v(84)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_38.b[0]
+ADDER               x027y014z1          0.627    f     5.407       1  pin: u_fat32_cluster_walker/lt4_syn_38.fco
+net (fo=1)                              0.000          5.407          net: u_fat32_cluster_walker/lt4_syn_9,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_41.fci
+ADDER               x027y015z0          0.073    f     5.480          pin: u_fat32_cluster_walker/lt4_syn_41.fco
+net (fo=1)                              0.000          5.480          net: u_fat32_cluster_walker/lt4_syn_13,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_44.fci
+ADDER               x027y015z1          0.073    f     5.553          pin: u_fat32_cluster_walker/lt4_syn_44.fco
+net (fo=1)                              0.000          5.553          net: u_fat32_cluster_walker/lt4_syn_17,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_47.fci
+ADDER               x027y016z0          0.073    f     5.626          pin: u_fat32_cluster_walker/lt4_syn_47.fco
+net (fo=1)                              0.000          5.626          net: u_fat32_cluster_walker/lt4_syn_21,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_49.fci
+ADDER               x027y016z1          0.144    f     5.770       2  pin: u_fat32_cluster_walker/lt4_syn_49.f[0]
+net (fo=1)                              0.594          6.364          net: u_fat32_cluster_walker/fat_in_win_n1,  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/roote_h_reg[7]_syn_4.d[0]
+LUT2                x027y017z1          0.205    r     6.569       3  pin: u_fat32_boot_parser/roote_h_reg[7]_syn_4.f[0]
+net (fo=29)                             2.457          9.026          net: u_fat32_cluster_walker/fat_in_win,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/mux48_syn_515.d[1]
+LUT2                x018y017z1          0.205    r     9.231       4  pin: u_fat32_cluster_walker/mux48_syn_515.f[1]
+net (fo=4)                              0.826         10.057          net: u_fat32_cluster_walker/fat_val_b6[5],  NOFILE(0)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_87.b[1]
+ADDER               x018y009z1          0.539    f    10.596       5  pin: u_fat32_cluster_walker/lt0_syn_87.fco
+net (fo=1)                              0.000         10.596          net: u_fat32_cluster_walker/lt0_syn_10,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_90.fci
+ADDER               x018y010z0          0.073    f    10.669          pin: u_fat32_cluster_walker/lt0_syn_90.fco
+net (fo=1)                              0.000         10.669          net: u_fat32_cluster_walker/lt0_syn_14,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_93.fci
+ADDER               x018y010z1          0.073    f    10.742          pin: u_fat32_cluster_walker/lt0_syn_93.fco
+net (fo=1)                              0.000         10.742          net: u_fat32_cluster_walker/lt0_syn_18,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_96.fci
+ADDER               x018y011z0          0.073    f    10.815          pin: u_fat32_cluster_walker/lt0_syn_96.fco
+net (fo=1)                              0.000         10.815          net: u_fat32_cluster_walker/lt0_syn_22,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_99.fci
+ADDER               x018y011z1          0.073    f    10.888          pin: u_fat32_cluster_walker/lt0_syn_99.fco
+net (fo=1)                              0.000         10.888          net: u_fat32_cluster_walker/lt0_syn_26,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_102.fci
+ADDER               x018y012z0          0.073    f    10.961          pin: u_fat32_cluster_walker/lt0_syn_102.fco
+net (fo=1)                              0.000         10.961          net: u_fat32_cluster_walker/lt0_syn_30,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_105.fci
+ADDER               x018y012z1          0.073    f    11.034          pin: u_fat32_cluster_walker/lt0_syn_105.fco
+net (fo=1)                              0.000         11.034          net: u_fat32_cluster_walker/lt0_syn_34,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_108.fci
+ADDER               x018y013z0          0.073    f    11.107          pin: u_fat32_cluster_walker/lt0_syn_108.fco
+net (fo=1)                              0.000         11.107          net: u_fat32_cluster_walker/lt0_syn_38,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_111.fci
+ADDER               x018y013z1          0.073    f    11.180          pin: u_fat32_cluster_walker/lt0_syn_111.fco
+net (fo=1)                              0.000         11.180          net: u_fat32_cluster_walker/lt0_syn_42,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_114.fci
+ADDER               x018y014z0          0.073    f    11.253          pin: u_fat32_cluster_walker/lt0_syn_114.fco
+net (fo=1)                              0.000         11.253          net: u_fat32_cluster_walker/lt0_syn_46,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_117.fci
+ADDER               x018y014z1          0.073    f    11.326          pin: u_fat32_cluster_walker/lt0_syn_117.fco
+net (fo=1)                              0.000         11.326          net: u_fat32_cluster_walker/lt0_syn_50,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_120.fci
+ADDER               x018y015z0          0.073    f    11.399          pin: u_fat32_cluster_walker/lt0_syn_120.fco
+net (fo=1)                              0.000         11.399          net: u_fat32_cluster_walker/lt0_syn_54,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/lt0_syn_122.fci
+ADDER               x018y015z1          0.144    f    11.543       6  pin: u_fat32_cluster_walker/lt0_syn_122.f[0]
+net (fo=3)                              0.769         12.312          net: u_fat32_cluster_walker/nxt_eoc,  ../../../../../rtl/storage/fat32_cluster_walker.v(97)
+                                                                      pin: u_fat32_cluster_walker/fat_val_reg[24]_syn_4.c[1]
+LUT5                x020y017z3          0.348    f    12.660       7  pin: u_fat32_cluster_walker/fat_val_reg[24]_syn_4.f[1]
+net (fo=2)                              0.872         13.532          net: u_fat32_cluster_walker/mux44_syn_67,  ../../../../../rtl/storage/fat32_cluster_walker.v(135)
+                                                                      pin: u_fat32_boot_parser/nfat_reg[6]_syn_4.d[1]
+LUT2                x026y018z2          0.262    r    13.794       8  pin: u_fat32_boot_parser/nfat_reg[6]_syn_4.f[1]
+net (fo=3)                              0.456         14.250          net: u_fat32_cluster_walker/mux44_syn_70,  ../../../../../rtl/storage/fat32_cluster_walker.v(135)
+                                                                      pin: u_fat32_boot_parser/sig_h_reg[1]_syn_4.d[1]
+LUT3                x027y019z2          0.262    r    14.512       9  pin: u_fat32_boot_parser/sig_h_reg[1]_syn_4.f[1]
+net (fo=2)                              0.757         15.269          net: u_fat32_cluster_walker/mstate_b1[2]_syn_2,  NOFILE(0)
+                                                                      pin: u_fat32_cluster_walker/mstate_reg[2]_syn_4.a[0]
+LUT4                x026y020z3          0.424    f    15.693      10  pin: u_fat32_cluster_walker/mstate_reg[2]_syn_4.f[0]
+net (fo=1)                              0.594         16.287          net: u_fat32_cluster_walker/mux44_syn_28,  ../../../../../rtl/storage/fat32_cluster_walker.v(135)
+                                                                      pin: u_fat32_boot_parser/sig_h_reg[5]_syn_4.d[0]
+LUT2                x027y020z0          0.205    r    16.492      11  pin: u_fat32_boot_parser/sig_h_reg[5]_syn_4.f[0]
+net (fo=2)                              0.309         16.801          net: u_fat32_cluster_walker/err_code_reg[1]_syn_8,  ../../../../../rtl/storage/fat32_cluster_walker.v(109)
+                                                                      pin: u_fat32_cluster_walker/err_code_reg[0]_syn_7.d[1]
+LUT3 (reg)          x027y021z2          0.371    r    17.172      12  net: u_fat32_cluster_walker/err_code[0],  ../../../../../rtl/storage/fat32_cluster_walker.v(49)
+--------------------------------------------------------------------  ---------------
+Arrival                                               17.172               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_cluster_walker/err_code_reg[0]_syn_7.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  6.270               
+
+Slack               : 6.694ns
+Begin Point         : u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/total_clus_reg[25]_syn_4.d[1] (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 13.026ns (cell 7.477ns (57%), net 5.549ns (43%))
+Clock Skew          : 0.064ns
+Logic Level         : 8 ( ADDER=4  LUT3=2  MULT18=1  LUT2=1 )
+Max Fanout          : 3
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x013y028z0          0.146    r     3.868          pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.q[0]
+net (fo=2)                              0.628          4.496          net: u_fat32_boot_parser/fs32_0[1],  ../../../../../rtl/storage/fat32_boot_parser.v(83)
+                                                                      pin: u_fat32_boot_parser/mult0_syn_85.b[1]
+MULT18              x016y027            3.563    f     8.059       1  pin: u_fat32_boot_parser/mult0_syn_85.p[1]
+net (fo=1)                              1.048          9.107          net: u_fat32_boot_parser/mult0_syn_4,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_173.d[1]
+ADDER               x015y025z2          0.715    f     9.822       2  pin: u_fat32_boot_parser/add2_syn_173.fco
+net (fo=1)                              0.000          9.822          net: u_fat32_boot_parser/add2_syn_143,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_174.fci
+ADDER               x015y025z3          0.132    f     9.954          pin: u_fat32_boot_parser/add2_syn_174.fco
+net (fo=1)                              0.000          9.954          net: u_fat32_boot_parser/add2_syn_147,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_175.fci
+ADDER               x015y026z2          0.453    f    10.407       3  pin: u_fat32_boot_parser/add2_syn_175.fx[1]
+net (fo=3)                              1.467         11.874          net: u_fat32_boot_parser/data_start_lba_b8[10],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_166.e[1]
+ADDER               x019y023z2          0.715    f    12.589       4  pin: u_fat32_boot_parser/sub2_syn_166.fco
+net (fo=1)                              0.000         12.589          net: u_fat32_boot_parser/sub2_syn_142,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_167.fci
+ADDER               x019y023z3          0.132    f    12.721          pin: u_fat32_boot_parser/sub2_syn_167.fco
+net (fo=1)                              0.000         12.721          net: u_fat32_boot_parser/sub2_syn_146,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_168.fci
+ADDER               x019y024z2          0.132    f    12.853          pin: u_fat32_boot_parser/sub2_syn_168.fco
+net (fo=1)                              0.000         12.853          net: u_fat32_boot_parser/sub2_syn_150,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_169.fci
+ADDER               x019y024z3          0.132    f    12.985          pin: u_fat32_boot_parser/sub2_syn_169.fco
+net (fo=1)                              0.000         12.985          net: u_fat32_boot_parser/sub2_syn_154,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_170.fci
+ADDER               x019y025z2          0.132    f    13.117          pin: u_fat32_boot_parser/sub2_syn_170.fco
+net (fo=1)                              0.000         13.117          net: u_fat32_boot_parser/sub2_syn_158,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_171.fci
+ADDER               x019y025z3          0.132    f    13.249          pin: u_fat32_boot_parser/sub2_syn_171.fco
+net (fo=1)                              0.000         13.249          net: u_fat32_boot_parser/sub2_syn_162,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_172.fci
+ADDER               x019y026z2          0.198    r    13.447       5  pin: u_fat32_boot_parser/sub2_syn_172.f[0]
+net (fo=3)                              0.920         14.367          net: u_fat32_boot_parser/total_clus_b9[31],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/root_dir_lba_reg[0]_syn_4.d[0]
+LUT3                x020y024z3          0.262    r    14.629       6  pin: u_fat32_boot_parser/root_dir_lba_reg[0]_syn_4.f[0]
+net (fo=2)                              0.892         15.521          net: u_fat32_boot_parser/right_shift0_syn_223,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/ts32_2_reg[2]_syn_4.d[1]
+LUT2                x021y025z3          0.262    r    15.783       7  pin: u_fat32_boot_parser/ts32_2_reg[2]_syn_4.f[1]
+net (fo=2)                              0.594         16.377          net: u_fat32_boot_parser/right_shift0_syn_225,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[25]_syn_4.d[1]
+LUT3 (reg)          x022y025z2          0.371    r    16.748       8  net: u_fat32_boot_parser/total_clus[25],  ../../../../../rtl/storage/fat32_boot_parser.v(41)
+--------------------------------------------------------------------  ---------------
+Arrival                                               16.748               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[25]_syn_4.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  6.694               
+
+Slack               : 6.700ns
+Begin Point         : u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/total_clus_reg[22]_syn_4.d[0] (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 13.020ns (cell 7.482ns (57%), net 5.538ns (43%))
+Clock Skew          : 0.064ns
+Logic Level         : 8 ( ADDER=4  LUT3=3  MULT18=1 )
+Max Fanout          : 3
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x013y028z0          0.146    r     3.868          pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.q[0]
+net (fo=2)                              0.628          4.496          net: u_fat32_boot_parser/fs32_0[1],  ../../../../../rtl/storage/fat32_boot_parser.v(83)
+                                                                      pin: u_fat32_boot_parser/mult0_syn_85.b[1]
+MULT18              x016y027            3.563    f     8.059       1  pin: u_fat32_boot_parser/mult0_syn_85.p[1]
+net (fo=1)                              1.048          9.107          net: u_fat32_boot_parser/mult0_syn_4,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_173.d[1]
+ADDER               x015y025z2          0.715    f     9.822       2  pin: u_fat32_boot_parser/add2_syn_173.fco
+net (fo=1)                              0.000          9.822          net: u_fat32_boot_parser/add2_syn_143,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_174.fci
+ADDER               x015y025z3          0.132    f     9.954          pin: u_fat32_boot_parser/add2_syn_174.fco
+net (fo=1)                              0.000          9.954          net: u_fat32_boot_parser/add2_syn_147,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_175.fci
+ADDER               x015y026z2          0.453    f    10.407       3  pin: u_fat32_boot_parser/add2_syn_175.fx[1]
+net (fo=3)                              1.467         11.874          net: u_fat32_boot_parser/data_start_lba_b8[10],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_166.e[1]
+ADDER               x019y023z2          0.715    f    12.589       4  pin: u_fat32_boot_parser/sub2_syn_166.fco
+net (fo=1)                              0.000         12.589          net: u_fat32_boot_parser/sub2_syn_142,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_167.fci
+ADDER               x019y023z3          0.132    f    12.721          pin: u_fat32_boot_parser/sub2_syn_167.fco
+net (fo=1)                              0.000         12.721          net: u_fat32_boot_parser/sub2_syn_146,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_168.fci
+ADDER               x019y024z2          0.132    f    12.853          pin: u_fat32_boot_parser/sub2_syn_168.fco
+net (fo=1)                              0.000         12.853          net: u_fat32_boot_parser/sub2_syn_150,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_169.fci
+ADDER               x019y024z3          0.132    f    12.985          pin: u_fat32_boot_parser/sub2_syn_169.fco
+net (fo=1)                              0.000         12.985          net: u_fat32_boot_parser/sub2_syn_154,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_170.fci
+ADDER               x019y025z2          0.453    f    13.438       5  pin: u_fat32_boot_parser/sub2_syn_170.fx[1]
+net (fo=2)                              0.737         14.175          net: u_fat32_boot_parser/total_clus_b9[26],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/rsvd_l_reg[5]_syn_4.d[0]
+LUT3                x020y024z1          0.205    r    14.380       6  pin: u_fat32_boot_parser/rsvd_l_reg[5]_syn_4.f[0]
+net (fo=2)                              0.920         15.300          net: u_fat32_boot_parser/right_shift0_syn_193,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/ts32_1_reg[1]_syn_4.b[0]
+LUT3                x022y024z1          0.333    f    15.633       7  pin: u_fat32_boot_parser/ts32_1_reg[1]_syn_4.f[0]
+net (fo=2)                              0.738         16.371          net: u_fat32_boot_parser/right_shift0_syn_207,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[22]_syn_4.d[0]
+LUT3 (reg)          x023y023z2          0.371    r    16.742       8  net: u_fat32_boot_parser/total_clus[21],  ../../../../../rtl/storage/fat32_boot_parser.v(41)
+--------------------------------------------------------------------  ---------------
+Arrival                                               16.742               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[22]_syn_4.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  6.700               
+
+Slack               : 6.751ns
+Begin Point         : u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/total_clus_reg[20]_syn_4.b[1] (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 12.969ns (cell 7.594ns (58%), net 5.375ns (42%))
+Clock Skew          : 0.064ns
+Logic Level         : 8 ( ADDER=4  LUT3=3  MULT18=1 )
+Max Fanout          : 3
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x013y028z0          0.146    r     3.868          pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.q[0]
+net (fo=2)                              0.628          4.496          net: u_fat32_boot_parser/fs32_0[1],  ../../../../../rtl/storage/fat32_boot_parser.v(83)
+                                                                      pin: u_fat32_boot_parser/mult0_syn_85.b[1]
+MULT18              x016y027            3.563    f     8.059       1  pin: u_fat32_boot_parser/mult0_syn_85.p[1]
+net (fo=1)                              1.048          9.107          net: u_fat32_boot_parser/mult0_syn_4,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_173.d[1]
+ADDER               x015y025z2          0.715    f     9.822       2  pin: u_fat32_boot_parser/add2_syn_173.fco
+net (fo=1)                              0.000          9.822          net: u_fat32_boot_parser/add2_syn_143,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_174.fci
+ADDER               x015y025z3          0.132    f     9.954          pin: u_fat32_boot_parser/add2_syn_174.fco
+net (fo=1)                              0.000          9.954          net: u_fat32_boot_parser/add2_syn_147,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_175.fci
+ADDER               x015y026z2          0.453    f    10.407       3  pin: u_fat32_boot_parser/add2_syn_175.fx[1]
+net (fo=3)                              1.467         11.874          net: u_fat32_boot_parser/data_start_lba_b8[10],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_166.e[1]
+ADDER               x019y023z2          0.715    f    12.589       4  pin: u_fat32_boot_parser/sub2_syn_166.fco
+net (fo=1)                              0.000         12.589          net: u_fat32_boot_parser/sub2_syn_142,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_167.fci
+ADDER               x019y023z3          0.132    f    12.721          pin: u_fat32_boot_parser/sub2_syn_167.fco
+net (fo=1)                              0.000         12.721          net: u_fat32_boot_parser/sub2_syn_146,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_168.fci
+ADDER               x019y024z2          0.132    f    12.853          pin: u_fat32_boot_parser/sub2_syn_168.fco
+net (fo=1)                              0.000         12.853          net: u_fat32_boot_parser/sub2_syn_150,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_169.fci
+ADDER               x019y024z3          0.132    f    12.985          pin: u_fat32_boot_parser/sub2_syn_169.fco
+net (fo=1)                              0.000         12.985          net: u_fat32_boot_parser/sub2_syn_154,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_170.fci
+ADDER               x019y025z2          0.387    f    13.372       5  pin: u_fat32_boot_parser/sub2_syn_170.fx[0]
+net (fo=2)                              0.737         14.109          net: u_fat32_boot_parser/total_clus_b9[24],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/ts32_1_reg[5]_syn_4.d[0]
+LUT3                x021y024z1          0.205    r    14.314       6  pin: u_fat32_boot_parser/ts32_1_reg[5]_syn_4.f[0]
+net (fo=2)                              0.738         15.052          net: u_fat32_boot_parser/right_shift0_syn_181,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/ts32_1_reg[5]_syn_4.b[1]
+LUT3                x021y024z1          0.333    f    15.385       7  pin: u_fat32_boot_parser/ts32_1_reg[5]_syn_4.f[1]
+net (fo=2)                              0.757         16.142          net: u_fat32_boot_parser/right_shift0_syn_195,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[20]_syn_4.b[1]
+LUT3 (reg)          x023y022z2          0.549    f    16.691       8  net: u_fat32_boot_parser/total_clus[20],  ../../../../../rtl/storage/fat32_boot_parser.v(41)
+--------------------------------------------------------------------  ---------------
+Arrival                                               16.691               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[20]_syn_4.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  6.751               
+
+Slack               : 6.801ns
+Begin Point         : u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/total_clus_reg[22]_syn_4.b[1] (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 12.919ns (cell 7.660ns (59%), net 5.259ns (41%))
+Clock Skew          : 0.064ns
+Logic Level         : 8 ( ADDER=4  LUT3=3  MULT18=1 )
+Max Fanout          : 3
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x013y028z0          0.146    r     3.868          pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.q[0]
+net (fo=2)                              0.628          4.496          net: u_fat32_boot_parser/fs32_0[1],  ../../../../../rtl/storage/fat32_boot_parser.v(83)
+                                                                      pin: u_fat32_boot_parser/mult0_syn_85.b[1]
+MULT18              x016y027            3.563    f     8.059       1  pin: u_fat32_boot_parser/mult0_syn_85.p[1]
+net (fo=1)                              1.048          9.107          net: u_fat32_boot_parser/mult0_syn_4,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_173.d[1]
+ADDER               x015y025z2          0.715    f     9.822       2  pin: u_fat32_boot_parser/add2_syn_173.fco
+net (fo=1)                              0.000          9.822          net: u_fat32_boot_parser/add2_syn_143,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_174.fci
+ADDER               x015y025z3          0.132    f     9.954          pin: u_fat32_boot_parser/add2_syn_174.fco
+net (fo=1)                              0.000          9.954          net: u_fat32_boot_parser/add2_syn_147,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_175.fci
+ADDER               x015y026z2          0.453    f    10.407       3  pin: u_fat32_boot_parser/add2_syn_175.fx[1]
+net (fo=3)                              1.467         11.874          net: u_fat32_boot_parser/data_start_lba_b8[10],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_166.e[1]
+ADDER               x019y023z2          0.715    f    12.589       4  pin: u_fat32_boot_parser/sub2_syn_166.fco
+net (fo=1)                              0.000         12.589          net: u_fat32_boot_parser/sub2_syn_142,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_167.fci
+ADDER               x019y023z3          0.132    f    12.721          pin: u_fat32_boot_parser/sub2_syn_167.fco
+net (fo=1)                              0.000         12.721          net: u_fat32_boot_parser/sub2_syn_146,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_168.fci
+ADDER               x019y024z2          0.132    f    12.853          pin: u_fat32_boot_parser/sub2_syn_168.fco
+net (fo=1)                              0.000         12.853          net: u_fat32_boot_parser/sub2_syn_150,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_169.fci
+ADDER               x019y024z3          0.132    f    12.985          pin: u_fat32_boot_parser/sub2_syn_169.fco
+net (fo=1)                              0.000         12.985          net: u_fat32_boot_parser/sub2_syn_154,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_170.fci
+ADDER               x019y025z2          0.453    f    13.438       5  pin: u_fat32_boot_parser/sub2_syn_170.fx[1]
+net (fo=2)                              0.737         14.175          net: u_fat32_boot_parser/total_clus_b9[26],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/rsvd_l_reg[5]_syn_4.d[0]
+LUT3                x020y024z1          0.205    r    14.380       6  pin: u_fat32_boot_parser/rsvd_l_reg[5]_syn_4.f[0]
+net (fo=2)                              0.920         15.300          net: u_fat32_boot_parser/right_shift0_syn_193,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/ts32_1_reg[1]_syn_4.b[0]
+LUT3                x022y024z1          0.333    f    15.633       7  pin: u_fat32_boot_parser/ts32_1_reg[1]_syn_4.f[0]
+net (fo=2)                              0.459         16.092          net: u_fat32_boot_parser/right_shift0_syn_207,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[22]_syn_4.b[1]
+LUT3 (reg)          x023y023z2          0.549    f    16.641       8  net: u_fat32_boot_parser/total_clus[22],  ../../../../../rtl/storage/fat32_boot_parser.v(41)
+--------------------------------------------------------------------  ---------------
+Arrival                                               16.641               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[22]_syn_4.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  6.801               
+
+Slack               : 6.889ns
+Begin Point         : u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/total_clus_reg[23]_syn_4.d[0] (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 12.831ns (cell 7.420ns (57%), net 5.411ns (43%))
+Clock Skew          : 0.064ns
+Logic Level         : 8 ( ADDER=4  LUT3=2  MULT18=1  LUT2=1 )
+Max Fanout          : 3
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x013y028z0          0.146    r     3.868          pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.q[0]
+net (fo=2)                              0.628          4.496          net: u_fat32_boot_parser/fs32_0[1],  ../../../../../rtl/storage/fat32_boot_parser.v(83)
+                                                                      pin: u_fat32_boot_parser/mult0_syn_85.b[1]
+MULT18              x016y027            3.563    f     8.059       1  pin: u_fat32_boot_parser/mult0_syn_85.p[1]
+net (fo=1)                              1.048          9.107          net: u_fat32_boot_parser/mult0_syn_4,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_173.d[1]
+ADDER               x015y025z2          0.715    f     9.822       2  pin: u_fat32_boot_parser/add2_syn_173.fco
+net (fo=1)                              0.000          9.822          net: u_fat32_boot_parser/add2_syn_143,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_174.fci
+ADDER               x015y025z3          0.132    f     9.954          pin: u_fat32_boot_parser/add2_syn_174.fco
+net (fo=1)                              0.000          9.954          net: u_fat32_boot_parser/add2_syn_147,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_175.fci
+ADDER               x015y026z2          0.453    f    10.407       3  pin: u_fat32_boot_parser/add2_syn_175.fx[1]
+net (fo=3)                              1.467         11.874          net: u_fat32_boot_parser/data_start_lba_b8[10],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_166.e[1]
+ADDER               x019y023z2          0.715    f    12.589       4  pin: u_fat32_boot_parser/sub2_syn_166.fco
+net (fo=1)                              0.000         12.589          net: u_fat32_boot_parser/sub2_syn_142,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_167.fci
+ADDER               x019y023z3          0.132    f    12.721          pin: u_fat32_boot_parser/sub2_syn_167.fco
+net (fo=1)                              0.000         12.721          net: u_fat32_boot_parser/sub2_syn_146,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_168.fci
+ADDER               x019y024z2          0.132    f    12.853          pin: u_fat32_boot_parser/sub2_syn_168.fco
+net (fo=1)                              0.000         12.853          net: u_fat32_boot_parser/sub2_syn_150,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_169.fci
+ADDER               x019y024z3          0.132    f    12.985          pin: u_fat32_boot_parser/sub2_syn_169.fco
+net (fo=1)                              0.000         12.985          net: u_fat32_boot_parser/sub2_syn_154,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_170.fci
+ADDER               x019y025z2          0.132    f    13.117          pin: u_fat32_boot_parser/sub2_syn_170.fco
+net (fo=1)                              0.000         13.117          net: u_fat32_boot_parser/sub2_syn_158,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_171.fci
+ADDER               x019y025z3          0.132    f    13.249          pin: u_fat32_boot_parser/sub2_syn_171.fco
+net (fo=1)                              0.000         13.249          net: u_fat32_boot_parser/sub2_syn_162,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_172.fci
+ADDER               x019y026z2          0.198    r    13.447       5  pin: u_fat32_boot_parser/sub2_syn_172.f[0]
+net (fo=3)                              0.920         14.367          net: u_fat32_boot_parser/total_clus_b9[31],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/root_dir_lba_reg[0]_syn_4.d[0]
+LUT3                x020y024z3          0.262    r    14.629       6  pin: u_fat32_boot_parser/root_dir_lba_reg[0]_syn_4.f[0]
+net (fo=2)                              0.892         15.521          net: u_fat32_boot_parser/right_shift0_syn_223,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/ts32_2_reg[2]_syn_4.d[1]
+LUT2                x021y025z3          0.262    r    15.783       7  pin: u_fat32_boot_parser/ts32_2_reg[2]_syn_4.f[1]
+net (fo=2)                              0.456         16.239          net: u_fat32_boot_parser/right_shift0_syn_225,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[23]_syn_4.d[0]
+LUT3 (reg)          x022y025z0          0.314    r    16.553       8  net: u_fat32_boot_parser/total_clus[24],  ../../../../../rtl/storage/fat32_boot_parser.v(41)
+--------------------------------------------------------------------  ---------------
+Arrival                                               16.553               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[23]_syn_4.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  6.889               
+
+Slack               : 6.928ns
+Begin Point         : u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/total_clus_reg[18]_syn_4.b[0] (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 12.792ns (cell 7.560ns (59%), net 5.232ns (41%))
+Clock Skew          : 0.064ns
+Logic Level         : 8 ( ADDER=4  LUT3=3  MULT18=1 )
+Max Fanout          : 3
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x013y028z0          0.146    r     3.868          pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.q[0]
+net (fo=2)                              0.628          4.496          net: u_fat32_boot_parser/fs32_0[1],  ../../../../../rtl/storage/fat32_boot_parser.v(83)
+                                                                      pin: u_fat32_boot_parser/mult0_syn_85.b[1]
+MULT18              x016y027            3.563    f     8.059       1  pin: u_fat32_boot_parser/mult0_syn_85.p[1]
+net (fo=1)                              1.048          9.107          net: u_fat32_boot_parser/mult0_syn_4,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_173.d[1]
+ADDER               x015y025z2          0.715    f     9.822       2  pin: u_fat32_boot_parser/add2_syn_173.fco
+net (fo=1)                              0.000          9.822          net: u_fat32_boot_parser/add2_syn_143,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_174.fci
+ADDER               x015y025z3          0.132    f     9.954          pin: u_fat32_boot_parser/add2_syn_174.fco
+net (fo=1)                              0.000          9.954          net: u_fat32_boot_parser/add2_syn_147,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_175.fci
+ADDER               x015y026z2          0.453    f    10.407       3  pin: u_fat32_boot_parser/add2_syn_175.fx[1]
+net (fo=3)                              1.467         11.874          net: u_fat32_boot_parser/data_start_lba_b8[10],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_166.e[1]
+ADDER               x019y023z2          0.715    f    12.589       4  pin: u_fat32_boot_parser/sub2_syn_166.fco
+net (fo=1)                              0.000         12.589          net: u_fat32_boot_parser/sub2_syn_142,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_167.fci
+ADDER               x019y023z3          0.132    f    12.721          pin: u_fat32_boot_parser/sub2_syn_167.fco
+net (fo=1)                              0.000         12.721          net: u_fat32_boot_parser/sub2_syn_146,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_168.fci
+ADDER               x019y024z2          0.132    f    12.853          pin: u_fat32_boot_parser/sub2_syn_168.fco
+net (fo=1)                              0.000         12.853          net: u_fat32_boot_parser/sub2_syn_150,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_169.fci
+ADDER               x019y024z3          0.132    f    12.985          pin: u_fat32_boot_parser/sub2_syn_169.fco
+net (fo=1)                              0.000         12.985          net: u_fat32_boot_parser/sub2_syn_154,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_170.fci
+ADDER               x019y025z2          0.198    r    13.183       5  pin: u_fat32_boot_parser/sub2_syn_170.f[0]
+net (fo=2)                              0.757         13.940          net: u_fat32_boot_parser/total_clus_b9[23],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/ts32_0_reg[0]_syn_4.d[0]
+LUT3                x020y023z3          0.262    r    14.202       6  pin: u_fat32_boot_parser/ts32_0_reg[0]_syn_4.f[0]
+net (fo=2)                              0.594         14.796          net: u_fat32_boot_parser/right_shift0_syn_175,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/ts32_1_reg[4]_syn_4.b[0]
+LUT3                x022y023z2          0.431    f    15.227       7  pin: u_fat32_boot_parser/ts32_1_reg[4]_syn_4.f[0]
+net (fo=2)                              0.738         15.965          net: u_fat32_boot_parser/right_shift0_syn_189,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[18]_syn_4.b[0]
+LUT3 (reg)          x023y022z3          0.549    f    16.514       8  net: u_fat32_boot_parser/total_clus[19],  ../../../../../rtl/storage/fat32_boot_parser.v(41)
+--------------------------------------------------------------------  ---------------
+Arrival                                               16.514               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[18]_syn_4.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  6.928               
+
+Slack               : 7.005ns
+Begin Point         : u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/total_clus_reg[18]_syn_4.b[1] (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 12.715ns (cell 7.622ns (59%), net 5.093ns (41%))
+Clock Skew          : 0.064ns
+Logic Level         : 8 ( ADDER=4  LUT3=3  MULT18=1 )
+Max Fanout          : 3
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x013y028z0          0.146    r     3.868          pin: u_fat32_boot_parser/fs32_0_reg[0]_syn_3.q[0]
+net (fo=2)                              0.628          4.496          net: u_fat32_boot_parser/fs32_0[1],  ../../../../../rtl/storage/fat32_boot_parser.v(83)
+                                                                      pin: u_fat32_boot_parser/mult0_syn_85.b[1]
+MULT18              x016y027            3.563    f     8.059       1  pin: u_fat32_boot_parser/mult0_syn_85.p[1]
+net (fo=1)                              1.048          9.107          net: u_fat32_boot_parser/mult0_syn_4,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_173.d[1]
+ADDER               x015y025z2          0.715    f     9.822       2  pin: u_fat32_boot_parser/add2_syn_173.fco
+net (fo=1)                              0.000          9.822          net: u_fat32_boot_parser/add2_syn_143,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_174.fci
+ADDER               x015y025z3          0.132    f     9.954          pin: u_fat32_boot_parser/add2_syn_174.fco
+net (fo=1)                              0.000          9.954          net: u_fat32_boot_parser/add2_syn_147,  ../../../../../rtl/storage/fat32_boot_parser.v(261)
+                                                                      pin: u_fat32_boot_parser/add2_syn_175.fci
+ADDER               x015y026z2          0.453    f    10.407       3  pin: u_fat32_boot_parser/add2_syn_175.fx[1]
+net (fo=3)                              1.467         11.874          net: u_fat32_boot_parser/data_start_lba_b8[10],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_166.e[1]
+ADDER               x019y023z2          0.715    f    12.589       4  pin: u_fat32_boot_parser/sub2_syn_166.fco
+net (fo=1)                              0.000         12.589          net: u_fat32_boot_parser/sub2_syn_142,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_167.fci
+ADDER               x019y023z3          0.132    f    12.721          pin: u_fat32_boot_parser/sub2_syn_167.fco
+net (fo=1)                              0.000         12.721          net: u_fat32_boot_parser/sub2_syn_146,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_168.fci
+ADDER               x019y024z2          0.453    f    13.174       5  pin: u_fat32_boot_parser/sub2_syn_168.fx[1]
+net (fo=2)                              0.737         13.911          net: u_fat32_boot_parser/total_clus_b9[18],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/ts32_0_reg[0]_syn_4.b[1]
+LUT3                x020y023z3          0.431    f    14.342       6  pin: u_fat32_boot_parser/ts32_0_reg[0]_syn_4.f[1]
+net (fo=2)                              0.456         14.798          net: u_fat32_boot_parser/right_shift0_syn_169,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/ts32_0_reg[6]_syn_4.b[1]
+LUT3                x021y024z0          0.333    f    15.131       7  pin: u_fat32_boot_parser/ts32_0_reg[6]_syn_4.f[1]
+net (fo=2)                              0.757         15.888          net: u_fat32_boot_parser/right_shift0_syn_183,  ../../../../../rtl/storage/fat32_boot_parser.v(274)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[18]_syn_4.b[1]
+LUT3 (reg)          x023y022z3          0.549    f    16.437       8  net: u_fat32_boot_parser/total_clus[18],  ../../../../../rtl/storage/fat32_boot_parser.v(41)
+--------------------------------------------------------------------  ---------------
+Arrival                                               16.437               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/total_clus_reg[18]_syn_4.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  7.005               
+
+Slack               : 7.014ns
+Begin Point         : u_fat32_cluster_walker/fat_val_reg[29]_syn_12.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_cluster_walker/hop_cnt_reg[18]_syn_4.ce (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 12.706ns (cell 4.184ns (32%), net 8.522ns (68%))
+Clock Skew          : 0.064ns
+Logic Level         : 8 ( ADDER=4  LUT2=3  LUT5=1 )
+Max Fanout          : 33
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1311)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_cluster_walker/fat_val_reg[29]_syn_12.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x026y016z3          0.146    r     3.868          pin: u_fat32_cluster_walker/fat_val_reg[29]_syn_12.q[0]
+net (fo=4)                              0.912          4.780          net: u_fat32_cluster_walker/bcnt[1],  ../../../../../rtl/storage/fat32_cluster_walker.v(84)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_38.b[0]
+ADDER               x027y014z1          0.627    f     5.407       1  pin: u_fat32_cluster_walker/lt4_syn_38.fco
+net (fo=1)                              0.000          5.407          net: u_fat32_cluster_walker/lt4_syn_9,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_41.fci
+ADDER               x027y015z0          0.073    f     5.480          pin: u_fat32_cluster_walker/lt4_syn_41.fco
+net (fo=1)                              0.000          5.480          net: u_fat32_cluster_walker/lt4_syn_13,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_44.fci
+ADDER               x027y015z1          0.073    f     5.553          pin: u_fat32_cluster_walker/lt4_syn_44.fco
+net (fo=1)                              0.000          5.553          net: u_fat32_cluster_walker/lt4_syn_17,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_47.fci
+ADDER               x027y016z0          0.073    f     5.626          pin: u_fat32_cluster_walker/lt4_syn_47.fco
+net (fo=1)                              0.000          5.626          net: u_fat32_cluster_walker/lt4_syn_21,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/lt4_syn_49.fci
+ADDER               x027y016z1          0.144    f     5.770       2  pin: u_fat32_cluster_walker/lt4_syn_49.f[0]
+net (fo=1)                              0.594          6.364          net: u_fat32_cluster_walker/fat_in_win_n1,  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/roote_h_reg[7]_syn_4.d[0]
+LUT2                x027y017z1          0.205    r     6.569       3  pin: u_fat32_boot_parser/roote_h_reg[7]_syn_4.f[0]
+net (fo=29)                             2.457          9.026          net: u_fat32_cluster_walker/fat_in_win,  ../../../../../rtl/storage/fat32_cluster_walker.v(94)
+                                                                      pin: u_fat32_cluster_walker/mux48_syn_515.d[1]
+LUT2                x018y017z1          0.205    r     9.231       4  pin: u_fat32_cluster_walker/mux48_syn_515.f[1]
+net (fo=4)                              0.664          9.895          net: u_fat32_cluster_walker/fat_val_b6[5],  NOFILE(0)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_113.b[0]
+ADDER               x021y011z1          0.627    f    10.522       5  pin: u_fat32_cluster_walker/lt2_syn_113.fco
+net (fo=1)                              0.000         10.522          net: u_fat32_cluster_walker/lt2_syn_17,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_116.fci
+ADDER               x021y012z0          0.073    f    10.595          pin: u_fat32_cluster_walker/lt2_syn_116.fco
+net (fo=1)                              0.000         10.595          net: u_fat32_cluster_walker/lt2_syn_21,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_119.fci
+ADDER               x021y012z1          0.073    f    10.668          pin: u_fat32_cluster_walker/lt2_syn_119.fco
+net (fo=1)                              0.000         10.668          net: u_fat32_cluster_walker/lt2_syn_25,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_122.fci
+ADDER               x021y013z0          0.073    f    10.741          pin: u_fat32_cluster_walker/lt2_syn_122.fco
+net (fo=1)                              0.000         10.741          net: u_fat32_cluster_walker/lt2_syn_29,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_125.fci
+ADDER               x021y013z1          0.073    f    10.814          pin: u_fat32_cluster_walker/lt2_syn_125.fco
+net (fo=1)                              0.000         10.814          net: u_fat32_cluster_walker/lt2_syn_33,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_128.fci
+ADDER               x021y014z0          0.073    f    10.887          pin: u_fat32_cluster_walker/lt2_syn_128.fco
+net (fo=1)                              0.000         10.887          net: u_fat32_cluster_walker/lt2_syn_37,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_131.fci
+ADDER               x021y014z1          0.073    f    10.960          pin: u_fat32_cluster_walker/lt2_syn_131.fco
+net (fo=1)                              0.000         10.960          net: u_fat32_cluster_walker/lt2_syn_41,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_134.fci
+ADDER               x021y015z0          0.073    f    11.033          pin: u_fat32_cluster_walker/lt2_syn_134.fco
+net (fo=1)                              0.000         11.033          net: u_fat32_cluster_walker/lt2_syn_45,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_137.fci
+ADDER               x021y015z1          0.073    f    11.106          pin: u_fat32_cluster_walker/lt2_syn_137.fco
+net (fo=1)                              0.000         11.106          net: u_fat32_cluster_walker/lt2_syn_49,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_140.fci
+ADDER               x021y016z0          0.073    f    11.179          pin: u_fat32_cluster_walker/lt2_syn_140.fco
+net (fo=1)                              0.000         11.179          net: u_fat32_cluster_walker/lt2_syn_53,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_143.fci
+ADDER               x021y016z1          0.073    f    11.252          pin: u_fat32_cluster_walker/lt2_syn_143.fco
+net (fo=1)                              0.000         11.252          net: u_fat32_cluster_walker/lt2_syn_57,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_146.fci
+ADDER               x021y017z0          0.073    f    11.325          pin: u_fat32_cluster_walker/lt2_syn_146.fco
+net (fo=1)                              0.000         11.325          net: u_fat32_cluster_walker/lt2_syn_61,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_149.fci
+ADDER               x021y017z1          0.073    f    11.398          pin: u_fat32_cluster_walker/lt2_syn_149.fco
+net (fo=1)                              0.000         11.398          net: u_fat32_cluster_walker/lt2_syn_65,  ../../../../../rtl/storage/fat32_cluster_walker.v(99)
+                                                                      pin: u_fat32_cluster_walker/lt2_syn_152.fci
+ADDER               x021y018z0          0.355    f    11.753       6  pin: u_fat32_cluster_walker/lt2_syn_152.f[1]
+net (fo=2)                              0.456         12.209          net: u_fat32_cluster_walker/nxt_oob_n2,  NOFILE(0)
+                                                                      pin: u_fat32_cluster_walker/fat_val_reg[24]_syn_4.b[0]
+LUT5                x020y017z3          0.431    f    12.640       7  pin: u_fat32_cluster_walker/fat_val_reg[24]_syn_4.f[0]
+net (fo=33)                             1.457         14.097          net: u_fat32_cluster_walker/hop_cnt_b2[0]_syn_4,  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/roote_h_reg[1]_syn_4.d[0]
+LUT2                x026y019z2          0.262    r    14.359       8  pin: u_fat32_boot_parser/roote_h_reg[1]_syn_4.f[0]
+net (fo=17)                             1.982         16.341          net: u_fat32_cluster_walker/mux43_syn_165,  ../../../../../rtl/storage/fat32_cluster_walker.v(168)
+                                                                      pin: u_fat32_cluster_walker/hop_cnt_reg[18]_syn_4.ce
+reg                 x022y014z2          0.087    r    16.428               
+--------------------------------------------------------------------  ---------------
+Arrival                                               16.428               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.493          1.493          pin: clk_syn_2.di
+net (fo=1311)                           1.853          3.346          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_cluster_walker/hop_cnt_reg[18]_syn_4.clk
+capture edge                           20.000    r    23.346               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116         23.230               
+clock uncertainty                      -0.100         23.130               
+clock pessimism                         0.312         23.442               
+--------------------------------------------------------------------  ---------------
+Required                                              23.442               
+--------------------------------------------------------------------  ---------------
+Slack                                                  7.014               
+
+
+
+Min Paths
+----------------------------------------------------------------------------------------------------
+Slack               : 0.030ns
+Begin Point         : add87_syn_194.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : pwr_cnt_b[0]_syn_8.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.428ns (cell 0.196ns (45%), net 0.232ns (55%))
+Clock Skew          : 0.045ns
+Logic Level         : 0
+Max Fanout          : 9
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: add87_syn_194.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+ADDER (clk2q)       x011y009z2          0.109    f     3.049          pin: add87_syn_194.q[0]
+net (fo=9)                              0.232          3.281          net: rst_sync_n_dup_5,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: pwr_cnt_b[0]_syn_8.sr
+reg                 x009y009z3          0.087    r     3.368               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.368               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: pwr_cnt_b[0]_syn_8.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.247          3.338               
+--------------------------------------------------------------------  ---------------
+Required                                               3.338               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.030               
+
+Slack               : 0.030ns
+Begin Point         : u_fat32_boot_parser/add0_syn_194.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/to_cnt_reg[11]_syn_4.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.428ns (cell 0.196ns (45%), net 0.232ns (55%))
+Clock Skew          : 0.045ns
+Logic Level         : 0
+Max Fanout          : 22
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/add0_syn_194.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+ADDER (clk2q)       x009y019z2          0.109    f     3.049          pin: u_fat32_boot_parser/add0_syn_194.q[0]
+net (fo=22)                             0.232          3.281          net: rst_sync_n_dup_8,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: u_fat32_boot_parser/to_cnt_reg[11]_syn_4.sr
+reg                 x010y019z2          0.087    r     3.368               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.368               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/to_cnt_reg[11]_syn_4.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.247          3.338               
+--------------------------------------------------------------------  ---------------
+Required                                               3.338               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.030               
+
+Slack               : 0.038ns
+Begin Point         : add87_syn_194.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : to_rep_reg[3]_syn_4.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.436ns (cell 0.196ns (44%), net 0.240ns (56%))
+Clock Skew          : 0.045ns
+Logic Level         : 0
+Max Fanout          : 9
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: add87_syn_194.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+ADDER (clk2q)       x011y009z2          0.109    f     3.049          pin: add87_syn_194.q[0]
+net (fo=9)                              0.240          3.289          net: rst_sync_n_dup_5,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: to_rep_reg[3]_syn_4.sr
+reg                 x012y009z2          0.087    r     3.376               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.376               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: to_rep_reg[3]_syn_4.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.247          3.338               
+--------------------------------------------------------------------  ---------------
+Required                                               3.338               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.038               
+
+Slack               : 0.038ns
+Begin Point         : add87_syn_194.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : to_rep_reg[7]_syn_4.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.436ns (cell 0.196ns (44%), net 0.240ns (56%))
+Clock Skew          : 0.045ns
+Logic Level         : 0
+Max Fanout          : 9
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: add87_syn_194.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+ADDER (clk2q)       x011y009z2          0.109    f     3.049          pin: add87_syn_194.q[0]
+net (fo=9)                              0.240          3.289          net: rst_sync_n_dup_5,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: to_rep_reg[7]_syn_4.sr
+reg                 x012y009z3          0.087    r     3.376               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.376               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: to_rep_reg[7]_syn_4.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.247          3.338               
+--------------------------------------------------------------------  ---------------
+Required                                               3.338               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.038               
+
+Slack               : 0.038ns
+Begin Point         : u_reset_sync/release_pipe_reg[1]_syn_137.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_directory_scanner/ent_first_clus_reg[13]_syn_4.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.436ns (cell 0.196ns (44%), net 0.240ns (56%))
+Clock Skew          : 0.045ns
+Logic Level         : 0
+Max Fanout          : 16
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_reset_sync/release_pipe_reg[1]_syn_137.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+clk2q               x015y044z0          0.109    f     3.049          pin: u_reset_sync/release_pipe_reg[1]_syn_137.q[0]
+net (fo=16)                             0.240          3.289          net: rst_sync_n_dup_45,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: u_fat32_directory_scanner/ent_first_clus_reg[13]_syn_4.sr
+reg                 x014y044z2          0.087    r     3.376               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.376               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_directory_scanner/ent_first_clus_reg[13]_syn_4.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.247          3.338               
+--------------------------------------------------------------------  ---------------
+Required                                               3.338               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.038               
+
+Slack               : 0.038ns
+Begin Point         : u_reset_sync/release_pipe_reg[1]_syn_137.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_directory_scanner/ent_first_clus_reg[17]_syn_4.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.436ns (cell 0.196ns (44%), net 0.240ns (56%))
+Clock Skew          : 0.045ns
+Logic Level         : 0
+Max Fanout          : 16
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_reset_sync/release_pipe_reg[1]_syn_137.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+clk2q               x015y044z0          0.109    f     3.049          pin: u_reset_sync/release_pipe_reg[1]_syn_137.q[0]
+net (fo=16)                             0.240          3.289          net: rst_sync_n_dup_45,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: u_fat32_directory_scanner/ent_first_clus_reg[17]_syn_4.sr
+reg                 x013y044z3          0.087    r     3.376               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.376               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_directory_scanner/ent_first_clus_reg[17]_syn_4.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.247          3.338               
+--------------------------------------------------------------------  ---------------
+Required                                               3.338               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.038               
+
+Slack               : 0.038ns
+Begin Point         : bus_rd_addr[8]_syn_4.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_directory_scanner/sd_rd_addr_reg[21]_syn_4.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.436ns (cell 0.196ns (44%), net 0.240ns (56%))
+Clock Skew          : 0.045ns
+Logic Level         : 0
+Max Fanout          : 27
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: bus_rd_addr[8]_syn_4.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+clk2q               x021y034z0          0.109    f     3.049          pin: bus_rd_addr[8]_syn_4.q[0]
+net (fo=27)                             0.240          3.289          net: rst_sync_n_dup_37,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: u_fat32_directory_scanner/sd_rd_addr_reg[21]_syn_4.sr
+reg                 x019y034z2          0.087    r     3.376               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.376               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_directory_scanner/sd_rd_addr_reg[21]_syn_4.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.247          3.338               
+--------------------------------------------------------------------  ---------------
+Required                                               3.338               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.038               
+
+Slack               : 0.046ns
+Begin Point         : u_uart_tx/mux11_syn_2288.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_uart_tx/mux11_syn_2300.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.428ns (cell 0.196ns (45%), net 0.232ns (55%))
+Clock Skew          : 0.029ns
+Logic Level         : 0
+Max Fanout          : 13
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_uart_tx/mux11_syn_2288.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+clk2q               x025y039z2          0.109    f     3.049          pin: u_uart_tx/mux11_syn_2288.q[0]
+net (fo=13)                             0.232          3.281          net: rst_sync_n_dup_56,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: u_uart_tx/mux11_syn_2300.sr
+reg                 x025y038z2          0.087    r     3.368               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.368               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_uart_tx/mux11_syn_2300.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.263          3.322               
+--------------------------------------------------------------------  ---------------
+Required                                               3.322               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.046               
+
+Slack               : 0.046ns
+Begin Point         : u_uart_tx/mux11_syn_2288.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_uart_tx/mux11_syn_2354.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.428ns (cell 0.196ns (45%), net 0.232ns (55%))
+Clock Skew          : 0.029ns
+Logic Level         : 0
+Max Fanout          : 13
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_uart_tx/mux11_syn_2288.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+clk2q               x025y039z2          0.109    f     3.049          pin: u_uart_tx/mux11_syn_2288.q[0]
+net (fo=13)                             0.232          3.281          net: rst_sync_n_dup_56,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: u_uart_tx/mux11_syn_2354.sr
+reg                 x025y040z2          0.087    r     3.368               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.368               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_uart_tx/mux11_syn_2354.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.263          3.322               
+--------------------------------------------------------------------  ---------------
+Required                                               3.322               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.046               
+
+Slack               : 0.046ns
+Begin Point         : u_uart_tx/mux11_syn_2298.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/bps_h_reg[4]_syn_4.sr (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : removal
+Process             : fast
+Budget              : 0.000ns { clk rising@0.000ns - clk rising@0.000ns }
+Data Path Delay     : 0.444ns (cell 0.196ns (44%), net 0.248ns (56%))
+Clock Skew          : 0.045ns
+Logic Level         : 0
+Max Fanout          : 30
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.184          1.184          pin: clk_syn_2.di
+net (fo=1311)                           1.756          2.940          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_uart_tx/mux11_syn_2298.clk
+launch edge                             0.000    r     2.940               
+--------------------------------------------------------------------  ---------------
+clk2q               x028y029z2          0.109    f     3.049          pin: u_uart_tx/mux11_syn_2298.q[0]
+net (fo=30)                             0.248          3.297          net: rst_sync_n_dup_32,  ../../../rtl/top_stage6_fat32_mount.v(179)
+                                                                      pin: u_fat32_boot_parser/bps_h_reg[4]_syn_4.sr
+reg                 x027y029z2          0.087    r     3.384               
+--------------------------------------------------------------------  ---------------
+Arrival                                                3.384               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.302          1.302          pin: clk_syn_2.di
+net (fo=1311)                           1.930          3.232          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/bps_h_reg[4]_syn_4.clk
+capture edge                            0.000    r     3.232               
+--------------------------------------------------------------------  ---------------
+removal                                 0.253          3.485               
+clock uncertainty                       0.100          3.585               
+clock pessimism                        -0.247          3.338               
+--------------------------------------------------------------------  ---------------
+Required                                               3.338               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.046               
+
+
+Inter clock domain timing
+--------------------------------------------------
+
+IP timing
+--------------------------------------------------

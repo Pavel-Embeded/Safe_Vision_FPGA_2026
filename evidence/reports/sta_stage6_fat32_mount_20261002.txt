@@ -1,0 +1,156 @@
+# TC-Q-STA-2 证据（节选）：阶段 6-7 板级顶层 top_stage6_fat32_mount 的布线后时序报告
+# ---------------------------------------------------------------------------
+# 条目：evidence/reports/INDEX.md 的 TC-Q-STA-2
+# 原文：Tang Dynasty 生成，卷首写着 Generated Fri Oct 2 19:39:44 2026
+# 原始文件 868456 字节，SHA-256 97f301ec58b568fcf5351710947ba6903d458e9770060e6b1ef40bfc332ed2cb
+# ★ 本文件是【节选】：只保留摘要页与最长失败路径的前若干级（足以定位问题）。
+#   完整报告未入库（868 KB，含 1e9 条路径分析，属可再生的中间产物）。
+#
+# ★★ 结论：这次时序没过，不能上板。
+#   SWNS = -85.399 ns（负值 = 建立时间违例），STNS = -1162.758 ns，
+#   4684 个端点里 28 个违例；R-Period 105.399 ns，即 Fmax 只有 9.488 MHz
+#   （约束是 50 MHz / 20 ns）。Hold 侧 HWNS = +0.038 ns（正，勉强过）。
+#   顶层 / 器件 / 约束文件都对，Confidence=Routed，STA 覆盖率 99.77，
+#   所以这不是报告配置问题，是设计里真有一条 105 ns 的组合路径。
+#
+# 根因（就是下面这条最长路径）：
+#   u_fat32_boot_parser 的 total_clus 那一行用了 Verilog 除法运算符 / spc
+#   （safevision/rtl/storage/fat32_boot_parser.v:255），综合器把它实现成
+#   组合除法阵列：报告里写明 Logic Level = 100，其中 ADDER=68。
+#   仿真里除法是零延迟、看不出问题；TD 一综合就暴露。
+#
+# 为什么阶段 5 那次能过：那次顶层 top_stage5_sector_rd 没有实例化 FAT32 层，
+#   这条路径根本不存在。所以阶段 5 时序通过，推不出 FAT32 层能综合。
+#
+# 修复方向（尚未实施）：不要用组合除法算 total_clus。
+#   FAT32 规范规定 SecPerClus 必须是 2 的幂，所以可用
+#   total_clus = (TotSec32 - data_lba) >> log2(SecPerClus)：
+#   log2 用一个小优先编码器求，移位基本不花资源；顺带把 SecPerClus 非 2 的幂
+#   判为非法 BPB（这本身就是该有的合法性检查）。
+#   另一条路是把除法改成跨多拍的移位-相减引擎（更贴近原行为，代码更多）。
+# ---------------------------------------------------------------------------
+
+Created by          : Tang Dynasty v6.2.168116
+                    : Copyright (c) 2012-2025 Anlogic Inc.
+Generated           : Fri Oct  2 19:39:44 2026
+
+Top Model           : top_stage6_fat32_mount
+Device              : EG4S20BG256
+Speed               : NA
+STA coverage        : 99.77%
+Constraint File     : F:/workspace/fpga_competition/HX4S20_Contest_202606/safevision/platform/anlogic_eg4s20_hx4s20c/constraints/timing.sdc;
+Confidence          : Routed
+Check Corner        : Both (Slow and Fast)
+CRPR Enabled        : Yes
+Report Scheme       : 10 end point(s) per path group, 1 path(s) per end point
+
+
+Check Status
+-------------
+
+Corner   | Max      Min     
+------------------------------------
+Slow     | yes      yes     
+Fast     | yes      yes     
+
+
+Timing Status
+--------------------
+	SWNS: -85.399ns, STNS: -1162.758ns
+	HWNS: 0.038ns, HTNS: 0.000ns
+	Period Check WNS: 0.000ns
+
+
+Clock Summary
+--------------------
+
+       Clock-Id:       C-Freq       Fanout   Clock-Name
+--------------------------------------------------------------------------------
+           clk0:       50.000         1367   clk
+--------------------------------------------------------------------------------
+
+       Name            Type         Rise(ns)   Fall(ns)          C-Period(ns)     C-Freq(MHz)          R-Period(ns)     R-Freq(MHz)         SWNS(ns)   STNS(ns)         HWNS(ns)   HTNS(ns)         Skew(ns)           Fanout        Max-Level        CC-From    CC-To
+       clk0           local            0.000     10.000                20.000          50.000               105.399           9.488          -85.399  -1162.758            0.038      0.000            0.326             1367              100             no       no
+
+Notes
+----------
+C-Period  :  constraint period
+C-Freq    :  constraint freq
+R-Period  :  report min period
+R-Freq    :  report fmax
+CC-From   :  has path(s) from cross-domain clock
+CC-To     :  has path(s) to cross-domain clock
+
+
+*   Clock R-Period data only takes intra-clock timing. SWNS/STNS/HWNS/HTNS take both intra-clock and inter-clock timing.
+*   If there is mismatch between R-Period and SWNS, check inter-clock timing of this clock as capture clock.
+*   SWNS/STNS/HWNS/HTNS of timing exception (SMCP/SMD) only counted in global Timing Status, not counted in Clock Summary.
+
+Intra clock domain timing
+--------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+Path Group     :     clk -> clk
+Type           :     Self
+From Clock     :     clk
+To Clock       :     clk
+Min Period     :     105.399ns
+Fmax           :     9.488MHz
+
+Statistics:
+Max            : SWNS    -85.399ns, STNS  -1162.758ns,        28 Viol Endpoints,      4684 Total Endpoints,1000000000 Paths Analyzed
+Min            : HWNS      0.038ns, HTNS      0.000ns,         0 Viol Endpoints,      4684 Total Endpoints,1000000000 Paths Analyzed
+----------------------------------------------------------------------------------------------------
+
+Max Paths
+----------------------------------------------------------------------------------------------------
+Slack               : -85.399ns
+Begin Point         : u_fat32_boot_parser/fs32_0_reg[3]_syn_3.clk (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+End Point           : u_fat32_boot_parser/total_clus_reg[0]_syn_4.fci (rising edge triggered by clock clk  { rise@0.000000ns  fall@10.000000ns  period=20.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 20.000ns { clk rising@20.000ns - clk rising@0.000ns }
+Data Path Delay     : 105.119ns (cell 60.811ns (57%), net 44.308ns (43%))
+Clock Skew          : 0.064ns
+Logic Level         : 100 ( ADDER=68  LUT3=30  MULT18=1  LUT5=1 )
+Max Fanout          : 32
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_2.ipad
+PAD                 x020y071            1.660          1.660          pin: clk_syn_2.di
+net (fo=1367)                           2.062          3.722          net: clk_dup_1,  ../../../rtl/top_stage6_fat32_mount.v(100)
+                                                                      pin: u_fat32_boot_parser/fs32_0_reg[3]_syn_3.clk
+launch edge                             0.000    r     3.722               
+--------------------------------------------------------------------  ---------------
+clk2q               x012y023z1          0.146    r     3.868          pin: u_fat32_boot_parser/fs32_0_reg[3]_syn_3.q[1]
+net (fo=2)                              0.629          4.497          net: u_fat32_boot_parser/fs32_0[3],  ../../../../../rtl/storage/fat32_boot_parser.v(83)
+                                                                      pin: u_fat32_boot_parser/mult0_syn_85.b[3]
+MULT18              x016y018            3.563    f     8.060       1  pin: u_fat32_boot_parser/mult0_syn_85.p[4]
+net (fo=1)                              0.615          8.675          net: u_fat32_boot_parser/mult0_syn_7,  ../../../../../rtl/storage/fat32_boot_parser.v(251)
+                                                                      pin: u_fat32_boot_parser/add2_syn_174.e[0]
+ADDER               x015y019z3          0.781    f     9.456       2  pin: u_fat32_boot_parser/add2_syn_174.fco
+net (fo=1)                              0.000          9.456          net: u_fat32_boot_parser/add2_syn_147,  ../../../../../rtl/storage/fat32_boot_parser.v(251)
+                                                                      pin: u_fat32_boot_parser/add2_syn_175.fci
+ADDER               x015y020z2          0.132    f     9.588          pin: u_fat32_boot_parser/add2_syn_175.fco
+net (fo=1)                              0.000          9.588          net: u_fat32_boot_parser/add2_syn_151,  ../../../../../rtl/storage/fat32_boot_parser.v(251)
+                                                                      pin: u_fat32_boot_parser/add2_syn_176.fci
+ADDER               x015y020z3          0.132    f     9.720          pin: u_fat32_boot_parser/add2_syn_176.fco
+net (fo=1)                              0.000          9.720          net: u_fat32_boot_parser/add2_syn_155,  ../../../../../rtl/storage/fat32_boot_parser.v(251)
+                                                                      pin: u_fat32_boot_parser/add2_syn_177.fci
+ADDER               x015y021z2          0.132    f     9.852          pin: u_fat32_boot_parser/add2_syn_177.fco
+net (fo=1)                              0.000          9.852          net: u_fat32_boot_parser/add2_syn_159,  ../../../../../rtl/storage/fat32_boot_parser.v(251)
+                                                                      pin: u_fat32_boot_parser/add2_syn_178.fci
+ADDER               x015y021z3          0.453    f    10.305       3  pin: u_fat32_boot_parser/add2_syn_178.fx[1]
+net (fo=3)                              1.447         11.752          net: u_fat32_boot_parser/data_start_lba_b8[22],  NOFILE(0)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_169.e[1]
+ADDER               x019y016z3          0.715    f    12.467       4  pin: u_fat32_boot_parser/sub2_syn_169.fco
+net (fo=1)                              0.000         12.467          net: u_fat32_boot_parser/sub2_syn_154,  ../../../../../rtl/storage/fat32_boot_parser.v(255)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_170.fci
+ADDER               x019y017z2          0.132    f    12.599          pin: u_fat32_boot_parser/sub2_syn_170.fco
+net (fo=1)                              0.000         12.599          net: u_fat32_boot_parser/sub2_syn_158,  ../../../../../rtl/storage/fat32_boot_parser.v(255)
+                                                                      pin: u_fat32_boot_parser/sub2_syn_171.fci
+ADDER               x019y017z3          0.132    f    12.731          pin: u_fat32_boot_parser/sub2_syn_171.fco

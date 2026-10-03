@@ -19,7 +19,13 @@
 module sd_spi_card_model #(
     parameter [31:0] OCR_VALUE       = 32'hC0FF_8000,  // bit31=1 上电完成, bit30=1 CCS(SDHC)
     parameter [7:0]  SLOW_INIT_POLLS = 8'd0,           // ACMD41 前 N 次回 idle 态（模拟慢卡）
-    parameter        CMD8_ILLEGAL    = 1'b0            // 1 = v1.x 卡，CMD8 回 illegal command
+    parameter        CMD8_ILLEGAL    = 1'b0,           // 1 = v1.x 卡，CMD8 回 illegal command
+    // ---- 卷基址（分区卡）支持，见 docs/interface_spec.md §3.2.1 ----
+    // 默认 0 = 无分区表（卷 0 号扇区 = 卡 0 号扇区），所有既有 TB 行为完全不变。
+    // 设成 N>0 时：卡 LBA [N, N+63] 映射到 vol[] 的卷内相对扇区 [0,63]，
+    // 所以 vol_zero / vol_set / vol_set_le / mk_* 仍按【卷内相对 LBA】使用；
+    // 卡 LBA 0..N-1（如 MBR）与其它未映射扇区回落到默认图案 sector[]。
+    parameter [31:0] VOL_BASE        = 32'd0
 )(
     input  wire        sclk,
     input  wire        cs_n,
@@ -243,6 +249,11 @@ module sd_spi_card_model #(
     reg  [2:0]  cmd_cnt;       // 已收命令字节数
     reg  [5:0]  cur_cmd;       // 当前命令索引
     reg  [31:0] cur_arg;
+    // 卷内相对 LBA（= cur_arg - VOL_BASE）。用 blocking 赋值的 reg 而非 wire：
+    // 若用 continuous-assign 的 wire，在同一条 always 里刚 `cur_arg = ...` 之后
+    // 立刻读它会读到【旧值】（连续赋值的更新不在同一时刻立即生效），
+    // 导致 CMD17 选择卷/默认图案出错。用 blocking reg 才能"写完立刻读对"。
+    reg  [31:0] cur_rel;
     reg         in_resp;       // 1 = 正在发响应
     reg         skip_byte;     // 1 = 跳过下一个字节（CS 拉低后的哑字节 / 命令间哑字节）
     reg  [15:0] rp;            // 响应位置
@@ -360,12 +371,18 @@ module sd_spi_card_model #(
                         // 第 2~5 字节 = 32bit 参数（MSB 先收），第 6 字节 = CRC
                         cur_cmd     = cmd_buf[45:40];
                         cur_arg     = cmd_buf[39:8];
+                        cur_rel     = cur_arg - VOL_BASE;   // blocking：写完立刻可读
                         if (cur_cmd == `SD_CMD17) begin
-                            // SDHC 模式下 cur_arg 就是块号。
-                            // 该 LBA 被显式写过 -> 用卷内容；否则用默认图案（兼容 tb_sd_sector_reader）
+                            // SDHC 模式下 cur_arg 就是块号（卡的绝对 LBA）。
+                            // 该 LBA 落在卷内(>= VOL_BASE 且相对偏移 < 64)且被显式写过
+                            //   -> 用卷内容 vol[]（卷内相对索引，(cur_arg - VOL_BASE)）；
+                            // 否则 -> 用默认图案 sector[]（兼容无分区表的老 TB；VOL_BASE=0
+                            //   时本式与原式逐项等价，既有 TB 行为不变）。
                             for (kk = 0; kk < 512; kk = kk + 1)
-                                rd_buf[kk] = ((cur_arg < 32'd64) && vol_used[cur_arg[5:0]])
-                                             ? vol[cur_arg*32'd512 + kk]
+                                rd_buf[kk] = ((cur_arg >= VOL_BASE) &&
+                                              (cur_rel < 32'd64) &&
+                                              vol_used[cur_rel[5:0]])
+                                             ? vol[cur_rel*32'd512 + kk]
                                              : sector[kk];
                             crc_val = crc16_of_rdbuf(16'd512);
                         end
@@ -419,6 +436,7 @@ module sd_spi_card_model #(
         tx_sh       = 8'hFF;
         cur_cmd     = 6'h0;
         cur_arg     = 32'h0;
+        cur_rel     = 32'h0;
         crc_val     = 16'h0;
         o_cmd       = 6'h0;
         o_arg       = 32'h0;

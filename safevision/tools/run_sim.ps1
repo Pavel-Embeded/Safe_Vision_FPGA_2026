@@ -78,7 +78,8 @@ $RTL = @(
     "../rtl/memory/memory_bandwidth_monitor.v",
     # ---- platform bring-up top (touches pins, so it lives under platform/) ----
     "../platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
-    "../platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v"
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v",
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v"
 )
 
 $SIM = @(
@@ -100,7 +101,8 @@ $SIM = @(
     "unit/tb_frame_writer.sv",
     "unit/tb_memory_arbiter.sv",
     "unit/tb_frame_swap_ctrl.sv",
-    "unit/tb_top_stage5_sector_rd.sv"
+    "unit/tb_top_stage5_sector_rd.sv",
+    "unit/tb_top_stage6_fat32_mount.sv"
 )
 
 $TBS = @(
@@ -120,7 +122,8 @@ $TBS = @(
     "tb_frame_writer",
     "tb_memory_arbiter",
     "tb_frame_swap_ctrl",
-    "tb_top_stage5_sector_rd"
+    "tb_top_stage5_sector_rd",
+    "tb_top_stage6_fat32_mount"
 )
 
 Write-Output "=== vlib work ==="
