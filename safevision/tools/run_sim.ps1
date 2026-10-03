@@ -68,6 +68,7 @@ $RTL = @(
     "../rtl/media/wav_parser.v",
     # ---- memory ----
     "../rtl/memory/mem_ctrl.v",
+    "../rtl/memory/mem_read_burst.v",
     "../rtl/memory/frame_address_gen.v",
     "../rtl/memory/frame_writer.v",
     "../rtl/memory/frame_buffer_manager.v",
@@ -76,10 +77,13 @@ $RTL = @(
     "../rtl/memory/frame_swap_ctrl.v",
     "../rtl/memory/frame_swap_cdc.v",
     "../rtl/memory/memory_bandwidth_monitor.v",
+    "../rtl/memory/framebuffer_loopback_core.v",
     # ---- platform bring-up top (touches pins, so it lives under platform/) ----
     "../platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
     "../platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v",
-    "../platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v"
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v",
+    # ---- board adapter (no encrypted IP inside; compile-checked + unit TB) ----
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v"
 )
 
 $SIM = @(
@@ -102,7 +106,9 @@ $SIM = @(
     "unit/tb_memory_arbiter.sv",
     "unit/tb_frame_swap_ctrl.sv",
     "unit/tb_top_stage5_sector_rd.sv",
-    "unit/tb_top_stage6_fat32_mount.sv"
+    "unit/tb_top_stage6_fat32_mount.sv",
+    "unit/tb_framebuffer_loopback_core.sv",
+    "unit/tb_sdram_app_adapter.sv"
 )
 
 $TBS = @(
@@ -123,7 +129,9 @@ $TBS = @(
     "tb_memory_arbiter",
     "tb_frame_swap_ctrl",
     "tb_top_stage5_sector_rd",
-    "tb_top_stage6_fat32_mount"
+    "tb_top_stage6_fat32_mount",
+    "tb_framebuffer_loopback_core",
+    "tb_sdram_app_adapter"
 )
 
 Write-Output "=== vlib work ==="

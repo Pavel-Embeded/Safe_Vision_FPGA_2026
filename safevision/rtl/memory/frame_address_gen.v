@@ -28,6 +28,8 @@
 //   显式分离开：FRAME_WIDTH 是像素数，行步长 = FRAME_WIDTH*BYTES_PER_PIXEL。
 // ============================================================================
 
+`include "safevision_defs.vh"
+
 module frame_address_gen #(
     parameter [9:0]  FRAME_WIDTH     = `SV_FRAME_WIDTH,  // 行内像素数（不是行步长字节数！）
     parameter [31:0] BYTES_PER_PIXEL = `SV_RGB565_BYTES_PER_PX   // RGB565 = 2 Byte/pixel
@@ -48,7 +50,11 @@ module frame_address_gen #(
     wire [IDX_W-1:0] xq = {{(IDX_W-10){1'b0}}, x};
 
     // 先算 (y*W + x)，再乘每像素字节数
-    wire [IDX_W-1:0] row     = yq * FRAME_WIDTH;   // y*640
+    // ★ 640 = 2^9 + 2^7：写成移位相加，避免综合成乘法器阵列（2026-10-03 实测：
+    //   乘法阵列使 y_cnt.ce 路径达 7.996ns / 4 级，125MHz 下 −0.067ns 违例）。
+    //   仅当 FRAME_WIDTH==640 时用移位相加（编译期常数折叠，逐值等价），否则退回乘法。
+    wire [IDX_W-1:0] row = (FRAME_WIDTH == 640) ?
+                           ((yq << 9) + (yq << 7)) : (yq * FRAME_WIDTH);   // y*640
     wire [IDX_W-1:0] pix_idx = row + xq;           // y*640 + x
     wire [31:0]      offset  = pix_idx * BYTES_PER_PIXEL;  // (y*640+x)*2
 

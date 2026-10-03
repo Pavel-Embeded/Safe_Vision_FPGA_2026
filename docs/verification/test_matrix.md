@@ -11,10 +11,12 @@
 | `tb_bmp_parser.sv`、`tb_bmp_unpack.sv`、`tb_wav_parser.sv` | BMP/WAV 解析与像素 | 行为模型仿真 |
 | `tb_common_fifo.sv`、`tb_crc.sv` | FIFO/反压/错误、CRC7 与 CRC16 | 行为模型仿真 |
 | `tb_frame_writer.sv`、`tb_memory_arbiter.sv`、`tb_frame_swap_ctrl.sv` | 帧写/仲裁/帧交换 | SDRAM 行为模型仿真 |
+| `tb_framebuffer_loopback_core.sv` | **阶段 10 帧缓存回环核心**（`framebuffer_loopback_core` + `mem_read_burst`，内部例化既有 `frame_writer`/`video_read_dma`/`mem_ctrl`/`sync_fifo`）：整帧 640×480 写入 → 整帧读回 → **逐像素比对零错**（LFSR 图案覆盖全 16 位）/ 抽样 CRC / `slot_valid` / 定长 208 Byte 报告逐字节（含 **地址斜坡探针 A 匹配位图 `AM/AF/AV` + 探针 C/B 抽样回读**，2026-10-03 起）/ **探针写值 = 字地址** / **探针段内写地址严格连续** | SDRAM 行为模型（`frame_memory_model`）仿真 |
+| `tb_sdram_app_adapter.sv` | **板级突发桥适配器**（`sdram_app_adapter`，逐字事务口 ↔ 厂商 `sdram` 的 App_* 口）。★ TB 内含**厂商 app 口模型**（按 M-11 已验形态：en 连发时**每拍采样地址**、每拍一条读命令、延迟 `RD_LAT` 拍按 **1:1** 返回）：写 32 个连续字（值=地址）→ 读 32 个连续字（**跨两次预取**）逐字相等 / **写突发与读突发期间地址必须每拍 +1**（D2/D4，**旧版适配器过不了这两条**）/ 非 16 对齐基址（0x1035）写 4 读 4 / **缓冲未排空时跳到缓冲外地址（D7，正是板上暴露的那个场景）** / 等 ready 与 rdata_valid 零超时 | 厂商 App 口行为模型（TB 内建） |
 | `tb_top_stage5_sector_rd.sv` | 板级 bring-up 顶层：完整命令序列、CMD17 参数、512 Byte 经 UART 逐字节、顶层进成功态 | SD 行为模型 + UART 接收模型仿真 |
 | `tb_top_stage6_fat32_mount.sv` | **阶段 6–7 板级顶层**：卷基址只加一次（FAT32 层 LBA 0 → 卡 LBA = 分区基址，直接断言卡模型收到的 `o_arg`）/ MBR 分区表 / BPB 几何 / 目录项 / UART **ASCII 报告**内容（**字节数 372/374、无前导 `0x00`、每行 CRLF**）/ **连读汇总 `RPT=`**（健康卡 `OK=total BAD=0`；连读中拔卡 → 有限时间内进 `ST_ERR`、末行 `ERR=02`、LED=错误主码低 4 位）/ 顶层进成功态 | SD 行为模型（`VOL_BASE` 参数模拟分区卡）+ 文本 UART 接收模型 |
 
-现有 B 回归为 **540 项断言 / 18 个 Testbench / 2 个行为模型**，`run_sim.ps1` 输出 `TOTAL PASS=540 FAIL=0`。`run_sim.ps1` 的 ModelSim 目录来自 `-ModelSimBin` 参数或 `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，脚本里不再写死本机路径）；换机器时设好这两者之一即可重跑，并把日志放 `evidence/sim/`。
+现有 B 回归为 **558 项断言 / 20 个 Testbench / 2 个行为模型**，`run_sim.ps1` 输出 `TOTAL PASS=558 FAIL=0`。`run_sim.ps1` 的 ModelSim 目录来自 `-ModelSimBin` 参数或 `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，脚本里不再写死本机路径）；换机器时设好这两者之一即可重跑，并把日志放 `evidence/sim/`。
 
 ## 待新增验证门槛
 

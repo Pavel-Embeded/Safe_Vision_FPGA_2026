@@ -5,7 +5,7 @@
 | ID | 目标 | 现有/规划模块 | 计划测试与证据 | 状态 |
 |---|---|---|---|---|
 | B01 | 本地媒体读取、四图识别 | `storage/*`（含新增 `mbr_parser` 卷基址）、`media/bmp_*`、`file_index` 现有；板级 `top_stage5_sector_rd` 现有 | TC-B01-01..03、TC-B-TOP；`evidence/{sim,board}` | **阶段 1–5 已上板实测通过**（M-9：512/512 逐字节一致，`evidence/board` 条目 M-9-PASS）；阶段 6–7 的板级验证与"四图识别"仍待做（`mbr_parser` 单测已过，板级顶层待写） |
-| B02 | SDRAM 缓存、HDMI 稳定显示 | `memory/*` 现有；`video/*`、板级 HDMI 规划 | TC-B02-01..02；报告/板级/水位 | 未整机集成 |
+| B02 | SDRAM 缓存、HDMI 稳定显示 | `memory/*` 现有（新增 `framebuffer_loopback_core` + `mem_read_burst` 做阶段 10 帧缓存回环）；`video/*`、板级 HDMI 规划 | TC-B02-01..02；报告/板级/水位 | **阶段 10 帧缓存回环核心已仿真通过**（整帧写→整帧读回→逐像素零错，`tb_framebuffer_loopback_core` 11 项）；板级 `top_stage10_framebuffer` **已上板验收通过（2026-10-03）**：整帧 307200 像素逐像素零错（`BAD=000000`）、三个地址斜坡探针全对；定位用的根因（适配器读预取地址未每拍自增）已修，`sdram_app_adapter` 另有 7 项单元 TB 覆盖；**仅余自研组时序 −0.992 ns 待收**；HDMI 稳定显示未整机集成 |
 | B03 | 按键/自动切换 | `frame_swap_*` 现有；`control/playback_fsm` 规划 | TC-B03-01..02；事件日志/录像 | 未整机集成 |
 | B04 | HDMI 音频 | `media/wav_parser` 现有；PCM 环/调度/HDMI 音频规划 | TC-B04-01..02；两台设备录音/录像 | 未整机集成 |
 | E01 | 高级转场/画面组织 | 视频转场规划 | TC-E01-01；水位/录像 | 计划 |

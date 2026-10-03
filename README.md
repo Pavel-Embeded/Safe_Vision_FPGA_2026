@@ -220,10 +220,11 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | 手册学习阶段 1–16 | **全部落地并仿真通过** |
 | 媒体格式层（BMP 解析/解包、WAV 解析） | 已完成并仿真通过 |
 | 目录树与命名 | 已按本项目结构（PROJECT_STRUCTURE.md）核对完成（含"同一常量多副本"的结构性收敛） |
-| B 链仿真回归 | **540 项断言 / 18 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
+| B 链仿真回归 | **558 项断言 / 20 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
 | 板级顶层 `top_stage5_sector_rd.v` | **已写、仿真通过、上板跑通**（板上 LED = `8`；`tb_top_stage5_sector_rd` 5 项断言） |
 | 板级顶层 `top_stage6_fat32_mount.v` | **已写 + 仿真通过（阶段 6–7）**：上电 → SD 初始化 → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner`(+walker) → UART 发**纯 ASCII 报告**；★ **卷基址只在此顶层加一次**（见 [interface_spec §3.2.1](docs/interface_spec.md)）。★ 磁盘上的 `.al` 现为阶段 5 配置，本模块**当前未登记进工程**（见 [module_registry.md](docs/architecture/module_registry.md) 的说明） |
 | 板级顶层 `top_sdram_loopback.v` | **★ 已写 + 已综合 + 上板通过（2026-10-02，阶段 9 第一步 / 手册 7.9）**：50 MHz → `sv_system_pll`（125 MHz + 180°）→ 厂商 SDRAM 控制器 → 写图案 / 读回比对 → UART 发定长 71 Byte 报告。实测 **`INIT=01 LOCK=01` / `W=1000 R=1000 CAP=1000 BAD=0000` / `DONE`**，与设计值一字不差（`evidence/board/` 条目 M-11-PASS）。★ **无 TB、进不了回归**（控制器是安路加密 IP，只能 TD 解密）；TD 工程 `TOP_MODULE` 已指向它。★ **2026-10-03：PLL 去重（B 的 `sys_pll` 并入 A 的 `sv_system_pll`）后已重新综合 + 复测通过**，报文与 M-11 逐字节相同（条目 M-11-PASS-2） |
+| 板级顶层 `top_stage10_framebuffer.v` | **★ 已写 + 已上板 bring-up（2026-10-03，阶段 10 帧缓存回环）**：`framebuffer_loopback_core`（可仿真，11/11 PASS）+ `sdram_app_adapter`（通用口↔厂商 App 口，**6/6 PASS**，有单元 TB）+ 厂商 `sdram` + `uart_tx`。★ **2026-10-03 板上验收通过**：整帧 307200 像素**逐像素零错**（`WR=RD=04B000`、`BAD=000000`），三个地址斜坡探针全对（`AM=FFFFFFFF`、`C0..C3=1004..1007`、`B0..B3=1035..1038`）。四轮推进：**第 2 轮用「地址斜坡探针」定案**（一次连续读突发里读地址只推进 4 个字就回绕，帧级 `BAD` 恰为 3/4）⇒ 读引擎按 M-11 形态重写；**第 3 轮验证读侧已根治**（`AM=FFFFFFFF` 32/32 全对、跨两次预取；探针 C 全对），但暴露我引入的一处死锁（缓冲没排空时跳到缓冲外地址不重预取 ⇒ `B=0000` + `WR=000000`）⇒ 已修 + 补 TB 用例 D7。报告瘦身为 208 Byte 修 STA（违例端点 475 → 312），最差路径换成适配器的 32 位加法器 ⇒ 已用寄存器 `rexp` + 读侧 ready 寄存器化切掉。**待重新综合（务必确认自研组 SWNS ≥ 0）+ 复测**，步骤见 `docs/B链-待办与硬件验证清单.md` §2.5 |
 | 厂商 IP 落库 | **新增（2026-10-02）**：`ip/sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）、`ip/pll/`（`sv_system_pll` / `sv_video_*_pll` / `sv_audio_pll`）。EG4S20 的 SDRAM 是**封装内硬核**（2M×32），信号不出引脚 ⇒ `pin.adc` 不需要 SDRAM 引脚 |
 | **阶段 1–5 上板验收** | ★ **已通过（2026-10-02）**：实物 UART 回传 512 Byte 与电脑侧参考 **SHA-256 完全相同**（M-9，见 [evidence/board/INDEX.md](evidence/board/INDEX.md) 的 M-9-PASS） |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来自开发板手册官方表 + 原理图 + 厂商例程，三处一致）；`uart_txd=D12` 已确认为 FPGA 发送脚，板载 USB-UART 可直接用 |
