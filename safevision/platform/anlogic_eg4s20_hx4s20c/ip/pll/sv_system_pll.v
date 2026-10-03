@@ -17,6 +17,7 @@
 //		Clock name	| Frequency 	| Phase shift
 //		C0        	| 100.000000MHZ	| 0.0000  DEG  
 //		C1        	| 125.000000MHZ	| 0.0000  DEG  
+//		C2        	| 125.000000MHZ	| 180.0000 DEG  
 ///////////////////////////////////////////////////////////////////////////////
 `timescale 1 ns / 100 fs
 
@@ -25,7 +26,8 @@ module sv_system_pll (
   reset,
   extlock,
   clk0_out,
-  clk1_out 
+  clk1_out,
+  clk2_out 
 );
 
   input refclk;
@@ -33,6 +35,7 @@ module sv_system_pll (
   output extlock;
   output clk0_out;
   output clk1_out;
+  output clk2_out;
 
   wire clk0_buf;
 
@@ -64,7 +67,11 @@ module sv_system_pll (
     .CLKC1_ENABLE("ENABLE"),
     .CLKC1_DIV(8),
     .CLKC1_CPHASE(7),
-    .CLKC1_FPHASE(0) 
+    .CLKC1_FPHASE(0),
+    .CLKC2_ENABLE("ENABLE"),
+    .CLKC2_DIV(8),
+    .CLKC2_CPHASE(3),
+    .CLKC2_FPHASE(0) 
   ) pll_inst (
     .refclk(refclk),
     .reset(reset),
@@ -83,7 +90,7 @@ module sv_system_pll (
     .daddr(6'b000000),
     .do({sv_system_pll_open8, sv_system_pll_open7, sv_system_pll_open6, sv_system_pll_open5, sv_system_pll_open4, sv_system_pll_open3, sv_system_pll_open2, sv_system_pll_open1}),
     .fbclk(clk0_out),
-    .clkc({sv_system_pll_open11, sv_system_pll_open10, sv_system_pll_open9, clk1_out, clk0_buf}) 
+    .clkc({sv_system_pll_open11, sv_system_pll_open10, clk2_out, clk1_out, clk0_buf}) 
   );
 
 endmodule

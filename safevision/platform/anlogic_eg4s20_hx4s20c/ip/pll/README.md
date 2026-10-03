@@ -8,12 +8,12 @@ Normal / CLKC0_EXT：`Fvco = 50 MHz × FBCLK_DIV × CLKC0_DIV / REFCLK_DIV`，`F
 
 | IP | REFCLK_DIV | FBCLK_DIV | C0/C1/C2 除数 | VCO MHz | 输出用途及实际 MHz |
 |---|---:|---:|---|---:|---|
-| sv_system_pll | 1 | 2 | 10 / 8 / 禁用 | 1000 | C0=sys 100；C1=mem 125 |
+| sv_system_pll | 1 | 2 | 10 / 8 / 8 | 1000 | C0=sys 100；C1=mem 125；C2=SDRAM Clk_sft 125@180° |
 | sv_video_vga_pll | 3 | 17 | 4 / 45 / 9 | 1133.333333 | C0=反馈；C1=pixel 25.185185185；C2=serial 125.925925926 |
 | sv_video_hd_pll | 4 | 1 | 89 / 15 / 3 | 1112.5 | C0=反馈；C1=pixel 74.166666667；C2=serial 370.833333333 |
 | sv_audio_pll | 2 | 1 | 29 / 59 / 禁用 | 725 | C0=反馈；C1=audio 12.288135593 |
 
-视频 C1 除数是 C2 的五倍，pixel:serial=1:5。每次构建只例化一种视频 PLL，共用三颗物理 PLL。所有输出零相移；高有效 reset 接 `~board_rst_n`；lock 启用；模拟参数使用向导生成的 Medium 配置。
+视频 C1 除数是 C2 的五倍，pixel:serial=1:5。每次构建只例化一种视频 PLL，共用三颗物理 PLL。仅系统 PLL 的 C2 为 180° 相移（给 SDRAM `Clk_sft`）；其余输出零相移；高有效 reset 接 `~board_rst_n`；lock 启用；模拟参数使用向导生成的 Medium 配置。
 
 | 用途 | 手册标称 MHz | 本配置实际 MHz | 误差 ppm |
 |---|---:|---:|---:|

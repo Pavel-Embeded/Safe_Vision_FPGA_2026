@@ -48,7 +48,7 @@
 
 ```verilog
 sdram U3(
-    .Clk               (ext_mem_clk),        // 125 MHz（sys_pll 输出）
+    .Clk               (ext_mem_clk),        // 125 MHz（sv_system_pll C1 输出）
     .Clk_sft           (ext_mem_clk_sft),    // 125 MHz 的 180° 相移（同源 PLL）
     .Rst               (rst_all),
     .Sdr_init_done     (Sdr_init_done),      // 输出：初始化完成（上电后等它）
@@ -79,7 +79,7 @@ sdram U3(
 
 ## 时钟方案（照例程，2026-10-02 决定采用 A 方案）
 
-板载 50 MHz `clk` → **`sys_pll`**（见 `../pll/`）：
+板载 50 MHz `clk` → **`sv_system_pll`**（见 `../pll/`）：
 
 | 输出 | 用途 |
 |---|---|
@@ -98,7 +98,7 @@ sdram U3(
 - ✅ 加密实现 `sdr_*.enc.v` 已随仓库落地（2026-10-02）。
 - ✅ **TD 工程已登记**（2026-10-02）：`safevision.al` 的 `design_1` 里已加入
   `sdram.v` / `global_def.v` / `sdr_as_ram.enc.v` / `sdr_init_ref.enc.v` / `sdr_wrrd.enc.v`
-  与 `../ip/pll/sys_pll.v`、`../rtl/top_sdram_loopback.v`；`TOP_MODULE` 已指向
+  与 `../ip/pll/sv_system_pll.v`、`../rtl/top_sdram_loopback.v`；`TOP_MODULE` 已指向
   `top_sdram_loopback`。
   ★ **不需要改 IncludeDir**：TD 解析 `\`include` 时会**同时按"包含文件所在目录"和"工程目录"**
   两处搜索 —— 这一点是从例程反推出来的：同在 `include/` 目录下的

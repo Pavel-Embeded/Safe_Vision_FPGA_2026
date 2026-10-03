@@ -3,7 +3,7 @@
 # ----------------------------------------------------------------------------
 #   Covers BOTH bring-up tops (whatever TOP_MODULE the TD project points at):
 #     top_stage5_sector_rd / top_stage6_fat32_mount - single 50 MHz domain, no PLL
-#     top_sdram_loopback                            - 50 MHz refclk -> sys_pll,
+#     top_sdram_loopback                            - 50 MHz refclk -> sv_system_pll,
 #                                                     logic runs on C1 = 125 MHz
 #
 #   clk = pin R7 = net FPGA_GCLK = board 50 MHz oscillator -> period 20 ns.
@@ -31,7 +31,7 @@
 
 create_clock -name clk -period 20 -waveform {0 10} [get_ports {clk}]
 
-# Auto-derive the PLL output clocks (sys_pll C0/C1/C2 ...) from the master clock.
+# Auto-derive the PLL output clocks (sv_system_pll C0/C1/C2 ...) from the master clock.
 derive_clocks
 
 # Optional, enable after bring-up if the async button path is reported:

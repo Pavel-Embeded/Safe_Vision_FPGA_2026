@@ -382,7 +382,7 @@
                     <Attr Name="CompileOrder" Val="42"/>
                 </FileInfo>
             </File>
-            <File Path="../ip/pll/sys_pll.v">
+            <File Path="../ip/pll/sv_system_pll.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true"/>
                     <Attr Name="UsedInP&R" Val="true"/>

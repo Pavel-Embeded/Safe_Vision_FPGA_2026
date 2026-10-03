@@ -36,6 +36,14 @@
                 <phase_shift>0.0000000000000000deg</phase_shift>
             </clock>
         </clocks>
+        <clocks>
+            <clock>
+                <clock_division_factor>8</clock_division_factor>
+                <clock_frequency>125.0000000000000000MHz</clock_frequency>
+                <id>2</id>
+                <phase_shift>180.0000000000000000deg</phase_shift>
+            </clock>
+        </clocks>
     </Page3>
     <GeneratedFiles>
         <VHDL Enable="false">sv_system_pll.vhd</VHDL>

@@ -33,6 +33,8 @@ def profile(name):
     if '.FIN("50.000000")' not in source or '.FEEDBK_PATH("CLKC0_EXT")' not in source:
         raise ValueError(f"{name}: unexpected reference or feedback configuration")
     ref, fb, c0, c1 = map(integer, ("REFCLK_DIV", "FBCLK_DIV", "CLKC0_DIV", "CLKC1_DIV"))
+    has_c2 = re.search(r"\.CLKC2_DIV\((\d+)\)", source) is not None
+    c2 = integer("CLKC2_DIV") if has_c2 else None
     if not all(1 <= divider <= 128 for divider in (ref, fb, c0, c1)):
         raise ValueError(f"{name}: divider outside 1..128")
     pfd = FIN / ref
@@ -44,10 +46,11 @@ def profile(name):
     result = {"name": name, "ref_div": ref, "fb_div": fb, "c0_div": c0,
               "c1_div": c1, "pfd_hz": float(pfd), "vco_hz": float(vco)}
     if "video" in name:
-        c2 = integer("CLKC2_DIV")
         if not 1 <= c2 <= 128 or c1 != 5 * c2:
             raise ValueError(f"{name}: video outputs do not have exact 5:1 ratio")
         result.update(c2_div=c2, serial_hz=float(vco / c2))
+    elif has_c2:
+        result.update(c2_div=c2, mem_inv_hz=float(vco / c2))
     config = ET.parse(IP_DIR / (name + ".ipc")).getroot()
     expected_fields = {"GeneralConfig/Device": "EG4S20BG256",
                        "GeneralConfig/Type": "PLL", "Page1/clk_num": "CLKC0",
@@ -63,7 +66,7 @@ def profile(name):
         raise ValueError(f"{name}: IPC reference frequency mismatch")
     config_clocks = config.findall("Page3/clocks/clock")
     expected_dividers = {0: c0, 1: c1}
-    if "video" in name:
+    if has_c2:
         expected_dividers[2] = c2
     if {int(clock.findtext("id")) for clock in config_clocks} != set(expected_dividers):
         raise ValueError(f"{name}: IPC enabled outputs mismatch")
@@ -77,8 +80,11 @@ def profile(name):
         recorded = clock.findtext("clock_frequency", "")
         if not recorded.endswith("MHz") or abs(Fraction(recorded[:-3]) * 1_000_000 - vco / divider) > Fraction(1, 100):
             raise ValueError(f"{name}: IPC C{index} frequency mismatch")
-        if Fraction(clock.findtext("phase_shift")[:-3]) != 0 or integer(f"CLKC{index}_CPHASE") != divider - 1 or integer(f"CLKC{index}_FPHASE") != 0:
-            raise ValueError(f"{name}: IPC/generated phase differs from zero-phase profile")
+        expected_phase = Fraction(180) if (name == "sv_system_pll" and index == 2) else Fraction(0)
+        if (Fraction(clock.findtext("phase_shift")[:-3]) != expected_phase
+                or integer(f"CLKC{index}_CPHASE") != divider - 1 - int(expected_phase / 360 * divider)
+                or integer(f"CLKC{index}_FPHASE") != 0):
+            raise ValueError(f"{name}: IPC/generated phase differs from the expected phase profile")
     result["ipc_matches_generated_parameters"] = True
     result["output_frequency_limit_checks"] = [
         {"output": f"C{index}", "frequency_hz": float(vco / divider),

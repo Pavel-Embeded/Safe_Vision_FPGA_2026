@@ -136,7 +136,7 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 │  │  │  ├─ rtl/top_sdram_loopback.v        bring-up 顶层（阶段 9 第一步，SDRAM 回环，接 PLL）
 │  │  │  ├─ constraints/            pin.adc + timing.sdc（已按原理图核对；含 derive_clocks）
 │  │  │  ├─ project/safevision.al   TD 6.2 工程（TOP_MODULE = top_sdram_loopback）
-│  │  │  └─ ip/                     厂商 IP：sdram/（应用级控制器 + 3 个安路加密 .enc.v）、pll/（sys_pll / video_pll）
+│  │  │  └─ ip/                     厂商 IP：sdram/（应用级控制器 + 3 个安路加密 .enc.v）、pll/（sv_system_pll / sv_video_*_pll / sv_audio_pll）
 │  │  └─ sim/                       [骨架] 非厂商仿真适配层
 │  ├─ build/                        [骨架] 文件清单、参数配置、构建说明
 │  ├─ assets/                       [骨架] 可再生字体、图案、SD 测试素材说明
@@ -223,8 +223,8 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | B 链仿真回归 | **540 项断言 / 18 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
 | 板级顶层 `top_stage5_sector_rd.v` | **已写、仿真通过、上板跑通**（板上 LED = `8`；`tb_top_stage5_sector_rd` 5 项断言） |
 | 板级顶层 `top_stage6_fat32_mount.v` | **已写 + 仿真通过（阶段 6–7）**：上电 → SD 初始化 → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner`(+walker) → UART 发**纯 ASCII 报告**；★ **卷基址只在此顶层加一次**（见 [interface_spec §3.2.1](docs/interface_spec.md)）。★ 磁盘上的 `.al` 现为阶段 5 配置，本模块**当前未登记进工程**（见 [module_registry.md](docs/architecture/module_registry.md) 的说明） |
-| 板级顶层 `top_sdram_loopback.v` | **★ 已写 + 已综合 + 上板通过（2026-10-02，阶段 9 第一步 / 手册 7.9）**：50 MHz → `sys_pll`（125 MHz + 180°）→ 厂商 SDRAM 控制器 → 写图案 / 读回比对 → UART 发定长 71 Byte 报告。实测 **`INIT=01 LOCK=01` / `W=1000 R=1000 CAP=1000 BAD=0000` / `DONE`**，与设计值一字不差（`evidence/board/` 条目 M-11-PASS）。★ **无 TB、进不了回归**（控制器是安路加密 IP，只能 TD 解密）；TD 工程 `TOP_MODULE` 已指向它 |
-| 厂商 IP 落库 | **新增（2026-10-02）**：`ip/sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）、`ip/pll/`（`sys_pll` / `video_pll`）。EG4S20 的 SDRAM 是**封装内硬核**（2M×32），信号不出引脚 ⇒ `pin.adc` 不需要 SDRAM 引脚 |
+| 板级顶层 `top_sdram_loopback.v` | **★ 已写 + 已综合 + 上板通过（2026-10-02，阶段 9 第一步 / 手册 7.9）**：50 MHz → `sv_system_pll`（125 MHz + 180°）→ 厂商 SDRAM 控制器 → 写图案 / 读回比对 → UART 发定长 71 Byte 报告。实测 **`INIT=01 LOCK=01` / `W=1000 R=1000 CAP=1000 BAD=0000` / `DONE`**，与设计值一字不差（`evidence/board/` 条目 M-11-PASS）。★ **无 TB、进不了回归**（控制器是安路加密 IP，只能 TD 解密）；TD 工程 `TOP_MODULE` 已指向它。★ **2026-10-03：PLL 去重（B 的 `sys_pll` 并入 A 的 `sv_system_pll`）后已重新综合 + 复测通过**，报文与 M-11 逐字节相同（条目 M-11-PASS-2） |
+| 厂商 IP 落库 | **新增（2026-10-02）**：`ip/sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）、`ip/pll/`（`sv_system_pll` / `sv_video_*_pll` / `sv_audio_pll`）。EG4S20 的 SDRAM 是**封装内硬核**（2M×32），信号不出引脚 ⇒ `pin.adc` 不需要 SDRAM 引脚 |
 | **阶段 1–5 上板验收** | ★ **已通过（2026-10-02）**：实物 UART 回传 512 Byte 与电脑侧参考 **SHA-256 完全相同**（M-9，见 [evidence/board/INDEX.md](evidence/board/INDEX.md) 的 M-9-PASS） |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来自开发板手册官方表 + 原理图 + 厂商例程，三处一致）；`uart_txd=D12` 已确认为 FPGA 发送脚，板载 USB-UART 可直接用 |
 | TD 工程 `project/safevision.al` | **综合 → 布局 → 布线 → 位流全跑通并已上板**（`TARGET_LBA=8192` 那次构建，2026-10-02 17:29 下载成功）；**时序收敛**（Setup WNS +11.297 ns / Hold WNS +0.046 ns，违反端点 0，50 MHz 下 Fmax 114.9 MHz），资源 IO 11/188、LUT 814/19600、REG 434/19600。★ 该时序/资源报告（TC-Q-STA）对应的是 `TARGET_LBA=1000` 的构建，重综合后建议补一条证据 |

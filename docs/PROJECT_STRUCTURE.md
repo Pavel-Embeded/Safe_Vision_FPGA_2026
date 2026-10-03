@@ -74,7 +74,7 @@
 | `safevision/rtl/video/` | `video_timing/`、`pattern_generator/`、`graphics_rom/`、`osd_overlay/`、`video_pipeline/`、`frame_reader/`、`video_compositor/`、`safe_scene_gen/`、`emergency_mux/`、`video_cdc/` | 均仅 README；B 已有的 `rtl/memory/frame_swap_cdc.v` 不移动 |
 | `safevision/rtl/top/` | `safevision_core/` | 仅 README |
 | `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/` | `clock/`、`pixel_fifo/`、`hdmi/`、`chipwatcher/`、`safevision_top/` | `clock/reset_sync.v`、`clock/clock_reset_ctrl.v`（A）与 `top_stage5_sector_rd.v`、`top_stage6_fat32_mount.v`、`top_sdram_loopback.v`（B 的 bring-up 顶层）为功能 RTL；其余仅 README |
-| `safevision/platform/anlogic_eg4s20_hx4s20c/ip/` | `sdram/`、`pll/`、`pixel_fifo/`、`graphics_bram/`、`hdmi/` | `sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）与 `pll/`（`sys_pll`、`video_pll`）为**厂商提供的 IP**（非本项目代码，版权与来源见各自 `README.md`）；其余仅 README |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/ip/` | `sdram/`、`pll/`、`pixel_fifo/`、`graphics_bram/`、`hdmi/` | `sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）与 `pll/`（`sv_system_pll`、`sv_video_*_pll`、`sv_audio_pll`）为**厂商提供的 IP**（非本项目代码，版权与来源见各自 `README.md`）；其余仅 README |
 
 模块文件在相应文件夹内；新增端口先更新 `docs/interface_spec.md` 和 `docs/architecture/module_registry.md`，再更新显式文件表。板级时钟由官方 TD PLL IP 产生，现有 `clock/` Verilog 只实现复位许可和分域释放。
 

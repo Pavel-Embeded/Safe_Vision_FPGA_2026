@@ -28,7 +28,7 @@
 //   在综合时是内部 `wire`，只有 `SIMULATION` 宏打开才会变成端口。）
 //
 // ★ 时钟方案（照例程，2026-10-02 采用 A 方案）
-//   板载 50 MHz（R7）→ `sys_pll`：C0=100M（本顶层用不到，留空）、
+//   板载 50 MHz（R7）→ `sv_system_pll`：C0=100M（本顶层用不到，留空）、
 //   C1=125M = SDRAM 侧 `Clk`、C2=125M 180° 相移 = `Clk_sft`。
 //   为什么必须跟例程走 125M + 180°：SDRAM 的初始化/刷新/CAS 是硬时序，
 //   `Clk_sft` 是采样相位，**同源 PLL 做相移，不能用反相器代替**。
@@ -39,7 +39,7 @@
 //     更少变量。C0=100M 因此真的没人用 —— 例程里 `PLL_HDMI_AUDIO` 的
 //     `clk0_out()/clk1_out()` 也是留空的，同样做法。
 //     ⚠ 待上板确认项：若 SDRAM 初始化始终不完成（LED=1、报告 ERR=01），
-//       先怀疑 PLL 反馈支路（`sys_pll` 是 FEEDBK_PATH=CLKC0_EXT，反馈经过
+//       先怀疑 PLL 反馈支路（`sv_system_pll` 是 FEEDBK_PATH=CLKC0_EXT，反馈经过
 //       clk0 的 BUFG），届时把 C0 接出来给一个真实负载再试。
 //
 // ★ 测试图案：`pat_of(addr)` 把地址摊到 32 bit 的四个字节上（两次原样 + 两次
@@ -78,7 +78,7 @@
 
 module top_sdram_loopback #(
     parameter integer CLK_FREQ      = 50_000_000,   // 板载晶振
-    parameter integer MEM_CLK_FREQ  = 125_000_000,  // sys_pll C1，uart 也用这个
+    parameter integer MEM_CLK_FREQ  = 125_000_000,  // sv_system_pll C1，uart 也用这个
     parameter integer BAUD          = 115200,
 
     parameter [23:0]  POWERUP_CYC   = 24'd2_500_000,  // 上电等待 @125MHz
@@ -117,13 +117,13 @@ module top_sdram_loopback #(
     );
 
     // ------------------------------------------------------------------------
-    // 时钟：50 MHz -> sys_pll（100M / 125M / 125M@180°）
+    // 时钟：50 MHz -> sv_system_pll（100M / 125M / 125M@180°）
     //   C0 本顶层用不到，留空（与例程 PLL_HDMI_AUDIO 的做法一致）
     // ------------------------------------------------------------------------
     wire ext_mem_clk;
     wire ext_mem_clk_sft;
 
-    sys_pll u_sys_pll (
+    sv_system_pll u_sys_pll (
         .refclk   (clk),
         .reset    (1'b0),
         .extlock  (pll_locked),

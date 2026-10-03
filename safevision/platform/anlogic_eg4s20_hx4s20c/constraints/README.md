@@ -47,5 +47,5 @@ USR-8168 ERROR: set_pin_assignment { sd_dclk } { LOCATION = A14; ... } in ../../
 ★ 好消息：`read_adc` 是**每次 Run 都执行**的命令（在 `syn_1/run.log` 里能看到），
 所以**改完 `.adc` 直接重新综合即可，不需要关掉/重开 TD**。
 
-`timing.sdc` 在 2026-10-02 加了 `derive_clocks`（`top_sdram_loopback` 接了 `sys_pll`；
+`timing.sdc` 在 2026-10-02 加了 `derive_clocks`（`top_sdram_loopback` 接了 `sv_system_pll`；
 不派生的话 125 MHz 域没有时钟定义、**STA 会是假通过**；对不接 PLL 的顶层派生不出额外时钟，可常开）。

@@ -71,6 +71,12 @@
 | `verification/models/sdram_model.sv` | `verification/models/frame_memory_model.sv` | 它建的是"帧缓存视图"（8 MiB/2M×32bit），不是 SDRAM 器件模型 |
 | `verification/unit/tb_mem_write.sv` | `verification/unit/tb_frame_writer.sv` | 被测件已叫 `frame_writer`，TB 同名；`tb_mem_write` 是阶段 9 的旧称 |
 
+#### v1.16 追加的 IP 去重（合并 A/B 两套系统 PLL）
+
+| 旧名 | 工程名（现结构） | 说明 |
+|---|---|---|
+| `ip/pll/sys_pll.v` / `sys_pll.ipc`（B 的，2026-10-02 落库） | `ip/pll/sv_system_pll.v` / `sv_system_pll.ipc`（A 的，去重后唯一一份） | 两套 PLL 输出频率**完全相同**（100/125 MHz），差别只在**电气参数**（A: Medium / ICP_CURRENT 13 / LPF_RESISTOR 4；B: High / 29 / 2）与 **B 多一路 C2 = 125 MHz@180°**（SDRAM 硬核 `Clk_sft` 要）。去重方案（2026-10-03）：**在 A 的 `sv_system_pll` 上补 C2@180°**，C0/C1 电气参数**取 A 的**（A 的时钟树与审计脚本几乎不动），**删除 B 的 `sys_pll`**；`top_sdram_loopback` 实例化改名 `sv_system_pll`。`check_pll_profiles.py` 相应放行"系统 PLL 允许第 3 路 180° 输出"。★ 影响：stage 9 的 PLL 电气参数由 B 的 High/29/2 变为 A 的 Medium/13/4 ⇒ **M-11 需重新综合 + 上板复测**。 |
+
 #### v1.7 新增文件（补结构缺口，不是改名）
 
 | 新增 | 落点 | 说明 |
@@ -1006,7 +1012,7 @@ LED 状态码：在 §3.7 的 `1..8` 基础上新增 **`9 = 连读进行中`**�
        BURST_N(128) BURST_GAP(16) WR_DRAIN_CYC(512) RD_WAIT_TO_CYC(200_000)
 ```
 
-**时钟**：板载 50 MHz → `sys_pll`：C0 = 100 MHz（本顶层不用，留空）、C1 = 125 MHz = SDRAM 侧
+**时钟**：板载 50 MHz → `sv_system_pll`：C0 = 100 MHz（本顶层不用，留空）、C1 = 125 MHz = SDRAM 侧
 `Clk`、C2 = 125 MHz **180° 相移** = `Clk_sft`。`timing.sdc` 因此新增 `derive_clocks`
 （**不加的话 125 MHz 域无时钟定义、STA 是假通过**）。
 **全部逻辑（含 `uart_tx`）跑 125 MHz 单域，刻意不做 CDC**：报告只有 71 Byte，瓶颈在 UART
@@ -1058,7 +1064,7 @@ LED 状态码：在 §3.7 的 `1..8` 基础上新增 **`9 = 连读进行中`**�
 
 **IP 落点与来源**：`safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/`
 （`sdram.v` 应用级外壳 + `global_def.v` + 三个 `.enc.v` + `sdram.ipc`）、
-`ip/pll/`（`sys_pll` / `video_pll`）。均来自厂商例程包（工作区参考材料，本身不进仓库），
+`ip/pll/`（`sv_system_pll` / `sv_video_*_pll` / `sv_audio_pll`；系统 PLL 于 2026-10-03 去重为唯一一份）。均来自厂商例程包（工作区参考材料，本身不进仓库），
 详见该目录 `README.md`。★ 例程里**有两个同名 `sdram` 模块**：`IP/sdram.v` 是引脚级 PHY 外壳
 （例程顶层没用它），`SD/sdram.v` 才是被 `sdram U3(...)` 例化的应用级控制器 —— 两者不能同时
 进同一个 TD 工程。本仓库只保留后者。
@@ -1256,6 +1262,8 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | v1.14 | 2026-10-02 | **新增 §3.9 板级顶层 `top_sdram_loopback`**（阶段 9 第一步 / 手册 7.9「SDRAM 先跑官方 Demo」）：把厂商 SDRAM 控制器接上，上电 → 等 PLL 锁定 → 等 IP 初始化完成 → 写图案 → 落地等待 → 读回比对 → UART 发**定长 71 Byte 纯 ASCII 报告**（`SV-SDRAM-LOOP` / `INIT=/LOCK=` / `W=/R=/CAP=/BAD=` / `DONE`，显式 `8'h0D`/`8'h0A`）。★ 三处新事实写进文档：① **EG4S20 的 SDRAM 是封装内硬核**（`EG_PHY_SDRAM_2M_32`，2M×32），55 根信号不出引脚 ⇒ `pin.adc` **不需要也不应该**加 SDRAM 引脚；② 应用侧协议：写是逐 word `App_wr_en`、读是**延迟应答式**（`Sdr_rd_en` 才是取数时刻），`Sdr_busy`/`Sdr_init_ref_vld` 在例程里纯直通从不参与判断，应用侧只需自负「突发留间隔 + 读写不重叠」；③ **本顶层没有 TB 也进不了回归** —— 控制器真正实现在三个**安路 RSA 加密**的 `sdr_*.enc.v` 里，只能由 TD 解密，验收只有"上板读报告"一条路。同时把厂商 IP 落进 `ip/sdram/`（应用级 `sdram.v` + `global_def.v` + 三个 `.enc.v` + `sdram.ipc`）与 `ip/pll/`（`sys_pll`/`video_pll`）。★ 纠一个我上一步的复制错误：例程里**有两个同名 `sdram` 模块**，`IP/sdram.v` 是引脚级 PHY 外壳（例程顶层没用、`.al` 里也没登记），`SD/sdram.v` 才是被 `sdram U3(...)` 例化的应用级控制器；本仓库只保留后者。★ `timing.sdc` 新增 `derive_clocks`：接了 PLL 之后不加它，125 MHz 域就没有时钟定义、**STA 会是假通过**。TD 工程 `safevision.al` 已登记上述文件并把 `TOP_MODULE` 切到 `top_sdram_loopback`（回退只需改回 `top_stage5_sector_rd`）。回归不变：**540 项断言 / 18 个 TB，全 PASS**；`check_repo.ps1` → `LAYOUT PASS`；新顶层过 `vlog` 编译检查。 | B |
 | v1.15 | 2026-10-02 | **§3.9 补上验收结果：阶段 9 第一步（手册 7.9「SDRAM 先跑官方 Demo」）板级通过（条目 M-11-PASS）**。位流 22:01:24 下载后 UART 收到 **71 Byte**：`SV-SDRAM-LOOP` / **`INIT=01 LOCK=01`** / **`W=1000 R=1000 CAP=1000 BAD=0000`** / `DONE`，与设计值**一字不差**（真 CRLF、无前导 `0x00`）。含义：`Sdr_init_done` 在 16 ms 超时窗内到齐；**`sys_pll` 锁定成功**（顺带证明"顶层把 C0 留空"不影响 `FEEDBK_PATH=CLKC0_EXT` 的反馈支路）；写 4096 word / 发 4096 次读命令 / **收齐 4096 word**（控制器一条读命令都没丢）；**32 bit 数据逐字比对零错** ⇒ 32 位数据线与 16 KB 连续区间的地址译码全部正确。★ 本轮同时解决/记录的四件事：① **TD 的 `.al` 只是上次保存的快照、跑综合用的是内存状态**（双向都踩过：改磁盘 `.al` 不生效，GUI 保存又覆盖磁盘）；判定只信 `syn_1/run.log` 的 `elaborate -top`；② **TD 对"约束里出现顶层不存在的端口"是报错**（`HDL-1492`/`USR-8168`），故 `pin.adc` 拆成"公共 6 条 + `[SD-ONLY]` 4 条"，且两者的生效方式不同（`read_adc` 每次 Run 都读、`.al` 要重开 TD）；③ **"全局 SWNS 为负"的判定口径**（本例 -6.826 ns 100% 出在厂商硬核 PAD 路径，自研组全绿，厂商参考设计同数 -6.565）；④ 自研薄点：fabric 最差路径仅 +0.130 ns。**接口、字段、报告格式一字未改**；回归 540 项不变。 | B |
 
+
+| v1.16 | 2026-10-03 | **系统 PLL 去重（A 的 `sv_system_pll` 收编 B 的 `sys_pll`）**。两套 PLL 输出频率相同（100/125 MHz），仅电气参数（A: Medium/13/4，B: High/29/2）与 B 独有的 C2 = 125 MHz@180° 不同。做法：**在 A 的 `sv_system_pll` 上新增 C2@180°**（`CLKC2_DIV 8` / `CLKC2_CPHASE 3` / `CLKC2_FPHASE 0`，`.ipc` 加 id=2 的 clock），**C0/C1 电气参数一字不动**；`top_sdram_loopback` 改为实例化 `sv_system_pll`；`safevision.al` 登记 `../ip/pll/sv_system_pll.v`；**删除 `ip/pll/sys_pll.v` / `sys_pll.ipc`**。`check_pll_profiles.py` 放宽为"按文件里是否有 `CLKC2_DIV` 判定输出集合 + 系统 PLL 的 C2 允许 180°"（相位判据在 0° 时与原文逐字等价，A 的其它 PLL 与 C0/C1 判据未放宽）；实跑 `check_pll_profiles.py` 输出 `result` 字段为 `PASS`。★ **B 链 RTL / 接口 / 错误码一字未改**，回归仍 **540 项 / 18 个 TB 全 PASS**；`check_repo.ps1` → `LAYOUT PASS`。★ **已重新综合 + 复测 M-11（2026-10-03 17:26:55）**：报文与 M-11 逐字节相同，证据条目 **M-11-PASS-2**（stage 9 的 PLL 电气参数随 A 变了） | B |
 
 ## A Clock / Video Timing 发布补充（2026-10-02）
 
