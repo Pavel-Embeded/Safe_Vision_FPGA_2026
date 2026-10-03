@@ -442,6 +442,7 @@ module tb_file_streamer;
         check(fs_valid === 1'b1,      "T37.1 反压期间 valid 保持");
         check(got_n == 0,             "T37.2 下游没收就不算送达");
         check(fs_sof === 1'b1,        "T37.3 反压期间 sof 保持");
+        @(negedge clk); // Change ready away from DUT/monitor sampling edge.
         fs_ready = 1'b1;              // 放开
         wait_cnt = 0;
         while (!(fs_done === 1'b1) && wait_cnt < 8_000_000) begin

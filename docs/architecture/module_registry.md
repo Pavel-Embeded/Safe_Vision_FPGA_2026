@@ -101,7 +101,6 @@
 | `rtl/video/video_timing/video_timing.v` | A | 目标模式时序 TB、约束 |
 | `rtl/video/pattern_generator/pattern_generator.v` | A | 彩条与网格、首像素 TB |
 | `rtl/video/graphics_rom/graphics_rom.v` | A | 字模/图标读取延迟 TB；BRAM IP 留平台 |
-| `rtl/video/video_pipeline/video_pipeline.v` | A | 像素/同步/valid 延迟对齐 TB |
 | `rtl/video/frame_reader/frame_reader.v` | A | 预取/标签对齐/欠载 TB |
 | `rtl/video/video_compositor/video_compositor.v` | A | 数据与 OSD 延迟对齐 TB |
 | `rtl/video/osd_overlay/osd_overlay.v` | A | 字模 BRAM 延迟 TB |
@@ -116,6 +115,12 @@
 | `platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v` | A | 引脚/IP/时钟复位接线、STA、上板 |
 
 文件名为计划建议，若实现时变更，先更新本表与接口规范。`pcm_ring`、`audio_cdc_fifo`、HDMI 音频包装、PLL/FIFO/SDRAM/HDMI 厂商适配仍是待定义/待实现，不可因目录存在而视作完成。
+
+## A 阶段十已实现模块（2026-10-03）
+
+| 文件 | 负责人 | 时钟/延迟 | 验证与接线 |
+|---|---|---|---|
+| `rtl/video/video_pipeline/video_pipeline.v` | A | pixel_clk；像素与全部标签统一 LATENCY 拍，默认 1 | 两个新 TB 通过；原 B 源表合编与 TD RTL 综合通过；独立 BASE/HD 内部 routed STA 无负裕量，已有 PLL 健康告警开放，未上板。接口与验证范围见 [阶段十说明](../A_stage10_latency.md) |
 
 
 ## A Clock / Video Timing 发布补充（2026-10-02）

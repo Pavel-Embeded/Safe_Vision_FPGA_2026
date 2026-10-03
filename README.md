@@ -292,3 +292,9 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 新 XSim 入口包含五项测试；帧量级联调测试显式传入 TIMEOUT_N=5,000,000，B 模块默认值与 `safevision_defs.vh` 均保持原版本。本次不改 B/C RTL、原 B 单元测试、原 B 回归入口、B 专用文档或 B 上板工程/证据。共享文档保留最新远程原文，仅追加 A 说明；现有 B 验收记录仍按其原证据判断。
 
 Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内部 STA 的实际 A 输入与本提交一致，但 TD 健康告警仍开放（runner 返回 2）。尚未完成 A 产品顶层、完整 HDMI/Frame Reader/OSD/应急链与 A 板级验证。旧 `clock_video_20261002` 是过滤前工作树历史记录，不能把其中 B 默认超时变更或全工作树文件计数当成本提交内容。当前范围与新回归见 [A发布核对](docs/A_PUSH_SCOPE_20261002.md)。
+
+## A 阶段十：数拍与标签对齐（2026-10-03）
+
+新增 `video_pipeline.v`、`tb_video_pipeline.sv`、`tb_video_pipeline_timing.sv` 和 `run_video_pipeline_sim.ps1`：验证任意固定延迟、手册 1+2+1=4 拍链路、RGB565 接口、整帧扫描与中途复位。两个新 TB 全部通过；A/B 源文件合编、TD 的 45 条工程源 RTL 综合通过。`safevision.al` 仅登记新模块，仍使用 B 的 `top_sdram_loopback`，不包含仿真 TB。
+
+独立 BASE/HD 验证顶层内部布局布线时序无负裕量；已有 PLL 反馈网络告警和板级 I/O 预算仍开放，尚不能称整机签核。端口、数拍约定、运行命令和验收边界见 [A阶段十说明](docs/A_stage10_latency.md)。本次只交付源代码、TB、仿真入口与必要接口/工程登记，不上传运行日志或时序记录。

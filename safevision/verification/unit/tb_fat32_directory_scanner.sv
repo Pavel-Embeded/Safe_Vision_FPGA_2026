@@ -490,6 +490,7 @@ module tb_fat32_directory_scanner;
         check(got_n == 0,                "T27.3 下游没确认就不算送达");
         check(ent_name === "SV0001  BMP","T27.4 反压期间名字不变");
 
+        @(negedge clk); // Change ready away from DUT/monitor sampling edge.
         ent_ready = 1'b1;                 // 放开
         wait_cnt = 0;
         while (!(scan_done === 1'b1) && wait_cnt < 2_000_000) begin

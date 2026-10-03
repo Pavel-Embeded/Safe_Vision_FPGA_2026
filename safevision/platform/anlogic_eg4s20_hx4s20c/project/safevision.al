@@ -398,6 +398,14 @@
                     <Attr Name="CompileOrder" Val="44"/>
                 </FileInfo>
             </File>
+            <File Path="../../../rtl/video/video_pipeline/video_pipeline.v">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true"/>
+                    <Attr Name="UsedInP&R" Val="true"/>
+                    <Attr Name="BelongTo" Val="design_1"/>
+                    <Attr Name="CompileOrder" Val="45"/>
+                </FileInfo>
+            </File>
         </Verilog>
         <ADC_FILE>
             <File Path="../constraints/pin.adc">
