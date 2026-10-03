@@ -101,6 +101,16 @@ module fat32_boot_parser (
                            (w_ts16  == 16'h0000) &&
                            (w_fs32  != 32'h0000_0000);
     wire spc_ok = (spc != 8'd0) && (spc <= 8'd128) && ((spc & (spc - 8'd1)) == 8'd0);  // 2 的幂
+    // ★ log2(spc)：供 total_clus 的移位使用（见 M_EVAL 里的注释）。
+    //   只有走到"全部合法"那一支时才会用到它，而那一支已经被 spc_ok 保证
+    //   spc 是 2 的幂（1..128），所以一个优先编码器就够了，不需要通用除法。
+    wire [2:0] w_log2_spc = (spc[7]) ? 3'd7 :
+                            (spc[6]) ? 3'd6 :
+                            (spc[5]) ? 3'd5 :
+                            (spc[4]) ? 3'd4 :
+                            (spc[3]) ? 3'd3 :
+                            (spc[2]) ? 3'd2 :
+                            (spc[1]) ? 3'd1 : 3'd0;
     wire nfat_ok = (nfat == 8'd1) || (nfat == 8'd2);
 
     // 只收不含 dout 的字节，永远 ready（本模块不反压）
@@ -252,7 +262,16 @@ module fat32_boot_parser (
                     root_dir_lba   <= {16'd0, w_rsvd} + (nfat * w_fs32)
                                       + ((w_rc - 32'd2) * spc);
                     total_sec      <= w_ts32;
-                    total_clus     <= (w_ts32 - ({16'd0, w_rsvd} + (nfat * w_fs32))) / spc;
+                    // ★ 这里绝对不能用 `/ spc`。
+                    //   Verilog 的除法运算符会被综合器实现成【组合除法阵列】：
+                    //   TD 2026-10-02 的综合报告（evidence/reports/ 条目 TC-Q-STA-2）
+                    //   显示这条路径 Logic Level = 100、其中 ADDER = 68、长 105 ns，
+                    //   直接把 50 MHz 的建立时间顶穿（SWNS = -85.399 ns，28 个端点违例），
+                    //   而 ModelSim 里除法是零延迟、530 项断言全绿也看不出来。
+                    //   改用移位：本分支已由 spc_ok 保证 spc 是 2 的幂（1..128），
+                    //   所以 `X / spc` 与 `X >> log2(spc)` 对无符号数是【逐值等价】的。
+                    //   ⇒ 行为与原来完全一致（既有 TB 断言逐字不变），只是不再有除法器。
+                    total_clus     <= (w_ts32 - ({16'd0, w_rsvd} + (nfat * w_fs32))) >> w_log2_spc;
                     mstate         <= M_DONE;
                 end
             end
