@@ -16,6 +16,7 @@
 | `safevision/rtl/storage/sd_initializer.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
 | `safevision/rtl/storage/sd_sector_reader.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
 | `safevision/rtl/storage/mbr_parser.v` | **新增（2026-10-02）**，单测通过 | B | **卷基址解析**：读卡 0 号扇区（MBR），给出分区 0 起始物理 LBA（`vol_base_lba`）与扇区数；供板级顶层把"卷内相对 LBA"换算成卡上地址（见 interface_spec §3.2.1） | `tb_mbr_parser.sv`（T1–T4，7 项断言全通过） |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v` | **新增（2026-10-02）**，单测通过；**板级 M-10（阶段 6–7）已通过**；v1.13 新增连读阶段（M-6/M-8） | B | **阶段 6–7 板级 bring-up 顶层**（接引脚）：上电 → SD 初始化 → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner`(+`fat32_cluster_walker`) → **连读阶段（`RPT_N`，默认 100，复用同一 reader）** → 经 UART 发**纯 ASCII 报告**（每行 `KEY=HEX`，新增 `RPT=<total> OK=<ok> BAD=<bad>` 行，末行 `DONE` 或 `ERR=02`；行尾为显式 CRLF）。★ **卷基址只在此处加一次**：`rd_addr_to_reader = bus_rd_addr + vol_base_lba`（见 interface_spec §3.2.1 / §3.8） | `tb_top_stage6_fat32_mount.sv`（**26 项断言全通过**：含报告字节数/无前导 0x00/每行 CRLF、连读 `RPT OK=100 BAD=0`、连读中拔卡进 `ST_ERR`+`ERR=02`） |
 | `safevision/rtl/storage/fat32_boot_parser.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
 | `safevision/rtl/storage/fat32_directory_scanner.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
 | `safevision/rtl/storage/fat32_cluster_walker.v` | 现有 | B（跨链边界 A/C 复核） | SD SPI、扇区读取、FAT32 和文件索引/流 |
@@ -57,10 +58,40 @@
 | 文件 | 状态 | 负责人 | 接口与作用 | 测试 |
 |---|---|---|---|---|
 | `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v` | RTL 已写，仿真通过；**未上板** | B（A 复核板级落点） | 接引脚的阶段 5 最小验证顶层：`clk`(R7, 50 MHz) / `rst_n`(A2) / `sd_ncs`·`sd_dclk`·`sd_mosi`·`sd_miso` / `uart_txd`(D12) / `led[3:0]`；内部例化 `sd_initializer` + `sd_sector_reader`（**共用一份 `spi_master`，按 `init_done` 二选一**）+ `uart_tx` + `reset_sync`；上电延时 → 初始化 → 读 `TARGET_LBA`（默认 `32'd8192` = 分区首扇区/FAT32 DBR；原定 1000 落在分区前空隙里、全是 0）→ 512 Byte 经 UART 回传。接口与时钟取舍见 interface_spec §3.7 | `tb_top_stage5_sector_rd.sv`（T1–T4 已通过） |
-| `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/pin.adc` | 已写，待综合 / 上板核对 | B | 引脚约束。来源：开发板手册官方引脚表（串口 / LED / 按键）+ `2_FPGA.pdf` / `6_EX_DEVICE.pdf` + 厂商同器件例程，三处一致。`uart_txd = D12` 已确认是 FPGA 发送脚（板载 CH340G，无需外接 USB-TTL） | 综合报告 |
-| `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/timing.sdc` | 已写（第一版：单一 50 MHz 时钟域） | B | `create_clock -name clk -period 20 -waveform {0 10}`；本顶层不接 PLL，无需派生时钟或跨域分组 | STA |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/pin.adc` | 已写，综合/上板核对中 | B | 引脚约束。来源：开发板手册官方引脚表（串口 / LED / 按键）+ `2_FPGA.pdf` / `6_EX_DEVICE.pdf` + 厂商同器件例程，三处一致。`uart_txd = D12` 已确认是 FPGA 发送脚（板载 CH340G，无需外接 USB-TTL）。★ **分成两段**：公共 6 条（`clk`/`rst_n`/`uart_txd`/`led[3:0]`，三个 bring-up 顶层通用）+ **`[SD-ONLY]` 4 条**（`sd_*`，只有阶段 5/6 顶层有；用 `top_sdram_loopback` 时必须注释 —— TD 对"约束里出现顶层没有的端口"是**报错** `HDL-1492`/`USR-8168`，详见待办清单 §2.4.2 与 `constraints/README.md`） | 综合报告 |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/constraints/timing.sdc` | 已写（单一 50 MHz 主时钟 + `derive_clocks`） | B | `create_clock -name clk -period 20 -waveform {0 10}` + **`derive_clocks`**（2026-10-02 新增：接 `sys_pll` 之后不派生的话，125 MHz 域没有时钟定义、**STA 会是假通过**；对不接 PLL 的顶层派生不出额外时钟，可安全常开） | STA |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v` | ★★ **已写、已综合、且上板通过（2026-10-02，条目 M-11-PASS）** | B | 阶段 9 第一步 / 手册 7.9「SDRAM 先跑官方 Demo」。端口只有 **`clk`/`rst_n`/`uart_txd`/`led[3:0]`（7 个，无 `sd_*` —— SDRAM 是封装内硬核、不用 TF 卡）**，所以 `pin.adc` 里 `[SD-ONLY]` 那 4 条**必须注释掉**（2026-10-02 首次综合就是被这条拦下的，见待办清单 §2.4.2）。内部：50 MHz → `sys_pll`（C1 = 125 MHz → SDRAM `Clk`、C2 = 125 MHz 180° → `Clk_sft`）→ 厂商 `sdram` 控制器 → 写图案 / 落地等待 / 读回比对 → `uart_tx`（125 MHz 域，115200）发**定长 71 Byte 纯 ASCII 报告**。**全部逻辑单域（含 uart）**，刻意不做 CDC。接口见 interface_spec §3.9 | ★ **无 TB、进不了回归**（控制器是安路 RSA 加密 IP，只能 TD 解密）⇒ 只能上板验收，步骤见待办清单 §2.4.2。**实测结果**：`INIT=01 / LOCK=01 / W=1000 R=1000 CAP=1000 BAD=0000 / DONE`（71 Byte，与设计值一字不差） |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/` | 厂商 IP 已落库（2026-10-02） | 厂商（Anlogic）；B 负责登记与对接 | 应用级 SDRAM 控制器 `sdram.v` + 位宽宏 `global_def.v` + **三个加密实现 `sdr_as_ram/sdr_init_ref/sdr_wrrd.enc.v`** + PHY 配置 `sdram.ipc`。★ `EG_PHY_SDRAM_2M_32` 是**封装内硬核**（2M×32 = 8 MB），信号不出引脚 ⇒ `pin.adc` 不该有 SDRAM 引脚。版权/来源/唯一一处前导行改动见该目录 `README.md` | 综合报告（不可仿真） |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/` | 厂商 IP 已落库（2026-10-02） | 厂商（Anlogic）；B 负责登记与对接 | `sys_pll`（50 MHz → 100M/125M/125M@180°）、`video_pll`（25M/5x，给 A 的 HDMI 用）。`sys_pll.v` 是 **TD 生成的可综合网表**，可直接进工程 | STA |
 
 `project/safevision.al` 已把 `TOP_MODULE` 设为 `top_stage5_sector_rd`，并加入 `reset_sync.v`、`top_stage5_sector_rd.v` 与 `constraint_1` 的 `pin.adc`/`timing.sdc`。**2026-10-02 已在 TD 里跑通完整流程**：修掉 `sd_initializer` / `sd_sector_reader` 的 `bdata` 多驱动（`HDL-8007`，详见 interface_spec v1.10 变更历史）后，综合 → 布局 → 布线 → 位流**一次通过**；**时序收敛**（Setup WNS +11.297 ns / Hold WNS +0.046 ns，违反端点 0，50 MHz 约束下 Fmax 114.9 MHz），资源 IO 11/188、LUT 814/19600、REG 434/19600、BRAM/DSP 0。`syn_1/run.log` 中不再有 `black box`。原始报告留证于 `evidence/reports/`（索引条目 TC-Q-STA）。★ 该证据对应的是 **`TARGET_LBA = 1000`** 那次构建；`TARGET_LBA` 默认值已改为 `8192`，**需要重新综合一次以对齐证据**（只改了一个常量，时序/资源预期不变，但按本项目口径证据必须与构建一致）。**位流尚未下载，未上板**（上板步骤见待办清单 §2.2）。
+
+★ **2026-10-02 后续状态变更（以磁盘上的 `.al` 为准，不要被上面这段的历史数字误导）**：
+- ★★ **已查明：磁盘上的 `.al` 从来没保存过阶段 6 的登记。** 阶段 6–7 的 `top_stage6_fat32_mount.v` /
+  `mbr_parser.v` 是在 **TD GUI 的内存会话里**加进去的（19:35 起的那次会话），**没有回写 `.al`**；
+  所以 `.al` 停留在更早的**阶段 5** 快照（只有 `top_stage5_sector_rd.v`，`TOP_MODULE = top_stage5_sector_rd`）。
+  ⇒ 文档里以前写的"TD 工程已登记新顶层（`TOP_MODULE = top_stage6_fat32_mount`）"**描述的是 GUI 状态、不是工程文件**，属于表述错误，据此更正。
+- ★★ **TD 运行时用的是内存状态，不是磁盘 `.al`。** 证据：2026-10-02 **21:25** 那次综合（当时磁盘 `.al` 的
+  `TOP_MODULE` 已是 `top_sdram_loopback`）产出 `syn_1/safevision.prj`，里面 `TOP_MODULE = top_stage6_fat32_mount`、
+  文件表**没有任何 `ip/` 文件**；`syn_1/run.log` 也写着 `elaborate -top top_stage6_fat32_mount`。
+  位流行为与 20:52 那次**逐字节相同**（见 `evidence/board/INDEX.md`）。
+  ⇒ **SDRAM 回环顶层至今没有被综合过**，板子上跑的是阶段 6–7 设计。
+- ⚠ **因此：只要那个 TD 会话还在（进程 `td`，19:34:49 启动），在 GUI 里"保存工程"就会用内存状态
+  覆盖磁盘 `.al`，本轮加进去的 7 条 IP/新顶层登记会全部丢失。** 正确做法是**在 GUI 里手动添加**
+  `../ip/sdram/` 5 个文件 + `../ip/pll/sys_pll.v` + `../rtl/top_sdram_loopback.v`，把 `TOP_MODULE`
+  设为 `top_sdram_loopback`，**再保存**；或者关掉 TD（不保存）后重新打开，让 TD 读取已修好的 `.al`。
+- 本轮已在磁盘 `.al` 上：新增 `../ip/sdram/` 5 个文件、`../ip/pll/sys_pll.v`、`../rtl/top_sdram_loopback.v`，
+  **并把此前丢掉的 `../../../rtl/storage/mbr_parser.v` 与 `../rtl/top_stage6_fat32_mount.v` 补回**
+  （共 9 条）；`TOP_MODULE = top_sdram_loopback`。`timing.sdc` 同时加了 `derive_clocks`。
+  要回退阶段 5，只需把 `TOP_MODULE` 改回 `top_stage5_sector_rd`。
+- ★ **21:41:36 确实发生了一次覆盖**（上面的警告应验）：TD 在 GUI 里保存工程，把 `.al` 写成了
+  它内存里的**阶段 6–7 快照**（37 条 Verilog，`TOP_MODULE = top_stage6_fat32_mount`，
+  **7 条 SDRAM/IP 登记全部消失**）。随后已按同一份内容**重新加回并复验**：
+  **46 条 File 条目路径全部 `Test-Path` 通过、Verilog `CompileOrder` 1–44 无重复、
+  `TOP_MODULE = top_sdram_loopback`（登记为 order 44）**。
+  ⇒ **结论不变：`.al` 谁写的不重要，TD 内存里是什么才决定综合结果。**
+  要让 TD 采用这份 `.al`，必须**关闭 TD（在"保存工程"提示里选【否】）后重新打开**，
+  或直接在 GUI 里手动添加那 7 条 —— 否则一保存又会被内存状态盖回去。
 
 ## 待实现模块命名（不是空 RTL）
 

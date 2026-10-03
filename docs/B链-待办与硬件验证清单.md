@@ -39,13 +39,15 @@
 | 媒体格式层（`bmp_unpack` BGR→RGB565 / `wav_parser`） | 已完成并仿真通过 |
 | 目录骨架与管理文档（`.github/` + `docs/` 子目录 + `evidence/` + `platform/` 等） | **已建立骨架**（v1.8 引入队友的项目管理覆盖包）。只有 README 占位与命名计划，**无功能代码**；落点规则见 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) |
 | 目录自检脚本 `safevision/tools/check_repo.ps1` | 已接入（不需要 ModelSim，输出 `LAYOUT PASS` 才算过） |
-| 板级 TD 工程 `platform/anlogic_eg4s20_hx4s20c/project/safevision.al` | **全流程已跑通**（器件 EG4S20BG256；35 条设计文件全为相对路径；`TOP_MODULE = top_stage5_sector_rd`；`constraint_1` 已挂 `pin.adc` + `timing.sdc`）。**综合 → 布局 → 布线 → 位流一次通过**：Setup WNS **+11.297 ns**、Hold WNS **+0.046 ns**、**违反端点 0**（906 端点 / 3480 路径），50 MHz 约束下报告 Fmax **114.9 MHz**；资源 IO 11/188、LUT 814/19600、REG 434/19600、BRAM/DSP 0。位流 `safevision.bit` 已生成。原始报告留证在 [evidence/reports/INDEX.md](../evidence/reports/INDEX.md)（TC-Q-STA） |
+| 板级 TD 工程 `platform/anlogic_eg4s20_hx4s20c/project/safevision.al` | **全流程已跑通**（器件 EG4S20BG256；设计文件全为相对路径；`constraint_1` 已挂 `pin.adc` + `timing.sdc`）。阶段 5 那次：**综合 → 布局 → 布线 → 位流一次通过**，Setup WNS **+11.297 ns**、Hold WNS **+0.046 ns**、**违反端点 0**（906 端点 / 3480 路径），50 MHz 约束下报告 Fmax **114.9 MHz**；资源 IO 11/188、LUT 814/19600、REG 434/19600、BRAM/DSP 0。原始报告留证在 [evidence/reports/INDEX.md](../evidence/reports/INDEX.md)（TC-Q-STA）。★ **当前 `TOP_MODULE = top_sdram_loopback`**（2026-10-02 切，本行上面的数字是阶段 5 顶层的，不是它的） |
 | 板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v`（阶段 5 最小验证） | **已写、仿真通过、且上板跑通**（`tb_top_stage5_sector_rd` 5 项断言；板上 LED = `8` 成功，M-9 通过） |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来源：开发板手册的串口/LED/按键引脚表 + `2_FPGA.pdf` / `6_EX_DEVICE.pdf` + 厂商同器件例程，三处一致；`timing.sdc` 为单一 50 MHz 时钟域第一版）。`uart_txd = D12` **已确认为 FPGA 发送脚**（板载 CH340G，无需外接 USB-TTL） |
 | 整机集成（`safevision_core` / `safevision_top`） | 未开始（A 负责） |
-| **上板实测** | **已开始**：阶段 5 的 **M-9 通过**（512/512 逐字节一致）；M-5/M-6/M-7/M-8 与阶段 6–16 的板级项待做 |
+| 厂商 IP 落库（阶段 9 前置） | **已落地**（2026-10-02）：`ip/sdram/`（应用级 `sdram.v` + `global_def.v` + 三个安路加密 `sdr_*.enc.v` + `sdram.ipc`）、`ip/pll/`（`sys_pll` / `video_pll`）。**加密件按用户决定随仓库提交**，版权与来源见该目录 `README.md`。★ 例程里有两个同名 `sdram` 模块，本仓库只保留被顶层例化的应用级那个 |
+| 板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v`（阶段 9 第一步 / 手册 7.9） | ★★ **已写、已综合（位流 22:01:24）、且上板通过（2026-10-02）**：报告 `INIT=01 / LOCK=01 / W=1000 R=1000 CAP=1000 BAD=0000 / DONE`（71 Byte，条目 **M-11-PASS**）。★ 无 TB、进不了回归（控制器是加密 IP，不可仿真）—— 上板步骤见 §2.4.2 |
+| **上板实测** | **阶段 1–7 与阶段 9 第一步均已通过**：M-9（512/512 逐字节）、M-10（卷基址/BPB/目录）、**M-6（连读 100 次）**、M-8a（无卡有界退出）、**M-11（SDRAM 回环 `BAD=0000`）**。待做：M-5（可用 ChipWatcher 复核 SCLK）、**M-7（3 张不同品牌卡）**、**M-8「连读中途拔卡」**、M-10 精确拍数、阶段 10–16 板级项（须等 A 的整机） |
 
-仿真回归：`safevision\tools\run_sim.ps1`，**514 项断言全部 PASS**（17 个 testbench）：
+仿真回归：`safevision\tools\run_sim.ps1`，**540 项断言全部 PASS**（18 个 testbench）：
 
 | testbench | 覆盖 | 断言数 |
 |---|---|---|
@@ -66,7 +68,8 @@
 | `tb_memory_arbiter.sv` | 仲裁最坏场景与防饥饿 / 单次占用上限 / 三类 starvation 计数为 0 | 7 |
 | `tb_frame_swap_ctrl.sv` | 帧交换四态 / 两类超时进 SAFE / 原子切换 / CDC mailbox 预稳定 | 23 |
 | `tb_top_stage5_sector_rd.sv` | **板级 bring-up 顶层**：自动初始化序列 / CMD17 参数 1000 / 512 Byte 经 UART 逐字节与卡模型一致 / 顶层进成功态 | 5 |
-| **合计** | | **514** |
+| `tb_top_stage6_fat32_mount.sv` | **阶段 6–7 板级顶层**：★ 卷基址只加一次（FAT32 层的 LBA 0 必须落到卡 LBA = 分区基址）/ MBR 分区表 / BPB 几何 / 目录项（名称·属性·大小）/ UART 纯 ASCII 报告内容（含**字节数、无前导 `0x00`、每行 CRLF** 三条 Task-1 回归）/ **连读汇总 `RPT=`**（健康卡 `OK=total BAD=0`）/ **拔卡场景**（有限时间内进 `ST_ERR`、末行 `ERR=02`、LED=错误主码低 4 位）/ 顶层进成功态 | 26 |
+| **合计** | | **540** |
 
 > v1.7 的 4 处拆分类改动（`tb_frame_swap`→2 个、`tb_media`→2 个）**只搬位置、不改断言**，
 > 拆分前后断言数逐项守恒（30→7+23，75→44+31）。
@@ -284,13 +287,98 @@
 | M-3 | ACMD41 轮询总时长 | 抓从第一次 ACMD41 到 ready 的拍数（不同品牌卡差异很大） | `SD_TO_ACMD41`、O-4 |
 | M-4 | 上电到 `init_done` 的时间 | 示波器或 LED 翻转计时 | 启动速度留证（E04） |
 | M-5 | 实际 SCLK 频率 | 示波器量 `sd_dclk`。★ 注意 bring-up 版跑 50 MHz（不接 PLL），所以**初始化段应为 200 kHz、数据段 12.5 MHz**（= `safevision_defs.vh` 里按 100 MHz 推导的 400 kHz / 25 MHz 的**一半**；`SD_DIV_INIT=124` / `SD_DIV_FAST=1`）。整机接 PLL 后再按 400 kHz / 25 MHz 复核。★ **没有示波器也能间接确认晶振频率**：`uart_tx` 的分频是按 50 MHz 算的（`DIV = 50M/115200 = 434`），本次 512 字节在电脑侧按 115200 8N1 **完整无误地收到**（M-9 通过），说明实际时钟频率落在 **±2% 内就是 50 MHz**（否则字节会错位）。`sd_dclk` 的精确频率建议以后用 TD 的 ChipWatcher 抓 `div_cnt`/`sclk_r` 复核，不必强求示波器 | 接口文档备注 |
-| M-6 | **连读 100 次** | 同一 LBA 连续读 100 次，UART 每次都回传，电脑脚本比对 | 手册 7.5 过关标准 |
-| M-7 | **多卡兼容** | 至少 3 张不同品牌/容量的卡都跑通 | 兼容性留证 |
-| M-8 | 拔卡 / 坏卡行为 | 运行中拔卡，确认有限时间内进错误态且不挂死；插回后能恢复 | 手册 7.4 过关标准 |
+| M-6 | **连读 100 次** | ★ 顶层已内置**连读阶段**（`RPT_N`，默认 100）：挂载 + 扫目录后自动对同一 LBA（根目录扇区）连读 100 次，每次由 `sd_sector_reader` 的 CRC16 判好坏，报告出一行 `RPT=0064 OK=0064 BAD=0000`。步骤见 §2.4.1 | 手册 7.5 过关标准；证据回填 `evidence/board/` |
+| M-7 | **多卡兼容** | 至少 3 张不同品牌/容量的卡各跑一轮，电脑侧先独立解析每张卡的分区表与 DBR 作基准；报告里的**几何行本就应逐卡不同**——"三张卡报告一模一样"反而是失败。步骤见 §2.4.1 | 兼容性留证 |
+| M-8 | 拔卡 / 坏卡行为 | 运行中拔卡：LED 显示错误主码低 4 位（应为 `2`），报告末行 `ERR=02`，且**有限时间内**停住不挂死；按复位键重插后能重跑。★ 仿真已在 TB 里覆盖（连读中拔卡 → 进 `ST_ERR`、`ERR=02`、`RPT BAD=100`）。步骤见 §2.4.1 | 手册 7.4 过关标准 |
 | M-9 | 单扇区读 + 电脑侧比对 | ★★ **通过（2026-10-02）**：工具改用 **HEX 文本导出**（无 `EF BF BD`），解码后 512 字节与 `evidence/board/lba8192_pc_20261002.bin` **SHA-256 完全相同**（`e470416567d512c0…`），非零字节 372 个也一致。证据见 `evidence/board/INDEX.md` 条目 **M-9-PASS** | 阶段 5 验收 ✅ |
 
 > **M-3 特别提醒**：不同品牌卡的 ACMD41 轮询时长差异可达几十倍，这也是为什么
 > 现在的超时值只是"推导 + 裕量"，必须实测后才敢冻结。
+
+### 2.4.1 M-6 / M-7 / M-8 上板操作步骤（连读 / 多卡 / 拔卡）
+
+前提：位流用的是 `top_stage6_fat32_mount`（TD 工程 `TOP_MODULE` 已指向它），串口按
+§2.2 第 5–6 步接好（板载 USB-UART，**115200 8N1**）；采集用
+`safevision/verification/board/capture_uart_512.ps1`，或串口工具里选 **HEX / 二进制导出**
+（**不要用文本模式**，见 §2.6 第 14 条）。健康卡整份报告固定 **476 Byte**
+（`183 + 5×52 + 27 + 6`），末行 `DONE`。
+
+**M-6（同一 LBA 连读 100 次）**
+
+1. 插卡 → 重新综合下载 → 按复位键（KEY_1 = A2）。
+2. 收整份报告，等 `DONE`。看最后两行：
+   - 健康：`RPT=0064 OK=0064 BAD=0000` + `DONE`。`OK == total` ⇒ 100 次连读**每一次**
+     的 CRC16 都通过。
+   - 有 `BAD != 0`（末行会变成 `ERR=02`）⇒ 出现了偶发读错，按 §2.6 第 4–6 条查。
+3. 留证：原始报告存 `evidence/board/`，在 `INDEX.md` 记一条（`RPT=` 行值 + SHA-256 +
+   板上 LED 码 + 日期）。
+4. 结论口径（手册 7.5）：**"同一 LBA 连续 100 次 CMD17，CRC16 全部通过，OK=100 BAD=0"**。
+
+**M-7（≥3 张不同品牌的卡）**
+
+1. 准备 ≥3 张卡（如金士顿 / 闪迪 / 杂牌各一），**都格式化成 FAT32**，每张都放 4–5 个
+   `SV000x.BMP`（否则 `ENT=` 会不同——那也要记录，但先分清是"卡不同"还是"内容不同"）。
+2. ★ **每张卡先在电脑侧独立解析一遍**：`Get-Partition` 看分区起始扇区，再把该物理扇区的
+   512 Byte 存成参考二进制，据此算出这一张卡的
+   `BASE / SECS / BPS / SPC / NFAT / FATLBA / DATALBA / ROOTLBA / TOTSEC / TOTCLUS` 基准。
+3. 逐卡：插卡 → 复位 → 收 476 Byte 报告 → 与**该卡自己的**电脑侧基准逐字段对账。
+4. ★ **重点**：几何行**本来就应当逐卡不同**（分区起始 / 簇大小 / FAT 大小都不一样）。
+   "三张卡报告一模一样"反而说明读的是旧值或路径被写死了，是**失败**。跨卡唯一应相同的，
+   是格式（长度 / 行数 / CRLF 行尾）与末行的 `RPT OK=total BAD=0` / `DONE`。
+5. 留证：每张卡一份报告 + 对应电脑侧基准，各自在 `INDEX.md` 记一条（注明品牌 / 容量）。
+
+**M-8（拔卡 / 坏卡）**
+
+1. 先跑一轮正常（M-6）确认健康。
+2. **在连读阶段进行中拔卡**（LED 停在 `9` 时拔；也可以直接用一张认不到的坏卡上电）。
+   要点是"运行中失去卡"，不是插拔本身。
+3. 期望（**有限时间内**，不挂死）——因为 reader 每个等待态都有自己的超时
+   （`SD_TO_RESP` / `SD_TO_DATA`），连读的**每一次读独立计时**，顶层还有兜底超时：
+   - 报告 `RPT=` 行的 `BAD` 等于拔卡后失败的那几次，末行显示 `ERR=02`；
+   - 板上 `led[3:0]` 显示**错误主码低 4 位 = 2**（不是成功态的 `8`）；
+   - 不会永远停在某个中间码上。
+4. 拔卡后插回，**按复位键**，应能重新完整跑通一轮（回到 `DONE`，LED = `8`）。
+5. 留证：把"拔卡那一轮"的报告与 LED 码记进 `INDEX.md`——这是手册 7.4 的过关证据。
+
+### 2.4.2 SDRAM 官方 Demo 回环上板步骤（阶段 9 第一步 / 手册 7.9，2026-10-02）
+
+对应顶层：`platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v`（接口见
+[interface_spec.md](interface_spec.md) §3.9）。**这条路径不能仿真**——厂商 SDRAM 控制器是
+安路 RSA 加密 IP（`sdr_*.enc.v`），只能由 TD 解密，所以没有 TB、也进不了回归，
+**验收只有"上板读报告"一条路**。
+
+> ★★ **2026-10-02 已通过（条目 M-11-PASS）**。位流 22:01:24 下载后收 **71 Byte**：
+> `SV-SDRAM-LOOP` / `INIT=01 LOCK=01` / **`W=1000 R=1000 CAP=1000 BAD=0000`** / `DONE`，
+> **与设计值一字不差**。⇒ 阶段 9 的"先证明厂商硬核能用"在实物上完成。
+> 下面是**重跑/复现**用的步骤（换参数、重做验证时照走）。
+
+| 步 | 做什么 | 看什么 |
+|---|---|---|
+| 1 | ✅ **工程文件已对齐（2026-10-02 已完成）**：`safevision.al` 里已登记 `../ip/sdram/` 5 个 + `../ip/pll/sys_pll.v` + `../rtl/top_sdram_loopback.v`（共 46 条 File 条目、路径全部可达、`CompileOrder` 1–44 无重复），`TOP_MODULE = top_sdram_loopback`。★ 已在 `syn_1/run.log` 里看到 **`elaborate -top top_sdram_loopback`**，证明 TD 真的采用了它 | 工程文件表里能看到那 7 条；`TOP_MODULE` = `top_sdram_loopback` |
+| 1b | ⚠ 提醒：**`.al` 谁写的不重要，TD 内存里是什么才决定综合结果** —— 2026-10-02 21:41 在 GUI 里点过一次"保存工程"，把 `.al` 覆盖成了内存里的阶段 6–7 快照（新加的 7 条全丢）。后来通过"关闭 TD（选【否】不保存）→ 重开"才让 TD 采纳修好的 `.al`。**以后在 TD 里保存前，先确认文件表里仍有那 7 条** | — |
+| 2 | **确认 `constraints/pin.adc` 的 `[SD-ONLY]` 四条处于注释状态**（`sd_dclk`/`sd_mosi`/`sd_miso`/`sd_ncs`）。这三个顶层**没有** `sd_*` 端口，而 TD 对"约束里出现顶层不存在的端口"是**报错**：`HDL-1492 Failed to find pin sd_dclk in model top_sdram_loopback` + `USR-8168 ... is not a valid ADC command`，随即 `PRJ-5013 Run syn_1 failed`。★ **`read_adc` 是每次 Run 都执行的命令，改完 `.adc` 直接重综合即可、不用关 TD** | `pin.adc` 里那四行是 `#set_pin_assignment ...` |
+| 3 | **重新综合**（这次多了 5 个 IP 文件 + `sys_pll` + `derive_clocks`，旧位流不含它们） | `syn_1/run.log` 里必须是 **`elaborate -top top_sdram_loopback`**（不是 stage6！）；`HDL-8007` / `black box` 必须为 0；`sys_pll` / `sdram` 要真的 elaborate |
+| 4 | 下载位流 | — |
+| 5 | 看 `led[3:0]` | `2` 等 SDRAM 初始化 → `3` 写 → `4` 等落地 → `5` 发读 → `6` 等收齐 → `7` 发报告 → **`8` = 成功** |
+| 6 | 插 USB，开 COM 口 **115200 8N1**，收 **71 Byte**（★ 报告头是 `SV-SDRAM-LOOP`，不是 `SAFEVISION B STAGE6`） | 用 **HEX / 二进制**导出（★ 别用文本模式，`≥0x80` 会被换成 `EF BF BD`） |
+| 7 | 对账 | 期望 `INIT=1 LOCK=1` / `W=1000 R=1000 CAP=1000 BAD=0000` / 末行 `DONE` |
+| 8 | 按复位键可重跑（整条序列从 `ST_POWER` 重来） | — |
+| 9 | 留证 | 把 71 Byte 存 `evidence/board/` 并在 `INDEX.md` 记一条；把 STA 报告按 `evidence/reports/` 规则记 `TC-Q-STA-4` |
+
+> ★ 换回阶段 5/6 顶层（跑 M-7 多卡 / M-8 拔卡）时，别忘了把 `pin.adc` 那四行行首的 `#` 去掉，
+> 否则 `sd_*` 会变成**未约束引脚**（TD 可能自动分配 = 位流静默错误，比报错更难查）。
+
+**失败对照**（LED 显示错误主码低 4 位）：
+
+| LED | 错误码 | 含义 | 先怀疑什么 |
+|---|---|---|---|
+| `1` | `ERR=01` | SDRAM 初始化一直不完成（`Sdr_init_done` 没来） | ① `sys_pll` 反馈支路：`sys_pll` 是 `FEEDBK_PATH=CLKC0_EXT`，反馈经过 C0 的 BUFG，而本顶层把 C0 留空了 —— 若始终锁不上，把 C0 接出来给一个真实负载再试；② 复位：`Rst` 是高有效、已与 `pll_locked` 相与；③ 加密件是否被 TD 正常解密 |
+| `2` | `ERR=02` | 读命令发了但返回不齐（`CAP < W`） | 读突发节奏太密（调小 `BURST_N` 或调大 `BURST_GAP`）；或读写没真正错开（调大 `WR_DRAIN_CYC`） |
+| `3` | `ERR=03` | 返回数量对但数据不对（`BAD != 0`） | 相位/采样：`Clk_sft` 的 180° 相移没生效（不能用反相器代替）；或地址译码问题（试 `ADDR_SHIFT=11` + `TEST_WORDS=1024` 扫全片） |
+
+**★ 两个概念别搞反**：报告里的 `W` 是**我们发出的写使能拍数**、`R` 是**我们发出的读命令数**、
+`CAP` 是**控制器返回的有效 word 数**。`W == R == CAP` 只说明"命令都被受理了"，
+**数据对不对要看 `BAD`**。三者不等才是"控制器丢了命令"。
 
 ### 2.5 存储链的实测项（阶段 8–16，板到后按序补）
 
@@ -300,8 +388,8 @@
 
 | 编号 | 测什么 | 怎么测 | 回填到 |
 |---|---|---|---|
-| M-10 | **SDRAM 初始化时间** | 上电到 `init_done` 的拍数 | `mem_ctrl` 参数、启动速度留证 |
-| M-11 | **SDRAM 读写回环** | 官方 Demo 写一帧再读回，逐字节比对（这是用 SDRAM 前的第一步，别跳） | 阶段 9 验收 |
+| M-10 | **SDRAM 初始化时间** | 上电到 `init_done` 的拍数 | ✅ **定性已通过（2026-10-02）**：`top_sdram_loopback` 报告 `INIT=01` ⇒ 在 16 ms 超时窗（`INIT_TO_CYC = 2_000_000` @125 MHz）内到齐；**精确拍数仍未测**（需 ChipWatcher 抓 `Sdr_init_done`） |
+| M-11 | **SDRAM 读写回环** | 官方 Demo 写一帧再读回，逐字节比对（这是用 SDRAM 前的第一步，别跳） | ✅ **已通过（2026-10-02，条目 M-11-PASS）**：写 4096 word → 读回 4096 word → **`BAD=0000` 零错**；`W=R=CAP=1000`、71 Byte 报告与设计值一字不差。★ 已覆盖 16 KB 连续区间；**全片稀疏扫描（`ADDR_SHIFT=11` + `TEST_WORDS=1024`）建议补做**，以覆盖行/体地址译码 |
 | M-12 | **持续带宽（关键）** | `memory_bandwidth_monitor` 的 `rd_bytes_total` / `wr_bytes_total` ÷ 时间；跑 ≥10 分钟 | 手册 7.12 的"有效带宽"结论、O-4 邻近项 |
 | M-13 | **FIFO 最低水位** | `fifo_health_monitor.min_level`，与上一条同时段采集 | 手册 7.12 要求成对给出；水位阈值标定 |
 | M-14 | **underflow / overflow 计数** | 连续跑 60 分钟，两个计数必须都为 0 | 表 7-4 的验收门槛 |
@@ -350,6 +438,23 @@
     修法：**用二进制方式采集**（`safevision/verification/board/capture_uart_512.ps1`），
     或在串口工具里选 HEX / 二进制导出。
     （2026-10-02 真实案例：512 → 740 字节，141 个 `≥0x80` 的字节被替换。）
+15. ★ **`top_stage6` 的报告开头多一个 `0x00`（字节数比预期多 1）**
+    → 报告头的**声明位宽比实际内容多 1 字节**：`hdr_bits` 曾写成 `[1471:0]`（184 Byte），
+    而六段实际只有 `21+42+25+51+34+10 = 183` Byte，Verilog 在 **MSB 侧补零**，
+    于是先发出一个 `0x00`、整份报告后移一字节（板上 450 = 1 NUL + 183 + 260 + 6）。
+    修法：按**真实字节数**声明（183 → `[1463:0]`），并保留「报告各段字节数逐段相加
+    = 声明字节数」的核对注释（v1.13 已修）。
+16. ★ **报告每行行尾是 `72 0A`（字母 r + LF）而不是 `0D 0A`**
+    → 源码里用了字符串转义 `"...\r\n"`。**ModelSim vlog 10.7 与 TD 6.2 都不把字符串里的
+    `\r` 当转义**，二者都把 `"DONE\r\n"` 编成 `44 4F 4E 45 72 0A`。之所以仿真"看起来是对的"，
+    是因为旧 TB 也用同一个转义、**两边错得一样**，自洽通过。
+    修法：行尾**写显式字节** `8'h0D, 8'h0A`（v1.13 已改，RTL 与 TB 都是显式字节）。
+    这条与项目规则 §5 第 11 条是同一类"仿真与综合不一致"。
+17. ★ **`RPT=` 行的 `BAD` 不为 0 / 末行是 `ERR=02`**
+    → 连读阶段有若干次 CMD17 超时或 CRC16 校验失败。正常卡（刚跑过 M-6）出现这种情况，
+    优先按第 4–6 条查（位序 / SCLK 相位 / 数据令牌与 CRC 字节有没有数满、超时计数器
+    有没有在进等待态时清零）。**拔卡那一轮**出现 `BAD != 0`（末行 `ERR=02`、LED=`2`）
+    是**预期**行为，不是故障——那正是 M-8 要看的证据。
 
 ---
 
@@ -399,3 +504,12 @@
 | 2026-10-02 | **第二次上板：拿到 UART 数据，但被串口工具的文本模式有损转换**。用户用 Serial Debug 助手存出 `Serial Debug 2026-10-02 175226.txt`（740 B），HxD 里出现大量 `EF BF BD`。**严格验证**：把参考 512 字节按"当 UTF-8 文本解码（非法字节→U+FFFD）再编码"变换一次，得到 **740 字节且与采集文件逐字节完全相同** ⇒ **FPGA 发出的就是参考原文，链路全对**；损失全部来自保存方式（参考里 141 个 `≥0x80` 的字节被替换，512→740，不可逆）。可逐字节确认 371 个 `<0x80` 字节；ASCII 串 `MSDOS5.0` / `NO NAME    FAT32` / `BOOTMGR` / `Disk error` / `Press any key to restart` 全对。**M-9 标记为"数据已证明正确、尚需一次二进制采集"**。证据存 `evidence/board/uart_capture_20261002_175226_textmode_mangled.txt`（740 B，SHA-256 `0B350785…`），索引条目 **CAP-M9-01**。新增排查条目 **§2.6-14**（`EF BF BD` 的识别与判定方法），并在 §2.2 第 6 步写明这个坑。 |
 | 2026-10-02 | **★ M-9 通过 —— 阶段 1–5 的实物验收完成**。重新导出改为 **HEX 文本**（无任何 `EF BF BD`），1536 B = 512 个 `XX ` 记号；解码成 512 字节后与参考 `lba8192_pc_20261002.bin` **SHA-256 完全相同**（`e470416567d512c0…`），非零字节 372 个也一致 ⇒ **512/512 逐字节一致**。至此实物验证覆盖：SPI 位序与 SCLK 相位、`CMD0`/`CMD8` 的 CRC7、`CMD55`+`ACMD41`+`CMD58`、`CMD17` 的 LBA 大端字节序、512 Byte 数据通路、CRC16 比对。证据：`evidence/board/uart_capture_20261002_175836.bin`（512 B，与参考同哈希）+ 原始导出 `uart_capture_20261002_175836_hextext.txt`（1536 B），索引条目 **M-9-PASS**。另：**M-5 不再强依赖示波器** —— `uart_tx` 的分频按 50 MHz 算，512 字节能在 115200 下完整收到即说明实际时钟在 ±2% 内就是 50 MHz；`sd_dclk` 精确频率可用 TD 的 ChipWatcher 复核。**下一步候选**：M-6（连读 100 次，需在顶层加连读计数）/ M-7（多卡）/ M-8（拔卡恢复）/ 把 bring-up 顶层往上推一层做阶段 6–7 的板级验证（读 DBR+BPB、扫根目录）/ SDRAM 官方 Demo 读写回环（手册 7.9）。 |
 | 2026-10-02 | **★ 为阶段 6–7 板级验证补上"卷基址"这块（`mbr_parser`）—— 这是板级实测逼出来的真缺口**。读代码发现 `fat32_boot_parser` 写死 `sd_rd_addr <= 32'd0`（TB 也有断言 `T11.3 挂载读的是 0 号扇区`），即**整个 FAT32 层假设"卷从 0 号扇区开始"（超级软盘格式）**；但真实 TF 卡是分区的（本卡分区起始 = 物理扇区 8192，卡 0 号扇区是 MBR）⇒ 直接接上去必然 `mount_error`。新增 **`rtl/storage/mbr_parser.v`**：读卡 0 号扇区，按**小端**解析分区 0 的起始 LBA（`446+8..11`）与扇区数（`446+12..15`），给出 `has_mbr` / `vol_base_lba` / `part_secs`；对"无 `0x55AA` 签名 / 分区项为空 / 起始 LBA=0"三种情况**不报错**、按无分区表回退为 0，只透传 SD 层错误。**约定写进 interface_spec §3.2.1**：FAT32 层永远不碰分区偏移，**卷基址只在板级顶层加一次**。新增 `tb_mbr_parser.sv`（T1 有效 MBR 起始 8192 / T2 无签名 / T3 空表项 / T4 起始 LBA=0，**7 项断言**）⇒ 回归 **507 → 514 项断言 / 16 → 17 个 TB，全 PASS**（既有 TB 与 RTL 端口一字未动）。interface_spec 升 **v1.11**。**下一步**：写阶段 6–7 的板级顶层（上电 → init → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner` → UART 回传文本报告比对）。 |
+| 2026-10-02 | **★ 阶段 6–7 板级顶层已写 + 仿真通过（未上板）**：`platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v` 串起 上电 → SD 初始化 → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner`(+`fat32_cluster_walker`)，最后经 `uart_tx`(115200) 发**纯 ASCII 报告**（`KEY=HEX` 每行一项，末行 `DONE`）——★ 用 ASCII 是刻意的：连"文本模式把高位字节换成 `EF BF BD`"那个坑都绕过去了，串口助手直接可读、也可被采集脚本按字节比对。**卷基址只加一次**（`rd_addr_to_reader = bus_rd_addr + mbr_vol_base`；MBR 那一轮基址还是 0，所以同一加法器正好落到卡 0 号扇区，无需特例）。卡模型加 `VOL_BASE` 参数（默认 0 时**逐项等价**，老 TB 行为不变）以便模拟分区卡。新增 `tb_top_stage6_fat32_mount.sv`（**16 项断言**，含"FAT32 层 LBA 0 必须落到卡 LBA = 分区基址"这条关键断言）⇒ 回归 **514 → 530 项断言 / 17 → 18 个 TB，全 PASS**；`check_repo.ps1` → `LAYOUT PASS`；**多驱动静态扫描全仓 0 个文件有问题**。TD 工程已登记新顶层（`TOP_MODULE = top_stage6_fat32_mount`，含 `mbr_parser.v` 与 `top_stage6_fat32_mount.v` 两条设计文件）。**待办**：TD 重新综合（确认无 `HDL-8007` / 无 `AutoExcluded`）→ 下载 → 采 UART 报告并与电脑侧独立解析的基准对账。 |
+| 2026-10-02 | **★★ TD 综合抓到第二个"仿真抓不到"的真问题：组合除法器导致时序违例，已修复。** 阶段 6-7 顶层综合后 **SWNS = -85.399 ns**（负 = 建立违例）、**28 / 4684 端点违例**、**Fmax 仅 9.488 MHz**（约束 50 MHz）。最长路径落在 `fat32_boot_parser.v:255` 的 `total_clus <= (...) / spc`：**Verilog 除法运算符被综合成组合除法阵列**（Logic Level **100**、ADDER **68**、105 ns）。**修复**：该分支已被 `spc_ok`（`(spc & (spc-1)) == 0`）保证 `spc` 是 **2 的幂**，故改为 `>> w_log2_spc`（`log2` 用一个 3 位优先编码器求）—— **对无符号数逐值等价**，所以接口、行为、断言一字未改，回归仍 **530 / 530 FAIL=0**。全仓扫查除法/取模：`uart_tx` 的是 `localparam`（编译期折叠）、`bmp_unpack` 的 `/4` 与 `frame_writer` 的 `% SAMPLE_STRIDE` 都是 2 的幂（变移位/掩码），**真凶只有这一处**。**教训两条**：① 可综合 RTL 禁用除法/取模（已写进项目规则 §5 第 10 条）；② **"某个顶层时序通过"推不出"它没实例化的模块也能综合"** —— 阶段 5 那次能过，纯粹因为那个顶层没接 FAT32 层。**证据**：`evidence/reports/sta_stage6_fat32_mount_20261002.txt`（节选 10.8 KB；原始 868456 B 未入库），索引条目 **TC-Q-STA-2**。**待办：重新综合，确认 SWNS 转正**（若仍有其它长路径，按同一节奏继续）。 |
+| 2026-10-02 | **★★★ 阶段 6–7 板级验收通过（M-10）+ 时序转正 —— 一天里从"炸了"到"过了"。** ① **时序**：重新综合后 **SWNS = +6.042 ns**（原 -85.399）、**STNS = 0**（违例端点 0）、HWNS = +0.030 ns；R-Period **13.958 ns** ⇒ **Fmax 71.644 MHz**（约束 50 MHz，余量约 30%）；**关键路径 Max-Level 从 100 降到 12** —— 这就是"组合除法阵列被移除"的直接证据。证据 `evidence/reports/sta_stage6_fat32_mount_20261002_1959.txt`，索引条目 **TC-Q-STA-3**。② **上板（M-10，阶段 6–7 验收）**：位流 20:01 下载后板上 LED = 成功态 8；UART 报告 450 Byte 与电脑侧基准 `evidence/board/stage6_expected_report_pc_20261002.txt` **逐项对账通过** —— `MBR=00000001`、**`BASE=00002000`（★ 卷基址在实物上成立：FAT32 层的"卷 0 号扇区"确实落到卡的物理扇区 8192，这正是这一轮补的那个缺口）**、`SECS=00ECC000`、`BPS=0200`、`SPC=08`、`NFAT=02`、`FATLBA=000009DE`、`DATALBA=00008000`、`ROOTLBA=00008000`、`TOTSEC=00ECC000`、`TOTCLUS=001D8800`、`ENT=0005`、5 个目录项（`SV0001..SV0005.BMP`，name/attr/首簇/size **全对**，size 均 `000E1036`=921654）、末行 `DONE`。证据 `evidence/board/uart_report_stage6_20261002_200159_hex.txt`（HEX 导出 1350 B），索引条目 **M-10-PASS**。③ **对账中发现两处偏差，都记档**：(a) `ent_index` 是 **0-based** 目录槽号，**我的基准初版按 1-based 记、写错了**（实物 0009/0019/001A/001B/001C，比基准少 1），已按实物更正基准并写明 —— 这就是"电脑侧基准也要被实物检验"的意义；(b) 每行行尾是 **`72 0A`（字母 r + LF）而不是 `0D 0A`（CR+LF）**：**源码写的是 Verilog 字符串 `"...\r\n"`，源码没错**，但这**不是"仿真与综合不一致"，是转义写错了**：★ **Verilog-2001 的转义表里根本没有 `\r`**（只有 `\n` `\t` `\\` `\"` 和八进制 `\ddd`），所以 `"...\r\n"` 在 **TD 与 ModelSim 里都**编成 `72 0A`（字母 r + 换行）；老 TB 之所以通过，是因为 **TB 用同一个错误转义构造期望值、两边错得一样**（这条教训比坑本身更重要：**仿真全绿连"RTL 与 TB 对约定理解一致"都证明不了**）。已改为显式字节 `8'h0D, 8'h0A`，并记进项目规则 §7 工具坑与 §5 第 11 条。属纯外观瑕疵，不影响判定。④ 另有一个**待确认的 0x00 前缀**（可能是采集工具产物，也可能是发射端多打一拍），不影响正文；下次采集顺手确认。**下一步**：修那两个外观项（`\r` 转义、0x00 前缀）→ 或直接推进 M-6/M-7/M-8 / SDRAM 官方 Demo 回环。 |
+| 2026-10-02 | **★ 修掉 M-10 的两个"外观项"，并加上 M-6/M-8 的连读阶段（回归 530 → 540）。** ① **`0x00` 前缀的根因确认**：`top_stage6` 的 `hdr_bits` 声明成 `[1471:0]`（184 Byte），但报告头六段实际只有 `21+42+25+51+34+10 = 183` Byte，Verilog 在 MSB 侧补零 ⇒ 整份报告多一个前导 `0x00`（板上 450 = 1 NUL + 183 + 260 + 6 与之完全吻合）。改为 `[1463:0]` / `HDR_BYTES=183`，并对 HDR/ENT/RPT/ERR/DONE 每段保留「逐字节相加 = 声明字节数」的核对注释。② **`\r` 转义**：RTL 全部 `"\r\n"` → 显式字节 `8'h0D, 8'h0A`。★ **实测更正了此前的判断**：用 vlog 10.7 亲测，**ModelSim 也不把字符串里的 `\r` 当转义**（`"DONE\r\n"` 得到 `44 4F 4E 45 72 0A`），旧 TB 用同一转义所以"两边错得一样"、仿真自洽通过；真机上才是 `72 0A`。改显式字节后仿真与硬件都发真 CR。③ **新增连读阶段（M-6 / M-8）**：新参数 `RPT_N`（默认 `16'd100`）；挂载 + 扫目录后，复用**同一个** `sd_sector_reader`（顶层第 5 个读请求方）对同一 LBA（根目录扇区）连读 `RPT_N` 次，**卷基址仍只加一次**，连读阶段 `data_ready` 恒 1 排空 512 Byte，每次的成败由 reader 自带 CRC16/超时判定。**失败也不提前退出**（跑满 `RPT_N` 次：报告长度固定、能区分"1 次坏"与"全坏"、拔卡时每读由 reader 出口兜底必然有界）。报告新增一行 `RPT=<total:4hex> OK=<ok:4hex> BAD=<bad:4hex>`，`BAD!=0` 时末行改发 `ERR=02`；LED 新增 `9 = 连读进行中`。④ `tb_top_stage6_fat32_mount.sv` 扩到 **26 项断言**（两个场景：健康卡 `RPT OK=100 BAD=0`、字节数 372、无前导 0x00、每行 CRLF；连读中拔卡 → 字节数 374、`RPT OK=0 BAD=100`、末行 `ERR=02`、LED=`2`、停 `ST_ERR` 不挂死）。⑤ **文档**：interface_spec 新增 **§3.8**（`top_stage6` 端口/参数/报告格式）升 v1.13；本清单补 **§2.4.1** M-6/M-7/M-8 上板步骤、**§2.6 第 15–17 条**排查、M-6/M-7/M-8 行改写。回归 **540 项断言 / 18 个 TB 全 PASS**，`check_repo.ps1` → `LAYOUT PASS`。**下一步**：按 §2.4.1 上板跑 M-6/M-7/M-8（需重新综合，报告从 450 变 476 Byte、末行前多一行 `RPT=`）。 |
+| 2026-10-02 | **厂商 IP 落库 + 写阶段 9 第一步的 SDRAM 回环顶层（`top_sdram_loopback`）。** ① **IP 落库**：`ip/sdram/`（应用级 `sdram.v` + `global_def.v` + **三个安路加密 `sdr_*.enc.v`** + `sdram.ipc`）+ `ip/pll/`（`sys_pll` / `video_pll`）。加密件按用户决定**随仓库提交**，版权/来源/唯一一处前导行改动都写在该目录 `README.md` 里。② **纠一个复制错误**：例程里**有两个同名 `sdram` 模块** —— `IP/sdram.v` 是引脚级 PHY 外壳（端口 `ras_n/cas_n/dq…`，例程顶层**没用它**、`.al` 里也没登记），`SD/sdram.v` 才是被 `sdram U3(...)` 例化的**应用级控制器**；本仓库只保留后者。③ **新事实：EG4S20 的 SDRAM 是封装内硬核**（`EG_PHY_SDRAM_2M_32`，2M×32 = 8 MB），55 根信号不出引脚 ⇒ **`pin.adc` 不需要也不该有** SDRAM 引脚（厂商例程同样一条都没有，这不是遗漏）。④ **应用侧协议**照例程：写是逐 word `App_wr_en`；读是**延迟应答式**（`Sdr_rd_en` 才是取数时刻）；`Sdr_busy`/`Sdr_init_ref_vld` 在例程里**纯直通、从不参与判断** ⇒ 应用侧只需自负「突发留间隔 + 读写不重叠」。⑤ **新顶层** `platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v`：50 MHz → `sys_pll`（C1=125M 给 SDRAM、C2=125M@180°）；**全部逻辑含 `uart_tx` 跑 125 MHz 单域，刻意不做 CDC**；写图案（`pat_of` 把地址摊到 32 bit）→ 落地等待 → 读回比对 → 发**定长 71 Byte 纯 ASCII 报告**（`SV-SDRAM-LOOP` / `INIT=/LOCK=` / `W=/R=/CAP=/BAD=` / `DONE`，显式 `8'h0D`/`8'h0A`）；两个等待态各挂独立超时（`ERR=01` 初始化超时 / `ERR=02` 读回不齐 / `ERR=03` 数据不一致）。⑥ **`timing.sdc` 加 `derive_clocks`** —— 接了 PLL 不加它，125 MHz 域就没有时钟定义、**STA 会是假通过**。⑦ **`.al` 已登记 7 条新文件并把 `TOP_MODULE` 切到 `top_sdram_loopback`**（回退只需改回 `top_stage5_sector_rd`）。★ **顺带发现一处需要你确认的不一致**：磁盘上的 `safevision.al` 现在只有**阶段 5** 的配置（`TOP_MODULE = top_stage5_sector_rd`，且 `mbr_parser.v` / `top_stage6_fat32_mount.v` **不在设计文件表里**），与"M-10 已用阶段 6 顶层上板验收通过"的记录对不上 —— 应是那次验收后把工程回退成了阶段 5；我这一轮是在这个阶段 5 配置上继续加的。⑧ **本顶层无 TB、进不了回归**（控制器是加密 IP，只能 TD 解密），上板步骤见新增的 **§2.4.2**。回归不变 **540 项 / 18 个 TB 全 PASS**；`check_repo.ps1` → `LAYOUT PASS`；新顶层过 `vlog` 编译检查。**下一步**：TD 重新综合（确认有 `sys_pll`/`sdram`、无 `HDL-8007`）→ 下载 → 采 71 Byte 报告对账 `W=R=CAP=1000 BAD=0000`。 |
+| 2026-10-02 | **★ 查明"顶层回退到阶段 5"的真相 + M-6 复采确认（证据同哈希）。** 用户在 21:29:55 又采了一份报告（HEX 1428 B），解码 **476 Byte**，SHA-256 `31A4D727…4E8769` —— **与 20:52 的 `uart_report_m6_20261002_205218_hex.txt` 逐字节相同**，故不重复归档（只在 `evidence/board/INDEX.md` 记一段说明）。**这份复采的价值在于坐实了一件重要的事**：TD 在 **21:25:40–21:26:48** 跑了一次完整流程并生成位流，而 `project/safevision_Runs/syn_1/run.log` 写的是 **`elaborate -top top_stage6_fat32_mount`**、`syn_1/safevision.prj` 里 **`TOP_MODULE = top_stage6_fat32_mount` 且文件表中没有任何 `ip/` 文件**。⇒ ① **板子上跑的是阶段 6–7 设计，SDRAM 回环顶层至今没有被综合过**；② **根因是 TD 运行时用的是【内存里的工程状态】，不是磁盘上的 `.al`** —— 磁盘 `.al` 的 `TOP_MODULE` 当时已被改成 `top_sdram_loopback`，但那个正在运行的 TD 会话（进程 `td`，**19:34:49 启动**）是从更早的状态打开的，根本没读我改过的文件。③ **磁盘 `.al` 从来没保存过阶段 6 的登记**：`top_stage6_fat32_mount.v` / `mbr_parser.v` 是在 GUI 内存会话里加的、**没回写 `.al`**，所以 `.al` 一直是更早的**阶段 5 快照** —— 文档里以前写的"TD 工程已登记新顶层（`TOP_MODULE = top_stage6_fat32_mount`）"**描述的是 GUI 状态而不是工程文件**，属表述错误，已更正（见 `module_registry.md`）。④ **已把磁盘 `.al` 修成完整超集**：补回丢掉的 `mbr_parser.v` / `top_stage6_fat32_mount.v`，加上本轮的 `ip/sdram/` 5 个 + `ip/pll/sys_pll.v` + `rtl/top_sdram_loopback.v`，共 9 条，**每条路径都用 `Test-Path` 验证过存在**。⑤ ⚠ **重要操作提醒**：只要那个 TD 会话还在，**在 GUI 里"保存工程"就会用内存状态覆盖磁盘 `.al`、把本轮 9 条登记全部冲掉**。正确做法见 §2.4.2 步 1（在 GUI 里手动添加这 7 条文件 + 设 `TOP_MODULE`，再保存）或关闭 TD 后重开。⑥ **阶段判定**：阶段 **1–7 板级全部通过**（M-9 / M-10 / M-6 / M-8a），但因 ⑤ 的操作风险，**SDRAM 回环（阶段 9 第一步）尚未上板**。 |
+| 2026-10-02 | **★ 阶段 9 首次综合：`.al` 采纳成功，但被 `pin.adc` 的 SD 引脚拦住 —— 已修。** ① **`.al` 生效**：`syn_1/run.log` 里出现 **`elaborate -top top_sdram_loopback`**（此前一直是 `top_stage6_fat32_mount`）⇒ 关闭 TD（选【否】）后重开这条路的办法有效，TD 采纳了修好的 `.al`。② **综合失败的唯一根因**：`pin.adc` 第 56–59 行给 `sd_dclk`/`sd_mosi`/`sd_miso`/`sd_ncs` 指定了引脚，但 `top_sdram_loopback` **没有这些端口**（SDRAM 是封装内硬核，不用 TF 卡）。**TD 对此是报错不是警告**：`USR-8168 ERROR: set_pin_assignment { sd_dclk } {...} in ../../../constraints/pin.adc(56) is not a valid ADC command`（GUI 侧另报 `HDL-1492 Failed to find pin sd_dclk in model top_sdram_loopback`），随后 `PRJ-5013 Run syn_1 failed`。③ **修法**：把 `pin.adc` 明确分成两段 —— **公共 6 条**（`clk`/`rst_n`/`uart_txd`/`led[3:0]`，三个 bring-up 顶层都有，恒定生效）+ **`[SD-ONLY]` 4 条**（只有阶段 5/6 顶层有，用 SDRAM 顶层时必须注释）。这是**厂商自己的惯例**（例程 `pin.adc` 里未用的信号就是 `#` 注释掉的）。★ 好消息：**`read_adc` 是每次 Run 都执行的命令**（日志里可见 `RUN-1002 : start command "read_adc ..."`），所以改完 `.adc` **直接重新综合即可，不用关 TD**。④ **其余告警全是无害的**，不要被吓到：`HDL-5007 concat with unsized literal`（6 条，在厂商 `.enc` 文件内部）、`HDL-5917 Input port ... not connected`（1 条，在 `sdr_as_ram.enc.v` 内部实例上）、以及 4 条 `*.vh will not be compiled since it is not included by any other file`（`top_sdram_loopback` 不 include 任何 `.vh`，自然如此）。⑤ 文档：`constraints/README.md` 新增「`[SD-ONLY]` 开关」整节；本清单 §2.4.2 加步 2 并重排步骤。 |
+| 2026-10-02 | **★ 阶段 9 综合跑通、位流已生成；STA 的负余量查明是厂商硬核 PAD 路径，不是我们的逻辑。** ① `pin.adc` 修完后重跑：**`read_adc` 无错**、`elaborate -top top_sdram_loopback`、**place → route → bitgen 全过**，位流 `phy_1/safevision.bit`（629639 B，22:01:24）。② STA（**新证据条目 TC-Q-STA-4**）报 `SWNS -6.826 ns / STNS -297.306 ns / HWNS +0.046 / HTNS 0.000`，**但全局 64 个违例端点恰好 = `clkc[1]→clkc[2]`（-2.787/32）+ `clkc[2]→clkc[1]`（-6.826/32）两组之和** —— 这两组里**没有任何 fabric 寄存器**（**`clkc[2]` 扇出 = 1**，只接 `u_sdram.Clk_sft`），违例"路径"`Logic Level 0`、`cell 100% / net 0%`，起止点是硬核 PAD（`u_sdram/sdram.dq[*]` / `u_sdram/sdram_syn_*.bpad`）。**厂商自己的参考设计报同一个数：`lab_ex4_tf` 的 `final_timing.rpt` = `SWNS -6.565 / STNS -297.430`**。③ **我们能控制的路径组全绿**：`clkc[1]→clkc[1]`（自研 818 端点）**+0.130 ns / 0 违例**、Min Period 7.870 ⇒ **Fmax 127.065 MHz**；`clk→clkc[1]` +1.232、`clk→clk` +18.390；Hold +0.046 / 0 违例；`Period Check WNS 0.000`。④ **自己的遗留薄点**：最差 fabric 路径只有 **+0.130 ns**，出在 `top_sdram_loopback.v` 的 `rpt_vec[8*(RPT_LEN-1-rpt_sel) +: 8]`（568 bit 向量变址选取，`Logic Level 7` 含 `ADDER=2`、扇出 39、net 62%）—— 能过但薄，以后再动这个顶层要重看（可选优化：把报告按段拆成小 case，或改成倒计数索引以去掉减法器）。⑤ **判定口径已写进项目规则 §7 最后一条**：全局 SWNS 为负时，先看 Clock Summary 的**扇出与分组**，再看违例是否落进"我们自己的组"，最后拿厂商参考设计对表；**不急着加 `set_false_path` 刷绿**。⑥ 证据：`evidence/reports/sta_sdram_loopback_20261002_2201_excerpt.txt`（节选 11902 B），索引条目 **TC-Q-STA-4**。**下一步：下载上板**（预期报告头 `SV-SDRAM-LOOP`，`W=R=CAP=1000 BAD=0000`）。 |
+| 2026-10-02 | **★★★ 阶段 9 第一步通过（M-11）—— 厂商 SDRAM 硬核在本工程里跑通了。** 位流 22:01:24 下载后 UART 收到 **71 Byte**（HEX 导出），解码后与设计值**一字不差**：`SV-SDRAM-LOOP` + CRLF / `INIT=01 LOCK=01` + CRLF / **`W=1000 R=1000 CAP=1000 BAD=0000`** + CRLF / `DONE` + CRLF；**真 CRLF**、**无前导 `0x00`**。逐项含义：`INIT=01` ⇒ `Sdr_init_done` 在 16 ms 超时窗内到齐；**`LOCK=01` ⇒ `sys_pll` 锁定成功 —— ★ 这顺带证伪了我上一轮提的那个担心**（顶层把 `sys_pll` 的 C0 留空会不会破坏 `FEEDBK_PATH=CLKC0_EXT` 的反馈支路；实测没问题，例程的音频 PLL 也是这么留空的）；`W=R=CAP=1000` ⇒ 写了 4096 word、发了 4096 次读命令、**收齐 4096 word**（说明控制器一条读命令都没丢）；**`BAD=0000` ⇒ 32 bit 数据逐字比对零错**。⇒ 加密 SDRAM 控制器能初始化、能写、能按序读回；**32 位数据线与 16 KB 连续区间的地址译码全部正确**（图案 `pat_of` 把地址摊到 4 个字节，所以这 4096 个值覆盖了全部 32 根数据线）。★ **本轮一并解决的四件事**：① `.al` 的"磁盘快照 ≠ TD 内存状态"（关 TD 选【否】再重开才生效，判定只信 `run.log` 的 `elaborate -top`）；② `pin.adc` 的 `[SD-ONLY]` 开关（TD 对顶层不存在的端口**报错**；`read_adc` 每次 Run 都执行，改完直接重综合）；③ STA 全局 SWNS 为负的**判定口径**（100% 出在硬核 PAD 路径，自研组全绿，厂商参考设计同数）；④ 顺带发现自己的薄点（fabric 最差路径仅 +0.130 ns，出在 `rpt_vec` 变址选取）。**证据**：`evidence/board/uart_report_sdram_loopback_20261002_221625_hex.txt`，条目 **M-11-PASS**。**下一步候选**：`ADDR_SHIFT=11 + TEST_WORDS=1024` 做全片稀疏扫描（覆盖行/体译码）/ M-7 多卡 / M-8 连读中途拔卡 / 把 SDRAM 接进帧缓存链（阶段 10–16，须等 A 的整机）。 |

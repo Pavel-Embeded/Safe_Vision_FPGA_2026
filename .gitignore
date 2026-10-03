@@ -36,7 +36,8 @@ modelsim.ini
 /safevision/**/*_Runs/
 #   TD 导出报告的默认落点是工程目录下的 report.txt，同样是可再生的中间输出；
 #   要留证的正式报告请按 evidence/reports/INDEX.md 的命名规则复制进 evidence/reports/。
-/safevision/platform/**/project/report.txt
+#   （report2.txt / report3.txt ... 是同一类中间输出，一并忽略）
+/safevision/platform/**/project/report*.txt
 
 # Evidence logs, reports, waveforms and media are intentionally allowed.
 *.log

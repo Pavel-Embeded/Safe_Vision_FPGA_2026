@@ -10,7 +10,7 @@
 |---|---|
 | 项目 | 安视 SafeVision · 赛题一 HDMI 多媒体播放与应急视听疏散终端 |
 | 平台 | 康芯 HX4S20C 开发板 / 安路 EG4S20BG256 |
-| 版本 | v1.11（v1.10 基础上新增 **§3.2.1 卷基址约定** 与 `mbr_parser` 接口；B 链既有端口未变） |
+| 版本 | v1.15（v1.14 基础上：**§3.9 补上阶段 9 第一步的上板验收结果** —— `top_sdram_loopback` 报告 71 Byte 与设计值一字不差、`BAD=0000`。**接口与格式一字未改**，只是把实测结论落到文档上） |
 | 负责人 | B 队员（数据存储链 / 数据搬运） |
 | 依据 | 赛题一官方选题指南；《赛选手册 V2.0》第 6/7/10 章 |
 | 维护规则 | 接口先于联调存在；改接口必同步改文档并通知对方；信号名、有效电平、时钟域、延迟、异常策略五者必须写清 |
@@ -910,6 +910,159 @@ SD 四线由 `2_FPGA.pdf` 的网络名（`FPGA_SD_CLK/CMD/D0/D3`）+ `6_EX_DEVIC
 三处一致；手册 TF 卡一节只印了连接器引脚语义（SPI 模式 pin2=cs / pin3=di / pin5=sclk / pin7=do），
 与上面的映射一致，未给 FPGA 引脚号。
 
+★ 阶段 6–7 的板级顶层 `top_stage6_fat32_mount` 见 **§3.8**（引脚、时钟取舍与本节完全相同）。
+
+---
+
+### 3.8 板级 bring-up 顶层 `top_stage6_fat32_mount`（阶段 6–7 最小验证，不属产品链）
+
+定位：接引脚的阶段 6–7 最小验证顶层，放 `platform/anlogic_eg4s20_hx4s20c/rtl/`。
+**引脚、时钟取舍与 §3.7 完全一致**（`clk`=R7 / `rst_n`=A2 / `sd_*` / `uart_txd`=D12 /
+`led[3:0]`，**不接 PLL**，全跑板载 50 MHz）；**无新增引脚**，`pin.adc` / `timing.sdc` 不变。
+板级验收结论见 `B链-待办与硬件验证清单.md` 的 M-10。
+
+流程：上电 → `sd_initializer` → `mbr_parser`（读卡 0 号扇区，给出卷基址）→
+`fat32_boot_parser` → `fat32_directory_scanner`(+`fat32_cluster_walker`) →
+**连读阶段（M-6）** → `uart_tx`(115200) 发纯 ASCII 报告。
+`mbr_parser` / `fat32_boot_parser` / `fat32_directory_scanner` / `fat32_cluster_walker` /
+**连读阶段** 共用一个 `sd_sector_reader`（顶层做总线复用）。
+
+参数：
+
+| 参数 | 默认 | 说明 |
+|---|---|---|
+| `CLK_FREQ` | `50_000_000` | 板载晶振（不接 PLL） |
+| `BAUD` | `115200` | UART 波特率 |
+| `POWERUP_CYC` | `24'd2_500_000` | 上电等待 50 ms @50 MHz |
+| `RPT_N` | `16'd100` | **★ M-6 连读次数**：挂载 + 扫目录后，对同一 LBA（根目录扇区，**卷内相对** LBA = `root_dir_lba`）连读 `RPT_N` 次，每次由 `sd_sector_reader` 自带的 CRC16 判好坏 |
+
+**连读阶段（M-6 / M-8）行为约定**：
+
+1. 请求经**共享的** `sd_sector_reader`（本顶层是第 5 个读请求方，走同一个 mux）；
+   地址给的是**卷内相对 LBA**，**卷基址仍由 §3.2.1 那唯一一个加法器加一次**——
+   ★ 不新增第二个加法器。
+2. 连读阶段 `data_ready` 恒 1，把 512 Byte 全部排空（否则 reader 会停在**无超时**
+   的 `S_DATA` 等下游）。
+3. **失败策略：无论成败都跑满 `RPT_N` 次，不提前退出**。理由：报告长度/行数固定，
+   PC 侧逐字节 diff 永远成立；「100 次里坏 1 次」与「100 次全坏」可区分开；拔卡时
+   每次读由 reader 自己的出口兜底（`S_R1` 轮询到 `SD_RESP_MAX_BYTES` 即退、
+   数据段有 `SD_TO_DATA`），100 次仍在毫秒级，**必然在有限时间内结束**。
+4. 任一次读**超时或 CRC16 错** → 计入 `BAD`，对外主码取 `ERR_SD_IO`(0x02)。
+5. **每个等待态独立超时**（手册 7.4）：连读的每一次 `ST_RPTWAIT` 都有自己的计数器
+   （每次读开始时清零）。
+6. `BAD != 0` 时报告末行改发 `ERR=<2hex>`；全 OK 则发 `DONE`。失败发生在连读之前时，
+   整份报告只有一行 `ERR=<2hex>`。
+
+LED 状态码：在 §3.7 的 `1..8` 基础上新增 **`9 = 连读进行中`**；失败仍是「错误主码低 4 位」。
+
+报告格式（纯 ASCII / 大写十六进制 / 定宽 / **CRLF 行尾**，全 ASCII 是为了规避串口
+工具文本模式把 `≥0x80` 字节换成 `U+FFFD` 的有损转换）：
+
+```text
+行1  SAFEVISION B STAGE6
+行2  MBR=<8hex> BASE=<8hex> SECS=<8hex>
+行3  BPS=<4hex> SPC=<2hex> NFAT=<2hex>
+行4  FATLBA=<8hex> DATALBA=<8hex> ROOTLBA=<8hex>
+行5  TOTSEC=<8hex> TOTCLUS=<8hex>
+行6  ENT=<4hex>
+每项 E <idx:4hex> <name:22hex> <attr:2hex> <clus:8hex> <size:8hex>   (52 Byte)
+行7  RPT=<total:4hex> OK=<ok:4hex> BAD=<bad:4hex>                    (27 Byte)
+末行 DONE (6 Byte) 或 ERR=<2hex> (8 Byte)
+```
+
+★ **各段字节数**：HDR `183` = `21+42+25+51+34+10`；每项 `52`；`RPT` `27`；`DONE` `6`；
+`ERR` `8`。早期版本把报告头声明成 **184 Byte**（实际 183），Verilog 在 MSB 侧补零 ⇒
+**整份报告多一个前导 `0x00`**（板上实测 450 = 1 NUL + 183 + 260 + 6）。现已按真实字节数
+声明并保留「逐段相加」的核对。
+
+★ **行尾一律用显式字节 `8'h0D` / `8'h0A`，不用字符串转义 `"\r\n"`**：**ModelSim vlog 10.7
+与 TD 6.2 都不把字符串里的 `\r` 当转义**——实测二者都把 `"DONE\r\n"` 编成
+`44 4F 4E 45 72 0A`（字母 `r` + LF）。旧版 RTL 与旧版 TB 同用转义，仿真里「错得一样」
+因而自洽通过，板子上却是 `72 0A`（M-10 记档的纯外观偏差之一）。改显式字节后，
+仿真与硬件都得到真正的 CR。
+
+健康卡（实卡 5 项）整份报告 = `183 + 5×52 + 27 + 6` = **476 Byte**，
+`RPT=0064 OK=0064 BAD=0000`，末行 `DONE`。
+
+---
+
+### 3.9 板级 bring-up 顶层 `top_sdram_loopback`（阶段 9 第一步 / 手册 7.9，不属产品链）
+
+**定位**：接引脚、不属产品链的 bring-up 顶层，**不是** A 的产品顶层 `safevision_top.v`。
+只做一件事：上电 → 等 PLL 锁定 → 等 SDRAM 控制器初始化完成 → 写图案 → 等落地 → 读回比对
+→ 经 UART 发纯 ASCII 报告。
+
+★★ **2026-10-02 上板通过（条目 M-11-PASS）**：位流 22:01:24 下载后收 **71 Byte**，
+`SV-SDRAM-LOOP` / `INIT=01 LOCK=01` / `W=1000 R=1000 CAP=1000 BAD=0000` / `DONE`，
+与设计值**一字不差** ⇒ 接口与报告格式实地确认。STA 见 `evidence/reports/` 条目 TC-Q-STA-4。
+
+```text
+文件 : safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v
+端口 : clk(R7 50MHz) / rst_n(A2) / uart_txd(D12) / led[3:0]
+       —— 与 §3.7 / §3.8 完全相同，pin.adc 无需改动
+参数 : CLK_FREQ(50M) MEM_CLK_FREQ(125M) BAUD(115200)
+       POWERUP_CYC(2_500_000) INIT_TO_CYC(2_000_000)
+       BASE_ADDR(21'd0) TEST_WORDS(21'd4096) ADDR_SHIFT(0)
+       BURST_N(128) BURST_GAP(16) WR_DRAIN_CYC(512) RD_WAIT_TO_CYC(200_000)
+```
+
+**时钟**：板载 50 MHz → `sys_pll`：C0 = 100 MHz（本顶层不用，留空）、C1 = 125 MHz = SDRAM 侧
+`Clk`、C2 = 125 MHz **180° 相移** = `Clk_sft`。`timing.sdc` 因此新增 `derive_clocks`
+（**不加的话 125 MHz 域无时钟定义、STA 是假通过**）。
+**全部逻辑（含 `uart_tx`）跑 125 MHz 单域，刻意不做 CDC**：报告只有 71 Byte，瓶颈在 UART
+（115200 下约 6.2 ms），把 `uart_tx` 也挂 125 MHz（`DIV = 125e6/115200 = 1085`，误差 0.006%）
+比引一条跨时钟域更少变量。⇒ 本顶层**只有一个逻辑时钟域**。
+
+**SDRAM 是封装内硬核（die-in-package）**：`EG_PHY_SDRAM_2M_32`，2M × 32 bit = 8 MB。
+其 55 根信号（`addr/ba/dq/dm/ras/cas/we/cs`）**不出芯片引脚**，因此
+**`constraints/pin.adc` 里不应该有、也确实没有** SDRAM 引脚（厂商例程同样一条都没有）。
+`ip/sdram/sdram.v` 里的 `SDRAM_*` 只在 `SIMULATION` 宏打开时才成为端口，综合时是内部 `wire`。
+
+**应用侧协议（照厂商例程，非自创）**：
+- 写：`App_wr_en` 逐 word 使能、`App_wr_addr` 逐拍递增、`App_wr_dm = 4'b0000`（全字节写）。
+- 读：`App_rd_en` + `App_rd_addr` 发命令，**数据是延迟应答式** —— `Sdr_rd_en` 才是取数时刻，
+  与 `Sdr_rd_dout` 同拍有效。**不许假设"发读命令下一拍就有数据"**。
+- `Sdr_busy` / `Sdr_init_ref_vld` 在例程里是**纯直通、从不参与判断**（`frame_fifo_*` 收了
+  这两个端口却一次没用），所以应用侧只需自负两条责任：**突发要留间隔**（本顶层
+  `BURST_N=128` + `BURST_GAP=16`）、**读写突发不许重叠**（写完 → `WR_DRAIN_CYC` 落地等待 → 再读）。
+
+**数据检查**：`pat_of(addr)` 把地址摊到 32 bit 的四个字节（两次原样 + 两次异或常数），
+地址一变则 32 根数据线全变；写侧与读侧用**同一个函数**算期望值，不存第二份图案。
+默认 `ADDR_SHIFT=0` 为连续 16 KB 块；置 `ADDR_SHIFT=11` + `TEST_WORDS=1024`
+则步长 2048 word、稀疏铺满整个 2M word 空间，用来查行/体地址译码。步长用移位实现
+（**可综合 RTL 禁用 `/` 与 `%`**，见 §5 第 10 条相关约定）。
+
+**LED 状态码**：`1` 上电等待 / `2` 等 SDRAM 初始化 / `3` 写图案 / `4` 等写落地 /
+`5` 发读命令 / `6` 等读回收齐 / `7` 发报告 / `8` 成功；失败显示错误主码低 4 位。
+
+**报告格式（定长 71 Byte，纯 ASCII，显式 `8'h0D`/`8'h0A` 行尾）**：
+
+```text
+行1  SV-SDRAM-LOOP                  (13 + CRLF = 15 Byte)
+行2  INIT=<2hex> LOCK=<2hex>        (5+2+6+2  + CRLF = 17 Byte)
+行3  W=<4hex> R=<4hex> CAP=<4hex> BAD=<4hex>   (31 + CRLF = 33 Byte)
+行4  DONE                           (4 + CRLF = 6 Byte)
+```
+
+默认参数下的理想报告为 `W=1000 R=1000 CAP=1000 BAD=0000`（`TEST_WORDS = 4096 = 0x1000`）。
+判定：`W == R == CAP == TEST_WORDS` 且 `BAD == 0000` 才算过；`CAP < W` 说明有读命令没返回
+（控制器丢命令），`CAP == W` 但 `BAD != 0` 才是真的数据错。
+
+**错误主码**（本顶层局部，非 §6 的团队对外错误码）：`01` = SDRAM 初始化超时（独立计数器）、
+`02` = 读回不齐（独立计数器）、`03` = 数据不一致。
+
+**★ 本顶层没有 testbench，也进不了 `run_sim.ps1`**：厂商 SDRAM 控制器的真正实现是
+`ip/sdram/sdr_as_ram.enc.v` 等三个**安路 RSA 加密**文件（IEEE-1735 `pragma protect`），
+只能由 TD 综合时解密。**验收方式只有上板 + 读 UART 报告**。这是"加密 IP 不可仿真"的客观
+限制，与阶段 1–7"仿真先绿再上板"的节奏不同，不是遗漏。
+
+**IP 落点与来源**：`safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/`
+（`sdram.v` 应用级外壳 + `global_def.v` + 三个 `.enc.v` + `sdram.ipc`）、
+`ip/pll/`（`sys_pll` / `video_pll`）。均来自厂商例程包（工作区参考材料，本身不进仓库），
+详见该目录 `README.md`。★ 例程里**有两个同名 `sdram` 模块**：`IP/sdram.v` 是引脚级 PHY 外壳
+（例程顶层没用它），`SD/sdram.v` 才是被 `sdram U3(...)` 例化的应用级控制器 —— 两者不能同时
+进同一个 TD 工程。本仓库只保留后者。
+
 ---
 
 ## 四、与 A / C 的边界
@@ -1098,6 +1251,10 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 **★ 同日修复 TD 综合才暴露的多驱动问题**：`sd_initializer.v` 与 `sd_sector_reader.v` 的 `bdata` 同时被「字节引擎」和「主状态机」两个 `always` 块赋值（字节引擎复位分支多写了一次 `bdata <= 8'hFF`）。**ModelSim 编译/仿真都不报错**（两个 always 块写同一 reg 在仿真里只是竞争），TD 综合 elaborate 时直接报 `HDL-8007 net 'bdata[7]' is constantly driven from multiple places` 并把该模块降级成黑盒。已把该复位赋值收归主状态机（单一驱动源），全仓静态复查确认没有同类问题。**接口与行为不变**，回归仍 507 项全 PASS。
 **另（同日追加）**：`TARGET_LBA` 的**默认值从 `32'd1000` 改为 `32'd8192`**（端口/参数名/位宽都没变，只改默认值）：实测本机 TF 卡的**分区从物理扇区 8192 开始**，原定的 LBA 1000 落在分区前的空隙里、读出来是 512 个 `0x00`，两边全零会让逐字节比对失去证明力；改用分区首扇区 = FAT32 引导扇区（非零、可识别）。电脑侧参考值存 `evidence/board/lba8192_pc_20261002.bin`。同时修正待办清单 M-5 的预期值（bring-up 跑 50 MHz，SCLK 应为 200 kHz / 12.5 MHz，是 400 kHz / 25 MHz 的一半）。 | B |
 | v1.11 | 2026-10-02 | **新增 §3.2.1「卷基址约定」与 `rtl/storage/mbr_parser.v`**（阶段 6）。缘由是**板级实测逼出来的**：FAT32 层内部一律用【卷内相对 LBA】（`fat32_boot_parser` 写死读 0 号扇区），但真实 TF 卡是分区的（实测本卡分区起始 = 物理扇区 8192，卡 0 号扇区是 MBR），直连必然 `mount_error`。约定：**FAT32 层不碰分区偏移，卷基址由 `mbr_parser` 解析并只在板级顶层加一次**（`sd_sector_reader` 地址 = 相对 LBA + `vol_base_lba`）。`mbr_parser` 对"无 0x55AA 签名 / 分区项为空 / 起始 LBA=0"三种情况**不报错**，按无分区表回退（`vol_base_lba=0`），只透传 SD 层错误；分区表字段为**小端**（`446+8..11` 起始 LBA、`446+12..15` 扇区数）。新增 `tb_mbr_parser.sv`（T1 有效 MBR / T2 无签名 / T3 空表项 / T4 起始 LBA=0，7 项断言），回归 **507 → 514 项断言 / 16 → 17 个 testbench，全 PASS**。**B 链既有模块的端口与行为一字未变**（不动已绿的 TB，只在顶层做一次加法）。 | B |
+| v1.12 | 2026-10-02 | **新增板级顶层 `platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v`**（阶段 6–7）：上电 → SD 初始化 → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner`(+`fat32_cluster_walker`) → `uart_tx`(115200) 发**纯 ASCII 报告**。该顶层是 §3.2.1 卷基址约定的**唯一落地处**：`rd_addr_to_reader = bus_rd_addr + vol_base_lba`（`bus_rd_addr` 由状态在 mbr / boot / scanner / walker 四个请求方之间 mux；MBR 那一轮 `vol_base_lba` 尚为 0，同一加法器正好落卡 0 号扇区）。**引脚与 `pin.adc` 不变**（沿用 `clk`/`rst_n`/`sd_*`/`uart_txd`/`led[3:0]`，无新增引脚）。报告格式：纯 ASCII、大写十六进制、定宽、`\r\n` 行尾，形如 `MBR=.. BASE=..` / `BPS=.. SPC=.. NFAT=..` / `FATLBA=.. DATALBA=.. ROOTLBA=..` / `TOTSEC=.. TOTCLUS=..` / `ENT=..` / `E <idx> <11字节8.3名 hex> <attr> <first_clus> <size>` / `DONE`（失败为 `ERR=xx`）——**刻意全 ASCII，以规避串口工具文本模式把 `≥0x80` 字节换成 `U+FFFD` 的有损转换**。新增 `tb_top_stage6_fat32_mount.sv`（16 项断言）；`sd_spi_card_model` 增加 `VOL_BASE` 参数（默认 0 时行为逐项等价）以模拟分区卡。回归 **514 → 530 项断言 / 17 → 18 个 TB，全 PASS**。 | B |
+| v1.13 | 2026-10-02 | **板级顶层 `top_stage6_fat32_mount` 两项收尾（M-10 的两个"外观项"）+ 新增连读阶段（M-6/M-8）。** ① **修报告头位宽错误**：`hdr_bits` 声明成 `[1471:0]`（184 Byte），但六段实际只有 `21+42+25+51+34+10 = 183` Byte，Verilog 在 MSB 侧补零 ⇒ 整份报告多一个前导 `0x00`（板上 450 = 1 NUL + 183 + 260 + 6 已证实）。改为 `[1463:0]` / `HDR_BYTES=183`，并对每段（HDR/ENT/RPT/ERR/DONE）保留"逐段相加 = 声明字节数"的核对注释。② **行尾改显式字节**：全部 `"\r\n"` → `8'h0D, 8'h0A`。**实测更正**：旧记录说"ModelSim 把 `\r` 当 0D、TD 当 0x72"——用 vlog 10.7 亲测，**ModelSim 也把字符串里的 `\r` 编成 `0x72`（字母 r）**，旧 TB 用同一转义所以"错得一样"、仿真自洽通过；板子上才是 `72 0A`。改显式字节后仿真与硬件都是真 CR。③ **新增 §3.8**：`RPT_N`（默认 `16'd100`）参数 + 连读阶段（M-6「同一 LBA 连读 100 次」/ M-8「拔卡不挂死」）——复用共享 `sd_sector_reader`（顶层第 5 个读请求方）、**卷基址仍只加一次**、连读阶段 `data_ready` 恒 1 排空 512 Byte、**失败也不提前退出**（跑满 `RPT_N` 次）、任一次超时/CRC16 错计 `BAD` 且末行改发 `ERR=02`；报告新增 `RPT=<total> OK=<ok> BAD=<bad>` 行，LED 新增 `9 = 连读进行中`。`tb_top_stage6_fat32_mount.sv` 扩到 **26 项断言**（含字节数 372/374、无前导 0x00、每行 CRLF、健康卡 `RPT OK=100 BAD=0`、拔卡场景在有限时间内进 ST_ERR 且 `ERR=02`）。回归 **530 → 540 项断言，18 个 TB 全 PASS**。**B 链既有模块的端口与行为一字未变**。 | B |
+| v1.14 | 2026-10-02 | **新增 §3.9 板级顶层 `top_sdram_loopback`**（阶段 9 第一步 / 手册 7.9「SDRAM 先跑官方 Demo」）：把厂商 SDRAM 控制器接上，上电 → 等 PLL 锁定 → 等 IP 初始化完成 → 写图案 → 落地等待 → 读回比对 → UART 发**定长 71 Byte 纯 ASCII 报告**（`SV-SDRAM-LOOP` / `INIT=/LOCK=` / `W=/R=/CAP=/BAD=` / `DONE`，显式 `8'h0D`/`8'h0A`）。★ 三处新事实写进文档：① **EG4S20 的 SDRAM 是封装内硬核**（`EG_PHY_SDRAM_2M_32`，2M×32），55 根信号不出引脚 ⇒ `pin.adc` **不需要也不应该**加 SDRAM 引脚；② 应用侧协议：写是逐 word `App_wr_en`、读是**延迟应答式**（`Sdr_rd_en` 才是取数时刻），`Sdr_busy`/`Sdr_init_ref_vld` 在例程里纯直通从不参与判断，应用侧只需自负「突发留间隔 + 读写不重叠」；③ **本顶层没有 TB 也进不了回归** —— 控制器真正实现在三个**安路 RSA 加密**的 `sdr_*.enc.v` 里，只能由 TD 解密，验收只有"上板读报告"一条路。同时把厂商 IP 落进 `ip/sdram/`（应用级 `sdram.v` + `global_def.v` + 三个 `.enc.v` + `sdram.ipc`）与 `ip/pll/`（`sys_pll`/`video_pll`）。★ 纠一个我上一步的复制错误：例程里**有两个同名 `sdram` 模块**，`IP/sdram.v` 是引脚级 PHY 外壳（例程顶层没用、`.al` 里也没登记），`SD/sdram.v` 才是被 `sdram U3(...)` 例化的应用级控制器；本仓库只保留后者。★ `timing.sdc` 新增 `derive_clocks`：接了 PLL 之后不加它，125 MHz 域就没有时钟定义、**STA 会是假通过**。TD 工程 `safevision.al` 已登记上述文件并把 `TOP_MODULE` 切到 `top_sdram_loopback`（回退只需改回 `top_stage5_sector_rd`）。回归不变：**540 项断言 / 18 个 TB，全 PASS**；`check_repo.ps1` → `LAYOUT PASS`；新顶层过 `vlog` 编译检查。 | B |
+| v1.15 | 2026-10-02 | **§3.9 补上验收结果：阶段 9 第一步（手册 7.9「SDRAM 先跑官方 Demo」）板级通过（条目 M-11-PASS）**。位流 22:01:24 下载后 UART 收到 **71 Byte**：`SV-SDRAM-LOOP` / **`INIT=01 LOCK=01`** / **`W=1000 R=1000 CAP=1000 BAD=0000`** / `DONE`，与设计值**一字不差**（真 CRLF、无前导 `0x00`）。含义：`Sdr_init_done` 在 16 ms 超时窗内到齐；**`sys_pll` 锁定成功**（顺带证明"顶层把 C0 留空"不影响 `FEEDBK_PATH=CLKC0_EXT` 的反馈支路）；写 4096 word / 发 4096 次读命令 / **收齐 4096 word**（控制器一条读命令都没丢）；**32 bit 数据逐字比对零错** ⇒ 32 位数据线与 16 KB 连续区间的地址译码全部正确。★ 本轮同时解决/记录的四件事：① **TD 的 `.al` 只是上次保存的快照、跑综合用的是内存状态**（双向都踩过：改磁盘 `.al` 不生效，GUI 保存又覆盖磁盘）；判定只信 `syn_1/run.log` 的 `elaborate -top`；② **TD 对"约束里出现顶层不存在的端口"是报错**（`HDL-1492`/`USR-8168`），故 `pin.adc` 拆成"公共 6 条 + `[SD-ONLY]` 4 条"，且两者的生效方式不同（`read_adc` 每次 Run 都读、`.al` 要重开 TD）；③ **"全局 SWNS 为负"的判定口径**（本例 -6.826 ns 100% 出在厂商硬核 PAD 路径，自研组全绿，厂商参考设计同数 -6.565）；④ 自研薄点：fabric 最差路径仅 +0.130 ns。**接口、字段、报告格式一字未改**；回归 540 项不变。 | B |
 
 
 ## A Clock / Video Timing 发布补充（2026-10-02）

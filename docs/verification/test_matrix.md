@@ -12,8 +12,9 @@
 | `tb_common_fifo.sv`、`tb_crc.sv` | FIFO/反压/错误、CRC7 与 CRC16 | 行为模型仿真 |
 | `tb_frame_writer.sv`、`tb_memory_arbiter.sv`、`tb_frame_swap_ctrl.sv` | 帧写/仲裁/帧交换 | SDRAM 行为模型仿真 |
 | `tb_top_stage5_sector_rd.sv` | 板级 bring-up 顶层：完整命令序列、CMD17 参数、512 Byte 经 UART 逐字节、顶层进成功态 | SD 行为模型 + UART 接收模型仿真 |
+| `tb_top_stage6_fat32_mount.sv` | **阶段 6–7 板级顶层**：卷基址只加一次（FAT32 层 LBA 0 → 卡 LBA = 分区基址，直接断言卡模型收到的 `o_arg`）/ MBR 分区表 / BPB 几何 / 目录项 / UART **ASCII 报告**内容（**字节数 372/374、无前导 `0x00`、每行 CRLF**）/ **连读汇总 `RPT=`**（健康卡 `OK=total BAD=0`；连读中拔卡 → 有限时间内进 `ST_ERR`、末行 `ERR=02`、LED=错误主码低 4 位）/ 顶层进成功态 | SD 行为模型（`VOL_BASE` 参数模拟分区卡）+ 文本 UART 接收模型 |
 
-现有 B 回归为 **514 项断言 / 17 个 Testbench / 2 个行为模型**，`run_sim.ps1` 输出 `TOTAL PASS=514 FAIL=0`。`run_sim.ps1` 的 ModelSim 目录来自 `-ModelSimBin` 参数或 `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，脚本里不再写死本机路径）；换机器时设好这两者之一即可重跑，并把日志放 `evidence/sim/`。
+现有 B 回归为 **540 项断言 / 18 个 Testbench / 2 个行为模型**，`run_sim.ps1` 输出 `TOTAL PASS=540 FAIL=0`。`run_sim.ps1` 的 ModelSim 目录来自 `-ModelSimBin` 参数或 `MSIM_BIN` 环境变量（与 `run_clock_sim.ps1` 同口径，脚本里不再写死本机路径）；换机器时设好这两者之一即可重跑，并把日志放 `evidence/sim/`。
 
 ## 待新增验证门槛
 
@@ -33,7 +34,7 @@
 
 编号为工程补充，最终与手册固定 TC 编号映射后再冻结；当前没有填入“通过”的证据。
 
-TC-A-CLOCK 的 TB 源文件与 `safevision/tools/run_clock_sim.ps1` 已建立，并已在本机运行通过（`clock/reset checks: 88 pass, 0 fail`）。既有 B 回归已在本机重跑，**514 项断言 / 17 个 Testbench 全 PASS**（含板级顶层 TB 与新增的 `tb_mbr_parser`）；本页所有"行为模型仿真"结论仍不等于上板验收。
+TC-A-CLOCK 的 TB 源文件与 `safevision/tools/run_clock_sim.ps1` 已建立，并已在本机运行通过（`clock/reset checks: 88 pass, 0 fail`）。既有 B 回归已在本机重跑，**540 项断言 / 18 个 Testbench 全 PASS**（含板级顶层 TB 与新增的 `tb_mbr_parser`、`tb_top_stage6_fat32_mount`）；本页所有"行为模型仿真"结论仍不等于上板验收。
 
 
 ## A Clock / Video Timing 发布补充（2026-10-02）

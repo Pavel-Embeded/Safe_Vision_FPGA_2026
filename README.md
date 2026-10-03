@@ -131,16 +131,18 @@ TF 卡 ──┤ SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲�
 │  ├─ platform/                     [部分 RTL] 板级适配层
 │  │  ├─ anlogic_eg4s20_hx4s20c/
 │  │  │  ├─ rtl/clock/              复位控制（reset_sync / clock_reset_ctrl，A）
-│  │  │  ├─ rtl/top_stage5_sector_rd.v  板级 bring-up 顶层（接引脚，阶段 5 最小验证，不接 PLL）
-│  │  │  ├─ constraints/            pin.adc + timing.sdc（已按原理图核对）
-│  │  │  ├─ project/safevision.al   TD 6.2 工程（TOP_MODULE 已指向 bring-up 顶层）
-│  │  │  └─ ip/ rtl/{pixel_fifo,hdmi,chipwatcher,safevision_top}/   [骨架] 待接
+│  │  │  ├─ rtl/top_stage5_sector_rd.v      板级 bring-up 顶层（接引脚，阶段 5，不接 PLL）
+│  │  │  ├─ rtl/top_stage6_fat32_mount.v    bring-up 顶层（阶段 6–7，FAT32 挂载 + 目录扫描）
+│  │  │  ├─ rtl/top_sdram_loopback.v        bring-up 顶层（阶段 9 第一步，SDRAM 回环，接 PLL）
+│  │  │  ├─ constraints/            pin.adc + timing.sdc（已按原理图核对；含 derive_clocks）
+│  │  │  ├─ project/safevision.al   TD 6.2 工程（TOP_MODULE = top_sdram_loopback）
+│  │  │  └─ ip/                     厂商 IP：sdram/（应用级控制器 + 3 个安路加密 .enc.v）、pll/（sys_pll / video_pll）
 │  │  └─ sim/                       [骨架] 非厂商仿真适配层
 │  ├─ build/                        [骨架] 文件清单、参数配置、构建说明
 │  ├─ assets/                       [骨架] 可再生字体、图案、SD 测试素材说明
 │  ├─ verification/
 │  │  ├─ models/                    行为级模型（sd_spi_card_model.sv / frame_memory_model.sv）
-│  │  ├─ unit/                      单元测试台（B 17 个 + A clock 1 个；含板级顶层 TB）
+│  │  ├─ unit/                      单元测试台（B 18 个 + A clock 1 个；含板级顶层 TB）
 │  │  ├─ subsystem/                 [骨架] SD→帧缓存、缓存→HDMI 等联调
 │  │  ├─ system/                    [骨架] 三链整机、故障与长稳
 │  │  └─ board/                     上板采集脚本（capture_uart_512.ps1：UART 512 Byte 回传 + 与参考值比对）
@@ -218,12 +220,15 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | 手册学习阶段 1–16 | **全部落地并仿真通过** |
 | 媒体格式层（BMP 解析/解包、WAV 解析） | 已完成并仿真通过 |
 | 目录树与命名 | 已按本项目结构（PROJECT_STRUCTURE.md）核对完成（含"同一常量多副本"的结构性收敛） |
-| B 链仿真回归 | **514 项断言 / 17 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
+| B 链仿真回归 | **540 项断言 / 18 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
 | 板级顶层 `top_stage5_sector_rd.v` | **已写、仿真通过、上板跑通**（板上 LED = `8`；`tb_top_stage5_sector_rd` 5 项断言） |
+| 板级顶层 `top_stage6_fat32_mount.v` | **已写 + 仿真通过（阶段 6–7）**：上电 → SD 初始化 → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner`(+walker) → UART 发**纯 ASCII 报告**；★ **卷基址只在此顶层加一次**（见 [interface_spec §3.2.1](docs/interface_spec.md)）。★ 磁盘上的 `.al` 现为阶段 5 配置，本模块**当前未登记进工程**（见 [module_registry.md](docs/architecture/module_registry.md) 的说明） |
+| 板级顶层 `top_sdram_loopback.v` | **★ 已写 + 已综合 + 上板通过（2026-10-02，阶段 9 第一步 / 手册 7.9）**：50 MHz → `sys_pll`（125 MHz + 180°）→ 厂商 SDRAM 控制器 → 写图案 / 读回比对 → UART 发定长 71 Byte 报告。实测 **`INIT=01 LOCK=01` / `W=1000 R=1000 CAP=1000 BAD=0000` / `DONE`**，与设计值一字不差（`evidence/board/` 条目 M-11-PASS）。★ **无 TB、进不了回归**（控制器是安路加密 IP，只能 TD 解密）；TD 工程 `TOP_MODULE` 已指向它 |
+| 厂商 IP 落库 | **新增（2026-10-02）**：`ip/sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）、`ip/pll/`（`sys_pll` / `video_pll`）。EG4S20 的 SDRAM 是**封装内硬核**（2M×32），信号不出引脚 ⇒ `pin.adc` 不需要 SDRAM 引脚 |
 | **阶段 1–5 上板验收** | ★ **已通过（2026-10-02）**：实物 UART 回传 512 Byte 与电脑侧参考 **SHA-256 完全相同**（M-9，见 [evidence/board/INDEX.md](evidence/board/INDEX.md) 的 M-9-PASS） |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来自开发板手册官方表 + 原理图 + 厂商例程，三处一致）；`uart_txd=D12` 已确认为 FPGA 发送脚，板载 USB-UART 可直接用 |
 | TD 工程 `project/safevision.al` | **综合 → 布局 → 布线 → 位流全跑通并已上板**（`TARGET_LBA=8192` 那次构建，2026-10-02 17:29 下载成功）；**时序收敛**（Setup WNS +11.297 ns / Hold WNS +0.046 ns，违反端点 0，50 MHz 下 Fmax 114.9 MHz），资源 IO 11/188、LUT 814/19600、REG 434/19600。★ 该时序/资源报告（TC-Q-STA）对应的是 `TARGET_LBA=1000` 的构建，重综合后建议补一条证据 |
-| 上板实测（M-1 ~ M-19） | **已开始**：**M-9 通过**（阶段 1–5 实物验收）；M-5/M-6/M-7/M-8 与阶段 6–16 待做。步骤见 [B链-待办与硬件验证清单.md](docs/B链-待办与硬件验证清单.md) §2.2 |
+| 上板实测（M-1 ~ M-19） | **阶段 1–7 + 阶段 9 第一步已通过**：**M-9**（512/512 逐字节）、**M-10**（卷基址/BPB/目录 5 项）、**M-6**（连读 100 次）、**M-8a**（无卡有界退出）、**M-11**（SDRAM 回环 `BAD=0000`）。待做：M-5/M-7/M-8「连读中途拔卡」/M-10 精确拍数/阶段 10–16（须等 A 的整机）。步骤见 [B链-待办与硬件验证清单.md](docs/B链-待办与硬件验证清单.md) §2.2 / §2.4.2 |
 | 整机集成 `safevision_core.v` / `safevision_top.v` | A 负责 |
 | A 板级时钟复位 | `reset_sync.v` 与 `clock_reset_ctrl.v` 已写并仿真通过（88 项）；PLL IP/约束/板级实测待完成 |
 
