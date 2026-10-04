@@ -51,7 +51,7 @@
 | `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v` | RTL 已写，本机已仿真通过（clock 88 项；另被板级顶层 TB 复用） | A | `clk`、异步低有效 `async_rst_n` 输入；本域低有效 `rst_n` 输出；默认两级同步释放 | `tb_clock_reset_ctrl.sv` 88 项通过 |
 | `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_reset_ctrl.v` | RTL 已写，本机已仿真通过（clock 88 项）；未上板 | A | 板级复位、各 PLL 锁定及分区复位请求输入；九路按域复位输出；不生成时钟 | `tb_clock_reset_ctrl.sv` 88 项通过 |
 
-安路 PLL 的实际 IP 配置、端口、引脚与约束尚未提供，`clock/` 目录的 RTL 只承担可综合的复位控制；频率生成须待 TD IP 接入。A 的其他模块目录是落点，不表示有功能 RTL。
+历史盘点时安路 PLL 的实际 IP 配置、端口、引脚与约束尚未提供；当前已登记实际IP，见时钟工程说明。以下保留原盘点语境：`clock/` 目录的 RTL 只承担可综合的复位控制；频率生成须待 TD IP 接入。此处为2026-09-29历史盘点；下方A阶段1–15实施登记已更新相应模块。
 
 ## 板级 bring-up 顶层与约束（2026-10-02 登记）
 
@@ -132,6 +132,10 @@
 ## A 阶段 1–9 新模块登记（2026-10-04，开发验证通过，硬件验收未完成）
 
 接口详见 [A 阶段 1–9](../A_stages1_9.md)。负责人 A；`rtl/common/a_{counter,debounce,edge_detect,mode_fsm}.v` 是基础练习；`rtl/video/pattern_generator/pattern_generator.v` 为组合图案；`graphics_rom/font8x16_rom.v` 为同步字模；`osd_overlay/{osd_overlay,osd_status_text,osd_coordinate_text,a_graphics_frontend}.v` 为四级图形链。5 个新 TB 位于 `verification/unit/`，入口 `tools/run_a_stage1_9_sim.ps1`。上述功能已替代待实现表里的 pattern/字库/OSD 项；图标、C 控制接入及其他后续模块仍未实现。不改变 B/C 协议或产品顶层。
+
+## A 阶段 11–15 已实现（2026-10-05）
+
+主责A，B按存储握手复核，C按应急图形输入复核。新增模块、时钟域、FIFO格式与阶段边界见 [A阶段11–15](../A_stages11_15.md)。7个新增TB及实际B模块整帧联调通过，TD BASE/HD内部探针时序通过；板级SDRAM/PLL健康与真实HDMI验收边界仍见交付说明。
 
 ## A 阶段十已实现模块（2026-10-03）
 

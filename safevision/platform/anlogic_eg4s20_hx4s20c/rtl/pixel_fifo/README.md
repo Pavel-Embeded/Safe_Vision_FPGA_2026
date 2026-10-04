@@ -1,7 +1,5 @@
-# pixel_fifo（A 模块落点）
+# pixel_fifo（A 阶段11–15）
 
-状态：仅创建模块文件夹，尚未实现功能 RTL。
+a_pixel_fifo封装A专用官方异步软FIFO，32写16读、低16先出、FWFT/NOREG；AW10容量2046pixel；写/读水位各在本域；不复用B的通用同步FIFO。
 
-用途：安路异步像素 FIFO 的板级适配规划落点；FWFT、复位极性、水位与读延迟须与 B/A 接口核对。
-
-新增端口与时钟域须先登记到 docs/interface_spec.md 和 docs/architecture/module_registry.md，再加入对应测试与显式源文件表。目录存在不表示模块已通过仿真或上板。
+RTL、TB、接线/延迟和已执行验证见 `docs/A_stages11_15.md`；阶段16应急策略/17HDMI与整板验收尚未完成。入口 `safevision/tools/run_a_stage11_15_sim.ps1`。

@@ -1,7 +1,5 @@
-# video_compositor（A 模块落点）
+# video_compositor（A 阶段11–15）
 
-状态：仅创建模块文件夹，尚未实现功能 RTL。
+video_layer_delay将RGB与透明mask同拍延迟；video_compositor按各层上游延迟补齐至最大值，Emergency > OSD > Normal，另寄存1拍；RGB与全部扫描标签一致，扫描不能被ready/valid暂停。
 
-用途：组合背景、帧像素、图案与 OSD；各层优先级和延迟须先在接口规范冻结。
-
-新增端口与时钟域须先登记到 docs/interface_spec.md 和 docs/architecture/module_registry.md，再加入对应测试与显式源文件表。目录存在不表示模块已通过仿真或上板。
+RTL、TB、接线/延迟和已执行验证见 `docs/A_stages11_15.md`；阶段16应急策略/17HDMI与整板验收尚未完成。入口 `safevision/tools/run_a_stage11_15_sim.ps1`。

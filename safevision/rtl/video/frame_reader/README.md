@@ -1,7 +1,5 @@
-# frame_reader（A 模块落点）
+# frame_reader（A 阶段11–15）
 
-状态：仅创建模块文件夹，尚未实现功能 RTL。
+frame_reader：RGB565 FWFT消费，RGB888/全扫描标签1拍；frame_slot_commit：B邮箱消费、垂直消隐原子换槽；pixel_word_packer：16bit低先合成32bit；a_frame_fetch_bridge：B DMA/官方FIFO、预取与排空后换epoch。
 
-用途：在固定扫描速率下消费 B 的像素 FIFO；处理预取、首像素对齐和欠载安全色。B 的 video_read_dma 与 frame_swap_cdc 仍在 rtl/memory。
-
-新增端口与时钟域须先登记到 docs/interface_spec.md 和 docs/architecture/module_registry.md，再加入对应测试与显式源文件表。目录存在不表示模块已通过仿真或上板。
+RTL、TB、接线/延迟和已执行验证见 `docs/A_stages11_15.md`；阶段16应急策略/17HDMI与整板验收尚未完成。入口 `safevision/tools/run_a_stage11_15_sim.ps1`。

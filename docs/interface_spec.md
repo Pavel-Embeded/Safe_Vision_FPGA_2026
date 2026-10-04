@@ -12,7 +12,7 @@
 |---|---|
 | 项目 | 安视 SafeVision · 赛题一 HDMI 多媒体播放与应急视听疏散终端 |
 | 平台 | 康芯 HX4S20C 开发板 / 安路 EG4S20BG256 |
-| 版本 | v1.33（在 A/B v1.32 集成基础上合入 db4acfa 的仲裁、DMA 突发与帧交换确认修正；保留 B soak 报告与 A 图形接口） |
+| 版本 | v1.34（保留 v1.33 存储修正及 B soak 接口，新增 A 阶段11–15显示核心、官方异步FIFO、CDC与对齐合成） |
 | 负责人 | B 队员（数据存储链 / 数据搬运） |
 | 依据 | 赛题一官方选题指南；《赛选手册 V2.0》第 6/7/10 章 |
 | 维护规则 | 接口先于联调存在；改接口必同步改文档并通知对方；信号名、有效电平、时钟域、延迟、异常策略五者必须写清 |
@@ -1457,3 +1457,20 @@ Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内
 验证范围（db4acfa 原提交）：7 项新回归、15 种逐字仲裁协议场景、4 个完整帧/1,228,800 个像素；B 既有 18 TB/540 项回归仍通过。不能替代 SDRAM 物理 AC、真实 HDMI、整机 CDC 或上板验收。原有测试入口和队友 TB 保留。
 
 | v1.33 | 2026-10-04 | 在 A/B v1.32 集成基础上合入 db4acfa：登记 memory arbiter 命令/读响应握手、DMA 帧尾/FIFO 水位/早到 ACK、帧交换确认与默认超时修正。合并后完整回归、TD STA 与板测待复验。 | A+B |
+
+
+## A 阶段11–15补充契约（v1.34，2026-10-05）
+
+新增接口及本轮验证见 [A_stages11_15.md](A_stages11_15.md)。基线 `b50ac4f`；不修改 B/C 已有 RTL、端口、测试或 B 的 `safevision.al`。
+
+- 显示集成入口 `a_video_display_core`：`sys_clk` 承担 B 槽mailbox/C配置，`mem_clk` 承担 B DMA读口和FIFO写端，`pixel_clk` 承担扫描、FIFO读端、图层合成。`rst_n` 必须共同断言，内部每域同步释放；整个邮箱/FIFO组不支持一端独立复位后保留另一端旧数据。
+- B 将既有 `frame_swap_ctrl` 的 `swap_req/frame_index/slot_id/generation/crc_ok` 接到 `swap_req_b/mb_*_b`；必须保持payload直到A确认。A返回的 `frame_start_evt_b/swap_ack_evt_b` 是sys域单拍，直接接既有B控制器，不要再次转toggle。A仅在原始垂直消隐更新active slot/generation/index；无效CRC不提交、不ACK。A对 `frame_swap_cdc` 的事件额外等一拍才取其新payload。
+- A `rd_*` 原样接 B `memory_arbiter` 的Video Read口：地址按字节，`rd_len`按32bit word，默认64。ACK确认整个突发，`rd_data_valid`每拍确认一个按序word；B的busy维持到所有响应返回。新帧先停发新请求并排空旧响应，再清本地DMA/FIFO，不复位共享仲裁器/SDRAM。
+- 官方像素FIFO遵循D-2：32写16读、低16先读、FWFT、输出无额外寄存。现B DMA16bit像素经独立packer成32bit word，不修改DMA。AW10实际2046pixel容量；`mem_fifo_pixels`是mem域保守水位（含半word与4pixel余量），不是像素域直接计数。
+- `cfg_valid&&cfg_ready`在sys域捕获整组OSD enable/mode/fps/sd/origin/foreground；源侧保持valid和全部字段直到握手。mailbox到像素域整组生效，mode枚举/状态文字沿用已有A显示契约；若C产品枚举不同，由装配层映射。诊断输出 `pix_*` 与 `mem_*` 的域由前缀明示，送给C总线前另做CDC。
+- 应急输入 `emergency_rgb/emergency_valid` 已属于pixel域，参考原始 `scan_x/scan_y/scan_de`，输入延迟0；阶段16负责图形/安全策略。不要把sys域三根应急控制线直接接此RGB层。最终RGB888从原始扫描延迟5拍：Normal=1，OSD=4，Emergency=0，对齐到4再合成1拍。最终所有同步、de、坐标与RGB同拍；`de`不受欠流/invalid暂停。
+- 存储格式保持四槽640×480 RGB565。BASE直接显示；HD扫描1280×720，将640×480画面居中（320,120）。不把640图像假称为原生HD帧，不擅改B容量、地址或格式。Reader独立HD整帧测试与集成letterbox测试分别登记。
+
+本轮：7个A新增TB通过，64份真实A+B RTL同库编译；实际B DMA/arbiter/swap + 官方FIFO联调BASE/HD，欠流后的本帧剩余像素安全色、下一帧恢复；B18TB/540检查、存储7TB+5旧码负对照、A1–10、时钟5功能+41参数及SDRAM应用层回归通过。TD内部探针BASE setup/hold +0.838/+0.011ns，HD +1.004/+0.021ns，125/100MHz及两种像素时钟与有界CDC已检查。未替代SDRAM物理AC、PLL补偿健康、真实HDMI、整板引脚预算或上板验收；既有SDRAM −6.826ns路径仍是未关闭问题。
+
+| v1.34 | 2026-10-05 | 新增A阶段11–15独立接口及集成核心；保持B/C冻结端口；登记FWFT容量/单位、B换帧与突发接线、C配置邮箱、5拍图层延迟、BASE/HD格式与验证边界。 | A |

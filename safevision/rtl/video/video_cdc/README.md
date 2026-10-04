@@ -1,7 +1,5 @@
-# video_cdc（A 模块落点）
+# video_cdc（A 阶段11–15）
 
-状态：仅创建模块文件夹，尚未实现功能 RTL。
+video_level_sync：稳定单bit两级；video_cdc_mailbox：valid/ready请求确认、整组payload保持到ACK；帧事件沿用B frame_swap_cdc。每域独立复位同步释放，TD载荷/Gray传播约束另有界。
 
-用途：A 侧视频控制 CDC 的规划落点；单比特、事件、载荷和像素流分别采用适当手段，不复制 B 已有 frame_swap_cdc。
-
-新增端口与时钟域须先登记到 docs/interface_spec.md 和 docs/architecture/module_registry.md，再加入对应测试与显式源文件表。目录存在不表示模块已通过仿真或上板。
+RTL、TB、接线/延迟和已执行验证见 `docs/A_stages11_15.md`；阶段16应急策略/17HDMI与整板验收尚未完成。入口 `safevision/tools/run_a_stage11_15_sim.ps1`。
