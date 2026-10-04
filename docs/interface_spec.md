@@ -1011,7 +1011,7 @@ LED 状态码：在 §3.7 的 `1..8` 基础上新增 **`9 = 连读进行中`**�
 参数 : CLK_FREQ(50M) MEM_CLK_FREQ(125M) BAUD(115200)
        POWERUP_CYC(2_500_000) INIT_TO_CYC(2_000_000)
        BASE_ADDR(21'd0) TEST_WORDS(21'd1024) ADDR_SHIFT(11) ADDR_LOWSTEP(1)
-       ROUNDS(32'd161_000_000) BURST_N(128) BURST_GAP(16)
+       ROUNDS(32'd27_000_000) BURST_N(128) BURST_GAP(16)
        WR_DRAIN_CYC(512) RD_WAIT_TO_CYC(200_000)
 ```
 
@@ -1033,7 +1033,7 @@ LED 状态码：在 §3.7 的 `1..8` 基础上新增 **`9 = 连读进行中`**�
   这两个端口却一次没用），所以应用侧只需自负两条责任：**突发要留间隔**（本顶层
   `BURST_N=128` + `BURST_GAP=16`）、**读写突发不许重叠**（写完 → `WR_DRAIN_CYC` 落地等待 → 再读）。
 
-**数据检查与测试图案**：mode 0 使用完整 21-bit 可逆签名；mode 1–5 轮换 LFSR、walking-1、walking-0、全 0/全 1 及相邻位交替。`sdr_pat_gen` 是唯一图案源，写/读两侧传地址和模式。比较流水先锁样本，再锁四个 byte-lane mismatch，最后提交 BAD/BAD0；`ST_RDWAIT` 等 `checked_cnt` 排空后才转态。UART 使用寄存器字节预取，在反压下保持 valid/data，报告索引只在握手成功后推进。默认参数为 1024 word、stride 2049、`ROUNDS=161,000,000`，报告 190 Byte；原 M-11 的 71 Byte 与后续 B soak 报告是不同历史构建，不能混为当前 build 证据。
+**数据检查与测试图案**：mode 0 使用完整 21-bit 可逆签名；mode 1–5 轮换 LFSR、walking-1、walking-0、全 0/全 1 及相邻位交替。`sdr_pat_gen` 是唯一图案源，写/读两侧传地址和模式。比较流水先锁样本，再锁四个 byte-lane mismatch，最后提交 BAD/BAD0；`ST_RDWAIT` 等 `checked_cnt` 排空后才转态。UART 使用寄存器字节预取，在反压下保持 valid/data，报告索引只在握手成功后推进。当前源码默认参数为 1024 word、stride 2049、`ROUNDS=27,000,000`（约 10 分钟），报告 190 Byte；`ROUNDS=161,000,000` 是约 60 分钟的历史板测配置，不是当前源码默认值。原 M-11 的 71 Byte 与后续 B soak 报告是不同历史构建，不能混为当前 build 证据。
 
 `ADDR_SHIFT=0, ADDR_LOWSTEP=0` 是连续步长 1；`BASE_ADDR=0`、`ADDR_SHIFT=11`、`ADDR_LOWSTEP=1`、`TEST_WORDS=1024` 是 stride 2049 的稀疏抽样。地址跨越 2M-word 范围，但不是每个 bank/row/column 或全部存储单元都逐一访问。详见 [SDRAM/PLL 核查修正版](B链-SDRAM接口与PLL时序核查.md)。本次 A+B 合并后构建尚需重新回归、STA 与板测，历史 B soak 不自动验收新 RTL。
 
@@ -1068,7 +1068,7 @@ LED 状态码：在 §3.7 的 `1..8` 基础上新增 **`9 = 连读进行中`**�
 **soak（`ROUNDS` 参数）**：把「写 → 等落地 → 读 → 等收齐」当一轮重复 `ROUNDS` 轮，
 **每轮换一种图案模式**（0..5 循环）。★ **出错立即停（fail fast）**：某轮不一致就不再跑
 后面的轮次，直接出报告 —— 报告里的 `RND` 就是**出错那一轮**，不必等 soak 跑完。
-`ROUNDS = 1`（默认）= 单轮行为。★ 轮时长 **实测 ≈ 22 µs**（2790 拍 @125 MHz，1024 word
+`ROUNDS = 1` = 单轮行为；当前源码默认 `ROUNDS=27,000,000`（约 10 分钟）。★ 轮时长 **实测 ≈ 22 µs**（2790 拍 @125 MHz，1024 word
 稀疏扫描）⇒ `ROUNDS ≈ 目标秒数 × 45_000`；**60 分钟约需 `ROUNDS = 1.6e8`**（32 位参数
 上限 4.29e9 轮 ≈ 26 小时）。★ **soak 期间"没有输出"就是好消息**：出错会立刻出报告。
 
