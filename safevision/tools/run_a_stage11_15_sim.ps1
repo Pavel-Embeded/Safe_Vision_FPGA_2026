@@ -5,7 +5,8 @@ param(
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/a_stage11_15_sim'),
  [string[]]$Top=@('tb_a_pixel_fifo','tb_video_stream_cdc','tb_frame_slot_commit',
- 'tb_frame_reader','tb_osd_text_layer','tb_video_compositor','tb_a_video_display_core')
+ 'tb_frame_reader','tb_osd_text_layer','tb_video_compositor','tb_a_video_display_core',
+ 'tb_a_video_display_core_stress','tb_pixel_word_packer_stress')
 )
 $ErrorActionPreference='Stop'
 $RepoRoot=(Resolve-Path -LiteralPath $RepoRoot).Path
@@ -82,7 +83,8 @@ $oldTemp=$env:TEMP;$oldTmp=$env:TMP
 try {
  foreach($case in $Top){
   if($case -notin @('tb_a_pixel_fifo','tb_video_stream_cdc','tb_frame_slot_commit',
-    'tb_frame_reader','tb_osd_text_layer','tb_video_compositor','tb_a_video_display_core')){throw 'Unknown test top'}
+    'tb_frame_reader','tb_osd_text_layer','tb_video_compositor','tb_a_video_display_core',
+ 'tb_a_video_display_core_stress','tb_pixel_word_packer_stress')){throw 'Unknown test top'}
   $dir=Join-Path $RunDir $case
   New-Item -ItemType Directory -Force -Path (Join-Path $dir 'tmp') | Out-Null
   $env:TEMP=Join-Path $dir 'tmp';$env:TMP=$env:TEMP

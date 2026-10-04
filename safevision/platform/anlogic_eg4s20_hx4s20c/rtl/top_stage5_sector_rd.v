@@ -124,6 +124,7 @@ module top_stage5_sector_rd #(
     wire        rd_ready;
     wire [7:0]  rd_data;
     wire        rd_data_valid;
+    wire        rd_data_ready;  // Explicit UART backpressure net.
     wire        rd_data_last;
     wire        rd_done;
     wire        rd_busy;
