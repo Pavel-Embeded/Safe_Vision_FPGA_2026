@@ -33,7 +33,7 @@
 ### 加密文件
 
 `sdr_*.enc.v` 是 Anlogic 加密 IP（IEEE-1735 `pragma protect`，RSA，`encrypt_agent = "Anlogic"`），
-密钥块里含 Cadence / Mentor Graphics 的 key。**内容不可读、不可改**，只能由 TD 综合时解密。
+密钥块里含 Cadence / Mentor Graphics 的 key。保护区不修改；TD 可综合，本机尚无已验证兼容的控制器仿真环境，不能由此断言所有仿真器都无法支持。`sdram.ipc` 只配置 PHY，不是完整控制器参数表；明文外壳还传入了 `self_refresh_open`，其可调范围须按厂商接口确认。
 ✅ 2026-10-02 用户决定：**随仓库一起提交**（比赛用例程 IP 属常规做法）。
 文件头已注明版权与来源，不要再改动被保护区内任何字节。
 
@@ -87,11 +87,9 @@ sdram U3(
 | `ext_mem_clk` = **125 MHz** | **SDRAM 侧**（就是上面例化的 `Clk`） |
 | `ext_mem_clk_sft` = 125 MHz **180° 相移** | SDRAM 采样相位（同源 PLL，**不能用普通反相器代替**） |
 
-`video_pll` 另出 640×480 像素时钟 **25 MHz** 与 5 倍串行时钟（HDMI 用）。
+**[更新 2026-10-04]** 当前 A 视频时钟来自 `sv_video_vga_pll` / `sv_video_hd_pll`，BASE 实际像素频率约 25.185185 MHz、HD 约 74.166667 MHz，串行时钟严格为 5 倍；旧 `video_pll` 是历史参考。C0 外部端口留空仍保留内部 NORMAL/CLKC0_EXT 反馈。四个 PLL 使用单一 C0 反馈网，系统 C2 使用 BUFG；最终路由仍须复验。
 
-**为什么跟着例程走 125 MHz**：SDRAM 的初始化/刷新/CAS 是硬时序，例程这套时钟是厂商验过的；
-自己换频率等于改 IP 时序参数，反而多一层不确定性。（bring-up 阶段曾经"不接 PLL 全跑 50 MHz"
-是为了阶段 1–5 少变量；接 SDRAM 就必须回到 PLL。）
+**保留 125 MHz / 180° 的理由**：沿用例程和当前接口契约，避免同时改变初始化、刷新、采样相位及带宽。厂商随附报告也有 SDRAM 负余量，因此不能把采用例程频率写成已通过最坏条件时序。当前读路径仍为 −6.826 ns；降频或修改采样须重新验证整个控制器契约，不能仅改 PLL 后宣称等价。
 
 ## 还缺什么 / 下一步
 
@@ -105,10 +103,9 @@ sdram U3(
   `sdr_as_ram.enc.v` 写 `"global_def.v"`（同目录形式）、`sdr_init_ref.enc.v` 却写
   `"../user_source/hdl_source/include/global_def.v"`（工程目录相对形式），**两条都能编过**。
   所以只要 `global_def.v` 与 IP 文件同目录，`\`include "global_def.v"` 就能解析。
-- ⚠ **ModelSim 跑不了这个 IP**：加密体只能由 TD 解密（ModelSim 是否认这组 key 未验证），
-  所以 SDRAM 通路**只能在板上验证，进不了 `run_sim.ps1` 回归**。这一点要在验收清单里写明。
+- **[新增]** `run_sdram_loopback_sim.ps1` 运行应用侧行为模型 TB，包含正常连续/稀疏回环、地址混叠、最高 DQ 位错误、读返回丢失、初始化超时和真实 UART 解码。它不编译加密控制器，不代替 DQ/AC 验证。新版图案修正了高位地址漏检，旧版 M-11 仍只属于原位流。
 - `ip/` 下另有可用的厂商 IP：`afifo_16_256`（异步 FIFO，含 `_sim.v` 仿真模型）、
   `afifo_16_32_256` / `afifo_32_16_256`（**跨位宽**异步 FIFO）—— 对应项目规则第 7 条
   "禁止手写异步 FIFO，跨时钟域用安路软 FIFO IP"，将来接 CDC 直接用它们（这些**能**进回归）。
 - 阶段 9 的第一步（手册 7.9「SDRAM 先跑官方 Demo」）：写 `top_sdram_loopback.v`，
-  写图案 → 读回 → 比对 → UART 报结果。**端口表已在上方，可以直接开工。**
+  写图案 → 读回 → 比对 → UART 报结果。原版已有 M-11，2026-10-04 图案和报告缓存修正版需重新上板。详细状态见 [核查修正版](../../../../../docs/B链-SDRAM接口与PLL时序核查.md)。

@@ -392,6 +392,7 @@ module tb_bmp_parser;
         repeat (300) @(posedge clk);
         check(bp_out_valid === 1'b1,     "T50.1 反压期间 out_valid 保持");
         check(out_n == 0,                "T50.2 下游没收就不算送达");
+        @(negedge clk); // Change ready away from DUT/monitor sampling edge.
         bp_out_ready = 1'b1;
         wait_cnt = 0;
         while ((src_valid === 1'b1 || bp_out_valid === 1'b1) && wait_cnt < 200_000) begin

@@ -76,7 +76,7 @@ try {
             $svPixelMHz = if ($svMode -eq 'base') { 25.185185185 } else { 74.166666667 }
             $svSerialMHz = if ($svMode -eq 'base') { 125.925925926 } else { 370.833333333 }
             $svFeedbackMHz = if ($svMode -eq 'base') { 283.333333333 } else { 12.5 }
-            $svTotalLeaves = if ($svMode -eq 'base') { 55 } else { 59 }
+            $svTotalLeaves = if ($svMode -eq 'base') { 54 } else { 58 }
             $svExpected = @{
                 'board_clk_50' = 50.0
                 ($svPrefix + 'u_system_pll/pll_inst.clkc[0]') = 100.0
@@ -87,13 +87,15 @@ try {
                 ($svPrefix + 'u_audio_pll/pll_inst.clkc[1]') = 12.288135593
                 ($svPrefix + 'u_audio_pll/pll_inst.clkc[0]') = 25.0
             }
-            # Fixed verification-top footprint. RTL changes require a reviewed
-            # new baseline; positive WNS alone must not accept lost leaf clocks.
+            # Reviewed TD6.2 footprint after the NORMAL feedback-wiring repair.
+            # Pixel-domain FF packing uses one fewer shared physical clock pin.
+            # Register bits remain 68/71 (BASE/HD); check both counts below so
+            # a lost register cannot be accepted as a mere packing change.
             $svExpectedLeaves = @{
                 'board_clk_50' = $svTotalLeaves
                 ($svPrefix + 'u_system_pll/pll_inst.clkc[0]') = $(if ($svMode -eq 'base') { 8 } else { 10 })
                 ($svPrefix + 'u_system_pll/pll_inst.clkc[1]') = 8
-                ($svVideoPrefix + '[1]') = $(if ($svMode -eq 'base') { 29 } else { 31 })
+                ($svVideoPrefix + '[1]') = $(if ($svMode -eq 'base') { 28 } else { 30 })
                 ($svVideoPrefix + '[2]') = 6
                 ($svVideoPrefix + '[0]') = 0
                 ($svPrefix + 'u_audio_pll/pll_inst.clkc[1]') = 4
@@ -119,6 +121,14 @@ try {
                     [int]$svFound[0].nonclocks -ne 0) {
                     throw "Wrong leaf-clock coverage: $svClockName"
                 }
+            }
+            $svArea = Get-Content -LiteralPath (Join-Path $svFinal 'final.area') -Raw
+            $svRegMatch = [regex]::Match($svArea, '(?m)^#reg\s+(\d+)\s+out of')
+            $svOregMatch = [regex]::Match($svArea, '(?m)^\s*#oreg\s+(\d+)\s*$')
+            $svExpectedRegs = if ($svMode -eq 'base') { 68 } else { 71 }
+            if (-not $svRegMatch.Success -or [int]$svRegMatch.Groups[1].Value -ne $svExpectedRegs -or
+                -not $svOregMatch.Success -or [int]$svOregMatch.Groups[1].Value -ne 17) {
+                throw "Wrong sequential/register-output coverage: $svMode"
             }
             $svTiming = Get-Content -LiteralPath (Join-Path $svFinal 'final.timing') -Raw
             if ($svTiming -match 'DeriveClock' -or $svTiming -notmatch 'Confidence\s+:\s+Routed') {

@@ -24,6 +24,8 @@
 #         exit branches can actually be reached in acceptable sim time.
 #         Those scaled values are SIMULATION ONLY - the product values in
 #         safevision_defs.vh must be re-measured on the real board.
+# NOTE 3: output is a transient console transcript; do not store it under
+#         evidence/ or commit it. Record only concise results in Markdown.
 # ============================================================================
 
 # ModelSim install path: -ModelSimBin, or MSIM_BIN env var. No baked-in default.
@@ -78,10 +80,14 @@ $RTL = @(
     "../rtl/memory/frame_swap_cdc.v",
     "../rtl/memory/memory_bandwidth_monitor.v",
     "../rtl/memory/framebuffer_loopback_core.v",
+    "../rtl/memory/sdr_pat_gen.v",
     # ---- platform bring-up top (touches pins, so it lives under platform/) ----
     "../platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
     "../platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v",
     "../platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v",
+    # ---- board bring-up top that instantiates the vendor IP; pulled into the
+    #      regression by binding sdram / sv_system_pll to the stubs in models/ ----
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v",
     # ---- board adapter (no encrypted IP inside; compile-checked + unit TB) ----
     "../platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v"
 )
@@ -89,6 +95,7 @@ $RTL = @(
 $SIM = @(
     "models/sd_spi_card_model.sv",
     "models/frame_memory_model.sv",
+    "models/vendor_ip_stub.sv",
     "unit/tb_sd_sector_reader.sv",
     "unit/tb_mbr_parser.sv",
     "unit/tb_sd_initializer.sv",
@@ -108,7 +115,9 @@ $SIM = @(
     "unit/tb_top_stage5_sector_rd.sv",
     "unit/tb_top_stage6_fat32_mount.sv",
     "unit/tb_framebuffer_loopback_core.sv",
-    "unit/tb_sdram_app_adapter.sv"
+    "unit/tb_sdram_app_adapter.sv",
+    "unit/tb_sdr_pat_gen.sv",
+    "unit/tb_top_sdram_loopback.sv"
 )
 
 $TBS = @(
@@ -131,7 +140,9 @@ $TBS = @(
     "tb_top_stage5_sector_rd",
     "tb_top_stage6_fat32_mount",
     "tb_framebuffer_loopback_core",
-    "tb_sdram_app_adapter"
+    "tb_sdram_app_adapter",
+    "tb_sdr_pat_gen",
+    "tb_top_sdram_loopback"
 )
 
 Write-Output "=== vlib work ==="

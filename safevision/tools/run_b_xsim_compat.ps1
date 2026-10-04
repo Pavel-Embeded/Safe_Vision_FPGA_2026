@@ -1,0 +1,62 @@
+# Reuse the source/TB lists in the existing ModelSim runner without executing it.
+# This companion verifies B plus the A stage-1..10 sources with XSim.
+param(
+    [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
+    [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
+    [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/b_xsim_compat')
+)
+$ErrorActionPreference='Stop'
+$repo=[IO.Path]::GetFullPath($RepoRoot)
+$runDir=[IO.Path]::GetFullPath($RunDir)
+if($runDir -match '[^\x00-\x7f]'){throw 'XSim 2018.3 needs an ASCII RunDir.'}
+$xsimBin=$XSimBin
+$original=Get-Content -LiteralPath (Join-Path $repo 'safevision/tools/run_sim.ps1') -Raw
+function Get-OriginalPaths($name) {
+    $match=[regex]::Match($original, ('(?s)\$'+$name+' = @\((.*?)\n\)'))
+    if(-not $match.Success){throw "Cannot find original $name source list"}
+    @([regex]::Matches($match.Groups[1].Value,'"([^"]+)"') | ForEach-Object {
+        [IO.Path]::GetFullPath((Join-Path (Join-Path $repo 'safevision/verification') $_.Groups[1].Value))
+    })
+}
+$rtl=Get-OriginalPaths 'RTL'
+$tb=Get-OriginalPaths 'SIM'
+$rtl+=Join-Path $repo 'safevision/rtl/video/video_pipeline/video_pipeline.v'
+$rtl+=Join-Path $repo 'safevision/rtl/video/video_timing/video_timing.v'
+$aSources=@('common/a_counter.v','common/a_debounce.v','common/a_edge_detect.v','common/a_mode_fsm.v',
+    'video/pattern_generator/pattern_generator.v','video/graphics_rom/font8x16_rom.v',
+    'video/osd_overlay/osd_status_text.v','video/osd_overlay/osd_coordinate_text.v',
+    'video/osd_overlay/osd_overlay.v','video/osd_overlay/a_graphics_frontend.v')
+foreach($source in $aSources){$rtl+=Join-Path $repo "safevision/rtl/$source"}
+$tops=@('tb_sd_sector_reader','tb_mbr_parser','tb_sd_initializer',
+    'tb_fat32_boot_parser','tb_fat32_directory_scanner','tb_fat32_cluster_walker',
+    'tb_file_streamer','tb_bmp_parser','tb_file_index','tb_common_fifo',
+    'tb_crc','tb_bmp_unpack','tb_wav_parser','tb_frame_writer',
+    'tb_memory_arbiter','tb_frame_swap_ctrl','tb_top_stage5_sector_rd','tb_top_stage6_fat32_mount')
+New-Item -ItemType Directory -Force -Path (Join-Path $runDir 'tmp') | Out-Null
+$previousTemp=$env:TEMP;$previousTmp=$env:TMP
+$failures=@()
+$assertions=0
+Push-Location -LiteralPath $runDir
+try {
+    $env:TEMP=Join-Path $runDir 'tmp';$env:TMP=$env:TEMP
+    & (Join-Path $xsimBin 'xvlog.bat') -d SIM_FAST_TO -i (Join-Path $repo 'safevision/rtl/include') --log all_rtl.log @rtl
+    if($LASTEXITCODE -ne 0){throw 'B+A combined Verilog compile failed'}
+    & (Join-Path $xsimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i (Join-Path $repo 'safevision/rtl/include') --log all_tb.log @tb
+    if($LASTEXITCODE -ne 0){throw 'B TB compile failed'}
+    foreach($top in $tops){
+        & (Join-Path $xsimBin 'xelab.bat') "work.$top" -s "${top}_sim" --timescale '1ns/1ps' --log "${top}_elab.log"
+        if($LASTEXITCODE -ne 0){throw "$top elaboration failed"}
+        & (Join-Path $xsimBin 'xsim.bat') "${top}_sim" -runall --log "${top}_sim.log"
+        if($LASTEXITCODE -ne 0){throw "$top simulation failed"}
+        $log=Get-Content -LiteralPath "${top}_sim.log" -Raw
+        if($log -notmatch '\[PASS\]' -or $log -notmatch '\$finish called' -or $log -match '(?im)^\s*(\[FAIL\]|FAIL\b|FATAL\b|ERROR:|\[RESULT\].*FAILED)'){
+            $failures+=$top
+            Write-Host "FAILED EXISTING $top"
+            continue
+        }
+        $assertions+=([regex]::Matches($log,'\[PASS\]')).Count
+        Write-Host "VERIFIED EXISTING $top"
+    }
+    if($failures.Count){throw "Existing XSim failures: $($failures -join ', ')"}
+    Write-Host "B+A COMPILE AND B FUNCTIONAL PASS: tests=$($tops.Count) checks=$assertions"
+}finally{Pop-Location;$env:TEMP=$previousTemp;$env:TMP=$previousTmp}

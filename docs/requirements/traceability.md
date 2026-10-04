@@ -24,3 +24,8 @@
 新 XSim 入口包含五项测试；帧量级联调测试显式传入 TIMEOUT_N=5,000,000，B 模块默认值与 `safevision_defs.vh` 均保持原版本。本次不改 B/C RTL、原 B 单元测试、原 B 回归入口、B 专用文档或 B 上板工程/证据。共享文档保留最新远程原文，仅追加 A 说明；现有 B 验收记录仍按其原证据判断。
 
 Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内部 STA 的实际 A 输入与本提交一致，但 TD 健康告警仍开放（runner 返回 2）。尚未完成 A 产品顶层、完整 HDMI/Frame Reader/OSD/应急链与 A 板级验证。旧 `clock_video_20261002` 是过滤前工作树历史记录，不能把其中 B 默认超时变更或全工作树文件计数当成本提交内容。当前范围与新回归见 [A发布核对](../A_PUSH_SCOPE_20261002.md)。
+
+
+## A 阶段 1–9 需求落地（2026-10-04）
+
+手册 §6.1–6.9：基础四模块→`common/a_*.v`；测试图/一像素框/坐标文字→`pattern_generator.v` + `osd_coordinate_text.v`；片上字库/OSD→`font8x16_rom.v` + `.mem` + `osd_overlay.v`；四级流水→OSD 与既有 `video_pipeline` 同拍接线。状态文字可用于后续 B03/E03 观测，但 C 控制/UART 配置接入尚未完成；字体 ROM 是后续 E01 的基础，未宣称完整应急安全场景完成。已执行 TB、内部 STA 与尚缺上板验收见 [阶段对应表](../A_stages1_9.md)。

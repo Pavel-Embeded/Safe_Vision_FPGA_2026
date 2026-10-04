@@ -1,5 +1,7 @@
 # SafeVision B 链接口规范（interface_spec）
 
+> A 阶段 1–9 新增接口（2026-10-04）：见 [A_stages1_9.md](A_stages1_9.md)。新增模块独立注册，不变更下文 B 冻结接口；图形链 RGB888，pixel_clk 单域，OSD 统一延迟 4 拍。A 基础 FSM 为教学件，不作为 C 产品状态契约。
+
 > 本文档是 **B 链（数据存储与数据搬运）** 与 A、C 的**冻结接口依据**。
 > 任何一方改接口，必须先改本文档、再改 RTL，并通知对接人。
 > 联调时以本文档为准，不以口头约定为准。
@@ -10,7 +12,7 @@
 |---|---|
 | 项目 | 安视 SafeVision · 赛题一 HDMI 多媒体播放与应急视听疏散终端 |
 | 平台 | 康芯 HX4S20C 开发板 / 安路 EG4S20BG256 |
-| 版本 | v1.15（v1.14 基础上：**§3.9 补上阶段 9 第一步的上板验收结果** —— `top_sdram_loopback` 报告 71 Byte 与设计值一字不差、`BAD=0000`。**接口与格式一字未改**，只是把实测结论落到文档上） |
+| 版本 | v1.32（合并 A d6f40a6 的 21-bit 可逆图案、byte compare pipeline、UART 预取及应用层 TB；保留 B 6 模式 soak/190 Byte 诊断报告。合并版回归与上板验收待完成） |
 | 负责人 | B 队员（数据存储链 / 数据搬运） |
 | 依据 | 赛题一官方选题指南；《赛选手册 V2.0》第 6/7/10 章 |
 | 维护规则 | 接口先于联调存在；改接口必同步改文档并通知对方；信号名、有效电平、时钟域、延迟、异常策略五者必须写清 |
@@ -1008,16 +1010,15 @@ LED 状态码：在 §3.7 的 `1..8` 基础上新增 **`9 = 连读进行中`**�
        —— 与 §3.7 / §3.8 完全相同，pin.adc 无需改动
 参数 : CLK_FREQ(50M) MEM_CLK_FREQ(125M) BAUD(115200)
        POWERUP_CYC(2_500_000) INIT_TO_CYC(2_000_000)
-       BASE_ADDR(21'd0) TEST_WORDS(21'd4096) ADDR_SHIFT(0)
-       BURST_N(128) BURST_GAP(16) WR_DRAIN_CYC(512) RD_WAIT_TO_CYC(200_000)
+       BASE_ADDR(21'd0) TEST_WORDS(21'd1024) ADDR_SHIFT(11) ADDR_LOWSTEP(1)
+       ROUNDS(32'd161_000_000) BURST_N(128) BURST_GAP(16)
+       WR_DRAIN_CYC(512) RD_WAIT_TO_CYC(200_000)
 ```
 
-**时钟**：板载 50 MHz → `sv_system_pll`：C0 = 100 MHz（本顶层不用，留空）、C1 = 125 MHz = SDRAM 侧
+**时钟**：板载 50 MHz → `sv_system_pll`：C0 = 100 MHz（外部业务端口留空，wrapper 内反馈保持连接）、C1 = 125 MHz = SDRAM 侧
 `Clk`、C2 = 125 MHz **180° 相移** = `Clk_sft`。`timing.sdc` 因此新增 `derive_clocks`
 （**不加的话 125 MHz 域无时钟定义、STA 是假通过**）。
-**全部逻辑（含 `uart_tx`）跑 125 MHz 单域，刻意不做 CDC**：报告只有 71 Byte，瓶颈在 UART
-（115200 下约 6.2 ms），把 `uart_tx` 也挂 125 MHz（`DIV = 125e6/115200 = 1085`，误差 0.006%）
-比引一条跨时钟域更少变量。⇒ 本顶层**只有一个逻辑时钟域**。
+**全部逻辑（含 `uart_tx`）跑 125 MHz 单域，刻意不做 CDC**：当前 B soak 报告 190 Byte，UART 仍是低速串行链路；把 `uart_tx` 也挂 125 MHz（`DIV = 125e6/115200 = 1085`，误差 0.006%）比引入跨时钟域更少变量。⇒ 本顶层**只有一个逻辑时钟域**。
 
 **SDRAM 是封装内硬核（die-in-package）**：`EG_PHY_SDRAM_2M_32`，2M × 32 bit = 8 MB。
 其 55 根信号（`addr/ba/dq/dm/ras/cas/we/cs`）**不出芯片引脚**，因此
@@ -1032,35 +1033,73 @@ LED 状态码：在 §3.7 的 `1..8` 基础上新增 **`9 = 连读进行中`**�
   这两个端口却一次没用），所以应用侧只需自负两条责任：**突发要留间隔**（本顶层
   `BURST_N=128` + `BURST_GAP=16`）、**读写突发不许重叠**（写完 → `WR_DRAIN_CYC` 落地等待 → 再读）。
 
-**数据检查**：`pat_of(addr)` 把地址摊到 32 bit 的四个字节（两次原样 + 两次异或常数），
-地址一变则 32 根数据线全变；写侧与读侧用**同一个函数**算期望值，不存第二份图案。
-默认 `ADDR_SHIFT=0` 为连续 16 KB 块；置 `ADDR_SHIFT=11` + `TEST_WORDS=1024`
-则步长 2048 word、稀疏铺满整个 2M word 空间，用来查行/体地址译码。步长用移位实现
-（**可综合 RTL 禁用 `/` 与 `%`**，见 §5 第 10 条相关约定）。
+**数据检查与测试图案**：mode 0 使用完整 21-bit 可逆签名；mode 1–5 轮换 LFSR、walking-1、walking-0、全 0/全 1 及相邻位交替。`sdr_pat_gen` 是唯一图案源，写/读两侧传地址和模式。比较流水先锁样本，再锁四个 byte-lane mismatch，最后提交 BAD/BAD0；`ST_RDWAIT` 等 `checked_cnt` 排空后才转态。UART 使用寄存器字节预取，在反压下保持 valid/data，报告索引只在握手成功后推进。默认参数为 1024 word、stride 2049、`ROUNDS=161,000,000`，报告 190 Byte；原 M-11 的 71 Byte 与后续 B soak 报告是不同历史构建，不能混为当前 build 证据。
+
+`ADDR_SHIFT=0, ADDR_LOWSTEP=0` 是连续步长 1；`BASE_ADDR=0`、`ADDR_SHIFT=11`、`ADDR_LOWSTEP=1`、`TEST_WORDS=1024` 是 stride 2049 的稀疏抽样。地址跨越 2M-word 范围，但不是每个 bank/row/column 或全部存储单元都逐一访问。详见 [SDRAM/PLL 核查修正版](B链-SDRAM接口与PLL时序核查.md)。本次 A+B 合并后构建尚需重新回归、STA 与板测，历史 B soak 不自动验收新 RTL。
 
 **LED 状态码**：`1` 上电等待 / `2` 等 SDRAM 初始化 / `3` 写图案 / `4` 等写落地 /
 `5` 发读命令 / `6` 等读回收齐 / `7` 发报告 / `8` 成功；失败显示错误主码低 4 位。
 
-**报告格式（定长 71 Byte，纯 ASCII，显式 `8'h0D`/`8'h0A` 行尾）**：
+**报告格式（定长 190 Byte，纯 ASCII，显式 `8'h0D`/`8'h0A` 行尾）**
+★ 2026-10-04 的两次扩容：71 → 136（加**配置行**与**首个错点行**）→ **190**
+（加**轮次/图案模式行**与**累计搬运量行**，并给 `BAD0` 加上**轮次**）。
 
 ```text
-行1  SV-SDRAM-LOOP                  (13 + CRLF = 15 Byte)
-行2  INIT=<2hex> LOCK=<2hex>        (5+2+6+2  + CRLF = 17 Byte)
-行3  W=<4hex> R=<4hex> CAP=<4hex> BAD=<4hex>   (31 + CRLF = 33 Byte)
-行4  DONE                           (4 + CRLF = 6 Byte)
+行1  SV-SDRAM-LOOP                                 (13 + CRLF = 15 Byte)
+行2  INIT=<2hex> LOCK=<2hex>                       (5+2+6+2  + CRLF = 17 Byte)
+行3  CFG=<2hex><1hex> BASE=<6hex> N=<6hex>         (4+3+6+6+3+6 + CRLF = 30 Byte)
+行4  RND=<8hex>/<8hex> PAT=<1hex>                  (4+8+1+8+5+1 + CRLF = 29 Byte)
+行5  W=<4hex> R=<4hex> CAP=<4hex> BAD=<4hex>       (31 + CRLF = 33 Byte)
+行6  TOT=<10hex>                                   (4+10 + CRLF = 16 Byte)
+行7  BAD0=<8hex>:<6hex> E=<8hex> A=<8hex>          (42 + CRLF = 44 Byte)
+行8  DONE                                          (4 + CRLF = 6 Byte)
 ```
 
-默认参数下的理想报告为 `W=1000 R=1000 CAP=1000 BAD=0000`（`TEST_WORDS = 4096 = 0x1000`）。
+- 行3 `CFG` = `ADDR_SHIFT`(2 位 hex) + `ADDR_LOWSTEP`(1 位 hex)；`BASE` = 起始 word 地址；
+  `N` = **每轮** `TEST_WORDS`。**这些字段让采集件自描述**。
+- 行4 `RND` = 已跑轮数 / 总轮数（`ROUNDS` 参数）；`PAT` = 本轮**图案模式**（0..5，含义见
+  `rtl/memory/sdr_pat_gen.v` 头注）。
+- 行5 `W/R/CAP/BAD` 都是**本轮**的计数。
+- 行6 `TOT` = **累计比对字数**（40 位，不随轮次重置）⇒ 就是手册 7.12 要求的
+  "用计数器统计一段时间内实际完成搬运的数据量"口径。
+- 行7 `BAD0` = **首个不符发生在第几轮 : 哪个地址**（无错时哨兵 `FFFFFFFF:FFFFFF`）；
+  `E` = 该地址**期望值**；`A` = 该地址**实际读回值**。
+
+**soak（`ROUNDS` 参数）**：把「写 → 等落地 → 读 → 等收齐」当一轮重复 `ROUNDS` 轮，
+**每轮换一种图案模式**（0..5 循环）。★ **出错立即停（fail fast）**：某轮不一致就不再跑
+后面的轮次，直接出报告 —— 报告里的 `RND` 就是**出错那一轮**，不必等 soak 跑完。
+`ROUNDS = 1`（默认）= 单轮行为。★ 轮时长 **实测 ≈ 22 µs**（2790 拍 @125 MHz，1024 word
+稀疏扫描）⇒ `ROUNDS ≈ 目标秒数 × 45_000`；**60 分钟约需 `ROUNDS = 1.6e8`**（32 位参数
+上限 4.29e9 轮 ≈ 26 小时）。★ **soak 期间"没有输出"就是好消息**：出错会立刻出报告。
+
+**默认参数 = 单轮全片稀疏扫描**：`ADDR_SHIFT=11` + `ADDR_LOWSTEP=1` + `TEST_WORDS=1024`
+⇒ 步长 `(1<<11)+1 = 2049`，1024 个点铺满整个 2M word 空间。理想报告为
+`CFG=0B1 BASE=000000 N=000400` / `RND=00000001/00000001 PAT=0` /
+`W=0400 R=0400 CAP=0400 BAD=0000` / `TOT=0000000400` /
+`BAD0=FFFFFFFF:FFFFFF E=00000000 A=00000000`。
+
+> ★ 步长为什么是 `(1<<ADDR_SHIFT) + ADDR_LOWSTEP` 而不是纯 2 的幂：**纯 2 的幂步长会把
+> 低位地址位固定住**（步长 2048 时 `a[10:0]` 恒为 0），列地址与行低位根本没被激励；
+> 加 1 之后 `k*2049 = (k<<11)+k` ⇒ **每个地址位都在变**。旧的「连续扫描」=
+> `ADDR_SHIFT=0, ADDR_LOWSTEP=1`（步长 1）。
+> ★ 约束：`BASE_ADDR + (TEST_WORDS-1)*STRIDE` 必须 < 2^21，否则地址回绕、测试无意义。
+
 判定：`W == R == CAP == TEST_WORDS` 且 `BAD == 0000` 才算过；`CAP < W` 说明有读命令没返回
-（控制器丢命令），`CAP == W` 但 `BAD != 0` 才是真的数据错。
+（控制器丢命令），`CAP == W` 但 `BAD != 0` 才是真的数据错 —— 此时**先看 `BAD0/E/A`**。
 
 **错误主码**（本顶层局部，非 §6 的团队对外错误码）：`01` = SDRAM 初始化超时（独立计数器）、
 `02` = 读回不齐（独立计数器）、`03` = 数据不一致。
 
-**★ 本顶层没有 testbench，也进不了 `run_sim.ps1`**：厂商 SDRAM 控制器的真正实现是
-`ip/sdram/sdr_as_ram.enc.v` 等三个**安路 RSA 加密**文件（IEEE-1735 `pragma protect`），
-只能由 TD 综合时解密。**验收方式只有上板 + 读 UART 报告**。这是"加密 IP 不可仿真"的客观
-限制，与阶段 1–7"仿真先绿再上板"的节奏不同，不是遗漏。
+**★ 关于仿真**（2026-10-04 起口径变了，注意）：
+
+- 厂商 SDRAM 控制器的真正实现是 `ip/sdram/sdr_as_ram.enc.v` 等三个**安路 RSA 加密**文件
+  （IEEE-1735 `pragma protect`），PLL 则是 TD 的 `EG_PHY_PLL` 宏 —— 两者 ModelSim **都编译不了**。
+  所以**顶层本身没有直连真 IP 的 TB**，**协议层面的验收方式只有上板 + 读 UART 报告**。
+- ★ **应用侧检查器有两套分离的回归入口，勿把模型混编**：
+  1. B/ModelSim：`run_sim.ps1` 编译 `vendor_ip_stub.sv` 与 `tb_top_sdram_loopback.sv`；22 项图案测试 + 8 项顶层测试覆盖 6 模式、190 Byte soak 报告、轮次、fail-fast、第二轮 `BAD0` 定位。
+  2. A/XSim：`run_sdram_loopback_sim.ps1` 使用 TD PLL functional model 和独立应用侧 `sdram` 模型；检查 mode 0 全 21-bit 签名反解、DQ 位覆盖、连续/稀疏 loopback、地址别名、最高 DQ 位翻转、初始化与缺失读返回超时及 UART 报告。
+  两套测试各自有同名仿真替代模块 `sdram`；**不要放进同一个编译库**。A testbench 针对当前合并 soak top，不能保留旧 71 Byte 的预期；B-only 顶层 TB 仍单独检查 190 Byte 报告。
+- ★★ **仿真效力边界**：A/B 模型都不模拟真实加密控制器、物理 DQ、刷新/CAS 实际行为或 AC/PVT 时序；应用侧 `BAD=0000` 不是 SDRAM 完整性证明。整合后的新 RTL 还必须重新运行对应仿真、重新综合布线，并用匹配的位流上板复测。
 
 **IP 落点与来源**：`safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/`
 （`sdram.v` 应用级外壳 + `global_def.v` + 三个 `.enc.v` + `sdram.ipc`）、
@@ -1110,15 +1149,29 @@ clk(R7,50MHz) / rst_n(A2) / uart_txd(D12) / led[3:0]     板级引脚（无 sd_*
 ★ C/B 两行只报低 16 位（探针地址都在 `0x1000~0x1038`，低 16 位足以唯一识别；全局判据是 `BAD`）。
 ★ 三个探针都在帧槽 0 内，随后被整帧写入覆盖。
 
-★ `framebuffer_loopback_core` 的报告索引为 9 位**倒计数**取值（`rpt_vec[8*rpt_idx +: 8]`），
-索引里**不含减法器**。**STA 记录**：2026-10-03 00 时那一版用 `RPT_LEN-1-rpt_sel` 的加法器 +
-2832 bit 向量 + 512 个回读寄存器，自研组 `clkc[1]→clkc[1]` 从 **+0.030 ns 掉到 −1.083 ns /
-475 个违例端点**（最差路径全在 `ra_reg → rpt_vec 选择 → u_uart_tx/shifter`）；改为"边读边比对
-+ 16 位抽样 + 208 Byte 向量"后重做。
+★ `framebuffer_loopback_core` 的报告索引为 9 位**倒计数**取值，索引里**不含减法器**。
+**STA 记录**：2026-10-03 那一版用 `RPT_LEN-1-rpt_sel` 的加法器 + 2832 bit 向量 + 512 个回读
+寄存器，自研组 `clkc[1]→clkc[1]` 从 **+0.030 ns 掉到 −1.083 ns / 475 个违例端点**（最差路径全在
+`ra_reg → rpt_vec 选择 → u_uart_tx/shifter`）；改为"边读边比对 + 16 位抽样 + 208 Byte 向量"后重做。
+★ 2026-10-03 晚再收一刀：208 Byte 报告 mux 由"1664 bit 向量 + 变址选取"改成
+**13 块 × 16 Byte 两级 mux + 一块 16 Byte 的块寄存器**（第 1 级 13:1×128bit → `blk_q`；
+第 2 级 16:1×8bit → `rep_data`），把"大 mux → 跨芯片送 `uart_tx`"的长走线切在中间。
+★ 同日第三刀：report18 复算后自研组只剩 **−0.081 ns / 2 违例端点**，且这两条路径都是
+`rpt_idx → 9 位减法器（4 级 ADDER）→ rpt_dn[5]（扇出 **195**）→ 块 mux`（那个减法器本来只给
+状态机算 `rpt_idx-1`，却被综合塞进了**块选择端**）。改法 = **块号提前一拍存进 5 位寄存器
+`blk_nxt`**（恒 = `block(rpt_idx-1)`，只在"下一字节跨块"时 -1）⇒ 关键路径变成
+`blk_nxt（寄存器）→ 块 mux → blk_q`，减法器退回成**只喂 5 个 bit** 的轻负载路径。
+★ **对外的 `rep_valid` / `rep_data` 接口与延迟都不变**（无额外 priming 拍：`blk_q` / `blk_nxt`
+与 `rpt_idx` 在同一时钟边沿更新），**报告字节流逐字节不变**（`tb_framebuffer_loopback_core` 的 T9 守住）。
+★ report19 复算确认第 3 刀**生效**：块 mux 路径 **−0.081 → +0.058 ns（通过）**；但自研组的全局最差
+换到了**适配器的突发基址 / 读命令计数通路**（`rfbase` / `wbase` / `rcmd_i`，`sdram_app_adapter.v`），
+−0.218 ns / 3 违例端点。⇒ 自研组现有**约 10 条路径挤在 0.25 ns 以内**，**本顶层（bring-up 自测顶层）
+已决定收手**，时序债留到**整机集成后在 A 的 `safevision_top` 上重跑 STA**（详见
+`docs/B链-待办与硬件验证清单.md` §2.5 的"决策"）。
 
 ★ **本顶层含安路加密 SDRAM IP ⇒ 无 TB、进不了 ModelSim 回归**；其可仿真部分
 （`framebuffer_loopback_core` + `mem_read_burst`）由 `tb_framebuffer_loopback_core.sv` 覆盖（11 项）；
-**适配器 `sdram_app_adapter` 本身不含加密件，另有 `tb_sdram_app_adapter.sv` 覆盖（6 项）**，
+**适配器 `sdram_app_adapter` 本身不含加密件，另有 `tb_sdram_app_adapter.sv` 覆盖（7 项）**，
 上板步骤见 `docs/B链-待办与硬件验证清单.md` §2.5。
 ★ 新事实（写进本仓，供后续复用）：厂商 `sdram` 的应用口是**脉冲式**（`App_wr_en`/`App_rd_en`
 连发、地址**每拍自增**、`Sdr_rd_en` 单拍应答数据），与 `mem_ctrl` 的通用 req/ready 口**协议不同**，
@@ -1351,6 +1404,24 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 
 | v1.21 | 2026-10-03 | **★★★ 阶段 10 帧缓存回环「板上验收通过」**。208 Byte 报文（ID 211030）**全部判据一次通过**：`INIT=01` / `WR=04B000 CRC=01 SV=01`（整帧 307200 像素写完）/ **`RD=04B000 BAD=000000`（整帧读回逐像素零错）** / `W0=59C3ACE1 W1=670FB387` / **`AM=FFFFFFFF`、`AF=FF`、`AV=00000000`**（探针 A：32 个回读全对、跨两次预取）/ **`C0..C3=1004/1005/1006/1007`**（探针 C）/ **`B0..B3=1035/1036/1037/1038`**（探针 B）/ `BF=000000` / `DONE`。⇒ **从"整帧 3/4 像素错"到零错闭环完成**：根因（适配器读预取地址未每拍自增）由「地址斜坡探针」定案并修复，中途自引入的一处死锁（缓冲没排空时跳到缓冲外地址不重预取）也一并修掉并有 TB 用例守着。**STA 四版记分**（自研组 `clkc[1]→clkc[1]`）：report13 **+0.030 / 0 违例 / 3023 端点** → report14 **−1.083 / 475 / 4445** → report15 **−1.562 / 312 / 3691** → **report16 −0.992 / 31 / 3709**。**时序仍差约 1 ns**：最差路径已从"报告 mux / 适配器加法器"移到 `u_core/st → amask/bw 的变址译码 → 报告寄存器 CE`（`bw[0]_b1[15]` 这条网单独占 2.9 ns）。**本轮把回读收集由"变址写数组"改成"纯移位"**（`amask` 每比对一次右移一位塞入、`cwq/bwq` 每收一个 word 左移 16 位）⇒ 32 路/4 路译码器及其高扇出网一起消失；`framebuffer_loopback_core.v` 的报告侧改读固定位段，**报告字节流逐字节不变**（回归 558 项全 PASS 守住）。**对外接口 / 地址表 / 错误码一字未改**。 | B |
 
+| v1.22 | 2026-10-03 | **阶段 10 收时序：208 Byte 报告 mux 由"1664 bit 向量 + 变址选取"改成"13 块 × 16 Byte 两级 mux + 块寄存器"（仅 `framebuffer_loopback_core.v`）。** 动因 = TD 复算（report17）显示自研组 `clkc[1]→clkc[1]` 已从 −0.992 ns / 31 违例端点收到 **−0.386 ns / 6 违例端点 / Fmax 119.246 MHz**，但 6 条违例里 **4 条终止在 `u_uart_tx/shifter_reg`**，最差路径 `rpt_idx → rpt_vec 变址 mux → uart shifter` 数据路径 8.106 ns、**net 占 71%**、`rpt_idx[4]` 扇出 **47** —— 代价在"一条 208:1 的大 mux 被摊平进 `uart_tx`、输出端要横跨芯片"，不在逻辑层级。**做法**：第 1 级 `rpt_idx → 块选择（13:1 × 128bit）→ blk_q`（块号 k = `rpt_idx[8:4]`，**位**偏移 = `{k,7'b0}`）；第 2 级 `blk_q → 块内字节选择（16:1 × 8bit）→ rep_data`。★ **逐字节等价**：`rpt_idx` 逐字节递减 ⇒ 同块内 `rpt_idx[8:4]` 恒定；`blk_q` 与 `rpt_idx` **在同一个时钟边沿更新**（装"下一字节"所在的块）⇒ **恒 ready（TB `rep_ready=1'b1`、报告逐拍流出）也正确**，无需额外的 priming 拍。★ **对外 `rep_valid` / `rep_data` 的接口与延迟都不变**，报告字节流逐字节不变（`tb_framebuffer_loopback_core` 的 T8/T9 守住）。★ **实现中踩到的坑并已修**：块 mux 的位偏移必须按 **128 位/块** 步进（`{k,7'b0}`），第一版误写成 `{k,4'b0000}`（= k×16 **位**）⇒ 回归 **T9 逐字节断言立刻 FAIL**（而 T8 的"208 Byte"计数仍是对的）—— 印证"报告通路必须逐字节断言，不能只数长度"。回归 **558 项 / 20 个 TB 全 PASS**。**待办**：TD 再复算一次确认自研组 SWNS ≥ 0。 | B |
+
+| v1.23 | 2026-10-03 | **阶段 10 收时序第 3 刀：块号改成寄存器 `blk_nxt`（仅 `framebuffer_loopback_core.v`）。** 动因 = TD 复算（report18）：自研组 `clkc[1]→clkc[1]` 已收到 **−0.081 ns / 2 违例端点 / 3948 端点**（report17 是 −0.386 / 6 / 3676），报告 mux 两级化把**报告通路那 4 条违例全干掉了**；但剩下的 2 条路径都是 `rpt_idx → 9 位减法器（4 级 ADDER，0.92 ns）→ `rpt_dn[5]`（**扇出 195**，1.73 ns）→ 块 mux → `blk_q``。那个 `rpt_dn = rpt_idx - 9'd1` 本来只给状态机算下一个索引，却被综合塞进了**块 mux 的选择端**，于是"9 位借位链 + 195 扇出的长网"全压在关键路径上（数据路径 7.801 ns，net 占 64%）。**改法**：把块号**提前一拍算好存进 5 位寄存器 `blk_nxt`**（恒等于 `block(rpt_idx-1)`，只在"下一字节正好跨块"即 `rpt_idx[3:0]==1` 时 -1）⇒ 关键路径变成 `blk_nxt（寄存器）→ 块 mux → blk_q`，**减法器退回成只喂 5 个 bit 的轻负载路径**。★ 仍是**逐字节等价**：`blk_nxt` 与 `blk_q` 在同一时钟边沿更新，恒 ready（TB `rep_ready=1'b1`）下也正确；**对外 `rep_valid`/`rep_data` 接口与延迟一字未改**。回归 **558 项 / 20 个 TB 全 PASS**。**待办**：TD 复算（report19）确认自研组 SWNS ≥ 0；若仍差，下一根杠杆 = 块宽 16 Byte → 8 Byte（选择扇出减半）。 | B |
+
+| v1.24 | 2026-10-03 | **阶段 10 时序：第 3 刀生效、最差路径换人，决定"收手"（转推进整机集成）。** ① **report19（TD 复算）**：自研组 `clkc[1]→clkc[1]` = **−0.218 ns / 3 违例端点 / 3982 端点**（report18 是 −0.081 / 2 / 3948）。② **第 3 刀（`blk_nxt`）确实修好了它的目标路径**：块 mux 那条从 **−0.081 ns 变成 +0.058 ns（通过）**。③ **但全局最差换到了适配器**：`u_adapter` 的**突发基址 / 读命令计数**通路（`rfbase` / `wbase` / `addr[17]` / `rcmd_i`，`sdram_app_adapter.v` 44/106/124 行），**−0.218 ns / 数据路径 7.938 ns / net 占 69% / 扇出 51**（2 个端点）；第 3 条是 `ramp_to → ramp_addr[17].ce` **−0.029 ns**。⇒ 自研组现有**约 10 条路径挤在 0.25 ns 以内**（已跑到预算 99% 的典型形态）。④ **决策：本顶层（bring-up 自测顶层）就此收手，不再做 RTL 微调** —— 它不会交付（产品顶层是 A 的 `safevision_top`），`framebuffer_loopback_core` 也是自测夹具；剩下两条都是慢逻辑（报告序列化在 115200 下每字节隔约 8680 拍、适配器突发基址建立），不是吞吐瓶颈；且收益递减（475 → 31 → 6 → 2 → 3）。⑤ **时序债的还法**：整机集成后在 A 的顶层重跑 STA；若报告通路仍关键 ⇒ 用**有理由的 `set_multicycle_path`**（数据在几千拍内稳定），**不用 `set_false_path` 刷绿**；若适配器通路仍关键 ⇒ 那是要交付的真逻辑，值得单独优化。⑥ **接口 / 地址表 / 错误码一字未改**；回归 **558 项 / 20 个 TB 全 PASS**。 | B |
+
+| v1.25 | 2026-10-04 | **回应 A 的阶段十审查：SDRAM `C1↔C2` 与 PLL `USR-6135` 两条遗留项完成核查，判定口径修正。** ① **路径事实**（`report19.txt`）：读侧 `C2→C1` **−6.826 ns / 32 端点**，`Logic Level 0`、**`cell 100% / net 0%`、扇出 0**、起止都是 PAD（`u_sdram/sdram.dq[*]` → `u_sdram/sdram_syn_1.bpad`）⇒ **纯 PAD↔PAD，我们的 fabric 完全没有参与**；写侧 `C1→C2` **−2.787 ns / 32 端点**，`Logic Level 1 (PAD=1)`，起点是**厂商控制器内部寄存器**（`u_sdram/u2_ram/u2_wrrd/col_en_reg`）。两者的 budget 都只有 **4.000 ns**（因 C2 相对 C1 移相 180°）。★ **因此此前"全局 −6.826 ns 100% 出自硬核 PAD 路径"的说法不准确**，准确说法是"**厂商 SDRAM 控制器与封装内 SDRAM 的接口路径**"；但工程结论相同：**RTL 不可改**。② **厂商对照（新增证据）**：厂商出货例程 `lab_ex5_i2s` 的 `final_timing.rpt` 有**同名同结构**路径组（`sys_pll_m0/pll_inst.clkc[2] → ext_mem_clk`，**−6.565 / 32 / 32**，同 4.000 ns 预算、同 `sdram.dq[*]` 终点、`clkc[2]` 同样未命名且扇出 1），厂商例程**自身 fabric 组也有小违例**（−0.144 / 2、−0.127 / 1、−0.998 / 1）⇒ 厂商带着同样的数字出货。**按 A 的标准这只是旁证，不是豁免依据。** ③ **`USR-6135`**：我们 `sv_system_pll` 的 `FEEDBK_MODE("NORMAL") / FEEDBK_PATH("CLKC0_EXT")` 与厂商**完全相同**，但我们的 **C0（100 MHz）扇出 = 0（悬空）**，厂商把 C0 当 `sd_card_clk` 用、**扇出 451** ⇒ `CLKC0_EXT` 要求 C0 走外部（全局）网络绕回 `fbclk`，C0 悬空时反馈无实际负载、工具判 local **有据可依**（解释了 A 看到的"物理报告 vs 时序检查"矛盾 —— 前提不同）。候选改法 (a)/(b)/(c) 见核查文档，**B 不单方面改**。④ **判定口径修正**（同步进项目规则 §7 末条）：按 `Logic Level` / `cell%·net%` / `Max Fanout` / 起止点判物理归属，分"纯 PAD↔PAD"、"厂商控制器寄存器→PAD"、"fabric 组"三类；**fabric 组必须修**；**厂商同数不能单独作豁免依据**；**不许 `set_false_path` 刷绿**。⑤ **实物证据**（已有）：M-11（4096 word `BAD=0000`）+ 阶段 10（**307200 word 逐像素零错**），写读两方向都覆盖；**局限：单板单温度点、非厂商全模式图案、无长时间 soak**。⑥ **新增文档** `docs/B链-SDRAM接口与PLL时序核查.md`。**接口 / 地址表 / 错误码一字未改**。 | B |
+
+| v1.26 | 2026-10-04 | **§3.9 `top_sdram_loopback` 改版：报告 71 → 136 Byte + 默认改「全片稀疏扫描」+ 图案生成抽成可仿真模块（回归 558 → 569）。** ① **修掉一个真问题**：原顶层里的 `pat_of` **只用了 `a[11:4]` 与 `a[7:0]`**，而稀疏扫描的被测地址是 `a = k<<11`（`a[10:0]` 恒为 0、`a[11:4]` 只剩最低位）⇒ **1024 个测试点只可能得到 2 种图案**，"全片扫描"几乎什么都证明不了。★ 这类错误**写读自比发现不了**（写侧读侧同一个函数，错得一样照样 `BAD=0000`）。② **图案生成抽成 `rtl/memory/sdr_pat_gen.v`**（无引脚、纯组合，可进回归）：映射 `b0=a[7:0]^a[20:16]`、`b1=a[15:8]`、`b2={3'b0,a[20:16]}`、`b3=b0^b1^b2^0xA5` —— **单射**（可反解 `a[20:0]`）；新增 `tb_sdr_pat_gen.sv`（**11 项**，含 T7 **反向对照**：把旧公式也算一遍、确认它只有 2 种图案 ⇒ 证明判据抓得到）。③ **步长改为 `STRIDE = (1<<ADDR_SHIFT) + ADDR_LOWSTEP`**，默认 `11 + 1 = 2049`：纯 2 的幂步长会把低位地址位固定住（步长 2048 时 `a[10:0]` 恒 0）⇒ 列地址与行低位没被激励；加 1 后 `k*2049=(k<<11)+k` ⇒ 每个地址位都在变。旧连续扫描 = `ADDR_SHIFT=0, ADDR_LOWSTEP=1`。④ **报告 71 → 136 Byte**：新增 `CFG=hhx BASE=hhhhhh N=hhhhhh`（**自描述**）与 `BAD0=hhhhhh E=hhhhhhhh A=hhhhhhhh`（**首个错点**的地址/期望/实际，`FFFFFF`=无错）。⑤ **报告索引改 8 位倒计数**（`rpt_vec[{rpt_idx,3'b0} +: 8]`）：**不含减法器**，避免重蹈阶段 10 那条 `RPT_LEN-1-idx` 减法器被综合进 mux 选择端的最差路径。⑥ **引脚 / 接口 / 错误码一字未改**；回归 **558 → 569 项 / 20 → 21 个 TB 全 PASS**。**待办**：重新综合 → 烧板 → 对账（期望 `CFG=0B1 BASE=000000 N=000400` / `W=0400 R=0400 CAP=0400 BAD=0000` / `BAD0=FFFFFF E=00000000 A=00000000`）。 | B |
+
+| v1.27 | 2026-10-04 | **把"不可仿真"的 SDRAM 顶层拉进回归：新增仿真桩 `vendor_ip_stub` + `tb_top_sdram_loopback`（5 项），136 Byte 报告**逐字节仿真验证过**（回归 569 → 574）。** ① **动机**：`top_sdram_loopback.v` 例化的两个单元 ModelSim 编译不了（加密 `sdr_*.enc.v` + TD 的 `EG_PHY_PLL` 宏），所以它历史上**完全没有 TB**；而本轮刚把报告 71 → 136 Byte 并改了索引方式 —— **这类改动以前只能烧一次板才知道对不对**。② **做法**：`verification/models/vendor_ip_stub.sv`（**仿真桩**，明确标注"不是厂商行为模型"）—— PLL 桩给 125 MHz 方波；SDRAM 桩是"理想存储器"（读命令延迟 4 拍后按 **1:1** 回 `Sdr_rd_en` + 该地址数据，数据由同一份 `sdr_pat_gen` 算出）。`tb_top_sdram_loopback.sv` 自建 125 MHz 采样 UART 8N1 接收模型，断言：报告**恰好 136 Byte** / **逐字节与期望串一致** / **`CFG=0B1 BASE=000000 N=000400`** / **`BAD0=FFFFFF E=00000000 A=00000000`** / **`led=8`**。③ 该顶层与桩分别加入 `run_sim.ps1` 的 `$RTL` / `$SIM`。④ ★ **TB 自己的一个坑已记档**：`got` 里"第 0 个收到的字节在最高位"，取"流字节 [a..b]"的切片基址要按**末字节 b** 算（`got[8*(135-b) +: 8*(b-a+1)]`）—— 按首字节算会把顺序倒过来，表现为**整串比对通过、单行比对失败**（用一个秒级 scratch 仿真打切片才定位）。⑤ ★★ **效力边界**：桩不模拟初始化/刷新/CAS/突发窗口/地址每拍自增，读数据按地址算出 ⇒ **桩里的 `BAD=0000` 是构造保证的，不是数据完整性证明**；**SDRAM 协议与数据完整性仍只认 M-11 / 阶段 10 的上板实测**。⑥ **接口 / 引脚 / 错误码一字未改**；回归 **574 项 / 22 个 TB 全 PASS**。 | B |
+
+| v1.28 | 2026-10-04 | **§3.9 补上「全片稀疏扫描」的板级验收结果（条目 M-11-PASS-3）**：采集解码后 **136 字节**，**逐字节与设计值一致** —— `SV-SDRAM-LOOP` / `INIT=01 LOCK=01` / **`CFG=0B1 BASE=000000 N=000400`** / **`W=0400 R=0400 CAP=0400 BAD=0000`** / **`BAD0=FFFFFF E=00000000 A=00000000`** / `DONE`；真 CRLF、无前导 `0x00`。⇒ 步长 2049 × 1024 点铺满整个 2M word 空间（4 个 bank、全部行/列地址位都被激励）**读回全部正确** ⇒ **行/体/列地址译码在实物上验证通过**。★ **报告自证**：`CFG=0B1` 与 136 Byte 格式只存在于新版 RTL ⇒ 同时证明综合采用了含 `sdr_pat_gen.v` 的新代码。★ 本轮修掉一个"看起来在测、其实几乎没测"的真问题（旧图案公式在步长 2^11 下 1024 点只有 2 种图案）。**接口 / 格式 / 引脚 / 错误码一字未改**；归档 `evidence/board/`（HEX `AA0F261E…`；解码后 136 B `5BE3B939…`）。 | B |
+
+| v1.29 | 2026-10-04 | **§3.9 做「扩展图案 + soak」：报告 136 → 190 Byte，新增 `ROUNDS` 参数与 6 种图案模式（回归 574 → 588）。** ① **6 种图案模式**（`sdr_pat_gen` 加 `mode` 输入，逐轮轮换）：`0 ADDR`（地址派生，单射 ⇒ 治地址译码）/ `1 LFSR`（xorshift32，双射 ⇒ 压数据线串扰）/ `2 WALK1`、`3 WALK0`（单根数据线为 1/0 在走 ⇒ 治线间粘连）/ `4 ALT`（全 0 全 1 交替 ⇒ 最坏功耗图案）/ `5 ADJ`（相邻位反向 ⇒ 压相邻线耦合）。② **soak（`ROUNDS`）**：把「写→等落地→读→等收齐」当一轮重复 N 轮、每轮换模式；`TOT`（40 位，不重置）累计搬运量 ⇒ 手册 7.12 的"实际搬运数据量"口径。★ **出错立即停（fail fast）**，报告 `RND` 即出错轮次。★ 轮时长**实测 ≈ 22 µs**（2790 拍 @125 MHz）⇒ `ROUNDS ≈ 目标秒数 × 45_000`；60 分钟约 `ROUNDS=1.6e8`。★ **soak 期间"没有输出"就是好消息**（出错会立刻出报告）。③ **报告 136 → 190 Byte**：加 `RND=hhhhhhhh/hhhhhhhh PAT=h` 与 `TOT=hhhhhhhhhh`，`BAD0` 加**轮次**（`BAD0=hhhhhhhh:hhhhhh E=… A=…`，无错哨兵 `FFFFFFFF:FFFFFF`）。④ **仿真桩改成"真存真取"**（`vendor_ip_stub` 由"按地址算图案"改成 2M×32 bit 理想存储器）—— 顶层现在有 6 种模式，桩不可能去猜当前用哪种；并加**故障注入**钩子供 TB 验 fail-fast。⑤ **带桩 TB 扩到 8 项**：阶段 1（`ROUNDS=3`）验报告逐字节 + `RND=3/3 PAT=2`（soak 与模式轮换生效）+ `led=8`；阶段 2（注入 1 bit 错）验只跑 1 轮就停 + `BAD=0001` + **`BAD0=00000001:002805 E=88002805 A=88002804`**（轮次:地址 定位）+ `led=3`。⑥ **★ TB 抓出一个真缺陷**：**xorshift 的 0 是不动点** ⇒ 原"地址**异或**播种"会让某个地址输出**全 0**（最弱图案、掩盖"数据线卡死在 0"）⇒ 改**加非零常数**播种。⑦ **引脚 / 接口 / 错误码一字未改**；回归 **588 项 / 22 个 TB 全 PASS**。**待办：改 `ROUNDS` 重新综合 → 烧板跑 soak → 按待办清单 §2.4.2 步 7b 对账**。 | B |
+
+| v1.30 | 2026-10-04 | **§3.9 回读比对改四级流水（修自研组时序违例）；soak 首轮上板报异常报文（未通过）。** ① **现象**：soak 首轮（`ROUNDS=450000`，位流 11:16）采集 190 Byte —— `RND=00000002/0006DDD0 PAT=1` / `W=R=CAP=0400` / **`BAD=0001`** / `TOT=0000000800` / **`BAD0=FFFFFFFF:FFFFFF`（无错哨兵）**。★ 按 RTL，`bad_cnt` 自增与 `bad0_set` 置位在**同一拍同一分支** ⇒ **两者不可能同时成立**。② **定位**：报文确认来自新构建（`elaborate -top top_sdram_loopback` + `elaborate module sdr_pat_gen`）；**仿真里复现不了**该矛盾（带桩 TB 制造"第 2 轮 1 字不符"时 `BAD0` 正常）；**布线后 STA 找到真问题** —— `clkc[1]→clkc[1]` = **SWNS −3.591 ns / 90 违例端点 / 1431 端点，Fmax 86.274 MHz**，最差路径正是 `cap_cnt → 地址加法 → sdr_pat_gen(mode1 xorshift/mux) → 32 位比较 → bad0_exp[*].ce`（**11.311 ns**、Logic Level 8、net 占 66%）⇒ **`BAD0` 没锁存极可能是时序违例**，`BAD=1` 真伪待定。③ **修复（`top_sdram_loopback.v`）**：回读比对拆 **4 级流水** —— Stage0 响应采样（锁 `sample_{addr,mode,data}`，`cap_cnt/tot_cnt++`）→ Stage1 期望图案（`sample_*` 经 `sdr_pat_gen` 算，锁 `expect_pat`）→ Stage2 比较（结果锁 `cmp_bad`，诊断锁 `cmp_{addr,exp,act}`）→ Stage3 提交（`checked_cnt++`/`bad_cnt++`/首次错写 `bad0_*`）；**`ST_RDWAIT` 出口由 `cap_cnt >= TEST_WORDS` 改为 `checked_cnt >= TEST_WORDS`**（等流水排空，否则会在流水未完时切 `pat_mode` / 发报告）。④ **验证**：回归 **588 项 / 22 个 TB 全 PASS**、`LAYOUT PASS`；`tb_top_sdram_loopback` **8/8**（阶段 2 已改成"**第 2 轮 mode 1 注入 1 bit 错**"，断言 `RND=2/3 PAT=1`、`BAD=0001`、`BAD0=00000002:002805 E=64F2D804 A=64F2D805` —— 正好覆盖板上失败场景）。⑤ **★ 结论**：**这次 soak 既不算通过、也不能当成"发现真实存储错误"**；**报告格式 / 引脚 / 接口 / 错误码一字未改**。**待办：重新综合 + 布线（看自研组 SWNS 是否转正）→ 烧 10 秒版复测**。⑥ 证据归档：`evidence/board/` 条目 **SOAK-R1-ANOMALY**（HEX `8D60E7A2…`；解码后 190 B `081D82C7…`）；交接文档重建 `docs/B链-交接-给下一位Agent.md`。 | B |
+
 ## A Clock / Video Timing 发布补充（2026-10-02）
 
 本次新增模块化 `video_timing.v`、`video_mode_defs.vh`、`clock_gen.v`、`clock_video_subsystem.v`、四套安路官方 PLL `.v/.ipc`，并加固 A 的 `reset_sync.v`。BASE/HD 按编译参数一致选择扫描几何和视频 PLL；输出五时钟、四锁定许可、九路复位和同拍扫描标签。详细用途、频率和验收边界见 [实施说明](clock_video_implementation.md)，端口/时钟域见 [A接口补充](A_clock_video_interfaces.md)。
@@ -1358,3 +1429,15 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 新 XSim 入口包含五项测试；帧量级联调测试显式传入 TIMEOUT_N=5,000,000，B 模块默认值与 `safevision_defs.vh` 均保持原版本。本次不改 B/C RTL、原 B 单元测试、原 B 回归入口、B 专用文档或 B 上板工程/证据。共享文档保留最新远程原文，仅追加 A 说明；现有 B 验收记录仍按其原证据判断。
 
 Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内部 STA 的实际 A 输入与本提交一致，但 TD 健康告警仍开放（runner 返回 2）。尚未完成 A 产品顶层、完整 HDMI/Frame Reader/OSD/应急链与 A 板级验证。旧 `clock_video_20261002` 是过滤前工作树历史记录，不能把其中 B 默认超时变更或全工作树文件计数当成本提交内容。当前范围与新回归见 [A发布核对](A_PUSH_SCOPE_20261002.md)。
+
+## A 阶段十接口补充（v1.17，2026-10-03）
+
+`video_pipeline` 在 pixel_clk 域将像素、x/y、hsync/vsync/de、pixel_valid、line_start/frame_start/active_frame_start 和 hblank/vblank 作为一个 bundle 无条件逐拍推进；全部端口统一 LATENCY 拍，默认 1，LATENCY=0 为组合旁路。默认像素宽度 24；接 B 的 RGB565 显式设置 PIXEL_WIDTH=16，坐标默认 12 位。低有效本域复位清空全链，置同步为不活动电平、消隐为 1。所有数据输入均须已完成 CDC 且同拍对齐；de 与 pixel_valid 独立。
+
+完整端口名、精确采样边沿约定、逐级账本、与 B 的控制事件接线边界及实际测试结果见 [A_stage10_latency.md](A_stage10_latency.md)。原 B/C 接口、原始扫描 frame_start、四槽地址表和 B 上板顶层保持现行协议。该模块不是 FIFO、Frame Reader 或完整 HDMI 顶层。
+
+| 版本 | 日期 | 接口变更 | 负责人 |
+|---|---|---|---|
+| v1.17 | 2026-10-03 | 新增 A 的 video_pipeline 固定 LATENCY 拍接口；全部像素/标签同拍，登记两个 TB、仿真入口和工程源文件。保留 B/C 既有端口与顶层。 | A |
+| v1.18 | 2026-10-04 | 新增 A 基础四模块、测试图、同步字库、状态/坐标文字及四级 OSD；图形前端 RGB888，同域配置，全部扫描标签统一延迟 4 拍。B/C 产品接口、RGB565、地址表与回环顶层不变。详见 A_stages1_9.md。 | A |
+| v1.32 | 2026-10-04 | 整合 A d6f40a6 与 B SDRAM bring-up：完整 21-bit 签名、byte compare pipeline、UART 预取与应用层 TB；保留 B 6 模式 soak/190 Byte 诊断报告。ModelSim B 回归及集成应用层 ModelSim 用例通过；XSim、TD STA 与新构建板测待执行。 | A+B |

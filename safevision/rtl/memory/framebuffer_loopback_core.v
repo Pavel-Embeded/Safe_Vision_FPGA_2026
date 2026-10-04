@@ -71,6 +71,13 @@
 //      自研组 `clkc[1]→clkc[1]` 从 +0.030 ns 掉到 **−1.083 ns / 475 个违例端点**，
 //      最差路径全在 `ra_reg → rpt_vec 选择 → u_uart_tx/shifter`；去掉 512 个回读
 //      寄存器并把向量缩到 1664 bit 后重做。）
+//   ★ 2026-10-03 晚再收一刀：report17 后自研组仍 −0.386 ns / 6 违例（4 条终止在
+//     `u_uart_tx/shifter`），把 208:1 的扁平变址改成 **13 块 × 16 Byte 两级 mux +
+//     块寄存器**（见文件末"报告 mux"整节）—— 逐字节等价，只是把长走线切在中间。
+//   ★ 同日第三次：report18 复算后自研组收到 **−0.081 ns / 2 违例**，但这两条路径的起点
+//     变成了 `rpt_idx → 9 位减法器 → rpt_dn[5]（扇出 195）→ 块 mux`（减法器被综合塞进了
+//     块选择端）。于是把块号**提前一拍存进寄存器 `blk_nxt`**，关键路径变成
+//     `blk_nxt → 块 mux → blk_q`，减法器退回成只喂 5 个 bit 的轻负载路径。
 // ============================================================================
 `include "safevision_defs.vh"
 
@@ -259,6 +266,10 @@ module framebuffer_loopback_core #(
     reg  [15:0] lo_q;
     reg  [8:0]  rpt_idx;            // 报告索引：9 位、**倒计数**（354 Byte 超出 8 位）
     reg         rpt_run;            // 报告发射中（进 S_REPORT 后先装初值，见状态机）
+    // 下一字节索引（倒计数 -1）。唯一的减法器；**只喂状态机的 `rpt_idx` 寄存器**（负载很轻）。
+    // ★ 不要再把它接到报告块 mux 的选择端：report18 就是这么被"4 级 ADDER + 扇出 195"
+    //   压在关键路径上的。块号请用寄存器 `blk_nxt`，见文件末"报告 mux"一节。
+    wire [8:0]  rpt_dn = rpt_idx - 9'd1;
 
     assign rep_valid = (st == S_REPORT) && rpt_run && rep_ready;
     wire   rep_fire  = rep_valid;   // uart_tx 取走一字节
@@ -589,7 +600,7 @@ module framebuffer_loopback_core #(
                             ok <= 1'b1;
                             st <= S_OK;
                         end else st <= S_ERR;
-                    end else rpt_idx <= rpt_idx - 9'd1;
+                    end else rpt_idx <= rpt_dn;   // = rpt_idx-1（减法器只喂这里，不进块 mux）
                 end
             end
             S_OK : st <= S_OK;
@@ -600,7 +611,7 @@ module framebuffer_loopback_core #(
     end
 
     // ------------------------------------------------------------------------
-    // 报告装配（定长 354 Byte；每段都标注"逐字节相加 = 声明字节数"）
+    // 报告装配（定长 208 Byte；每段都标注"逐字节相加 = 声明字节数"）
     // ------------------------------------------------------------------------
     function [7:0] hx;
         input [3:0] n;
@@ -678,9 +689,68 @@ module framebuffer_loopback_core #(
                                      rpt_l6, rpt_l7, rpt_l8, rpt_l9, rpt_l10,
                                      rpt_l11, rpt_l12 };
 
-    // ★ 倒计数取值：索引 = rpt_idx*8（乘 8 = 左移 3 位，无减法器）。
-    //   rpt_idx 从 RPT_LEN-1 递减，正好按 MSB→LSB 逐字节吐出（= 报告书写顺序）。
-    assign rep_data = rpt_vec[ {rpt_idx, 3'b000} +: 8 ];
+    // ------------------------------------------------------------------------
+    // 报告 mux：**两级 + 一级块寄存器**（2026-10-03 晚，为收 STA）
+    // ------------------------------------------------------------------------
+    // 起因：report17 实测自研组 `clkc[1]→clkc[1]` SWNS **-0.386ns / 6 个违例端点**，
+    //   6 条里有 4 条终止在 `u_uart_tx/shifter_reg`（全是报告通路）。最差路径
+    //   `rpt_idx -> rpt_vec 变址 mux -> u_uart_tx/shifter` 数据路径 8.106ns，
+    //   其中 **net 占 71%**、`rpt_idx[4]` 扇出 **47** —— 代价主要在"一条 208:1 的
+    //   大 mux 被摊平进 uart_tx、输出端要横跨芯片"，而不是逻辑层级深。
+    // 做法：把 208 Byte 的扁平变址拆成 **13 块 × 16 Byte** 两级，两级之间插一个
+    //   16 Byte 的块寄存器：
+    //     第 1 级  rpt_idx -> 块选择（13:1 × 128bit）-> blk_q
+    //     第 2 级  blk_q   -> 块内字节选择（16:1 × 8bit）-> rep_data -> uart_tx
+    //   块寄存器把"大 mux -> 跨芯片送 uart_tx"这条长走线**切在中间**，第 2 级只剩
+    //   一个 16:1 的窄 mux，8 根网直接进 uart_tx。
+    // ★ 为什么**逐字节等价**：rpt_idx 逐字节递减 ⇒ 同一个 16 Byte 块内 `rpt_idx[8:4]`
+    //   恒定，所以"下一字节所在的块" = "当前块"（跨块那一拍才真的换块）。
+    // ★ 为什么**恒 ready（TB `rep_ready=1'b1`、报告逐拍流出）也正确**：blk_q 与 rpt_idx
+    //   **在同一个时钟边沿更新**，装的是"下一字节所在的块"；对当前拍而言它与 rpt_idx
+    //   始终一致，所以背靠背发射也不会读到旧块。进 S_REPORT 的第一拍另有 `!rpt_run`
+    //   分支把 blk_q 直接装成末块初值。⇒ 不需要额外的 priming 拍。
+    // ★ 只动 mux 结构：报告内容/接口/字节流**逐字节不变**（TB T8/T9 守住）。
+    // ★ RPT_LEN 必须是 16 的整数倍（208 = 13×16）；改报告长度时这条要一起看。
+    reg  [8*16-1:0] blk_q;                     // 当前 16 Byte 块（低字节 = 块内偏移 0）
+    reg  [4:0]      blk_nxt;                   // 下一字节所在块 = block(rpt_idx-1)（见下）
+
+    // 第 1 级：块选择（13:1 × 128bit），由**寄存器 `blk_nxt` 直接驱动**。
+    //   块号 k 覆盖字节 [16k .. 16k+15] = **比特** [128k .. 128k+127] ⇒ 位偏移 = {k, 7'b0}。
+    //   ★ 这里最容易写错：`{k, 4'b0000}` 是"k×16 位"，只有 `{k, 7'b0}` 才是"k×128 位"。
+    //   ★★ 为什么块号要**提前一拍算好存进寄存器**（report18 的教训）：report18 复算后自研组
+    //      只剩 **−0.081 ns / 2 个违例端点**，而这两条路径的起点都是
+    //      `rpt_idx → 9 位减法器（4 级 ADDER，0.92 ns）→ rpt_dn[5]（扇出 195，1.73 ns）→ 块 mux`
+    //      —— 减法器本来只是给状态机做 `rpt_idx-1`，却被综合塞进了块 mux 的选择端，
+    //      于是"9 位借位链 + 195 扇出的网"全压在这条路上。
+    //      现在把块号**提前一拍**算好：关键路径变成
+    //          `blk_nxt（寄存器）→ 块 mux → blk_q`
+    //      减法器则退回成一条**只喂 5 个 bit** 的轻负载路径（`rpt_idx → 5 位条件减法 → blk_nxt`）。
+    //   `blk_nxt` 恒等于 `block(rpt_idx - 1)`（"下一个字节所在的块"）；不变量由更新式保证：
+    //      只有 `rpt_idx[3:0] == 1`（下一个字节正好跨块）时才 -1，否则保持不变。
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) blk_q <= {8*16{1'b0}};
+        else if (st == S_REPORT) begin
+            if (!rpt_run)                                   // 进报告：装末块初值
+                blk_q <= rpt_vec[ {RPT_LAST[8:4], 7'b0000000} +: 128 ];
+            else if (rep_fire && (rpt_idx != 9'd0))         // 发射一字节：装"下一字节"的块
+                blk_q <= rpt_vec[ {blk_nxt, 7'b0000000} +: 128 ];
+        end
+    end
+
+    // 块号寄存器：恒 = block(rpt_idx - 1)。★ RPT_LEN 是 16 的倍数 ⇒ RPT_LAST[3:0]=15，
+    //   所以 block(RPT_LAST) 与 block(RPT_LAST-1) 同块，初值都用 `RPT_LAST[8:4]`。
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) blk_nxt <= 5'd12;
+        else if (st == S_REPORT) begin
+            if (!rpt_run)                    blk_nxt <= RPT_LAST[8:4];
+            else if (rep_fire) begin
+                if (rpt_idx[3:0] == 4'd1)    blk_nxt <= blk_nxt - 5'd1;  // 下一字节跨块
+            end
+        end
+    end
+
+    // 第 2 级：块内字节选择（16:1）。rpt_idx[3:0] 就是块内偏移。
+    assign rep_data = blk_q[ {rpt_idx[3:0], 3'b000} +: 8 ];
 
     // ------------------------------------------------------------------------
     // 例化：帧写、仲裁、读 DMA、像素 FIFO、mem_ctrl

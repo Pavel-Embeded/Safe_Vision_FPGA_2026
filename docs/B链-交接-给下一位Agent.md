@@ -1,306 +1,439 @@
-# B 链 · 交接说明（给下一位 Agent）
+# B 链 · 交接文档（给下一位接手者 / 多 agent 并行）
 
-> 目的：让接手的人**不必重问一遍"这是干嘛的、做到哪了、下一步干什么、坑在哪"**。
-> 本文件是**交接索引**：一页说清全局，细节都在引用的仓库文档里。
-> 工作区规则见 [`.trae/rules/项目规则.md`](../../.trae/rules/项目规则.md)
-> （Trae 里会自动注入；**若你的运行环境没有注入，请务必先手动读一遍**，它含结构基准与硬约定）。
-> 最近更新：2026-10-03 晚（阶段 10 板级验收通过那一版）。
-
----
-
-## 0. 一句话现状
-
-- **手册阶段 1–10 的板级验收全部通过**：M-9（单扇区读 512/512 逐字节）、M-10（卷基址 / BPB / 根目录）、
-  M-6（连读 100 次）、M-8a（无卡有界退出）、M-11（SDRAM 官方 Demo 回环 `BAD=0000`）、
-  **阶段 10 帧缓存回环（2026-10-03：整帧 307200 像素 `BAD=000000` 逐像素零错 + 三个探针全对）**。
-- **仿真回归全绿**：`run_sim.ps1` → `TOTAL PASS=558 FAIL=0`（20 个 testbench / 2 个行为模型）；
-  `check_repo.ps1` → `LAYOUT PASS`。
-- **唯一遗留是阶段 10 板级顶层的时序**：自研组 `clkc[1]→clkc[1]` **−0.992 ns / 31 个违例端点**
-  （已从 475 收到 31，还差约 1 ns）。**功能不需要再烧板**，只剩 TD 复算与最后一段压时序。
-  → 为什么没压完、还有哪三根杠杆，见 §5。
-- **工作树未提交**（9 改 + 7 新，清单见 §4）。**接手第一件事建议就是提交它**（见 §4 的提交建议）。
+> 初稿写于 2026-10-04 11:55；当前状态更新至 2026-10-04 14:19（四级流水修复已重新布线，10 秒/10 分钟/约 60 分钟 soak 均板测零错）。
+> 本文仍保留初始异常与定位过程作为历史记录；当前未决项以 §1.4 为准。
+>
+> **★ 接手顺序建议**：
+> 1. **§1.4** 当前测试结论与剩余 STA/远端提交核对事项
+> 2. **§0.5** 改动影响面（回答"会不会影响队友代码"）
+> 3. **§10.5 / §11** 多 agent 共享资源与当前未提交工作树
+> 4. **§7** 工具坑（`.al` 快照陷阱、多驱动降黑盒、切片口径……）—— **动手前必读**
+> 5. 其余按需查（§2 报告怎么读 / §3 验收进度 / §4 `BAD!=0` 判读表 / §5 时序杠杆 / §6 判定口径）
 
 ---
 
-## 1. 半小时上手（按这个顺序读）
+## 0. 三十秒了解这个工程
 
-1. [`.trae/rules/项目规则.md`](../../.trae/rules/项目规则.md) —— **规则**（不是文档）：开发基准＝手册、
-   结构基准＝`docs/PROJECT_STRUCTURE.md`、硬约定（收数据 `valid&&ready` 双判 / FAT 侧小端 / SD 命令参大端 /
-   每态独立超时 / 冻结地址表只在 `rtl/include/pixel_format_defs.vh` / 公共算法只在 `rtl/common/` /
-   **一个 `reg` 一个驱动源** / **可综合 RTL 禁 `/` `%`** / **别写 `\r` 转义**）、已知工具坑。**§8 = 进度锚点**。
-2. [`docs/B链-待办与硬件验证清单.md`](B链-待办与硬件验证清单.md) —— **运维手册 + 变更日志**：
-   §零 状态总览、§2.x 各阶段上板步骤与判据、§2.6 排查顺序、§三 已知未完成项、**§四 逐次变更记录
-   （每次改完代码都要在这里加一行）**。
-3. [`docs/interface_spec.md`](interface_spec.md) —— **接口契约**（信号 / 有效电平 / 时钟域 / 延迟 /
-   地址表 / 错误码 / 命名迁移表 / §九 变更历史）。改接口必改它。
-4. [`docs/architecture/module_registry.md`](architecture/module_registry.md) —— 模块登记表（状态 / 负责人 /
-   接口 / 测试），新增模块**先登记再写代码**。
-5. [`docs/PROJECT_STRUCTURE.md`](PROJECT_STRUCTURE.md) —— 目录落点规则（**板级相关一切归
-   `safevision/platform/anlogic_eg4s20_hx4s20c/`**；只有不带引脚的可移植 core 才放 `safevision/rtl/`）。
-
-跑一遍验证（换机器要设 `MSIM_BIN`）：
-
-```powershell
-$env:MSIM_BIN = "<ModelSim 的 win64 目录>"     # 本项目实测：D:\modeltech64_10.7\win64
-powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1     # 期望 TOTAL PASS=558 FAIL=0
-powershell -ExecutionPolicy Bypass -File safevision\tools\check_repo.ps1  # 期望 LAYOUT PASS
-```
+- **赛题**：全国大学生嵌入式芯片与系统设计竞赛 2026 · FPGA 赛道 · 赛题一。
+  你负责的是 **B 链（数据存储链 / 数据搬运）**：TF 卡 → SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲裁/DMA。
+- **工作区**：`f:\workspace\fpga_competition\HX4S20_Contest_202606`
+- **仓库白名单**（`.gitignore` 是白名单制）：只有 `.github/` `docs/` `safevision/` `evidence/` `README.md` `.gitignore` 进仓库。
+- **★ 规则文件（必读）**：`.trae/rules/项目规则.md` —— 每次对话自动注入，里面有硬约定、工具坑、判定口径。
+- **开发基准**：工作区根目录 `赛题一对标学习与开发手册_V2.0.pdf`（**不进仓库**；PDF 很大，别整份 Read，按需抽章节）。
+- **结构基准**：`docs/PROJECT_STRUCTURE.md`（文件放哪以它为准）。
+- **沟通口径**：中文；改动前先讲清"为什么这么做"；解释面向"只懂一点电路基础的小白"。
 
 ---
 
-## 2. 工程全景
+## 0.5 我刚动过什么 / 没动什么（影响面，附证据）
 
-**这是什么**：全国大学生嵌入式芯片与系统设计竞赛 2026 · FPGA 赛道 · 赛题一（SafeVision）。
-本工作区是**三人分工里的 B 链**：**TF 卡 → SPI/SD → FAT32 → 媒体解析 → SDRAM 帧缓存 → 仲裁/DMA**。
-A 负责视频/HDMI/产品顶层，C 负责 UART 命令与日志等；**B 链的边界**看 `interface_spec.md` §四。
+> 这一节是为了回答"改这些会不会影响队友的代码"。**结论：不会。**
 
-**目录落点（记住这四条就够）**：
+**我这次只碰了 B 侧自己的东西**：
 
-| 位置 | 放什么 |
-|---|---|
-| `safevision/rtl/{include,common,storage,media,memory,top,...}` | **不带引脚**的可移植 RTL；`.v` = Verilog-2001 子集 |
-| `safevision/platform/anlogic_eg4s20_hx4s20c/` | **板级一切**：`rtl/`（含引脚的顶层与适配器）、`constraints/`（`pin.adc` / `timing.sdc`）、`ip/`（含加密 IP）、`project/`（TD 工程 `safevision.al`） |
-| `safevision/verification/{unit,models,board,...}` | TB（`.sv`）、行为模型、上板采集脚本 |
-| `docs/` `evidence/` | 文档三件套与管理文档；**要留证的原始数据**（仿真日志 / 报告 / 采集件） |
+| 文件 | 性质 | 谁会用到它 |
+|---|---|---|
+| `platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v` | **板级 bring-up 自测顶层** | 只有 `.al` 把它当 `TOP_MODULE`；**没有任何产品模块例化它** |
+| `safevision/rtl/memory/sdr_pat_gen.v`（新增） | 测试图案生成器 | **只被 `top_sdram_loopback.v` 例化**（×2）+ 它自己的 TB |
+| `safevision/rtl/memory/framebuffer_loopback_core.v` | **阶段 10 自测核心** | **只被 `top_stage10_framebuffer.v` 例化**（也是 B 侧 bring-up 顶层） |
+| `verification/models/vendor_ip_stub.sv`（新增） | 仿真桩 | 只被回归用 |
+| `verification/unit/tb_sdr_pat_gen.sv`、`tb_top_sdram_loopback.sv`（新增） | TB | 只被回归用 |
+| `tools/run_sim.ps1`、`safevision.al`、`README.md`、`.gitignore`、`docs/*`、`evidence/*` | 脚本 / 工程 / 文档 | — |
 
-**`.v` vs `.sv` 的分工是项目自定约定**（不是随手选的）：`rtl/**` 一律 `.v` + **TD 已验证支持的
-Verilog-2001 子集**（要过安路 TD 综合）；`verification/**` 用 `.sv`（不综合，只跑 ModelSim）。别把
-`.sv` 放进 `rtl/`。
+**我一个字都没动的**（`git status` 可验证）：
 
----
+- ★ **`ip/` 下全部**：`sv_system_pll`（A 的 PLL）、加密 SDRAM IP（`sdr_*.enc.v`）、`sdram.v`、`global_def.v`、`sdram.ipc` —— **`git status safevision/platform/anlogic_eg4s20_hx4s20c/ip/` 输出为空**
+- `constraints/`（`pin.adc` / `timing.sdc`）
+- A 的目录：`safevision/rtl/video/`、`safevision/rtl/top/`、`platform/.../rtl/safevision_top/`
+- `interface_spec.md` 里任何**接口契约**（时钟契约、地址表、错误码）—— 只改了 §3.9 的文字说明与 §九 历史
 
-## 3. 交付物与验收状态一览
+**★ 关于"pipeline"这个词的澄清**：
+我加的"四级流水"是 **`top_sdram_loopback.v` 内部的回读比对流水**（响应采样 → 期望图案 → 比较 → 提交），
+**和 A 的 `video_pipeline` 没有任何关系** —— 后者在这个仓库里**只有 README 占位、还没有代码**。
 
-| 阶段 | 内容 | 仿真 | 板级 |
-|---|---|---|---|
-| 1–5 | SPI 地基 / SPI 主机 / SD 初始化 / 每态超时 / CMD17 单扇区读 + CRC16 | ✅ | ✅ **M-9**（512/512 逐字节） |
-| 6–7 | FAT32 挂载（BPB）/ 根目录扫描 / 簇链跟随 / 字节流 / BMP 头 / 索引表 | ✅ | ✅ **M-10**（含卷基址 `BASE=00002000`）+ **M-6** + **M-8a** |
-| 8–9 | FIFO 水位 / 切分缓冲 / 健康度统计 / SDRAM wrapper + 行为模型 | ✅ | ✅ **M-11**（官方 Demo 回环 `BAD=0000`） |
-| 10 | **帧缓存回环**：`frame_writer` + `mem_read_burst` + 地址斜坡探针 | ✅（11 项） | ✅ **2026-10-03 验收通过**（`BAD=000000`） |
-| 11–16 | 突发策略 / 带宽与水位计数 / 仲裁 / 双缓冲与槽所有权 / 帧交换 / 错误上报 | ✅ | ⏳ 板级多须等 A 的整机（或自建 bring-up 顶层）；阶段 16 的五类故障注入也待整机 |
-| 媒体层 | `bmp_parser` / `bmp_unpack` / `wav_parser` / `file_index` | ✅ | — |
-
-其余已落地但**未做**的：`pcm_ring` / `audio_cdc_fifo`（音频链最后两块）、CMD18 多扇区读、
-与 A 的帧交换联仿、整机集成（`safevision_core.v` / `safevision_top.v` 由 A 负责）。
-**完整清单见待办清单 §三（"已知的未完成项，别当成 bug"）** —— 那里逐条写了"为什么现在不做、什么时候做"。
+**A 的代码在哪里**：`safevision_top/`、`safevision_core/`、`video_pipeline/` 三个目录
+**只有 400 字节的 README**（2026-10-02 建的骨架，见项目规则 §2"目录存在 ≠ 功能已实现"）。
+A 的产品顶层**不在本仓库**，所以本仓库里的改动**不可能编译进 A 的设计**。
 
 ---
 
-## 4. 当前工作树（未提交）与建议的第一次提交
+## 1. 当前状态：soak 已通过，仍有时序余项
 
-`git log` 最新提交是 `5e210aa Stage 9: dedup the system PLL onto the A-side sv_system_pll`。
-**阶段 10 的全部成果还没提交**，工作树 = **9 改 + 7 新**：
+> **状态更新（2026-10-04 14:19）**：§1.1–1.3 记录的首轮异常已通过四级流水修复；新构建经 report20 复算后，10 秒、10 分钟及约 60 分钟三档板级 soak 均 `BAD=0000` 完成。初始矛盾报文仍保留作历史证据，不再代表当前状态。尚未解决的是自研时序组轻微负余量及 SDRAM C1/C2 DQ 接口全局负余量；详细下一步见 §1.4。
 
-- **新增 7 个**（其中 6 个是阶段 10 的成果，1 个是本文件）：
-  - `safevision/rtl/memory/framebuffer_loopback_core.v`（**可仿真核心**，含地址斜坡探针 + 208 Byte 报告）
-  - `safevision/rtl/memory/mem_read_burst.v`（读突发引擎：把突发读变成 `mem_ctrl` 的逐字读）
-  - `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v`（**突发桥**，见 §6.1）
-  - `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage10_framebuffer.v`（板级顶层）
-  - `safevision/verification/unit/tb_framebuffer_loopback_core.sv`（11 项断言）
-  - `safevision/verification/unit/tb_sdram_app_adapter.sv`（7 项断言，含"厂商 app 口模型"）
-  - `docs/B链-交接-给下一位Agent.md`（本文件）
-- **改动 9 个**：`README.md`、`docs/B链-待办与硬件验证清单.md`、`docs/interface_spec.md`、
-  `docs/architecture/module_registry.md`、`docs/requirements/traceability.md`、
-  `docs/verification/test_matrix.md`、`safevision/platform/anlogic_eg4s20_hx4s20c/project/safevision.al`
-  （登记阶段 10 的 4 条文件 + `TOP_MODULE` 切到 `top_stage10_framebuffer`）、
-  `safevision/rtl/memory/frame_address_gen.v`（补 `` `include `` + `y*640` 改移位相加）、
-  `safevision/tools/run_sim.ps1`（把 `sdram_app_adapter.v` 与 `tb_sdram_app_adapter.sv` 加进编译/回归列表）。
+### 1.1 历史现象：soak 首轮上板报文自相矛盾
 
-**建议的提交**（信息用 ASCII —— 中文提交信息在这个 shell 里会乱码；分两段更清楚）：
+`Serial Debug 2026-10-04 111710.txt`（HEX 导出 408 B）解码后是 **190 字节**：
 
-```bash
-git add -A
-git commit -m "Stage 10: verify the framebuffer loopback on the board" \
-           -m "Add framebuffer_loopback_core, mem_read_burst, sdram_app_adapter, top_stage10_framebuffer and two TBs. Board result: WR=RD=04B000 BAD=000000 with all three address-ramp probes passing. Regression 540 -> 558 assertions / 20 TBs. Self clock group is still -0.992 ns / 31 endpoints."
-```
-
-> ★ **提交前先看一眼 `git status` 里有没有你不认识的改动**（尤其 `project/safevision.al`：
-> 如果 TD 正开着并保存过工程，磁盘上的 `.al` 可能是 TD 内存状态覆盖的版本）。
-
----
-
-## 5. 阶段 10 完整复盘（一页）
-
-### 5.1 现象 → 定案 → 修复 → 验收
-
-1. **现象**：整帧写→整帧读回比对，**恰好 3/4 的 word 错**（`BAD=038400` = 153600 的精确 3/4），
-   首个不符像素 `BF=00000A`；而帧前 2 个 word 是对的（`W0=59C3ACE1 W1=670FB387`，与核心 LFSR
-   逐步推算完全一致）⇒ **写侧数据与前 2 个 word 的读通路正常，错位从后面开始**。
-2. **定位手段**：加**「地址斜坡探针」** —— **写进去的值 = 它自己的字地址**，于是回读值直接告诉你
-   "这份数据当初被写在哪个地址"，一次上板就能读出**错位量 / 步长 / 丢没丢**。
-   探针 A：字 `0x1000`（16 对齐）起连写 32 个、顺序读回 32 个（跨两次 16 字预取），只报
-   `AM`（32 位匹配位图）/`AF`（首个不符序号）/`AV`（该处实际读回值）—— 因为**存 32 个回读值要
-   512 个寄存器，会把 125 MHz 的报告通路时序打穿**（实测过）。
-   探针 C：**另起一次预取**读字 `0x1004` 起 4 个 —— 这是**区分"写错"还是"读错"的关键**；
-   探针 B：字 `0x1035`（**非 16 对齐**）写 4 读 4，作"非对齐基址"对照。
-3. **定案**：板上报文显示 `A0..A3` 对、**`A4..AF` 又重复回这 4 个值**，而 `B0..B3` 全对
-   ⇒ **一次连续读突发里，读地址只推进 4 个字就回绕**，与帧级"每 4 个读回只对 1 个"完全吻合。
-   根因：`sdram_app_adapter` 把**读预取的地址推进挂在 `Sdr_rd_en` 上**（厂商应答延迟窗内地址被"钉住"
-   不前进）⇒ 违反 M-11 已验形态（见 §6.1）。
-4. **修复**：读引擎按 M-11 形态重写（发命令 / 收响应两条独立计数 + 1:1 配对 + 突发间静默）；
-   另外修掉自己的两个后续问题（**"跳到缓冲外地址但缓冲没排空"不会重预取 ⇒ 永久死等**；
-   以及**报告寄存器数量导致的 STA 回归**）。
-5. **验收（2026-10-03 晚，208 Byte 报文，采集 ID 211030）**：
-
-```
-SV-FB-LOOP
-INIT=01
-WR=04B000 CRC=01 SV=01              ← 整帧 307200 像素写完（CRC / slot_valid 都过）
-RD=04B000 BAD=000000                ← ★ 整帧读回逐像素零错
-W0=59C3ACE1 W1=670FB387             ← 帧前 2 word 与核心 LFSR 逐步推算一致
-AM=FFFFFFFF AF=FF AV=00000000       ← 探针 A：32 个回读全对（跨两次预取）
-C0=1004 C1=1005 C2=1006 C3=1007     ← 探针 C：非零偏移处全对（写侧正常）
-B0=1035 B1=1036 B2=1037 B3=1038     ← 探针 B：非 16 对齐基址全对
-BF=000000
+```text
+SV-SDRAM-LOOP
+INIT=01 LOCK=01
+CFG=0B1 BASE=000000 N=000400
+RND=00000002/0006DDD0 PAT=1      ← 只跑到第 2 轮（总 450000 轮）
+W=0400 R=0400 CAP=0400 BAD=0001  ← 第 2 轮有 1 个 word 不符
+TOT=0000000800                    ← = 2×1024，自洽
+BAD0=FFFFFFFF:FFFFFF E=00000000 A=00000000   ← ★ 无错哨兵，与 BAD=1 矛盾
 DONE
 ```
 
-### 5.2 唯一遗留：自研组时序 ~1 ns
+- `RND=2/450000` ⇒ `ROUNDS=450000` 确实编译进去了（**新代码烧进去了，不是旧位流**）
+- **矛盾点**：按 RTL 逻辑，`bad_cnt` 只在"比对不符"那一拍自增，且同一拍会置 `bad0_set=1`。
+  ⇒ `BAD=1` 与 `BAD0` 哨兵**不可能同时成立**。
 
-**四版 STA 记分（只看自研组 `clkc[1]→clkc[1]`；全局 −6.826 ns 是硬核 PAD 路径，与 stage 9 同数，正常）**：
+### 1.2 定位过程（我已经做完的部分）
 
-| 构建 | SWNS | 违例端点 | 端点总数 | 最差路径在哪 |
-|---|---|---|---|---|
-| report13（加探针**之前**） | **+0.030 ns** | 0 | 3023 | — |
-| report14（354 B 报告 + 512 回读寄存器） | −1.083 | 475 | 4445 | `ra_reg → rpt_vec 选择 → u_uart_tx/shifter` |
-| report15（208 B 报告） | −1.562 | 312 | 3691 | 适配器 `rbase+rhead` 32 位加法器 → `ready` → 核内状态机 |
-| **report16（当前代码）** | **−0.992** | **31** | 3709 | `u_core/st → amask/bw 变址译码 → 报告寄存器 CE`（net 占 76%） |
+1. **确认报文来自新构建**：`syn_1/run.log` 里有 `elaborate -top top_sdram_loopback` 与
+   `elaborate module sdr_pat_gen`；`phy_1/final_timing.rpt` 的 Top Model 是 `top_sdram_loopback`；
+   `.al` 的 `TOP_MODULE` 与文件表都正确。⇒ 排除"烧了旧位流"。
+2. **仿真里复现不了这个矛盾**：带桩 TB 里制造"第 2 轮 1 个字不符"，
+   `bad0_set` 会**正确**置 1 并给出 `BAD0=2:地址 期望 实际`。
+   ⇒ **逻辑本身是对的**，问题不在功能描述。
+3. **查布线后 STA，找到真问题** —— `phy_1/final_timing.rpt`（2026-10-04 11:16）：
 
-**已经做过的两项减负**：① 报告瘦身（354 → 208 Byte、报告寄存器 640 → 199 个、去掉探针回读的
-512 个寄存器）；② 回读结果收集由"**变址写数组**"改成"**纯移位**"（`amask` 右移塞入、
-`cwq/bwq` 左移 16 位）⇒ 32 路/4 路译码器与它们的高扇出网消失。
+   | 项 | 值 |
+   |---|---|
+   | 自研组 `clkc[1]→clkc[1]` | **SWNS −3.591 ns / 90 违例端点 / 1431 端点，Fmax 仅 86.274 MHz** |
+   | 最差路径 | `cap_cnt[5] → 地址加法 → sdr_pat_gen(mode1 xorshift/mux) → 32 位比较 → bad0_exp[*].ce` |
+   | 该路径 | 数据路径 **11.311 ns**、Logic Level 8、**net 占 66%**、扇出 39 |
+   | 全局 | `SWNS −6.826 / STNS −527.544`（硬核 PAD 组，与自研组无关，见 §6） |
 
-**下一步（按杠杆大小排序，都不需要动功能）**：
+   ⇒ **`BAD0` 没锁存极可能是这条路径的时序违例（setup/hold）造成的**；
+   而 `BAD=1` 既可能是**真实数据错**，也可能是**同一违例把比较结果打歪**了。
+   **两种都不能排除 —— 所以这次 soak 既不能算通过，也不能当成"发现了真实存储错误"。**
 
-1. **先复算一次 TD**，看 31 个违例端点还剩多少、最差路径在哪（可能这次改动已经够）。
-2. **把报告 mux 按段拆成小 case**（文档里登记已久的备选）：现在是"1664 bit 向量 + 变址选取"，
-   改成"12 路选段 + 段内小 mux"，能显著缩短走线与 LUT 层级。
-3. 还不行就给 `rep_data` 加**输出寄存器**（注意：索引要提前一拍，且 **`req` 必须在握手上升沿**
-   才撤 —— 见 §7 的 TB 握手三坑）。
+### 1.2.5 为什么"在 soak 期间"动了 RTL（不是乱改，但流程上确实该先问）
 
-> ★ 判定口径（项目规则 §7 末条）：**先看 Clock Summary 的扇出与分组，再看违例是否落进"我们自己的组"，
-> 最后拿厂商参考设计对表**；**不要急着加 `set_false_path` 刷绿**，那会把以后真出问题一起盖住。
-> ★ 参考无害告警：`HDL-5007 concat with unsized literal`（厂商 `.enc` 内部）、
-> `HDL-5917 Input port ... not connected`、以及若干 `*.vh will not be compiled` —— 都不是问题。
+**因果链**：soak 首轮 → 报文自相矛盾 → 查布线后 STA → 发现**自研组时序从 119 MHz 掉到 86 MHz**，
+最差路径**正是我前一步刚加的"首错诊断 + 图案生成 + 比较"那条链**。
 
----
+⇒ 也就是说：**这个 soak 测试本身已经被我上一步的改动弄坏了**（它连"错在哪"都报不出来）。
+在这种状态下继续跑 soak 是没有意义的 —— **必须先把这个测试修好，soak 的结论才可信**。
 
-## 6. 最贵的三条经验（这一层不可仿真，每次猜错 = 一次烧板）
+所以修复是必要的；**但流程上我应该在动手前先说明并征求同意**（项目规则要求"改动前先讲清为什么"）。
+这一点由我承担，**接手者按 §1.4 的顺序继续即可**。
 
-### 6.1 ★★ 厂商 SDRAM app 口：只照抄 M-11 的形态，不要自己发明
+★ 另外要分清：这里改的是**自测顶层内部的流水**，**不是** A 的 `video_pipeline`，
+也**没有碰** `ip/`（PLL / SDRAM IP）、`constraints/` 或任何接口契约 —— 详见 §0.5。
 
-`ip/sdram/` 是**安路加密 IP**（`sdr_*.enc.v`：TD 能解密、ModelSim 不能）⇒ **适配器只能板上验**。
-厂商 App 口的**唯一被实物验证可行**的形态，就是 M-11（`top_sdram_loopback.v`，4096 个连续 word、
-`BAD=0000`）那一版：
+### 1.3 修复与验证状态（仿真、重新布线与 soak 已完成）
 
-> **`App_*_en` 连发 N 拍 + `App_*_addr` 在连发期间每拍自增 + 突发之间 en 静默若干拍 +
-> 读侧按 1:1 收响应（第 k 个 `Sdr_rd_en` 对应第 k 条读命令）+ 读写不重叠**
+在 `top_sdram_loopback.v` 里把"回读比对"拆成 **4 级流水**：
 
-踩过的三个反例（三轮实验定论）：
-① **只拉 1 拍使能** ⇒ 读到全 FF（厂商要 ≥2 拍）；
-② **同址连发** ⇒ 能写进去但相邻地址互相覆盖（读回全是最后写入值）；
-③ **地址跟着应答走（挂在 `Sdr_rd_en` 上）** ⇒ 一次突发只推进 4 个字就回绕（阶段 10 的根因）。
+```text
+Stage 0  响应采样   sdr_rd_en 时锁 sample_{addr,mode,data}；cap_cnt++ / tot_cnt++
+Stage 1  期望图案   由 sample_addr/sample_mode 经 sdr_pat_gen 算，锁进 expect_pat
+Stage 2  比较       32 位比较结果锁进 cmp_bad；诊断数据锁进 cmp_{addr,exp,act}
+Stage 3  提交       checked_cnt++ / bad_cnt++ / 首次错写 bad0_*
+```
 
-**烧板纪律**：这一层不可仿真，**每猜一次协议就是一次烧板**。正确姿势 = **先照抄 M-11 已验证的形态**；
-每次上板前把假设写成**显式判据**，争取"一次 burn 拿全部信息"（斜坡探针就是为这个设计的）。
+并把 `ST_RDWAIT` 的出口从 `cap_cnt >= TEST_WORDS` 改成 **`checked_cnt >= TEST_WORDS`**
+（必须等比较流水排空，否则会在流水未完时切 `pat_mode` 或发报告）。
 
-### 6.2 ★★ 诊断方法论：「值 = 它的地址」的斜坡探针
+**验证状态**：
+- `run_sim.ps1` → **`TOTAL PASS=588 FAIL=0`**（22 个 TB）；当前保存的 preflight 控制台日志只用于本机排查，`.gitignore` 已排除。
+- `check_repo.ps1` → `LAYOUT PASS`。
+- `tb_top_sdram_loopback` **8/8**，阶段 2 对第 2 轮 mode 1 注入 1 bit 错，正确断言 `BAD=0001` 与 `BAD0=00000002:002805 E=64F2D804 A=64F2D805`，覆盖初始板上故障场景。
+- TD 最新 `report20`：Top=`top_sdram_loopback`、Routed；自研 `clkc[1]→clkc[1]` 组的 −3.591 ns 长路径已消失，但仍有 1/1919 个端点 `SWNS=-0.138 ns`（Fmax 122.880 MHz），最差路径在 `rd_i` 经报告 mux 到 UART shifter。
+- 板级 soak：`ROUNDS=450,000`（约 10 秒）、`27,000,000`（约 10 分钟）、`161,000,000`（约 60 分钟）均 `BAD=0000`、`BAD0` 无错哨兵、`DONE`；长测 `TOT=2662A90000`。这证明本次数据检查通过，但**不等于 STA 收敛**。
 
-需要回答"错位几 / 步长几 / 丢没丢"时，**别只写固定图案（1111/2222…）** —— 那只回答"对不对"；
-**写"值 = 该字的地址"**，回读值本身就是地址，一次就能读出整张映射。
-配套两条：**分段基址**（对齐 / 非对齐各一段）**用来区分"写错"还是"读错"**；
-**匹配位图（mask）比"存回读值"省 10 倍寄存器**，而信息量几乎不损失。
+### 1.4 当前未决项与下一步
 
-### 6.3 ★ 报告 / 序列化通路是 TD 时序的地雷
-
-本工程历史上最薄的路径反复出现在**报告装配**上（`rpt_vec[... +: 8]` 的变址选取、
-`u_uart_tx` 的输入 mux）。**加报告字段 / 加回读寄存器之前，先想清楚 STA**：
-优先用"**寄存器 + 小 mux**"，别用"大向量 + 变址"；报告长度一变，`rpt_idx` 的位宽与取值方式都要跟着看。
-
----
-
-## 7. 已知工具/工程坑（都踩过，别再踩）
-
-**TD 工程与约束**
-- **`.al` 只是"上次保存的快照"，跑综合用的是 TD 内存里的状态**：手改 `.al` 后必须**关掉 TD
-  （提示保存选【否】）再重开**，或 GUI 里手动添加；**判断综合了哪个顶层只信 `syn_1/run.log` 的
-  `elaborate -top <名>`**，不要信 UI。
-- **`pin.adc` 给顶层不存在的端口指引脚 = 报错**（`USR-8168` / `HDL-1492`）。多顶层共用一份 `.adc`
-  时把只有部分顶层才有的引脚用 `#` 注释（现在分成"公共 6 条 + `[SD-ONLY]` 4 条"）。
-  **两个修改的生效方式不同**：`read_adc` 每次 Run 都执行（改完 `.adc` 直接重综合即可），
-  而 `.al` 的改动必须**重开 TD**。
-- **"全局 SWNS 为负"不一定是我们的问题**：全局 −6.826 ns 100% 出自 SDRAM 硬核 PAD 路径
-  （`clkc[1]↔clkc[2]`，`clkc[2]` 扇出=1，厂商参考设计同数）。**判定只看自研组**（见 §5.2）。
-
-**仿真/回归**
-- **`run_sim.ps1` 只跑 `.sv`/`.v` 的可仿真部分**；**阶段 10 板级顶层 `top_stage10_framebuffer.v`
-  进不了回归**（含加密 IP）。但**适配器 `sdram_app_adapter.v` 不含加密件**，已进 `$RTL` 且有
-  单元 TB（TB 里内建"厂商 app 口模型"）—— 这是把不可仿真的一层尽量捞回仿真里的做法。
-- **`check_repo.ps1` 只查"引用的文件在不在"**，查不到"新建文件没进 `$RTL/$SIM/$TBS`" ⇒ **两个脚本都要跑**。
-- ★ **仿真全绿 ≠ 能综合**：改完 RTL 还要在 TD 里跑一次综合 —— **多驱动**（一个 `reg` 被两个 `always`
-  写）和**组合除法**这类问题 **ModelSim 完全不报**，只有 TD 报（`HDL-8007` / `Logic Level 100`）。
-  **每个 `.v` 必须自带它用到的头文件**（TD 按文件独立编译、不共享宏；`frame_address_gen.v` 就栽过）。
-- **`sync_fifo` 的 `data_count` 位宽 = `$clog2(DEPTH)+1`**：改深度会改位宽，接线位宽不匹配会把高位
-  悬空（仿真里是 `Z`）⇒ 水位比较变 X、DMA 永不发起。
-- **报告 `rpt_idx` 要按报文长度定宽**（当前 208 Byte ⇒ **9 位**、且是**倒计数**
-  `rpt_vec[8*rpt_idx +: 8]`）。位宽不够会让报告状态机卡死（`rpt_idx >= RPT_LEN` 永不成立）。
-- 断言名是中文 ⇒ **PowerShell 控制台会把 `[FAIL]` 那行显示成乱码**；**判定只看 `PASS=/FAIL=` 计数与 `TOTAL` 行**。
-
-**写 TB（这一轮连踩三次，值得单独记）**
-- ① 用**阻塞赋值**驱动 `req`/`wr` 后紧接着 `while (!ready)`：同一个 delta 里读到的是**旧 ready** ⇒ 误判握手。
-  **⇒ 驱动一律用非阻塞赋值。**
-- ② `while (!ready)` 在 `ready` 为 **X** 时也会退出（`!X` 不为真）⇒ 同样误判。**⇒ 判据写 `ready !== 1'b1`。**
-- ③ ★★ **握手是在上升沿被吃掉**：`req` 必须**恰好跨一个上升沿**。在 negedge 撤 ⇒ 握手丢失；
-  为了躲 ① 多等一个 negedge 再撤 ⇒ `req` 跨**两个**上升沿、同一字被**写两遍**。
-  **⇒ `@(negedge clk)` 拉高 → `@(posedge clk)` 对齐 → 每个上升沿判 ready → 在 ready=1 的那个上升沿同拍撤 req。**
-- ★ 排障有效手法：**把"DUT 内部存储内容"与"回读值"并排打出来**（本轮靠 `read == mem` 逐项一致，
-  把嫌疑从被测模块锁回 TB）。
-- ★ **TB 的判据自己也会错**：给"分段探针"写连续性判据时，只能**段内**判（A 段末尾与 B 段基址本来就不连续）。
-- ★ TB 里的行为模型**要如实标注"它不能证明什么"**（`tb_sdram_app_adapter` 的厂商模型按 M-11 形态建模，
-  守得住"地址每拍自增"，但**不能复现**厂商的内部细节 ⇒ 别让后人以为"仿真过了 = 板子过了"）。
-
-**采集/留证**
-- 串口采集**必须用 HEX/二进制导出**：文本模式会把 ≥0x80 换成 `EF BF BD`，**不可逆**；
-  判据是"把参考按 UTF-8 解码(errors=replace)再编码，若与采集件逐字节相同，就说明 FPGA 发的是对的"。
-- 报告一律用**显式字节** `8'h0D, 8'h0A`（**Verilog-2001 没有 `\r` 转义**，写 `"\r\n"` 得到的是 `72 0A`）。
+1. **soak 已完成，不要只为增加时长继续堆轮数**：10 秒、10 分钟、约 60 分钟三档均板测零错；每轮固定 1024 个稀疏地址点，六种图案逐轮轮换，延长时长增加重复/时间覆盖，不增加每轮地址点数。
+2. **保留 STA 余项，不把板测当作时序收敛**：`report20` 自研 `clkc[1]→clkc[1]` 仅 1/1919 端点违例，但 `SWNS=-0.138 ns`；全局负余量 `SWNS=-6.826 ns` 仍主要在 SDRAM C1/C2 DQ 接口。按 §5 的判定口径继续跟踪，向厂商核实硬核 I/O timing 模型与 4 ns budget；与 A 协商整机顶层时钟/STA 方案。
+3. **原始 log 管理**：可再生的 ModelSim preflight stdout 日志（如 `evidence/sim/soak_preflight_*.log`）只保留本地，`.gitignore` 已排除；仅把 PASS/FAIL 和稳定结论写进 TODO/README。板级 UART HEX 如需正式留证，仍按 §2.4.2 步 9 精选并登记索引。
+4. **提交前先同步远端**：本地 `origin/main` 仍为 `5e210aa`（2026-10-03 Stage 9），本地 `main` 为 `3ec72c6`（Stage 10，ahead 1）；最新可见 A commit 为 `54ab278`，但远端 fetch 失败，不能据此确认 A 的最新推送。刷新成功并逐文件比对前，不要直接 push 共享 `main`。
 
 ---
 
-## 8. 下一步该做什么（按优先级）
+## 2. 这个顶层是什么 / 报告怎么读
 
-**A. 收尾阶段 10 的时序**（唯一阻塞项）：TD 复算 → 按 §5.2 的三根杠杆压到 SWNS ≥ 0。
-        复算时顺便确认 `syn_1/run.log` 是 `elaborate -top top_stage10_framebuffer`、无 `HDL-8007` / 无黑盒。
+**文件**：`safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v`
+（板级 bring-up 顶层，**不属产品链**，不是 A 的产品顶层 `safevision_top.v`）
 
-**B. 补证据归档**（阶段 10 的板级采集**目前只在工作区根目录**，不在仓库白名单内、不会进仓库）：
-        `Serial Debug 2026-10-03 211030.txt`（**验收报文，208 Byte**）应复制进 `evidence/board/`、
-        在 `evidence/board/INDEX.md` 记一条（参考已有条目的写法：条件 / 结论 / 原始文件 + SHA-256）。
-        建议一并归档：`195845`（354 Byte，定案那次）、`205358`（208 Byte，暴露死锁那次）。
-        完整采集清单与解读见待办清单 §2.5。
+```text
+50 MHz(R7) → sv_system_pll（C1=125M、C2=125M@180°）
+           → 厂商 sdram（安路 RSA 加密 IP，只能 TD 解密）
+           → 写图案 → 等落地 → 读回 → 比对 → UART 115200 发定长报告
+端口只有 clk / rst_n / uart_txd / led[3:0]（★ 没有 sd_* —— SDRAM 是封装内硬核）
+```
 
-**C. 板级还能做的实测**（都能独立于 A 的整机）：
-        M-7（3 张不同品牌 TF 卡）、M-8 的"**连读中途拔卡**"分支、M-5（SCLK 频率，可用 ChipWatcher）、
-        M-10 精确拍数（`Sdr_init_done` 到齐的拍数）、**SDRAM 全片稀疏扫描**
-        （`top_sdram_loopback.v` 的 `ADDR_SHIFT=11 + TEST_WORDS=1024`，参数已留，覆盖行/体地址译码）。
+**报告 190 Byte 定长**（逐字节固定；`rpt_idx` 是 8 位倒计数，索引里不含减法器）：
 
-**D. 与 A/C 的待确认项**（越早定越便宜，见待办清单 §1.5）：O-1 `bmp_unpack` 舍入/截断、
-        O-3 `mem_arbiter` 突发长度、O-7 音频 `track_id` 编号规则；以及把 `interface_spec.md` 发给 A/C 过一遍。
+```text
+行1  SV-SDRAM-LOOP                                  (15)
+行2  INIT=hh LOCK=hh                                (17)
+行3  CFG=hhx BASE=hhhhhh N=hhhhhh                   (30) ← ADDR_SHIFT/ADDR_LOWSTEP / 基址 / 每轮 word 数
+行4  RND=hhhhhhhh/hhhhhhhh PAT=h                    (29) ← 已跑轮数 / 总轮数 / 本轮图案模式(0..5)
+行5  W=hhhh R=hhhh CAP=hhhh BAD=hhhh                (33) ← **本轮**计数
+行6  TOT=hhhhhhhhhh                                 (16) ← 累计比对字数（40 bit，不重置）
+行7  BAD0=hhhhhhhh:hhhhhh E=hhhhhhhh A=hhhhhhhh     (44) ← 首个错点：轮次 : 地址 / 期望 / 实际
+行8  DONE                                            (6)
+```
 
-**E. 代码级待办**（等整机或有余力）：CMD18 多扇区读（现只支持 CMD17）、`pcm_ring` 与
-        `audio_cdc_fifo`（音频链最后两块，跨时钟域**必须**用安路软 FIFO，禁止手写异步 FIFO）、
-        WAV 出错后的排空/回退提示音、`bmp_parser` 坏文件提前 abort、`frame_swap_*` 与 A 的联仿。
+- **无错哨兵**：`BAD0=FFFFFFFF:FFFFFF`（地址最大 0x1FFFFF、轮次用 0xFFFFFFFF）
+- **判定**：`W == R == CAP == TEST_WORDS` 且 `BAD == 0000`
+- **`PAT` 含义**（6 种图案模式，逐轮轮换，详见 `safevision/rtl/memory/sdr_pat_gen.v` 头注）：
+  `0 ADDR` 地址派生（单射⇒治地址译码）/ `1 LFSR` xorshift32（双射⇒压数据线串扰）/
+  `2 WALK1`、`3 WALK0` 单根数据线为 1/0 在走（治线间粘连）/ `4 ALT` 全 0 全 1 交替（最坏功耗）/
+  `5 ADJ` 相邻位反向（压相邻线耦合）
 
----
+**关键参数**（`top_sdram_loopback.v` 参数表，约第 127–140 行）：
 
-## 9. 文档同步义务（改代码后必做，不是可选）
+| 参数 | 当前工作树的值 | 说明 |
+|---|---|---|
+| `BASE_ADDR` | `21'd0` | 起始 word 地址 |
+| `TEST_WORDS` | `21'd1024` | **每轮**测试 word 数 |
+| `ADDR_SHIFT` | `11` | 步长高位 |
+| `ADDR_LOWSTEP` | `1` | 步长低位 ⇒ 步长 `(1<<11)+1 = 2049` |
+| **`ROUNDS`** | **`32'd161_000_000`** | 当前源码 soak 参数（约 60 分钟；10 秒 / 10 分钟 / 60 分钟板测均已零错完成） |
 
-| 文档 | 触发条件 |
+- **步长 2049 × 1024 点铺满整个 2M word**（4 bank + 全部行/列地址位都被激励）
+- ★ 用 `+1` 而不是纯 2^11 是关键：纯 2 的幂步长会把**低位地址位钉死**（步长 2048 时 `a[10:0]` 恒 0）
+- **轮时长实测 ≈ 22 µs**（2790 拍 @125 MHz）⇒ **`ROUNDS ≈ 目标秒数 × 45_000`**
+
+| 目标时长 | `ROUNDS` |
 |---|---|
-| `docs/interface_spec.md` | **任何**信号名 / 有效电平 / 时钟域 / 延迟 / 异常策略变更；模块接口增删；地址表或错误码变化；命名调整（另在 §九 补一行变更历史） |
-| `docs/B链-待办与硬件验证清单.md` | 阶段状态 / 回归断言数 / 已知未完成项 / 新增实测或排查条目变化（**文末 §四 变更记录每次都要加一行**） |
-| `README.md` | 结构或回归数变化时的"当前状态"表 |
-| `module_registry.md` / `test_matrix.md` / `traceability.md` | 模块增删或状态变化 |
+| ~10 秒 | `32'd450_000` ← 建议每次改动后的第一次烧 |
+| ~1 分钟 | `32'd2_700_000` |
+| ~10 分钟 | `32'd27_000_000` |
+| ~60 分钟 | `32'd161_000_000` |
 
-**判据**：**改动让某文档的一句话变成错的，就必须改那份文档。**
-"代码已经对了、文档回头补"在这个项目里不成立 —— **三份文档就是交付物的一部分**。
-（另：文档里**只用仓库相对路径**，不要出现盘符、本机用户名、本机安装路径；机器相关的值按变量名描述，
-例如 `MSIM_BIN`。）
+- ★★ **soak 期间"没有输出"就是好消息**：出错会**立即**出报告（fail fast），
+  所以"没提前收到报文" = 到目前为止全对。
+
+---
+
+## 3. 板级验收到哪了
+
+| 阶段 | 内容 | 仿真 | 板级 |
+|---|---|---|---|
+| 1–5 | SPI 地基 / SPI 主机 / SD 初始化 / 每态超时 / CMD17 + CRC16 | ✅ | ✅ M-9（512/512 逐字节） |
+| 6–7 | FAT32 挂载 / 根目录扫描 / 簇链 / 字节流 / BMP 头 / 索引表 | ✅ | ✅ M-10 + M-6 + M-8a |
+| 8 | FIFO 水位 / 切分缓冲 / 健康度统计 | ✅ | ⚠️ 部分（`sync_fifo` 随阶段 10 上过板；`fifo_health_monitor` 的板级量化没做，要等整机） |
+| 9 | SDRAM wrapper + 官方 Demo 回环 | ✅ | ✅ M-11（`BAD=0000`）+ **M-11-PASS-3（全片稀疏扫描）** + **10 秒 / 10 分钟 / 约 60 分钟 soak 全零错** |
+| 10 | 帧缓存回环 | ✅ 11 项 | ✅ 2026-10-03 验收通过（整帧 307200 像素零错） |
+| 11–16 | 突发策略 / 带宽与水位计数 / 仲裁 / 双缓冲 / 帧交换 / 错误上报 | ✅ 全部落地 | ⏳ **板级实测一条都没做**（M-12~M-19，几乎全要等 A 的整机） |
+
+- **回归**：`TOTAL PASS=588 FAIL=0` / 22 个 TB / 2 个行为模型 + 1 个厂商 IP 仿真桩
+- **板级证据索引**：`evidence/board/INDEX.md`（M-9 / M-10 / M-6 / M-8a / M-11 / M-11-PASS-2 / M-11-PASS-3 / STAGE10-*）；10/60 分钟 soak 汇总见待办清单 §2.4.2，临时仿真 preflight log 不归档到仓库
+- **布线后 STA**：`evidence/reports/INDEX.md`（TC-Q-STA-1..4）
+- ★ 阶段 10 顶层的时序**已决定"收手"**：`top_stage10_framebuffer` 是 bring-up 自测顶层、
+  不是交付顶层；时序债留到整机集成后在 A 的顶层重跑 STA。详见待办清单 §2.5 的"决策"。
+
+---
+
+## 4. `BAD != 0` 时怎么判读（拿到 `BAD0` 的三个数就能定性）
+
+| `E` 与 `A` 的关系 | 说明什么 | 下一步查什么 |
+|---|---|---|
+| 只差 **1~几位** | **位级故障**：某根数据线/某个单元边缘 | 该地址、该位；换图案模式复测看是否随图案变 |
+| `A` 是**邻居地址**的值 | **地址译码**问题 | 该地址的行/列/bank 位；用 `PAT=0`（地址派生）复测 |
+| `A` = `00000000` / `FFFFFFFF` | **线卡死**（恒 0 / 恒 1） | 用 `PAT=2/3`（walking-1/0）复测定位到具体线 |
+| `A` 与 `E` 完全无关 | 读通路整体错位 | 响应顺序、`cap_cnt` 对齐 |
+| `BAD0` 又是哨兵 | **诊断寄存器没锁存 ⇒ 又有时序违例** | 回去看 `phy_1/final_timing.rpt` 自研组 |
+
+★ 若同一现象在第 1 轮就出现，说明与"轮次切换"无关；在第 2 轮才出现则重点看轮边界逻辑
+（`ST_ROUND` 与流水排空）。
+
+---
+
+## 5. 自研组时序的杠杆顺序（`clkc[1]→clkc[1]`，目标 SWNS ≥ 0）
+
+已经用过的（都在 `top_sdram_loopback.v` / `framebuffer_loopback_core.v` 里）：
+
+1. 报告瘦身（354 → 208 → 190 Byte）、回读收集改纯移位
+2. 报告 mux 两级化（13 块 × 16 Byte + 块寄存器 `blk_q`）、块号改寄存器 `blk_nxt`
+3. ★ **本轮：回读比对四级流水**（见 §1.3）—— 直接对着 11.311 ns 那条最差路径下刀
+
+还没用、按顺序试：
+
+4. `bad0_*` 的 CE 再省一层（把 `cmp_bad` 再提前一拍 / 用 `cmp_v` 打拍）
+5. 把 `sdr_pat_gen` 的读侧输出**也寄存**（`pat_rd` 进一级寄存器再比较）
+6. 兜底：给报告/比较这类"慢逻辑"加**有理由的 `set_multicycle_path`**
+   —— ★ **不要用 `set_false_path`**（项目规则 §7 末条：那会把以后真出问题一起盖住）
+
+---
+
+## 6. 判定口径（**已被 A 的审查修正过**，别沿用旧说法）
+
+- **全局 `SWNS −6.826 ns`** 落在 `clkc[1] ↔ clkc[2]`（SDRAM DQ 接口）：读侧 `C2→C1` 是
+  **纯 PAD↔PAD**（`Logic Level 0`、`cell 100% / net 0%`、扇出 0）；写侧 `C1→C2` 起点是
+  **厂商控制器内部的寄存器**。
+  ⇒ 旧说法"**100% 出自硬核 PAD 路径**"**不准确**（已更正）；
+  准确说法是"**厂商 SDRAM 控制器与封装内 SDRAM 的接口路径**"。
+  ⇒ **RTL 不可改**，但**不能当"正常"放过** —— 要豁免必须补实物证据或厂商说明。
+- 关键证据：那两条路径的数据部分只有一个**硬核模型常数**（`input (hard ip) 5.000 ns` /
+  `output (hard ip) −5.000 ns`），而 budget 只有 4.000 ns（因 C2 相对 C1 移相 180°）
+  ⇒ **光这个常数就超预算，数学上不可能靠改 RTL 收敛**。
+- 完整核查：**`docs/B链-SDRAM接口与PLL时序核查.md`**（事实 / 厂商出货例程对照 / 实物证据 /
+  PLL `USR-6135` 的 C0 悬空线索 / 候选改法 / 口径修正）。
+- **PLL `USR-6135`**（反馈走局部网络）：我们 `sv_system_pll` 用 `FEEDBK_PATH("CLKC0_EXT")`
+  而 **C0（100 MHz）扇出 = 0（悬空）**；厂商例程把 C0 当 `sd_card_clk` 用、扇出 451。
+  候选改法 (a) 让 C0 带负载 / (b) 改内部反馈（必须重验相位）/ (c) 向厂商确认 ——
+  **B 不单方面改**。
+
+---
+
+## 7. 工具坑（都是真踩过的，务必先看）
+
+1. **★★ `.al` 只是"上次保存的快照"，跑综合用的是【TD 内存里的工程状态】**
+   - 改磁盘 `.al` 而 TD 会话是旧状态打开的 ⇒ `run.log` 里还是旧的 `elaborate -top`
+   - 在 GUI 里点"保存工程"会**用内存状态覆盖磁盘 `.al`**（实测丢过 7 条登记）
+   - ⇒ **手改 `.al` 后必须：关掉 TD（提示保存时选【否】）→ 重开**
+   - ⇒ **判断到底综合了哪个顶层，只信 `safevision_Runs/syn_1/run.log` 里的 `elaborate -top <名字>`，不要信 UI**
+   - ★ 相反，**改 `.v` / 改 `pin.adc` 不需要重开 TD**（`read_adc` 每次 Run 都执行）
+2. **新增模块必须先登记进 `.al`**，否则 TD 会当**黑盒**（2026-10-04 踩过：`sdr_pat_gen.v` 忘了登记）
+3. **`ip/sdram/global_def.v` 被 TD 标 `AutoExcluded` 是正常的**（它是被 `` `include `` 拉进来的，
+   不需要单独编译）—— **看到它被排除不要去"修"**
+4. **一个 `reg` 只能有一个驱动源**。ModelSim 对多驱动**不报错**，TD 会报 `HDL-8007` 并
+   把模块**降级成黑盒**。⇒ 所以轮次边界用了**只停一拍的状态 `ST_ROUND`**，
+   让 `wr_i`/`rd_i`/`cap_cnt`/`bad_cnt` 在**各自的 always 块**里清零，而不是从主状态机里写
+5. **Verilog-2001 没有 `\r` 转义**：`"DONE\r\n"` 编出来是 `72 0A`（字母 r + LF）。
+   要精确控字节就写显式 `8'h0D, 8'h0A`。★ 更深的教训：**TB 与 RTL 用同一个错误转义，
+   两边错得一样，断言照样通过**
+6. **可综合 RTL 禁用 `/` 和 `%`**（除非除数是 2 的幂或编译期常数能被折叠）
+7. **串口采集不能用"文本模式"保存**：`≥0x80` 会被换成 `EF BF BD`（不可逆）。
+   用 **HEX / 二进制**导出
+8. **`.sv` 的切片口径**（踩过一次）：`got` 里"第 0 个收到的字节在最高位"，
+   所以"流字节 `[a..b]`"的切片是 `got[8*(189-b) +: 8*(b-a+1)]` —— **基址按末字节取**。
+   按首字节取会把顺序倒过来，表现是"**整串比对通过、单行比对失败**"
+9. **`run_sim.ps1` 必须保持纯 ASCII 注释**（PowerShell 5.1 无 BOM 时按 ANSI 解码，
+   中文注释会吃掉后面的引号导致解析失败）。中文注释写在 RTL 里
+10. **本机 ModelSim 调用方式**：`$env:MSIM_BIN="D:\modeltech64_10.7\win64"` 后跑脚本；
+    或直接 `"D:/modeltech64_10.7/win64/vlog.exe"` / `vsim.exe`
+11. **这个 shell 环境里 PowerShell 工具的前台 stdout 捕获不稳定**：可靠做法是
+    `run_in_background: true` 后用 `TaskOutput` 取，或把输出 `Out-File -Encoding ascii` 到文件再用 Read
+
+---
+
+## 8. 这个顶层怎么"能仿真"了（重要，别重复劳动）
+
+`top_sdram_loopback` 例化的两个单元 ModelSim 编译不了（加密 `sdr_*.enc.v` + TD 的 `EG_PHY_PLL` 宏），
+历史上**完全没有 TB**。2026-10-04 用**仿真桩**把它拉进了回归：
+
+- `safevision/verification/models/vendor_ip_stub.sv` —— 顶掉那两个黑盒：
+  PLL 桩给 125 MHz 方波；SDRAM 桩是 **2M×32 bit 理想存储器**（真存真取），
+  带**故障注入**钩子 `STUB_ERR_ADDR` / `STUB_ERR_XOR`（默认关闭，TB 用层次引用改）
+- `safevision/verification/unit/tb_top_sdram_loopback.sv` —— 8 项断言，**两个阶段**：
+  阶段 1（`ROUNDS=3` 全过）验报告逐字节 + `RND=3/3 PAT=2` + `led=8`；
+  阶段 2（**第 2 轮**注入 1 bit 错）验 fail-fast + `BAD0` 定位 + `led=3`
+- `safevision/verification/unit/tb_sdr_pat_gen.sv` —— 22 项，守 `sdr_pat_gen` 的"区分度"性质
+  （含**反向对照**：证明旧公式在稀疏扫描下只有 2 种图案）
+
+**★★ 桩的效力边界（别把仿真过了当板子过了）**：
+桩是**理想存储器**，不模拟初始化 / 刷新 / CAS / 突发窗口 / 地址每拍自增，
+也**永远不会报协议错**；写进去立刻就能无损读出来。
+⇒ **桩里的 `BAD=0000` 是构造保证的**；**SDRAM 协议与数据完整性仍然只认上板实测**。
+
+---
+
+## 9. 文档 / 证据地图
+
+| 文件 | 看什么 |
+|---|---|
+| `.trae/rules/项目规则.md` | **规则**：硬约定、工具坑、判定口径、文档同步义务 |
+| `docs/B链-待办与硬件验证清单.md` | **主待办**：§零 状态总览 / §2.4.2 SDRAM 回环上板步骤（含 ROUNDS 表与判据）/ §2.5 阶段 10 复盘 / §三 未完成项 / §四 变更记录 |
+| `docs/interface_spec.md` | **接口冻结依据**（§3.9 是本顶层的接口与报告格式；§一 时钟契约；§九 变更历史） |
+| `docs/B链-SDRAM接口与PLL时序核查.md` | **★ SDRAM `C1↔C2` 与 PLL `USR-6135` 的完整核查**（含厂商对照、实物证据、候选改法） |
+| `docs/B链-原理讲解-入门版.md` | 面向小白的设计取舍解释（含"地址斜坡探针"等经验） |
+| `docs/PROJECT_STRUCTURE.md` | 目录与文件落点规则 |
+| `docs/architecture/module_registry.md` | 模块登记表（状态 / 负责人 / 接口 / 测试） |
+| `docs/verification/test_matrix.md` | TB ↔ 需求的对应矩阵 |
+| `evidence/board/INDEX.md` | **板级证据索引**（每条的原始文件 + SHA-256） |
+| `evidence/reports/INDEX.md` | **布线后 STA 报告索引**（TC-Q-STA-*） |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/project/report*.txt` | 历次 STA 报告（report13..report19 是阶段 10 的记分） |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/project/safevision_Runs/phy_1/final_timing.rpt` | **最新一次布线后 STA**（就是 §1.2 引用的那份） |
+
+**改代码后的文档同步义务**（项目规则 §3，不是可选）：
+`interface_spec.md`（任何信号/时钟域/延迟/接口变更 + §九 补一行）、
+`B链-待办与硬件验证清单.md`（阶段状态 / 回归断言数 / 未完成项变化）、
+`B链-原理讲解-入门版.md`（设计取舍变化）、`README.md`（结构或回归数变化）。
+
+---
+
+## 10. 环境与常用命令
+
+```powershell
+# 全量回归（约 2 分 30 秒）—— 必须全绿：TOTAL PASS=n FAIL=0
+$env:MSIM_BIN = "D:\modeltech64_10.7\win64"
+powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1
+
+# 目录/脚本自检（不需要 ModelSim）—— 必须 LAYOUT PASS
+powershell -ExecutionPolicy Bypass -File safevision\tools\check_repo.ps1
+```
+
+- 回归脚本的三个列表 `$RTL` / `$SIM` / `$TBS` 必须同步加新文件（**不加进去 = 死文件**）
+- 想单独看某个 TB：`vsim -c -do "run -all; quit -f" work.<tb名>`
+- ★ 想快速看某个内部信号（不等 UART 报文）：写个**秒级 scratch TB** 用层次引用读
+  （例如 `u_top.bad_cnt`、`u_top.u_sdram.mem[addr]`）—— 比反复烧 2.5 分钟的回归快得多
+
+---
+
+## 10.5 ★★ 多 agent 并行怎么分工（本工程特别要注意的地方）
+
+> 接下来打算**多个 agent 一起用**，那先看这一节。本工程的并行难点不在代码，而在**共享资源**。
+
+### 第一步：先对齐远端，再决定提交
+
+本地 `main` 为 `3ec72c6`，而本地 `origin/main` 仍停在 `5e210aa`；fetch 未成功，A 是否有更新推送尚未确认。先通过成功的远端刷新/提交 hash 对齐 A 的文件清单，再逐文件检查当前未提交的 B 改动。**未确认远端前不要直接 push，也不要用 pull/merge 覆盖未提交工作树。**当前精确状态见 §11。
+
+### 共享资源清单（**同一时刻只允许一个 agent 碰**）
+
+| 资源 | 为什么危险 |
+|---|---|
+| **TD 工程 `.al` 的 `TOP_MODULE`** | 它是**全局开关**。A agent 切成 `top_sdram_loopback` 时，B agent 烧出来的位流就不是他以为的顶层了 |
+| **板子（只有一块）** | 一次只能烧一个人的位流；而且烧之前要确认 `pin.adc` 的 `[SD-ONLY]` 注释状态与当前顶层匹配 |
+| **`safevision/tools/run_sim.ps1`** | `$RTL` / `$SIM` / `$TBS` 三个列表是**共享的**；两个 agent 同时加 TB 会冲突 |
+| **文档三件套**（`interface_spec.md` / `B链-待办与硬件验证清单.md` / `B链-原理讲解-入门版.md`）+ `README.md` | 所有人都要按规则同步它们，**同时改必冲突** |
+| `constraints/pin.adc` | `[SD-ONLY]` 四条的注释状态随 `TOP_MODULE` 切换 |
+
+### 建议的并行分工（按**文件所有权**切，互不重叠）
+
+| Track | 内容 | 名下文件（只改这些） | 冲突面 |
+|---|---|---|---|
+| **T1（已完成板测，仍有 STA 跟进）** | 10 秒 / 10 分钟 / 约 60 分钟 SDRAM soak 均 `BAD=0000`；跟进 `report20` 自研组 −0.138 ns 及 C1/C2 DQ 接口时序判定 | `top_sdram_loopback.v`、soak/STA 文档 | 后续若需改 RTL 才占 TD + 板子 |
+| **T2** | 板级实测 M-7（多卡）/ M-8（拔卡）/ M-5（SCLK） | `platform/.../rtl/top_stage6_fat32_mount.v`（如需改）、`constraints/pin.adc` 的 SD 段 | **与 T1 抢 TD + 板子 ⇒ 必须串行** |
+| **T3** | 音频链最后两块 `pcm_ring` / `audio_cdc_fifo`（还没写）+ TB | `safevision/rtl/audio/`、`verification/unit/tb_*`（**新文件**） | 只碰 `run_sim.ps1` 的三个列表（**协调后一次只一人改**）；**不碰板子** |
+| **T4** | 文档/证据整理：把 `report13..19` 归档进 `evidence/reports/`、校对 `docs/` | `evidence/reports/INDEX.md`、`docs/`（非三件套部分） | **不碰 RTL / `.al` / 板子**；★ 三件套由改动者各自同步，别抢 |
+| **T5** | 阶段 11–16 板级实测（M-12~M-19）+ PLL `C0` 负载决策 | 阻塞中 | **要等 A 的整机** |
+
+### 协作规则（建议直接照做）
+
+1. **提交粒度**：每个 track 做完一件可验证的事就提交一次；提交信息用 **ASCII**（这个 shell 里中文会乱码），
+   且**别用英文双引号**（会被 shell 吃掉）。
+2. **改共享资源前先声明**：尤其是 `.al` 的 `TOP_MODULE`、`pin.adc`、`run_sim.ps1`。
+3. **回归是硬门槛**：任何 RTL/TB 改动，**必须自己跑**
+   `run_sim.ps1`（`TOTAL PASS=n FAIL=0`）+ `check_repo.ps1`（`LAYOUT PASS`）**再交**。
+4. **烧板前先核对**：`syn_1/run.log` 里的 `elaborate -top <名字>` 是不是你想要的那个顶层
+   （`.al` 是快照、TD 用内存状态，见 §7 第 1 条）。
+5. **文档同步义务**（项目规则 §3）**由改动者负责**，不要指望别人补。
+6. **别让两个 agent 同时改同一个 `.v`**：本工程的 RTL 都是单文件大模块，合并冲突很难看。
+
+---
+
+## 11. 工作树状态（未提交、未 push；2026-10-04 14:19 核对）
+
+`HEAD=3ec72c6`（Stage 10），本地 `main` 比本地跟踪的 `origin/main=5e210aa` 领先 1 个提交。最新本地可见 A commit 为 `54ab278`，但多次 fetch 未能刷新远端，所以**不能据此确认 A 是否又有新推送**。提交/推送前需先成功同步并逐文件比对。
+
+当前状态：**13 个已跟踪文件修改、10 个未跟踪文件，未暂存、未提交**。未跟踪新增项包括：
+
+- `safevision/rtl/memory/sdr_pat_gen.v`
+- `safevision/verification/models/vendor_ip_stub.sv`
+- `safevision/verification/unit/tb_sdr_pat_gen.sv`
+- `safevision/verification/unit/tb_top_sdram_loopback.sv`
+- `docs/B链-SDRAM接口与PLL时序核查.md`
+- `evidence/board/` 下 1 份 M-11-PASS-3 HEX 与 3 份阶段 10 HEX
+
+修改项包括 `top_sdram_loopback.v`（soak、6 模式、四级流水）、`framebuffer_loopback_core.v`、`safevision.al`、`run_sim.ps1`、README、`.gitignore`、待办/接口/模块/测试文档及证据索引。
+
+`evidence/sim/soak_preflight_20261004_1220.log` 是可再生全量回归控制台日志，**保留本地但由 `.gitignore` 排除，不提交**；已将 `TOTAL PASS=588 FAIL=0` 汇总进文档。没有删除本地日志，也没有暂存或提交任何内容。
+
+**当前建议**：先刷新远端并确认 A 的最新提交；再审核 `.gitignore`、文档与精选板级 HEX 的差异，确认后才决定是否提交/推送。不要基于过期 `origin/main` 直接 push。
+
+---
+
+## 12. 一句话总结
+
+> B 链阶段 1–16 全部落地、回归 588 项全绿；板级阶段 1–10、M-11 全片稀疏扫描，以及 10 秒/10 分钟/约 60 分钟 SDRAM soak 均零错。
+> 四级流水已重新综合布线并通过板测；但 `report20` 的自研组仍有 **1/1919 端点 SWNS −0.138 ns**，全局 SDRAM C1/C2 DQ 接口仍有负余量，不能说 STA 已完全收敛。
+> 下一步重点是确认 A 最新远端提交、维护选定证据并核查剩余时序/厂商模型；临时 preflight run log 只在本地保留。

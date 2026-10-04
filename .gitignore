@@ -7,6 +7,13 @@
 !/safevision/
 !/evidence/
 
+# ---- 本地生成的大体积文档（不进仓库，避免仓库膨胀）----
+# docs/SafeVision技术栈详解 是一份面向零基础的图文讲解（PDF 约 1.9 MB + 自包含 HTML）。
+# 它是【本地生成的讲解材料】，不是交付物的一部分；HTML 源文件与 PDF 都留在本地。
+# 需要重新生成时按 HTML 里的方式重跑一次无头浏览器渲染即可（不进版本管理）。
+/docs/SafeVision技术栈详解-零基础版.pdf
+/docs/SafeVision技术栈详解.html
+
 # Regenerable simulation and synthesis output.
 /safevision/verification/work/
 /safevision/verification/work_*/
@@ -44,6 +51,8 @@ modelsim.ini
 *.vcd
 !evidence/**/*.log
 !evidence/**/*.vcd
+# Reproducible preflight run transcripts are local diagnostics, not curated evidence.
+/evidence/sim/soak_preflight_*.log
 
 # Never commit licenses, credentials, caches or editor debris.
 *.lic

@@ -220,16 +220,16 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | 手册学习阶段 1–16 | **全部落地并仿真通过** |
 | 媒体格式层（BMP 解析/解包、WAV 解析） | 已完成并仿真通过 |
 | 目录树与命名 | 已按本项目结构（PROJECT_STRUCTURE.md）核对完成（含"同一常量多副本"的结构性收敛） |
-| B 链仿真回归 | **558 项断言 / 20 个 testbench / 2 个行为模型，全 PASS（已在本机重跑）** |
+| B 链仿真回归 | **588 项断言 / 22 个 testbench / 2 个行为模型 + 1 个厂商 IP 仿真桩，全 PASS（已在本机重跑）** |
 | 板级顶层 `top_stage5_sector_rd.v` | **已写、仿真通过、上板跑通**（板上 LED = `8`；`tb_top_stage5_sector_rd` 5 项断言） |
 | 板级顶层 `top_stage6_fat32_mount.v` | **已写 + 仿真通过（阶段 6–7）**：上电 → SD 初始化 → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner`(+walker) → UART 发**纯 ASCII 报告**；★ **卷基址只在此顶层加一次**（见 [interface_spec §3.2.1](docs/interface_spec.md)）。★ 磁盘上的 `.al` 现为阶段 5 配置，本模块**当前未登记进工程**（见 [module_registry.md](docs/architecture/module_registry.md) 的说明） |
-| 板级顶层 `top_sdram_loopback.v` | **★ 已写 + 已综合 + 上板通过（2026-10-02，阶段 9 第一步 / 手册 7.9）**：50 MHz → `sv_system_pll`（125 MHz + 180°）→ 厂商 SDRAM 控制器 → 写图案 / 读回比对 → UART 发定长 71 Byte 报告。实测 **`INIT=01 LOCK=01` / `W=1000 R=1000 CAP=1000 BAD=0000` / `DONE`**，与设计值一字不差（`evidence/board/` 条目 M-11-PASS）。★ **无 TB、进不了回归**（控制器是安路加密 IP，只能 TD 解密）；TD 工程 `TOP_MODULE` 已指向它。★ **2026-10-03：PLL 去重（B 的 `sys_pll` 并入 A 的 `sv_system_pll`）后已重新综合 + 复测通过**，报文与 M-11 逐字节相同（条目 M-11-PASS-2） |
+| 板级顶层 `top_sdram_loopback.v` | **旧版已上板通过（M-11-PASS）；A/B 当前集成源码尚待重新回归、STA 与板测**：50 MHz → `sv_system_pll`（125 MHz + 180°）→ 厂商 SDRAM 控制器 → 写图案 / 读回比对 → UART 发定长报告。实测 **`INIT=01 LOCK=01` / `W=1000 R=1000 CAP=1000 BAD=0000` / `DONE`**，与设计值一字不差（`evidence/board/` 条目 M-11-PASS）。**应用层回归**：B 的 `run_sim.ps1`（ModelSim）全量 22 TB / 588 项通过；合并后的 A/B `tb_sdram_loopback.sv` 也通过 ModelSim fallback 六场景及 21-bit 穷举。A XSim 专用入口因本机缺少 XSim 2018.3 未执行。两种模型均不模拟真实 SDRAM AC。当前集成版已重跑 TD Routed STA：全局 setup −6.826 ns（65 个端点），自研 C1 报告路径 −0.094 ns（1 个端点），故仍不收敛；尚无匹配位流或合并版板测。TD 工程 `TOP_MODULE` 设为 `top_sdram_loopback`。★ **2026-10-03：PLL 去重（B 的 `sys_pll` 并入 A 的 `sv_system_pll`）后已重新综合 + 复测通过**，报文与 M-11 逐字节相同（条目 M-11-PASS-2）。★ **2026-10-04 改版（M-11 补测「全片稀疏扫描」+「扩展图案 + soak」）**：报告 71 → **190 Byte**（加 `CFG` 自描述、`RND/PAT` 轮次与图案模式、`TOT` 累计搬运量、`BAD0` 首个错点含轮次），B 旧版参数使用 `ADDR_SHIFT=11 + ADDR_LOWSTEP=1 + TEST_WORDS=1024`（步长 2049 的 1024 个稀疏样本跨越近乎完整地址范围，不等于逐 word 全容量测试）；新增 **`ROUNDS` soak**（重复 N 轮、每轮换一种图案模式、**出错立即停**）与 **6 种图案模式**（地址派生 / LFSR / walking-1 / walking-0 / 全0全1 / 相邻位交替）；测试图案抽成**可仿真**的 `rtl/memory/sdr_pat_gen.v` + `tb_sdr_pat_gen`（22 项）—— 因为旧图案公式在稀疏扫描下**只有 2 种图案**（写读自比看不出来）。★ **此前本地 B soak 构建**的全片稀疏扫描与 10 秒 / 10 分钟 / 约 60 分钟 soak 均板测零错（汇总见待办清单 §2.4.2）；这些结果不自动验收 A `d6f40a6` 后的合并 RTL。A/B 合并版应用回归已通过，但最新 TD routed 仍有全局 setup −6.826 ns 与自研报告路径 −0.094 ns；未生成新位流、未进行合并版板测 |
 | 板级顶层 `top_stage10_framebuffer.v` | **★ 已写 + 已上板 bring-up（2026-10-03，阶段 10 帧缓存回环）**：`framebuffer_loopback_core`（可仿真，11/11 PASS）+ `sdram_app_adapter`（通用口↔厂商 App 口，**6/6 PASS**，有单元 TB）+ 厂商 `sdram` + `uart_tx`。★ **2026-10-03 板上验收通过**：整帧 307200 像素**逐像素零错**（`WR=RD=04B000`、`BAD=000000`），三个地址斜坡探针全对（`AM=FFFFFFFF`、`C0..C3=1004..1007`、`B0..B3=1035..1038`）。四轮推进：**第 2 轮用「地址斜坡探针」定案**（一次连续读突发里读地址只推进 4 个字就回绕，帧级 `BAD` 恰为 3/4）⇒ 读引擎按 M-11 形态重写；**第 3 轮验证读侧已根治**（`AM=FFFFFFFF` 32/32 全对、跨两次预取；探针 C 全对），但暴露我引入的一处死锁（缓冲没排空时跳到缓冲外地址不重预取 ⇒ `B=0000` + `WR=000000`）⇒ 已修 + 补 TB 用例 D7。报告瘦身为 208 Byte 修 STA（违例端点 475 → 312），最差路径换成适配器的 32 位加法器 ⇒ 已用寄存器 `rexp` + 读侧 ready 寄存器化切掉。**待重新综合（务必确认自研组 SWNS ≥ 0）+ 复测**，步骤见 `docs/B链-待办与硬件验证清单.md` §2.5 |
 | 厂商 IP 落库 | **新增（2026-10-02）**：`ip/sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）、`ip/pll/`（`sv_system_pll` / `sv_video_*_pll` / `sv_audio_pll`）。EG4S20 的 SDRAM 是**封装内硬核**（2M×32），信号不出引脚 ⇒ `pin.adc` 不需要 SDRAM 引脚 |
 | **阶段 1–5 上板验收** | ★ **已通过（2026-10-02）**：实物 UART 回传 512 Byte 与电脑侧参考 **SHA-256 完全相同**（M-9，见 [evidence/board/INDEX.md](evidence/board/INDEX.md) 的 M-9-PASS） |
 | 引脚约束 `pin.adc` / 时序约束 `timing.sdc` | **已写并核对**（引脚来自开发板手册官方表 + 原理图 + 厂商例程，三处一致）；`uart_txd=D12` 已确认为 FPGA 发送脚，板载 USB-UART 可直接用 |
 | TD 工程 `project/safevision.al` | **综合 → 布局 → 布线 → 位流全跑通并已上板**（`TARGET_LBA=8192` 那次构建，2026-10-02 17:29 下载成功）；**时序收敛**（Setup WNS +11.297 ns / Hold WNS +0.046 ns，违反端点 0，50 MHz 下 Fmax 114.9 MHz），资源 IO 11/188、LUT 814/19600、REG 434/19600。★ 该时序/资源报告（TC-Q-STA）对应的是 `TARGET_LBA=1000` 的构建，重综合后建议补一条证据 |
-| 上板实测（M-1 ~ M-19） | **阶段 1–7 + 阶段 9 第一步已通过**：**M-9**（512/512 逐字节）、**M-10**（卷基址/BPB/目录 5 项）、**M-6**（连读 100 次）、**M-8a**（无卡有界退出）、**M-11**（SDRAM 回环 `BAD=0000`）。待做：M-5/M-7/M-8「连读中途拔卡」/M-10 精确拍数/阶段 10–16（须等 A 的整机）。步骤见 [B链-待办与硬件验证清单.md](docs/B链-待办与硬件验证清单.md) §2.2 / §2.4.2 |
+| 上板实测（M-1 ~ M-19） | **阶段 1–7 + 阶段 9 第一步已通过**：**M-9**（512/512 逐字节）、**M-10**（卷基址/BPB/目录 5 项）、**M-6**（连读 100 次）、**M-8a**（无卡有界退出）、**M-11 历史 B 构建**（稀疏扫描及三档 soak `BAD=0000`；A d6f40a6 合并版待复测）。待做：M-5/M-7/M-8「连读中途拔卡」/M-10 精确拍数/阶段 10–16（须等 A 的整机）。步骤见 [B链-待办与硬件验证清单.md](docs/B链-待办与硬件验证清单.md) §2.2 / §2.4.2 |
 | 整机集成 `safevision_core.v` / `safevision_top.v` | A 负责 |
 | A 板级时钟复位 | `reset_sync.v` 与 `clock_reset_ctrl.v` 已写并仿真通过（88 项）；PLL IP/约束/板级实测待完成 |
 
@@ -293,3 +293,18 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 新 XSim 入口包含五项测试；帧量级联调测试显式传入 TIMEOUT_N=5,000,000，B 模块默认值与 `safevision_defs.vh` 均保持原版本。本次不改 B/C RTL、原 B 单元测试、原 B 回归入口、B 专用文档或 B 上板工程/证据。共享文档保留最新远程原文，仅追加 A 说明；现有 B 验收记录仍按其原证据判断。
 
 Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内部 STA 的实际 A 输入与本提交一致，但 TD 健康告警仍开放（runner 返回 2）。尚未完成 A 产品顶层、完整 HDMI/Frame Reader/OSD/应急链与 A 板级验证。旧 `clock_video_20261002` 是过滤前工作树历史记录，不能把其中 B 默认超时变更或全工作树文件计数当成本提交内容。当前范围与新回归见 [A发布核对](docs/A_PUSH_SCOPE_20261002.md)。
+
+## A 阶段十：数拍与标签对齐（2026-10-03）
+
+新增 `video_pipeline.v`、`tb_video_pipeline.sv`、`tb_video_pipeline_timing.sv` 和 `run_video_pipeline_sim.ps1`：验证任意固定延迟、手册 1+2+1=4 拍链路、RGB565 接口、整帧扫描与中途复位。两个新 TB 全部通过；A/B 源文件合编、TD 的 45 条工程源 RTL 综合通过。`safevision.al` 仅登记新模块，仍使用 B 的 `top_sdram_loopback`，不包含仿真 TB。
+
+独立 BASE/HD 验证顶层内部布局布线时序无负裕量；已有 PLL 反馈网络告警和板级 I/O 预算仍开放，尚不能称整机签核。端口、数拍约定、运行命令和验收边界见 [A阶段十说明](docs/A_stage10_latency.md)。本次只交付源代码、TB、仿真入口与必要接口/工程登记，不上传运行日志或时序记录。
+
+
+## A 阶段 1–9 发布补充（2026-10-04）
+
+已新增基础四模块、五种测试图/单像素框、同步 ASCII 字库、状态/坐标文字和四级 OSD 图形前端；5 个新 TB、ROM 初始化回读、BASE/HD 内部 STA 通过，原 B 18 TB/540 项和阶段十回归通过。B/C RTL 及 B 回环顶层保持现行版本，`.al` 只增加 A 源文件，当前 56 个条目。源码与复现方法见 [A 阶段 1–9](docs/A_stages1_9.md)。原 SDRAM 负裕量与 PLL 健康告警仍开放，未完成上板/HDMI 验收；功能完成不等于整机烧录验收。
+
+## B 阶段 9：A/B 集成 UART selector 时序修复（2026-10-04）
+
+`top_sdram_loopback.v` 的 190 Byte 报告选择器已改为两级（行寄存、行内取字节），Routed C1→C1 setup 从 `−0.094 ns` 改善为 `+0.113 ns`，0/2517 违例端点，Fmax 126.791 MHz。全局 setup 仍 `−6.826 ns`（SDRAM DQ），hold `+0.030 ns`；因此不是整板时序通过。当前 selector 版已用 ModelSim SE-64 10.7 跑过专用应用层仿真：编译 0 error/0 warning、六场景 PASS；独立索引对照另通过 190/190 项。当前源码尚未生成匹配位流或上板。TD GUI/上板操作由用户完成，后续 10 分钟 soak 通过核验后再讨论 push。详见 [SDRAM/PLL 时序核查 §7.2](docs/B链-SDRAM接口与PLL时序核查.md) 和 [待办清单 §2.4.2](docs/B链-待办与硬件验证清单.md)。

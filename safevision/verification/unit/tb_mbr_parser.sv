@@ -232,6 +232,7 @@ module tb_mbr_parser;
         begin
             mbr_start = 1'b1;
             @(posedge clk);
+            #1; // Hold through DUT sampling/NBA; avoid active-region race.
             mbr_start = 1'b0;
             wait (parse_done === 1'b0);
             wait (parse_done === 1'b1);
@@ -264,6 +265,7 @@ module tb_mbr_parser;
         // ---- SD 初始化 ----
         init_start = 1'b1;
         @(posedge clk);
+        #1; // Hold through DUT sampling/NBA; avoid active-region race.
         init_start = 1'b0;
         wait (init_done === 1'b1);
         spi_sel = 1'b1;
