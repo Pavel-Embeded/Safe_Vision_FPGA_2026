@@ -12,7 +12,7 @@
 |---|---|
 | 项目 | 安视 SafeVision · 赛题一 HDMI 多媒体播放与应急视听疏散终端 |
 | 平台 | 康芯 HX4S20C 开发板 / 安路 EG4S20BG256 |
-| 版本 | v1.32（合并 A d6f40a6 的 21-bit 可逆图案、byte compare pipeline、UART 预取及应用层 TB；保留 B 6 模式 soak/190 Byte 诊断报告。合并版回归与上板验收待完成） |
+| 版本 | v1.33（在 A/B v1.32 集成基础上合入 db4acfa 的仲裁、DMA 突发与帧交换确认修正；保留 B soak 报告与 A 图形接口） |
 | 负责人 | B 队员（数据存储链 / 数据搬运） |
 | 依据 | 赛题一官方选题指南；《赛选手册 V2.0》第 6/7/10 章 |
 | 维护规则 | 接口先于联调存在；改接口必同步改文档并通知对方；信号名、有效电平、时钟域、延迟、异常策略五者必须写清 |
@@ -1441,3 +1441,19 @@ Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内
 | v1.17 | 2026-10-03 | 新增 A 的 video_pipeline 固定 LATENCY 拍接口；全部像素/标签同拍，登记两个 TB、仿真入口和工程源文件。保留 B/C 既有端口与顶层。 | A |
 | v1.18 | 2026-10-04 | 新增 A 基础四模块、测试图、同步字库、状态/坐标文字及四级 OSD；图形前端 RGB888，同域配置，全部扫描标签统一延迟 4 拍。B/C 产品接口、RGB565、地址表与回环顶层不变。详见 A_stages1_9.md。 | A |
 | v1.32 | 2026-10-04 | 整合 A d6f40a6 与 B SDRAM bring-up：完整 21-bit 签名、byte compare pipeline、UART 预取与应用层 TB；保留 B 6 模式 soak/190 Byte 诊断报告。ModelSim B 回归及集成应用层 ModelSim 用例通过；XSim、TD STA 与新构建板测待执行。 | A+B |
+
+## 存储联调修正（远端提交 db4acfa，2026-10-04）
+
+本节记录 db4acfa 引入的存储握手、DMA 突发及帧交换确认修正；具体接口契约与原提交说明保持如下，并与本文件的 A/B 集成及 soak 参数说明并存。
+
+- `memory_arbiter`：突发 ACK 后留一拍准备首字；每个命令仅在 `mem_req && mem_ready` 的时钟边沿被接受，停顿时保持地址/模式。读通道的 `busy` 保持到最后一个 `mem_rdata_valid` 响应返回，之后才能切换通道。下游须按序返回每个已接受读命令的一个响应。若永久丢失响应，需要故障管理执行复位/恢复；本接口没有新增响应超时输出。饥饿事件先寄存再计数，`rd_starve_cnt/wr_starve_cnt` 比事件晚一拍更新，以缩短 125 MHz 控制路径。
+- 写数据发送方应在所属通道的 `busy && mem_req && mem_ready && mem_wr` 成立时推进一个 word；`mem_req && !mem_ready` 期间保持 `wr_data/sd_wdata`。这些握手量由装配层连接；`wr_ack/sd_ack` 仍只确认整个突发，不是逐 word 确认。SD 的读/写模式在 grant 时锁存。
+- `video_read_dma`：收集与输出索引宽度由 `BURST_WORDS` 决定；支持默认 16 以及 64 word 等合法配置。最后一次突发按剩余帧长度缩短，按本次长度预留 FIFO 空间。最后一个注册的 FIFO 写脉冲被消费后，再读水位；`done` 在整帧像素已送入 FIFO 后出现。接受 ACK 同拍的首个读响应。
+- DMA 参数约束：`1 <= BURST_WORDS <= 65535`、`1 <= PIX_DEPTH <= 65535`、`2*BURST_WORDS <= PIX_DEPTH`、`1 <= LOW_WATER <= PIX_DEPTH`。FIFO 水位必须是写时钟域的有效计数；只能由本 DMA 写入该 FIFO。当前帧几何仍为 640×480 RGB565，未扩展为 HD 存储格式。
+- `frame_swap_ctrl`：在 WAIT_VBLANK/COMMIT 中到达的确认会被保存；确认与帧边界同拍也可完成握手，但 `active_commit` 仍必须在帧边界发生。默认 `TIMEOUT_N=5_000_000`，100 MHz 为 50 ms，125 MHz 为 40 ms；其他帧率/时钟需按最大等待与 CDC 裕量覆盖参数。无帧边界或无确认仍超时进入 SAFE，复位会清除保存的确认。
+
+复现与回归入口：`safevision/tools/run_memory_protocol_sim.ps1`。7 个新增 TB 包括 `tb_memory_arbiter_backpressure`、`tb_memory_arbiter_read_latency`、`tb_video_read_dma_burst64`、`tb_frame_swap_vblank_ack`、`tb_frame_swap_default_timeout`、`tb_memory_arbiter_protocol`、`tb_video_read_dma_integration`。默认同时验证修正代码的 PASS 与 `d6f40a6` 旧代码的 5 个预期失败；可用 `-SkipNegativeControls` 只运行修正代码。XSim/Git 工具路径可通过参数指定。
+
+验证范围（db4acfa 原提交）：7 项新回归、15 种逐字仲裁协议场景、4 个完整帧/1,228,800 个像素；B 既有 18 TB/540 项回归仍通过。不能替代 SDRAM 物理 AC、真实 HDMI、整机 CDC 或上板验收。原有测试入口和队友 TB 保留。
+
+| v1.33 | 2026-10-04 | 在 A/B v1.32 集成基础上合入 db4acfa：登记 memory arbiter 命令/读响应握手、DMA 帧尾/FIFO 水位/早到 ACK、帧交换确认与默认超时修正。合并后完整回归、TD STA 与板测待复验。 | A+B |

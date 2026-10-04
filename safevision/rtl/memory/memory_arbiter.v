@@ -103,12 +103,16 @@ module memory_arbiter #(
     reg  [1:0]  cur_ch;        // 当前/最近一次被授权的通道
     reg         busy;          // 1 = 一个突发正在搬运
     reg  [15:0] word_left;     // 本突发剩余 word 数
+    reg         transfer_active; // one prime cycle after ack, then req/ready transfers
+    reg         cur_wr;          // write/read mode latched with the burst
+    reg  [15:0] responses_left; // retain channel ownership until ALL read responses
     reg  [31:0] cur_addr;      // 本突发当前 word 的逻辑字节地址
     reg  [1:0]  last_ch;       // 上一次授权的通道
     reg  [15:0] consec_cnt;    // 该通道已连续被授权的突发数
 
     reg  [15:0] rd_wait_cnt;   // 最长等待时间计数器（内部，不对外）
     reg  [15:0] wr_wait_cnt;
+    reg         rd_starve_event,wr_starve_event; // diagnostics delayed one cycle
     reg  [15:0] sd_wait_cnt;
 
     // ---- 紧迫（超限即临时提权）----
@@ -152,107 +156,120 @@ module memory_arbiter #(
         end
     end
 
-    // ------------------------------------------------------------------------
-    // 数据回送（组合转发，避免再打一拍引入半新半旧）
-    // ------------------------------------------------------------------------
-    assign rd_data        = mem_rdata;
-    assign rd_data_valid  = mem_rdata_valid && (cur_ch == CH_RD);
-    assign sd_rdata       = mem_rdata;
-    assign sd_rdata_valid = mem_rdata_valid && (cur_ch == CH_SD);
+    // Requests are accepted only on mem_req && mem_ready. The selected writer
+    // must hold wr_data/sd_wdata during !mem_ready and advance it only on its
+    // accepted word (wr_busy/sd_busy && mem_req && mem_ready && mem_wr).
+    // No per-word write ack is added: all existing module ports are preserved.
+    always @* begin
+        mem_req   = busy && transfer_active && (word_left != 0);
+        mem_wr    = cur_wr;
+        mem_addr  = cur_addr;
+        mem_wdata = (cur_ch == CH_WR) ? wr_data : sd_wdata;
+        mem_wstrb = cur_wr ? 4'hF : 4'h0;
+    end
 
+    wire mem_fire = mem_req && mem_ready;
+    wire response_fire = busy && !cur_wr && (responses_left != 0) && mem_rdata_valid;
+    wire commands_done = (word_left == 0) || (mem_fire && word_left == 1);
+    wire responses_done = cur_wr || (responses_left == 0) ||
+                          (response_fire && responses_left == 1);
+
+    assign rd_data       = mem_rdata;
+    assign rd_data_valid = response_fire && (cur_ch == CH_RD);
+    assign sd_rdata      = mem_rdata;
+    assign sd_rdata_valid= response_fire && (cur_ch == CH_SD);
     assign rd_busy = busy && (cur_ch == CH_RD);
     assign wr_busy = busy && (cur_ch == CH_WR);
     assign sd_busy = busy && (cur_ch == CH_SD);
 
-    // ------------------------------------------------------------------------
-    // 主逻辑
-    // ------------------------------------------------------------------------
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            cur_ch    <= CH_NONE;
-            busy      <= 1'b0;
-            word_left <= 16'd0;
-            cur_addr  <= 32'd0;
-            last_ch   <= CH_NONE;
-            consec_cnt<= 16'd0;
-            rd_wait_cnt <= 16'd0;
-            wr_wait_cnt <= 16'd0;
-            sd_wait_cnt <= 16'd0;
-            rd_ack <= 1'b0;
-            wr_ack <= 1'b0;
-            sd_ack <= 1'b0;
-            mem_req   <= 1'b0;
-            mem_wr    <= 1'b0;
-            mem_addr  <= 32'd0;
-            mem_wdata <= 32'd0;
-            mem_wstrb <= 4'b0000;
-            wr_starve_cnt <= 16'd0;
-            rd_starve_cnt <= 16'd0;
+            cur_ch <= CH_NONE;
+            busy <= 1'b0;
+            transfer_active <= 1'b0;
+            cur_wr <= 1'b0;
+            word_left <= 0;
+            responses_left <= 0;
+            cur_addr <= 0;
+            last_ch <= CH_NONE;
+            consec_cnt <= 0;
+            rd_wait_cnt <= 0;
+            wr_wait_cnt <= 0;
+            sd_wait_cnt <= 0;
+            rd_ack <= 0;
+            wr_ack <= 0;
+            sd_ack <= 0;
+            wr_starve_cnt <= 0;
+            rd_starve_cnt <= 0;
+            wr_starve_event <= 0;
+            rd_starve_event <= 0;
         end else begin
-            // 默认值：单拍脉冲清零 / 事务口空闲
-            rd_ack   <= 1'b0;
-            wr_ack   <= 1'b0;
-            sd_ack   <= 1'b0;
-            mem_req  <= 1'b0;
-
+            rd_ack <= 0;
+            wr_ack <= 0;
+            sd_ack <= 0;
+            // Register diagnostic events before their 16-bit saturating counters;
+            // this cuts the winner priority tree out of the counter enable path.
+            rd_starve_event <= !busy && rd_urg && winner != CH_RD;
+            wr_starve_event <= !busy && wr_urg && winner != CH_WR;
+            if(rd_starve_event && rd_starve_cnt != 16'hFFFF)
+                rd_starve_cnt <= rd_starve_cnt + 1'b1;
+            if(wr_starve_event && wr_starve_cnt != 16'hFFFF)
+                wr_starve_cnt <= wr_starve_cnt + 1'b1;
             if (!busy) begin
-                // ---------------- 突发边界：仲裁并受理 ----------------
                 if (winner != CH_NONE) begin
-                    cur_ch    <= winner;
-                    busy      <= 1'b1;
-                    cur_addr  <= (winner == CH_RD) ? rd_addr :
-                                 (winner == CH_WR) ? wr_addr : sd_addr;
-                    word_left <= (winner == CH_RD) ? ((rd_len == 16'd0) ? 16'd1 : rd_len) :
-                                 (winner == CH_WR) ? ((wr_len == 16'd0) ? 16'd1 : wr_len) :
-                                                     ((sd_len == 16'd0) ? 16'd1 : sd_len);
+                    cur_ch <= winner;
+                    busy <= 1'b1;
+                    transfer_active <= 1'b0;
+                    cur_wr <= (winner == CH_WR) || ((winner == CH_SD) && sd_wr);
+                    cur_addr <= (winner == CH_RD) ? rd_addr :
+                                (winner == CH_WR) ? wr_addr : sd_addr;
+                    word_left <= (winner == CH_RD) ? ((rd_len == 0) ? 16'd1 : rd_len) :
+                                 (winner == CH_WR) ? ((wr_len == 0) ? 16'd1 : wr_len) :
+                                                    ((sd_len == 0) ? 16'd1 : sd_len);
+                    if (winner == CH_RD)
+                        responses_left <= (rd_len == 0) ? 16'd1 : rd_len;
+                    else if (winner == CH_SD && !sd_wr)
+                        responses_left <= (sd_len == 0) ? 16'd1 : sd_len;
+                    else responses_left <= 0;
                     case (winner)
                         CH_RD: rd_ack <= 1'b1;
                         CH_WR: wr_ack <= 1'b1;
                         CH_SD: sd_ack <= 1'b1;
                         default: ;
                     endcase
-
-                    if (last_ch == winner) consec_cnt <= consec_cnt + 16'd1;
-                    else begin
-                        last_ch    <= winner;
+                    if (last_ch == winner) begin
+                        if (consec_cnt != 16'hFFFF) consec_cnt <= consec_cnt + 1'b1;
+                    end else begin
+                        last_ch <= winner;
                         consec_cnt <= 16'd1;
                     end
                 end
-
-                // 真正的饥饿事件：某路已超时，仲裁却把授权给了别人
-                if (rd_urg && (winner != CH_RD)) begin
-                    if (rd_starve_cnt != 16'hFFFF) rd_starve_cnt <= rd_starve_cnt + 16'd1;
-                end
-                if (wr_urg && (winner != CH_WR)) begin
-                    if (wr_starve_cnt != 16'hFFFF) wr_starve_cnt <= wr_starve_cnt + 16'd1;
-                end
             end else begin
-                // ---------------- 传输中：连续搬运本突发 ----------------
-                mem_req   <= 1'b1;
-                mem_wr    <= (cur_ch == CH_WR) || ((cur_ch == CH_SD) && sd_wr);
-                mem_addr  <= cur_addr;
-                mem_wdata <= (cur_ch == CH_WR) ? wr_data : sd_wdata;
-                mem_wstrb <= ((cur_ch == CH_WR) || ((cur_ch == CH_SD) && sd_wr)) ? 4'hF : 4'h0;
-
-                if (mem_ready) begin
+                // Prime cycle lets a client observe ack and prepare its first word.
+                transfer_active <= 1'b1;
+                if (mem_fire) begin
                     cur_addr <= cur_addr + 32'd4;
-                    if (word_left <= 16'd1) begin
-                        busy <= 1'b0;              // 突发结束，回到突发边界
-                    end else begin
-                        word_left <= word_left - 16'd1;
-                    end
+                    word_left <= word_left - 1'b1;
+                end
+                if (response_fire) responses_left <= responses_left - 1'b1;
+                if (commands_done && responses_done) begin
+                    busy <= 1'b0;
+                    transfer_active <= 1'b0;
                 end
             end
 
-            // ---------------- 最长等待时间计数器 ----------------
-            // 正在被服务（或在本次仲裁被选中）就清零，否则累加
-            rd_wait_cnt <= (rd_req && !(busy && (cur_ch == CH_RD)) && (winner != CH_RD))
-                          ? (rd_wait_cnt + 16'd1) : 16'd0;
-            wr_wait_cnt <= (wr_req && !(busy && (cur_ch == CH_WR)) && (winner != CH_WR))
-                          ? (wr_wait_cnt + 16'd1) : 16'd0;
-            sd_wait_cnt <= (sd_req && !(busy && (cur_ch == CH_SD)) && (winner != CH_SD))
-                          ? (sd_wait_cnt + 16'd1) : 16'd0;
+            // A grant starts busy on this edge; its counter clears on the next
+            // edge while busy owns that channel. Do not put the full winner
+            // priority tree in the 125 MHz wait-counter clock-enable path.
+            if (rd_req && !(busy && cur_ch == CH_RD)) begin
+                if (rd_wait_cnt != 16'hFFFF) rd_wait_cnt <= rd_wait_cnt + 1'b1;
+            end else rd_wait_cnt <= 0;
+            if (wr_req && !(busy && cur_ch == CH_WR)) begin
+                if (wr_wait_cnt != 16'hFFFF) wr_wait_cnt <= wr_wait_cnt + 1'b1;
+            end else wr_wait_cnt <= 0;
+            if (sd_req && !(busy && cur_ch == CH_SD)) begin
+                if (sd_wait_cnt != 16'hFFFF) sd_wait_cnt <= sd_wait_cnt + 1'b1;
+            end else sd_wait_cnt <= 0;
         end
     end
-
 endmodule

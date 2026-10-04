@@ -67,21 +67,58 @@ module video_read_dma #(
     localparam integer FRAME_W     = `SV_FRAME_WIDTH;
     localparam integer FRAME_H     = `SV_FRAME_HEIGHT;
     localparam [31:0]  FRAME_BYTES = FRAME_W * FRAME_H * `SV_RGB565_BYTES_PER_PX;   // 614400
-    localparam [31:0]  BURST_BYTES = BURST_WORDS * 4;             // 突发字节数
-    localparam [15:0]  HIGH_WATER  = PIX_DEPTH - BURST_WORDS * 2; // 预留整突发像素的空间
+    function integer index_width;
+        input integer n;
+        integer v;
+        begin
+            index_width=1;
+            for(v=n-1;v>1;v=v>>1) index_width=index_width+1;
+        end
+    endfunction
+    localparam integer INDEX_W=index_width(BURST_WORDS);
+    // Frame size and target burst length are constants. Only the LAST burst
+    // can be shorter, so avoid a run-time 32-bit subtract/compare/add chain.
+    localparam integer FRAME_WORDS=FRAME_BYTES/4;
+    localparam integer LAST_WORDS=(FRAME_WORDS%BURST_WORDS)==0 ?
+                                  BURST_WORDS : FRAME_WORDS%BURST_WORDS;
+    localparam [31:0] LAST_OFFSET=(FRAME_WORDS-LAST_WORDS)*4;
+    localparam [15:0] FULL_SPACE_LIMIT=PIX_DEPTH-BURST_WORDS*2;
+    localparam [15:0] LAST_SPACE_LIMIT=PIX_DEPTH-LAST_WORDS*2;
+    wire last_burst=(rd_bytes_cnt==LAST_OFFSET);
+    wire [15:0] next_burst_words=last_burst ? LAST_WORDS : BURST_WORDS;
+    wire fifo_has_space=(pix_fifo_level <=
+                         (last_burst ? LAST_SPACE_LIMIT : FULL_SPACE_LIMIT));
+    reg [15:0] burst_words;
+    // synthesis translate_off
+    initial if(BURST_WORDS<1 || BURST_WORDS>65535 || PIX_DEPTH<1 ||
+        PIX_DEPTH>65535 || BURST_WORDS*2>PIX_DEPTH || LOW_WATER<1 || LOW_WATER>PIX_DEPTH)
+        $fatal(1,"video_read_dma invalid burst/FIFO parameters");
+    // synthesis translate_on
 
     localparam [2:0] V_IDLE    = 3'd0,
                      V_CHECK   = 3'd1,
                      V_WAITACK = 3'd2,
                      V_COLLECT = 3'd3,
-                     V_DRAIN   = 3'd4;
+                     V_DRAIN   = 3'd4,
+                     V_SETTLE  = 3'd5; // observe FIFO level AFTER its last registered write
 
     reg  [2:0]  state;
     reg  [31:0] base;                       // 本帧基地址锁存
     reg  [31:0] rd_buf [0:BURST_WORDS-1];   // 突发 landing buffer（避开保留字 buf）
-    reg  [4:0]  collect_cnt;                // 已收 word 数
-    reg  [4:0]  drain_word;                 // 正在拆的 word
+    reg  [INDEX_W-1:0] collect_cnt;                // 已收 word 数
+    reg  [INDEX_W-1:0] drain_word;                 // 正在拆的 word
     reg         drain_half;                 // 0=低 16bit（左像素）1=高 16bit
+
+    // A single synchronous write port keeps the landing buffer inferable as
+    // memory. Its contents need no reset: every word is captured before drain.
+    wire capture_at_ack = (state == V_WAITACK) && rd_ack;
+    wire capture_word = rst_n && rd_data_valid &&
+                        (capture_at_ack || (state == V_COLLECT));
+    wire [INDEX_W-1:0] capture_index = capture_at_ack ?
+                                      {INDEX_W{1'b0}} : collect_cnt;
+    always @(posedge clk) begin
+        if (capture_word) rd_buf[capture_index] <= rd_data;
+    end
 
     // ------------------------------------------------------------------------
     // 主逻辑
@@ -89,9 +126,10 @@ module video_read_dma #(
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             state        <= V_IDLE;
+            burst_words  <= 0;
             base         <= 32'd0;
-            collect_cnt  <= 5'd0;
-            drain_word   <= 5'd0;
+            collect_cnt  <= 0;
+            drain_word   <= 0;
             drain_half   <= 1'b0;
             rd_req       <= 1'b0;
             rd_addr      <= 32'd0;
@@ -124,9 +162,10 @@ module video_read_dma #(
                     done   <= 1'b1;             // 一帧搬完
                     state  <= V_IDLE;
                 end else if ((pix_fifo_level < LOW_WATER) &&
-                             (pix_fifo_level <= HIGH_WATER)) begin
+                             fifo_has_space) begin
                     rd_addr <= base + rd_bytes_cnt;
-                    rd_len  <= BURST_WORDS[15:0];
+                    rd_len  <= next_burst_words;
+                    burst_words <= next_burst_words;
                     rd_req  <= 1'b1;
                     state   <= V_WAITACK;
                 end
@@ -135,21 +174,29 @@ module video_read_dma #(
             V_WAITACK: begin
                 if (rd_ack) begin
                     rd_req      <= 1'b0;
-                    collect_cnt <= 5'd0;
+                    collect_cnt <= 0;
                     state       <= V_COLLECT;
+                    // A target may return the first word together with its ack.
+                    if(rd_data_valid) begin
+                        if(burst_words==1) begin
+                            rd_bytes_cnt <= rd_bytes_cnt+32'd4;
+                            drain_word <= 0;
+                            drain_half <= 0;
+                            state <= V_DRAIN;
+                        end else collect_cnt <= 1;
+                    end
                 end
             end
             // ---- 整突发收进 landing buffer（1 word/cycle）---------------------
             V_COLLECT: begin
                 if (rd_data_valid) begin
-                    rd_buf[collect_cnt] <= rd_data;
-                    if (collect_cnt == (BURST_WORDS-1)) begin
-                        rd_bytes_cnt <= rd_bytes_cnt + BURST_BYTES;
-                        drain_word   <= 5'd0;
+                    if (collect_cnt == (burst_words-1)) begin
+                        rd_bytes_cnt <= rd_bytes_cnt + {14'd0,burst_words,2'b00};
+                        drain_word   <= 0;
                         drain_half   <= 1'b0;
                         state        <= V_DRAIN;
                     end else begin
-                        collect_cnt <= collect_cnt + 5'd1;
+                        collect_cnt <= collect_cnt + 1'b1;
                     end
                 end
             end
@@ -159,16 +206,17 @@ module video_read_dma #(
                 fifo_wr_data <= drain_half ? rd_buf[drain_word][31:16]
                                            : rd_buf[drain_word][15:0];
                 if (drain_half) begin
-                    if (drain_word == (BURST_WORDS-1)) begin
-                        state <= V_CHECK;       // 本突发拆完，回去看水位
+                    if (drain_word == (burst_words-1)) begin
+                        state <= V_SETTLE;      // last fifo_wr_en is consumed on the next edge
                     end else begin
-                        drain_word <= drain_word + 5'd1;
+                        drain_word <= drain_word + 1'b1;
                         drain_half <= 1'b0;
                     end
                 end else begin
                     drain_half <= 1'b1;         // 先出低 16bit，再出高 16bit
                 end
             end
+            V_SETTLE: state <= V_CHECK;
             default: state <= V_IDLE;
             endcase
         end
