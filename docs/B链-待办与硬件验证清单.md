@@ -343,9 +343,7 @@
 ### 2.4.2 SDRAM 官方 Demo 回环上板步骤（阶段 9 第一步 / 手册 7.9，2026-10-02）
 
 对应顶层：`platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v`（接口见
-[interface_spec.md](interface_spec.md) §3.9）。**这条路径不能仿真**——厂商 SDRAM 控制器是
-安路 RSA 加密 IP（`sdr_*.enc.v`），只能由 TD 解密，所以没有 TB、也进不了回归，
-**验收只有"上板读报告"一条路**。
+[interface_spec.md](interface_spec.md) §3.9）。**[纠正 2026-10-04]** 本机没有已验证兼容的加密控制器仿真模型；新增 `tb_sdram_loopback.sv` 用应用侧行为模型检查图案、回环、超时和 UART，不代表真实 DQ、刷新/CAS 或 AC 时序验证。最终 STA 和对应版本上板仍须完成。当前 PLL 告警已修正，SDRAM setup 仍未闭合，详见 [核查修正版](B链-SDRAM接口与PLL时序核查.md)。历史 M-11 不自动验收新版图案。
 
 > ★★ **2026-10-02 已通过（条目 M-11-PASS）**。位流 22:01:24 下载后收 **71 Byte**：
 > `SV-SDRAM-LOOP` / `INIT=01 LOCK=01` / **`W=1000 R=1000 CAP=1000 BAD=0000`** / `DONE`，
@@ -372,9 +370,9 @@
 
 | LED | 错误码 | 含义 | 先怀疑什么 |
 |---|---|---|---|
-| `1` | `ERR=01` | SDRAM 初始化一直不完成（`Sdr_init_done` 没来） | ① `sv_system_pll` 反馈支路：`sv_system_pll` 是 `FEEDBK_PATH=CLKC0_EXT`，反馈经过 C0 的 BUFG，而本顶层把 C0 留空了 —— 若始终锁不上，把 C0 接出来给一个真实负载再试；② 复位：`Rst` 是高有效、已与 `pll_locked` 相与；③ 加密件是否被 TD 正常解密 |
+| `1` | `ERR=01` | SDRAM 初始化一直不完成（`Sdr_init_done` 没来） | 检查 `pll_locked`、高有效 `Rst` 与同步释放、加密件和最终反馈路由；C0 外部端口留空不等于内部反馈断开，不能靠增加虚假业务负载判断。该超时由 LED/内部 `err_code=01` 表示，当前 RTL 不发送 UART 错误行 |
 | `2` | `ERR=02` | 读命令发了但返回不齐（`CAP < W`） | 读突发节奏太密（调小 `BURST_N` 或调大 `BURST_GAP`）；或读写没真正错开（调大 `WR_DRAIN_CYC`） |
-| `3` | `ERR=03` | 返回数量对但数据不对（`BAD != 0`） | 相位/采样：`Clk_sft` 的 180° 相移没生效（不能用反相器代替）；或地址译码问题（试 `ADDR_SHIFT=11` + `TEST_WORDS=1024` 扫全片） |
+| `3` | `ERR=03` | 返回数量对但数据不对（`BAD != 0`） | 相位/采样：`Clk_sft` 的 180° 相移没生效（不能用反相器代替）；或地址译码问题（试 `ADDR_SHIFT=11` + `TEST_WORDS=1024` 做高位地址稀疏检查；该扫描不覆盖全部地址） |
 
 **★ 两个概念别搞反**：报告里的 `W` 是**我们发出的写使能拍数**、`R` 是**我们发出的读命令数**、
 `CAP` 是**控制器返回的有效 word 数**。`W == R == CAP` 只说明"命令都被受理了"，
@@ -389,7 +387,7 @@
 | 编号 | 测什么 | 怎么测 | 回填到 |
 |---|---|---|---|
 | M-10 | **SDRAM 初始化时间** | 上电到 `init_done` 的拍数 | ✅ **定性已通过（2026-10-02）**：`top_sdram_loopback` 报告 `INIT=01` ⇒ 在 16 ms 超时窗（`INIT_TO_CYC = 2_000_000` @125 MHz）内到齐；**精确拍数仍未测**（需 ChipWatcher 抓 `Sdr_init_done`） |
-| M-11 | **SDRAM 读写回环** | 官方 Demo 写一帧再读回，逐字节比对（这是用 SDRAM 前的第一步，别跳） | ✅ **已通过（2026-10-02，条目 M-11-PASS）**：写 4096 word → 读回 4096 word → **`BAD=0000` 零错**；`W=R=CAP=1000`、71 Byte 报告与设计值一字不差。★ 已覆盖 16 KB 连续区间；**全片稀疏扫描（`ADDR_SHIFT=11` + `TEST_WORDS=1024`）建议补做**，以覆盖行/体地址译码 |
+| M-11 | **SDRAM 读写回环** | 官方 Demo 写一帧再读回，逐字节比对（这是用 SDRAM 前的第一步，别跳） | ✅ **已通过（2026-10-02，条目 M-11-PASS）**：写 4096 word → 读回 4096 word → **`BAD=0000` 零错**；`W=R=CAP=1000`、71 Byte 报告与设计值一字不差。★ 已覆盖 16 KB 连续区间；**新版图案需重新上板复测；高位地址稀疏扫描（`ADDR_SHIFT=11` + `TEST_WORDS=1024`）建议补做**，仅检查选中地址的混叠，不能宣称全部行/体/列覆盖 |
 | M-12 | **持续带宽（关键）** | `memory_bandwidth_monitor` 的 `rd_bytes_total` / `wr_bytes_total` ÷ 时间；跑 ≥10 分钟 | 手册 7.12 的"有效带宽"结论、O-4 邻近项 |
 | M-13 | **FIFO 最低水位** | `fifo_health_monitor.min_level`，与上一条同时段采集 | 手册 7.12 要求成对给出；水位阈值标定 |
 | M-14 | **underflow / overflow 计数** | 连续跑 60 分钟，两个计数必须都为 0 | 表 7-4 的验收门槛 |

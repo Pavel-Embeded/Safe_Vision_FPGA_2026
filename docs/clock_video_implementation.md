@@ -1,5 +1,7 @@
 # 本次 A 独立发布范围
 
+> **[更新 2026-10-04]** 下文的 USR-6135 开放状态属于历史构建。`a1dba93` 已修正四个 PLL 的 C0 反馈连线及系统 C2 缓冲；本次 SDRAM 回环图案/报告缓存修正版复验未再出现 USR-6135、PHY-5079。SDRAM setup −6.826 ns 仍开放，不能登记为整板时序通过。当前说明见 [SDRAM/PLL 核查修正版](B链-SDRAM接口与PLL时序核查.md)。
+
 本文件技术说明用于 A Clock/Timing。当前新回归与B不变核对见 [A_PUSH_SCOPE_20261002.md](A_PUSH_SCOPE_20261002.md)。下列旧归档路径记录过滤前完整工作树；A 的TD源码输入未变，B默认超时试验没有推送。
 
 # Clock / Reset / Video Timing 实现与接线说明

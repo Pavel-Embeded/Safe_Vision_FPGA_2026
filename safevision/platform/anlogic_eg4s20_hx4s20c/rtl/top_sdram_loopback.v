@@ -14,11 +14,11 @@
 //       报告是纯 ASCII（KEY=HEX，末行 DONE），和阶段 6 顶层同一口径：这样串口
 //       助手用【文本模式】保存也不会踩"≥0x80 被换成 EF BF BD"的那个有损坑。
 //
-// ★★ 为什么这个顶层【进不了 ModelSim 回归】（必须知道，别白找 TB）
+// ★★ 仿真边界（2026-10-04 纠正）
 //   厂商 SDRAM 控制器的真正实现是 `ip/sdram/sdr_as_ram.enc.v` 等三个文件，
-//   是安路 RSA 加密 IP，只能由 TD 综合时解密。所以本顶层**没有 testbench**，
-//   验收方式只有一种：**上板 + 读 UART 报告**。这与阶段 1–7 那套"仿真先绿再上板"
-//   的节奏不同，属于"加密 IP 不可仿真"的客观限制，不是偷懒。
+//   本机未验证兼容的控制器仿真模型。tb_sdram_loopback.sv 用应用侧行为模型
+//   验证图案、回环、超时和 UART；不能证明加密控制器、物理 DQ 或 AC 时序。
+//   完整验收仍须最终布局布线 STA 和对应版本的上板读写测试。
 //
 // ★★ EG4S20 的 SDRAM 是【封装内裸片】（die-in-package），不是外挂芯片
 //   `EG_PHY_SDRAM_2M_32` 是硬核：2M × 32 bit = 8 MB。SDRAM 的 55 根
@@ -28,7 +28,7 @@
 //   在综合时是内部 `wire`，只有 `SIMULATION` 宏打开才会变成端口。）
 //
 // ★ 时钟方案（照例程，2026-10-02 采用 A 方案）
-//   板载 50 MHz（R7）→ `sv_system_pll`：C0=100M（本顶层用不到，留空）、
+//   板载 50 MHz（R7）→ `sv_system_pll`：C0=100M（外部端口留空，内部反馈保留）、
 //   C1=125M = SDRAM 侧 `Clk`、C2=125M 180° 相移 = `Clk_sft`。
 //   为什么必须跟例程走 125M + 180°：SDRAM 的初始化/刷新/CAS 是硬时序，
 //   `Clk_sft` 是采样相位，**同源 PLL 做相移，不能用反相器代替**。
@@ -36,19 +36,18 @@
 //   ★ 全部逻辑（含 uart_tx）都放在 125 MHz 域，**刻意不做跨时钟域**：
 //     报告只有 71 Byte，UART 才是瓶颈（115200 下约 6.2 ms），把 uart_tx 也挂在
 //     125 MHz 上（DIV = 125e6/115200 = 1085，误差 0.006%）比引一条 CDC 更简单、
-//     更少变量。C0=100M 因此真的没人用 —— 例程里 `PLL_HDMI_AUDIO` 的
-//     `clk0_out()/clk1_out()` 也是留空的，同样做法。
-//     ⚠ 待上板确认项：若 SDRAM 初始化始终不完成（LED=1、报告 ERR=01），
-//       先怀疑 PLL 反馈支路（`sv_system_pll` 是 FEEDBK_PATH=CLKC0_EXT，反馈经过
-//       clk0 的 BUFG），届时把 C0 接出来给一个真实负载再试。
+//     更少变量。C0 在 wrapper 内接 PLL fbclk；寄存器扇出 0 不代表反馈悬空。
+//     当前单一 C0 反馈网络保留 NORMAL 补偿，C2 经专用 BUFG；最终路由须复查。
+//     若初始化超时（LED=1），检查 pll_locked、复位、加密件与最终时钟路由。
+//     不能用添加无业务意义的 C0 负载代替反馈检查。超时分支不发送 UART 报告。
 //
-// ★ 测试图案：`pat_of(addr)` 把地址摊到 32 bit 的四个字节上（两次原样 + 两次
-//   异或常数），所以地址一变，**32 根数据线全都在变** —— 比只写常数或只写下标
-//   强得多。写侧与读侧用同一个函数算期望值，不存第二份图案。
+// ★ 测试图案：32 bit、包含全部 21 个地址位；不同合法地址得到不同图案。
+//   连续 256 个低位地址使每个数据位都出现 0 和 1；单次地址变化不必翻转所有位。
+//   写侧与读侧共用图案函数；TB 独立反解地址并穷举全地址范围，防止同错漏检。
 //
-// ★ 参数化的"扫全片"开关：ADDR_SHIFT 默认 0 = 连续地址块；
-//   若要覆盖全部 bank/row（检测行/体地址译码错），把它设为 11、TEST_WORDS 设 1024，
-//   则步长 = 2^11 = 2048 word，恰好稀疏铺满整个 2M word 空间。
+// ★ 参数化的稀疏扫描：ADDR_SHIFT 默认 0 = 连续地址块；
+//   ADDR_SHIFT=11、TEST_WORDS=1024、BASE_ADDR=0 时步长为 2048 word，
+//   采样地址 0..2095104，只改变地址位 [20:11]，不是全部 bank/row/列或容量覆盖。
 //   用移位实现步长是刻意的：**可综合 RTL 禁用 `/` 和 `%`**（项目规则 §5 第 10 条），
 //   而 2 的幂用移位即可（ADDR_SHIFT 是编译期常数）。
 //
@@ -118,7 +117,7 @@ module top_sdram_loopback #(
 
     // ------------------------------------------------------------------------
     // 时钟：50 MHz -> sv_system_pll（100M / 125M / 125M@180°）
-    //   C0 本顶层用不到，留空（与例程 PLL_HDMI_AUDIO 的做法一致）
+    //   C0 外部端口不接业务负载；wrapper 内的 NORMAL 反馈始终连接。
     // ------------------------------------------------------------------------
     wire ext_mem_clk;
     wire ext_mem_clk_sft;
@@ -161,13 +160,18 @@ module top_sdram_loopback #(
     wire [7:0]  uart_tx_data;
 
     // ------------------------------------------------------------------------
-    // 测试图案：把地址摊到 32 bit（两次原样 + 两次异或常数）
-    //   地址变 -> 四个字节全变 -> 32 根数据线都被覆盖
+    // 32-bit address signature. Recover a[7:0] from byte 1, then recover
+    // a[20:13] / a[12:5] from bytes 3 / 2. Thus all 21 bits are distinguishable.
+    // Mixing the low byte into each output byte also exercises every DQ bit
+    // in a contiguous 256-word test. This is not a complete SDRAM march test.
     // ------------------------------------------------------------------------
     function [31:0] pat_of;
         input [20:0] a;
         begin
-            pat_of = { (8'hA5 ^ a[11:4]), (8'h5A ^ a[7:0]), a[11:4], a[3:0] };
+            pat_of = { (8'hA5 ^ a[7:0] ^ a[20:13]),
+                       (8'h5A ^ a[7:0] ^ a[12:5]),
+                       (8'h3C ^ a[7:0]),
+                       (8'hC3 ^ {a[4:0], a[7:5]}) };
         end
     endfunction
 
@@ -203,6 +207,8 @@ module top_sdram_loopback #(
     reg  [20:0] rd_i;          // 已发读命令数
     reg  [20:0] cap_cnt;       // 已收到返回 word 数
     reg  [15:0] bad_cnt;       // 比对不符数
+    reg  [3:0]  compare_bad_bytes;
+    reg         compare_valid;
 
     // 地址 = BASE_ADDR + index * (1 << ADDR_SHIFT)；用移位，不用乘除
     //   （必须写在 wr_i / rd_i 声明之后，否则 Verilog 会先建 1 bit 隐式网线）
@@ -244,14 +250,30 @@ module top_sdram_loopback #(
 
     // ---- 收数据：sdr_rd_en 才是取数时刻（读侧是延迟应答式）----
     //      第 k 个返回对应第 k 个读命令（例程也是这么假设的，1:1 不丢）
+    // Compare bytes in parallel, then count one bad word on the following edge.
+    // This cuts the input-PAD -> 32-bit reduction -> counter enable path.
+    // The last comparison completes when RDWAIT enters REPORT, before prefetch.
+    wire capture_accept = sdr_rd_en && ((st == ST_READ) || (st == ST_RDWAIT)) &&
+                          (cap_cnt < TEST_WORDS);
+    wire [31:0] expected_word = pat_of(BASE_ADDR + (cap_cnt << ADDR_SHIFT));
     always @(posedge ext_mem_clk or negedge rst_mem_n) begin
         if (!rst_mem_n) begin
             cap_cnt <= 21'd0;
             bad_cnt <= 16'd0;
-        end else if (sdr_rd_en && ((st == ST_READ) || (st == ST_RDWAIT)) &&
-                     (cap_cnt < TEST_WORDS)) begin
-            cap_cnt <= cap_cnt + 21'd1;
-            if (sdr_rd_dout != pat_of(BASE_ADDR + (cap_cnt << ADDR_SHIFT)))
+            compare_bad_bytes <= 4'b0000;
+            compare_valid <= 1'b0;
+        end else begin
+            compare_valid <= capture_accept;
+            if (capture_accept) begin
+                cap_cnt <= cap_cnt + 21'd1;
+                compare_bad_bytes <= {
+                    (sdr_rd_dout[31:24] != expected_word[31:24]),
+                    (sdr_rd_dout[23:16] != expected_word[23:16]),
+                    (sdr_rd_dout[15:8]  != expected_word[15:8]),
+                    (sdr_rd_dout[7:0]   != expected_word[7:0])
+                };
+            end
+            if (compare_valid && (|compare_bad_bytes))
                 bad_cnt <= bad_cnt + 16'd1;
         end
     end
@@ -312,7 +334,7 @@ module top_sdram_loopback #(
                         err_code <= 8'h03;
                         st       <= ST_ERR;
                     end else st <= ST_OK;
-                end else if (uart_tx_ready) rpt_idx <= rpt_idx + 7'd1;
+                end else if (uart_tx_valid && uart_tx_ready) rpt_idx <= rpt_idx + 7'd1;
             end
             ST_OK : st <= ST_OK;      // 停住，LED 保持 8
             ST_ERR: st <= ST_ERR;     // 停住，LED 显示错误主码低 4 位
@@ -382,8 +404,27 @@ module top_sdram_loopback #(
     wire [6:0] rpt_sel  = (rpt_idx < RPT_LEN) ? rpt_idx : 7'd0;
     wire [7:0] rpt_byte = rpt_vec[ 8*(RPT_LEN-1-rpt_sel) +: 8 ];
 
-    assign uart_tx_valid = (st == ST_REPORT) && (rpt_idx < RPT_LEN) && uart_tx_ready;
-    assign uart_tx_data  = rpt_byte;
+    // Register the wide report-byte selector before the UART input shifter.
+    // Index advances only on acceptance; prefetch while UART is busy and hold
+    // the byte until ready. No bytes are skipped or duplicated under backpressure.
+    reg [7:0] rpt_byte_q;
+    reg       rpt_byte_valid;
+    always @(posedge ext_mem_clk or negedge rst_mem_n) begin
+        if (!rst_mem_n) begin
+            rpt_byte_q     <= 8'd0;
+            rpt_byte_valid <= 1'b0;
+        end else if (st != ST_REPORT) begin
+            rpt_byte_valid <= 1'b0;
+        end else if (!rpt_byte_valid && (rpt_idx < RPT_LEN)) begin
+            rpt_byte_q     <= rpt_byte;
+            rpt_byte_valid <= 1'b1;
+        end else if (rpt_byte_valid && uart_tx_ready) begin
+            rpt_byte_valid <= 1'b0;
+        end
+    end
+
+    assign uart_tx_valid = (st == ST_REPORT) && rpt_byte_valid;
+    assign uart_tx_data  = rpt_byte_q;
 
     // ------------------------------------------------------------------------
     // 例化：厂商 SDRAM 控制器

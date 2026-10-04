@@ -59,3 +59,7 @@ Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内
 | TD 内部 STA | 基础/BASE/HD setup 与 hold 裕量均正；PLL 健康与 I/O 预算项仍开放 |
 
 既有 clock/video 5 功能 + 41 参数场景、B 18 TB/540 项、阶段十两个 TB 全通过。56 个共享工程源文件完成 TD 合编/布局布线/位流生成，但 SDRAM setup −6.826 ns 尚未收敛。详情与运行入口见 [A 阶段 1–9](../A_stages1_9.md)；不上传长报告，不构成硬件/HDMI 验收。
+
+## [新增 2026-10-04] SDRAM 回环检查器回归
+
+`safevision/tools/run_sdram_loopback_sim.ps1`：32 bit 图案、全部 2,097,152 地址的独立反解、32 个 DQ 位取值覆盖、6 个正常/故障场景及 71 Byte 实际 UART 解码；原图案负对照必须被 TB 检出地址混叠漏报。模型替代加密控制器，只证明应用侧检查器，不证明物理 SDRAM AC。当前最终 STA 和复测状态见 [核查修正版](../B链-SDRAM接口与PLL时序核查.md)。
