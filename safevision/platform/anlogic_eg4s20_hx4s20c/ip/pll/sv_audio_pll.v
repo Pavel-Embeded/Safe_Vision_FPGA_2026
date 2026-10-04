@@ -36,10 +36,12 @@ module sv_audio_pll (
 
   wire clk0_buf;
 
-  EG_LOGIC_BUFG bufg_feedback (
-    .i(clk0_buf),
-    .o(clk0_out) 
-  );
+  // TD 6.2.168116 workaround: keep NORMAL / CLKC0_EXT compensation.
+  // A split explicit feedback BUFG is physically merged by the router but
+  // check_timing misclassifies its input segment. A single C0 feedback net
+  // is auto-routed through the same global clock mesh to PLL fbclk.
+  // Verify final global routing and clock coverage after IP regeneration.
+  assign clk0_out = clk0_buf;
 
   EG_PHY_PLL #(
     .DPHASE_SOURCE("DISABLE"),

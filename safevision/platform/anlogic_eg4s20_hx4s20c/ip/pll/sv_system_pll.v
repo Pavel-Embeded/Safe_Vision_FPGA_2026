@@ -38,11 +38,17 @@ module sv_system_pll (
   output clk2_out;
 
   wire clk0_buf;
+  wire clk2_buf;
 
-  EG_LOGIC_BUFG bufg_feedback (
-    .i(clk0_buf),
-    .o(clk0_out) 
-  );
+  // Forward the 180-degree SDRAM clock on a dedicated clock network.
+  EG_LOGIC_BUFG bufg_memory (.i(clk2_buf), .o(clk2_out));
+
+  // TD 6.2.168116 workaround: keep NORMAL / CLKC0_EXT compensation.
+  // A split explicit feedback BUFG is physically merged by the router but
+  // check_timing misclassifies its input segment. A single C0 feedback net
+  // is auto-routed through the same global clock mesh to PLL fbclk.
+  // Verify final global routing and clock coverage after IP regeneration.
+  assign clk0_out = clk0_buf;
 
   EG_PHY_PLL #(
     .DPHASE_SOURCE("DISABLE"),
@@ -90,7 +96,7 @@ module sv_system_pll (
     .daddr(6'b000000),
     .do({sv_system_pll_open8, sv_system_pll_open7, sv_system_pll_open6, sv_system_pll_open5, sv_system_pll_open4, sv_system_pll_open3, sv_system_pll_open2, sv_system_pll_open1}),
     .fbclk(clk0_out),
-    .clkc({sv_system_pll_open11, sv_system_pll_open10, clk2_out, clk1_out, clk0_buf}) 
+    .clkc({sv_system_pll_open11, sv_system_pll_open10, clk2_buf, clk1_out, clk0_buf})
   );
 
 endmodule
