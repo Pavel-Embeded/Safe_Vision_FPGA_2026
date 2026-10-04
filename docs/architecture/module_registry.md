@@ -116,6 +116,10 @@
 
 文件名为计划建议，若实现时变更，先更新本表与接口规范。`pcm_ring`、`audio_cdc_fifo`、HDMI 音频包装、PLL/FIFO/SDRAM/HDMI 厂商适配仍是待定义/待实现，不可因目录存在而视作完成。
 
+## A 阶段 1–9 新模块登记（2026-10-04，开发验证通过，硬件验收未完成）
+
+接口详见 [A 阶段 1–9](../A_stages1_9.md)。负责人 A；`rtl/common/a_{counter,debounce,edge_detect,mode_fsm}.v` 是基础练习；`rtl/video/pattern_generator/pattern_generator.v` 为组合图案；`graphics_rom/font8x16_rom.v` 为同步字模；`osd_overlay/{osd_overlay,osd_status_text,osd_coordinate_text,a_graphics_frontend}.v` 为四级图形链。5 个新 TB 位于 `verification/unit/`，入口 `tools/run_a_stage1_9_sim.ps1`。上述功能已替代待实现表里的 pattern/字库/OSD 项；图标、C 控制接入及其他后续模块仍未实现。不改变 B/C 协议或产品顶层。
+
 ## A 阶段十已实现模块（2026-10-03）
 
 | 文件 | 负责人 | 时钟/延迟 | 验证与接线 |

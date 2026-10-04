@@ -44,3 +44,18 @@ TC-A-CLOCK 的 TB 源文件与 `safevision/tools/run_clock_sim.ps1` 已建立，
 新 XSim 入口包含五项测试；帧量级联调测试显式传入 TIMEOUT_N=5,000,000，B 模块默认值与 `safevision_defs.vh` 均保持原版本。本次不改 B/C RTL、原 B 单元测试、原 B 回归入口、B 专用文档或 B 上板工程/证据。共享文档保留最新远程原文，仅追加 A 说明；现有 B 验收记录仍按其原证据判断。
 
 Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内部 STA 的实际 A 输入与本提交一致，但 TD 健康告警仍开放（runner 返回 2）。尚未完成 A 产品顶层、完整 HDMI/Frame Reader/OSD/应急链与 A 板级验证。旧 `clock_video_20261002` 是过滤前工作树历史记录，不能把其中 B 默认超时变更或全工作树文件计数当成本提交内容。当前范围与新回归见 [A发布核对](../A_PUSH_SCOPE_20261002.md)。
+
+
+## A 阶段 1–9 已执行验证（2026-10-04）
+
+| 新 TB/检查 | 已执行范围 |
+|---|---|
+| `tb_a_basics` | 16,616 项，默认/单值计数、暂停、两级同步去抖、边沿、FSM；默认阈值变异必失败 |
+| `tb_pattern_generator` | 12,930,420 项，BASE/HD 全图案及双向箭头、单像素边框、越界 |
+| `tb_font8x16_rom` | 53,407 项，同步/全地址、独立字模点、四状态/BCD/全部 12 位坐标文字 |
+| `tb_osd_overlay` | 14,013 个 bundle，FPS:60、任意起点、动态配置、边界/复位、统一 4 拍 |
+| `tb_a_graphics_frontend` | BASE 状态、BASE 坐标、HD 状态三个完整帧，RGB/坐标/9 标签全比较 |
+| TD 字库 | 完整 ROM 映射 4 块 9K BRAM，综合网表 INIT 回读 4096/4096 字节 |
+| TD 内部 STA | 基础/BASE/HD setup 与 hold 裕量均正；PLL 健康与 I/O 预算项仍开放 |
+
+既有 clock/video 5 功能 + 41 参数场景、B 18 TB/540 项、阶段十两个 TB 全通过。56 个共享工程源文件完成 TD 合编/布局布线/位流生成，但 SDRAM setup −6.826 ns 尚未收敛。详情与运行入口见 [A 阶段 1–9](../A_stages1_9.md)；不上传长报告，不构成硬件/HDMI 验收。

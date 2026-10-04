@@ -298,3 +298,8 @@ Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内
 新增 `video_pipeline.v`、`tb_video_pipeline.sv`、`tb_video_pipeline_timing.sv` 和 `run_video_pipeline_sim.ps1`：验证任意固定延迟、手册 1+2+1=4 拍链路、RGB565 接口、整帧扫描与中途复位。两个新 TB 全部通过；A/B 源文件合编、TD 的 45 条工程源 RTL 综合通过。`safevision.al` 仅登记新模块，仍使用 B 的 `top_sdram_loopback`，不包含仿真 TB。
 
 独立 BASE/HD 验证顶层内部布局布线时序无负裕量；已有 PLL 反馈网络告警和板级 I/O 预算仍开放，尚不能称整机签核。端口、数拍约定、运行命令和验收边界见 [A阶段十说明](docs/A_stage10_latency.md)。本次只交付源代码、TB、仿真入口与必要接口/工程登记，不上传运行日志或时序记录。
+
+
+## A 阶段 1–9 发布补充（2026-10-04）
+
+已新增基础四模块、五种测试图/单像素框、同步 ASCII 字库、状态/坐标文字和四级 OSD 图形前端；5 个新 TB、ROM 初始化回读、BASE/HD 内部 STA 通过，原 B 18 TB/540 项和阶段十回归通过。B/C RTL 及 B 回环顶层保持现行版本，`.al` 只增加 A 源文件，当前 56 个条目。源码与复现方法见 [A 阶段 1–9](docs/A_stages1_9.md)。原 SDRAM 负裕量与 PLL 健康告警仍开放，未完成上板/HDMI 验收；功能完成不等于整机烧录验收。

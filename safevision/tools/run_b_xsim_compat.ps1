@@ -1,5 +1,5 @@
 # Reuse the source/TB lists in the existing ModelSim runner without executing it.
-# This companion verifies B plus the A stage-10 sources with XSim.
+# This companion verifies B plus the A stage-1..10 sources with XSim.
 param(
     [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
     [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
@@ -22,6 +22,11 @@ $rtl=Get-OriginalPaths 'RTL'
 $tb=Get-OriginalPaths 'SIM'
 $rtl+=Join-Path $repo 'safevision/rtl/video/video_pipeline/video_pipeline.v'
 $rtl+=Join-Path $repo 'safevision/rtl/video/video_timing/video_timing.v'
+$aSources=@('common/a_counter.v','common/a_debounce.v','common/a_edge_detect.v','common/a_mode_fsm.v',
+    'video/pattern_generator/pattern_generator.v','video/graphics_rom/font8x16_rom.v',
+    'video/osd_overlay/osd_status_text.v','video/osd_overlay/osd_coordinate_text.v',
+    'video/osd_overlay/osd_overlay.v','video/osd_overlay/a_graphics_frontend.v')
+foreach($source in $aSources){$rtl+=Join-Path $repo "safevision/rtl/$source"}
 $tops=@('tb_sd_sector_reader','tb_mbr_parser','tb_sd_initializer',
     'tb_fat32_boot_parser','tb_fat32_directory_scanner','tb_fat32_cluster_walker',
     'tb_file_streamer','tb_bmp_parser','tb_file_index','tb_common_fifo',

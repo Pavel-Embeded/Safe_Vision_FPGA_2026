@@ -1,7 +1,7 @@
 # graphics_rom（A 模块落点）
 
-状态：仅创建模块文件夹，尚未实现功能 RTL。
+状态：A 阶段 7 已实现 `font8x16_rom.v`；同步读一拍；全地址仿真与 TD BRAM 初始化回读通过，尚未上板。
 
-用途：可移植字模、图标与颜色查表逻辑；真实 BRAM IP 配置归平台 ip/graphics_bram。
+字库资源：`safevision/assets/fonts/font8x16.mem`，4096 字节，95 个可打印 ASCII 字符。使用官方 TD 推断 BRAM；独立全地址 ROM 映射 4 块 9K，不需要占额外 PLL。图标/颜色查表仍属后续实现。
 
-新增端口与时钟域须先登记到 docs/interface_spec.md 和 docs/architecture/module_registry.md，再加入对应测试与显式源文件表。目录存在不表示模块已通过仿真或上板。
+文件路径规则、bit7 左端和验证入口见 [A 阶段 1–9](../../../../../docs/A_stages1_9.md)。
