@@ -27,8 +27,9 @@
 `include "safevision_defs.vh"
 
 module frame_swap_ctrl #(
-    // 握手超时（O-5 待实测）。默认按最大帧周期加裕量。
-    parameter [31:0] TIMEOUT_N = 32'd1_000_000
+    // Default covers a full 60 Hz frame plus CDC/ack margin at 100/125 MHz.
+    // 5M cycles = 50/40 ms; other frame rates/clocks must override it (O-5).
+    parameter [31:0] TIMEOUT_N = 32'd5_000_000
 )(
     input  wire       clk,                // sys_clk
     input  wire       rst_n,
@@ -71,6 +72,7 @@ module frame_swap_ctrl #(
 
     reg [2:0]  state;
     reg [31:0] to_cnt;
+    reg        ack_seen;     // retain an ack received before/on the commit edge
     reg        fr_d;          // frame_ready 上一拍值，用于 S_SAFE 只在"新的"有效帧上重试
 
     always @(posedge clk or negedge rst_n) begin
@@ -78,6 +80,7 @@ module frame_swap_ctrl #(
             state            <= S_IDLE;
             to_cnt           <= 32'd0;
             fr_d             <= 1'b0;
+            ack_seen         <= 1'b0;
             swap_req         <= 1'b0;
             frame_index      <= 1'b0;
             slot_id          <= 2'd0;
@@ -94,12 +97,15 @@ module frame_swap_ctrl #(
             active_commit <= 1'b0;
             state_o       <= state;
             fr_d          <= frame_ready;
+            if ((state == S_WAIT_VBLANK || state == S_COMMIT || state == S_WAIT_ACK) && swap_ack)
+                ack_seen <= 1'b1;
 
             case (state)
             // ------------------------------------------------------------------
             S_IDLE: begin
                 // frame_ready 有效且 crc_ok -> 锁存 payload 到 mailbox
                 if (frame_ready && wr_crc_ok) begin
+                    ack_seen         <= 1'b0;
                     frame_index      <= wr_frame_index;
                     slot_id          <= wr_slot_id;
                     generation_next  <= wr_generation;
@@ -143,7 +149,8 @@ module frame_swap_ctrl #(
             end
             // ---- 等 A 的回执（swap_ack toggle 的边沿事件）----------------------
             S_WAIT_ACK: begin
-                if (swap_ack) begin
+                if (swap_ack || ack_seen) begin
+                    ack_seen <= 1'b0;
                     // A 已切换完成，允许 B 写另一块；swap_req 保持电平，等下次翻转
                     state <= S_IDLE;
                 end else if (to_cnt >= TIMEOUT_N) begin
@@ -156,6 +163,7 @@ module frame_swap_ctrl #(
             // ---- SAFE：保持当前显示块；收到【新的】合法 frame_ready 再试一次 -----
             S_SAFE: begin
                 if (frame_ready && wr_crc_ok && !fr_d) begin
+                    ack_seen         <= 1'b0;
                     swap_error       <= 1'b0;
                     frame_index      <= wr_frame_index;
                     slot_id          <= wr_slot_id;
