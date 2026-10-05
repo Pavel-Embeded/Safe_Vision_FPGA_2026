@@ -22,10 +22,19 @@ module sd_spi_card_model #(
     parameter        CMD8_ILLEGAL    = 1'b0,           // 1 = v1.x 卡，CMD8 回 illegal command
     // ---- 卷基址（分区卡）支持，见 docs/interface_spec.md §3.2.1 ----
     // 默认 0 = 无分区表（卷 0 号扇区 = 卡 0 号扇区），所有既有 TB 行为完全不变。
-    // 设成 N>0 时：卡 LBA [N, N+63] 映射到 vol[] 的卷内相对扇区 [0,63]，
-    // 所以 vol_zero / vol_set / vol_set_le / mk_* 仍按【卷内相对 LBA】使用；
-    // 卡 LBA 0..N-1（如 MBR）与其它未映射扇区回落到默认图案 sector[]。
-    parameter [31:0] VOL_BASE        = 32'd0
+    // 设成 N>0 时：卡 LBA [N, N+VOL_SECTORS-1] 映射到 vol[] 的卷内相对扇区
+    // [0, VOL_SECTORS-1]，所以 vol_zero / vol_set / vol_set_le / mk_* 仍按
+    // 【卷内相对 LBA】使用；卡 LBA 0..N-1（如 MBR）与其它未映射扇区回落到默认图案
+    // sector[]。
+    parameter [31:0] VOL_BASE        = 32'd0,
+    // ★ 2026-10-05：卷窗口大小从固定的 64 扇区扩到可参数化，默认 2048 扇区（1 MiB）。
+    //   原因：一幅 640x480 24bit BMP = 921654 字节 = 1801 扇区，装不进原来的 64 扇区
+    //   （约 32 KB）。扩大后"真文件整幅写进卡卷"才可能，从而让 SD/FAT32 前段能一路
+    //   把真 BMP 字节送到屏幕。
+    //   向后兼容：映射条件仍是 `vol_used[相对LBA]`（默认 0）⇒ 既有 TB 只用少量扇区，
+    //   未显式写入的 LBA 照样回落到默认图案 sector[]，行为逐项不变。
+    //   注意 VOL_SECTORS 必须是 2 的幂（下面用 11 位索引 [10:0]）。
+    parameter integer VOL_SECTORS    = 2048
 )(
     input  wire        sclk,
     input  wire        cs_n,
@@ -49,15 +58,16 @@ module sd_spi_card_model #(
     // ------------------------------------------------------------------------
     reg [7:0] sector [0:511];       // 默认扇区内容（未显式写入某 LBA 时的兜底）
     reg [7:0] rd_buf [0:511];       // CMD17 本次要返回的 512 字节
-    reg [7:0] vol    [0:32767];     // 按 (lba*512 + off) 显式写入的卷内容（测试用，最多 64 个扇区）
-    reg       vol_used [0:63];      // 标记哪些 LBA 被显式写过
+    // 按 (卷内相对 LBA*512 + off) 显式写入的卷内容。大小 = VOL_SECTORS 扇区。
+    reg [7:0] vol    [0:VOL_SECTORS*512-1];
+    reg       vol_used [0:VOL_SECTORS-1];   // 标记哪些【卷内相对 LBA】被显式写过
     integer   i;
     integer   j;
     integer   kk;
     initial begin
         for (i = 0; i < 512; i = i + 1)
             sector[i] = i[7:0] + 8'h11;
-        for (i = 0; i < 64; i = i + 1)
+        for (i = 0; i < VOL_SECTORS; i = i + 1)
             vol_used[i] = 1'b0;
     end
 
@@ -66,12 +76,12 @@ module sd_spi_card_model #(
     task vol_zero;
         input [31:0] lba;
         begin
-            if (lba < 32'd64) begin
+            if (lba < VOL_SECTORS) begin
                 for (kk = 0; kk < 512; kk = kk + 1)
                     vol[lba*32'd512 + kk] = 8'h00;
-                vol_used[lba[5:0]] = 1'b1;
+                vol_used[lba[10:0]] = 1'b1;
             end else begin
-                $display("[card_model] vol_zero: LBA %0d 超出模型支持范围(0..63)", lba);
+                $display("[card_model] vol_zero: LBA %0d 超出模型支持范围(0..%0d)", lba, VOL_SECTORS-1);
             end
         end
     endtask
@@ -82,11 +92,11 @@ module sd_spi_card_model #(
         input [15:0] off;
         input [7:0]  val;
         begin
-            if (lba < 32'd64) begin
+            if (lba < VOL_SECTORS) begin
                 vol[lba*32'd512 + off] = val;
-                vol_used[lba[5:0]] = 1'b1;
+                vol_used[lba[10:0]] = 1'b1;
             end else begin
-                $display("[card_model] vol_set: LBA %0d 超出模型支持范围(0..63)", lba);
+                $display("[card_model] vol_set: LBA %0d 超出模型支持范围(0..%0d)", lba, VOL_SECTORS-1);
             end
         end
     endtask
@@ -374,15 +384,16 @@ module sd_spi_card_model #(
                         cur_rel     = cur_arg - VOL_BASE;   // blocking：写完立刻可读
                         if (cur_cmd == `SD_CMD17) begin
                             // SDHC 模式下 cur_arg 就是块号（卡的绝对 LBA）。
-                            // 该 LBA 落在卷内(>= VOL_BASE 且相对偏移 < 64)且被显式写过
-                            //   -> 用卷内容 vol[]（卷内相对索引，(cur_arg - VOL_BASE)）；
+                            // 该 LBA 落在卷窗口内(>= VOL_BASE 且相对偏移 < VOL_SECTORS)
+                            // 且被显式写过 -> 用卷内容 vol[]（卷内相对索引，(cur_arg - VOL_BASE)）；
                             // 否则 -> 用默认图案 sector[]（兼容无分区表的老 TB；VOL_BASE=0
                             //   时本式与原式逐项等价，既有 TB 行为不变）。
+                            // 索引取 [10:0] 是因为 VOL_SECTORS=2048=2^11，条件已保证 cur_rel<2048。
                             for (kk = 0; kk < 512; kk = kk + 1)
                                 rd_buf[kk] = ((cur_arg >= VOL_BASE) &&
-                                              (cur_rel < 32'd64) &&
-                                              vol_used[cur_rel[5:0]])
-                                             ? vol[cur_rel*32'd512 + kk]
+                                              (cur_rel < VOL_SECTORS) &&
+                                              vol_used[cur_rel[10:0]])
+                                             ? vol[cur_rel[10:0]*32'd512 + kk]
                                              : sector[kk];
                             crc_val = crc16_of_rdbuf(16'd512);
                         end

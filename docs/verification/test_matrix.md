@@ -77,8 +77,8 @@
 |---|---|---|
 | **B 侧半段**：真 BMP → 帧缓存内容（阶段 8+10+11+13） | **`tb_b_frame_memory.sv`（本页新增，14 项）** | ✅ **本机 ModelSim 已跑通，逐字 0 错**；**已进 `run_sim.ps1`** |
 | **A 侧半段**：帧缓存 → 屏幕像素（A 阶段 11–15 + B 的仲裁/换帧） | A 的 `tb_a_video_display_core.sv`（用**合成数据**） | ✅ 在 **A 的 XSim** 上跑 |
-| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `tb_ab_frame_display.sv`（**本机 ModelSim**） | ✅✅ **已全绿：`errors=0  pix_ok=307200  pix_bad=0`** —— **整整一帧 307200 个像素逐点全对**，换帧握手正常（`swap_err=0`）。入口 `run_ab_display_sim.ps1`（独立脚本，已登记进 `run_all.ps1`）。（含硬断言 `commits >= 1` ✓） |
-| **SD/FAT32 前段 → 屏幕**：卡上的文件 → RGB565 像素 | **`tb_card_to_screen.sv`（46 项，2026-10-05 新增）** | ✅ **本机 ModelSim 已跑通：`CARD-TO-SCREEN PASS=46 FAIL=0`**（`stream bytes=921654 mismatch=0` / `pixels=307200 bad=0`）。入口 `run_card_to_screen_sim.ps1`（已登记进 `run_all.ps1`）。★ **但要注意它的边界**：卷是**合成的微型 FAT32 镜像**（64 扇区 ≈32 KB），**装不下**一幅 640×480 24bit BMP（921654 字节）⇒ **只有文件第一扇区（含 54 字节头）真的写在卡上，文件主体回落到卡模型的确定性默认图案**。所以"卷基址/BPB/目录扫描/索引/簇链/字节流/BMP 头"都是真链路，**"文件主体像素"不是真文件内容**。另：不含 `frame_writer`/SDRAM/A 显示核心，单时钟域（50 MHz），不覆盖多扇区 CMD18 |
+| **A+B 显示级全链路（真卡 → 屏幕）**：**SD 卡上真实 FAT32 文件** → 屏幕像素 | `tb_ab_frame_display.sv`（**本机 ModelSim**，2026-10-05 起前段已并入） | ✅✅ **已全绿：`AB-DISPLAY PASS=54 FAIL=0`**；TB 末行 `errors=0  pix_ok=307200  pix_bad=0  swap_err=0  stream=921654 stream_mism=0  u_pix=307200 u_pix_bad=0` —— **整整一帧 307200 个像素逐点全对**，且**文件字节来自真实写在 SD 卡卷上的完整 921654 字节 BMP**（不再是 TB 合成）。入口 `run_ab_display_sim.ps1`（独立脚本，已登记进 `run_all.ps1`）。（含硬断言 `commits >= 1` ✓） |
+| **SD/FAT32 前段 → 屏幕**：卡上的文件 → RGB565 像素 | **`tb_card_to_screen.sv`（46 项，2026-10-05 新增）** | ✅ **本机 ModelSim 已跑通：`CARD-TO-SCREEN PASS=46 FAIL=0`**（`stream bytes=921654 mismatch=0` / `pixels=307200 bad=0`）。入口 `run_card_to_screen_sim.ps1`（已登记进 `run_all.ps1`）。★ **它的边界**：卷仍是**合成的微型 FAT32 镜像**（64 扇区 ≈32 KB），**装不下**一幅 640×480 24bit BMP（921654 字节）⇒ **只有文件第一扇区（含 54 字节头）真的写在卡上，文件主体回落到卡模型的确定性默认图案**；且不含 `frame_writer`/SDRAM/A 显示核心。★ **"文件主体是真文件内容"这一条已由 `tb_ab_frame_display.sv` 覆盖**（见上一行，卡模型卷窗口已扩到 2048 扇区）。 |
 
 **★ 让 A 的显示核心能在 ModelSim 上跑：只改了一个文件的端口连接（2026-10-05）**
 `a_pixel_fifo_ip.v` 里 `ram_inst`（ERAM）只写了 14/16 个端口，**`doa`（A 口读数据）与
@@ -205,8 +205,18 @@ B `run_sim.ps1` 全回归基线为 **604 PASS / 0 FAIL**（2026-10-05 加入 `tb
 
 ## 待查项（2026-10-05，均**不阻塞**已验证的结论）
 
+> **★ 2026-10-05 晚更新**：`tb_ab_frame_display` 已改成**从真卡文件取数**（不再是 TB 造的 BMP），**待查项 #3 已关闭** —— 现在 `stream=921654 stream_mism=0` + `pix_ok=307200 pix_bad=0`，即**卡上真文件的 921654 字节 → 屏幕 307200 像素逐点一致**（`AB-DISPLAY PASS=54 FAIL=0`）。
+
+### ★★ 新发现（集成时才暴露，**可能影响整机**）
+
+| # | 发现 | 证据 / 说明 | 为什么要重视 |
+|---|---|---|---|
+| **A** | **`frame_writer` 的默认 `GAP_TIMEOUT = 512` 拍，对真实 SD 数据源太短** | 把 BMP 改从**真卡**取数后，`file_streamer` 在**每个簇边界**要读一次 FAT 扇区，`sd_sector_reader` 的 CMD17 停顿约 **16384 个 `clk_mem` 拍**（=131 µs）⇒ **远超 512 拍** ⇒ `frame_writer` 会误判"上游断流"。TB 里已把它实例化为 `GAP_TIMEOUT=500_000`（=4 ms）才跑通；**未改任何断言** | ★ **这不是 TB 的问题，是参数与真实数据源不匹配** ✗ —— 整机里若 `bmp_unpack` 与 `frame_writer` 直连、中间没有足够缓冲，**每到簇边界就会误报断流** |
+| **B** | ★ **一条有深度的缓冲 FIFO 可以同时解决两件事** | 待查项 #2（跨域）要补 FIFO；而上面 A 的"簇边界停顿"也要靠缓冲吸收 ⇒ **同一个 FIFO 深度参数同时决定"CDC 安全"与"能否吸收 SD 停顿"** | ⇒ 与 A 讨论 #2 时**要一并把 FIFO 深度定下来**（不能只当"过域线"用）|
+
+
 | # | 待查项 | 证据 / 现状 | 为什么要查 |
 |---|---|---|---|
 | ~~1~~ | ~~`active_commit` 未观测到脉冲~~ **✅ 已结案：不是 bug，是检查时机错了** | **实测时序**：`t=14.746 ms` FSM 进 `S_WAIT_VBLANK`；`t=16.485 ms` 才等到垂直消隐 → `S_COMMIT`（**这才发 `active_commit`**）；最终 `commits=1  acmt=1  stchg=5` ✓。★ **根因**：**A 的 core 从 mailbox 到达就激活画面**（`pix_active_valid`），而 **B 的 FSM 要等到下一个垂直消隐才提交** —— **两者差约 1.74 ms（一帧）**。我早先把检查放在 `pix_active_valid` 之后**立刻**做 ⇒ `commits` 还是 0 ⇒ 误判。现已改为"跨两整帧之后再检查"并**恢复为硬断言**（实测通过） | ★ **这个时序事实本身对整机有意义**：**画面激活比 B 的槽提交早一帧** —— 涉及 `frame_buffer_manager` 的时序理解 |
 | 2 | **`bmp_unpack` 与 `frame_writer` 之间的时钟域** | 两个集成 TB 都按**同域（mem_clk）**接的 | 若产品里跨域，需要补一级 CDC FIFO —— **待与 A 确认** |
-| 3 | **`tb_card_to_screen` 的文件主体不是真文件内容** | 卡模型卷只有 64 扇区（约 32 KB），装不下 640x480 24bit BMP（921654 字节）⇒ 只有第一扇区（含 54 B 头）真写入，主体回落默认图案 | 若要"真文件端到端"，需扩大卡模型卷或改用小尺寸 BMP（会牵动 `bmp_parser` 的 640x480 硬编码） |
+| ~~3~~ | ~~**`tb_card_to_screen` 的文件主体不是真文件内容**~~ **✅ 已结案（2026-10-05）** | `sd_spi_card_model.sv` 增加 `VOL_SECTORS` 参数（默认 2048 扇区 = 1 MiB），`tb_ab_frame_display.sv` 把**整幅 921654 字节真 BMP** 写进卡卷并跑完整条链，实测 `stream_mism=0 / u_pix_bad=0 / pix_bad=0`。`tb_card_to_screen` 保持原样（仍用 64 扇区小卷，`PASS=46 FAIL=0` 不变） | — |

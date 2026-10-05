@@ -41,9 +41,10 @@ $vlog  = Join-Path $ModelSimBin 'vlog.exe'
 $vsim  = Join-Path $ModelSimBin 'vsim.exe'
 $inc   = Join-Path $RepoRoot 'safevision/rtl/include'
 
-# B side + A side + the vendor stub (only for sdram / sv_system_pll symbols)
+# B side + A side + the SD card model + the vendor stub (sdram / sv_system_pll)
 $files = @(
     'verification/models/vendor_ip_stub.sv',
+    'verification/models/sd_spi_card_model.sv',
     'rtl/common/*.v',
     'rtl/media/*.v',
     'rtl/memory/*.v',
