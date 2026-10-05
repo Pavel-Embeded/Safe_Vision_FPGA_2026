@@ -77,7 +77,7 @@
 |---|---|---|
 | **B 侧半段**：真 BMP → 帧缓存内容（阶段 8+10+11+13） | **`tb_b_frame_memory.sv`（本页新增，14 项）** | ✅ **本机 ModelSim 已跑通，逐字 0 错**；**已进 `run_sim.ps1`** |
 | **A 侧半段**：帧缓存 → 屏幕像素（A 阶段 11–15 + B 的仲裁/换帧） | A 的 `tb_a_video_display_core.sv`（用**合成数据**） | ✅ 在 **A 的 XSim** 上跑 |
-| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `tb_ab_frame_display.sv`（**本机 ModelSim**） | ✅✅ **已全绿：`errors=0  pix_ok=307200  pix_bad=0`** —— **整整一帧 307200 个像素逐点全对**，换帧握手正常（`swap_err=0`）。入口 `run_ab_display_sim.ps1`（独立脚本，已登记进 `run_all.ps1`）。⚠️ **一个待查项**：`active_commit` 未观测到脉冲（TB 只打 `[WARN]`，不判失败）—— 见下方说明 |
+| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `tb_ab_frame_display.sv`（**本机 ModelSim**） | ✅✅ **已全绿：`errors=0  pix_ok=307200  pix_bad=0`** —— **整整一帧 307200 个像素逐点全对**，换帧握手正常（`swap_err=0`）。入口 `run_ab_display_sim.ps1`（独立脚本，已登记进 `run_all.ps1`）。（含硬断言 `commits >= 1` ✓） |
 | **SD/FAT32 前段 → 屏幕**：卡上的文件 → RGB565 像素 | **`tb_card_to_screen.sv`（46 项，2026-10-05 新增）** | ✅ **本机 ModelSim 已跑通：`CARD-TO-SCREEN PASS=46 FAIL=0`**（`stream bytes=921654 mismatch=0` / `pixels=307200 bad=0`）。入口 `run_card_to_screen_sim.ps1`（已登记进 `run_all.ps1`）。★ **但要注意它的边界**：卷是**合成的微型 FAT32 镜像**（64 扇区 ≈32 KB），**装不下**一幅 640×480 24bit BMP（921654 字节）⇒ **只有文件第一扇区（含 54 字节头）真的写在卡上，文件主体回落到卡模型的确定性默认图案**。所以"卷基址/BPB/目录扫描/索引/簇链/字节流/BMP 头"都是真链路，**"文件主体像素"不是真文件内容**。另：不含 `frame_writer`/SDRAM/A 显示核心，单时钟域（50 MHz），不覆盖多扇区 CMD18 |
 
 **★ 让 A 的显示核心能在 ModelSim 上跑：只改了一个文件的端口连接（2026-10-05）**
@@ -207,6 +207,6 @@ B `run_sim.ps1` 全回归基线为 **604 PASS / 0 FAIL**（2026-10-05 加入 `tb
 
 | # | 待查项 | 证据 / 现状 | 为什么要查 |
 |---|---|---|---|
-| 1 | **`active_commit` 未观测到脉冲** | `frame_swap_ctrl.v:141-142` 明确在 `S_WAIT_VBLANK` 收到 `frame_start` 时把它置 1 拍；但 `tb_ab_frame_display` 的边沿计数器实测始终为 0（计数器已确认存在且正确编译）。TB 目前只打 `[WARN]`、不判失败 | **`active_commit` 是 `frame_buffer_manager` 的输入** —— 若真不发，B 的槽管理链会缺一拍 |
+| ~~1~~ | ~~`active_commit` 未观测到脉冲~~ **✅ 已结案：不是 bug，是检查时机错了** | **实测时序**：`t=14.746 ms` FSM 进 `S_WAIT_VBLANK`；`t=16.485 ms` 才等到垂直消隐 → `S_COMMIT`（**这才发 `active_commit`**）；最终 `commits=1  acmt=1  stchg=5` ✓。★ **根因**：**A 的 core 从 mailbox 到达就激活画面**（`pix_active_valid`），而 **B 的 FSM 要等到下一个垂直消隐才提交** —— **两者差约 1.74 ms（一帧）**。我早先把检查放在 `pix_active_valid` 之后**立刻**做 ⇒ `commits` 还是 0 ⇒ 误判。现已改为"跨两整帧之后再检查"并**恢复为硬断言**（实测通过） | ★ **这个时序事实本身对整机有意义**：**画面激活比 B 的槽提交早一帧** —— 涉及 `frame_buffer_manager` 的时序理解 |
 | 2 | **`bmp_unpack` 与 `frame_writer` 之间的时钟域** | 两个集成 TB 都按**同域（mem_clk）**接的 | 若产品里跨域，需要补一级 CDC FIFO —— **待与 A 确认** |
 | 3 | **`tb_card_to_screen` 的文件主体不是真文件内容** | 卡模型卷只有 64 扇区（约 32 KB），装不下 640x480 24bit BMP（921654 字节）⇒ 只有第一扇区（含 54 B 头）真写入，主体回落默认图案 | 若要"真文件端到端"，需扩大卡模型卷或改用小尺寸 BMP（会牵动 `bmp_parser` 的 640x480 硬编码） |

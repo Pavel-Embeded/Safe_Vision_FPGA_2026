@@ -52,11 +52,12 @@
 //   ★ 另外两个**观测手段**的教训：(a) 单周期信号必须用 `always` 数边沿，
 //     1 ms 采样看不到；(b) **层次引用在 vopt 下不可靠**（`u_cdc.fs_sync` 读出来的值
 //     与实际驱动 `fs_evt_b` 的那份不一定是同一个）⇒ 只信 **TB 顶层信号**。
-//   ★ 待查项（不影响本 TB 结论）：**`active_commit` 未观测到脉冲**。
-//     —— `frame_swap_ctrl.v:141-142` 明确在 `S_WAIT_VBLANK` 收到 `frame_start` 时把它置 1 拍，
-//     但 TB 的边沿计数器实测始终为 0（计数器已确认存在且正确编译）。
-//     → 可能是本 TB 说不清，也可能是真问题；因为 `active_commit` 是 `frame_buffer_manager`
-//     的输入，**值得单独确认**。本 TB 只打 `[WARN]`，不判失败。
+//   ★★ 已查明（不是 bug）：**`active_commit` 完全正常，是检查时机错了**。
+//     实测的时序事实：**A 的 core 从 mailbox 到达就激活画面**（`pix_active_valid`），
+//     而 **B 的 FSM 要等到下一个垂直消隐才提交**（`active_commit`）——实测差约 **1.74 ms（一帧）**。
+//     早先把检查放在 `pix_active_valid` 之后立刻做 ⇒ `commits` 还是 0 ⇒ **误判**。
+//     现已改为"跨两整帧之后再检查"，并恢复为**硬断言**（实测通过）。
+//     ★ 这个时序事实对整机有意义：**画面激活比 B 的提交早一帧**。
 // ============================================================================
 // ★ 2026-10-05：`a_pixel_fifo_ip.v` 的两个未接端口已显式列出后，
 //   本 TB 在 **ModelSim** 上也能 elaborate（原先 vopt 会内部崩溃）。
@@ -442,6 +443,23 @@ module tb_ab_frame_display;
     // ★ 计数器必须声明在使用它的 always 块之前（否则 Verilog 建隐式网线、报 undefined）
     integer a_req_seen = 0, a_acks = 0, commits = 0;
     reg     cmt_d = 1'b0;
+    // ★★ 独立诊断：数 FSM 状态转移序列 + 用**另一个**计数器数 active_commit 边沿
+    integer acmt_edges = 0, st_changes = 0;
+    reg     acmt_d = 1'b0;
+    reg [2:0] st_d = 3'd0;
+    always @(posedge clk_sys) begin
+        if (!rst_n) begin acmt_d <= 1'b0; st_d <= 3'd0; end
+        else begin
+            acmt_d <= active_commit;
+            if (active_commit && !acmt_d) acmt_edges = acmt_edges + 1;
+            st_d <= swap_state_o;
+            if (swap_state_o !== st_d) begin
+                st_changes = st_changes + 1;
+                $display("[FSM] t=%0t state %0d -> %0d  active_commit=%b", $time, st_d, swap_state_o, active_commit);
+            end
+        end
+    end
+
     // ★ 换帧提交计数（之前只声明了变量、增量块跟 A 模型一起被删了 ⇒ 恒 0）
     always @(posedge clk_sys) begin
         if (!rst_n) cmt_d <= 1'b0;
@@ -611,13 +629,6 @@ module tb_ab_frame_display;
         // ★ 等**电平**信号 pix_active_valid，不要等单拍信号 active_commit：
         //   后者是 sys 域单拍，若在 wait 之前就闪过，wait 会永久挂住（实测踩过）。
         wait (pix_active_valid);
-        check(swap_error == 1'b0, "9) 换帧握手无超时");
-        // ★ 不做硬断言：`frame_swap_ctrl.v:141-142` 明确在 `S_WAIT_VBLANK` 收到 `frame_start` 时
-        //   会把 `active_commit` 置 1 拍，但本 TB 的边沿计数器实测始终为 0 ——
-        //   **本 TB 目前说不清楚**（不影响 `pix_ok/bad` 结论），故只告警不判失败。
-        //   待查：`active_commit` 是 `frame_buffer_manager` 的输入，值得单独确认。
-        if (commits == 0) $display("[WARN] active_commit 未观测到脉冲（commits=0）—— 待查，不影响像素结论");
-        check(1'b1, "9b) 换帧计数器已恢复（active_commit 观测为待查项，见 WARN）");
         // ★ 比对窗口：从“画面已激活”开始，再跨两整帧
         //   （早先只等 2000 拍，落在消隐期 ⇒ pix_ok=0）
         repeat (2) @(posedge disp_frame_start);
@@ -627,15 +638,23 @@ module tb_ab_frame_display;
         wait (frame_no >= 2);
         repeat (2000) @(posedge clk_pix);
 
+        // ★ 这两条必须放在"跨两整帧之后"：
+        //   ★★ 经测量确认的时序事实：**A 的 core 从 mailbox 到达就激活画面**（`pix_active_valid`），
+        //   而 **B 的 FSM 要等到下一个垂直消隐才提交**（`active_commit`）——
+        //   实测两者差约 **1.74 ms**（一帧）。
+        //   早先把检查放在 `pix_active_valid` 之后立刻做 ⇒ `commits` 还是 0 ⇒
+        //   误判成"`active_commit` 没发" 。**它其实完全正常**。
+        check(swap_error == 1'b0, "9) 换帧握手无超时");
+        check(commits >= 1, "9b) 换帧确实提交了（active_commit 至少 1 次）");
         check(pix_ok > 200000, "10) 显示侧至少比对上 200000 个像素（画面真的出来了）");
         check(pix_bad == 0,    "11) ★ 显示像素与源 BMP 像素**逐点一致**（0 个不符）");
         check(pix_underflow == 0, "12) 无像素欠流（A 的 underflow 计数 = 0）");
         check(mem_overflow == 0,  "13) 无 FIFO 溢出");
         check(pix_frame_fault == 0, "14) 无帧故障标记");
 
-        $display("[TB] tb_ab_frame_display done, errors=%0d (pix_ok=%0d pix_bad=%0d frames=%0d commits=%0d swapst=%0d swap_err=%b fsB=%0d ackB=%0d)",
+        $display("[TB] tb_ab_frame_display done, errors=%0d (pix_ok=%0d pix_bad=%0d frames=%0d commits=%0d swapst=%0d swap_err=%b fsB=%0d ackB=%0d acmt=%0d stchg=%0d)",
                  errors, pix_ok, pix_bad, frame_no, commits, swap_state_o, swap_error,
-                 fs_b_pulses, ack_b_pulses);
+                 fs_b_pulses, ack_b_pulses, acmt_edges, st_changes);
         $finish;
     end
 
