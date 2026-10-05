@@ -25,7 +25,8 @@ module sd_spi_card_model #(
     // 设成 N>0 时：卡 LBA [N, N+63] 映射到 vol[] 的卷内相对扇区 [0,63]，
     // 所以 vol_zero / vol_set / vol_set_le / mk_* 仍按【卷内相对 LBA】使用；
     // 卡 LBA 0..N-1（如 MBR）与其它未映射扇区回落到默认图案 sector[]。
-    parameter [31:0] VOL_BASE        = 32'd0
+    parameter [31:0] VOL_BASE        = 32'd0,
+    parameter integer VOL_SECTORS = 64
 )(
     input  wire        sclk,
     input  wire        cs_n,
@@ -49,15 +50,15 @@ module sd_spi_card_model #(
     // ------------------------------------------------------------------------
     reg [7:0] sector [0:511];       // 默认扇区内容（未显式写入某 LBA 时的兜底）
     reg [7:0] rd_buf [0:511];       // CMD17 本次要返回的 512 字节
-    reg [7:0] vol    [0:32767];     // 按 (lba*512 + off) 显式写入的卷内容（测试用，最多 64 个扇区）
-    reg       vol_used [0:63];      // 标记哪些 LBA 被显式写过
+    reg [7:0] vol    [0:VOL_SECTORS*512-1];     // 按 (lba*512 + off) 显式写入的卷内容（测试用，容量由 VOL_SECTORS 指定）
+    reg       vol_used [0:VOL_SECTORS-1];      // 标记哪些 LBA 被显式写过
     integer   i;
     integer   j;
     integer   kk;
     initial begin
         for (i = 0; i < 512; i = i + 1)
             sector[i] = i[7:0] + 8'h11;
-        for (i = 0; i < 64; i = i + 1)
+        for (i = 0; i < VOL_SECTORS; i = i + 1)
             vol_used[i] = 1'b0;
     end
 
@@ -66,12 +67,12 @@ module sd_spi_card_model #(
     task vol_zero;
         input [31:0] lba;
         begin
-            if (lba < 32'd64) begin
+            if (lba < VOL_SECTORS) begin
                 for (kk = 0; kk < 512; kk = kk + 1)
                     vol[lba*32'd512 + kk] = 8'h00;
-                vol_used[lba[5:0]] = 1'b1;
+                vol_used[lba] = 1'b1;
             end else begin
-                $display("[card_model] vol_zero: LBA %0d 超出模型支持范围(0..63)", lba);
+                $display("[card_model] vol_zero: LBA %0d 超出模型支持范围(VOL_SECTORS)", lba);
             end
         end
     endtask
@@ -82,11 +83,11 @@ module sd_spi_card_model #(
         input [15:0] off;
         input [7:0]  val;
         begin
-            if (lba < 32'd64) begin
+            if (lba < VOL_SECTORS) begin
                 vol[lba*32'd512 + off] = val;
-                vol_used[lba[5:0]] = 1'b1;
+                vol_used[lba] = 1'b1;
             end else begin
-                $display("[card_model] vol_set: LBA %0d 超出模型支持范围(0..63)", lba);
+                $display("[card_model] vol_set: LBA %0d 超出模型支持范围(VOL_SECTORS)", lba);
             end
         end
     endtask
@@ -380,8 +381,8 @@ module sd_spi_card_model #(
                             //   时本式与原式逐项等价，既有 TB 行为不变）。
                             for (kk = 0; kk < 512; kk = kk + 1)
                                 rd_buf[kk] = ((cur_arg >= VOL_BASE) &&
-                                              (cur_rel < 32'd64) &&
-                                              vol_used[cur_rel[5:0]])
+                                              (cur_rel < VOL_SECTORS) &&
+                                              vol_used[cur_rel])
                                              ? vol[cur_rel*32'd512 + kk]
                                              : sector[kk];
                             crc_val = crc16_of_rdbuf(16'd512);

@@ -56,7 +56,7 @@ module frame_writer #(
     parameter [31:0] BYTES_PER_PIXEL = `SV_RGB565_BYTES_PER_PX,
     parameter [18:0] PIX_PER_FRAME   = `SV_FRAME_PIXELS,      // 640*480
     parameter integer SAMPLE_STRIDE  = 1024,            // 每 1024 word 取一个抽样点
-    parameter [15:0] GAP_TIMEOUT     = 16'd512,         // 帧内无进展超时（拍）
+    parameter [31:0] GAP_TIMEOUT     = 32'd512,         // clocks; override for SD streaming latency
     parameter [31:0] SLOT_SPAN       = `SV_IMG_ALIGN_BYTES,     // 单槽预留（§5 地址表）
     parameter [31:0] MEM_VISIBLE     = `SV_MEM_VISIBLE_BYTES    // SDRAM 对外可见容量 4 MiB（§3.4）
 )(
@@ -116,12 +116,14 @@ module frame_writer #(
     reg        wr_pending;    // 有一个 word 待写出
     reg [31:0] wr_addr_r;
     reg [31:0] wr_data_r;
-    reg [15:0] gap_cnt;       // 帧内无进展计数
+    localparam integer GAP_W = (GAP_TIMEOUT < 2) ? 1 : $clog2({1'b0,GAP_TIMEOUT}+33'd1);
+    reg [GAP_W-1:0] gap_cnt;  // minimal width, including SD latency >65535 clocks
 
     // ------------------------------------------------------------------------
     // 二维坐标 -> 字节地址（复用 frame_address_gen，公式与手册一致）
     // ------------------------------------------------------------------------
     wire [31:0] cur_byte_addr;
+    wire [31:0] cur_offset;
     wire [29:0] cur_word_addr;
     wire        cur_word_phase;
 
@@ -129,13 +131,14 @@ module frame_writer #(
         .FRAME_WIDTH     (FRAME_WIDTH),
         .BYTES_PER_PIXEL (BYTES_PER_PIXEL)
     ) u_addr_gen (
-        .slot_base (base_reg),
+        .slot_base (32'd0),
         .x         (x_cnt),
         .y         (y_cnt),
-        .byte_addr (cur_byte_addr),
+        .byte_addr (cur_offset),
         .word_addr (cur_word_addr),
         .word_phase(cur_word_phase)
     );
+    assign cur_byte_addr = base_reg + cur_offset;
 
     // ------------------------------------------------------------------------
     // 组合信号
@@ -213,8 +216,10 @@ module frame_writer #(
                 S_IDLE: begin
                     if (start) begin
                         // 槽基地址合法性：4 Byte 对齐 + 不越过 SDRAM 可见容量
-                        if ((slot_base[1:0] != 2'b00) ||
-                            ((slot_base + SLOT_SPAN) > MEM_VISIBLE)) begin
+                        // Subtract the bound before comparison: adding a large
+                        // base could wrap to zero and admit an illegal address.
+                        if ((slot_base[1:0] != 2'b00) || (SLOT_SPAN > MEM_VISIBLE) ||
+                            (slot_base > (MEM_VISIBLE - SLOT_SPAN))) begin
                             // 越界/非法槽基地址：拒绝，不发任何写，不置 slot_valid
                             wr_error   <= 1'b1;
                             err_code   <= `ERR_MEDIA_INVALID;
@@ -264,8 +269,10 @@ module frame_writer #(
                             // 收齐一对，打包成一个 word
                             have_lo <= 1'b0;
                             // 越界写检查（防御性，正常永不触发）
-                            if ((cur_byte_addr < base_reg) ||
-                                (cur_byte_addr >= (base_reg + SLOT_SPAN))) begin
+                            // A validated base plus offset<SLOT_SPAN cannot
+                            // wrap or exceed MEM_VISIBLE. Check the offset so
+                            // the 125MHz enable path avoids add+two compares.
+                            if (cur_offset >= SLOT_SPAN) begin
                                 wr_error   <= 1'b1;
                                 err_code   <= `ERR_MEDIA_INVALID;
                                 err_detail <= `DET_BMP_TRUNC;

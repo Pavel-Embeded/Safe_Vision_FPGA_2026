@@ -1,78 +1,20 @@
-// ============================================================================
-// tb_card_to_screen.sv - SD-card/FAT32 front half -> RGB565 pixel stream
-// ----------------------------------------------------------------------------
-// WHY THIS EXISTS (the gap it closes)
-//   tb_b_frame_memory.sv and tb_ab_frame_display.sv both start from a BMP byte
-//   stream that the TESTBENCH INVENTS. Neither one touches the SD/FAT32 front
-//   half. This testbench puts a real (synthetic but fully deterministic) BMP
-//   FILE on the sd_spi_card_model and drives the real storage chain:
-//
-//     sd_spi_card_model
-//       -> sd_initializer
-//       -> sd_sector_reader        (single-sector CMD17, shared SPI + shared
-//                                   read bus with the front-half modules)
-//       -> mbr_parser              (card LBA 0 = MBR -> volume base)
-//       -> fat32_boot_parser       (volume LBA 0 = DBR/BPB)
-//       -> fat32_directory_scanner (+ fat32_cluster_walker)
-//       -> file_index              (SV0001.BMP selection + sort)
-//       -> file_streamer           (+ fat32_cluster_walker, cluster chain)
-//       -> bmp_parser              (BMP header validation)
-//       -> bmp_unpack              (BGR888 -> RGB565)
-//
-//   and asserts the RGB565 pixel stream against the bytes that were actually
-//   placed on the card (see "WHAT IS ASSERTED AGAINST WHAT" below).
-//
-// WHAT IS ASSERTED AGAINST WHAT
-//   The expectation is NOT a second invention. It is computed from the exact
-//   byte sequence the card model returns for file offset j (`filebyte(j)`),
-//   which is built from:
-//     * the 54-byte BMP header written into the card's volume at the file's
-//       first sector (vol_set), and
-//     * the card model's documented default sector pattern (sector[k]=k+0x11)
-//       for every later sector of the file.
-//   If the chain mis-addresses, drops, reorders or duplicates a byte, the
-//   pixel comparison fails. `filebyte()` is the single source of truth used
-//   BOTH to lay the file down and to compute the expected pixels.
-//
-// WHY A 640x480 BMP (and why the pixel data is mostly the card default pattern)
-//   bmp_parser.v hard-codes width==640 && height==+/-480 (see its `size_ok`
-//   and BMP_PIX_BYTES=921600). A 640x480 24-bit BMP is 921654 bytes = 1801
-//   sectors, which does NOT fit in sd_spi_card_model's 64-sector volume
-//   (~32 KB). So we place the first sector of the file (header + first bytes)
-//   in the volume and let the remaining sectors fall through to the model's
-//   deterministic default pattern. The volume still holds a genuine FAT32
-//   image (DBR + FAT + root directory + 4 directory entries); only the bulk
-//   pixel payload comes from the card model's default fill. Everything the
-//   front half must get right (MBR/volume base, BPB, directory scan, index,
-//   cluster chain, byte stream, BMP header) is real.
-//
-// WHAT THIS DOES **NOT** PROVE
-//   * Real SD card timing / protocol AC: the card model answers instantly at
-//     the SPI bit level but has no NCR, no busy polling, no timing models.
-//   * Multi-sector CMD18: sd_sector_reader is CMD17 only (rd_len must be 1).
-//   * The volume is a synthetic, tiny FAT32 image (1 FAT sector, 32
-//     sectors/cluster, ~2048 sectors declared). It is not a real card image.
-//   * The bulk of the pixel payload is the card model's default pattern, not
-//     bytes written by this TB (see above).
-//   * It stops at bmp_unpack: no frame_writer / SDRAM / A display core here.
-//   * Single clock domain (50 MHz): no CDC.
-//
-// How to run: safevision/tools/run_card_to_screen_sim.ps1
-// Plusarg +STOP_AFTER_SCAN stops right after file_index commit (fast smoke run
-// of the front half only, no 921654-byte stream).
-// ============================================================================
+// Complete 921654-byte BMP stored explicitly across 1801 card-model sectors.
+// Every streamed byte and RGB565 pixel is checked independently. ENABLE_DISPLAY
+// additionally drives B frame_writer and the production safevision_core.
+// No physical SDRAM/HDMI/board behavior is modeled here.
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 `include "pixel_format_defs.vh"
 
-module tb_card_to_screen;
+module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_HZ=50_000_000);
 
     // ------------------------------------------------------------------------
     // Clock / reset / bookkeeping
     // ------------------------------------------------------------------------
-    localparam integer CLK_HZ = 50_000_000;
+    localparam [15:0] INIT_DIV=(CLK_HZ+799999)/800000-1;
+    localparam [15:0] FAST_DIV=(CLK_HZ+49999999)/50000000-1;
     reg clk   = 1'b0;
-    always #10 clk = ~clk;                 // 20 ns -> 50 MHz
+    always #(500000000.0/CLK_HZ) clk = ~clk;
     reg rst_n = 1'b0;
 
     integer errors = 0;
@@ -165,26 +107,26 @@ module tb_card_to_screen;
     //   j <  512           : rest of the file's first sector (vol_zero -> 0)
     //   j >= 512           : unmapped sector -> sector_byte(j & 511)
     // ------------------------------------------------------------------------
+    // Distinct image coordinates and independent BGR channel arithmetic.
     function [7:0] filebyte;
         input integer j;
+        integer n,x,y,c;
         begin
-            if (j < 54)       filebyte = bmp_hdr[j];
-            else if (j < 512) filebyte = 8'h00;
-            else              filebyte = sector_byte(j & 32'h1FF);
+            if(j<54)filebyte=bmp_hdr[j];
+            else begin
+                n=(j-54)/3;x=n%W;y=n/W;c=(j-54)%3;
+                case(c)
+                    0:filebyte=(x*3+y*7+17)&255;
+                    1:filebyte=(x*5+y*11+67)&255;
+                    default:filebyte=(x*13+y*19+131)&255;
+                endcase
+            end
         end
     endfunction
-
-    // Pixel byte index p (= file offset - 54) -> card byte
     function [7:0] pixbyte;
-        input integer p;
-        integer jj;
-        begin
-            jj = p + 54;
-            if (jj < 512) pixbyte = 8'h00;
-            else          pixbyte = sector_byte(jj & 32'h1FF);
-        end
+        input integer j;
+        begin pixbyte=filebyte(54+j);end
     endfunction
-
     // Expected RGB565 for raster pixel n (top-down BMP, 640*3 stride = 1920)
     function [15:0] exp565;
         input integer n;
@@ -209,7 +151,7 @@ module tb_card_to_screen;
     wire        o_cmd_valid;
 
     sd_spi_card_model #(
-        .VOL_BASE (VOL_BASE)
+        .VOL_BASE (VOL_BASE), .VOL_SECTORS(2048)
     ) u_card (
         .sclk         (sd_dclk),
         .cs_n         (sd_ncs),
@@ -369,7 +311,7 @@ module tb_card_to_screen;
     // ========================================================================
     // Module instances
     // ========================================================================
-    sd_initializer u_init (
+    sd_initializer #(.CLK_DIV_INIT(INIT_DIV)) u_init (
         .clk(clk), .rst_n(rst_n), .start(init_start),
         .sdhc(sdhc), .init_done(init_done), .init_error(init_error),
         .err_code(init_err_code), .err_detail(), .retry_cnt(), .dbg_state(),
@@ -492,18 +434,26 @@ module tb_card_to_screen;
         .out_sof(bpo_sof), .out_eof(bpo_eof)
     );
 
+    wire bpu_ready,display_done;wire [31:0] display_errors;
     bmp_unpack u_unpack (
         .clk(clk), .rst_n(rst_n),
         .din(bpo_data), .din_valid(bpo_valid), .din_ready(bpo_ready),
         .din_sof(bpo_sof), .din_eof(bpo_eof),
         .width(bmp_width), .height(bmp_height), .top_down(bmp_top_down), .pixel_off(bmp_pixel_off),
-        .pixel(bpu_pixel), .pixel_valid(bpu_valid), .pixel_ready(1'b1),
+        .pixel(bpu_pixel), .pixel_valid(bpu_valid), .pixel_ready(bpu_ready),
         .x(bpu_x), .y(bpu_y), .img_sof(bpu_sof), .img_eof(bpu_eof),
         .done(bpu_done), .error(bpu_error), .err_code(bpu_ec), .err_detail(bpu_ed),
         .dbg_state()
     );
 
-    sd_sector_reader u_rd (
+    generate if(ENABLE_DISPLAY) begin: full_display
+        ab_frame_sink sink(.mem_clk(clk),.rst_n(rst_n),.start(fst_start),.top_down(bmp_top_down),
+          .pixel(bpu_pixel),.pixel_valid(bpu_valid),.pixel_ready(bpu_ready),
+          .pixel_x(bpu_x),.pixel_y(bpu_y),.done(display_done),.errors(display_errors));
+    end else begin: front_only
+        assign bpu_ready=1'b1;assign display_done=1'b1;assign display_errors=0;
+    end endgenerate
+    sd_sector_reader #(.CLK_DIV_FAST(FAST_DIV)) u_rd (
         .clk(clk), .rst_n(rst_n), .sdhc(sdhc),
         .rd_en(bus_rd_en), .rd_addr(rd_addr_to_reader), .rd_len(bus_rd_len), .rd_ready(rd_ready),
         .data(rd_data), .data_valid(rd_data_valid), .data_ready(bus_data_ready),
@@ -570,12 +520,17 @@ module tb_card_to_screen;
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd32,  "SV0002  BMP", 8'h20, FILE_CLUS, FILE_SIZE);
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd64,  "SV0003  BMP", 8'h20, FILE_CLUS, FILE_SIZE);
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd96,  "SV0004  BMP", 8'h20, FILE_CLUS, FILE_SIZE);
-            // File first sector (volume LBA 34): header in the first 54 bytes,
-            // the rest stays zero (vol_zero). Later sectors fall through to the
-            // card model default pattern - see filebyte().
-            u_card.vol_zero(VOL_FILE0_LBA);
-            for (k = 0; k < 54; k = k + 1)
-                u_card.vol_set(VOL_FILE0_LBA, k[15:0], bmp_hdr[k]);
+            for(c=0;c<(FILE_SIZE+511)/512;c=c+1) begin
+                u_card.vol_zero(VOL_FILE0_LBA+c);
+                for(k=0;k<512;k=k+1)
+                    if(c*512+k<FILE_SIZE)
+                        u_card.vol_set(VOL_FILE0_LBA+c,k[15:0],filebyte(c*512+k));
+            end
+            // Negative control: corrupt a non-header sector's address mapping.
+            if(MUTATE_LBA) begin
+                for(k=0;k<512;k=k+1)
+                    u_card.vol_set(VOL_FILE0_LBA+100,k[15:0],filebyte(99*512+k));
+            end
             // MBR (card LBA 0 -> card model default sector[] area)
             mbr_set_card0;
         end
@@ -622,7 +577,7 @@ module tb_card_to_screen;
     integer pix_n = 0, pix_bad = 0;
     integer pix_sof_n = 0;
     always @(posedge clk) begin
-        if (rst_n && bpu_valid) begin
+        if (rst_n && bpu_valid && bpu_ready) begin
             if (bpu_sof) pix_sof_n = pix_sof_n + 1;
             if (bpu_pixel !== exp565(pix_n)) begin
                 pix_bad = pix_bad + 1;
@@ -801,6 +756,10 @@ module tb_card_to_screen;
         check(pix_bad === 0,                  "45) ★ 307200 个 RGB565 像素逐个与卡上文件一致（0 错）");
         check(pix_sof_n === 1,                "46) img_sof 恰好 1 次");
 
+        if(ENABLE_DISPLAY)begin
+            wait(display_done);
+            check(display_errors==0,"card -> B writer -> A complete displayed frame");
+        end
         report;
         $finish;
     end

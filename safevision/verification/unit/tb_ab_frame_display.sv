@@ -35,43 +35,20 @@
 //     若产品里这两级是跨域的，需要在它们之间补 CDC FIFO —— **这一点待与 A 确认**（见文件末注）。
 // ============================================================================
 // ============================================================================
-// ✅ 本 TB 的状态（2026-10-05）：**已全绿通过**
-//   实测：`errors=0  pix_ok=307200  pix_bad=0` —— **整整一帧 307200 个像素逐点全对**，
-//   且换帧握手正常完成（`swap_err=0`）。
-//   入口：`safevision/tools/run_ab_display_sim.ps1`（独立脚本，已登记进 `run_all.ps1`）。
-//
-// ★★ 排查过程中定位到的三个**TB 自身的错**（都曾被误判成 RTL bug）：
-//   1. **重复例化 `frame_swap_cdc`** —— A 的 `a_video_display_core` 内部已经有一个，
-//      TB 又放了一个 ⇒ `fs_evt_b`/`ack_evt_b` **双驱动** ⇒ 换帧 FSM 永远收不到
-//      `frame_start`、超时进 SAFE。**这正是接线表里写的那条禁忌**（"B 侧不要再例化一份"）。
-//   2. **`TIMEOUT_N` 给得太小**：原来给 40000 拍（=400 us），而 A 的 core 在
-//      **真实垂直消隐**才回 `frame_start`（一帧约 16.7 ms）⇒ 等不到就超时。
-//      改用模块默认 5_000_000 拍（=50 ms，注释里写明"覆盖一整帧"）。
-//   3. **比对窗口太短**：原来只等 2000 拍，落在消隐期 ⇒ `pix_ok=0`；
-//      改为"画面激活后再跨两整帧"。
-//   ★ 另外两个**观测手段**的教训：(a) 单周期信号必须用 `always` 数边沿，
-//     1 ms 采样看不到；(b) **层次引用在 vopt 下不可靠**（`u_cdc.fs_sync` 读出来的值
-//     与实际驱动 `fs_evt_b` 的那份不一定是同一个）⇒ 只信 **TB 顶层信号**。
-//   ★★ 已查明（不是 bug）：**`active_commit` 完全正常，是检查时机错了**。
-//     实测的时序事实：**A 的 core 从 mailbox 到达就激活画面**（`pix_active_valid`），
-//     而 **B 的 FSM 要等到下一个垂直消隐才提交**（`active_commit`）——实测差约 **1.74 ms（一帧）**。
-//     早先把检查放在 `pix_active_valid` 之后立刻做 ⇒ `commits` 还是 0 ⇒ **误判**。
-//     现已改为"跨两整帧之后再检查"，并恢复为**硬断言**（实测通过）。
-//     ★ 这个时序事实对整机有意义：**画面激活比 B 的提交早一帧**。
-// ============================================================================
-// ★ 2026-10-05：`a_pixel_fifo_ip.v` 的两个未接端口已显式列出后，
-//   本 TB 在 **ModelSim** 上也能 elaborate（原先 vopt 会内部崩溃）。
+// Mailbox arrival only creates a pending frame. A commits at scan_frame_start;
+// B active_commit follows the returned sys-domain frame event by CDC latency.
+// The assertions below measure both events instead of inferring a frame lead.
 `timescale 1ns / 1ps
 `include "pixel_format_defs.vh"
 
-module tb_ab_frame_display;
+module tb_ab_frame_display #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_LEAD=0);
 
     // ------------------------------------------------------------------------
     // 三个时钟域（与整机一致：sys 100M / mem 125M / pixel 74.25M）
     // ------------------------------------------------------------------------
     reg clk_sys = 1'b0;  always #5.0   clk_sys = ~clk_sys;
     reg clk_mem = 1'b0;  always #4.0   clk_mem = ~clk_mem;
-    reg clk_pix = 1'b0;  always #6.734 clk_pix = ~clk_pix;
+    reg clk_pix = 1'b0;  always #(HD ? 6.734 : 19.861) clk_pix = ~clk_pix;
 
     reg rst_n = 1'b0;
 
@@ -96,9 +73,11 @@ module tb_ab_frame_display;
     function [23:0] px24;
         input integer x;
         input integer y;
+        reg [7:0] rr,gg,bb;
         begin
             // BGR 存盘；这里给的是 RGB 语义值
-            px24 = { (x[7:0] ^ y[7:0]), (x[9:0] + y[9:0]) & 8'hFF, (x[9:0] * 3) & 8'hFF };
+            rr=x[7:0]^y[7:0]; gg=x+y; bb=x*3;
+            px24={rr,gg,bb};
         end
     endfunction
 
@@ -270,7 +249,8 @@ module tb_ab_frame_display;
     wire [7:0]  fw_err_code, fw_err_detail;
     wire        fw_wr_ready;
 
-    frame_writer u_frame_writer (
+    bmp_frame_write_bridge u_frame_writer (
+        .top_down(bp_top_down),
         .clk        (clk_mem),
         .rst_n      (rst_n),
         .start      (fw_start),
@@ -490,7 +470,7 @@ module tb_ab_frame_display;
     wire [31:0] mem_dma_bytes;
 
     a_video_display_core #(
-        .HD      (0),
+        .HD      (HD),
         .FIFO_AW (10),
         .BURST_WORDS (64),
         .FONT_FILE ("font8x16.mem")
@@ -563,6 +543,7 @@ module tb_ab_frame_display;
     //    所以按"延迟 5 拍对齐"比较（与 A 的 TB 同口径）。
     // ========================================================================
     integer pix_ok = 0, pix_bad = 0;
+    integer red_samples=0,green_samples=0,blue_samples=0;
     integer frame_no = 0;
     reg [23:0] exp_rgb [0:4];
     integer    ei;
@@ -579,20 +560,41 @@ module tb_ab_frame_display;
             //   表现是"每个像素都错、且错得像横向平移 5 个像素"（实测踩过）。
             if (pix_active_valid) comparing <= 1'b1;
 
-            if (comparing && disp_de && (disp_x < W) && (disp_y < H)) begin
-                if (disp_rgb[23:0] === expand565(px565(disp_x, disp_y))) pix_ok = pix_ok + 1;
+            if (comparing && disp_de && (disp_x >= (HD?320:0)) && (disp_x < (HD?960:W)) && (disp_y >= (HD?120:0)) && (disp_y < (HD?600:H))) begin
+                if(disp_rgb[23:16]!=0)red_samples=red_samples+1;
+                if(disp_rgb[15:8]!=0)green_samples=green_samples+1;
+                if(disp_rgb[7:0]!=0)blue_samples=blue_samples+1;
+                if ((disp_rgb[23:0] ^ (MUTATE_COLOR ? 24'h010000 : 24'h000000)) === expand565(px565(disp_x-(HD?320:0), disp_y-(HD?120:0)))) pix_ok = pix_ok + 1;
                 else begin
                     pix_bad = pix_bad + 1;
                     if (pix_bad <= 3)
                         $display("[INFO] pixel mismatch @(%0d,%0d) got=%h want=%h",
                                  disp_x, disp_y, disp_rgb[23:0],
-                                 expand565(px565(disp_x, disp_y)));
+                                 expand565(px565(disp_x-(HD?320:0), disp_y-(HD?120:0))));
                 end
             end
             if (disp_frame_start) frame_no = frame_no + 1;
         end
     end
 
+    time a_commit_time=0,b_commit_time=0;
+    integer commit_phase_errors=0;
+    always @(posedge clk_pix) if(rst_n && u_display.slot.pending && u_display.scan_frame_start) begin
+        a_commit_time=$time;
+        $display("[PHASE] A frame-boundary commit t=%0t",$time);
+    end
+    always @(posedge pix_active_valid) begin
+        if($time!=a_commit_time)commit_phase_errors=commit_phase_errors+1;
+    end
+    always @(posedge active_commit) begin
+        b_commit_time=$time;
+        $display("[PHASE] B commit t=%0t delta=%0t",$time,$time-a_commit_time);
+    end
+    initial if($test$plusargs("WAVES")) begin
+        $dumpfile("swap.vcd");
+        $dumpvars(0,frame_ready,swap_req_b,fs_evt_b,ack_evt_b,active_commit,
+          swap_state_o,pix_active_valid,pix_active_slot,pix_generation,scan_frame_start);
+    end
     // ========================================================================
     // 7) 主流程
     // ========================================================================
@@ -620,6 +622,7 @@ module tb_ab_frame_display;
         check(fw_crc_ok == 1'b1, "7) frame_writer CRC 校验通过");
         check(fw_slot_valid[1] == 1'b1, "8) 槽 1 的 slot_valid 置位（A 才允许读）");
 
+        if(SUBMIT_LEAD>0)wait(scan_y==(HD?719:479) && scan_x==(HD?1650:800)-SUBMIT_LEAD);
         // 触发换帧握手
         @(negedge clk_sys);
         frame_ready = 1'b1;
@@ -638,15 +641,16 @@ module tb_ab_frame_display;
         wait (frame_no >= 2);
         repeat (2000) @(posedge clk_pix);
 
-        // ★ 这两条必须放在"跨两整帧之后"：
-        //   ★★ 经测量确认的时序事实：**A 的 core 从 mailbox 到达就激活画面**（`pix_active_valid`），
-        //   而 **B 的 FSM 要等到下一个垂直消隐才提交**（`active_commit`）——
-        //   实测两者差约 **1.74 ms**（一帧）。
-        //   早先把检查放在 `pix_active_valid` 之后立刻做 ⇒ `commits` 还是 0 ⇒
-        //   误判成"`active_commit` 没发" 。**它其实完全正常**。
+        check(commit_phase_errors == 0, "A commits only at a raw frame boundary");
+        check(b_commit_time >= a_commit_time && (b_commit_time-a_commit_time) < 100,
+              "B commit follows A within 100ns, not a whole frame");
+        check(ack_b_pulses == 1 && commits == 1, "one request has one ACK and one B commit");
+        check(px24(255,0)==24'hFFFFFD && px24(0,255)==24'hFFFF00,
+              "independent red/green/blue color anchors");
+        check(red_samples>0 && green_samples>0 && blue_samples>0,"all color channels exercised");
         check(swap_error == 1'b0, "9) 换帧握手无超时");
         check(commits >= 1, "9b) 换帧确实提交了（active_commit 至少 1 次）");
-        check(pix_ok > 200000, "10) 显示侧至少比对上 200000 个像素（画面真的出来了）");
+        check(pix_ok >= FRAME_PIX, "10) 显示侧至少比对上 200000 个像素（画面真的出来了）");
         check(pix_bad == 0,    "11) ★ 显示像素与源 BMP 像素**逐点一致**（0 个不符）");
         check(pix_underflow == 0, "12) 无像素欠流（A 的 underflow 计数 = 0）");
         check(mem_overflow == 0,  "13) 无 FIFO 溢出");

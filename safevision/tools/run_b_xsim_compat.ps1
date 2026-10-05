@@ -27,11 +27,11 @@ $aSources=@('common/a_counter.v','common/a_debounce.v','common/a_edge_detect.v',
     'video/osd_overlay/osd_status_text.v','video/osd_overlay/osd_coordinate_text.v',
     'video/osd_overlay/osd_overlay.v','video/osd_overlay/a_graphics_frontend.v')
 foreach($source in $aSources){$rtl+=Join-Path $repo "safevision/rtl/$source"}
-$tops=@('tb_sd_sector_reader','tb_mbr_parser','tb_sd_initializer',
-    'tb_fat32_boot_parser','tb_fat32_directory_scanner','tb_fat32_cluster_walker',
-    'tb_file_streamer','tb_bmp_parser','tb_file_index','tb_common_fifo',
-    'tb_crc','tb_bmp_unpack','tb_wav_parser','tb_frame_writer',
-    'tb_memory_arbiter','tb_frame_swap_ctrl','tb_top_stage5_sector_rd','tb_top_stage6_fat32_mount')
+# Follow B's current TBS list, including new integration/adapter tests.
+$topMatch=[regex]::Match($original,'(?s)\$TBS = @\((.*?)\n\)')
+if(-not $topMatch.Success){throw 'Cannot find current B top list'}
+$tops=@([regex]::Matches($topMatch.Groups[1].Value,'"(tb_[^"]+)"') | ForEach-Object {$_.Groups[1].Value})
+if($tops.Count -eq 0){throw 'Empty B regression selection'}
 New-Item -ItemType Directory -Force -Path (Join-Path $runDir 'tmp') | Out-Null
 $previousTemp=$env:TEMP;$previousTmp=$env:TMP
 $failures=@()

@@ -21,7 +21,10 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module sd_sector_reader (
+module sd_sector_reader #(
+    // Default remains div1 at100MHz (25MHz). At125MHz use div2, not div1.
+    parameter [15:0] CLK_DIV_FAST = `SD_DIV_FAST
+) (
     input  wire        clk,
     input  wire        rst_n,
 
@@ -180,7 +183,7 @@ module sd_sector_reader (
             err_code    <= `ERR_NONE;
             err_detail  <= `DET_NONE;
             spi_cs_n    <= 1'b1;
-            spi_clk_div <= `SD_DIV_FAST;
+            spi_clk_div <= CLK_DIV_FAST;
             to_resp     <= 32'd0;
             to_data     <= 32'd0;
             dbg_state   <= S_IDLE;
@@ -196,7 +199,7 @@ module sd_sector_reader (
             // ------------------------------------------------------------------
             S_IDLE: begin
                 spi_cs_n    <= 1'b1;
-                spi_clk_div <= `SD_DIV_FAST;    // 数据传输段可用 25MHz
+                spi_clk_div <= CLK_DIV_FAST;    // default-speed data SCLK <=25MHz
                 dvalid      <= 1'b0;
                 if (rd_en) begin
                     if (rd_len != 16'd1) begin

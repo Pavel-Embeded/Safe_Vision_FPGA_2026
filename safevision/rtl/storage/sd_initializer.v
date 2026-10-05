@@ -22,7 +22,11 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module sd_initializer (
+module sd_initializer #(
+    // Default remains the existing 100MHz contract. Override when integrating
+    // the storage chain in mem_clk (e.g.125MHz -> div156, SCLK<=400kHz).
+    parameter [15:0] CLK_DIV_INIT = `SD_DIV_INIT
+) (
     input  wire        clk,
     input  wire        rst_n,
 
@@ -188,7 +192,7 @@ module sd_initializer (
             err_detail  <= `DET_NONE;
             retry_cnt   <= 8'd0;
             spi_cs_n    <= 1'b1;
-            spi_clk_div <= `SD_DIV_INIT;
+            spi_clk_div <= CLK_DIV_INIT;
             to_resp     <= 32'd0;
             to_acmd41   <= 32'd0;
             dbg_state   <= M_IDLE;
@@ -210,7 +214,7 @@ module sd_initializer (
             // ------------------------------------------------------------------
             M_IDLE: begin
                 spi_cs_n   <= 1'b1;
-                spi_clk_div<= `SD_DIV_INIT;      // 初始化段 SCLK <= 400kHz
+                spi_clk_div<= CLK_DIV_INIT;      // initialization SCLK <=400kHz
                 if (start) begin
                     do_soft_reset;
                     mstate <= M_POWER;

@@ -24,6 +24,8 @@ param(
     [string]$ModelSimBin = $env:MSIM_BIN,
     [string]$XSimBin    = 'D:\Xilinx\Vivado\2018.3\bin',
     [string]$TdRoot     = 'D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116',
+    [string]$PythonExe = 'python',
+    [string]$RunRoot = (Join-Path $RepoRoot 'safevision/build/out/all'),
     [string[]]$Only     = @(),
     [switch]$AllowSkip
 )
@@ -68,7 +70,7 @@ function Show-Tool {
 $Entries = @(
     @{ N = 'B main regression (23 TBs / 604 assertions)';        S = 'run_sim.ps1';                     T = 'ModelSim' },
     @{ N = 'Clock+reset checks (88 checks)';                     S = 'run_clock_sim.ps1';               T = 'ModelSim' },
-    @{ N = 'B compat suite on XSim (18 TBs, A stage1-10 same lib)'; S = 'run_b_xsim_compat.ps1';        T = 'XSim' },
+    @{ N = 'Current B suite on XSim (all current TBS)'; S = 'run_b_xsim_compat.ps1';        T = 'XSim' },
     @{ N = 'Memory protocol suite (7 TBs + negative controls)';   S = 'run_memory_protocol_sim.ps1';     T = 'XSim' },
     @{ N = 'SDRAM loopback app-level (A model)';                 S = 'run_sdram_loopback_sim.ps1';      T = 'XSimOrModelSim' },
     @{ N = 'A stages 1-9 (5 TBs)';                               S = 'run_a_stage1_9_sim.ps1';          T = 'XSim' },
@@ -76,11 +78,18 @@ $Entries = @(
     @{ N = 'A video pipeline (2 TBs)';                           S = 'run_video_pipeline_sim.ps1';      T = 'XSim' },
     @{ N = 'Clock/video subsystem (5 TBs)';                      S = 'run_video_clock_sim.ps1';         T = 'XSim' },
     @{ N = 'PLL feedback equivalence (git-ref comparison)';      S = 'run_pll_feedback_equivalence.ps1'; T = 'XSim' },
-    @{ N = 'A/B display-level chain (real BMP -> screen pixels)'; S = 'run_ab_display_sim.ps1';      T = 'ModelSim' },
-    @{ N = 'Card->screen chain (SD card -> FAT32 -> BMP -> RGB565)'; S = 'run_card_to_screen_sim.ps1'; T = 'ModelSim' },
-    @{ N = 'A display internal routed STA (base + hd)';          S = 'run_a_display_sta.ps1';           T = 'TD' }
+    @{ N = 'A/B display + core BASE/HD + boundary'; S = 'run_ab_display_sim.ps1'; T = 'XSimOrModelSim' },
+    @{ N = 'Full card file -> B write -> A display'; S = 'run_card_to_screen_sim.ps1'; T = 'XSimOrModelSim' },
+    @{ N = 'A display internal routed STA (base + hd)';          S = 'run_a_display_sta.ps1'; T = 'TD' },
+    @{ N = 'A+B assembly + BMP write bridge routed STA'; S = 'run_ab_core_sta.ps1'; T = 'TD' }
 )
 
+# Fail closed: a misspelled selector must never produce an empty ALL PASS.
+foreach($selected in $Only){
+ if(-not ($Entries | Where-Object {($_.S -eq $selected) -or (($_.S -replace '\.ps1$','') -eq $selected)})){
+  throw "Unknown verification selector: $selected"
+ }
+}
 Write-Output '============================================================================'
 Write-Output ' SafeVision verification entry points'
 Write-Output ("  ModelSim : {0}" -f (Show-Tool 'ModelSim'))
@@ -110,7 +119,20 @@ foreach ($e in $Entries) {
     $env:MSIM_BIN = $ModelSimBin
     Push-Location -LiteralPath $ToolsDir
     try {
-        & powershell -ExecutionPolicy Bypass -File $script
+        # Forward only parameters declared by the selected child script.
+        $tokens=$null;$parseErrors=$null
+        $ast=[System.Management.Automation.Language.Parser]::ParseFile($script,[ref]$tokens,[ref]$parseErrors)
+        if($parseErrors.Count){throw "Cannot parse verification script: $script"}
+        $names=@($ast.ParamBlock.Parameters | ForEach-Object {$_.Name.VariablePath.UserPath})
+        $values=@{RepoRoot=$RepoRoot;ModelSimBin=$ModelSimBin;XSimBin=$XSimBin;
+          TdRoot=$TdRoot;PythonExe=$PythonExe;RunDir=(Join-Path $RunRoot $short)}
+        $argsForChild=@('-NoProfile','-ExecutionPolicy','Bypass','-File',$script)
+        foreach($key in @('RepoRoot','ModelSimBin','XSimBin','TdRoot','PythonExe','RunDir')){
+          if($names -contains $key -and -not [string]::IsNullOrWhiteSpace($values[$key])){
+            $argsForChild+=@(('-'+$key),$values[$key])
+          }
+        }
+        & powershell @argsForChild
         $code = $LASTEXITCODE
     } finally { Pop-Location }
 

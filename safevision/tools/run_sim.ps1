@@ -73,6 +73,7 @@ $RTL = @(
     "../rtl/memory/mem_read_burst.v",
     "../rtl/memory/frame_address_gen.v",
     "../rtl/memory/frame_writer.v",
+    "../rtl/top/safevision_core/bmp_frame_write_bridge.v",
     "../rtl/memory/frame_buffer_manager.v",
     "../rtl/memory/memory_arbiter.v",
     "../rtl/memory/video_read_dma.v",
@@ -119,7 +120,10 @@ $SIM = @(
     "unit/tb_sdr_pat_gen.sv",
     "unit/tb_top_sdram_loopback.sv",
     "unit/tb_ab_storage_contract.sv",
-    "unit/tb_b_frame_memory.sv"
+    "unit/tb_b_frame_memory.sv",
+    "unit/tb_bmp_frame_write_bridge.sv",
+    "unit/tb_frame_writer_bounds.sv",
+    "unit/tb_sd_clock_params.sv"
 )
 
 $TBS = @(
@@ -146,7 +150,10 @@ $TBS = @(
     "tb_sdr_pat_gen",
     "tb_top_sdram_loopback",
     "tb_ab_storage_contract",
-    "tb_b_frame_memory"
+    "tb_b_frame_memory",
+    "tb_bmp_frame_write_bridge",
+    "tb_frame_writer_bounds",
+    "tb_sd_clock_params"
 )
 
 Write-Output "=== vlib work ==="

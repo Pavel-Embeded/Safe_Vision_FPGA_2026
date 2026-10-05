@@ -62,8 +62,10 @@ module tb_b_frame_memory;
     function [23:0] px24;
         input integer x;
         input integer y;
+        reg [7:0] rr,gg,bb;
         begin
-            px24 = { (x[7:0] ^ y[7:0]), (x[9:0] + y[9:0]) & 8'hFF, (x[9:0] * 3) & 8'hFF };
+            rr=x[7:0]^y[7:0]; gg=x+y; bb=x*3;
+            px24={rr,gg,bb};
         end
     endfunction
 
@@ -210,7 +212,8 @@ module tb_b_frame_memory;
     wire [18:0] fw_px_cnt;
     wire [7:0]  fw_err_code, fw_err_detail;
 
-    frame_writer u_frame_writer (
+    bmp_frame_write_bridge u_frame_writer (
+        .top_down(bp_top_down),
         .clk(clk), .rst_n(rst_n),
         .start(fw_start), .slot_sel(2'd1), .slot_base(`SV_IMG1_BASE),
         .din(bu_pixel), .din_valid(bu_pixel_valid), .din_ready(bu_pixel_ready),
