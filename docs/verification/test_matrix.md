@@ -77,7 +77,8 @@
 |---|---|---|
 | **B 侧半段**：真 BMP → 帧缓存内容（阶段 8+10+11+13） | **`tb_b_frame_memory.sv`（本页新增，14 项）** | ✅ **本机 ModelSim 已跑通，逐字 0 错**；**已进 `run_sim.ps1`** |
 | **A 侧半段**：帧缓存 → 屏幕像素（A 阶段 11–15 + B 的仲裁/换帧） | A 的 `tb_a_video_display_core.sv`（用**合成数据**） | ✅ 在 **A 的 XSim** 上跑 |
-| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `tb_ab_frame_display.sv`（**本机 ModelSim**） | ✅✅ **已全绿：`errors=0  pix_ok=307200  pix_bad=0`** —— **整整一帧 307200 个像素逐点全对**，换帧握手正常（`swap_err=0`）。入口 `run_ab_display_sim.ps1`（独立脚本，已登记进 `run_all.ps1`） |
+| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `tb_ab_frame_display.sv`（**本机 ModelSim**） | ✅✅ **已全绿：`errors=0  pix_ok=307200  pix_bad=0`** —— **整整一帧 307200 个像素逐点全对**，换帧握手正常（`swap_err=0`）。入口 `run_ab_display_sim.ps1`（独立脚本，已登记进 `run_all.ps1`）。⚠️ **一个待查项**：`active_commit` 未观测到脉冲（TB 只打 `[WARN]`，不判失败）—— 见下方说明 |
+| **SD/FAT32 前段 → 屏幕**：卡上的文件 → RGB565 像素 | **`tb_card_to_screen.sv`（46 项，2026-10-05 新增）** | ✅ **本机 ModelSim 已跑通：`CARD-TO-SCREEN PASS=46 FAIL=0`**（`stream bytes=921654 mismatch=0` / `pixels=307200 bad=0`）。入口 `run_card_to_screen_sim.ps1`（已登记进 `run_all.ps1`）。★ **但要注意它的边界**：卷是**合成的微型 FAT32 镜像**（64 扇区 ≈32 KB），**装不下**一幅 640×480 24bit BMP（921654 字节）⇒ **只有文件第一扇区（含 54 字节头）真的写在卡上，文件主体回落到卡模型的确定性默认图案**。所以"卷基址/BPB/目录扫描/索引/簇链/字节流/BMP 头"都是真链路，**"文件主体像素"不是真文件内容**。另：不含 `frame_writer`/SDRAM/A 显示核心，单时钟域（50 MHz），不覆盖多扇区 CMD18 |
 
 **★ 让 A 的显示核心能在 ModelSim 上跑：只改了一个文件的端口连接（2026-10-05）**
 `a_pixel_fifo_ip.v` 里 `ram_inst`（ERAM）只写了 14/16 个端口，**`doa`（A 口读数据）与

@@ -77,6 +77,7 @@ $Entries = @(
     @{ N = 'Clock/video subsystem (5 TBs)';                      S = 'run_video_clock_sim.ps1';         T = 'XSim' },
     @{ N = 'PLL feedback equivalence (git-ref comparison)';      S = 'run_pll_feedback_equivalence.ps1'; T = 'XSim' },
     @{ N = 'A/B display-level chain (real BMP -> screen pixels)'; S = 'run_ab_display_sim.ps1';      T = 'ModelSim' },
+    @{ N = 'Card->screen chain (SD card -> FAT32 -> BMP -> RGB565)'; S = 'run_card_to_screen_sim.ps1'; T = 'ModelSim' },
     @{ N = 'A display internal routed STA (base + hd)';          S = 'run_a_display_sta.ps1';           T = 'TD' }
 )
 
