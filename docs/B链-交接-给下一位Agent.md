@@ -203,8 +203,35 @@ Stage 3  提交       checked_cnt++ / bad_cnt++ / 首次错写 bad0_*
 
 ---
 
-## 3. 板级验收到哪了
+## 2.9 ★ 集成测试现状（2026-10-05 新增，接手请先看这一节）
 
+用户要求"把阶段串起来做集成测试"。现状：
+
+| 层次 | 覆盖它的东西 | 状态 |
+|---|---|---|
+| **B 侧半段**：真 BMP → 帧缓存内容（阶段 8+10+11+13） | **`tb_b_frame_memory.sv`（14 项，已进 `run_sim.ps1`）** | ✅ **本机 ModelSim 跑通，`wok=153600 wbad=0` 逐字 0 错** |
+| **A 侧半段**：帧缓存 → 屏幕像素（A 阶段 11–15） | A 的 `tb_a_video_display_core.sv`（合成数据） | ✅ 在 **A 的 XSim**（本机没 Vivado） |
+| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `verification/unit/tb_ab_frame_display.sv.xsim_handover`（**写好、未运行**） | ⛔ **卡在 ModelSim 工具限制**，见下 |
+
+**⛔ 为什么 A+B 显示级在本机跑不了（工具限制，不是设计问题）**：
+A 的 `a_pixel_fifo_ip.v` **vlog 能过、vopt（优化）崩**（`ram_inst` 端口连接不全，缺 `dib`/`doa`），
+`-novopt` 也不行 ⇒ **A 的显示核心只能在 XSim 上跑**（A 的脚本本来如此）。
+⇒ **该 TB 请交给 A 在 XSim 上跑**（或本机装 Vivado 后跑）。
+
+**★★ 两个 Questa 10.7 陷阱（本轮实测，都让调试白花几十分钟；详见 `test_matrix.md`）**：
+1. **`func(...)[7:0]`（对函数返回值直接位选）⇒ vopt 内部崩溃**（`vgenexpr.c(3346)`，
+   报在**文件最后一行 `endmodule`**，极难定位）⇒ **必须先存临时变量再选位**。
+2. **在 `always` 里用了"声明在它后面"的 `wire` ⇒ 隐式 1 bit 网线、永不驱动** ⇒
+   表现为**整条链卡死且无报错**（本 TB 实测两次：`.ready(bp_ready)` 接错名字；
+   以及忘了拉 `fw_start` ⇒ `frame_writer` 没启动）。
+
+**★ 一个待与 A 确认的时钟域问题**：`tb_b_frame_memory.sv` 把 `bmp_parser`/`bmp_unpack`
+与 `frame_writer` **都放在 mem_clk**。**若产品里这两级跨域，需要在它们之间补 CDC FIFO** ——
+这是集成时可能漏掉的一环，值得先问清。
+
+---
+
+## 3. 板级验收到哪了
 | 阶段 | 内容 | 仿真 | 板级 |
 |---|---|---|---|
 | 1–5 | SPI 地基 / SPI 主机 / SD 初始化 / 每态超时 / CMD17 + CRC16 | ✅ | ✅ M-9（512/512 逐字节） |
@@ -333,7 +360,8 @@ Stage 3  提交       checked_cnt++ / bad_cnt++ / 首次错写 bad0_*
 |---|---|
 | `.trae/rules/项目规则.md` | **规则**：硬约定、工具坑、判定口径、文档同步义务 |
 | `docs/B链-待办与硬件验证清单.md` | **主待办**：§零 状态总览 / §2.4.2 SDRAM 回环上板步骤（含 ROUNDS 表与判据）/ §2.5 阶段 10 复盘 / §三 未完成项 / §四 变更记录 |
-| `docs/interface_spec.md` | **接口冻结依据**（§3.9 是本顶层的接口与报告格式；§一 时钟契约；§九 变更历史） |
+| `docs/interface_spec.md` | **接口冻结依据**（§3.9 是本顶层的接口与报告格式；§一 时钟契约；§九 变更历史；**v1.34 是 A 写的阶段11–15补充契约，v1.35 是 B 的应答**） |
+| `docs/B链-整机集成-存储侧接线表.md` | **★ 整机集成必读（2026-10-05 新增）**：A 的 `a_video_display_core` ↔ B 的 `memory_arbiter`/`frame_swap_ctrl` 的**逐根接线表**（14 根）、单位、时序语义 11 条、**"不该做什么" 6 条**、复位约定、与 A 契约的逐条对照、验证状态表。**A 集成 `safevision_core` 时照它接即可** |
 | `docs/B链-SDRAM接口与PLL时序核查.md` | **★ SDRAM `C1↔C2` 与 PLL `USR-6135` 的完整核查**（含厂商对照、实物证据、候选改法） |
 | `docs/B链-原理讲解-入门版.md` | 面向小白的设计取舍解释（含"地址斜坡探针"等经验） |
 | `docs/PROJECT_STRUCTURE.md` | 目录与文件落点规则 |
@@ -360,7 +388,21 @@ powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1
 
 # 目录/脚本自检（不需要 ModelSim）—— 必须 LAYOUT PASS
 powershell -ExecutionPolicy Bypass -File safevision\tools\check_repo.ps1
+
+# ★ 一次跑完所有验证入口（2026-10-05 新增）—— 跑不了的会明确报 SKIP
+powershell -ExecutionPolicy Bypass -File safevision\tools\run_all.ps1
 ```
+
+★ **`run_all.ps1` 的语义**：跑不了的入口报 **`SKIP`（不是 PASS）**，
+**只有 `RESULT: ALL PASS` 才 exit 0**；本地干活可加 `-AllowSkip`，但**发布/交接前必须严格跑**。
+★ **工程现在有 12 个 `run_*.ps1` 入口、跨两套工具链**，而 **`run_sim.ps1` 完全不含 A 的 9 个
+`tb_a_*`** ⇒ **"B 侧绿了"≠"整机绿了"**。**逐条清单见 `docs/verification/test_matrix.md` 的
+"验证入口总清单"**（含每项的工具链/前置条件/通过判据）。
+★ **工具链在两台机器上（路径别混）**：`D:\Xilinx\Vivado\2018.3\bin` 是 **A 的机器**上的
+（脚本 `-XSimBin` 默认值）；`D:\Anlogic\TD_...` 与 `D:\modeltech64_10.7\win64` 是 **B 这台机器**上的。
+⇒ B 这台：**ModelSim 有、TD 有、Vivado/XSim 没有**；
+`run_all.ps1 -AllowSkip` 结果 `PASS=4 FAIL=0 SKIP=7`（跳过的全是 XSim 入口，
+**含全工程唯一的 A↔B 端到端 TB `tb_a_video_display_core`**）。
 
 - 回归脚本的三个列表 `$RTL` / `$SIM` / `$TBS` 必须同步加新文件（**不加进去 = 死文件**）
 - 想单独看某个 TB：`vsim -c -do "run -all; quit -f" work.<tb名>`

@@ -190,6 +190,19 @@ powershell -ExecutionPolicy Bypass -File safevision\tools\run_sim.ps1 -ModelSimB
 脚本会 `vlib work` → 编译全部 RTL 与 testbench → 逐个 `vsim` 运行 → 汇总
 `[PASS]`/`[FAIL]` 计数。**最终 `FAIL` 必须是 0**，否则脚本以非零退出码结束。
 
+> ★★ **想一次跑完所有验证入口？用 `run_all.ps1`（2026-10-05 新增）**
+> ```powershell
+> powershell -ExecutionPolicy Bypass -File safevision\tools\run_all.ps1
+> ```
+> 它依次跑**本机能跑的**入口，跑不了的**明确报 `SKIP`（并说明缺什么），绝不报 PASS**；
+> **只有 `RESULT: ALL PASS` 才 exit 0**。
+> ★ 工程现在有 **12 个 `run_*.ps1` 入口、跨两套工具链**（ModelSim + XSim/Vivado，外加 TD STA），
+> 而 **`run_sim.ps1` 完全不含 A 的 9 个 `tb_a_*`** ⇒ **"B 侧绿了"≠"整机绿了"**。
+> **逐条清单见 [docs/verification/test_matrix.md](docs/verification/test_matrix.md) 的"验证入口总清单"**。
+> 本机实测（2026-10-05）：`PASS=4 FAIL=0 SKIP=7`（本机有 ModelSim + TD，**没有 Vivado**；
+> 跳过的 7 项全是 XSim 入口）。本地干活可用 `-AllowSkip`；
+> **发布 / 交接前必须用严格模式跑，只有 `ALL PASS` 才算过。**
+
 > ★ 维护脚本时注意：**`run_sim.ps1` 必须保持纯 ASCII 注释**。PowerShell 5.1 在没有 BOM
 > 时按 ANSI 解码 `.ps1`，中文注释会把后面的引号"吃掉"导致解析失败。中文注释写在 RTL 里。
 
@@ -220,10 +233,10 @@ powershell -ExecutionPolicy Bypass -File .\safevision\tools\check_repo.ps1
 | 手册学习阶段 1–16 | **全部落地并仿真通过** |
 | 媒体格式层（BMP 解析/解包、WAV 解析） | 已完成并仿真通过 |
 | 目录树与命名 | 已按本项目结构（PROJECT_STRUCTURE.md）核对完成（含"同一常量多副本"的结构性收敛） |
-| B 链仿真回归 | **588 项断言 / 22 个 testbench / 2 个行为模型 + 1 个厂商 IP 仿真桩，全 PASS（已在本机重跑）** |
+| B 链仿真回归 | **618 项断言 / 24 个 testbench / 2 个行为模型 + 1 个厂商 IP 仿真桩，全 PASS（已在本机重跑）** |
 | 板级顶层 `top_stage5_sector_rd.v` | **已写、仿真通过、上板跑通**（板上 LED = `8`；`tb_top_stage5_sector_rd` 5 项断言） |
 | 板级顶层 `top_stage6_fat32_mount.v` | **已写 + 仿真通过（阶段 6–7）**：上电 → SD 初始化 → `mbr_parser` → `fat32_boot_parser` → `fat32_directory_scanner`(+walker) → UART 发**纯 ASCII 报告**；★ **卷基址只在此顶层加一次**（见 [interface_spec §3.2.1](docs/interface_spec.md)）。★ 磁盘上的 `.al` 现为阶段 5 配置，本模块**当前未登记进工程**（见 [module_registry.md](docs/architecture/module_registry.md) 的说明） |
-| 板级顶层 `top_sdram_loopback.v` | **旧版已上板通过（M-11-PASS）；A/B 当前集成源码尚待重新回归、STA 与板测**：50 MHz → `sv_system_pll`（125 MHz + 180°）→ 厂商 SDRAM 控制器 → 写图案 / 读回比对 → UART 发定长报告。实测 **`INIT=01 LOCK=01` / `W=1000 R=1000 CAP=1000 BAD=0000` / `DONE`**，与设计值一字不差（`evidence/board/` 条目 M-11-PASS）。**应用层回归**：B 的 `run_sim.ps1`（ModelSim）全量 22 TB / 588 项通过；合并后的 A/B `tb_sdram_loopback.sv` 也通过 ModelSim fallback 六场景及 21-bit 穷举。A XSim 专用入口因本机缺少 XSim 2018.3 未执行。两种模型均不模拟真实 SDRAM AC。当前集成版已重跑 TD Routed STA：全局 setup −6.826 ns（65 个端点），自研 C1 报告路径 −0.094 ns（1 个端点），故仍不收敛；尚无匹配位流或合并版板测。TD 工程 `TOP_MODULE` 设为 `top_sdram_loopback`。★ **2026-10-03：PLL 去重（B 的 `sys_pll` 并入 A 的 `sv_system_pll`）后已重新综合 + 复测通过**，报文与 M-11 逐字节相同（条目 M-11-PASS-2）。★ **2026-10-04 改版（M-11 补测「全片稀疏扫描」+「扩展图案 + soak」）**：报告 71 → **190 Byte**（加 `CFG` 自描述、`RND/PAT` 轮次与图案模式、`TOT` 累计搬运量、`BAD0` 首个错点含轮次），B 旧版参数使用 `ADDR_SHIFT=11 + ADDR_LOWSTEP=1 + TEST_WORDS=1024`（步长 2049 的 1024 个稀疏样本跨越近乎完整地址范围，不等于逐 word 全容量测试）；新增 **`ROUNDS` soak**（重复 N 轮、每轮换一种图案模式、**出错立即停**）与 **6 种图案模式**（地址派生 / LFSR / walking-1 / walking-0 / 全0全1 / 相邻位交替）；测试图案抽成**可仿真**的 `rtl/memory/sdr_pat_gen.v` + `tb_sdr_pat_gen`（22 项）—— 因为旧图案公式在稀疏扫描下**只有 2 种图案**（写读自比看不出来）。★ **此前本地 B soak 构建**的全片稀疏扫描与 10 秒 / 10 分钟 / 约 60 分钟 soak 均板测零错（汇总见待办清单 §2.4.2）；这些结果不自动验收 A `d6f40a6` 后的合并 RTL。A/B 合并版应用回归已通过，但最新 TD routed 仍有全局 setup −6.826 ns 与自研报告路径 −0.094 ns；未生成新位流、未进行合并版板测 |
+| 板级顶层 `top_sdram_loopback.v` | **旧版已上板通过（M-11-PASS）；A/B 当前集成源码尚待重新回归、STA 与板测**：50 MHz → `sv_system_pll`（125 MHz + 180°）→ 厂商 SDRAM 控制器 → 写图案 / 读回比对 → UART 发定长报告。实测 **`INIT=01 LOCK=01` / `W=1000 R=1000 CAP=1000 BAD=0000` / `DONE`**，与设计值一字不差（`evidence/board/` 条目 M-11-PASS）。**应用层回归**：B 的 `run_sim.ps1`（ModelSim）全量 22 TB / 588 项通过；合并后的 A/B `tb_sdram_loopback.sv` 也通过 ModelSim fallback 六场景及 21-bit 穷举。A XSim 专用入口因本机缺少 XSim 2018.3 未执行。两种模型均不模拟真实 SDRAM AC。当前集成版已重跑 TD Routed STA：全局 setup −6.826 ns（65 个端点），自研 `clkc[1]→clkc[1]` 报告路径 **+0.113 ns / 0 违例（2517 端点）**（★ 2026-10-05 订正：这里原先误抄成修复前的旧值 `−0.094 ns`；`−0.094 → +0.113` 是"两级报告选择器"那次修复的 before→after，修复后的值才是当前值。来源 `project/report22.txt`，2026-10-04 20:53，顶层 `top_sdram_loopback`），全局 setup 仍 `−6.826 ns`（**来自 `clkc[2]→clkc[1]` 的 SDRAM 读回路径**，32 个违例端点；另有 `clkc[1]→clkc[2]` 写侧 −2.859 ns / 32 端点），故仍不收敛；尚无匹配位流或合并版板测。TD 工程 `TOP_MODULE` 设为 `top_sdram_loopback`。★ **2026-10-03：PLL 去重（B 的 `sys_pll` 并入 A 的 `sv_system_pll`）后已重新综合 + 复测通过**，报文与 M-11 逐字节相同（条目 M-11-PASS-2）。★ **2026-10-04 改版（M-11 补测「全片稀疏扫描」+「扩展图案 + soak」）**：报告 71 → **190 Byte**（加 `CFG` 自描述、`RND/PAT` 轮次与图案模式、`TOT` 累计搬运量、`BAD0` 首个错点含轮次），B 旧版参数使用 `ADDR_SHIFT=11 + ADDR_LOWSTEP=1 + TEST_WORDS=1024`（步长 2049 的 1024 个稀疏样本跨越近乎完整地址范围，不等于逐 word 全容量测试）；新增 **`ROUNDS` soak**（重复 N 轮、每轮换一种图案模式、**出错立即停**）与 **6 种图案模式**（地址派生 / LFSR / walking-1 / walking-0 / 全0全1 / 相邻位交替）；测试图案抽成**可仿真**的 `rtl/memory/sdr_pat_gen.v` + `tb_sdr_pat_gen`（22 项）—— 因为旧图案公式在稀疏扫描下**只有 2 种图案**（写读自比看不出来）。★ **此前本地 B soak 构建**的全片稀疏扫描与 10 秒 / 10 分钟 / 约 60 分钟 soak 均板测零错（汇总见待办清单 §2.4.2）；这些结果不自动验收 A `d6f40a6` 后的合并 RTL。A/B 合并版应用回归已通过，但最新 TD routed 仍有全局 setup −6.826 ns 与自研报告路径 −0.094 ns；未生成新位流、未进行合并版板测 |
 | 板级顶层 `top_stage10_framebuffer.v` | **★ 已写 + 已上板 bring-up（2026-10-03，阶段 10 帧缓存回环）**：`framebuffer_loopback_core`（可仿真，11/11 PASS）+ `sdram_app_adapter`（通用口↔厂商 App 口，**6/6 PASS**，有单元 TB）+ 厂商 `sdram` + `uart_tx`。★ **2026-10-03 板上验收通过**：整帧 307200 像素**逐像素零错**（`WR=RD=04B000`、`BAD=000000`），三个地址斜坡探针全对（`AM=FFFFFFFF`、`C0..C3=1004..1007`、`B0..B3=1035..1038`）。四轮推进：**第 2 轮用「地址斜坡探针」定案**（一次连续读突发里读地址只推进 4 个字就回绕，帧级 `BAD` 恰为 3/4）⇒ 读引擎按 M-11 形态重写；**第 3 轮验证读侧已根治**（`AM=FFFFFFFF` 32/32 全对、跨两次预取；探针 C 全对），但暴露我引入的一处死锁（缓冲没排空时跳到缓冲外地址不重预取 ⇒ `B=0000` + `WR=000000`）⇒ 已修 + 补 TB 用例 D7。报告瘦身为 208 Byte 修 STA（违例端点 475 → 312），最差路径换成适配器的 32 位加法器 ⇒ 已用寄存器 `rexp` + 读侧 ready 寄存器化切掉。**待重新综合（务必确认自研组 SWNS ≥ 0）+ 复测**，步骤见 `docs/B链-待办与硬件验证清单.md` §2.5 |
 | 厂商 IP 落库 | **新增（2026-10-02）**：`ip/sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）、`ip/pll/`（`sv_system_pll` / `sv_video_*_pll` / `sv_audio_pll`）。EG4S20 的 SDRAM 是**封装内硬核**（2M×32），信号不出引脚 ⇒ `pin.adc` 不需要 SDRAM 引脚 |
 | **阶段 1–5 上板验收** | ★ **已通过（2026-10-02）**：实物 UART 回传 512 Byte 与电脑侧参考 **SHA-256 完全相同**（M-9，见 [evidence/board/INDEX.md](evidence/board/INDEX.md) 的 M-9-PASS） |

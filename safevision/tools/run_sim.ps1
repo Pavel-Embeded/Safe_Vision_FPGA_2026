@@ -117,7 +117,9 @@ $SIM = @(
     "unit/tb_framebuffer_loopback_core.sv",
     "unit/tb_sdram_app_adapter.sv",
     "unit/tb_sdr_pat_gen.sv",
-    "unit/tb_top_sdram_loopback.sv"
+    "unit/tb_top_sdram_loopback.sv",
+    "unit/tb_ab_storage_contract.sv",
+    "unit/tb_b_frame_memory.sv"
 )
 
 $TBS = @(
@@ -142,7 +144,9 @@ $TBS = @(
     "tb_framebuffer_loopback_core",
     "tb_sdram_app_adapter",
     "tb_sdr_pat_gen",
-    "tb_top_sdram_loopback"
+    "tb_top_sdram_loopback",
+    "tb_ab_storage_contract",
+    "tb_b_frame_memory"
 )
 
 Write-Output "=== vlib work ==="

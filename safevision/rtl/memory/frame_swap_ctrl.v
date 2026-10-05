@@ -18,8 +18,18 @@
 //       输入 frame_ready / frame_start / swap_ack
 //   表 7-6 里"拉高 / 释放 swap_ack"对应 B 侧"保持 / 释放 swap_req 的请求有效窗口"，
 //   因为 swap_ack 是 A→B 的回执（spec 端口方向），本模块只能读不能写。
-//   frame_start（A→B 单拍）与 swap_ack（A→B toggle）都必须先经 frame_swap_cdc
-//   同步/边沿检测，本模块收到的已是【本域单拍事件】。
+//   ★★ 本模块的 frame_start / swap_ack 收到的**已经是本域单拍脉冲**，由 `frame_swap_cdc`
+//      完成"两级同步 + 边沿检测"后给出：
+//        · frame_start  ← `frame_swap_cdc.frame_start_evt_b`
+//        · swap_ack     ← `frame_swap_cdc.swap_ack_evt_b`
+//          （`frame_swap_cdc.v` 里是 `assign swap_ack_evt_b = ack_sync[2] ^ ack_sync[1];`，
+//            即 **A 侧 toggle 电平的边沿已经被取成单拍**）
+//      ⇒ ★ **不要在本模块内部再对它们做边沿检测 / 再转一次 toggle**
+//        （A 的 interface_spec v1.34 补充契约原文：这两个信号"是 sys 域单拍，
+//          直接接既有 B 控制器，**不要再次转 toggle**"）。
+//        多做一次转换 = 每两次切换只认出一次，帧交换会静默丢帧。
+//      （2026-10-05 订正：原注释把 swap_ack 写成"A→B toggle 的边沿事件"，
+//        容易被读成"这里还得自己边沿检测一次"，与上面的契约正好相反。）
 //
 // ★ 主序列保持不变；额外插入一个 S_REQ 过渡拍，对应图 7-2"payload 锁存进 mailbox"
 //   之后才"swap_req 翻转"：保证 req 翻转前 payload 已稳定（手册 7.15 纠错要求）。
@@ -41,9 +51,11 @@ module frame_swap_ctrl #(
     input  wire [7:0] wr_generation,
     input  wire       wr_crc_ok,
 
-    // ---- A 侧（均已经 frame_swap_cdc 同步成本域单拍事件）----
-    input  wire       frame_start,        // 垂直消隐入口，每帧 1 拍
-    input  wire       swap_ack,           // A 已完成切换（toggle 的边沿事件）
+    // ---- A 侧（★ 均已经 frame_swap_cdc 同步并边沿检测成【本域单拍脉冲】）----
+    input  wire       frame_start,        // 垂直消隐入口，每帧 1 拍（来自 frame_start_evt_b）
+    input  wire       swap_ack,           // A 已完成切换，**单拍**（来自 swap_ack_evt_b）
+                                          //   ★ 不要再做边沿检测 / 再转 toggle：它是
+                                          //     frame_swap_cdc 对 A 侧 toggle 取边沿后的脉冲
 
     // ---- 输出给 A（B→A，经 frame_swap_cdc）----
     output reg        swap_req,           // toggle 电平翻转（不是单拍脉冲）
