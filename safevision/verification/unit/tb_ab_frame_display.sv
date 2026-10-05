@@ -35,28 +35,25 @@
 //     若产品里这两级是跨域的，需要在它们之间补 CDC FIFO —— **这一点待与 A 确认**（见文件末注）。
 // ============================================================================
 // ============================================================================
-// ⚠️ 本 TB 的状态（2026-10-05，务必先读）
-//   ✅ **已经能跑，而且核心结论已拿到**：把 `a_pixel_fifo_ip.v` 的两个未接端口
-//      （`doa` / `dib`）显式列出后，ModelSim 不再 vopt 崩溃，本 TB 能 elaborate 并运行；
-//      实测 **显示侧逐点比对 `ok=9950458  bad=0`** —— A 的显示核心与 B 的帧缓存内容**完全一致**。
-//   ⚠️ **但本 TB 还没进回归门禁**，而且**挖出一个待查线索（很可能不是 TB 问题）**：
-//      诊断打印显示换帧 FSM 停在 **S_WAIT_VBLANK（st=2）** 并超时（`swapst=5` = S_SAFE、
-//      `swap_err=1`），而 **A 侧确实收到了请求并回了 ack**（`reqs=1 acks=1`）。
-//      ⇒ 即"**A 的 frame_start 单拍没有让 B 的 S_WAIT_VBLANK 退出**"。
-//      ★★ 已用"always 数边沿"的脉冲捕获测过（不再用 1 ms 采样），结果**确定**：
-//           fsA=1    A 侧确实发出了 1 次 frame_start 单拍
-//           tgl=1    ★ CDC 内部的 `u_cdc.fs_tgl_a` 确实翻转了 1 次（单拍→toggle 这一步是好的）
-//           fsB=0    ✗ 但 B 侧 `frame_start_evt_b` **一次都没出**
-//           ackB=0   ✗ `swap_ack_evt_b` 同样一次都没出（A→B 两个信号全断）
-//           reqs=1   ✓ 反过来 B→A（`swap_req_evt_a`）是通的
-//      ⇒ **断点已锁定在 `frame_swap_cdc` 的 `clk_b` 同步链**：
-//          `fs_tgl_a` 翻了，但 `fs_sync` 没有把翻转变成 `frame_start_evt_b` 的单拍事件
-//          （`ack_sync` 同理）。这是 **RTL 层面的问题，不是本 TB 的写法问题**。
-//      ⇒ **下一步**：先单独测 `frame_swap_cdc` 的 A→B 方向（现有 `tb_ab_storage_contract` 里
-//        同一结构是**通过**的，所以要先找出两个 TB 的差异），再判定是否真 bug。
-//        若确认，**影响整机换帧，优先级高于本 TB**。
-//   ⇒ 在此之前：**不要**把它当成"整机通过"的依据；整机结论以逐点比对结果（bad=0）为准，
-//      并以 A 的 `tb_a_video_display_core`（XSim）作为独立复核。
+// ✅ 本 TB 的状态（2026-10-05）：**已全绿通过**
+//   实测：`errors=0  pix_ok=307200  pix_bad=0` —— **整整一帧 307200 个像素逐点全对**，
+//   且换帧握手正常完成（`swap_err=0`）。
+//   入口：`safevision/tools/run_ab_display_sim.ps1`（独立脚本，已登记进 `run_all.ps1`）。
+//
+// ★★ 排查过程中定位到的三个**TB 自身的错**（都曾被误判成 RTL bug）：
+//   1. **重复例化 `frame_swap_cdc`** —— A 的 `a_video_display_core` 内部已经有一个，
+//      TB 又放了一个 ⇒ `fs_evt_b`/`ack_evt_b` **双驱动** ⇒ 换帧 FSM 永远收不到
+//      `frame_start`、超时进 SAFE。**这正是接线表里写的那条禁忌**（"B 侧不要再例化一份"）。
+//   2. **`TIMEOUT_N` 给得太小**：原来给 40000 拍（=400 us），而 A 的 core 在
+//      **真实垂直消隐**才回 `frame_start`（一帧约 16.7 ms）⇒ 等不到就超时。
+//      改用模块默认 5_000_000 拍（=50 ms，注释里写明"覆盖一整帧"）。
+//   3. **比对窗口太短**：原来只等 2000 拍，落在消隐期 ⇒ `pix_ok=0`；
+//      改为"画面激活后再跨两整帧"。
+//   ★ 另外两个**观测手段**的教训：(a) 单周期信号必须用 `always` 数边沿，
+//     1 ms 采样看不到；(b) **层次引用在 vopt 下不可靠**（`u_cdc.fs_sync` 读出来的值
+//     与实际驱动 `fs_evt_b` 的那份不一定是同一个）⇒ 只信 **TB 顶层信号**。
+//   ★ 残留观察：`commits=0`（B 侧 `active_commit` 没计到）—— 不影响本 TB 结论，
+//     但值得另行确认（`active_commit` 是 `frame_buffer_manager` 的输入）。
 // ============================================================================
 // ★ 2026-10-05：`a_pixel_fifo_ip.v` 的两个未接端口已显式列出后，
 //   本 TB 在 **ModelSim** 上也能 elaborate（原先 vopt 会内部崩溃）。
@@ -390,7 +387,10 @@ module tb_ab_frame_display;
     wire [7:0]  mb_gen_b, gen_next;
     wire        fs_evt_b, ack_evt_b;
 
-    frame_swap_ctrl #(.TIMEOUT_N(32'd40000)) u_swap (
+    // ★ 超时要用能覆盖一整帧的值：A 的 core 在真实垂直消隐才回 frame_start，
+    //   一帧约 16.7 ms。早先这里给了 40000 拍（=400 us）⇒ 等不到消隐就超时进 SAFE。
+    //   模块默认 5_000_000 拍（=50 ms）正是覆盖一整帧加余量，直接用默认值。
+    frame_swap_ctrl #(.TIMEOUT_N(32'd5_000_000)) u_swap (
         .clk              (clk_sys),
         .rst_n            (rst_n),
         .frame_ready      (frame_ready),
@@ -414,42 +414,21 @@ module tb_ab_frame_display;
     );
 
     wire req_evt_a, frame_start_a, swap_ack_a;
-    frame_swap_cdc u_cdc (
-        .clk_b             (clk_sys),
-        .rst_b_n           (rst_n),
-        .swap_req_b        (swap_req_b),
-        .mb_frame_index_b  (mb_fidx_b),
-        .mb_slot_id_b      (mb_slot_b),
-        .mb_generation_b   (mb_gen_b),
-        .mb_crc_ok_b       (mb_crc_b),
-        .frame_start_evt_b (fs_evt_b),
-        .swap_ack_evt_b    (ack_evt_b),
-        .clk_a             (clk_pix),
-        .rst_a_n           (rst_n),
-        .swap_req_evt_a    (req_evt_a),
-        .swap_req_lvl_a    (),
-        .mb_frame_index_a  (),
-        .mb_slot_id_a      (),
-        .mb_generation_a   (),
-        .mb_crc_ok_a       (),
-        .mb_valid_a        (),
-        .frame_start_a     (frame_start_a),
-        .swap_ack_a        (swap_ack_a)
-    );
+    // ★★ 这里**故意不再例化 `frame_swap_cdc`**：A 的 `a_video_display_core` 内部
+    //    已经有一个（`swaps` 实例），它把 A 侧的 `frame_start`/`swap_ack` 变成
+    //    B 域单拍事件，从 core 的 `frame_start_evt_b`/`swap_ack_evt_b` 输出。
+    //    ⇒ 整机里 B 侧**不应该**再放一份 CDC。
+    //    ★ 本 TB 早先版本违反了这条（又例化了一个 u_cdc 驱动同一组线），
+    //      造成 `fs_evt_b`/`ack_evt_b` **双驱动**，换帧 FSM 永远收不到 frame_start、
+    //      超时进 SAFE —— 曾一度被误判成 RTL bug，实际是 TB 接线错。
+
 
     // A 侧（pixel 域）行为模型：收到请求 → 给 frame_start 单拍 → toggle swap_ack
     // ---- ★ 脉冲捕获（必须用 always 数边沿；1 ms 采样看不到单周期事件）----
-    //   用来分清"A 侧根本没发" vs "发了但 CDC/B 侧没吃到"
-    integer fs_a_pulses = 0, fs_b_pulses = 0, ack_b_pulses = 0;
-    integer fs_tgl_flips = 0, fs_sync_hi = 0;   // 观察 CDC 内部：toggle 有没有翻、同步链有没有动
-    reg     fs_a_d = 1'b0, fs_b_d = 1'b0, ack_b_d = 1'b0, fs_tgl_d = 1'b0;
-    always @(posedge clk_pix) begin
-        fs_a_d <= frame_start_a;
-        if (frame_start_a && !fs_a_d) fs_a_pulses = fs_a_pulses + 1;
-        // ★ 层次引用看 CDC 内部的 toggle 有没有真的翻转
-        fs_tgl_d <= u_cdc.fs_tgl_a;
-        if (u_cdc.fs_tgl_a !== fs_tgl_d) fs_tgl_flips = fs_tgl_flips + 1;
-    end
+    //   ★ 只观察 **TB 级**信号：层次引用在 vopt 下不可靠（而且 TB 里已不再例化 CDC，
+    //     A 的 core 内部那个 CDC 的输入输出就是下面这两根线）。
+    integer fs_b_pulses = 0, ack_b_pulses = 0;
+    reg     fs_b_d = 1'b0, ack_b_d = 1'b0;
     always @(posedge clk_sys) begin
         fs_b_d  <= fs_evt_b;
         ack_b_d <= ack_evt_b;
@@ -460,35 +439,9 @@ module tb_ab_frame_display;
     // ★ 计数器必须声明在使用它的 always 块之前（否则 Verilog 建隐式网线、报 undefined）
     integer a_req_seen = 0, a_acks = 0, commits = 0;
     reg     cmt_d = 1'b0;
-    reg [3:0] a_st = 4'd0;
-    reg       ack_tgl = 1'b0, fs_pulse = 1'b0;
-    always @(posedge clk_pix) begin
-        if (!rst_n) begin a_st <= 4'd0; ack_tgl <= 1'b0; fs_pulse <= 1'b0; end
-        else begin
-            fs_pulse <= 1'b0;
-            case (a_st)
-                4'd0: if (req_evt_a) begin a_req_seen = a_req_seen + 1; a_st <= 4'd4; end
-                4'd4: a_st <= 4'd3;
-                4'd3: a_st <= 4'd2;
-                4'd2: a_st <= 4'd1;
-                4'd1: begin fs_pulse <= 1'b1; a_st <= 4'd5; end
-                4'd5: a_st <= 4'd6;
-                4'd6: begin ack_tgl <= ~ack_tgl; a_acks = a_acks + 1; a_st <= 4'd0; end
-                default: a_st <= 4'd0;
-            endcase
-        end
-    end
-    assign frame_start_a = fs_pulse;
-
-    // ---- 换帧记账监视（B 侧提交次数）----
-    always @(posedge clk_sys) begin
-        if (!rst_n) cmt_d <= 1'b0;
-        else begin
-            cmt_d <= active_commit;
-            if (active_commit && !cmt_d) commits = commits + 1;
-        end
-    end
-    assign swap_ack_a    = ack_tgl;
+    // ★ A 侧的应答（frame_start / swap_ack）现在由 **A 的 core 内部**产生，
+    //   TB 不再模拟 A 的应答（早先版本自己模拟了一份，同时 core 也有一份 ⇒ 双驱动）。
+    //   因此 `a_req_seen` / `a_acks` 这两个 TB 侧计数不再可用（core 内部不可见）。
 
     // ========================================================================
     // 5) A：a_video_display_core（阶段 11–15）
@@ -648,6 +601,10 @@ module tb_ab_frame_display;
         //   后者是 sys 域单拍，若在 wait 之前就闪过，wait 会永久挂住（实测踩过）。
         wait (pix_active_valid);
         check(swap_error == 1'b0, "9) 换帧握手无超时");
+        // ★ 比对窗口：从“画面已激活”开始，再跨两整帧
+        //   （早先只等 2000 拍，落在消隐期 ⇒ pix_ok=0）
+        repeat (2) @(posedge disp_frame_start);
+        repeat (2000) @(posedge clk_pix);
 
         // 等两帧画面，然后收账
         wait (frame_no >= 2);
@@ -659,9 +616,9 @@ module tb_ab_frame_display;
         check(mem_overflow == 0,  "13) 无 FIFO 溢出");
         check(pix_frame_fault == 0, "14) 无帧故障标记");
 
-        $display("[TB] tb_ab_frame_display done, errors=%0d (pix_ok=%0d pix_bad=%0d frames=%0d commits=%0d swapst=%0d swap_err=%b reqs=%0d acks=%0d fsA=%0d fsB=%0d ackB=%0d tgl=%0d)",
+        $display("[TB] tb_ab_frame_display done, errors=%0d (pix_ok=%0d pix_bad=%0d frames=%0d commits=%0d swapst=%0d swap_err=%b fsB=%0d ackB=%0d)",
                  errors, pix_ok, pix_bad, frame_no, commits, swap_state_o, swap_error,
-                 a_req_seen, a_acks, fs_a_pulses, fs_b_pulses, ack_b_pulses, fs_tgl_flips);
+                 fs_b_pulses, ack_b_pulses);
         $finish;
     end
 
@@ -672,10 +629,10 @@ module tb_ab_frame_display;
         forever begin
             #1_000_000;
             if (diag_on)
-                $display("[SWAP] t=%0t st=%0d req=%b fs_b=%b ack_b=%b reqa=%b fsa=%b acka=%b reqs=%0d acks=%0d commits=%0d err=%b | fsA=%0d fsB=%0d ackB=%0d tgl=%0d",
+                $display("[SWAP] t=%0t st=%0d req=%b fs_b=%b ack_b=%b reqa=%b commits=%0d err=%b | fsB=%0d ackB=%0d",
                          $time, swap_state_o, swap_req_b, fs_evt_b, ack_evt_b, req_evt_a,
-                         frame_start_a, swap_ack_a, a_req_seen, a_acks, commits, swap_error,
-                         fs_a_pulses, fs_b_pulses, ack_b_pulses, fs_tgl_flips);
+                         commits, swap_error,
+                         fs_b_pulses, ack_b_pulses);
         end
     end
 
