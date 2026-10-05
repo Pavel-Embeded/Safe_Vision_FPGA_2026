@@ -672,6 +672,7 @@
 
 | 日期 | 变更 |
 |---|---|
+| **2026-10-05** | ★★ **板级顶层 `safevision_top` 首点亮：HDMI B 出彩条 + `led[3:0]` 全亮** ✓（B 侧主责的板级顶层，接封装内 SDRAM + 厂商 HDMI 1.4b 发送核）。配套：`platform/.../rtl/safevision_top/`、独立约束 `project/board_verify/board_b.adc`（**HDMI B**，不动共享 `pin.adc`）、`board_b.sdc`/`board_cdc.sdc`、`tools/run_board_sta.ps1`（默认不流片，`-Bitgen` 才出位流）。**HDMI B 引脚四方交叉 + TD 实测逐脚核对通过**（正端 C3/G5/F1/E1、负端 **C2/G6/F2/D1**、DDC P2/R2；`#IO=12`、`#pad=16` 精确自洽 ⇒ 无意外占用引脚）。板级 STA：**用户逻辑域全绿**（pixel +27.945 / mem +0.121 / sys +3.113 ns）、**唯一遗留是封装内 SDRAM 硬核物理路径 `−6.565 ns`**（`dq→内部 pad`，cell 100% / net 0%，用户 RTL 无法优化）⇒ ★ **功能实测可用，但不等于时序收敛**。详见 [B链-板级顶层HDMI验证报告](B链-板级顶层HDMI验证报告.md)；观测证据登记于 `evidence/board/INDEX.md`（HDMI-B-BRINGUP-PASS）。**未提交/未推送**：等用户指示 |
 | 2026-10-04 | 修复 A/B 集成 `top_sdram_loopback` 的 190 Byte UART 报告选择路径：按行寄存、再选行内字节；C1 自研 setup `−0.094 ns → +0.113 ns`，0/2517 违例。当前 selector 版已用 ModelSim SE-64 10.7 重跑专用应用层回归：六场景 PASS，编译 0 error/0 warning；独立索引映射 190/190 通过。未生成匹配位流/未上板；全局 SDRAM setup 仍 `−6.826 ns`。下一步由用户经 TD GUI 生成匹配位流并做 10 分钟 soak，核验后再议 push |
 | — | 初版：阶段 1–5 仿真通过后整理 |
 | — | 阶段 6 首块 `fat32_boot_parser` + 四类异常分支测试通过后更新 |
