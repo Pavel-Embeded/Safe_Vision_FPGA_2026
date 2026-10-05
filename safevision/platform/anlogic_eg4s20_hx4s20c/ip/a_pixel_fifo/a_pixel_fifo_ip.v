@@ -318,11 +318,20 @@ module a_pixel_fifo_ip
         .ocea               (1'b0),
         .dia                (di), 
         .addra              (wr_addr), 
+        // ★ 显式列出 SDP 模式下用不到的两个端口（零功能改动）：
+        //   A 口是只写的 ⇒ `doa` 不用；B 口是只读的 ⇒ `dib` 不用。
+        //   原来靠"不写这两个端口"隐式留空，XSim 能过，但 **ModelSim 的 vopt 会
+        //   报 "Too few port connections ... Expected 16, found 14" 并在代码生成阶段
+        //   内部崩溃**（Questa vgenexpr.c），导致 B 侧无法仿真 A 的显示核心。
+        //   显式写出来只是把"有意不接"表达清楚，综合与仿真行为完全不变。
+        //   （2026-10-05 B 侧为整机集成可仿真性所加；A 若看到请确认无异议。）
+        .doa                (),                      // SDP 模式不用 A 口读数据
         .clkb               (clkr), 
         .rstb               (rd_rst),
         .ceb                (SHOW_AHEAD_EN | rd_en_s),
         .web                (1'b0),  
         .oceb               (1'b1),  
+        .dib                ({DATA_WIDTH_R{1'b0}}),  // SDP 模式不用 B 口写数据
         .addrb              (rd_addr_mux), 
         .dob                (dout)
     );

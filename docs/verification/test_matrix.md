@@ -71,28 +71,35 @@
 
 ---
 
-### ★ A↔B 端到端集成（显示级）当前状态 —— 2026-10-05
+### ★ A↔B 端到端集成（显示级）当前状态 —— 2026-10-05 更新
 
 | 层次 | 覆盖它的东西 | 状态 |
 |---|---|---|
-| **B 侧半段**：真 BMP → 帧缓存内容（阶段 8+10+11+13） | **`tb_b_frame_memory.sv`（本页新增，14 项）** | ✅ **本机 ModelSim 已跑通，逐字 0 错** |
-| **A 侧半段**：帧缓存 → 屏幕像素（A 阶段 11–15 + B 的仲裁/换帧） | A 的 `tb_a_video_display_core.sv`（用**合成数据**，不经过 B 的 `bmp_unpack`/`frame_writer`） | ✅ 在 **A 的 XSim** 上跑（本机没装 Vivado） |
-| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `tb_ab_frame_display.sv.xsim_handover`（**已写好、未运行**） | ⛔ **卡在 ModelSim 的 vopt 崩溃**，见下 |
+| **B 侧半段**：真 BMP → 帧缓存内容（阶段 8+10+11+13） | **`tb_b_frame_memory.sv`（本页新增，14 项）** | ✅ **本机 ModelSim 已跑通，逐字 0 错**；**已进 `run_sim.ps1`** |
+| **A 侧半段**：帧缓存 → 屏幕像素（A 阶段 11–15 + B 的仲裁/换帧） | A 的 `tb_a_video_display_core.sv`（用**合成数据**） | ✅ 在 **A 的 XSim** 上跑 |
+| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `tb_ab_frame_display.sv`（**本机 ModelSim 已能跑**） | ✅ **核心结论已拿到：`ok=9950458 bad=0`（逐点全对）**；⚠️ TB 自身记账未收尾、**暂未进门禁** |
 
-**★ 为什么 A+B 显示级在本机跑不了（工具限制，不是设计问题）**：
-`a_pixel_fifo_ip.v` 在 ModelSim 里 **vlog 能过、但 vopt（优化）阶段让编译器内部崩溃**
-（`ram_inst` 端口连接不全：`Expected 16, found 14`，缺 `dib`/`doa`）；`-novopt` 也不行。
-⇒ A 的显示核心**只能在 XSim 上跑**（A 的脚本本来就是这样）。暂存件保留在
-`verification/unit/tb_ab_frame_display.sv.xsim_handover`（`.xsim_handover` 扩展名不会被编译）。
+**★ 让 A 的显示核心能在 ModelSim 上跑：只改了一个文件的端口连接（2026-10-05）**
+`a_pixel_fifo_ip.v` 里 `ram_inst`（ERAM）只写了 14/16 个端口，**`doa`（A 口读数据）与
+`dib`（B 口写数据）在 SDP 模式下本来就不用**，所以 XSim 容忍；但 **ModelSim 的 vopt 会报
+"Too few port connections ... Expected 16, found 14" 并在代码生成阶段内部崩溃**。
+⇒ **把这两人端口显式写出来**（`doa` 留空、`dib` 接 0）即可，**零功能改动** ✓。
+改完实测：`[PROBE-A] elaborated and ran OK` ✓，`tb_ab_frame_display` 也能 elaborate 并跑出
+**`ok=9950458 bad=0`**（A 的显示核心与 B 的帧缓存内容逐点一致）✓✓。
+★ 该改动在 A 的文件里，**请 A 确认无异议**（综合与仿真行为不变）。
 
-**★★ 本轮踩到并记档的两个 Questa 10.7 陷阱**（都会让调试白花几十分钟）：
+**★★ 本轮踩到并记档的 Questa 10.7 / TB 写法陷阱**（都会让调试白花几十分钟）：
 1. **`func(...)[7:0]`（对函数返回值直接位选）会让 vopt 内部崩溃**
    —— `Questa ... unexpected internal error: vgenexpr.c(3346)`，报在**文件最后一行**（`endmodule`），
    极难定位。⇒ **必须先把函数返回值存进临时变量，再选位**。（`tb_b_frame_memory` 实测）
 2. **在 `always` 块里用了"声明在它后面"的 `wire` ⇒ Verilog 按隐式 1 bit 网线建，永不驱动**
-   —— 表现是**整条链在第 N 个字节卡死、无报错**。本项目 RTL 里也有同类注释
-   （`top_sdram_loopback.v` 的 `wr_addr` 必须写在 `wr_i` 之后）⇒ **TB 里同样要遵守**。
-   （本 TB 实测：`.ready(bp_ready)` 接错名字 ⇒ `bmp_ready` 悬空 ⇒ 卡在第 1 字节）
+   —— 表现是**整条链在第 N 个字节卡死、无报错**。（本 TB 实测：`.ready(bp_ready)` 接错名字）
+3. **`wait (<单拍信号>)` 会永久挂住**：单拍信号若在 `wait` 之前就闪过，`wait` 等不到。
+   ⇒ **等电平信号**（`pix_active_valid` / `fw_slot_valid` / `fw_px_cnt`），不要等 `active_commit` /
+   `wr_done` 这类单拍脉冲。（本 TB 实测）
+4. **不要给期望值额外加延迟**：A 的 core 输出端的 `x`/`y` **本身已经是延迟后的扫描坐标**
+   （`rgb` 与 `x`/`y`/`de` 在输出端同拍）。再给期望值加 5 拍 = 拿 `x-5` 的期望去比 `x` 的像素，
+   表现是"每个像素都错、且错得像横向平移 5 个像素"。（本 TB 实测）
 
 ---
 

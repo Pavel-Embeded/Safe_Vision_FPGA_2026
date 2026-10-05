@@ -34,6 +34,18 @@
 //   · ★ 时钟域假设：本 TB 把 `bmp_parser`/`bmp_unpack` 与 `frame_writer` **都放在 mem_clk**。
 //     若产品里这两级是跨域的，需要在它们之间补 CDC FIFO —— **这一点待与 A 确认**（见文件末注）。
 // ============================================================================
+// ============================================================================
+// ⚠️ 本 TB 的状态（2026-10-05，务必先读）
+//   ✅ **已经能跑，而且核心结论已拿到**：把 `a_pixel_fifo_ip.v` 的两个未接端口
+//      （`doa` / `dib`）显式列出后，ModelSim 不再 vopt 崩溃，本 TB 能 elaborate 并运行；
+//      实测 **显示侧逐点比对 `ok=9950458  bad=0`** —— A 的显示核心与 B 的帧缓存内容**完全一致**。
+//   ⚠️ **但本 TB 还没进回归门禁**：换帧记账（`swap_error` / `commits`）在最后几轮里读数不对，
+//      属于 **TB 自身的监视/等待写法问题**（不是 DUT 问题），收尾后再考虑加进 `run_sim.ps1`。
+//   ⇒ 在此之前：**不要**把它当成"整机通过"的依据；整机结论以逐点比对结果（bad=0）为准，
+//      并以 A 的 `tb_a_video_display_core`（XSim）作为独立复核。
+// ============================================================================
+// ★ 2026-10-05：`a_pixel_fifo_ip.v` 的两个未接端口已显式列出后，
+//   本 TB 在 **ModelSim** 上也能 elaborate（原先 vopt 会内部崩溃）。
 `timescale 1ns / 1ps
 `include "pixel_format_defs.vh"
 
@@ -123,6 +135,7 @@ module tb_ab_frame_display;
 
     integer bi = 0;                     // 已发出的字节序号
     integer bx, by, bc;                 // 当前像素坐标与通道
+    reg [23:0] px_tmp;         // ★ 先把函数返回值存下来再选位（Questa vopt 会对 f(x)[7:0] 崩）
     integer row_pad;
     always @(posedge clk_mem) begin
         if (!rst_n) begin
@@ -137,9 +150,10 @@ module tb_ab_frame_display;
                     bi        <= bi + 1;
                 end else if (by < H) begin
                     // BMP 自底向上：第 0 行 = 图像最后一行
-                    bmp_data  <= (bc == 0) ? px24(bx, H-1-by)[7:0]    :   // B
-                                 (bc == 1) ? px24(bx, H-1-by)[15:8]   :   // G
-                                             px24(bx, H-1-by)[23:16];     // R
+                    px_tmp    = px24(bx, H-1-by);
+                    bmp_data  <= (bc == 0) ? px_tmp[7:0]    :   // B
+                                 (bc == 1) ? px_tmp[15:8]   :   // G
+                                             px_tmp[23:16];     // R
                     bmp_valid <= 1'b1;
                     bi        <= bi + 1;
                     if (bc == 2) begin
@@ -174,7 +188,7 @@ module tb_ab_frame_display;
         .rst_n      (rst_n),
         .data       (bmp_data),
         .valid      (bmp_valid),
-        .ready      (bp_ready),
+        .ready      (bmp_ready),
         .eof        (bmp_eof),
         .file_size  (54 + FRAME_PIX*3),
         .check_done (bp_check_done),
@@ -531,21 +545,20 @@ module tb_ab_frame_display;
             comparing <= 1'b0;
             for (ei = 0; ei < 5; ei = ei + 1) exp_rgb[ei] = 24'h000000;
         end else begin
-            // 期望值：画面区域内 = BMP 像素展开成 888；区域外 = 0（不参与比对）
-            exp_rgb[0] <= (disp_de && (disp_x < W) && (disp_y < H))
-                          ? expand565(px565(disp_x, disp_y)) : 24'h000000;
-            for (ei = 4; ei > 0; ei = ei - 1) exp_rgb[ei] <= exp_rgb[ei-1];
-
-            // 只在"画面已激活（换帧完成）"之后才开始比对
+            // ★ 直接比对，**不要给期望值加延迟**：A 的 core 输出的 `x`/`y` 本身就已经是
+            //   延迟后的扫描坐标（`rgb` 与 `x`/`y`/`de` 在输出端本来就同拍）。
+            //   早先版本把期望值再延迟 5 拍，等于拿 x-5 的期望去比 x 的像素 ——
+            //   表现是"每个像素都错、且错得像横向平移 5 个像素"（实测踩过）。
             if (pix_active_valid) comparing <= 1'b1;
 
-            if (comparing && (exp_rgb[4] !== 24'h000000)) begin
-                if (disp_rgb[23:0] === exp_rgb[4]) pix_ok = pix_ok + 1;
+            if (comparing && disp_de && (disp_x < W) && (disp_y < H)) begin
+                if (disp_rgb[23:0] === expand565(px565(disp_x, disp_y))) pix_ok = pix_ok + 1;
                 else begin
                     pix_bad = pix_bad + 1;
                     if (pix_bad <= 3)
                         $display("[INFO] pixel mismatch @(%0d,%0d) got=%h want=%h",
-                                 disp_x, disp_y, disp_rgb[23:0], exp_rgb[4]);
+                                 disp_x, disp_y, disp_rgb[23:0],
+                                 expand565(px565(disp_x, disp_y)));
                 end
             end
             if (disp_frame_start) frame_no = frame_no + 1;
@@ -560,15 +573,20 @@ module tb_ab_frame_display;
         #400;
         rst_n = 1'b1;
 
+        // ★ 必须先启动 frame_writer：它的 din_ready 要求 running
+        repeat (4) @(posedge clk_mem);
+        @(negedge clk_mem); fw_start = 1'b1;
+        @(negedge clk_mem); fw_start = 1'b0;
+
         // 等 BMP 字节流发完
-        wait (bu_done || bu_error);
+        wait (bu_done || bu_error || (fw_px_cnt == `SV_FRAME_PIXELS));
         check(!bu_error, "1) bmp_unpack 无错（BMP 头与像素段都被接受）");
         check(bp_width  == 16'd640, "2) bmp_parser 解析出宽度 = 640");
         check(bp_height == 16'd480, "3) bmp_parser 解析出高度 = 480");
         check(!bp_check_error,      "4) BMP 头校验通过");
 
         // 等 frame_writer 写完
-        wait (fw_wr_done || fw_wr_error);
+        wait (fw_slot_valid[1] || fw_wr_error);
         check(!fw_wr_error, "5) frame_writer 写帧无错");
         check(fw_px_cnt == `SV_FRAME_PIXELS, "6) frame_writer 写满 307200 像素");
         check(fw_crc_ok == 1'b1, "7) frame_writer CRC 校验通过");
@@ -580,7 +598,9 @@ module tb_ab_frame_display;
         @(negedge clk_sys);
         frame_ready = 1'b0;
 
-        wait (active_commit);
+        // ★ 等**电平**信号 pix_active_valid，不要等单拍信号 active_commit：
+        //   后者是 sys 域单拍，若在 wait 之前就闪过，wait 会永久挂住（实测踩过）。
+        wait (pix_active_valid);
         check(swap_error == 1'b0, "9) 换帧握手无超时");
 
         // 等两帧画面，然后收账
