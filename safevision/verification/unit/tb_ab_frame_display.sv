@@ -43,11 +43,18 @@
 //      诊断打印显示换帧 FSM 停在 **S_WAIT_VBLANK（st=2）** 并超时（`swapst=5` = S_SAFE、
 //      `swap_err=1`），而 **A 侧确实收到了请求并回了 ack**（`reqs=1 acks=1`）。
 //      ⇒ 即"**A 的 frame_start 单拍没有让 B 的 S_WAIT_VBLANK 退出**"。
-//      ★ 注意：本次用的诊断是**每 1 ms 采样一次**，看不到单周期脉冲 ⇒ `fs_b=0` **不构成证据**，
-//        需要换用"在 always 里捕获脉冲"的监视方式再测（下一步）。
-//      ⇒ 若确认 `frame_start` 真的到不了，那 **`frame_swap_ctrl` / `frame_swap_cdc` 在
-//        "长时间空闲后第一次换帧"这条路径上可能有问题** —— 那会是 **RTL 的真 bug**（影响整机换帧），
-//        优先级高于本 TB 本身。**接手请先按这条线索查。**
+//      ★★ 已用"always 数边沿"的脉冲捕获测过（不再用 1 ms 采样），结果**确定**：
+//           fsA=1    A 侧确实发出了 1 次 frame_start 单拍
+//           tgl=1    ★ CDC 内部的 `u_cdc.fs_tgl_a` 确实翻转了 1 次（单拍→toggle 这一步是好的）
+//           fsB=0    ✗ 但 B 侧 `frame_start_evt_b` **一次都没出**
+//           ackB=0   ✗ `swap_ack_evt_b` 同样一次都没出（A→B 两个信号全断）
+//           reqs=1   ✓ 反过来 B→A（`swap_req_evt_a`）是通的
+//      ⇒ **断点已锁定在 `frame_swap_cdc` 的 `clk_b` 同步链**：
+//          `fs_tgl_a` 翻了，但 `fs_sync` 没有把翻转变成 `frame_start_evt_b` 的单拍事件
+//          （`ack_sync` 同理）。这是 **RTL 层面的问题，不是本 TB 的写法问题**。
+//      ⇒ **下一步**：先单独测 `frame_swap_cdc` 的 A→B 方向（现有 `tb_ab_storage_contract` 里
+//        同一结构是**通过**的，所以要先找出两个 TB 的差异），再判定是否真 bug。
+//        若确认，**影响整机换帧，优先级高于本 TB**。
 //   ⇒ 在此之前：**不要**把它当成"整机通过"的依据；整机结论以逐点比对结果（bad=0）为准，
 //      并以 A 的 `tb_a_video_display_core`（XSim）作为独立复核。
 // ============================================================================
@@ -431,6 +438,25 @@ module tb_ab_frame_display;
     );
 
     // A 侧（pixel 域）行为模型：收到请求 → 给 frame_start 单拍 → toggle swap_ack
+    // ---- ★ 脉冲捕获（必须用 always 数边沿；1 ms 采样看不到单周期事件）----
+    //   用来分清"A 侧根本没发" vs "发了但 CDC/B 侧没吃到"
+    integer fs_a_pulses = 0, fs_b_pulses = 0, ack_b_pulses = 0;
+    integer fs_tgl_flips = 0, fs_sync_hi = 0;   // 观察 CDC 内部：toggle 有没有翻、同步链有没有动
+    reg     fs_a_d = 1'b0, fs_b_d = 1'b0, ack_b_d = 1'b0, fs_tgl_d = 1'b0;
+    always @(posedge clk_pix) begin
+        fs_a_d <= frame_start_a;
+        if (frame_start_a && !fs_a_d) fs_a_pulses = fs_a_pulses + 1;
+        // ★ 层次引用看 CDC 内部的 toggle 有没有真的翻转
+        fs_tgl_d <= u_cdc.fs_tgl_a;
+        if (u_cdc.fs_tgl_a !== fs_tgl_d) fs_tgl_flips = fs_tgl_flips + 1;
+    end
+    always @(posedge clk_sys) begin
+        fs_b_d  <= fs_evt_b;
+        ack_b_d <= ack_evt_b;
+        if (fs_evt_b  && !fs_b_d)  fs_b_pulses  = fs_b_pulses  + 1;
+        if (ack_evt_b && !ack_b_d) ack_b_pulses = ack_b_pulses + 1;
+    end
+
     // ★ 计数器必须声明在使用它的 always 块之前（否则 Verilog 建隐式网线、报 undefined）
     integer a_req_seen = 0, a_acks = 0, commits = 0;
     reg     cmt_d = 1'b0;
@@ -633,8 +659,9 @@ module tb_ab_frame_display;
         check(mem_overflow == 0,  "13) 无 FIFO 溢出");
         check(pix_frame_fault == 0, "14) 无帧故障标记");
 
-        $display("[TB] tb_ab_frame_display done, errors=%0d (pix_ok=%0d pix_bad=%0d frames=%0d commits=%0d swapst=%0d swap_err=%b reqs=%0d acks=%0d)",
-                 errors, pix_ok, pix_bad, frame_no, commits, swap_state_o, swap_error, a_req_seen, a_acks);
+        $display("[TB] tb_ab_frame_display done, errors=%0d (pix_ok=%0d pix_bad=%0d frames=%0d commits=%0d swapst=%0d swap_err=%b reqs=%0d acks=%0d fsA=%0d fsB=%0d ackB=%0d tgl=%0d)",
+                 errors, pix_ok, pix_bad, frame_no, commits, swap_state_o, swap_error,
+                 a_req_seen, a_acks, fs_a_pulses, fs_b_pulses, ack_b_pulses, fs_tgl_flips);
         $finish;
     end
 
@@ -645,9 +672,10 @@ module tb_ab_frame_display;
         forever begin
             #1_000_000;
             if (diag_on)
-                $display("[SWAP] t=%0t st=%0d req=%b fs_b=%b ack_b=%b reqa=%b fsa=%b acka=%b reqs=%0d acks=%0d commits=%0d err=%b",
+                $display("[SWAP] t=%0t st=%0d req=%b fs_b=%b ack_b=%b reqa=%b fsa=%b acka=%b reqs=%0d acks=%0d commits=%0d err=%b | fsA=%0d fsB=%0d ackB=%0d tgl=%0d",
                          $time, swap_state_o, swap_req_b, fs_evt_b, ack_evt_b, req_evt_a,
-                         frame_start_a, swap_ack_a, a_req_seen, a_acks, commits, swap_error);
+                         frame_start_a, swap_ack_a, a_req_seen, a_acks, commits, swap_error,
+                         fs_a_pulses, fs_b_pulses, ack_b_pulses, fs_tgl_flips);
         end
     end
 

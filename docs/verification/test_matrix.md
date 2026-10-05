@@ -77,7 +77,7 @@
 |---|---|---|
 | **B 侧半段**：真 BMP → 帧缓存内容（阶段 8+10+11+13） | **`tb_b_frame_memory.sv`（本页新增，14 项）** | ✅ **本机 ModelSim 已跑通，逐字 0 错**；**已进 `run_sim.ps1`** |
 | **A 侧半段**：帧缓存 → 屏幕像素（A 阶段 11–15 + B 的仲裁/换帧） | A 的 `tb_a_video_display_core.sv`（用**合成数据**） | ✅ 在 **A 的 XSim** 上跑 |
-| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `tb_ab_frame_display.sv`（**本机 ModelSim 已能跑**） | ✅ **核心结论已拿到：`ok=9950458 bad=0`（逐点全对）**；⚠️ **暂未进门禁** —— 换帧 FSM 停在 **`S_WAIT_VBLANK`** 并超时（`swapst=5`=S_SAFE / `swap_err=1`），而 **A 侧确实收到请求并回了 ack**（`reqs=1 acks=1`）⇒ **「A 的 `frame_start` 单拍没能让 B 的 `S_WAIT_VBLANK` 退出」**，**很可能不是 TB 问题而是 `frame_swap_ctrl`/`frame_swap_cdc` 的真 bug**（影响整机换帧）⇒ **优先查** |
+| **A+B 显示级全链路**：真 BMP → 屏幕像素 | `tb_ab_frame_display.sv`（**本机 ModelSim 已能跑**） | ✅ **核心结论已拿到：`ok=9950458 bad=0`（逐点全对）**；⚠️ **暂未进门禁** —— 换帧 FSM 停在 **`S_WAIT_VBLANK`** 并超时（`swapst=5`=S_SAFE / `swap_err=1`），而 **A 侧确实收到请求并回了 ack**（`reqs=1 acks=1`）⇒ **「A 的 `frame_start` 单拍没能让 B 的 `S_WAIT_VBLANK` 退出」**，**断点已锁定在 `frame_swap_cdc` 的 `clk_b` 同步链**（影响整机换帧）⇒ **优先查**。<br>★ 脉冲捕获（always 数边沿）证据：`fsA=1`（A 侧确实发了）· `tgl=1`（**CDC 内部 `fs_tgl_a` 确实翻转**）· **`fsB=0`**（B 侧 `frame_start_evt_b` 一次都没出）· `ackB=0`（A→B 两个信号全断）· `reqs=1`（B→A 是通的）。⇒ 即"**toggle 翻了，但 `fs_sync` 没把它变成单拍事件**" —— **是 RTL 层面问题，不是 TB 写法问题**。<br>★ 待办：同一结构在 `tb_ab_storage_contract` 里是**通过**的 ⇒ 先找出两个 TB 的差异，再判定是否真 bug |
 
 **★ 让 A 的显示核心能在 ModelSim 上跑：只改了一个文件的端口连接（2026-10-05）**
 `a_pixel_fifo_ip.v` 里 `ram_inst`（ERAM）只写了 14/16 个端口，**`doa`（A 口读数据）与
