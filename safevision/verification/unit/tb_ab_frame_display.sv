@@ -39,8 +39,15 @@
 //   ✅ **已经能跑，而且核心结论已拿到**：把 `a_pixel_fifo_ip.v` 的两个未接端口
 //      （`doa` / `dib`）显式列出后，ModelSim 不再 vopt 崩溃，本 TB 能 elaborate 并运行；
 //      实测 **显示侧逐点比对 `ok=9950458  bad=0`** —— A 的显示核心与 B 的帧缓存内容**完全一致**。
-//   ⚠️ **但本 TB 还没进回归门禁**：换帧记账（`swap_error` / `commits`）在最后几轮里读数不对，
-//      属于 **TB 自身的监视/等待写法问题**（不是 DUT 问题），收尾后再考虑加进 `run_sim.ps1`。
+//   ⚠️ **但本 TB 还没进回归门禁**，而且**挖出一个待查线索（很可能不是 TB 问题）**：
+//      诊断打印显示换帧 FSM 停在 **S_WAIT_VBLANK（st=2）** 并超时（`swapst=5` = S_SAFE、
+//      `swap_err=1`），而 **A 侧确实收到了请求并回了 ack**（`reqs=1 acks=1`）。
+//      ⇒ 即"**A 的 frame_start 单拍没有让 B 的 S_WAIT_VBLANK 退出**"。
+//      ★ 注意：本次用的诊断是**每 1 ms 采样一次**，看不到单周期脉冲 ⇒ `fs_b=0` **不构成证据**，
+//        需要换用"在 always 里捕获脉冲"的监视方式再测（下一步）。
+//      ⇒ 若确认 `frame_start` 真的到不了，那 **`frame_swap_ctrl` / `frame_swap_cdc` 在
+//        "长时间空闲后第一次换帧"这条路径上可能有问题** —— 那会是 **RTL 的真 bug**（影响整机换帧），
+//        优先级高于本 TB 本身。**接手请先按这条线索查。**
 //   ⇒ 在此之前：**不要**把它当成"整机通过"的依据；整机结论以逐点比对结果（bad=0）为准，
 //      并以 A 的 `tb_a_video_display_core`（XSim）作为独立复核。
 // ============================================================================
@@ -371,6 +378,7 @@ module tb_ab_frame_display;
     // ========================================================================
     reg         frame_ready = 1'b0;
     wire        swap_req_b, mb_fidx_b, mb_crc_b, swap_error, active_commit;
+    wire [2:0]  swap_state_o;      // 诊断：帧交换 FSM 当前状态
     wire [1:0]  mb_slot_b, active_next;
     wire [7:0]  mb_gen_b, gen_next;
     wire        fs_evt_b, ack_evt_b;
@@ -395,7 +403,7 @@ module tb_ab_frame_display;
         .active_next      (active_next),
         .generation_next  (gen_next),
         .frame_index_next (),
-        .state_o          ()
+        .state_o          (swap_state_o)
     );
 
     wire req_evt_a, frame_start_a, swap_ack_a;
@@ -423,6 +431,9 @@ module tb_ab_frame_display;
     );
 
     // A 侧（pixel 域）行为模型：收到请求 → 给 frame_start 单拍 → toggle swap_ack
+    // ★ 计数器必须声明在使用它的 always 块之前（否则 Verilog 建隐式网线、报 undefined）
+    integer a_req_seen = 0, a_acks = 0, commits = 0;
+    reg     cmt_d = 1'b0;
     reg [3:0] a_st = 4'd0;
     reg       ack_tgl = 1'b0, fs_pulse = 1'b0;
     always @(posedge clk_pix) begin
@@ -430,18 +441,27 @@ module tb_ab_frame_display;
         else begin
             fs_pulse <= 1'b0;
             case (a_st)
-                4'd0: if (req_evt_a) a_st <= 4'd4;
+                4'd0: if (req_evt_a) begin a_req_seen = a_req_seen + 1; a_st <= 4'd4; end
                 4'd4: a_st <= 4'd3;
                 4'd3: a_st <= 4'd2;
                 4'd2: a_st <= 4'd1;
                 4'd1: begin fs_pulse <= 1'b1; a_st <= 4'd5; end
                 4'd5: a_st <= 4'd6;
-                4'd6: begin ack_tgl <= ~ack_tgl; a_st <= 4'd0; end
+                4'd6: begin ack_tgl <= ~ack_tgl; a_acks = a_acks + 1; a_st <= 4'd0; end
                 default: a_st <= 4'd0;
             endcase
         end
     end
     assign frame_start_a = fs_pulse;
+
+    // ---- 换帧记账监视（B 侧提交次数）----
+    always @(posedge clk_sys) begin
+        if (!rst_n) cmt_d <= 1'b0;
+        else begin
+            cmt_d <= active_commit;
+            if (active_commit && !cmt_d) commits = commits + 1;
+        end
+    end
     assign swap_ack_a    = ack_tgl;
 
     // ========================================================================
@@ -613,16 +633,29 @@ module tb_ab_frame_display;
         check(mem_overflow == 0,  "13) 无 FIFO 溢出");
         check(pix_frame_fault == 0, "14) 无帧故障标记");
 
-        $display("[TB] tb_ab_frame_display done, errors=%0d (pix_ok=%0d pix_bad=%0d frames=%0d commits=%0d)",
-                 errors, pix_ok, pix_bad, frame_no, active_commit);
+        $display("[TB] tb_ab_frame_display done, errors=%0d (pix_ok=%0d pix_bad=%0d frames=%0d commits=%0d swapst=%0d swap_err=%b reqs=%0d acks=%0d)",
+                 errors, pix_ok, pix_bad, frame_no, commits, swap_state_o, swap_error, a_req_seen, a_acks);
         $finish;
+    end
+
+    // ---- 换帧过程诊断（每 1 ms 打一行，只在 frame_ready 之后开始，避免刷屏）----
+    reg diag_on = 1'b0;
+    always @(posedge clk_sys) if (frame_ready) diag_on <= 1'b1;
+    initial begin
+        forever begin
+            #1_000_000;
+            if (diag_on)
+                $display("[SWAP] t=%0t st=%0d req=%b fs_b=%b ack_b=%b reqa=%b fsa=%b acka=%b reqs=%0d acks=%0d commits=%0d err=%b",
+                         $time, swap_state_o, swap_req_b, fs_evt_b, ack_evt_b, req_evt_a,
+                         frame_start_a, swap_ack_a, a_req_seen, a_acks, commits, swap_error);
+        end
     end
 
     // 看门狗（本 TB 要过 92 万字节 + 两帧扫描，给足）
     initial begin
         #200_000_000;
-        $display("[FAIL] tb_ab_frame_display 看门狗超时（bi=%0d fw_px=%0d frames=%0d ok=%0d bad=%0d active=%b)",
-                 bi, fw_px_cnt, frame_no, pix_ok, pix_bad, pix_active_valid);
+        $display("[FAIL] tb_ab_frame_display 看门狗超时（bi=%0d fw_px=%0d frames=%0d ok=%0d bad=%0d active=%b swapst=%0d swap_err=%b commits=%0d）",
+                 bi, fw_px_cnt, frame_no, pix_ok, pix_bad, pix_active_valid, swap_state_o, swap_error, commits);
         $finish;
     end
 
