@@ -199,3 +199,14 @@ B `run_sim.ps1` 全回归基线为 **604 PASS / 0 FAIL**（2026-10-05 加入 `tb
 > `clkc[2]→clkc[1]` **−6.826 / 32 / 32**（**全局 −6.826 就是这一组**）。
 > ⚠ 注意 `safevision_Runs/phy_1/final_timing.rpt` **当前不在磁盘上**（TD 运行目录被清理过），
 > 引用时请用 `project/report*.txt` 系列，或重跑 TD 后再引用运行目录。
+
+
+---
+
+## 待查项（2026-10-05，均**不阻塞**已验证的结论）
+
+| # | 待查项 | 证据 / 现状 | 为什么要查 |
+|---|---|---|---|
+| 1 | **`active_commit` 未观测到脉冲** | `frame_swap_ctrl.v:141-142` 明确在 `S_WAIT_VBLANK` 收到 `frame_start` 时把它置 1 拍；但 `tb_ab_frame_display` 的边沿计数器实测始终为 0（计数器已确认存在且正确编译）。TB 目前只打 `[WARN]`、不判失败 | **`active_commit` 是 `frame_buffer_manager` 的输入** —— 若真不发，B 的槽管理链会缺一拍 |
+| 2 | **`bmp_unpack` 与 `frame_writer` 之间的时钟域** | 两个集成 TB 都按**同域（mem_clk）**接的 | 若产品里跨域，需要补一级 CDC FIFO —— **待与 A 确认** |
+| 3 | **`tb_card_to_screen` 的文件主体不是真文件内容** | 卡模型卷只有 64 扇区（约 32 KB），装不下 640x480 24bit BMP（921654 字节）⇒ 只有第一扇区（含 54 B 头）真写入，主体回落默认图案 | 若要"真文件端到端"，需扩大卡模型卷或改用小尺寸 BMP（会牵动 `bmp_parser` 的 640x480 硬编码） |
