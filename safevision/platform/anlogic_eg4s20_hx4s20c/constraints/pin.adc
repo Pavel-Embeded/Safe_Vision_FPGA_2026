@@ -47,6 +47,10 @@
 # sd_miso: the schematic sheet we could read does not state whether D0 has an
 # external pull-up.  PULLTYPE = NONE matches the vendor example; switch to
 # PULLUP here if bring-up shows MISO floating before the card drives it.
+#   ★ 2026-10-06 板级实测证实了这条预案：SD 初始化约 1/10 成功、状态行 `ED=11`
+#     （CMD0 的 R1 ≠ 0x01）——正是"悬空 MISO 的噪声被当成假 R1"的签名。
+#     处置：**board bring-up 的 `project/board_verify/board_b.adc` 已改成 PULLUP**
+#     （本共享文件保持原样，不动其它顶层的行为）。
 #
 # ============================================================================
 #  ##  [SD-ONLY] 四根 SD/SPI 引脚的开关说明（中文，务必看清）  ##

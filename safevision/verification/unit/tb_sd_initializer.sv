@@ -68,7 +68,13 @@ module tb_sd_initializer;
         .spi_rx_data(s1_rxd), .spi_rx_valid(s1_rxv)
     );
 
-    sd_spi_card_model #(.SLOW_INIT_POLLS(8'd3)) u_card1 (
+    // ★ 2026-10-06：这个"慢卡"实例同时兼守**缺陷 27 + 缺陷 28** ——
+    //   前 2 次 CMD0 故意回 `0x02`（非 idle，模拟"卡被上次复位打断、残留字节被当成 R1"）
+    //   ⇒ RTL 必须靠"重走 CS 高前导 + CMD0"重新同步（缺陷 28）；
+    //   之后回 `0x03`（bit0 idle + bit1 erase reset，真卡实测值）⇒ 判据必须容忍 bit1（缺陷 27）。
+    //   旧实现（等值判 0x01 / 不重同步）在这两处任一都会挂（T7.1/T7.2）。
+    sd_spi_card_model #(.SLOW_INIT_POLLS(8'd3), .CMD0_R1(8'h03),
+                        .CMD0_BAD_TRIES(3'd2)) u_card1 (
         .sclk(s1_sclk), .cs_n(s1_cs), .mosi(s1_mosi), .miso(s1_miso),
         .i_dead(1'b0),
         .o_cmd(), .o_arg(), .o_acmd41_arg(),
@@ -177,7 +183,7 @@ module tb_sd_initializer;
         `endif
 
         // ---- 三个实例同时启动 ----
-        $display("\n==== T7~T9: 慢卡 / v1 卡 / 拔卡 并行验证 ====");
+        $display("\n==== T7~T9: 慢卡(CMD0 R1=0x03) / v1 卡 / 拔卡 并行验证 ====");
         @(posedge clk);
         s1_start = 1'b1; s2_start = 1'b1; s3_start = 1'b1;
         @(posedge clk);

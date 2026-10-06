@@ -20,6 +20,15 @@ module sd_spi_card_model #(
     parameter [31:0] OCR_VALUE       = 32'hC0FF_8000,  // bit31=1 上电完成, bit30=1 CCS(SDHC)
     parameter [7:0]  SLOW_INIT_POLLS = 8'd0,           // ACMD41 前 N 次回 idle 态（模拟慢卡）
     parameter        CMD8_ILLEGAL    = 1'b0,           // 1 = v1.x 卡，CMD8 回 illegal command
+    // ★ 2026-10-06 新增：CMD0 的 R1 值。真卡实测**并不总是 0x01** ——
+    //   `evidence/board` 的 SVPLAY-CAP 抓到 `R1=03`（bit0 idle + bit1 erase reset）。
+    //   旧 RTL 用 `r1 == 8'h01` 等值判断 ⇒ 把 0x03 判成失败（缺陷 27）。
+    //   本参数让 TB 能构造"CMD0 回 0x03"的卡，守住"必须容忍 erase-reset 位"这条判据。
+    parameter [7:0]  CMD0_R1         = 8'h01,
+    // ★ 2026-10-06 新增（缺陷 28 守门用）：前 N 次 CMD0 故意回 `0x02`（非 idle），
+    //   模拟"卡被上次复位打断、残留数据字节被当成 R1"。RTL 必须靠"重走前导 + CMD0"
+    //   重新同步后仍能初始化成功。
+    parameter [2:0]  CMD0_BAD_TRIES  = 3'd0,
     // ---- 卷基址（分区卡）支持，见 docs/interface_spec.md §3.2.1 ----
     // 默认 0 = 无分区表（卷 0 号扇区 = 卡 0 号扇区），所有既有 TB 行为完全不变。
     // 设成 N>0 时：卡 LBA [N, N+63] 映射到 vol[] 的卷内相对扇区 [0,63]，
@@ -195,10 +204,15 @@ module sd_spi_card_model #(
             vol_set(lba, off + 16'd10, name83[7:0]);
             vol_set(lba, off + 16'd11, attr);              // DIR_Attr
             // 0x0C..0x13 保留字段留 0（调用前应先 vol_zero 本扇区）
-            vol_set(lba, off + 16'd20, first_clus[31:24]); // FstClusHI
-            vol_set(lba, off + 16'd21, first_clus[23:16]);
-            vol_set(lba, off + 16'd26, first_clus[15:8]);  // FstClusLO
-            vol_set(lba, off + 16'd27, first_clus[7:0]);
+            // ★★ 首簇号按【小端】写（与真卡/Windows 一致）：0x14=HI 低字节、0x15=HI 高字节、
+            //   0x1A=LO 低字节、0x1B=LO 高字节。
+            //   ⚠ 2026-10-06 修复（缺陷 24）：原来这里写成大端，与 `fat32_directory_scanner.v`
+            //     的同款错误**互相抵消** ⇒ 全部 TB 绿、真卡全错。改这里是为了让 TB 具备
+            //     发现该字段字节序问题的能力（改后若 RTL 再退回大端，本 TB 会立刻失败）。
+            vol_set(lba, off + 16'd20, first_clus[23:16]); // FstClusHI 低字节
+            vol_set(lba, off + 16'd21, first_clus[31:24]); // FstClusHI 高字节
+            vol_set(lba, off + 16'd26, first_clus[7:0]);   // FstClusLO 低字节
+            vol_set(lba, off + 16'd27, first_clus[15:8]);  // FstClusLO 高字节
             vol_set(lba, off + 16'd28, file_size[7:0]);    // FileSize 小端
             vol_set(lba, off + 16'd29, file_size[15:8]);
             vol_set(lba, off + 16'd30, file_size[23:16]);
@@ -248,6 +262,7 @@ module sd_spi_card_model #(
 
     reg  [47:0] cmd_buf;       // 6 字节命令帧
     reg  [2:0]  cmd_cnt;       // 已收命令字节数
+    reg  [2:0]  cmd0_seen;     // ★ 已收到几次 CMD0（缺陷 28 场景用）
     reg  [5:0]  cur_cmd;       // 当前命令索引
     reg  [31:0] cur_arg;
     // 卷内相对 LBA（= cur_arg - VOL_BASE）。用 blocking 赋值的 reg 而非 wire：
@@ -279,7 +294,12 @@ module sd_spi_card_model #(
             case (cur_cmd)
                 `SD_CMD0: begin
                     rlen = 16'd1;
-                    if (rp == 16'd0) b = 8'h01;
+                    // ★ 2026-10-06：前 CMD0_BAD_TRIES 次故意回 `0x02`（bit1 erase reset、
+                    //   bit0=0 即**非 idle**）——模拟"卡被上次复位打断、残留一个数据字节
+                    //   被主机当成 R1"的真实板级现象（板上抓到 `R1=02 SQ=0`）。
+                    //   RTL 的处置是"重走 CS 高前导 + CMD0"重新同步（缺陷 28）。
+                    if (rp == 16'd0)
+                        b = (cmd0_seen <= CMD0_BAD_TRIES) ? 8'h02 : CMD0_R1;
                 end
                 `SD_CMD8: begin
                     rlen = 16'd5;
@@ -373,6 +393,8 @@ module sd_spi_card_model #(
                         cur_cmd     = cmd_buf[45:40];
                         cur_arg     = cmd_buf[39:8];
                         cur_rel     = cur_arg - VOL_BASE;   // blocking：写完立刻可读
+                        // ★ 2026-10-06（缺陷 28 用）：数 CMD0 次数，供"前 N 次返回残留字节"场景
+                        if (cur_cmd == `SD_CMD0) cmd0_seen = cmd0_seen + 3'd1;
                         if (cur_cmd == `SD_CMD17) begin
                             // SDHC 模式下 cur_arg 就是块号（卡的绝对 LBA）。
                             // 该 LBA 落在卷内(>= VOL_BASE 且相对偏移 < 64)且被显式写过
@@ -427,6 +449,7 @@ module sd_spi_card_model #(
 
     initial begin
         cmd_cnt     = 3'd0;
+        cmd0_seen   = 3'd0;
         cmd_buf     = 48'h0;
         in_resp     = 1'b0;
         skip_byte   = 1'b1;

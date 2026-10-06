@@ -120,6 +120,8 @@ module memory_arbiter #(
     reg  [15:0] rd_wait_cnt;   // 最长等待时间计数器（内部，不对外）
     reg  [15:0] wr_wait_cnt;
     reg         rd_starve_event,wr_starve_event; // diagnostics delayed one cycle
+    reg         grant_event;    // 授权事件迟一拍（见 consec_cnt 结算处时序说明）
+    reg  [1:0]  grant_ch;
     reg  [15:0] sd_wait_cnt;
 
     // ---- 紧迫（超限即临时提权）----
@@ -210,6 +212,8 @@ module memory_arbiter #(
             rd_starve_cnt <= 0;
             wr_starve_event <= 0;
             rd_starve_event <= 0;
+            grant_event     <= 1'b0;
+            grant_ch        <= CH_NONE;
         end else begin
             rd_ack <= 0;
             wr_ack <= 0;
@@ -222,6 +226,21 @@ module memory_arbiter #(
                 rd_starve_cnt <= rd_starve_cnt + 1'b1;
             if(wr_starve_event && wr_starve_cnt != 16'hFFFF)
                 wr_starve_cnt <= wr_starve_cnt + 1'b1;
+            // ★ 同一招用于 consec_cnt/last_ch（mem→mem 多米诺，2026-10-06）：
+            //   授权事件先寄存、下一拍再结算连续授权计数，把 winner 优先树
+            //   （连带 rd_req→rd_e 长锥）移出计数器 CE 路径。授权后 busy 至少
+            //   占 2 拍（prime 拍 + ≥1 个 transfer 拍），下一次仲裁决策最早在
+            //   3 拍之后 ⇒ 迟一拍结算与就地结算对仲裁决策完全等价。
+            grant_event <= !busy && (winner != CH_NONE);
+            grant_ch    <= winner;
+            if (grant_event) begin
+                if (last_ch == grant_ch) begin
+                    if (consec_cnt != 16'hFFFF) consec_cnt <= consec_cnt + 1'b1;
+                end else begin
+                    last_ch <= grant_ch;
+                    consec_cnt <= 16'd1;
+                end
+            end
             if (!busy) begin
                 if (winner != CH_NONE) begin
                     cur_ch <= winner;
@@ -244,12 +263,8 @@ module memory_arbiter #(
                         CH_SD: sd_ack <= 1'b1;
                         default: ;
                     endcase
-                    if (last_ch == winner) begin
-                        if (consec_cnt != 16'hFFFF) consec_cnt <= consec_cnt + 1'b1;
-                    end else begin
-                        last_ch <= winner;
-                        consec_cnt <= 16'd1;
-                    end
+                    // consec_cnt/last_ch 的结算已移到 grant_event（上方），
+                    // 这里不再就地更新 —— 见那里的时序等价性说明。
                 end
             end else begin
                 // Prime cycle lets a client observe ack and prepare its first word.

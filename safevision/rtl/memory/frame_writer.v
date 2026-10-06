@@ -116,6 +116,8 @@ module frame_writer #(
     reg        wr_pending;    // 有一个 word 待写出
     reg [31:0] wr_addr_r;
     reg [31:0] wr_data_r;
+    reg        crc_src_pend;  // CRC 源侧提交事件（迟一拍结算，见下方时序说明）
+    reg [31:0] crc_pair_q;    // 与事件对齐锁存的像素对载荷
     localparam integer GAP_W = (GAP_TIMEOUT < 2) ? 1 : $clog2({1'b0,GAP_TIMEOUT}+33'd1);
     reg [GAP_W-1:0] gap_cnt;  // minimal width, including SD latency >65535 clocks
 
@@ -174,10 +176,17 @@ module frame_writer #(
 
     wire [15:0] crc_src_w1, crc_src_w2, crc_src_w3;
     wire [15:0] crc_src_next;
-    crc16_ccitt u_crc_src_0 (.crc_in(crc_src),    .data(px_pair[31:24]), .crc_out(crc_src_w1));
-    crc16_ccitt u_crc_src_1 (.crc_in(crc_src_w1), .data(px_pair[23:16]), .crc_out(crc_src_w2));
-    crc16_ccitt u_crc_src_2 (.crc_in(crc_src_w2), .data(px_pair[15:8]),  .crc_out(crc_src_w3));
-    crc16_ccitt u_crc_src_3 (.crc_in(crc_src_w3), .data(px_pair[7:0]),   .crc_out(crc_src_next));
+    // ★ 时序（mem→mem 多米诺，2026-10-06）：源侧 CRC 改为对**锁存载荷**
+    //   crc_pair_q 计算、迟一拍提交（见主状态机里的 crc_src_pend）。
+    //   这使"px_cnt → frame_full → din_ready → px_accept → CE"的 5 级长锥
+    //   （net 占 75%）退化为寄存器直驱的短 CE；级联本身（crc_src → crc_src_next
+    //   → crc_src.d）深度不变，且输入从输入脚/lo_pix 换成寄存器只会更短。
+    //   语义不变：配对完成间隔 ≥2 拍（have_lo 翻转），迟一拍不丢提交；帧满
+    //   结算最早在提交后第 2 个边沿读 crc_src（wr_pending 先占用 1 拍），余 1 拍。
+    crc16_ccitt u_crc_src_0 (.crc_in(crc_src),    .data(crc_pair_q[31:24]), .crc_out(crc_src_w1));
+    crc16_ccitt u_crc_src_1 (.crc_in(crc_src_w1), .data(crc_pair_q[23:16]), .crc_out(crc_src_w2));
+    crc16_ccitt u_crc_src_2 (.crc_in(crc_src_w2), .data(crc_pair_q[15:8]),  .crc_out(crc_src_w3));
+    crc16_ccitt u_crc_src_3 (.crc_in(crc_src_w3), .data(crc_pair_q[7:0]),   .crc_out(crc_src_next));
 
     // ------------------------------------------------------------------------
     // 主状态机
@@ -198,6 +207,8 @@ module frame_writer #(
             wr_pending <= 1'b0;
             wr_addr_r  <= 32'd0;
             wr_data_r  <= 32'd0;
+            crc_src_pend <= 1'b0;
+            crc_pair_q   <= 32'd0;
             gap_cnt    <= 16'd0;
             wr_done    <= 1'b0;
             slot_valid <= 4'b0000;
@@ -210,6 +221,13 @@ module frame_writer #(
         end else begin
             // 默认单拍脉冲
             wr_done <= 1'b0;
+
+            // ---- CRC 源侧：迟一拍提交（时序切分，见 crc_src_next 处说明）----
+            // 先消费后登记（源序）：即便消费与新登记同拍，后者也不会被吞掉。
+            if (crc_src_pend) begin
+                crc_src      <= crc_src_next;
+                crc_src_pend <= 1'b0;
+            end
 
             case (state)
                 // ============================================================
@@ -282,8 +300,13 @@ module frame_writer #(
                                 wr_pending <= 1'b1;
                                 wr_addr_r  <= cur_byte_addr;
                                 wr_data_r  <= px_pair;       // 高半=后到，低半=先到
-                                if ((src_idx % SAMPLE_STRIDE) == 0)
-                                    crc_src <= crc_src_next;
+                                // ★ 抽样命中：不再就地算 crc_src，改为登记
+                                //   "事件 + 载荷"、下一拍由块首的消费逻辑结算
+                                //   （时序理由与等价性见 crc_src_next 处说明）
+                                if ((src_idx % SAMPLE_STRIDE) == 0) begin
+                                    crc_src_pend <= 1'b1;
+                                    crc_pair_q   <= px_pair;
+                                end
                                 src_idx <= src_idx + 32'd1;
                                 // 推进像素对坐标（x 每次 +2）
                                 if (x_cnt == (FRAME_WIDTH - 10'd2)) begin

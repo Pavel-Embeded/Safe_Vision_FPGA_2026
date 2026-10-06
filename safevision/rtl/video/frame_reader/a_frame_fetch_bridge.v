@@ -68,8 +68,18 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64)(
     wire dma_req,dma_we;wire [15:0] dma_pixel;
     wire [31:0] packed_word;wire packed_valid,packer_ready,half_pending;
     wire fifo_ready,fifo_full,fifo_afull;wire [FIFO_AW-1:0] fifo_words;
-    wire [15:0] guarded_level=({{(15-FIFO_AW){1'b0}},fifo_words,1'b0})+
+    // Level is REGISTERED one mem_clk before use: cuts the wr_addr_diff ->
+    // arbiter cur_addr/consec_cnt comb chain (mem->mem budget). Consumers
+    // (video_read_dma V_CHECK watermark, arbiter video_fifo_level) are
+    // heuristics with huge slack (FIFO 2*(2^AW-1), burst BURST_WORDS,
+    // +4 guard), so one cycle of lag is inside the margin.
+    wire [15:0] guarded_level_next=({{(15-FIFO_AW){1'b0}},fifo_words,1'b0})+
                                (half_pending?16'd1:16'd0)+16'd4;
+    reg [15:0] guarded_level;
+    always @(posedge mem_clk or negedge mem_local_reset_n)begin
+        if(!mem_local_reset_n)guarded_level<=16'd0;
+        else guarded_level<=guarded_level_next;
+    end
     assign fifo_mem_pixels=guarded_level;
     assign fetch_state=state;
     assign rd_req=dma_req && state==RUN;

@@ -264,10 +264,19 @@ module fat32_directory_scanner (
                     5'd1, 5'd2, 5'd3, 5'd4, 5'd5, 5'd6, 5'd7, 5'd8, 5'd9, 5'd10:
                         name_raw <= {name_raw[79:0], sd_data};
                     5'd11: attr_raw <= sd_data;
-                    5'd20: fc_h[15:8] <= sd_data;
-                    5'd21: fc_h[7:0]  <= sd_data;
-                    5'd26: fc_l[15:8] <= sd_data;
-                    5'd27: fc_l[7:0]  <= sd_data;
+                    // ★★ 首簇号两个 16 位字段是【小端】（FAT32 全表小端，与 BPB 一致）：
+                    //   0x14 = FstClusHI 低字节 -> fc_h[7:0]，0x15 高字节 -> fc_h[15:8]
+                    //   0x1A = FstClusLO 低字节 -> fc_l[7:0]，0x1B 高字节 -> fc_l[15:8]
+                    //   ⚠ 2026-10-06 修复（缺陷 24）：这里原来写成**大端**（低偏移进高半），
+                    //     真卡（Windows 小端）上首簇全部字节交换 ⇒ 文件数据地址全错
+                    //     （板上实测：SV0001 真簇 232 被读成 0xE800 ⇒ 读回垃圾 ⇒ EC=03）。
+                    //     当时所有仿真都过，是因为 `sd_spi_card_model.mk_dir_entry`
+                    //     用了同一个错误字节序，两边错得一样（同 `\r\n` 转义那次）——
+                    //     模型已同步改成小端，此后 TB 才真正能守住这个字段。
+                    5'd20: fc_h[7:0]  <= sd_data;
+                    5'd21: fc_h[15:8] <= sd_data;
+                    5'd26: fc_l[7:0]  <= sd_data;
+                    5'd27: fc_l[15:8] <= sd_data;
                     5'd28: size_raw[7:0]   <= sd_data;
                     5'd29: size_raw[15:8]  <= sd_data;
                     5'd30: size_raw[23:16] <= sd_data;

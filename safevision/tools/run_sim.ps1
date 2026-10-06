@@ -90,7 +90,13 @@ $RTL = @(
     #      regression by binding sdram / sv_system_pll to the stubs in models/ ----
     "../platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v",
     # ---- board adapter (no encrypted IP inside; compile-checked + unit TB) ----
-    "../platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v"
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v",
+    # ---- Plan A sink: official a_pixel_fifo (wr 50 MHz / rd 125 MHz) + the
+    #      mem-side frame controller. Covered by tb_bmp_frame_sink below. ----
+    "../platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v",
+    "../platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v",
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
+    "../platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v"
 )
 
 $SIM = @(
@@ -123,7 +129,8 @@ $SIM = @(
     "unit/tb_b_frame_memory.sv",
     "unit/tb_bmp_frame_write_bridge.sv",
     "unit/tb_frame_writer_bounds.sv",
-    "unit/tb_sd_clock_params.sv"
+    "unit/tb_sd_clock_params.sv",
+    "unit/tb_bmp_frame_sink.sv"
 )
 
 $TBS = @(
@@ -153,7 +160,8 @@ $TBS = @(
     "tb_b_frame_memory",
     "tb_bmp_frame_write_bridge",
     "tb_frame_writer_bounds",
-    "tb_sd_clock_params"
+    "tb_sd_clock_params",
+    "tb_bmp_frame_sink"
 )
 
 Write-Output "=== vlib work ==="

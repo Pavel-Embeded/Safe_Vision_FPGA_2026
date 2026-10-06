@@ -25,7 +25,10 @@
 module sd_initializer #(
     // Default remains the existing 100MHz contract. Override when integrating
     // the storage chain in mem_clk (e.g.125MHz -> div156, SCLK<=400kHz).
-    parameter [15:0] CLK_DIV_INIT = `SD_DIV_INIT
+    parameter [15:0] CLK_DIV_INIT = `SD_DIV_INIT,
+    // ★ 2026-10-06 新增（缺陷 28）：CMD0 的 R1 不是 idle 时，最多再重走几次
+    //   "CS 高前导 → CS 低 → CMD0"（用于重新同步被上次复位打断的卡）。
+    parameter [2:0]  CMD0_RETRY_MAX = 3'd3
 ) (
     input  wire        clk,
     input  wire        rst_n,
@@ -39,6 +42,14 @@ module sd_initializer #(
     output reg  [7:0]  err_detail,      // B 链内部细分码
     output reg  [7:0]  retry_cnt,       // ACMD41 轮询次数，供观测
     output reg  [3:0]  dbg_state,       // 供 ChipWatcher / 数码管
+    // ★ 2026-10-06 新增（板上 SD 初始化不稳定时的诊断）：
+    //   dbg_r1  = 最近一次收到的 R1 原始字节（失败时即"挂掉那条命令"的响应）
+    //             `FF` = 卡根本没应答（接触/供电）；`05` = 非法命令（卡没听懂 ⇒ 时钟/位序）；
+    //             `00` = 卡应答但状态不对；`01` = idle（正常）
+    //   dbg_seq = 失败时正处在第几条命令：0=CMD0, 1=CMD8, 2=CMD55, 3=ACMD41
+    //             （只报 R1 会被 CMD8 的"回显错但 R1=01"误导，所以要带 seq）
+    output wire [7:0]  dbg_r1,
+    output wire [2:0]  dbg_seq,
 
     // ---- 到 spi_master 的字节总线 ----
     // 注：tx_valid / tx_data 由字节引擎组合驱动（output wire），
@@ -93,6 +104,12 @@ module sd_initializer #(
     reg  [31:0] acmd41_arg;
     reg  [31:0] to_resp;        // 【独立超时 1】命令响应等待
     reg  [31:0] to_acmd41;      // 【独立超时 2】ACMD41 轮询总上限
+    reg  [2:0]  cmd0_try;       // ★ CMD0 已重同步次数（缺陷 28；do_soft_reset 清零）
+
+    // ★ 诊断输出（见端口注释）：必须放在 r1/seq 的**声明之后**（本项目铁律：
+    //   先用后声明在 ModelSim 会直接编译不过，且隐式网会另建一根未驱动的网）
+    assign dbg_r1  = r1;
+    assign dbg_seq = seq;
 
     // ------------------------------------------------------------------------
     // 命令帧构造：0x40|cmd + arg(MSB 先发) + CRC7
@@ -168,6 +185,7 @@ module sd_initializer #(
             retry_cnt  <= 8'd0;
             to_resp    <= 32'd0;
             to_acmd41  <= 32'd0;
+            cmd0_try   <= 3'd0;      // ★ 每次 start 都从"第 0 次重同步"起算
         end
     endtask
 
@@ -321,11 +339,30 @@ module sd_initializer #(
             // ---- 评估，决定下一个命令 ----------------------------------------
             M_NEXT: begin
                 case (seq)
-                // -------- CMD0：期望 0x01（已进 idle）--------
+                // -------- CMD0：期望已进 idle（★ 不能只认 0x01，见下）--------
                 3'd0: begin
-                    if (r1 == 8'h01) begin
+                    // ★★ 2026-10-06 板级实测修（缺陷 27）：**原写法 `r1 == 8'h01` 过严**。
+                    //   板上用新增的 `R1=`/`SQ=` 诊断抓到真值：`ED=11 R1=03 SQ=0`
+                    //   ⇒ CMD0 的 R1 = `0x03` = **bit0(idle) + bit1(erase reset)**
+                    //   —— 卡**确实进了 idle**、复位是成功的，但严格等值判断把它判成失败。
+                    //   这就是"SD 初始化约 1/10 才成功"的来源之一：卡干净时返 `0x01` 就过，
+                    //   带 erase-reset 状态位时返 `0x03` 就被拒（连续按复位时后者居多）。
+                    //   正确判据：**bit0(idle) 必须为 1**，且 bit6..bit2
+                    //   （非法命令/CRC/擦除序/地址/参数）**全 0**；bit1 是状态位，**容忍**。
+                    //
+                    // ★★ 2026-10-06 再修（缺陷 28）：**判失败前先"重新同步"**。
+                    //   后续又抓到 `R1=02 SQ=0`（bit0=0，**非 idle**）——这种"非 idle 的怪值"
+                    //   很像**卡在上一次事务被 FPGA 复位打断后残留的一个数据字节**被 M_R1
+                    //   当成了 R1（轮询只要求 bit7=0，残留字节的 bit7 也可能是 0）。
+                    //   处置：不是 idle 就**重走一遍 `M_POWER`（CS 高 + 80 拍前导）→
+                    //   `M_CSON`（CS 拉低）→ `M_CMD`（CMD0）** —— CS 翻转 + 前导会中止并
+                    //   重新同步卡；最多再试 `CMD0_RETRY_MAX` 次，仍不行才判错。
+                    if (r1[`SD_R1_IDLE_STATE] && (r1[6:2] == 5'd0)) begin
                         seq    <= 3'd1;
                         mstate <= M_CSON;
+                    end else if (cmd0_try < CMD0_RETRY_MAX) begin
+                        cmd0_try <= cmd0_try + 3'd1;
+                        mstate   <= M_POWER;          // 重新同步：整段重来
                     end else begin
                         err_code   <= `ERR_SD_INIT;
                         err_detail <= `DET_SD_INIT_CMD;

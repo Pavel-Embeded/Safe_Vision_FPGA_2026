@@ -32,6 +32,7 @@ set paths [list \
     [file join $platform ip a_pixel_fifo a_pixel_fifo_ip.v] \
     [file join $platform ip a_pixel_fifo a_pixel_fifo_eram.v] \
     [file join $platform rtl pixel_fifo a_pixel_fifo.v] \
+    [file join $platform rtl bmp_frame_sink.v] \
     [file join $vend hdmi_phy_warpper.v] \
     [file join $vend lane_lvds_10_1.v] \
     [file join $vend hdmi1.4b_transmitter_core hdmi_1_4b_transmitter_core_wrapper.enc.v]]
@@ -45,6 +46,12 @@ foreach p {rtl/video/frame_reader/pixel_word_packer.v rtl/video/frame_reader/fra
            rtl/memory/video_read_dma.v rtl/memory/frame_swap_cdc.v rtl/memory/memory_arbiter.v
            rtl/memory/frame_swap_ctrl.v rtl/memory/frame_writer.v rtl/memory/frame_address_gen.v
            rtl/memory/mem_ctrl.v rtl/common/crc16_ccitt.v
+           rtl/common/crc7.v rtl/common/uart_tx.v
+           rtl/storage/spi_master.v rtl/storage/sd_initializer.v rtl/storage/sd_sector_reader.v
+           rtl/storage/mbr_parser.v rtl/storage/fat32_boot_parser.v
+           rtl/storage/fat32_directory_scanner.v rtl/storage/fat32_cluster_walker.v
+           rtl/storage/file_index.v rtl/storage/file_streamer.v rtl/storage/sd_bmp_player.v
+           rtl/media/bmp_parser.v rtl/media/bmp_unpack.v
            rtl/top/safevision_core/safevision_core.v rtl/top/safevision_core/bmp_frame_write_bridge.v} {
     lappend paths [file join $root safevision $p]
 }

@@ -99,12 +99,67 @@ module file_index (
     wire ext_wav = (ne0 == 8'h57) && (ne1 == 8'h41) && (ne2 == 8'h56);   // WAV
 
     // 数字后缀：0000 非法（编号从 0001 起）
-    wire [13:0] ent_num = ((nd0 - 8'h30) * 14'd1000) + ((nd1 - 8'h30) * 14'd100) +
-                          ((nd2 - 8'h30) * 14'd10)   +  (nd3 - 8'h30);
-    wire num_ok = (ent_num >= 14'd1) && (ent_num <= 14'd9999);
+    // ★★ 2026-10-05 时序修改：比较键改用**4 个 nibble 打包**（每个数字 0..9），
+    //   它与十进制数值**同序**（0001 < 0002 < ... < 9999），但**去掉了
+    //   *1000/*100/*10 的十进制乘法** —— 那正是 TD 在 125MHz 下报出的
+    //   MULT18+ADDER，也是 15.03ns 长路径（8ns 预算）的一部分。
+    // ★★ 2026-10-06 复核修（缺陷 25）：**位宽截断**。原来写成
+    //     `wire [15:0] ent_key = {(nd0-8'h30),(nd1-8'h30),(nd2-8'h30),(nd3-8'h30)};`
+    //   四个操作数各是 **8 bit** ⇒ 拼接结果是 **32 bit**，赋给 16 bit 只留**低 16 位**
+    //   ⇒ 实际只有【后两位数字】参与比较。后果（真卡/真目录就会踩到）：
+    //     · 编号以 `00` 结尾（`SV0100`/`SV0200`…）⇒ ent_key==0 ⇒ `num_ok` 为假
+    //       ⇒ **整幅图被静默忽略**（既不报错也不入槽）；
+    //     · 只差前两位（`SV0001` vs `SV0101`）⇒ **键相同** ⇒ 被 `is_dup` 当重复丢弃 + 排序错。
+    //   修法：先把每个数字**截成 4 bit**（`nk*`），再拼 16 bit ⇒ 键 = 千/百/十/个，
+    //   与十进制同序且无截断。★ 仍然没有乘法，时序收益保持不变。
+    //   （本仓库既有 TB 只用 SV0001..SV0006：既不撞车也不以 00 结尾 ⇒ 60 项断言守不住，
+    //     已补 `tb_file_index` 的 T7x 用例。）
+    wire [3:0]  nk0 = nd0 - 8'h30;      // 千
+    wire [3:0]  nk1 = nd1 - 8'h30;      // 百
+    wire [3:0]  nk2 = nd2 - 8'h30;      // 十
+    wire [3:0]  nk3 = nd3 - 8'h30;      // 个
+    wire [15:0] ent_key = { nk0, nk1, nk2, nk3 };
+    wire num_ok = (ent_key != 16'd0);
 
-    wire is_bmp = ent_valid && name_ok && num_ok && ext_bmp;
-    wire is_wav = ent_valid && name_ok && num_ok && ext_wav;
+    wire is_bmp_c = ent_valid && name_ok && num_ok && ext_bmp;
+    wire is_wav_c = ent_valid && name_ok && num_ok && ext_wav;
+
+    // ★★ 译码打一拍（流水第 1 段 → 第 2 段）：
+    //   把「88 位名比较 + 数字归一化」与「4 槽插入排序 + 表移位」切开。
+    //   实测（board_verify base）：两者压在一拍时最差 15.03ns / Logic Level 11，
+    //   在 125MHz（8ns）下必违例；切开后第 2 段的输入全部来自寄存器。
+    //   ★ 因此 idx_commit 需要在模块内**延后几拍**（见下方 COMMIT_DLY），
+    //     保证最后一个目录项已经流过第 2 段之后再冻结表。
+    reg        is_bmp_d, is_wav_d;
+    reg [15:0] key_d;
+    reg [31:0] clus_d, size_d;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            is_bmp_d <= 1'b0; is_wav_d <= 1'b0; key_d <= 16'd0;
+            clus_d <= 32'd0; size_d <= 32'd0;
+        end else begin
+            is_bmp_d <= is_bmp_c;
+            is_wav_d <= is_wav_c;
+            key_d    <= ent_key;
+            clus_d   <= ent_first_clus;
+            size_d   <= ent_size;
+        end
+    end
+
+    wire is_bmp = is_bmp_d;
+    wire is_wav = is_wav_d;
+
+    // idx_commit 内部延后 3 拍：等译码流水排空 + 表写完再冻结
+    reg [2:0] cmit_pipe;
+    reg       cmit_d;
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin cmit_pipe <= 3'd0; cmit_d <= 1'b0; end
+        else begin
+            cmit_pipe <= {cmit_pipe[1:0], idx_commit};
+            cmit_d    <= cmit_pipe[2];
+        end
+    end
 
     assign ent_ready = 1'b1;           // 本模块不反压（见接口文档）
 
@@ -112,12 +167,12 @@ module file_index (
     // 2. 图片槽（插入排序，只留数字最小的 4 个）
     //    以及 WAV 候选表（同样插入排序，只留数字最小的 8 个）
     // ------------------------------------------------------------------------
-    reg [13:0] s_num [0:NSLOT-1];
+    reg [15:0] s_key [0:NSLOT-1];
     reg [31:0] s_clus[0:NSLOT-1];
     reg [31:0] s_size[0:NSLOT-1];
     reg        s_val [0:NSLOT-1];
 
-    reg [13:0] w_num [0:NWAV-1];
+    reg [15:0] w_key [0:NWAV-1];
     reg [31:0] w_clus[0:NWAV-1];
     reg [31:0] w_size[0:NWAV-1];
     reg        w_val [0:NWAV-1];
@@ -136,10 +191,10 @@ module file_index (
     always @(*) begin
         ins_pos = 0;
         for (i = 0; i < NSLOT; i = i + 1)
-            if (s_val[i] && (s_num[i] < ent_num)) ins_pos = i + 1;
+            if (s_val[i] && (s_key[i] < key_d)) ins_pos = i + 1;
         is_dup = 1'b0;
         for (i = 0; i < NSLOT; i = i + 1)
-            if (s_val[i] && (s_num[i] == ent_num)) is_dup = 1'b1;
+            if (s_val[i] && (s_key[i] == key_d)) is_dup = 1'b1;
         // ins_pos == NSLOT 说明新编号比榜上最大的还大 -> 落榜
         ins_keep = (ins_pos < NSLOT) && !is_dup;
     end
@@ -153,7 +208,7 @@ module file_index (
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             for (i = 0; i < NSLOT; i = i + 1) begin
-                s_num[i]  <= 14'd0;
+                s_key[i]  <= 16'd0;
                 s_clus[i] <= 32'd0;
                 s_size[i] <= 32'd0;
                 s_val[i]  <= 1'b0;
@@ -162,7 +217,7 @@ module file_index (
                 m_val[i]  <= 1'b0;
             end
             for (i = 0; i < NWAV; i = i + 1) begin
-                w_num[i]  <= 14'd0;
+                w_key[i]  <= 16'd0;
                 w_clus[i] <= 32'd0;
                 w_size[i] <= 32'd0;
                 w_val[i]  <= 1'b0;
@@ -183,7 +238,7 @@ module file_index (
             // ---- 清表：准备新一轮扫描 --------------------------------------
             if (idx_clear) begin
                 for (i = 0; i < NSLOT; i = i + 1) begin
-                    s_num[i]  <= 14'd0;
+                    s_key[i]  <= 16'd0;
                     s_clus[i] <= 32'd0;
                     s_size[i] <= 32'd0;
                     s_val[i]  <= 1'b0;
@@ -192,7 +247,7 @@ module file_index (
                     m_val[i]  <= 1'b0;
                 end
                 for (i = 0; i < NWAV; i = i + 1) begin
-                    w_num[i]  <= 14'd0;
+                    w_key[i]  <= 16'd0;
                     w_clus[i] <= 32'd0;
                     w_size[i] <= 32'd0;
                     w_val[i]  <= 1'b0;
@@ -215,15 +270,15 @@ module file_index (
                 if (ins_keep) begin
                     for (j = NSLOT - 1; j > 0; j = j - 1) begin
                         if (j > ins_pos) begin
-                            s_num[j]  <= s_num[j-1];
+                            s_key[j]  <= s_key[j-1];
                             s_clus[j] <= s_clus[j-1];
                             s_size[j] <= s_size[j-1];
                             s_val[j]  <= s_val[j-1];
                         end
                     end
-                    s_num [ins_pos] <= ent_num;
-                    s_clus[ins_pos] <= ent_first_clus;
-                    s_size[ins_pos] <= ent_size;
+                    s_key [ins_pos] <= key_d;
+                    s_clus[ins_pos] <= clus_d;
+                    s_size[ins_pos] <= size_d;
                     s_val [ins_pos] <= 1'b1;
                 end
             end else if (is_wav) begin
@@ -237,30 +292,30 @@ module file_index (
                     reg     wkeep;
                     wpos = 0;
                     for (wi = 0; wi < NWAV; wi = wi + 1)
-                        if (w_val[wi] && (w_num[wi] < ent_num)) wpos = wi + 1;
+                        if (w_val[wi] && (w_key[wi] < key_d)) wpos = wi + 1;
                     wdup = 1'b0;
                     for (wi = 0; wi < NWAV; wi = wi + 1)
-                        if (w_val[wi] && (w_num[wi] == ent_num)) wdup = 1'b1;
+                        if (w_val[wi] && (w_key[wi] == key_d)) wdup = 1'b1;
                     wkeep = (wpos < NWAV) && !wdup;
                     if (wkeep) begin
                         for (wi = NWAV - 1; wi > 0; wi = wi - 1) begin
                             if (wi > wpos) begin
-                                w_num[wi]  <= w_num[wi-1];
+                                w_key[wi]  <= w_key[wi-1];
                                 w_clus[wi] <= w_clus[wi-1];
                                 w_size[wi] <= w_size[wi-1];
                                 w_val[wi]  <= w_val[wi-1];
                             end
                         end
-                        w_num [wpos] <= ent_num;
-                        w_clus[wpos] <= ent_first_clus;
-                        w_size[wpos] <= ent_size;
+                        w_key [wpos] <= key_d;
+                        w_clus[wpos] <= clus_d;
+                        w_size[wpos] <= size_d;
                         w_val [wpos] <= 1'b1;
                     end
                 end
             end
 
             // ---- 提交：冻结索引表 + 配对 WAV ---------------------------------
-            if (idx_commit) begin
+            if (cmit_d) begin
                 file_valid <= {s_val[3], s_val[2], s_val[1], s_val[0]};
                 file_cnt   <= {2'b00, s_val[3]} + {2'b00, s_val[2]} +
                               {2'b00, s_val[1]} + {2'b00, s_val[0]};
@@ -281,7 +336,7 @@ module file_index (
                     m_val[i]  <= 1'b0;
                     if (s_val[i]) begin
                         for (k = 0; k < NWAV; k = k + 1) begin
-                            if (w_val[k] && (w_num[k] == s_num[i])) begin
+                            if (w_val[k] && (w_key[k] == s_key[i])) begin
                                 m_clus[i] <= w_clus[k];
                                 m_size[i] <= w_size[k];
                                 m_val[i]  <= 1'b1;
