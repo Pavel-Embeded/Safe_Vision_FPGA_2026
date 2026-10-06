@@ -21,6 +21,16 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64)(
     wire [31:0] begin_base;
     wire common_reset_n=pixel_rst_n&&mem_rst_n;
     wire pixel_local_reset_n,mem_local_reset_n;
+    // Register the complete B response beat before the DMA landing RAM. The
+    // external interface is non-backpressured; valid and all 32 data bits get
+    // the SAME one-cycle delay. This removes arbiter response-count logic from
+    // the RAM write enable path without changing a word or its ordering.
+    reg [31:0] response_data;
+    reg response_valid;
+    always @(posedge mem_clk or negedge mem_local_reset_n)begin
+        if(!mem_local_reset_n)begin response_data<=0;response_valid<=0;end
+        else begin response_data<=rd_data;response_valid<=rd_data_valid;end
+    end
     // Joining reset permissions only forms an ASYNC assertion source. Its
     // release must be synchronized again in EACH domain, never used as data CE.
     reset_sync fetch_pixel_reset(.clk(pixel_clk),.async_rst_n(common_reset_n),.rst_n(pixel_local_reset_n));
@@ -48,7 +58,7 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64)(
         end else case(state)
             IDLE: ;
             QUIET:begin
-                if(rd_busy||rd_ack)quiet_count<=0;
+                if(rd_busy||rd_ack||rd_data_valid||response_valid)quiet_count<=0;
                 else if(quiet_count==2)begin state<=CLEAR;phase_count<=0;end
                 else quiet_count<=quiet_count+1'b1;
             end
@@ -76,7 +86,7 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64)(
     video_read_dma #(.BURST_WORDS(BURST_WORDS),.PIX_DEPTH(CAPACITY),.LOW_WATER(LOW_WATER)) dma(
       .clk(mem_clk),.rst_n(dma_reset_n),.start(state==LAUNCH),.frame_base(mem_base),
       .pix_fifo_level(guarded_level),.rd_req(dma_req),.rd_addr(rd_addr),.rd_len(rd_len),
-      .rd_ack(rd_ack),.rd_busy(rd_busy),.rd_data(rd_data),.rd_data_valid(rd_data_valid),
+      .rd_ack(rd_ack),.rd_busy(rd_busy),.rd_data(response_data),.rd_data_valid(response_valid),
       .fifo_wr_data(dma_pixel),.fifo_wr_en(dma_we),.rd_bytes_cnt(dma_bytes),
       .active(dma_active),.done(dma_done));
     pixel_word_packer packer(.clk(mem_clk),.rst_n(mem_local_reset_n&&!fifo_reset),

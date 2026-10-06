@@ -11,7 +11,7 @@
 module safevision_top #(
     parameter integer HD = `SAFEVISION_BOARD_HD,
     parameter integer MEM_CLK_HZ = 125000000,
-    parameter FONT_FILE = "font8x16.mem"
+    parameter FONT_FILE = "../../../assets/fonts/font8x16.mem"
 )(
     input wire clk, rst_n,
     output wire [3:0] led,

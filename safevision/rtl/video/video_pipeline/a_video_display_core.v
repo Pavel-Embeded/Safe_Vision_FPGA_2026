@@ -7,7 +7,8 @@
 // BASE displays stored640x480; HD centers that image in1280x720 (no scaling).
 module a_video_display_core #(
     parameter integer HD=0,FIFO_AW=10,BURST_WORDS=64,
-    parameter FONT_FILE="../../../assets/fonts/font8x16.mem"
+    parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
+    parameter integer EMERGENCY_LATENCY=0
 )(
     input wire sys_clk,mem_clk,pixel_clk,rst_n,
     input wire swap_req_b,mb_frame_index_b,input wire [1:0] mb_slot_id_b,
@@ -95,7 +96,7 @@ module a_video_display_core #(
       .x(scan_x),.y(scan_y),.origin_x(origin_x),.origin_y(origin_y),.enable(osd_enable),
       .char_count(8'd38),.char_code(char_code),.foreground(foreground),
       .char_index(char_index),.rgb(osd_rgb),.valid(osd_valid));
-    video_compositor #(.NORMAL_LATENCY(1),.OSD_LATENCY(4),.EMERGENCY_LATENCY(0),
+    video_compositor #(.NORMAL_LATENCY(1),.OSD_LATENCY(4),.EMERGENCY_LATENCY(EMERGENCY_LATENCY),
       .HSYNC_ACTIVE(HD!=0),.VSYNC_ACTIVE(HD!=0)) compositor(
       .clk(pixel_clk),.rst_n(prn),.normal_rgb(normal_rgb),.normal_valid(normal_valid),
       .osd_rgb(osd_rgb),.osd_valid(osd_valid),.emergency_rgb(emergency_rgb),.emergency_valid(emergency_valid),

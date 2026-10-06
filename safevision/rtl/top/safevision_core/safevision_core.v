@@ -9,7 +9,8 @@
 module safevision_core #(
     parameter integer HD=0,FIFO_AW=10,BURST_WORDS=64,MAX_BURSTS=4,STARVE_LIMIT=64,
     parameter [31:0] SWAP_TIMEOUT_N=32'd5_000_000,
-    parameter FONT_FILE="../../../assets/fonts/font8x16.mem"
+    parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
+    parameter integer EMERGENCY_LATENCY=0
 )(
     // SYS domain: producer retains payload until swap_state_o returns IDLE.
     input wire frame_ready,wr_frame_index,input wire [1:0] wr_slot_id,
@@ -73,8 +74,15 @@ module safevision_core #(
       .generation(mb_generation_b),.crc_ok(mb_crc_ok_b),.swap_error(swap_error),
       .active_commit(b_commit),.active_next(active_next),
       .generation_next(generation_next),.frame_index_next(frame_index_next),.state_o(swap_state_o));
-    memory_arbiter #(.MAX_BURSTS(MAX_BURSTS),.STARVE_LIMIT(STARVE_LIMIT)) arbiter(
-      .clk(mem_clk),.rst_n(mrn),.video_fifo_level(mem_fifo_pixels),
+    // Priority uses a one-cycle MEM-domain water-level snapshot. DMA admission
+    // still uses its live guarded FIFO level; this register changes neither
+    // burst lengths nor the safety space check and breaks the priority path.
+    reg [15:0] arbitration_level;
+    always @(posedge mem_clk or negedge mrn)
+        if(!mrn)arbitration_level<=0;else arbitration_level<=mem_fifo_pixels;
+    memory_arbiter #(.MAX_BURSTS(MAX_BURSTS),.STARVE_LIMIT(STARVE_LIMIT),
+      .COMPACT_CONSEC_COUNTER(1)) arbiter(
+      .clk(mem_clk),.rst_n(mrn),.video_fifo_level(arbitration_level),
       .rd_req(rd_req),.rd_addr(rd_addr),.rd_len(rd_len),.rd_ack(rd_ack),
       .rd_busy(rd_busy),.rd_data(rd_data),.rd_data_valid(rd_data_valid),
       .wr_req(wr_req),.wr_addr(wr_addr),.wr_data(wr_data),.wr_len(wr_len),
@@ -84,7 +92,7 @@ module safevision_core #(
       .mem_req(mem_req),.mem_wr(mem_wr),.mem_addr(mem_addr),.mem_wdata(mem_wdata),
       .mem_wstrb(mem_wstrb),.mem_ready(mem_ready),.mem_rdata(mem_rdata),
       .mem_rdata_valid(mem_rdata_valid),.wr_starve_cnt(wr_starve_cnt),.rd_starve_cnt(rd_starve_cnt));
-    a_video_display_core #(.HD(HD),.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS),.FONT_FILE(FONT_FILE)) display(
+    a_video_display_core #(.HD(HD),.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS),.EMERGENCY_LATENCY(EMERGENCY_LATENCY),.FONT_FILE(FONT_FILE)) display(
       .sys_clk(sys_clk),
       .mem_clk(mem_clk),
       .pixel_clk(pixel_clk),

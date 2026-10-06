@@ -21,7 +21,7 @@ set_false_path -to [get_regs {submit_sync[0]}]
 
 # ---- Inside safevision_core (same structure A constrained) ----
 set_false_path -to [get_regs {core/display/config_mailbox/req_meta core/display/config_mailbox/ack_meta core/display/fetch/frame_request/req_meta core/display/fetch/frame_request/ack_meta core/display/fetch/arm_sync/meta core/display/swaps/req_sync[0] core/display/swaps/fs_sync[0] core/display/swaps/ack_sync[0]}]
-set_false_path -from [get_clocks {video_base$video_pll/pll_inst.clkc[1]}] -to [get_pins {core/display/fetch/fetch_mem_reset/*.sr}]
+set_false_path -from [get_clocks {video_*$video_pll/pll_inst.clkc[1]}] -to [get_pins {core/display/fetch/fetch_mem_reset/*.sr}]
 set_false_path -from [get_clocks {system_pll/pll_inst.clkc[1]}] -to [get_pins {core/display/fetch/fetch_pixel_reset/*.sr}]
 set_false_path -through [get_nets {core/display/fetch/common_reset_n}] -to [get_pins {*/*.sr}]
 set_false_path -from [get_clocks {system_pll/pll_inst.clkc[1]}] -to [get_regs {core/display/fetch/fifo/fifo/asy_r_rst*}]
