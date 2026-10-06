@@ -81,8 +81,17 @@ with verified B compatibility"），其中 **5 个文件与本轮改动重叠**�
 | `project/board_verify/td_flow.tcl` | 1 行 | 源表补文件 |
 
 ⇒ **两边都在解同一个 `mem→mem` 时序问题、思路不同**。合并时**必须人工取舍**，
-不要机械取一边（否则会丢对方的工作）。本轮的交接分支基于 `6716de8`，**已在分支上合并 `09c7f9f`**，
-若合并干净则分支 = 双方成果之和。
+不要机械取一边（否则会丢对方的工作）。
+
+★ **本轮已完成合并**（分支 `backup/b-chain-board-bringup` = 双方成果之和）：
+- 自动合并成功：`a_frame_fetch_bridge.v`（他的响应寄存 + 我的 `guarded_level` 寄存 **共存**）、
+  `board_cdc.sdc`、`td_flow.tcl`
+- **2 处冲突，已人工解为"双方都保留"**：
+  1. `memory_arbiter.v`：保留本轮 P1 的**结算位置**（`grant_event`），
+     同时采用对方的**参数化位宽**（`CONSEC_WIDTH` / `{CONSEC_WIDTH{1'b1}}`）——两处改动正交；
+  2. `safevision_top.v`：保留对方的 `FONT_FILE` 相对路径，同时保留本轮新增的
+     `MODE_TO_N` / `RPT_PERIOD_N` 两个可测性参数。
+- **合并后三闸门全过**：主回归 **668/0**、顶层 TB **PASS(40)**、整链 TB **PASS 17/17**。
 
 ---
 

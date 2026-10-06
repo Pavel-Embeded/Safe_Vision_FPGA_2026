@@ -9,6 +9,7 @@ set root [file normalize [file join $here .. .. .. .. ..]]
 if {[info exists ::env(SAFEVISION_REPO)]} {set root [file normalize $::env(SAFEVISION_REPO)]}
 set platform [file join $root safevision platform anlogic_eg4s20_hx4s20c]
 set vend [file join $root 7_lab_ex_2026_nosoft example lab_ex4_tf src user_source hdl_source]
+if {[info exists ::env(SAFEVISION_HDMI_VENDOR)]} {set vend [file normalize $::env(SAFEVISION_HDMI_VENDOR)]}
 set out [file join $root safevision build out board_verify $board_mode]
 if {[info exists ::env(SAFEVISION_BOARD_OUT)]} {set out [file join [file normalize $::env(SAFEVISION_BOARD_OUT)] $board_mode]}
 file mkdir $out

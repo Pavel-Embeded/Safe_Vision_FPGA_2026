@@ -46,11 +46,13 @@
 module safevision_top #(
     parameter integer HD = `SAFEVISION_BOARD_HD,
     parameter integer MEM_CLK_HZ = 125000000,
-    parameter FONT_FILE = "font8x16.mem",
+    // ★ 合并 origin/main 后：字体路径用对方的（相对工程路径，A 侧改动），
+    //   同时保留本轮新增的两个"可测性参数"（MODE_TO_N / RPT_PERIOD_N）——两者正交。
+    parameter FONT_FILE = "../../../assets/fonts/font8x16.mem",
     // 上电后等多久判定“卡不可用”而回落到片上测试图案（mem 拍）
     parameter [31:0] MODE_TO_N = 32'd37_500_000,       // 300 ms @125MHz
     // UART 状态行的发送周期（mem 拍）。默认 500 ms @125MHz。
-    // ★ 提成 parameter 只是**为了可测**：整行 90 字节在 115200 波特下要 ~0.78 ms，
+    // ★ 提成 parameter 只是**为了可测**：整行 107 字节在 115200 波特下要 ~9.3 ms，
     //   仿真里等 500 ms 太贵。TD 流程不覆盖它 ⇒ 综合结果与原来完全一致。
     parameter [31:0] RPT_PERIOD_N = 32'd62_500_000
 )(

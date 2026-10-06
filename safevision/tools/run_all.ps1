@@ -81,7 +81,14 @@ $Entries = @(
     @{ N = 'A/B display + core BASE/HD + boundary'; S = 'run_ab_display_sim.ps1'; T = 'XSimOrModelSim' },
     @{ N = 'Full card file -> B write -> A display'; S = 'run_card_to_screen_sim.ps1'; T = 'XSimOrModelSim' },
     @{ N = 'A display internal routed STA (base + hd)';          S = 'run_a_display_sta.ps1'; T = 'TD' },
-    @{ N = 'A+B assembly + BMP write bridge routed STA'; S = 'run_ab_core_sta.ps1'; T = 'TD' }
+    @{ N = 'A+B assembly + BMP write bridge routed STA'; S = 'run_ab_core_sta.ps1'; T = 'TD' },
+    @{ N = 'A stages16-20 unit checks + arbiter equivalence'; S = 'run_a_stage16_20_sim.ps1'; T = 'XSim' },
+    @{ N = 'Complete A+B emergency/display BASE/HD, both policies'; S = 'run_a_system_matrix.ps1'; T = 'XSimOrModelSim' },
+    @{ N = 'Actual vendor PHY + actual EG ODDR bit comparisons'; S = 'run_hdmi_phy_sim.ps1'; T = 'XSim' },
+    @{ N = 'HDMI wrapper port/stream contract only, encrypted encoding unverified'; S = 'run_hdmi_output_contract_sim.ps1'; T = 'XSim' },
+    @{ N = 'Complete A portable assembly routed STA'; S = 'run_a_complete_sta.ps1'; T = 'TD' },
+    @{ N = 'B physical board STA including unresolved SDRAM hard-IP'; S = 'run_board_sta.ps1'; T = 'TD' },
+    @{ N = 'A physical board assembly STA including unresolved SDRAM hard-IP'; S = 'run_a_board_sta.ps1'; T = 'TD' }
 )
 
 # Fail closed: a misspelled selector must never produce an empty ALL PASS.

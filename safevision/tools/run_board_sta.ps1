@@ -10,16 +10,19 @@ param(
  [string]$TdRoot='D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116',
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/board_verify'),
  [string[]]$Mode=@('base','hd'),
- [switch]$Bitgen
+ [switch]$Bitgen,
+ [string]$VendorRoot
 )
 $ErrorActionPreference='Stop'
 $RepoRoot=(Resolve-Path -LiteralPath $RepoRoot).Path
 $RunDir=$ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($RunDir)
 New-Item -ItemType Directory -Force -Path $RunDir | Out-Null
-$oldRepo=$env:SAFEVISION_REPO;$oldOut=$env:SAFEVISION_BOARD_OUT;$oldBit=$env:SAFEVISION_BOARD_BITGEN
+$oldRepo=$env:SAFEVISION_REPO;$oldOut=$env:SAFEVISION_BOARD_OUT;$oldBit=$env:SAFEVISION_BOARD_BITGEN;$oldVendor=$env:SAFEVISION_HDMI_VENDOR
 try{
  $env:SAFEVISION_REPO=$RepoRoot
  $env:SAFEVISION_BOARD_OUT=$RunDir
+ . (Join-Path $PSScriptRoot 'resolve_hdmi_vendor.ps1')
+ $env:SAFEVISION_HDMI_VENDOR=Resolve-SafeVisionHdmiVendor -VendorRoot $VendorRoot -RepoRoot $RepoRoot -RunDir $RunDir
  $env:SAFEVISION_BOARD_BITGEN = if($Bitgen){'1'}else{'0'}
  if($Bitgen){ Write-Warning 'Bitgen requested: the SDRAM hard-IP setup path is NOT converged. The bitstream is not proof of timing closure.' }
  foreach($m in $Mode){
@@ -57,5 +60,5 @@ try{
   }
  }
 }finally{
- $env:SAFEVISION_REPO=$oldRepo;$env:SAFEVISION_BOARD_OUT=$oldOut;$env:SAFEVISION_BOARD_BITGEN=$oldBit
+ $env:SAFEVISION_REPO=$oldRepo;$env:SAFEVISION_BOARD_OUT=$oldOut;$env:SAFEVISION_BOARD_BITGEN=$oldBit;$env:SAFEVISION_HDMI_VENDOR=$oldVendor
 }

@@ -40,7 +40,11 @@
 
 module memory_arbiter #(
     parameter integer MAX_BURSTS   = 4,     // N：单次 grant 连续突发上限（防独占，待实测）
-    parameter integer STARVE_LIMIT = 64     // 最长等待周期，超限即临时提权（待实测）
+    parameter integer STARVE_LIMIT = 64,    // 最长等待周期，超限即临时提权（待实测）
+    // Optional A integration optimization; default preserves B's 16-bit
+    // counter and all existing positional parameters. Arbitration only tests
+    // count >= MAX_BURSTS, so saturation above that threshold is equivalent.
+    parameter integer COMPACT_CONSEC_COUNTER = 0
 )(
     input  wire        clk,                 // mem_clk 125MHz
     input  wire        rst_n,               // 低有效
@@ -115,7 +119,17 @@ module memory_arbiter #(
     reg  [15:0] responses_left; // retain channel ownership until ALL read responses
     reg  [31:0] cur_addr;      // 本突发当前 word 的逻辑字节地址
     reg  [1:0]  last_ch;       // 上一次授权的通道
-    reg  [15:0] consec_cnt;    // 该通道已连续被授权的突发数
+    function integer consecutive_width;
+        input integer n;
+        integer v;
+        begin
+            consecutive_width=1;
+            for(v=n;v>1;v=v>>1)consecutive_width=consecutive_width+1;
+        end
+    endfunction
+    localparam integer CONSEC_WIDTH=COMPACT_CONSEC_COUNTER?
+        consecutive_width(MAX_BURSTS):16;
+    reg [CONSEC_WIDTH-1:0] consec_cnt;
 
     reg  [15:0] rd_wait_cnt;   // 最长等待时间计数器（内部，不对外）
     reg  [15:0] wr_wait_cnt;
@@ -235,10 +249,10 @@ module memory_arbiter #(
             grant_ch    <= winner;
             if (grant_event) begin
                 if (last_ch == grant_ch) begin
-                    if (consec_cnt != 16'hFFFF) consec_cnt <= consec_cnt + 1'b1;
+                    if (consec_cnt != {CONSEC_WIDTH{1'b1}}) consec_cnt <= consec_cnt + 1'b1;
                 end else begin
                     last_ch <= grant_ch;
-                    consec_cnt <= 16'd1;
+                    consec_cnt <= 1'b1;
                 end
             end
             if (!busy) begin
@@ -265,6 +279,8 @@ module memory_arbiter #(
                     endcase
                     // consec_cnt/last_ch 的结算已移到 grant_event（上方），
                     // 这里不再就地更新 —— 见那里的时序等价性说明。
+                    // ★ 合并 origin/main 后：位宽改用 CONSEC_WIDTH（对方的参数化），
+                    //   结算位置仍在本轮 P1 的 grant_event 里（两处改动正交，均保留）。
                 end
             end else begin
                 // Prime cycle lets a client observe ack and prepare its first word.
