@@ -849,10 +849,19 @@ module sd_bmp_player #(
                     if (stream_kicked && fd_pending) begin
                         frame_active  <= 1'b0;
                         last_frame_ok_o <= lok_sync[1];    // 采样 mem 侧电平（已两级同步）
-                        frame_cnt     <= frame_cnt + 16'd1;
                         stream_kicked <= 1'b0;
                         to_cnt        <= 32'd0;
-                        state_o       <= S_SWAP;
+                        if (lok_sync[1]) begin
+                            frame_cnt <= frame_cnt + 16'd1;
+                            state_o <= S_SWAP;
+                        end else begin
+                            // A failed sink completion must not transfer slot
+                            // ownership or count as a successful displayed frame.
+                            fail_stage <= ST_STREAM;
+                            err_code <= 8'hE3;
+                            err_detail <= 8'h01;
+                            state_o <= S_ERROR;
+                        end
                     end else if (fst_error || bpu_error || bmp_check_error) begin
                         stream_kicked <= 1'b0;
                         frame_active  <= 1'b0;

@@ -38,6 +38,7 @@ module bmp_frame_sink #(
     //   每帧只写进去约 2/3 就被判超时。TB 里没暴露是因为 tb_sd_bmp_player 把
     //   SPI 分频调到最快档（236 ms < 400 ms）—— 仿真跑得快反而掩盖了真问题。
     parameter [31:0]  WRITE_TO_N  = 32'd50_000_000  // 400 ms：**无进展**才算超时
+    ,parameter integer REQUIRE_WRITE_DRAIN = 0
 )(
     input  wire        clk,            // mem_clk 125 MHz（读侧 / 帧控制器）
     input  wire        rst_n,          // mem 域低有效
@@ -73,7 +74,8 @@ module bmp_frame_sink #(
     output reg  [7:0]  err_code,
     output reg  [7:0]  err_detail,
     output reg  [15:0] frame_cnt,
-    output reg  [18:0] px_written
+    output reg  [18:0] px_written,
+    input wire write_drained // mem domain; used only with REQUIRE_WRITE_DRAIN=1
 );
 
     // ========================================================================
@@ -82,7 +84,8 @@ module bmp_frame_sink #(
     localparam [3:0] S_DRAIN = 4'd0,   // 空闲：排空 FIFO，给 mem_ready
                      S_WRITE = 4'd1,   // 桥正在写
                      S_SWAP  = 4'd2,   // 等 core 换帧走完
-                     S_ERROR = 4'd3;
+                     S_ERROR = 4'd3,
+                     S_FLUSH = 4'd4;
 
     localparam [7:0] MY_TO_SWAP = 8'hF1,
                      MY_TO_FRAME= 8'hF2;
@@ -253,6 +256,7 @@ module bmp_frame_sink #(
                         mem_ready    <= 1'b0;
                         to_cnt       <= 32'd0;
                         swap_seen    <= 1'b0;
+                        last_frame_ok<= 1'b0;
                         state_o      <= S_WRITE;
                     end
                 end
@@ -266,7 +270,6 @@ module bmp_frame_sink #(
 
                     if (br_done) begin
                         last_frame_ok  <= br_crc_ok;
-                        frame_cnt      <= frame_cnt + 16'd1;
                         // ★ 一帧成功 ⇒ 清掉粘滞的错误码（"证明能工作了"才清）
                         err_code       <= 8'h00;
                         err_detail     <= 8'h00;
@@ -274,14 +277,16 @@ module bmp_frame_sink #(
                         swap_crc_ok    <= br_crc_ok;
                         swap_slot      <= slot_lat;
                         swap_generation<= swap_generation + 8'd1;
-                        swap_toggle    <= ~swap_toggle;
+                        if (!REQUIRE_WRITE_DRAIN) swap_toggle <= ~swap_toggle;
                         to_cnt         <= 32'd0;
-                        state_o        <= S_SWAP;
+                        state_o        <= REQUIRE_WRITE_DRAIN ? S_FLUSH : S_SWAP;
                     end else if (br_err) begin
+                        last_frame_ok<= 1'b0;
                         err_code   <= br_ec;
                         err_detail <= br_ed;
                         state_o    <= S_ERROR;
                     end else if (to_cnt >= WRITE_TO_N) begin
+                        last_frame_ok<= 1'b0;
                         err_code   <= MY_TO_FRAME;
                         state_o    <= S_ERROR;
                     end
@@ -293,6 +298,22 @@ module bmp_frame_sink #(
                 //     `if(busy)… else if(seen)… else if(to_cnt>=TO)…` 时，busy 一直为 1
                 //     就永远走不到超时分支 ⇒ sink 永久停在 S_SWAP ✗
                 //     （core 的 frame_swap_ctrl 若进了 S_SAFE，swap_state != 0 会一直挂着）
+                S_FLUSH: begin
+                    // Writer ack means arbiter grant, not physical completion.
+                    // Hold frame metadata until the adapter's buffered tail and
+                    // the granted write transaction have both drained.
+                    to_cnt <= to_cnt + 32'd1;
+                    if (write_drained) begin
+                        swap_toggle <= ~swap_toggle;
+                        to_cnt <= 32'd0;
+                        state_o <= S_SWAP;
+                    end else if (to_cnt >= WRITE_TO_N) begin
+                        last_frame_ok <= 1'b0;
+                        err_code <= MY_TO_FRAME;
+                        state_o <= S_ERROR;
+                    end
+                end
+
                 S_SWAP: begin
                     to_cnt <= to_cnt + 32'd1;
                     if (swap_busy) swap_seen <= 1'b1;
@@ -300,11 +321,14 @@ module bmp_frame_sink #(
                     if (to_cnt >= SWAP_TO_N) begin
                         // 兜底：无论 busy 起没起、落没落，都不卡死；翻 frame_done 让 SD 侧推进
                         swap_seen    <= 1'b0;
+                        last_frame_ok<= 1'b0;
+                        err_code     <= MY_TO_SWAP;
                         frame_done   <= ~frame_done;
                         to_cnt       <= 32'd0;
                         empty_settle <= 3'd0;
                         state_o      <= S_DRAIN;
                     end else if (swap_seen && !swap_busy) begin
+                        if (last_frame_ok) frame_cnt <= frame_cnt + 16'd1;
                         swap_seen    <= 1'b0;
                         frame_done   <= ~frame_done;        // ★ 通知 SD 侧本帧完成
                         to_cnt       <= 32'd0;
@@ -315,6 +339,8 @@ module bmp_frame_sink #(
 
                 // ------------------------------------------------------------
                 S_ERROR: begin
+                    // Never return the previous frame's success on a failure.
+                    last_frame_ok <= 1'b0;
                     mem_ready <= 1'b0;
                     // 排空 FIFO，避免残留像素影响下一次尝试
                     if (fifo_empty) begin

@@ -1,4 +1,4 @@
-# safevision_top board-level bring-up simulation.
+﻿# safevision_top board-level bring-up simulation.
 # The board top previously had ZERO simulation coverage (only TD synthesis + STA).
 # This pulls it into ModelSim by stubbing the three vendor IPs the top instantiates
 # (video PLL, HDMI 1.4b transmitter core, TMDS serializer) - see models/top_ip_stub.sv.
@@ -33,6 +33,7 @@ $extra=@(
   'rtl/top/safevision_core/safevision_core.v',
   'rtl/top/safevision_core/bmp_frame_write_bridge.v',
   'rtl/storage/sd_bmp_player.v',
+  'rtl/video/hdmi_output/hdmi_video_bridge.v',
   'platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v',
   'platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v'
 ) | ForEach-Object { Join-Path $sv $_ }

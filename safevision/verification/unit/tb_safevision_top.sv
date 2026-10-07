@@ -43,7 +43,7 @@ module tb_safevision_top;
     endtask
 
     // ---------------------------------------------------------------- DUT 引脚
-    reg  btn_next = 1'b0, btn_auto = 1'b0;
+    reg  btn_next = 1'b1, btn_auto = 1'b1;
     wire uart_txd;
     wire [3:0] led;
     wire sd_ncs, sd_dclk, sd_mosi, sd_miso;
@@ -205,7 +205,7 @@ module tb_safevision_top;
     integer guard;
     reg [7:0] b; reg ok;
     initial begin
-        btn_next = 1'b0; btn_auto = 1'b0;
+        btn_next = 1'b1; btn_auto = 1'b1;
         repeat (20) @(posedge clk);
         rst_n = 1'b1;
         repeat (20) @(posedge clk);
@@ -299,7 +299,7 @@ module tb_safevision_top;
         check(dut.btn_next_db === 1'b0, "T6a) next-button idle low (released != pressed)");
         check(dut.btn_auto_db === 1'b0, "T6b) auto-play idle low");
 
-        @(posedge clk); btn_next = 1'b1; btn_auto = 1'b1;
+        @(posedge clk); btn_next = 1'b0; btn_auto = 1'b0;
         // 等消抖电平落定（约 65536 个 clk 拍）
         guard = 0;
         while (!dut.dn_db && guard < 200_000) begin @(posedge clk); guard = guard + 1; end
@@ -315,7 +315,7 @@ module tb_safevision_top;
         check(dut.btn_next_db === 1'b0,
               "T6g) next-button stays low while held (one-shot pulse, not a level)");
         check(dut.btn_auto_db === 1'b1, "T6h) auto-play stays high while held (level)");
-        @(posedge clk); btn_next = 1'b0; btn_auto = 1'b0;
+        @(posedge clk); btn_next = 1'b1; btn_auto = 1'b1;
 
         // ================================================================
         // T7 换帧全链路：commit → pending → 下一个 frame_start → active

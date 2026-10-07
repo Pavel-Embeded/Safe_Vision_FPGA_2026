@@ -19,21 +19,21 @@
 //      有画面；该回落路径 2026-10-05 已上板点亮过）
 //   ③ ①②都不是 HDMI 电气合规 / 显示器兼容 / 音频的验收证据 ✗
 //
-// ★ 跨时钟域（只在模块边界，模块内部无 CDC）
+// ★ 跨时钟域（通过同步器、mailbox 或双时钟 FIFO）
 //   · 像素流 50M → 125M：**官方 a_pixel_fifo**（双时钟 + 32→16 位宽转换），
 //     写侧 wr_clk = clk、读侧 = mem_clk；`px_word_ready`（FIFO wr_ready）留在 50M 域 ✓
 //   · 帧控制 125M → 50M：`mem_ready`（电平）/`frame_done`（toggle）/`last_frame_ok`
 //     （电平）都在 player 内部两级同步 ✓
 //   · 帧控制 50M → 125M：`frame_active`/`top_down`/`slot` 由 sink 内部两级同步 ✓
 //   · 写口 wr_*（mem 域）直连 core 的 memory_arbiter（mem 域）✓
-//   · 换帧请求 mem → sys：swap_toggle 两级同步产生事件，载荷（slot/generation/
-//     crc_ok）在事件到达那一拍寄存（源电平已稳定多个周期）✓
+//   · 换帧请求 mem → sys：统一发布事件，使用带确认的 video_cdc_mailbox
+//     传输 slot/generation/crc_ok，目的域寄存完整载荷及 valid ✓
 //   · swap_busy sys → mem：单 bit 两级同步（`swap_busy_mem`），再给 sink ✓
 //     ★ 注意：core 的 `frame_swap_ctrl` 跑在 **sys_clk**，所以 sink 的 `swap_busy`
 //       不能直接接 `swap_state_o`，必须接同步后的 `swap_busy_mem`。
 //
 // ★ UART：板载 CH340G（D12），115200 8N1，周期性一行 ASCII（见 report 段）。
-//   ★ 格式仍是固定 90 字节（不改）：ST/FS/SD/CARD/CNT/CUR/RD 取自 **player**（SD 链），
+//   ★ 格式仍是固定 107 字节：ST/FS/SD/CARD/CNT/CUR/RD 取自 **player**（SD 链），
 //     PX/F/SLOT/CRC 取自 **sink**（mem 侧的像素与换帧才是真相）；
 //     EC 报"有效错误码"——sink 报错时优先报 sink 的（否则板上只看得到 E3）。
 // ★ 本文件不生成位流；由 tools/run_board_sta.ps1 控制（默认关）。
@@ -54,7 +54,9 @@ module safevision_top #(
     // UART 状态行的发送周期（mem 拍）。默认 500 ms @125MHz。
     // ★ 提成 parameter 只是**为了可测**：整行 107 字节在 115200 波特下要 ~9.3 ms，
     //   仿真里等 500 ms 太贵。TD 流程不覆盖它 ⇒ 综合结果与原来完全一致。
-    parameter [31:0] RPT_PERIOD_N = 32'd62_500_000
+    parameter [31:0] RPT_PERIOD_N = 32'd62_500_000,
+    parameter [15:0] PLAYER_SPI_INIT_DIV=16'd249,
+    parameter [15:0] PLAYER_SPI_FAST_DIV=16'd0
 )(
     // ---- 板级引脚（引脚号见 project/board_verify/board_b.adc）----
     input  wire        clk,             // R7  50 MHz
@@ -79,7 +81,7 @@ module safevision_top #(
     // ========================================================================
     wire sys_clk, mem_clk, mem_clk_sft, pixel_clk, serial_clk;
     wire sys_lock, video_lock;
-    wire ref_rst_n, common_rst_n, mem_rst_n, pixel_rst_n;
+    wire ref_rst_n, common_rst_n, mem_rst_n, pixel_rst_n, sys_rst_n;
 
     reset_sync reset_ref(.clk(clk), .async_rst_n(rst_n), .rst_n(ref_rst_n));
 
@@ -99,6 +101,7 @@ module safevision_top #(
     assign common_rst_n = ref_rst_n && sys_lock && video_lock;
     reset_sync reset_mem  (.clk(mem_clk),   .async_rst_n(common_rst_n), .rst_n(mem_rst_n));
     reset_sync reset_pixel(.clk(pixel_clk), .async_rst_n(common_rst_n), .rst_n(pixel_rst_n));
+    reset_sync reset_sys(.clk(sys_clk),.async_rst_n(common_rst_n),.rst_n(sys_rst_n));
 
     // ========================================================================
     // 封装内 SDRAM（EG_PHY_SDRAM_2M_32，硬核、不出引脚）
@@ -117,6 +120,8 @@ module safevision_top #(
         .Sdr_rd_en(sdr_rd_en), .Sdr_rd_dout(sdr_rd_dout));
 
     wire        adapter_req, adapter_wr, adapter_ready, adapter_rvalid, adapter_init;
+    wire adapter_write_idle;
+    reg card_mode; reg [31:0] mode_cnt;
     wire [31:0] adapter_addr, adapter_wdata, adapter_rdata;
     wire [3:0]  adapter_wstrb;
 
@@ -124,7 +129,7 @@ module safevision_top #(
         .req(adapter_req), .wr(adapter_wr), .addr(adapter_addr),
         .wdata(adapter_wdata), .wstrb(adapter_wstrb),
         .rdata(adapter_rdata), .rdata_valid(adapter_rvalid),
-        .ready(adapter_ready), .init_done(adapter_init),
+        .ready(adapter_ready), .init_done(adapter_init), .write_idle(adapter_write_idle),
         .Sdr_init_done(sdr_init_done), .Sdr_init_ref_vld(sdr_ref_valid),
         .Sdr_busy(sdr_busy), .App_wr_en(app_wr_en), .App_wr_addr(app_wr_addr),
         .App_wr_dm(app_wr_dm), .App_wr_din(app_wr_din),
@@ -207,6 +212,10 @@ module safevision_top #(
     //     · `restart` 恒 1 ⇒ player 在 S_ERROR 里会无限重启。
     //   ⇒ 改成"稳定 **且** 按下"，并把 `btn_next` 做成**按下沿单拍脉冲**
     //     （player 端口注释写的就是"脉冲：下一幅"），`btn_auto` 保持**电平**（连播开关）。
+    (* keep = "true" *) reg [1:0] next_sync, auto_sync;
+    // HX4S20 schematic 6_EX_DEVICE.pdf: 10k pull-ups, switches to GND.
+    // Board pins are active LOW. The player receives normalized press signals.
+    wire next_pressed=~next_sync[1],auto_pressed=~auto_sync[1];
     reg [15:0] dn_cnt, da_cnt;
     reg        dn_s, da_s;
     reg        dn_db, dn_db_d, da_db;
@@ -219,18 +228,20 @@ module safevision_top #(
     //   输出要等**新电平稳定满窗**之后才更新 ⇒ 真消抖、且无毛刺。
     always @(posedge clk or negedge ref_rst_n) begin
         if (!ref_rst_n) begin
+            next_sync<=2'b11;auto_sync<=2'b11;
             dn_cnt <= 16'd0; da_cnt <= 16'd0; dn_s <= 1'b0; da_s <= 1'b0;
             dn_db <= 1'b0; dn_db_d <= 1'b0; da_db <= 1'b0;
         end else begin
-            dn_s <= btn_next; da_s <= btn_auto;
+            next_sync<={next_sync[0],btn_next};auto_sync<={auto_sync[0],btn_auto};
+            dn_s <= next_pressed; da_s <= auto_pressed;
 
-            if (btn_next != dn_s)        dn_cnt <= 16'd0;
+            if (next_pressed != dn_s)        dn_cnt <= 16'd0;
             else if (dn_cnt != 16'hFFFF) dn_cnt <= dn_cnt + 16'd1;
-            else                         dn_db  <= btn_next;    // 稳定满窗才更新输出
+            else                         dn_db  <= next_pressed;    // 稳定满窗才更新输出
 
-            if (btn_auto != da_s)        da_cnt <= 16'd0;
+            if (auto_pressed != da_s)        da_cnt <= 16'd0;
             else if (da_cnt != 16'hFFFF) da_cnt <= da_cnt + 16'd1;
-            else                         da_db  <= btn_auto;
+            else                         da_db  <= auto_pressed;
 
             dn_db_d <= dn_db;
         end
@@ -239,20 +250,38 @@ module safevision_top #(
     wire btn_next_db = dn_db & ~dn_db_d;   // 按下沿 → 单拍脉冲（"下一幅"）
     wire btn_auto_db = da_db;              // 电平（"自动连播"开关）
 
+    // A missing swap acknowledgement leaves active-slot ownership uncertain.
+    // Latch this fault until common reset. Transfer only the stable single-bit
+    // fault level into the player's domain; never decode MEM telemetry there.
+    reg swap_fault_latched;
+    wire sink_fatal_ref;
+    always @(posedge mem_clk or negedge mem_rst_n) begin
+        if (!mem_rst_n) swap_fault_latched <= 1'b0;
+        else if (sk_ec == 8'hF1) swap_fault_latched <= 1'b1;
+    end
+    video_level_sync sink_fatal_sync(.clk(clk),.rst_n(ref_rst_n),
+        .async_level(swap_fault_latched),.level(sink_fatal_ref));
+
     sd_bmp_player #(
         // ★ 本模块的时钟就是板载 50 MHz（R7 的原始晶振），不再经过 PLL：
         //   top_stage5/6 原本就是 "single 50 MHz domain, no PLL"，零风险。
-        .CLK_HZ(50_000_000)
+        .CLK_HZ(50_000_000),.CLK_DIV_INIT(PLAYER_SPI_INIT_DIV),.CLK_DIV_FAST(PLAYER_SPI_FAST_DIV)
     ) player (
         .clk(clk), .rst_n(ref_rst_n),
         .run(1'b1),
         .btn_next(btn_next_db), .btn_auto(btn_auto_db),
-        .restart(btn_next_db),
+        // A swap-ACK timeout can mean PIX already committed while SYS lost
+        // the acknowledgement. Local retry cannot infer the active slot.
+        // Preserve that slot until KEY1/common reset reinitializes both sides.
+        // Media-stream aborts also need common reset: the child stream/sector
+        // FSMs are not reset by a local player restart. KEY2 retries SD init;
+        // KEY1 resets the complete chain after other errors.
+        .restart(btn_next_db && !sink_fatal_ref && (pl_fail_stage == 4'd1)),
         .sd_ncs(sd_ncs), .sd_dclk(sd_dclk), .sd_mosi(sd_mosi), .sd_miso(sd_miso),
         .px_word(pl_px_word), .px_word_valid(pl_px_word_valid),
         .px_word_ready(pl_px_word_ready),
         .frame_active(pl_frame_active), .top_down_o(pl_top_down), .slot_o(pl_slot),
-        .mem_ready(sk_mem_ready), .frame_done(sk_frame_done),
+        .mem_ready(sk_mem_ready && card_mode && adapter_init && !swap_fault_latched && (sk_ec != 8'hF1)), .frame_done(sk_frame_done),
         .last_frame_ok(sk_frame_ok),
         .state_o(pl_state), .fail_stage(pl_fail_stage),
         .err_code(pl_ec), .err_detail(pl_ed),
@@ -269,7 +298,7 @@ module safevision_top #(
     //   ★ swap_busy 用 `swap_busy_mem`（已从 sys 域两级同步进 mem 域）：
     //     core 的 frame_swap_ctrl 跑在 **sys_clk**（见 frame_swap_ctrl.v 头注），
     //     所以不能把 `swap_state_o` 直接接进来（那是 sys→mem 的 CDC）✗
-    bmp_frame_sink sink (
+    bmp_frame_sink #(.REQUIRE_WRITE_DRAIN(1)) sink (
         .clk(mem_clk), .rst_n(mem_rst_n), .wr_clk(clk),
         .px_word(pl_px_word), .px_word_valid(pl_px_word_valid),
         .px_word_ready(pl_px_word_ready),
@@ -277,7 +306,8 @@ module safevision_top #(
         .mem_ready(sk_mem_ready), .frame_done(sk_frame_done),
         .last_frame_ok(sk_frame_ok),
         .wr_req(sk_wr_req), .wr_addr(sk_wr_addr), .wr_data(sk_wr_data),
-        .wr_len(sk_wr_len), .wr_ready(prod_wr_ack),
+        .wr_len(sk_wr_len), .wr_ready(prod_wr_ack && card_mode),
+        .write_drained(adapter_write_idle && !prod_wr_busy),
         .swap_toggle(sk_swap_toggle), .swap_slot(sk_swap_slot),
         .swap_generation(sk_swap_gen), .swap_crc_ok(sk_swap_crc_ok),
         .swap_busy(swap_busy_mem),
@@ -295,7 +325,7 @@ module safevision_top #(
     //   ⇒ 每个字段先过两级触发器，mem 域只读同步后的副本。
     //
     //   ★ 语义说明（重要，别过度解读）：状态行是"每 500 ms 刷新一次的诊断信息"，
-    //     而且是**逐字节**发出去的（整行 ~7.8 ms），本来就不是原子快照；
+    //     而且是**逐字节**发出去的（整行 ~9.3 ms），本来就不是原子快照；
     //     多 bit 字段（cur_bytes_rd / frame_cnt）在**值变化的那 1~2 拍**可能被读到
     //     中间值 —— 只影响该次显示的数值、没有功能后果，下一次报告即自愈。
     //     这一层要解决的是"消除亚稳态 + 把跨域路径变成同步器首级（可约束）"。
@@ -359,8 +389,7 @@ module safevision_top #(
     //        **不是同一个对象** ⇒ 卡/回落的选择 mux 会读到一根未驱动的网。
     //   TD 恰好容忍了这种写法（所以板上回落路径当时是通的），但这是**工具相关的隐患**，
     //   本项目在 `sd_bmp_player.v` 文件头已把同类问题记为"既有踩坑"。
-    reg        card_mode;
-    reg [31:0] mode_cnt;
+    reg fb_swap_seen,fb_swap_acked;
 
     always @(posedge mem_clk or negedge mem_rst_n) begin
         if (!mem_rst_n) begin
@@ -399,12 +428,12 @@ module safevision_top #(
                     //   （由新增的顶层 TB 抓到。）
                     if (!fb_drain_on) begin
                         if (fb_wr_done && fb_crc_ok && fb_slot_valid[0]) fb_drain_on <= 1'b1;
-                    end else if (fb_drain == 10'd1023) begin
+                    end else if (fb_drain == 10'd1023 && adapter_write_idle && !prod_wr_busy) begin
                         fb_toggle   <= ~fb_toggle;
                         fb_submitted<= 1'b1;
                         fb_drain_on <= 1'b0;
                     end else begin
-                        fb_drain <= fb_drain + 10'd1;
+                        if(fb_drain!=10'd1023)fb_drain <= fb_drain + 10'd1;
                     end
                 end
             end
@@ -418,19 +447,24 @@ module safevision_top #(
         .slot_base(`SV_IMG0_BASE),
         .din(fb_rgb565), .din_valid(fb_valid), .din_ready(fb_ready),
         .wr_req(fb_wr_req), .wr_addr(fb_wr_addr), .wr_data(fb_wr_data),
-        .wr_len(fb_wr_len), .wr_ready(prod_wr_ack), .wr_done(fb_wr_done),
+        .wr_len(fb_wr_len), .wr_ready(prod_wr_ack && !card_mode), .wr_done(fb_wr_done),
         .slot_valid(fb_slot_valid), .crc_ok(fb_crc_ok), .crc_value(), .px_cnt(fb_px),
         .wr_error(fb_wr_error), .err_code(), .err_detail());
 
-    // ---- 生产者选择：只在还没写出任何一幅时允许切换 ----
+    // ---- Producer ownership: complete fallback before returning to the card ----
     //   ★ card_mode / mode_cnt 的**声明已挪到上面**（回落逻辑先用后声明是隐患，见那里的注释）
     always @(posedge mem_clk or negedge mem_rst_n) begin
-        if (!mem_rst_n) begin card_mode <= 1'b1; mode_cnt <= 32'd0; end
-        else begin
-            // ★ 回落后**不允许再切回卡路径**：切回来会在中途换掉生产者的 toggle 源
-            //   （`sk_swap_toggle` ↔ `fb_toggle`），跨域的沿检测会漏一拍/多一拍 ✗
-            //   判据用 `fb_go`（回落一旦开跑就永不清零）⇒ 只在"还没写出任何一幅"之前
-            //   允许保持卡路径。配合 `t_fcnt16 == 0`（卡路径还没出过帧）保证切换干净。
+        if (!mem_rst_n) begin
+            card_mode<=1'b1;mode_cnt<=0;fb_swap_seen<=0;fb_swap_acked<=0;
+        end else begin
+            if(fb_submitted && swap_busy_mem)fb_swap_seen<=1;
+            if(fb_swap_seen && !swap_busy_mem)fb_swap_acked<=1;
+            // A late/restarted card may take over only after fallback display
+            // ownership was acknowledged and no writer still owns the arbiter.
+            if(!card_mode && fb_swap_acked && t_card && !prod_wr_busy)card_mode<=1;
+
+            // The unified publisher below removes source-toggle mux edges.
+            // Never switch away from a writer while it owns an in-flight frame.
             if (t_card && !fb_go) begin card_mode <= 1'b1; mode_cnt <= 32'd0; end
             else if (card_mode && !fb_go && t_fcnt16 == 16'd0) begin
                 if (mode_cnt >= MODE_TO_N) card_mode <= 1'b0;      // 超时 → 回落
@@ -445,38 +479,50 @@ module safevision_top #(
     wire [31:0] prod_wr_addr = card_mode ? sk_wr_addr : fb_wr_addr;
     wire [31:0] prod_wr_data = card_mode ? sk_wr_data : fb_wr_data;
     wire [15:0] prod_wr_len  = card_mode ? sk_wr_len  : fb_wr_len;
-    wire        prod_toggle  = card_mode ? sk_swap_toggle : fb_toggle;
-    wire [1:0]  prod_slot    = card_mode ? sk_swap_slot   : 2'd0;
-    wire [7:0]  prod_gen     = card_mode ? sk_swap_gen    : 8'd1;
-    wire        prod_crc_ok  = card_mode ? sk_swap_crc_ok : fb_crc_ok;
+    // A mux of two independent toggles creates false events on owner changes.
+    // Publish selected source EVENTS into one toggle and one stable mailbox.
+    reg sk_toggle_d,fb_toggle_d,publish_toggle;
+    reg [1:0] publish_slot;reg [7:0] publish_gen;reg publish_crc;
+    always @(posedge mem_clk or negedge mem_rst_n)begin
+      if(!mem_rst_n)begin
+        sk_toggle_d<=0;fb_toggle_d<=0;publish_toggle<=0;
+        publish_slot<=0;publish_gen<=0;publish_crc<=0;
+      end else begin
+        sk_toggle_d<=sk_swap_toggle;fb_toggle_d<=fb_toggle;
+        if(card_mode && (sk_swap_toggle!=sk_toggle_d))begin
+          publish_toggle<=~publish_toggle;publish_slot<=sk_swap_slot;
+          publish_gen<=publish_gen+1'b1;publish_crc<=sk_swap_crc_ok;
+        end else if(!card_mode && (fb_toggle!=fb_toggle_d))begin
+          publish_toggle<=~publish_toggle;publish_slot<=0;
+          publish_gen<=publish_gen+1'b1;publish_crc<=fb_crc_ok;
+        end
+      end
+    end
+    wire prod_toggle=publish_toggle;
+    wire [1:0] prod_slot=publish_slot;
+    wire [7:0] prod_gen=publish_gen;
+    wire prod_crc_ok=publish_crc;
 
     // ========================================================================
     // 跨域打包：mem 域（生产者） → sys 域（core 的 frame_swap_ctrl）
     // ========================================================================
-    reg [2:0] tog_sync;
-    reg [1:0] slot_sys;
-    reg [7:0] gen_sys;
-    reg       crc_sys;
-
-    always @(posedge sys_clk or negedge common_rst_n) begin
-        if (!common_rst_n) begin
-            tog_sync <= 3'd0; slot_sys <= 2'd0; gen_sys <= 8'd0; crc_sys <= 1'b0;
-        end else begin
-            tog_sync <= {tog_sync[1:0], prod_toggle};
-            // ★★ 载荷必须比 frame_ready **早一拍**捕获：用第 0/1 级的异或（事件前奏）
-            //   采样，而不是第 1/2 级。写成与 frame_ready 同拍的 [2]^[1] 时，
-            //   swap_ctrl 在 S_IDLE 判 `frame_ready && wr_crc_ok` 看到的是**上一帧**的
-            //   crc_sys（复位后是 0）⇒ 复位后第一帧的请求被直接丢掉（回落单帧场景 =
-            //   永不显示），且此后每帧都带上一帧的 slot/generation（显示滞后一帧、
-            //   sink 会写进正在显示的槽 ⇒ 撕屏）。源电平稳定多个周期，早一拍采样同样安全。
-            if (tog_sync[1] ^ tog_sync[0]) begin
-                slot_sys <= prod_slot;
-                gen_sys  <= prod_gen;
-                crc_sys  <= prod_crc_ok;
-            end
-        end
+    wire [1:0] slot_sys;
+    wire [7:0] gen_sys;
+    wire crc_sys,frame_ready,submit_ready;
+    reg sent_toggle;
+    wire submit_valid=(prod_toggle!=sent_toggle);
+    always @(posedge mem_clk or negedge mem_rst_n)begin
+      if(!mem_rst_n)sent_toggle<=0;
+      else if(submit_valid&&submit_ready)sent_toggle<=prod_toggle;
     end
-    wire frame_ready = tog_sync[2] ^ tog_sync[1];
+    // Reuse the non-droppable A mailbox. No logic consumes the metastability
+    // stage. The source payload is held through an acknowledged transfer;
+    // dst_data and dst_valid are registered together before core samples them.
+    video_cdc_mailbox #(.WIDTH(11)) board_frame_mailbox(
+      .src_clk(mem_clk),.src_rst_n(mem_rst_n),.src_data({prod_crc_ok,prod_slot,prod_gen}),
+      .src_valid(submit_valid),.src_ready(submit_ready),
+      .dst_clk(sys_clk),.dst_rst_n(sys_rst_n),.dst_data({crc_sys,slot_sys,gen_sys}),
+      .dst_valid(frame_ready),.dst_ready(1'b1));
 
     // ========================================================================
     // A 的整机核心
@@ -529,25 +575,23 @@ module safevision_top #(
 
     // ========================================================================
     // HDMI B：厂商 1.4b 发送核 + TMDS 串化
-    //   ★ axis_s_valid 直接跟几何 de（照厂商例程）；该路径无法反压固定速率扫描，
-    //     故把 !axis_ready 锁存成 fault：一旦发生 LED 会指出、且不声称有画面。
+    //   Fixed-rate RGB scan enters the existing A AXIS queue.
     // ========================================================================
-    reg [23:0] axis_data;
-    reg        axis_valid, axis_user, axis_last, hdmi_backpressure;
-    wire       axis_ready;
-
-    always @(posedge pixel_clk or negedge pixel_rst_n) begin
-        if (!pixel_rst_n) begin
-            axis_data <= 24'd0; axis_valid <= 1'b0; axis_user <= 1'b0;
-            axis_last <= 1'b0; hdmi_backpressure <= 1'b0;
-        end else begin
-            axis_data  <= rgb;
-            axis_valid <= out_de;
-            axis_user  <= out_de && out_x == 12'd0 && out_y == 12'd0;
-            axis_last  <= out_de && out_x == (HD ? 12'd1279 : 12'd639);
-            if (axis_valid && !axis_ready) hdmi_backpressure <= 1'b1;
-        end
-    end
+    wire [23:0] axis_data;
+    wire axis_valid,axis_user,axis_last,axis_ready,hdmi_backpressure;
+    wire hdmi_resync;wire [31:0] hdmi_dropped_frames;wire [4:0] hdmi_queue_level;
+    // Fixed scan cannot stop on AXIS ready. Reuse A's tested queue, keeping
+    // data/user/last stable under bounded backpressure. Overflow resets the
+    // transmitter and waits for a new complete frame, rather than corrupting
+    // all following line boundaries.
+    hdmi_video_bridge #(.HD(HD),.QUEUE_AW(4)) hdmi_queue(
+      .clk(pixel_clk),.rst_n(pixel_rst_n),.rgb(rgb),.de(out_de),.x(out_x),.y(out_y),
+      .axis_valid(axis_valid),.axis_user(axis_user),.axis_last(axis_last),.axis_data(axis_data),
+      .axis_ready(axis_ready),.resync(hdmi_resync),.overflow_sticky(hdmi_backpressure),
+      .dropped_frames(hdmi_dropped_frames),.queue_level(hdmi_queue_level));
+    wire tx_reset=!pixel_rst_n||hdmi_resync;
+    wire phy_rst_n;
+    reset_sync reset_phy(.clk(serial_clk),.async_rst_n(!tx_reset),.rst_n(phy_rst_n));
 
     // 时钟稳定后打一拍读 EDID（照厂商例程）
     reg [16:0] edid_count; reg edid_trig;
@@ -575,7 +619,7 @@ module safevision_top #(
         .VIDEO_TPG("Disable"), .VIDEO_FORMAT("RGB"),
         .AUDIO_SAMPLE_RATE("48K"), .IIC_SCL_DIV(250)
     ) transmitter(
-        .I_pixel_clk(pixel_clk), .I_rst(~pixel_rst_n),
+        .I_pixel_clk(pixel_clk), .I_rst(tx_reset),
         .I_edid_read_trig(edid_trig), .O_edid_read_valid(), .O_edid_read_data(),
         .I_axis_s_user(axis_user), .I_axis_s_valid(axis_valid),
         .I_axis_s_last(axis_last), .I_axis_s_data(axis_data),
@@ -588,7 +632,7 @@ module safevision_top #(
         .O_ch2_tmds_data(ch2), .O_clk_tmds_data(chclk));
 
     hdmi_phy_wrapper #(.DEVICE("EG")) serializer(
-        .I_pixel_clk(pixel_clk), .I_serial_clk(serial_clk), .I_rst(~pixel_rst_n),
+        .I_pixel_clk(pixel_clk), .I_serial_clk(serial_clk), .I_rst(!phy_rst_n),
         .I_tmds_channel_0(ch0), .I_tmds_channel_1(ch1),
         .I_tmds_channel_2(ch2), .I_tmds_channel_clk(chclk),
         .O_tmds_ch0_p(HDMI_D0_P), .O_tmds_ch1_p(HDMI_D1_P),

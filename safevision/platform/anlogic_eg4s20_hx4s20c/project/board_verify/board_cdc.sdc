@@ -12,33 +12,25 @@ set_false_path -from [get_ports {rst_n}]
 # Bound through the JOINED async-assert net to the async SR pins, which is the
 # form that actually resolves in TD (get_regs on the kept release_pipe array
 # did not match and silently applied nothing).
-set_false_path -through [get_nets {common_rst_n}] -to [get_pins {*/*.sr}]
-# ★ 上面这条有两个实测的脆弱点（2026-10-06 都踩到）：
-#   ① `-to [get_pins {*/*.sr}]` 只匹配**两级**路径名；综合出来的顶层单元是一级形式
-#      （实测端点 `add5_syn_104.sr`）⇒ 静默漏掉。
-#   ② `-through [get_nets {common_rst_n}]` 依赖那个 AND 网被保留成独立命名网。
-#   漏掉的后果：board_clk → 像素域的异步复位脚被当成真的 recovery 检查，
-#   预算只有 0.302 ns（50 MHz 与 25.185 MHz 不相关）⇒ 报 −3.94 ns 假违例。
-#   ⇒ 复位纪元只在 **board_clk 域**产生（reset_ref），所以用时钟源形式兜底：
-#     凡是从 board_clk 域寄存器到任何异步复位/置位脚的路径，都是复位分发路径。
-set_false_path -from [get_clocks {board_clk}] -to [get_pins {*.sr}]
-set_false_path -from [get_clocks {board_clk}] -to [get_pins {*/*.sr}]
+set_false_path -through [get_nets {common_rst_n}] -to [get_pins {*.sr */*.sr}]
+# Verify nonempty routed exception endpoints after synthesis. Do not replace
+# this reset-net exception with a clock-to-all-SR blanket exception.
 
-# ---- mem -> sys submit toggle (frame_ready) ----
-# The mem-domain write completion is published as a toggle and synchronized in
-# sys_clk. Only the first synchronizer stage input is exempt.
-# ★ 2026-10-06 订正：原 `set_false_path -to [get_regs {submit_sync[0]}]` 是**死约束**
-#   （submit_sync 寄存器已不在 RTL 里，现行名字是下面的 tog_sync[0]）。
-#   route.check 第 4 节 "checking invalid constraints" 实证报无效 ⇒ 移除。
-#   这是缺陷 23（get_regs 对不存在的名字静默落空）的新病例：约束必须对着
-#   route.check 验证过的名字写。
+# ---- MEM -> SYS board frame mailbox ----
+# Only the first event/ack synchronizer stages are exempt. Bundled payload
+# propagation remains physically bounded and checked after route.
+set_false_path -to [get_regs {board_frame_mailbox/req_meta board_frame_mailbox/ack_meta}]
+set_max_delay -datapath_only -from [get_regs {board_frame_mailbox/payload*}] -to [get_regs {board_frame_mailbox/dst_data*}] 8.000
 
 # ---- Inside safevision_core (same structure A constrained) ----
 set_false_path -to [get_regs {core/display/config_mailbox/req_meta core/display/config_mailbox/ack_meta core/display/fetch/frame_request/req_meta core/display/fetch/frame_request/ack_meta core/display/fetch/arm_sync/meta core/display/swaps/req_sync[0] core/display/swaps/fs_sync[0] core/display/swaps/ack_sync[0]}]
-set_false_path -from [get_clocks {video_*$video_pll/pll_inst.clkc[1]}] -to [get_pins {core/display/fetch/fetch_mem_reset/*.sr}]
-set_false_path -from [get_clocks {system_pll/pll_inst.clkc[1]}] -to [get_pins {core/display/fetch/fetch_pixel_reset/*.sr}]
-set_false_path -through [get_nets {core/display/fetch/common_reset_n}] -to [get_pins {*/*.sr}]
-set_false_path -from [get_clocks {system_pll/pll_inst.clkc[1]}] -to [get_regs {core/display/fetch/fifo/fifo/asy_r_rst*}]
+set_false_path -through [get_nets {core/display/fetch/common_reset_n}] -to [get_pins {*.sr */*.sr}]
+# The MEM-domain frame flush asynchronously asserts the vendor FIFO read-side
+# reset synchronizer. Both reset stages release on pixel_clk inside the IP.
+# Only their asynchronous SR pins are exempt; stage D/CE and every FIFO data,
+# Gray pointer and local released-reset path remain timed. TD folds fifo_reset
+# into state decode, so use the confirmed routed SR endpoint (not an empty net).
+set_false_path -to [get_pins {core/display/fetch/fifo/fifo/asy_r_rst*.sr}]
 # Bundled-data mailboxes: bound propagation instead of exempting (same 8 ns as A).
 set_max_delay -datapath_only -from [get_regs {core/display/config_mailbox/payload*}] -to [get_regs {core/display/config_mailbox/dst_data*}] 8.000
 set_max_delay -datapath_only -from [get_regs {core/display/fetch/frame_request/payload*}] -to [get_regs {core/display/fetch/frame_request/dst_data*}] 8.000
@@ -51,36 +43,12 @@ set_max_delay -datapath_only -from [get_regs {core/display/fetch/fifo/fifo/rd_to
 # intentional phase relationships are not a false path, so nothing is added
 # here. DDC is an I2C boundary and is left to ordinary STA.
 
-# ---- Board-level producer handshake (bmp_frame_sink -> core) ----
-# mem -> sys: the frame-ready EVENT crosses as a toggle through two stages, and
-# the payload (slot/generation/crc_ok) is a bundled-data capture that is sampled
-# on the cycle the event arrives. The payload holds stable for many source
-# cycles, so it is bounded by max_delay rather than exempted.
-set_false_path -to [get_regs {tog_sync[0]}]
-# ★★ 2026-10-06 深度定责（defect 23 家族新病例）：原写法
-#   `-from [get_clocks {system_pll/pll_inst.clkc[1]}]` 在 read_sdc 解析时刻**静默落空**：
-#   TD 的时钟对象要到 update_timing 才实体化——read_sdc 刚执行完时 get_clocks
-#   连 board_clk 都返回空（probe10 实证），而 get_regs 在解析时刻就能解析（probe11）。
-#   后果：route.exceptions 里该约束历次 Total=0 ⇒ "toggle 翻转后载荷在 1 个 sys
-#   周期内到达"这个换帧打包不错拍的物理前提，**一直没有被真正验证过**。
-#   ★ 教训：凡 -from [get_clocks ...] 形式的约束，必须到 route.exceptions 查
-#   Total>0 才算生效；route.check 的 "invalid constraint" 检查**不会**抓这种落空。
-#   ⇒ 改为 -from 侧点名真实的 mem 域源寄存器（get_regs 按 Q 网名解析，可打包孪生）：
-#     · sink/swap_slot*          —— 打包槽号（孪生 slot_lat[0] 自动跟随）
-#     · sink/last_frame_ok*      —— 帧 CRC 结果（孪生 writer/crc_ok 跟随）
-#     · sink/u_bridge/writer/crc_ok* —— writer 帧结果链
-#     · fb_writer/crc_ok*        —— 回落路径载荷
-#     · fb_drain*                —— 字计数（mux 锥输入）
-#   别名解析（综合吸收改名）：slot_sys* → core/swap_ctrl/wr_slot_id[0]、
-#   crc_sys → core/swap_ctrl/wr_crc_ok；gen_sys 整族已被综合吸收（布线网表里
-#   没有 generation 网，无路径需要约束）⇒ 从 -to 里删掉 gen_sys*（留着只添告警）。
-#   ⚠ 已知开放项：本文件上方几条 -from [get_clocks ...] 形式的 set_false_path
-#   （复位段 38/39/41 行）有同样的解析时刻问题，行为待专门核查后一并订正。
-set_max_delay -datapath_only -from [get_regs {sink/swap_slot* sink/last_frame_ok* sink/u_bridge/writer/crc_ok* fb_writer/crc_ok* fb_drain*}] -to [get_regs {slot_sys* crc_sys}] 8.000
 # sys -> mem: swap-busy level, first synchronizer stage only.
 # NOTE: core/swap_ctrl runs on sys_clk (see frame_swap_ctrl.v), so the sink's
 # swap_busy input must be the SYNCHRONIZED swap_busy_mem, not swap_state_o.
 set_false_path -to [get_regs {sb_sync[0]}]
+# MEM fatal swap latch -> 50 MHz player permission; only the metastability stage.
+set_false_path -to [get_regs {sink_fatal_sync/meta}]
 
 # ---- Plan A: SD/media chain now runs on the 50 MHz board clock ----
 # sd_bmp_player (board_clk, 50 MHz) <-> bmp_frame_sink (mem_clk, 125 MHz).
@@ -89,8 +57,15 @@ set_false_path -to [get_regs {sb_sync[0]}]
 # (a) Reset. bmp_frame_sink drives the official pixel FIFO's asynchronous reset
 #     from mem_rst_n. Asynchronous assertion is by design and the per-domain
 #     synchronous release lives inside the IP (wr_rst_done), exactly like the
-#     board-level reset epoch handled above. mem_rst_n is a reset net only.
-set_false_path -from [get_nets {mem_rst_n}]
+#     board-level reset epoch handled above. Only the receiving reset
+#     synchronizer SR pins are exempt; ordinary local reset releases stay timed.
+#     The raw mem_rst_n net is folded into duplicated release flops in HD mode.
+set_false_path -to [get_pins {sink/u_fifo/fifo/asy_w_rst*.sr}]
+# Raw MEM reset also gates wrapper wr_ready. The vendor asy_w_rst0/1 holds
+# wr_rst_done=0 and full_flag reset for at least one 20 ns write-clock period
+# after raw reset releases. Bound ONLY that reset-origin control to 8 ns,
+# inside this protection window. Do not relax the normal full_flag/Gray data.
+set_max_delay -datapath_only -from [get_regs {reset_mem/release_pipe*}] -to [get_regs {sink/u_fifo/fifo/full_flag}] 8.000
 #
 # (b) Frame control, 50 -> 125 MHz: frame_active / top_down / slot are captured by
 #     two-stage synchronizers inside the sink. Exempt only the FIRST stage; the
@@ -109,7 +84,7 @@ set_false_path -to [get_regs {player/mr_sync[0] player/fd_sync[0] player/lok_syn
 #     Each field now has its own two-stage synchronizer; only the first stage is
 #     exempt. The status line is a 500 ms diagnostic refresh, not an atomic
 #     snapshot, so a per-bit synchronizer is the appropriate treatment.
-set_false_path -to [get_regs {t_state1* t_fail1* t_ec1* t_sd1* t_card1* t_fok1* t_fcnt1* t_cur1* t_bytes1* t_fcnt16_1*}]
+set_false_path -to [get_regs {t_state1* t_fail1* t_ec1* t_ed1* t_r1_1* t_seq_1* t_sd1* t_card1* t_fok1* t_fcnt1* t_cur1* t_bytes1* t_fcnt16_1*}]
 #
 # (d) The 32-bit pixel stream itself crosses ONLY through the official
 #     a_pixel_fifo, whose internal Gray-code pointer synchronizers are bounded
@@ -119,10 +94,17 @@ set_max_delay -datapath_only -from [get_regs {sink/u_fifo/fifo/wr_to_rd_cross_in
 set_max_delay -datapath_only -from [get_regs {sink/u_fifo/fifo/rd_to_wr_cross_inst/primary_addr_gray_reg*}] -to [get_regs {sink/u_fifo/fifo/rd_to_wr_cross_inst/sync_r1*}] 8.000
 
 # ---- Mechanical push-buttons ----
-# btn_next / btn_auto feed only a debounce counter comparison; a metastable
-# sample merely delays detection, and the debounce filters it. No clock budget
-# exists for a hand-operated switch, so treat them as asynchronous inputs.
+# Raw KEY2/KEY4 are pulled high; a press pulls low. Two flip-flops precede
+# inversion and debounce. No clock budget exists for a mechanical input.
+# The first stage is packed into TD's input PAD register and is not returned
+# by get_regs. These ports feed ONLY their input synchronizers. A port-origin
+# exception ends at that first register; stage-to-stage paths remain timed.
 set_false_path -from [get_ports {btn_next btn_auto}]
+
+# HDMI queue overflow asserts transmitter/PHY reset. Only the asynchronous
+# assertion into the serial-clock reset synchronizer is exempt; release and
+# ODDR paths remain timed. Match both flattened and hierarchical SR names.
+set_false_path -through [get_nets {tx_reset}] -to [get_pins {*.sr */*.sr}]
 
 # ---- Slow board outputs with no measured I/O budget yet ----
 # sd_dclk (SPI, <=20.8 MHz), sd_mosi, sd_ncs and uart_txd (115200 baud) are
@@ -130,7 +112,7 @@ set_false_path -from [get_ports {btn_next btn_auto}]
 # that already passed routed STA. Add I/O delays once measured on hardware.
 
 # ---- UART status reporter: ridx -> report mux is a true 2-cycle path ----
-# 2026-10-06, mem->mem domino #2 (after the fetch guarded_level cut). The 90-way
+# 2026-10-06, mem->mem domino #2 (after the fetch guarded_level cut). The status
 # rbyte_c mux spans telemetry sources across the whole die; its select tree is
 # driven by ridx (fanout 54, net-dominated 70~73%, worst single-cycle path was
 # 8.6 ns / 8.0 ns budget). This is a PHYSICAL SPAN problem: inserting pipeline

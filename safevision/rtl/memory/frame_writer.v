@@ -103,6 +103,10 @@ module frame_writer #(
     localparam [7:0] DET_SDRAM_VERIFY = 8'h42;   // §6.2 0x42 SDRAM 写回读校验失败
 
     reg        state;
+    // Track the counter's full predicate at the same accepting edge. This
+    // removes a wide px_cnt equality from the pixel-ready/error/state cone;
+    // there is no extra pipeline cycle at the final pixel or publication.
+    reg        frame_full;
     reg [31:0] base_reg;      // 锁存的槽基地址
     reg [1:0]  slot_sel_q;    // 锁存的目标槽
     reg        have_lo;       // 是否已收到配对中的低半（先到）像素
@@ -146,7 +150,6 @@ module frame_writer #(
     // 组合信号
     // ------------------------------------------------------------------------
     wire running    = (state == S_RUN);
-    wire frame_full = (px_cnt == PIX_PER_FRAME);
 
     // 只在运行中、无待写 word、一帧未满时才收像素
     assign din_ready = running && !wr_pending && !frame_full;
@@ -215,6 +218,7 @@ module frame_writer #(
             crc_ok     <= 1'b0;
             crc_value  <= 16'd0;
             px_cnt     <= 19'd0;
+            frame_full <= (PIX_PER_FRAME == 19'd0);
             wr_error   <= 1'b0;
             err_code   <= `ERR_NONE;
             err_detail <= `DET_NONE;
@@ -256,6 +260,7 @@ module frame_writer #(
                             wr_pending <= 1'b0;
                             gap_cnt    <= 16'd0;
                             px_cnt     <= 19'd0;
+                            frame_full <= (PIX_PER_FRAME == 19'd0);
                             wr_error   <= 1'b0;
                             err_code   <= `ERR_NONE;
                             err_detail <= `DET_NONE;
@@ -279,6 +284,7 @@ module frame_writer #(
                     // ---- (2) 收像素：valid && ready 双判 ----
                     if (px_accept) begin
                         px_cnt <= px_cnt + 19'd1;
+                        if (px_cnt == (PIX_PER_FRAME - 19'd1)) frame_full <= 1'b1;
                         if (!have_lo) begin
                             // 配对中的低半（先到像素）
                             have_lo <= 1'b1;
