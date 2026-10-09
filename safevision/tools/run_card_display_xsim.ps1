@@ -5,7 +5,7 @@ param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/card_display_xsim'),
- [ValidateSet('adapter','drain','writer','crc','top','card','player','edid','idle','bridge')][string[]]$Case=@('adapter','drain','writer','crc','idle','bridge','edid','top','card'),
+ [ValidateSet('adapter','drain','writer','crc','top','card','init','player','edid','idle','bridge')][string[]]$Case=@('adapter','drain','writer','crc','idle','bridge','edid','top','init','card'),
  [int]$ReadLatency=4,[switch]$Waves
 )
 $ErrorActionPreference='Stop'
@@ -42,20 +42,24 @@ try{
     'platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v',
     'platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v',
     'platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v')
-   $top=if($c -eq 'card'){'tb_safevision_card_display'}elseif($c -eq 'edid'){'tb_safevision_hdmi_reset'}else{'tb_safevision_top'}
-   $memory=if($c -eq 'card'){'verification/models/board_memory_contract_model.sv'}else{'verification/models/vendor_ip_stub.sv'}
+   $top=if($c -in @('card','init')){'tb_safevision_card_display'}elseif($c -eq 'edid'){'tb_safevision_hdmi_reset'}else{'tb_safevision_top'}
+   $memory=if($c -in @('card','init')){'verification/models/board_memory_contract_model.sv'}else{'verification/models/vendor_ip_stub.sv'}
    $sim=@($memory,'verification/models/top_ip_stub.sv','verification/models/sd_spi_card_model.sv',"verification/unit/$top.sv")
+   if($c -eq 'init'){$sim+='verification/unit/tb_safevision_real_sd_init.sv'}
    Copy-Item -LiteralPath (Join-Path $sv 'assets/fonts/font8x16.mem') -Destination $run -Force
   }
   $rtl=@($rtl|Select-Object -Unique|ForEach-Object{Join-Path $sv $_})
   $sim=@($sim|ForEach-Object{Join-Path $sv $_})
   Push-Location -LiteralPath $run
   try{
-   & (Join-Path $XSimBin 'xvlog.bat') -d SIM_FAST_TO -i (Join-Path $sv 'rtl/include') --log rtl.log @rtl > rtl.console.log 2>&1
+   # The init probe restores production SPI rate and asserts product timeouts.
+   $defines=if($c -eq 'init'){@()}else{@('-d','SIM_FAST_TO')}
+   & (Join-Path $XSimBin 'xvlog.bat') @defines -i (Join-Path $sv 'rtl/include') --log rtl.log @rtl > rtl.console.log 2>&1
    if($LASTEXITCODE){throw "$c RTL compile failed: $run/rtl.log"}
-   & (Join-Path $XSimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i (Join-Path $sv 'rtl/include') --log tb.log @sim > tb.console.log 2>&1
+   & (Join-Path $XSimBin 'xvlog.bat') --sv @defines -i (Join-Path $sv 'rtl/include') --log tb.log @sim > tb.console.log 2>&1
    if($LASTEXITCODE){throw "$c TB compile failed: $run/tb.log"}
    $elab=@("work.$top",'-s','board_test','--timescale','1ns/1ps','--log','elab.log')
+   if($c -eq 'init'){$elab+=@('work.tb_safevision_real_sd_init')}
    if($Waves -or $c -eq 'card'){$elab+=@('-debug','typical')}
    if($c -eq 'adapter'){$elab+=@('-generic_top',('"RD_LAT={0}"' -f $ReadLatency))}
    & (Join-Path $XSimBin 'xelab.bat') @elab > elab.console.log 2>&1
@@ -76,6 +80,9 @@ try{
      foreach($name in @('a','b')){
       $tcl+="log_wave /$top/$name/valid /$top/$name/ready /$top/$name/user /$top/$name/last /$top/$name/data /$top/$name/resync /$top/$name/level"
      }
+    }elseif($c -eq 'init'){
+     $tcl+="log_wave /$top/sd_dclk /$top/dut/pl_sd_ready /$top/dut/pl_ec"
+     $tcl+='log_wave /tb_safevision_real_sd_init/rises /tb_safevision_real_sd_init/minimum_period'
     }elseif($c -in @('card','top')){
      # Selected protocol/control signals only; no clocks, scan counters, arrays
      # or recursive whole-chip logging. Keep wave size manageable.
@@ -104,7 +111,8 @@ try{
    & (Join-Path $XSimBin 'xsim.bat') @simArgs > sim.console.log 2>&1
    if($LASTEXITCODE){throw "$c simulator failed"}
    $log=Get-Content -LiteralPath sim.log -Raw
-   if($log -notmatch '(?m)^\s*(\[PASS\]|PASS\b)' -or $log -notmatch '\$finish called' -or
+   if(($c -eq 'init' -and $log -notmatch '\[PASS\] REAL INIT') -or
+      $log -notmatch '(?m)^\s*(\[PASS\]|PASS\b)' -or $log -notmatch '\$finish called' -or
       $log -match '(?im)^\s*(\[FAIL\]|FAIL\b|FATAL\b|ERROR:|(?!(?:\[PASS\]))[^\r\n]*\bFAILED\b)'){
      throw "$c assertion/finish gate failed: $run/sim.log"
    }
