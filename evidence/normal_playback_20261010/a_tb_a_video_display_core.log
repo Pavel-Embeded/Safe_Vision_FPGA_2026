@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 00:36:33 2026
+# Process ID: 32868
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/integrity_a_11_15_20261010/tb_a_video_display_core
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_a_video_display_core/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/integrity_a_11_15_20261010/tb_a_video_display_core/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/integrity_a_11_15_20261010/tb_a_video_display_core\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_a_video_display_core/xsim_script.tcl
+# xsim {tb_a_video_display_core} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+display HD=0 checks=2484007 normal=1232512 emergency=180 fault_pixels=303488 competing_write_beats=47876 commits=2
+display HD=1 checks=7375507 normal=1232384 emergency=180 fault_pixels=303616 competing_write_beats=48292 commits=2
+PASS tb_a_video_display_core: actual B DMA+arbiter+swap, official async FIFO, complete BASE/HD frames, starvation/recovery, atomic slots and emergency priority
+$finish called at time : 99333476424 ps : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_video_display_core.sv" Line 93
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:02:08 . Memory (MB): peak = 219.641 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 00:38:44 2026...

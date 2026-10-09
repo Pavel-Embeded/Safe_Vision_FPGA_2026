@@ -23,6 +23,7 @@ try{
   'platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v',
   'platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v',
   'platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v')
+ $rtl+=@('rtl/memory/frame_integrity_guard.v','rtl/memory/video_read_dma_checked.v')
  $rtl=@($rtl|Select-Object -Unique|ForEach-Object{Join-Path $sv $_})
  $sim=@('verification/models/board_memory_contract_model.sv','verification/models/top_ip_stub.sv',
   'verification/unit/tb_safevision_board_recovery.sv')|ForEach-Object{Join-Path $sv $_}

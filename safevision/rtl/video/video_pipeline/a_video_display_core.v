@@ -8,7 +8,7 @@
 module a_video_display_core #(
     parameter integer HD=0,FIFO_AW=10,BURST_WORDS=64,
     parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
-    parameter integer EMERGENCY_LATENCY=0,DMA_STREAMING=0
+    parameter integer EMERGENCY_LATENCY=0,DMA_STREAMING=0,DMA_CHECKED=0
 )(
     input wire sys_clk,mem_clk,pixel_clk,rst_n,
     input wire swap_req_b,mb_frame_index_b,input wire [1:0] mb_slot_id_b,
@@ -27,7 +27,9 @@ module a_video_display_core #(
     output wire pix_frame_index,pix_active_valid,pix_frame_fault,
     output wire [31:0] pix_underflow_count,pix_missed_frame_count,mem_overflow_count,
     output wire [15:0] mem_fifo_pixels,output wire [31:0] mem_dma_bytes,
-    output wire mem_dma_active,mem_dma_done,output wire [2:0] mem_fetch_state
+    output wire mem_dma_active,mem_dma_done,output wire [2:0] mem_fetch_state,
+    input wire [31:0] expected_crc,input wire expected_valid,
+    output wire [31:0] crc_lookup_addr,bad_addr,bad_expected,bad_actual,output wire integrity_fault
 );
     wire srn,mrn,prn;
     reset_sync sys_reset(.clk(sys_clk),.async_rst_n(rst_n),.rst_n(srn));
@@ -57,7 +59,7 @@ module a_video_display_core #(
       .commit(commit),.invalid_payload(invalid_payload));
     wire [15:0] fifo_data;wire fifo_valid,fifo_empty,fifo_re,fifo_ae,armed;
     wire [FIFO_AW:0] fifo_pixels;
-    a_frame_fetch_bridge #(.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS),.DMA_STREAMING(DMA_STREAMING)) fetch(
+    a_frame_fetch_bridge #(.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS),.DMA_STREAMING(DMA_STREAMING),.DMA_CHECKED(DMA_CHECKED)) fetch(
       .pixel_clk(pixel_clk),.pixel_rst_n(prn),.mem_clk(mem_clk),.mem_rst_n(mrn),
       .frame_start(scan_frame_start),.frame_enable(fetch_enable),.frame_base(fetch_base),
       .rd_req(rd_req),.rd_addr(rd_addr),.rd_len(rd_len),.rd_ack(rd_ack),.rd_busy(rd_busy),
@@ -65,7 +67,9 @@ module a_video_display_core #(
       .fifo_valid(fifo_valid),.fifo_empty(fifo_empty),.fifo_almost_empty(fifo_ae),.fifo_rd_pixels(fifo_pixels),
       .stream_armed(armed),.fifo_mem_pixels(mem_fifo_pixels),.missed_frame_count(pix_missed_frame_count),
       .overflow_count(mem_overflow_count),.dma_bytes(mem_dma_bytes),.dma_active(mem_dma_active),
-      .dma_done(mem_dma_done),.fetch_state(mem_fetch_state));
+      .dma_done(mem_dma_done),.fetch_state(mem_fetch_state),
+      .expected_crc(expected_crc),.expected_valid(expected_valid),.crc_lookup_addr(crc_lookup_addr),
+      .integrity_fault(integrity_fault),.bad_addr(bad_addr),.bad_expected(bad_expected),.bad_actual(bad_actual));
     wire [23:0] normal_rgb;wire normal_valid,underflow;
     frame_reader #(.IMAGE_W(`SV_FRAME_WIDTH),.IMAGE_H(`SV_FRAME_HEIGHT),
       .ORIGIN_X(HD?(1280-`SV_FRAME_WIDTH)/2:0),.ORIGIN_Y(HD?(720-`SV_FRAME_HEIGHT)/2:0),

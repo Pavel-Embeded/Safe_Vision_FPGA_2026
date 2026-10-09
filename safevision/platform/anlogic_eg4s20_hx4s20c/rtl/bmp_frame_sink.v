@@ -38,7 +38,7 @@ module bmp_frame_sink #(
     //   每帧只写进去约 2/3 就被判超时。TB 里没暴露是因为 tb_sd_bmp_player 把
     //   SPI 分频调到最快档（236 ms < 400 ms）—— 仿真跑得快反而掩盖了真问题。
     parameter [31:0]  WRITE_TO_N  = 32'd50_000_000  // 400 ms：**无进展**才算超时
-    ,parameter integer REQUIRE_WRITE_DRAIN = 0
+    ,parameter integer REQUIRE_WRITE_DRAIN = 0, REQUIRE_READBACK = 0
 )(
     input  wire        clk,            // mem_clk 125 MHz（读侧 / 帧控制器）
     input  wire        rst_n,          // mem 域低有效
@@ -75,7 +75,8 @@ module bmp_frame_sink #(
     output reg  [7:0]  err_detail,
     output reg  [15:0] frame_cnt,
     output reg  [18:0] px_written,
-    input wire write_drained // mem domain; used only with REQUIRE_WRITE_DRAIN=1
+    input wire write_drained,verify_done,verify_pass,
+    output wire source_begin,output wire [1:0] source_slot,output wire source_top_down
 );
 
     // ========================================================================
@@ -150,6 +151,7 @@ module bmp_frame_sink #(
     wire [7:0]  br_ec, br_ed;
 
     reg  [1:0]  slot_lat;        // 开帧时锁存的槽（帧内不变）
+    assign source_begin=br_start;assign source_slot=slot_lat;assign source_top_down=td_sync[1];
     wire [31:0] slot_base = (slot_lat == 2'd0) ? `SV_IMG0_BASE : `SV_IMG1_BASE;
     wire        br_din_ready;
 
@@ -277,9 +279,9 @@ module bmp_frame_sink #(
                         swap_crc_ok    <= br_crc_ok;
                         swap_slot      <= slot_lat;
                         swap_generation<= swap_generation + 8'd1;
-                        if (!REQUIRE_WRITE_DRAIN) swap_toggle <= ~swap_toggle;
+                        if (!REQUIRE_WRITE_DRAIN && !REQUIRE_READBACK) swap_toggle <= ~swap_toggle;
                         to_cnt         <= 32'd0;
-                        state_o        <= REQUIRE_WRITE_DRAIN ? S_FLUSH : S_SWAP;
+                        state_o        <= (REQUIRE_WRITE_DRAIN || REQUIRE_READBACK) ? S_FLUSH : S_SWAP;
                     end else if (br_err) begin
                         last_frame_ok<= 1'b0;
                         err_code   <= br_ec;
@@ -303,7 +305,9 @@ module bmp_frame_sink #(
                     // Hold frame metadata until the adapter's buffered tail and
                     // the granted write transaction have both drained.
                     to_cnt <= to_cnt + 32'd1;
-                    if (write_drained) begin
+                    if (REQUIRE_READBACK && verify_done && !verify_pass) begin
+                        last_frame_ok<=0;swap_crc_ok<=0;err_code<=8'hF3;state_o<=S_ERROR;
+                    end else if (write_drained && (!REQUIRE_READBACK || (verify_done && verify_pass))) begin
                         swap_toggle <= ~swap_toggle;
                         to_cnt <= 32'd0;
                         state_o <= S_SWAP;

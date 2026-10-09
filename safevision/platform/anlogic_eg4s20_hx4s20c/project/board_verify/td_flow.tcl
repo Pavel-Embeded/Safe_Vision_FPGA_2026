@@ -58,11 +58,10 @@ if {[catch {
     legalize_phy_inst
     read_sdc [file join $here board_b.sdc]
     read_sdc [file join $here board_cdc.sdc]
-    # The CRC feedback exception must resolve all 16 state bits, excluding
-    # crc_pair_q (new data) and crc_src_pend (enable), both still single-cycle.
+    # Required integrity CRC state exists and remains fully single-cycle timed.
     set crc_names {}
-    for {set i 0} {$i < 16} {incr i} {lappend crc_names [format {fb_writer/crc_src[%d]} $i]}
-    if {[llength [get_regs $crc_names]] != 16} {error "Incomplete writer CRC state collection"}
+    for {set i 0} {$i < 32} {incr i} {lappend crc_names [format {integrity/source_crc[%d]} $i]}
+    if {[llength [get_regs $crc_names]] != 32} {error "Incomplete source CRC32 state collection"}
     if {[llength [get_nets {core/display/fetch/fifo_reset}]] == 0} {error "Missing preserved FIFO asynchronous assertion net"}
     update_timing -mode basic
     report_timing_summary -ep_num 30 -file gate.timing

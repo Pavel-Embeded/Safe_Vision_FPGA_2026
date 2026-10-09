@@ -44,7 +44,12 @@ module memory_arbiter #(
     // Optional A integration optimization; default preserves B's 16-bit
     // counter and all existing positional parameters. Arbitration only tests
     // count >= MAX_BURSTS, so saturation above that threshold is equivalent.
-    parameter integer COMPACT_CONSEC_COUNTER = 0
+    parameter integer COMPACT_CONSEC_COUNTER = 0,
+    // Legacy defaults preserve the portable B contract. A real scan has no
+    // backpressure: reserve enough pixels for command gaps and a complete
+    // checked landing bank before serving an arbitrarily fast producer.
+    parameter [15:0] HIGH_WATER = 16'd48,
+    parameter [15:0] CRITICAL_WATER = 16'd0
 )(
     input  wire        clk,                 // mem_clk 125MHz
     input  wire        rst_n,               // 低有效
@@ -103,7 +108,7 @@ module memory_arbiter #(
 
     // ★ 设计目标，待实测（手册 7.13 学习卡片给的初值 16 / 48）
     localparam [15:0] LOW_WM  = 16'd16;
-    localparam [15:0] HIGH_WM = 16'd48;
+    localparam [15:0] HIGH_WM = HIGH_WATER;
 
     localparam [15:0] MAX_BURSTS_C   = MAX_BURSTS;
     localparam [15:0] STARVE_LIMIT_C = STARVE_LIMIT;
@@ -151,7 +156,8 @@ module memory_arbiter #(
     wire sd_mask = (last_ch == CH_SD) && (consec_cnt >= MAX_BURSTS_C) &&
                    (rd_req | wr_req) && !sd_urg;
 
-    wire rd_e = rd_req & ~rd_mask;
+    wire video_critical = video_fifo_level < CRITICAL_WATER;
+    wire rd_e = rd_req & (~rd_mask | video_critical);
     wire wr_e = wr_req & ~wr_mask;
     wire sd_e = sd_req & ~sd_mask;
 
@@ -166,6 +172,12 @@ module memory_arbiter #(
         winner = CH_NONE;
         if (busy) begin
             winner = CH_NONE;                 // 传输中不重新仲裁（突发边界才切换）
+        end else if (video_critical) begin
+            // Reserve the bus even during the checked DMA's short request
+            // bubbles. Starting a buffered write here would impose another
+            // physical write/drain/quiet turn-around before the next read.
+            // The core disables this reservation when its MEM DMA is idle.
+            winner = rd_e ? CH_RD : CH_NONE;
         end else if (rd_urg && rd_e) begin
             winner = CH_RD;                   // 超时优先，防饥饿
         end else if (wr_urg && wr_e) begin

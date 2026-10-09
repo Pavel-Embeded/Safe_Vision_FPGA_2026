@@ -1,0 +1,390 @@
+Table of Contents
+-----------------
+1. checking no clock(0) (HIGH)
+2. checking clock definition(2) (HIGH)
+3. checking dummy node(4) (HIGH)
+4. checking invalid constraint(0) (HIGH)
+5. checking pll/clock buffer clock constraints(0) (HIGH)
+6. checking combinational loops(0) (HIGH)
+7. checking soft fifo timing exception constraints(0) (HIGH)
+8. checking no path constraints(0) (MEDIUM)
+9. checking shadowed/ignored timing exception constraints(0) (MEDIUM)
+10. checking no input delay(6) (MEDIUM)
+11. checking no output delay(14) (MEDIUM)
+12. checking partial input delay(0) (MEDIUM)
+13. checking partial output delay(0) (MEDIUM)
+14. checking abnormal input delay(0) (MEDIUM)
+
+
+1. checking nets with no clock driven. (HIGH)
+---------------------------------------------
+2. checking clock definition problems. (HIGH)
+---------------------------------------------
+2.1 There are 0 leaf clock pins driven by multiple clocks. (HIGH)
+
+
+2.2 There are 0 clocks created on internal clock network. (HIGH)
+
+
+2.3 There are 0 unexpandable clock sets. (HIGH)
+
+
+2.4 There are 2 local clocks. (HIGH)
+
+	board_clk
+	system_pll/pll_inst.clkc[2]
+
+2.5 There are 2 generated clocks that are not connected to their master clocks. (HIGH)
+
+
+3. checking dummy nodes. (HIGH)
+---------------------------------------------
+There are 4 nodes are dangling. (HIGH)
+
+DummyNode in Model: EG_PHY_LSLICE
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_video_guard_band_1d_reg_syn_5.c[0]
+	ridx_reg[0]_syn_10.mi[0]
+	core/display/fetch/checked_read$dma/landing_n_syn_65.b[1]
+	core/display/fetch/checked_read$dma/landing_n_syn_65.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.e[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.e[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.e[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.e[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.e[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.e[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.e[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.e[1]
+	core/display/fetch/checked_read$dma/rd_req_reg_syn_344.c[1]
+	core/display/fetch/fifo/fifo/wr_to_rd_cross_inst/primary_addr_gray_sync_reg[4]_syn_4.b[1]
+	rbyte_reg[4]_syn_468.b[0]
+	core/display/fetch/fifo/fifo/wr_to_rd_cross_inst/primary_addr_gray_sync_reg[4]_syn_4.c[1]
+	rbyte_reg[4]_syn_468.c[0]
+	core/display/fetch/fifo/fifo/wr_to_rd_cross_inst/primary_addr_gray_sync_reg[4]_syn_4.d[1]
+	rbyte_reg[4]_syn_468.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.a[0]
+	core/display/fetch/checked_read$dma/rd_req_reg_syn_344.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.b[0]
+	core/display/fetch/checked_read$dma/landing_n_syn_65.d[1]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_68.mi[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_61.mi[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_46.mi[1]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_43.mi[1]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_43.mi[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_50.mi[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_50.mi[1]
+	integrity/mux93_syn_737.mi[0]
+	player/u_mbr/mux66_syn_34.mi[0]
+	player/u_bmp/mstate_reg[1]_syn_20.mi[0]
+	player/u_fst/mux83_syn_220.c[0]
+	reset_ref/release_pipe_reg[1]_syn_168.c[0]
+	player/u_fst/mux83_syn_220.a[0]
+	reset_ref/release_pipe_reg[1]_syn_168.a[0]
+	player/u_fst/mux83_syn_220.b[0]
+	reset_ref/release_pipe_reg[1]_syn_168.b[0]
+	player/u_fst/mux83_syn_220.d[0]
+	reset_ref/release_pipe_reg[1]_syn_168.d[0]
+	integrity/timer_b1[25]_syn_5.mi[0]
+	core/display/fetch/checked_read$dma/rd_req_reg_syn_342.mi[0]
+	integrity/mux93_syn_743.mi[0]
+	reset_mem/release_pipe_reg[1]_syn_88.mi[0]
+	reset_mem/release_pipe_reg[1]_syn_101.mi[0]
+	rbyte_reg[1]_syn_280.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_18.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_209.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_171.mi[0]
+	player/u_fst/mux90_syn_1147.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_229.mi[1]
+	player/err_detail_reg[5]_syn_52.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_193.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_203.mi[0]
+	player/u_fst/mux90_syn_1145.mi[0]
+	player/u_scan/mux164_syn_155.mi[0]
+	player/u_bmp/mux85_syn_257.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_239.mi[0]
+	player/u_unpack/phase_reg[2]_syn_11.mi[0]
+	player/u_rd/mux98_syn_392.mi[0]
+	player/u_boot/sel31_syn_231.mi[0]
+	player/u_wk_dir/mux44_syn_82.mi[0]
+	player/u_wk_dir/mux45_syn_801.mi[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_69.d[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_69.c[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_50.mi[1]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_35.mi[1]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_55.mi[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_video_guard_band_1d_reg_syn_5.d[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_18.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_21.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_33.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_23.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_24.mi[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[3]_syn_26.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_21.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_31.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_39.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_38.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_21.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_31.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_24.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_35.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_36.mi[0]
+
+DummyNode in Model: EG_PHY_MSLICE
+	rbyte_reg[4]_syn_346.d[0]
+	rload_reg_syn_25.d[1]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_32.c[1]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_32.c[0]
+	rload_reg_syn_25.c[1]
+	rbyte_reg[4]_syn_346.c[0]
+	core/display/fetch/checked_read$dma/landing_n_syn_67.b[1]
+	integrity/bad_actual_b[20]_syn_25.b[0]
+	core/display/compositor/nd/delay$data_reg[70]_syn_4.b[0]
+	core/display/fetch/checked_read$dma/landing_n_syn_67.c[1]
+	integrity/bad_actual_b[20]_syn_25.c[0]
+	core/display/compositor/nd/delay$data_reg[70]_syn_4.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_34.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_34.b[0]
+	playback_bad_addr_reg[11]_syn_4.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_34.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_34.a[1]
+	playback_bad_addr_reg[11]_syn_4.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_34.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_34.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_34.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_34.d[0]
+	core/display/fetch/checked_read$dma/landing_n_syn_67.d[1]
+	integrity/bad_actual_b[20]_syn_25.d[0]
+	core/display/compositor/nd/delay$data_reg[70]_syn_4.d[0]
+	core/display/fetch/checked_read$dma/rd_req_reg_syn_370.mi[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_53.mi[0]
+	core/display/fetch/checked_read$dma/rd_req_reg_syn_388.mi[0]
+	hdmi_queue/ramread0_syn_97.d[1]
+	hdmi_queue/ramread0_syn_97.d[0]
+	hdmi_queue/ramread0_syn_97.c[1]
+	hdmi_queue/ramread0_syn_97.c[0]
+	hdmi_queue/ramread0_syn_97.b[1]
+	hdmi_queue/ramread0_syn_97.b[0]
+	hdmi_queue/ramread0_syn_97.a[1]
+	hdmi_queue/ramread0_syn_97.a[0]
+	player/u_fst/mux90_syn_1149.mi[0]
+	player/u_boot/ts32_3_reg[3]_syn_4.c[0]
+	player/u_boot/spc_reg[0]_syn_4.c[0]
+	player/u_fst/sd_rd_addr_reg[14]_syn_4.c[0]
+	player/u_idx/size_d_reg[22]_syn_4.d[0]
+	player/u_scan/fc_h_reg[10]_syn_4.d[0]
+	player/u_idx/size_d_reg[22]_syn_4.b[0]
+	player/u_scan/fc_h_reg[10]_syn_4.b[0]
+	player/u_idx/size_d_reg[22]_syn_4.c[0]
+	player/u_scan/fc_h_reg[10]_syn_4.c[0]
+	player/u_fst/sd_rd_addr_reg[14]_syn_4.a[0]
+	player/u_fst/sd_rd_addr_reg[14]_syn_4.b[0]
+	player/u_fst/sd_rd_addr_reg[14]_syn_4.d[0]
+	reset_mem/release_pipe_reg[1]_syn_96.mi[0]
+	integrity/source_crc_b[21]_syn_14.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_242.mi[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_32.mi[1]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_45.mi[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_32.d[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_32.d[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_video_data_assemble/S_island_period_1d_reg_syn_4.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_15.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_20.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_21.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_22.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_23.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_20.c[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_21.c[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_22.c[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_23.c[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_20.b[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_21.b[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_22.b[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_23.b[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_20.d[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_21.d[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_22.d[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_23.d[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_20.b[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_21.b[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_22.b[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_23.b[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_20.d[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_21.d[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_22.d[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_23.d[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_20.c[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_21.c[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_22.c[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_23.c[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_4d_reg[0]_syn_4.d[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_4d_reg[0]_syn_4.c[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[10]_syn_29.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[2]_syn_25.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_26.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_34.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_27.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_25.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_33.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_29.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_33.mi[0]
+	player/ent_first_clus_q_reg[16]_syn_3.mi[0]
+	player/u_boot/ts32_3_reg[3]_syn_4.b[0]
+	player/u_boot/spc_reg[0]_syn_4.b[0]
+	player/u_boot/ts32_3_reg[3]_syn_4.d[0]
+	player/u_boot/spc_reg[0]_syn_4.d[0]
+
+DummyNode in Model: EG_PHY_MULT18
+	player/u_fst/mult0_syn_84.b[17]
+	player/u_fst/mult0_syn_84.b[16]
+	player/u_fst/mult0_syn_84.b[15]
+	player/u_fst/mult0_syn_84.b[14]
+	player/u_scan/mult0_syn_84.b[17]
+	player/u_scan/mult0_syn_84.b[16]
+	player/u_scan/mult0_syn_84.b[15]
+	player/u_scan/mult0_syn_84.b[14]
+
+DummyNode in Model: EG_PHY_PAD
+	memory_ip/sdram_syn_5.opad
+	memory_ip/sdram_syn_10.opad
+
+4. checking invalid constraints. (HIGH)
+---------------------------------------------
+There are 0 invalid constraints. (HIGH)
+
+
+5. checking PLL/buffer clocks. (HIGH)
+---------------------------------------------
+PLL/buffer inst: system_pll/pll_inst
+{
+	There are 0 clock pins that have no clock constraints. (HIGH)
+
+
+	There are 0 clocks whose clock frequency do not match the PLL setting. (HIGH)
+
+
+}
+
+PLL/buffer inst: video_hd$video_pll/pll_inst
+{
+	There are 0 clock pins that have no clock constraints. (HIGH)
+
+
+	There are 0 clocks whose clock frequency do not match the PLL setting. (HIGH)
+
+
+}
+
+6. checking combinational loops. (HIGH)
+---------------------------------------------
+There are 0 combinational loops. (HIGH)
+
+
+7. checking soft fifo set_max_delay constraints. (HIGH)
+---------------------------------------------
+There are 0 max-delay datapath-only paths that are part of the provided async clock paths, whereas the timing between other registers is not relaxed or ignored. (HIGH)
+
+
+8. checking no path constraints. (MEDIUM)
+---------------------------------------------
+There are 0 constraints that have no timing paths. (MEDIUM)
+
+
+9. checking path exception constraints shadowed/ignored by other constraints. (MEDIUM)
+---------------------------------------------
+
+MCP/SMD Summary
+--------------------
+
+		Max Check
+		--------------------
+		     Total    Dominated     Shadowed      Ignored   Constraint
+		         6            6            0            0   set_max_delay -datapath_only -from [get_regs {board_frame_mailbox/payload*}] -to [get_regs {board_frame_mailbox/dst_data*}] 8.000
+		       120          120            0            0   set_max_delay -datapath_only -from [get_regs {core/display/config_mailbox/payload*}] -to [get_regs {core/display/config_mailbox/dst_data*}] 8.000
+		        64           64            0            0   set_max_delay -datapath_only -from [get_regs {core/display/fetch/frame_request/payload*}] -to [get_regs {core/display/fetch/frame_request/dst_data*}] 8.000
+		         6            6            0            0   set_max_delay -datapath_only -from [get_regs {core/swap_ctrl/slot_id* core/swap_ctrl/generation* core/swap_ctrl/frame_index core/swap_ctrl/crc_ok}] -to [get_regs {core/display/swaps/mb_slot_id_a_r* core/display/swaps/mb_generation_a_r* core/display/swaps/frame_index_a_r core/display/swaps/mb_crc_ok_a_r}] 8.000
+		        22           22            0            0   set_max_delay -datapath_only -from [get_regs {core/display/fetch/fifo/fifo/wr_to_rd*/primary_addr_gray_reg*}] -to [get_regs {core/display/fetch/fifo/fifo/wr_to_rd*/sync_r1*}] 8.000
+		        22           22            0            0   set_max_delay -datapath_only -from [get_regs {core/display/fetch/fifo/fifo/rd_to_wr*/primary_addr_gray_reg*}] -to [get_regs {core/display/fetch/fifo/fifo/rd_to_wr*/sync_r1*}] 8.000
+		         0            0            0            0   set_max_delay -datapath_only -from [get_regs {reset_mem/release_pipe*}] -to [get_regs {sink/u_fifo/fifo/full_flag}] 8.000
+		        20           20            0            0   set_max_delay -datapath_only -from [get_regs {sink/u_fifo/fifo/wr_to_rd_cross_inst/primary_addr_gray_reg*}] -to [get_regs {sink/u_fifo/fifo/wr_to_rd_cross_inst/sync_r1*}] 8.000
+		        20           20            0            0   set_max_delay -datapath_only -from [get_regs {sink/u_fifo/fifo/rd_to_wr_cross_inst/primary_addr_gray_reg*}] -to [get_regs {sink/u_fifo/fifo/rd_to_wr_cross_inst/sync_r1*}] 8.000
+		       174          174            0            0   set_multicycle_path -setup -from [get_regs {ridx*}] 2
+
+		Min Check
+		--------------------
+		     Total    Dominated     Shadowed      Ignored   Constraint
+		       174          174            0            0   set_multicycle_path -hold -end -from [get_regs {ridx*}] 1
+
+10. checking no input delay (MEDIUM)
+--------------------------
+There are 6 input ports that with no input delay specified. (MEDIUM)
+
+	HDMI_DDC_SDA
+	btn_auto
+	btn_emergency
+	btn_next
+	rst_n
+	sd_miso
+
+11. checking no output delay (MEDIUM)
+--------------------------
+There are 14 output ports that with no output delay specified. (MEDIUM)
+
+	HDMI_CLK_P
+	HDMI_D0_P
+	HDMI_D1_P
+	HDMI_D2_P
+	HDMI_DDC_SCL
+	HDMI_DDC_SDA
+	led[3]
+	led[2]
+	led[1]
+	led[0]
+	sd_dclk
+	sd_mosi
+	sd_ncs
+	uart_txd
+
+12. checking partial input delay (MEDIUM)
+--------------------------
+There are 0 input ports with partial input delay specified. (MEDIUM)
+
+
+13. checking partial output delay (MEDIUM)
+--------------------------
+There are 0 output ports with partial output delay specified. (MEDIUM)
+
+
+14. checking abnormal set_input_delay constraints. (MEDIUM)
+---------------------------------------------
+There are 0 abnormal set_input_delay constraints. (MEDIUM)
+
+

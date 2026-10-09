@@ -53,7 +53,7 @@ module tb_safevision_top;
     // ★ 缩短两个"等"的参数（都只是可测性参数，TD 不覆盖 ⇒ 综合结果不变）：
     //   MODE_TO_N   = 4 ms 判卡不可用（50 MHz）
     //   RPT_PERIOD_N= 3 ms 发一次状态行（一行 107 字节 @115200 要 ~9.3 ms）
-    safevision_top #(
+    safevision_top #(.STORAGE_INTEGRITY(0),
         .HD(0),
         .MODE_TO_N(32'd200_000),
         .RPT_PERIOD_N(32'd150_000),
@@ -81,9 +81,9 @@ module tb_safevision_top;
     );
 
     // ---------------------------------------------------------------- UART 接收（按 mem_clk 采样）
-    // Board memory/UART domain is now 50 MHz; receive the physical 115200 baud
+    // Board memory/UART domain is now 40 MHz; receive the physical 115200 baud
     // line using the same declared frequency, rather than the legacy 125 MHz.
-    localparam integer BIT_TICKS = 50_000_000 / 115_200;      // 434
+    localparam integer BIT_TICKS = 40_000_000 / 115_200;      // 347
 
     task uart_get_byte;
         output [7:0] b;
@@ -261,6 +261,20 @@ module tb_safevision_top;
             check(line[sd_i+4] === 8'h30, "T3a) SD=0 with an unusable card");
             check(line[cd_i+6] === 8'h30, "T3b) CARD=0 with an unusable card");
         end
+
+        // The second line belongs to the SAME packet snapshot. Changing the
+        // live diagnostic buses after its first line must not tear its fields.
+        force dut.integrity_bad_addr=32'h12345678;
+        force dut.integrity_expected=32'h89abcdef;
+        force dut.integrity_actual=32'h76543210;
+        uart_get_line;
+        check(line_len==82 && line[80]==8'h0D && line[81]==8'h0A,"UART integrity line has 82 bytes and CRLF");
+        check(find_str("SV-MEM",6)==0 && find_str("26101001",8)==10,"UART carries exact integrity build ID");
+        check(find_str(" PH=0",5)==18,"UART snapshot phase matches packet start");
+        check(find_str(" BAD=",5)==23 && line[28]==8'h30 && line[35]==8'h30,"UART bad address retains packet snapshot");
+        check(find_str(" EXP=",5)==36 && line[41]==8'h30 && line[48]==8'h30,"UART expected CRC retains packet snapshot");
+        check(find_str(" GOT=",5)==49 && line[54]==8'h30 && line[61]==8'h30,"UART actual CRC retains packet snapshot");
+        release dut.integrity_bad_addr;release dut.integrity_expected;release dut.integrity_actual;
 
         // ================================================================
         // T4 回落：card_mode 1→0 且片上图案接管

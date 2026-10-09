@@ -1,10 +1,11 @@
-// Complete synthesized board RTL with a true 50/100/125/25.185 MHz clock set.
+// Complete synthesized board RTL with a 50 MHz SD, 100 MHz SYS, 40 MHz MEM and BASE/720p pixel clocks.
 // SD card: real BMP byte stream in a synthetic FAT32 volume. FIFO: actual
 // vendor ERAM/FIFO Verilog. Memory: strict application contract model, not AC.
 // HDMI: vendor core/PHY contract stubs; pixel checks stop at accepted AXIS data.
 `timescale 1ns/1ps
 `include "pixel_format_defs.vh"
-module tb_safevision_card_display;
+module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10);
+    localparam integer SCREEN_W=HD?1280:640,SCREEN_PIX=HD?921600:307200;
     localparam integer W = 640;
     localparam integer H = 480;
     localparam integer FRAME_PIX = W*H;                       // 307200
@@ -154,11 +155,14 @@ module tb_safevision_card_display;
     endtask
 
 
- reg clk=0;always #10 clk=~clk;
+ // SD_HALF_NS=1 stresses producer/FIFO backpressure at 10x source-clock rate.
+ // The contract PLL keeps MEM=40MHz and real BASE/HD scan frequencies.
+ // This is a functional stress configuration, never a physical PLL model.
+ reg clk=0;always #(SD_HALF_NS) clk=~clk;
  reg rst_n=0,btn_next=1,btn_auto=1;
  wire sd_ncs,sd_dclk,sd_mosi,sd_miso,uart_txd;
  wire [3:0] led;wire d0,d1,d2,dc,scl;tri1 sda;
- safevision_top #(.FONT_FILE("font8x16.mem"),.PLAYER_SPI_INIT_DIV(1)) dut(
+ safevision_top #(.HD(HD),.PLAYER_SPI_FAST_DIV(0),.FONT_FILE("font8x16.mem"),.PLAYER_SPI_INIT_DIV(1)) dut(
  .clk(clk),.rst_n(rst_n),.btn_next(btn_next),.btn_auto(btn_auto),.btn_emergency(1'b1),.uart_txd(uart_txd),.led(led),
  .sd_ncs(sd_ncs),.sd_dclk(sd_dclk),.sd_mosi(sd_mosi),.sd_miso(sd_miso),
  .HDMI_D0_P(d0),.HDMI_D1_P(d1),.HDMI_D2_P(d2),.HDMI_CLK_P(dc),
@@ -191,30 +195,35 @@ module tb_safevision_card_display;
        active_writes=active_writes+1;
    end
  end
+ integer media_k,screen_x,screen_y;
  integer full_frames=0,new_slot_frames=0,axis_k=0,pixel_bad=0,tag_bad=0;
- reg axis_slot=0;
+ reg axis_slot=0;reg [7:0] axis_generation=0;reg injecting_fault=0;
  reg compare_axis=0;
  reg [15:0] expected_p;reg [23:0] expected_rgb;
  always @(posedge dut.pixel_clk)if(dut.axis_valid&&dut.axis_ready)begin
    if(dut.axis_user)begin
-     if(compare_axis&&axis_k!=FRAME_PIX)tag_bad=tag_bad+1;
-     compare_axis=dut.active&&!dut.frame_fault&&!dut.safety_active;axis_k=0;
-     axis_slot=dut.core.display.pix_active_slot[0];
+     if(compare_axis&&axis_k!=SCREEN_PIX)tag_bad=tag_bad+1;
+     compare_axis=dut.active&&!dut.frame_fault&&!dut.safety_active&&!injecting_fault;axis_k=0;
+     axis_slot=dut.core.display.pix_active_slot[0];axis_generation=dut.core.display.pix_generation;
    end
    if(compare_axis)begin
-     if(axis_k>=FRAME_PIX)tag_bad=tag_bad+1;
+     if(axis_k>=SCREEN_PIX)tag_bad=tag_bad+1;
      else begin
-       expected_p=axis_slot?exp565_k(axis_k):~exp565_k(axis_k);expected_rgb=rgb565(expected_p);
+       screen_x=axis_k%SCREEN_W;screen_y=axis_k/SCREEN_W;
+       if(!HD||(screen_x>=320&&screen_x<960&&screen_y>=120&&screen_y<600))begin
+         media_k=HD?(screen_y-120)*640+(screen_x-320):axis_k;
+         expected_p=(axis_slot&&axis_generation==1)?exp565_k(media_k):~exp565_k(media_k);expected_rgb=rgb565(expected_p);
+       end else expected_rgb=0;
        if(dut.axis_data!==expected_rgb)begin
          if(pixel_bad<4)$display("[DIAG] AXIS pixel=%0d got=%06x expected=%06x",axis_k,dut.axis_data,expected_rgb);
          pixel_bad=pixel_bad+1;
        end
-       if(dut.axis_last!==((axis_k%W)==W-1))tag_bad=tag_bad+1;
+       if(dut.axis_last!==((axis_k%SCREEN_W)==SCREEN_W-1))tag_bad=tag_bad+1;
      end
      axis_k=axis_k+1;
-     if(axis_k==FRAME_PIX)begin full_frames=full_frames+1;compare_axis=0;
+     if(axis_k==SCREEN_PIX)begin full_frames=full_frames+1;compare_axis=0;
        if(!axis_slot)new_slot_frames=new_slot_frames+1;
-       $display("[TB] checked full display frame %0d (%0d pixels), underflows=%0d",full_frames,FRAME_PIX,dut.underflows);end
+       $display("[TB] checked full display frame %0d (%0d pixels), underflows=%0d",full_frames,SCREEN_PIX,dut.underflows);end
    end
  end
  task cmp_mem(input integer base,input string name);
@@ -227,7 +236,17 @@ module tb_safevision_card_display;
      bad=bad+1;
    end
  end check(bad==0,name);end endtask
- integer before_frames;
+ integer before_frames,auto_count;
+ reg [31:0] previous_underflows=0;
+ always @(posedge dut.pixel_clk)if(dut.underflows!=previous_underflows)begin
+   previous_underflows<=dut.underflows;
+   $display("[UNDERFLOW] t=%0t fifo=%0d active=%b dma_state=%0d issued=%0d drained=%0d req=%b busy=%b ch=%0d hw=%0d wbuf=%0d wm=%0d critical=%b",$time,dut.display_fifo_level,dut.display_dma_active,dut.core.display.fetch.checked_read.dma.read_state,dut.core.display.fetch.checked_read.dma.issued_words,dut.core.display.fetch.checked_read.dma.drained_words,dut.core.rd_req,dut.core.rd_busy,dut.core.arbiter.cur_ch,dut.adapter.state,dut.adapter.wcnt,dut.core.arbitration_level,dut.core.arbiter.video_critical);
+ end
+ initial begin
+   forever begin #50000000;
+     if(rst_n)$display("[PROGRESS] card t=%0t player=%0d sink=%0d source=%0d blocks=%0d gfault=%b vCRC=%b frames=%0d",$time,dut.pl_state,dut.sk_state,dut.integrity_words,dut.integrity_blocks,dut.integrity_fault,dut.playback_fault,dut.pl_frame_cnt);
+   end
+ end
  initial begin
    check(px24(7,11)===24'h0c1222&&px24(0,1)===24'h010105&&
          px24(255,255)===24'h00fe06,
@@ -241,7 +260,7 @@ module tb_safevision_card_display;
    check(dut.sk_frame_ok,"first frame CRC accepted after memory drain and swap");
    cmp_mem(SLOT1_WORD,"slot 1 has all 153600 correct words from bottom-up BMP");
    wait(full_frames>=2);
-   check(pixel_bad==0&&tag_bad==0,"two full VGA AXIS frames: RGB and SOF/EOL pixel-exact");
+   check(pixel_bad==0&&tag_bad==0,"two full BASE/720p AXIS frames: RGB and SOF/EOL pixel-exact");
    before_frames=full_frames;
    // A second, DIFFERENT image must reach the other slot and the screen;
    // otherwise a stale buffer could pass a repeated-identical-image test.
@@ -257,9 +276,30 @@ module tb_safevision_card_display;
    check(pixel_bad==0&&tag_bad==0,"all accepted active-frame pixels and line markers match");
    check(!dut.hdmi_backpressure,"no HDMI queue overflow");
    check(dut.memory_ip.protocol_errors==0,"strict SDRAM application burst contract respected");
-   $display("CARD DISPLAY checks=%0d errors=%0d checked_frames=%0d write_bursts=%0d read_bursts=%0d publishes=%0d undrained_publishes=%0d",checks,errors,full_frames,dut.memory_ip.write_bursts,dut.memory_ip.read_bursts,publish_count,unsafe_publish);
+   @(negedge clk);btn_auto=0;
+   wait(dut.pl_frame_cnt>=3);@(negedge clk);btn_auto=1;
+   wait(!dut.btn_auto_db);
+   wait(dut.pl_frame_cnt>=4 && dut.pl_state==7);
+   check(dut.pl_frame_cnt>=4&&!dut.integrity_fault&&!dut.playback_fault,"two additional automatic frames pass readback and playback CRC");
+   check(dut.underflows==0&&dut.overflows==0&&pixel_bad==0&&tag_bad==0,"automatic swaps retain exact pixels and no underflow");
+   check(publish_count>=4&&unsafe_publish==0&&active_writes==0,"automatic mode preserves inactive-slot ownership and publication barriers");
+   // Corrupt one physical stored word AFTER publication. The runtime checker
+   // must report the bad block and the board must enter its BRAM safety scene.
+   injecting_fault=1;compare_axis=0;
+   auto_count=(dut.core.display.pix_active_slot==1)?SLOT1_WORD:0;
+   dut.memory_ip.mem[auto_count+7]=dut.memory_ip.mem[auto_count+7]^32'h00010000;
+   wait(dut.playback_fault);
+   check(dut.playback_bad_addr==auto_count*4,"runtime fault reports first corrupt block byte address");
+   wait(dut.safety_active&&dut.safety_level==2);
+   check(!dut.tx_reset&&!dut.hdmi_backpressure,"runtime CRC fault switches to red Exit without resetting HDMI");
+   // KEY1/common reset starts a new ownership/signature epoch. A complete
+   // source image must be written and checked again before normal playback.
+   @(negedge clk);rst_n=0;repeat(100)@(negedge clk);rst_n=1;
+   wait(dut.pl_frame_cnt==1);
+   check(dut.integrity_pass&&!dut.integrity_fault&&!dut.playback_fault&&dut.sk_frame_ok,"common reset recovers by re-verifying the new complete image");
+   $display("CARD DISPLAY HD=%0d SD_HALF_NS=%0d checks=%0d errors=%0d checked_frames=%0d write_bursts=%0d read_bursts=%0d publishes=%0d undrained_publishes=%0d",HD,SD_HALF_NS,checks,errors,full_frames,dut.memory_ip.write_bursts,dut.memory_ip.read_bursts,publish_count,unsafe_publish);
    if(errors)$fatal(1,"CARD DISPLAY FAILED");
    test_done=1;$display("[PASS] CARD DISPLAY PASS");$finish;
  end
- initial begin #2000000000;$fatal(1,"CARD DISPLAY watchdog: player=%0d ec=%02x sink=%0d px=%0d frames=%0d active=%b fault=%b",dut.pl_state,dut.pl_ec,dut.sk_state,dut.sk_px_written,dut.pl_frame_cnt,dut.active,dut.frame_fault);end
+ initial begin #(64'd8000000000);$fatal(1,"CARD DISPLAY watchdog: player=%0d ec=%02x sink=%0d px=%0d frames=%0d active=%b fault=%b",dut.pl_state,dut.pl_ec,dut.sk_state,dut.sk_px_written,dut.pl_frame_cnt,dut.active,dut.frame_fault);end
 endmodule

@@ -1,0 +1,252 @@
+{
+  "status": "PASS",
+  "gate_accepted": true,
+  "timing_passed": true,
+  "experimental_requested": false,
+  "global": {
+    "swns_ns": 1.563,
+    "stns_ns": 0.0,
+    "hwns_ns": 0.011,
+    "htns_ns": 0.0,
+    "period_wns_ns": 0.0
+  },
+  "health": {
+    "no clock": 0,
+    "clock definition": 2,
+    "dummy node": 4,
+    "invalid constraint": 0,
+    "pll/clock buffer clock constraints": 0,
+    "combinational loops": 0,
+    "soft fifo timing exception constraints": 0,
+    "no path constraints": 0,
+    "shadowed/ignored timing exception constraints": 0,
+    "no input delay": 6,
+    "no output delay": 14,
+    "partial input delay": 0,
+    "partial output delay": 0,
+    "abnormal input delay": 0
+  },
+  "reported_path_count": 1394,
+  "negative_path_count": 0,
+  "minima": {
+    "setup": {
+      "reported_min_ns": 1.563,
+      "non_sdram_reported_min_ns": 1.563
+    },
+    "hold": {
+      "reported_min_ns": 0.021,
+      "non_sdram_reported_min_ns": 0.021
+    },
+    "recovery": {
+      "reported_min_ns": 3.604,
+      "non_sdram_reported_min_ns": 3.604
+    },
+    "removal": {
+      "reported_min_ns": 0.011,
+      "non_sdram_reported_min_ns": 0.011
+    }
+  },
+  "groups": [
+    {
+      "name": "board_clk -> board_clk",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 4.922,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 0.021,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "system_pll/pll_inst.clkc[1] -> system_pll/pll_inst.clkc[1]",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 4.389,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 0.011,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "video_base$video_pll/pll_inst.clkc[1] -> video_base$video_pll/pll_inst.clkc[1]",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 27.146,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 0.011,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "system_pll/pll_inst.clkc[0] -> system_pll/pll_inst.clkc[0]",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 5.101,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 0.145,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "video_base$video_pll/pll_inst.clkc[2] -> video_base$video_pll/pll_inst.clkc[2]",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 5.707,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 0.153,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "system_pll/pll_inst.clkc[1] -> board_clk",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 1.563,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 0.118,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "video_base$video_pll/pll_inst.clkc[1] -> video_base$video_pll/pll_inst.clkc[2]",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 6.461,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 0.244,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "board_clk -> system_pll/pll_inst.clkc[1]",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 3.665,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 0.417,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "video_base$video_pll/pll_inst.clkc[2] -> video_base$video_pll/pll_inst.clkc[1]",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 6.598,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 0.27,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "system_pll/pll_inst.clkc[1] -> system_pll/pll_inst.clkc[2]",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 4.323,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 14.74,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    },
+    {
+      "name": "system_pll/pll_inst.clkc[2] -> system_pll/pll_inst.clkc[1]",
+      "summaries": [
+        {
+          "direction": "Max",
+          "wns_ns": 4.174,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        },
+        {
+          "direction": "Min",
+          "wns_ns": 14.677,
+          "tns_ns": 0.0,
+          "violating_endpoints": 0
+        }
+      ]
+    }
+  ],
+  "negative_paths": [],
+  "errors": [],
+  "limitation": "Classification covers reported final routed paths. An experimental SDRAM boundary exception is not timing closure, SDRAM AC validation, proof of a vendor defect, or board/HDMI acceptance.",
+  "reports": [
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\integrity_sta_reserved_20261010\\base\\route.timing",
+      "sha256": "fbf476b35c984a3843d066db041a371f8d9513a4d4ab8b2410b64838b01309b2"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\integrity_sta_reserved_20261010\\base\\route.check",
+      "sha256": "439eefc85fcdfbc4375d68f2552c34ee2d7fa5c2968c14105100dcb325812d57"
+    }
+  ],
+  "checked_at_utc": "2026-10-09T17:13:45.392250+00:00"
+}

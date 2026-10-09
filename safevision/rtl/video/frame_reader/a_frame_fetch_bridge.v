@@ -1,7 +1,7 @@
 // Pixel vblank -> stable base mailbox -> mem DMA -> official async pixel FIFO.
 // Each new frame discards old prefetched pixels. Quiesce the external B read
 // channel BEFORE resetting FIFO/DMA; shared arbiter and SDRAM are not reset.
-module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_STREAMING=0)(
+module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_STREAMING=0,DMA_CHECKED=0)(
     input wire pixel_clk,pixel_rst_n,mem_clk,mem_rst_n,
     input wire frame_start,frame_enable,input wire [31:0] frame_base,
     output wire rd_req,output wire [31:0] rd_addr,output wire [15:0] rd_len,
@@ -10,7 +10,9 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_ST
     output wire fifo_almost_empty,output wire [FIFO_AW:0] fifo_rd_pixels,
     output wire stream_armed,output wire [15:0] fifo_mem_pixels,
     output reg [31:0] missed_frame_count,overflow_count,output wire [31:0] dma_bytes,
-    output wire dma_active,dma_done,output wire [2:0] fetch_state
+    output wire dma_active,dma_done,output wire [2:0] fetch_state,
+    input wire [31:0] expected_crc,input wire expected_valid,
+    output wire [31:0] crc_lookup_addr,bad_addr,bad_expected,bad_actual,output wire integrity_fault
 );
     localparam integer CAPACITY=2*((1<<FIFO_AW)-1);
     // A 720p line consumes its 640 media pixels faster than memory supplies
@@ -96,12 +98,24 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_ST
     assign fifo_mem_pixels=guarded_level;
     assign fetch_state=state;
     assign rd_req=dma_req && state==RUN;
+    assign crc_lookup_addr=rd_addr;
+    generate if(DMA_CHECKED)begin: checked_read
+    video_read_dma_checked #(.BURST_WORDS(BURST_WORDS),.PIX_DEPTH(CAPACITY),.LOW_WATER(LOW_WATER)) dma(
+      .clk(mem_clk),.rst_n(dma_reset_n),.start(state==LAUNCH),.frame_base(mem_base),
+      .pix_fifo_level(guarded_level),.rd_req(dma_req),.rd_addr(rd_addr),.rd_len(rd_len),
+      .rd_ack(rd_ack),.rd_busy(rd_busy),.rd_data(response_data),.rd_data_valid(response_valid),
+      .fifo_wr_data(dma_pixel),.fifo_wr_en(dma_we),.rd_bytes_cnt(dma_bytes),
+      .active(dma_active),.done(dma_done),.expected_crc(expected_crc),.expected_valid(expected_valid),
+      .fault(integrity_fault),.bad_addr(bad_addr),.bad_expected(bad_expected),.bad_actual(bad_actual));
+    end else begin: legacy_read
     video_read_dma #(.BURST_WORDS(BURST_WORDS),.PIX_DEPTH(CAPACITY),.LOW_WATER(LOW_WATER),.STREAMING(DMA_STREAMING)) dma(
       .clk(mem_clk),.rst_n(dma_reset_n),.start(state==LAUNCH),.frame_base(mem_base),
       .pix_fifo_level(guarded_level),.rd_req(dma_req),.rd_addr(rd_addr),.rd_len(rd_len),
       .rd_ack(rd_ack),.rd_busy(rd_busy),.rd_data(response_data),.rd_data_valid(response_valid),
       .fifo_wr_data(dma_pixel),.fifo_wr_en(dma_we),.rd_bytes_cnt(dma_bytes),
       .active(dma_active),.done(dma_done));
+    assign integrity_fault=0;assign bad_addr=0;assign bad_expected=0;assign bad_actual=0;
+    end endgenerate
     pixel_word_packer packer(.clk(mem_clk),.rst_n(mem_local_reset_n&&!fifo_reset),
       .pixel(dma_pixel),.valid(dma_we&&state==RUN),.ready(packer_ready),
       .word_data(packed_word),.word_valid(packed_valid),.word_ready(fifo_ready),.pending(half_pending));

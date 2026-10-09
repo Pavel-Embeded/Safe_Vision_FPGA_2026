@@ -474,6 +474,22 @@
                     <Attr Name="CompileOrder" Val="58" />
                 </FileInfo>
             </File>
+            <File Path="../../../rtl/memory/frame_integrity_guard.v">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true" />
+                    <Attr Name="UsedInP&R" Val="true" />
+                    <Attr Name="BelongTo" Val="design_1" />
+                    <Attr Name="CompileOrder" Val="59" />
+                </FileInfo>
+            </File>
+            <File Path="../../../rtl/memory/video_read_dma_checked.v">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true" />
+                    <Attr Name="UsedInP&R" Val="true" />
+                    <Attr Name="BelongTo" Val="design_1" />
+                    <Attr Name="CompileOrder" Val="60" />
+                </FileInfo>
+            </File>
         </Verilog>
         <ADC_FILE>
             <File Path="board_verify/board_b.adc">

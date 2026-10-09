@@ -1,0 +1,103 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 01:13:45 2026
+# Process ID: 38528
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/checked_card_hd_reserved_final_20261010/card
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/checked_card_hd_reserved_final_20261010/card/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/checked_card_hd_reserved_final_20261010/card\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] independent 8-bit RGB pattern samples include x/y and all channels
+[PASS] row/column high bits remain distinct after RGB565 quantization
+[PASS] FAT32 indexed four files at 50 MHz
+[PROGRESS] card t=50000000000 player=8 sink=1 source=101240 blocks=0 gfault=0 vCRC=0 frames=0
+[PASS] card owns producer after first frame
+[PASS] first frame CRC accepted after memory drain and swap
+[PASS] slot 1 has all 153600 correct words from bottom-up BMP
+[PROGRESS] card t=100000000000 player=7 sink=0 source=153600 blocks=2400 gfault=0 vCRC=0 frames=1
+[TB] checked full display frame 1 (921600 pixels), underflows=0
+[TB] checked full display frame 2 (921600 pixels), underflows=0
+[PASS] two full BASE/720p AXIS frames: RGB and SOF/EOL pixel-exact
+[PROGRESS] card t=150000000000 player=8 sink=1 source=1121 blocks=0 gfault=0 vCRC=0 frames=1
+[TB] checked full display frame 3 (921600 pixels), underflows=0
+[TB] checked full display frame 4 (921600 pixels), underflows=0
+[TB] checked full display frame 5 (921600 pixels), underflows=0
+[PROGRESS] card t=200000000000 player=8 sink=1 source=45812 blocks=0 gfault=0 vCRC=0 frames=1
+[TB] checked full display frame 6 (921600 pixels), underflows=0
+[TB] checked full display frame 7 (921600 pixels), underflows=0
+[TB] checked full display frame 8 (921600 pixels), underflows=0
+[PROGRESS] card t=250000000000 player=8 sink=1 source=90416 blocks=0 gfault=0 vCRC=0 frames=1
+[TB] checked full display frame 9 (921600 pixels), underflows=0
+[TB] checked full display frame 10 (921600 pixels), underflows=0
+[TB] checked full display frame 11 (921600 pixels), underflows=0
+[PROGRESS] card t=300000000000 player=8 sink=1 source=135016 blocks=0 gfault=0 vCRC=0 frames=1
+[TB] checked full display frame 12 (921600 pixels), underflows=0
+[TB] checked full display frame 13 (921600 pixels), underflows=0
+[TB] checked full display frame 14 (921600 pixels), underflows=0
+[PASS] slot 0 has all 153600 correct words after next-button frame
+[PROGRESS] card t=350000000000 player=7 sink=0 source=153600 blocks=2400 gfault=0 vCRC=0 frames=2
+[TB] checked full display frame 15 (921600 pixels), underflows=0
+[TB] checked full display frame 16 (921600 pixels), underflows=0
+[PASS] no player or sink error on two physical-rate card frames
+[PASS] exactly two frame events, both after physical write drain
+[PASS] displayed slot never overwritten by card producer
+[PASS] no display underflow, FIFO overflow or frame fault
+[PASS] all accepted active-frame pixels and line markers match
+[PASS] no HDMI queue overflow
+[PASS] strict SDRAM application burst contract respected
+[TB] checked full display frame 17 (921600 pixels), underflows=0
+[PROGRESS] card t=400000000000 player=8 sink=1 source=16046 blocks=0 gfault=0 vCRC=0 frames=2
+[TB] checked full display frame 18 (921600 pixels), underflows=0
+[TB] checked full display frame 19 (921600 pixels), underflows=0
+[TB] checked full display frame 20 (921600 pixels), underflows=0
+[PROGRESS] card t=450000000000 player=8 sink=1 source=60652 blocks=0 gfault=0 vCRC=0 frames=2
+[TB] checked full display frame 21 (921600 pixels), underflows=0
+[TB] checked full display frame 22 (921600 pixels), underflows=0
+[TB] checked full display frame 23 (921600 pixels), underflows=0
+[PROGRESS] card t=500000000000 player=8 sink=1 source=105333 blocks=0 gfault=0 vCRC=0 frames=2
+[TB] checked full display frame 24 (921600 pixels), underflows=0
+[TB] checked full display frame 25 (921600 pixels), underflows=0
+[TB] checked full display frame 26 (921600 pixels), underflows=0
+[PROGRESS] card t=550000000000 player=8 sink=1 source=149941 blocks=0 gfault=0 vCRC=0 frames=2
+[TB] checked full display frame 27 (921600 pixels), underflows=0
+[TB] checked full display frame 28 (921600 pixels), underflows=0
+[TB] checked full display frame 29 (921600 pixels), underflows=0
+[PROGRESS] card t=600000000000 player=8 sink=1 source=16309 blocks=0 gfault=0 vCRC=0 frames=3
+[TB] checked full display frame 30 (921600 pixels), underflows=0
+[TB] checked full display frame 31 (921600 pixels), underflows=0
+[TB] checked full display frame 32 (921600 pixels), underflows=0
+[PROGRESS] card t=650000000000 player=8 sink=1 source=60915 blocks=0 gfault=0 vCRC=0 frames=3
+[TB] checked full display frame 33 (921600 pixels), underflows=0
+[TB] checked full display frame 34 (921600 pixels), underflows=0
+[TB] checked full display frame 35 (921600 pixels), underflows=0
+[PROGRESS] card t=700000000000 player=8 sink=1 source=105605 blocks=0 gfault=0 vCRC=0 frames=3
+[TB] checked full display frame 36 (921600 pixels), underflows=0
+[TB] checked full display frame 37 (921600 pixels), underflows=0
+[TB] checked full display frame 38 (921600 pixels), underflows=0
+[PROGRESS] card t=750000000000 player=8 sink=1 source=150177 blocks=0 gfault=0 vCRC=0 frames=3
+[TB] checked full display frame 39 (921600 pixels), underflows=0
+[TB] checked full display frame 40 (921600 pixels), underflows=0
+[PASS] two additional automatic frames pass readback and playback CRC
+[PASS] automatic swaps retain exact pixels and no underflow
+[PASS] automatic mode preserves inactive-slot ownership and publication barriers
+[PASS] runtime fault reports first corrupt block byte address
+[UNDERFLOW] t=786003611000 fifo=4 active=0 dma_state=3 issued=0 drained=0 req=0 busy=0 ch=1 hw=0 wbuf=0 wm=65535 critical=0
+[PASS] runtime CRC fault switches to red Exit without resetting HDMI
+[UNDERFLOW] t=799332622000 fifo=0 active=0 dma_state=0 issued=0 drained=0 req=0 busy=0 ch=0 hw=0 wbuf=0 wm=65535 critical=0
+[PROGRESS] card t=800000000000 player=8 sink=1 source=1121 blocks=0 gfault=0 vCRC=0 frames=0
+[PROGRESS] card t=850000000000 player=8 sink=1 source=102637 blocks=0 gfault=0 vCRC=0 frames=0
+[PASS] common reset recovers by re-verifying the new complete image
+CARD DISPLAY HD=1 SD_HALF_NS=1 checks=21 errors=0 checked_frames=40 write_bursts=93696 read_bursts=441604 publishes=5 undrained_publishes=0
+[PASS] CARD DISPLAY PASS
+$finish called at time : 898666245 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_safevision_card_display.sv" Line 302
+run: Time (s): cpu = 00:00:01 ; elapsed = 00:55:09 . Memory (MB): peak = 219.496 ; gain = 0.000
+## quit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 02:08:57 2026...

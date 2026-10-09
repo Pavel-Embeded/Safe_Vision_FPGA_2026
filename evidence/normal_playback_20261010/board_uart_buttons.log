@@ -1,0 +1,79 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 00:48:16 2026
+# Process ID: 44284
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/integrity_uart_20261010/top
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/integrity_uart_20261010/top/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/integrity_uart_20261010/top\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[TB] T1: reset -> PLL lock + SDRAM init (led[0])
+[PASS] T1a) led[0]=1 (sys/video PLL locked + SDRAM init done)
+[TB] T2: UART status line format + fields (card unusable)
+[PASS] T2a) status line is exactly 107 bytes
+[PASS] T2b) status line ends with CRLF
+[PASS] T2c) status line starts with 'SV-PLAY'
+[PASS] T2d) status line has ' ST=' field
+[PASS] T2e) status line has ' SD=' field
+[PASS] T2f) status line has ' CARD=' field
+[PASS] T2g) status line has ' RD=' field
+[PASS] T2h) status line has ' PX=' field (from sink)
+[PASS] T2i) status line has ' F=' field (from sink)
+[PASS] T2j) status line has ' SLOT=' field (from sink)
+[PASS] T2k) status line has ' CRC=' field (from sink)
+[PASS] T2l) status line has ' ED=' field (err_detail)
+[PASS] T2m) ED= field carries two hex digits
+[PASS] T2n) status line has ' R1=' field (SD R1 byte)
+[PASS] T2o) status line has ' SQ=' field (SD command index)
+[PASS] T3a) SD=0 with an unusable card
+[PASS] T3b) CARD=0 with an unusable card
+[PASS] UART integrity line has 82 bytes and CRLF
+[PASS] UART carries exact integrity build ID
+[PASS] UART snapshot phase matches packet start
+[PASS] UART bad address retains packet snapshot
+[PASS] UART expected CRC retains packet snapshot
+[PASS] UART actual CRC retains packet snapshot
+[TB] T4: fallback takes over when the card never becomes usable
+[PASS] T4a) card_mode fell back to 0 (card unusable)
+[PASS] T4b) fallback pattern was written and submitted
+[PASS] T4c) led[1]=1 (fallback frame available + CRC ok)
+[PASS] T4d) fallback swap event reached the core sys domain
+[PASS] T4e) card path never produced a frame (frame_cnt=0)
+[TB] T5: HDMI AXI-Stream is alive
+[PASS] T5a) transmitter reports video_locked
+[PASS] T5b) HDMI AXI-Stream beats are flowing (display chain alive)
+[PASS] T5c) line 'last' beats are flowing (timing generator alive)
+[PASS] T5d) no HDMI backpressure fault latched
+[TB] T6: button debounce runs in the player's 50 MHz domain
+[PASS] T6a) next-button idle low (released != pressed)
+[PASS] T6b) auto-play idle low
+[PASS] T6c) debounced press level asserted
+[PASS] T6d) debounce took ~65536 clk cycles (it really runs on the 50 MHz domain)
+[PASS] T6e) next-button produced a press pulse
+[PASS] T6f) auto-play produced a held level
+[PASS] T6g) next-button stays low while held (one-shot pulse, not a level)
+[PASS] T6h) auto-play stays high while held (level)
+[TB] T7: swap commit reaches the display (pending -> active)
+[PASS] T7a) swap request reached pixel-domain commit (pending set)
+[PASS] T7b) display activated (active=1) within 2 video frames
+[PASS] T7c) led[2]=1 (picture active, no swap error)
+[TB] T7 info: active=1 after 599212 clk (vs_pulses=3 swap_error=0 frame_fault=0)
+[TB] T8: SD init auto-retry settle window (defect 26)
+[TB] T8 info: retries seen=22, bad init_arm on entry=0
+[PASS] T8a) SD init failure did go through the auto-retry path
+[PASS] T8b) init_arm was cleared on every retry entry (defect 26)
+============================================
+  SAFEVISION-TOP PASS (0 error)
+============================================
+$finish called at time : 48600650 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_safevision_top.sv" Line 367
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:33 . Memory (MB): peak = 219.574 ; gain = 0.000
+## quit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 00:48:53 2026...

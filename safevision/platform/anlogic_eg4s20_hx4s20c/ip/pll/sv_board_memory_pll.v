@@ -1,6 +1,6 @@
 // Board memory timing profile derived from the TD-generated system PLL.
-// Same 50MHz reference, 1GHz VCO and 100MHz SYS; MEM=50MHz, SDRAM=50MHz
-// with its rising edge 8ns after MEM (144 degrees). CPHASE=7 is verified
+// Same 50MHz reference, 1GHz VCO and 100MHz SYS; MEM=40MHz, SDRAM=40MHz
+// with its rising edge 10ns after MEM (144 degrees). CPHASE=9 is verified
 // by TD derive_clocks, not inferred from the IP GUI label. All SDRAM setup/
 // hold paths remain timed. The original 125MHz PLL is retained for lab tops.
 `timescale 1 ns / 100 fs
@@ -55,12 +55,12 @@ module sv_board_memory_pll (
     .CLKC0_CPHASE(9),
     .CLKC0_FPHASE(0),
     .CLKC1_ENABLE("ENABLE"),
-    .CLKC1_DIV(20),
-    .CLKC1_CPHASE(19),
+    .CLKC1_DIV(25),
+    .CLKC1_CPHASE(24),
     .CLKC1_FPHASE(0),
     .CLKC2_ENABLE("ENABLE"),
-    .CLKC2_DIV(20),
-    .CLKC2_CPHASE(7),
+    .CLKC2_DIV(25),
+    .CLKC2_CPHASE(9),
     .CLKC2_FPHASE(0)
   ) pll_inst (
     .refclk(refclk),

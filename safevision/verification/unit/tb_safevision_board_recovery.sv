@@ -8,7 +8,7 @@ module tb_safevision_board_recovery;
  reg rst_n=0;
  wire uart_txd;wire [3:0] led;wire cs,sclk,mosi,d0,d1,d2,dc,ddc;
  wire sda;
- safevision_top #(.HD(0),.MODE_TO_N(32'd100),.RPT_PERIOD_N(32'd1000000),
+ safevision_top #(.STORAGE_INTEGRITY(0),.HD(0),.MODE_TO_N(32'd100),.RPT_PERIOD_N(32'd1000000),
    .FONT_FILE("font8x16.mem")) dut(
    .clk(clk),.rst_n(rst_n),.btn_next(1'b1),.btn_auto(1'b1),.btn_emergency(1'b1),
    .uart_txd(uart_txd),.led(led),.sd_ncs(cs),.sd_dclk(sclk),.sd_mosi(mosi),

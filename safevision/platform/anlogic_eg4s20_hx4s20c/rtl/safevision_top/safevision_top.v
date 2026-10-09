@@ -38,7 +38,8 @@
 //     EC 报"有效错误码"——sink 报错时优先报 sink 的（否则板上只看得到 E3）。
 // ★ 本文件不生成位流；由 tools/run_board_sta.ps1 控制（默认关）。
 // ============================================================================
-`define SAFEVISION_SDRAM_CLK_HZ 50000000
+`define SAFEVISION_SDRAM_CLK_HZ 40000000
+`define SAFEVISION_REFRESH_ROWS 4096
 `include "pixel_format_defs.vh"
 // Default video mode; the TD flow overrides it with -define SAFEVISION_BOARD_HD.
 `ifndef SAFEVISION_BOARD_HD
@@ -46,7 +47,7 @@
 `endif
 module safevision_top #(
     parameter integer HD = `SAFEVISION_BOARD_HD,
-    parameter integer MEM_CLK_HZ = 50000000,
+    parameter integer MEM_CLK_HZ = 40000000,
     // ★ 合并 origin/main 后：字体路径用对方的（相对工程路径，A 侧改动），
     //   同时保留本轮新增的两个"可测性参数"（MODE_TO_N / RPT_PERIOD_N）——两者正交。
     parameter FONT_FILE = "font8x16.mem",
@@ -57,7 +58,8 @@ module safevision_top #(
     //   仿真里等 500 ms 太贵。TD 流程不覆盖它 ⇒ 综合结果与原来完全一致。
     parameter [31:0] RPT_PERIOD_N = MEM_CLK_HZ/2,
     parameter [15:0] PLAYER_SPI_INIT_DIV=16'd249,
-    parameter [15:0] PLAYER_SPI_FAST_DIV=16'd0
+    parameter [15:0] PLAYER_SPI_FAST_DIV=16'd1,
+    parameter integer STORAGE_INTEGRITY=1
 )(
     // ---- 板级引脚（引脚号见 project/board_verify/board_b.adc）----
     input  wire        clk,             // R7  50 MHz
@@ -196,6 +198,23 @@ module safevision_top #(
     wire [15:0] pl_frame_cnt;
 
     // ---- 帧接收器（mem_clk = 50 MHz 域）----
+    wire integrity_begin,integrity_top_down,integrity_done,integrity_pass,integrity_fault;
+    wire [1:0] integrity_slot;
+    wire verify_req,verify_ack,verify_busy,verify_valid;
+    wire [31:0] verify_addr,verify_data,lookup_addr,lookup_crc;
+    wire lookup_valid,video_integrity_fault;
+    wire [31:0] integrity_bad_addr,integrity_expected,integrity_actual;
+    wire [31:0] video_bad_addr,video_expected,video_actual,integrity_words;
+    wire [15:0] integrity_blocks,display_fifo_level;
+    wire display_dma_active;
+    reg playback_fault;
+    reg [31:0] playback_bad_addr,playback_expected,playback_actual;
+    always @(posedge mem_clk or negedge mem_rst_n)
+        if(!mem_rst_n)begin playback_fault<=0;playback_bad_addr<=0;playback_expected<=0;playback_actual<=0;end
+        else if(video_integrity_fault&&!playback_fault)begin
+            playback_fault<=1;playback_bad_addr<=video_bad_addr;
+            playback_expected<=video_expected;playback_actual<=video_actual;
+        end
     wire        sk_wr_req;
     wire [31:0] sk_wr_addr, sk_wr_data;
     wire [15:0] sk_wr_len;
@@ -291,7 +310,7 @@ module safevision_top #(
         .px_word(pl_px_word), .px_word_valid(pl_px_word_valid),
         .px_word_ready(pl_px_word_ready),
         .frame_active(pl_frame_active), .top_down_o(pl_top_down), .slot_o(pl_slot),
-        .mem_ready(sk_mem_ready && card_mode && adapter_init && !swap_fault_latched && (sk_ec != 8'hF1)), .frame_done(sk_frame_done),
+        .mem_ready(sk_mem_ready && card_mode && adapter_init && !(STORAGE_INTEGRITY && (integrity_fault || playback_fault)) && !swap_fault_latched && (sk_ec != 8'hF1)), .frame_done(sk_frame_done),
         .last_frame_ok(sk_frame_ok),
         .state_o(pl_state), .fail_stage(pl_fail_stage),
         .err_code(pl_ec), .err_detail(pl_ed),
@@ -308,7 +327,8 @@ module safevision_top #(
     //   ★ swap_busy 用 `swap_busy_mem`（已从 sys 域两级同步进 mem 域）：
     //     core 的 frame_swap_ctrl 跑在 **sys_clk**（见 frame_swap_ctrl.v 头注），
     //     所以不能把 `swap_state_o` 直接接进来（那是 sys→mem 的 CDC）✗
-    bmp_frame_sink #(.REQUIRE_WRITE_DRAIN(1)) sink (
+    bmp_frame_sink #(.REQUIRE_WRITE_DRAIN(1),.REQUIRE_READBACK(STORAGE_INTEGRITY),
+        .GAP_TIMEOUT(MEM_CLK_HZ/250),.SWAP_TO_N(MEM_CLK_HZ/10),.WRITE_TO_N(MEM_CLK_HZ/2)) sink (
         .clk(mem_clk), .rst_n(mem_rst_n), .wr_clk(clk),
         .px_word(pl_px_word), .px_word_valid(pl_px_word_valid),
         .px_word_ready(pl_px_word_ready),
@@ -318,6 +338,8 @@ module safevision_top #(
         .wr_req(sk_wr_req), .wr_addr(sk_wr_addr), .wr_data(sk_wr_data),
         .wr_len(sk_wr_len), .wr_ready(prod_word_accepted && card_mode),
         .write_drained(adapter_write_idle && !prod_wr_busy),
+        .verify_done(integrity_done),.verify_pass(integrity_pass),
+        .source_begin(integrity_begin),.source_slot(integrity_slot),.source_top_down(integrity_top_down),
         .swap_toggle(sk_swap_toggle), .swap_slot(sk_swap_slot),
         .swap_generation(sk_swap_gen), .swap_crc_ok(sk_swap_crc_ok),
         .swap_busy(swap_busy_mem),
@@ -477,7 +499,7 @@ module safevision_top #(
             // Never switch away from a writer while it owns an in-flight frame.
             if (t_card && !fb_go) begin card_mode <= 1'b1; mode_cnt <= 32'd0; end
             else if (card_mode && !fb_go && t_fcnt16 == 16'd0) begin
-                if (mode_cnt >= MODE_TO_N) card_mode <= 1'b0;      // 超时 → 回落
+                if (!STORAGE_INTEGRITY && mode_cnt >= MODE_TO_N) card_mode <= 1'b0;      // 超时 → 回落
                 else mode_cnt <= mode_cnt + 32'd1;
             end
         end
@@ -551,7 +573,7 @@ module safevision_top #(
         if(!ref_rst_n)media_fault_ref<=0;else media_fault_ref<=(pl_state==4'd10);
     always @(posedge mem_clk or negedge mem_rst_n)
         if(!mem_rst_n)storage_fault_mem<=0;
-        else storage_fault_mem<=memory_error||adapter_fault||swap_fault_latched||fb_wr_error||(sk_ec!=0);
+        else storage_fault_mem<=memory_error||adapter_fault||(STORAGE_INTEGRITY&&(integrity_fault||playback_fault))||swap_fault_latched||fb_wr_error||(sk_ec!=0);
     board_display_guard display_guard(
         .pixel_clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(scan_frame_start),
         .active_frame(active),.frame_fault(frame_fault),
@@ -563,7 +585,20 @@ module safevision_top #(
         .x(scan_x),.y(scan_y),.active(safety_active),.direction(2'd2),
         .warning_level(safety_level),.rgb(safety_rgb),.valid(safety_valid));
 
-    safevision_core #(.HD(HD), .FONT_FILE(FONT_FILE),.EMERGENCY_LATENCY(4),.DMA_STREAMING(1),.FIFO_AW(12),.BURST_WORDS(256)) core(
+    frame_integrity_guard #(.TIMEOUT(MEM_CLK_HZ)) integrity(
+        .clk(mem_clk),.rst_n(mem_rst_n),.frame_begin(integrity_begin),.frame_slot(integrity_slot),
+        .top_down(integrity_top_down),.accepted(prod_word_accepted&&card_mode),
+        .write_addr(prod_wr_addr),.write_data(prod_wr_data),
+        .verify_start(STORAGE_INTEGRITY && sk_state==4 && adapter_write_idle && !prod_wr_busy),
+        .verify_allow(!display_dma_active || display_fifo_level>=16'd3000),
+        .verify_done(integrity_done),.verify_pass(integrity_pass),.fault(integrity_fault),
+        .rd_req(verify_req),.rd_addr(verify_addr),.rd_len(),.rd_ack(verify_ack),.rd_busy(verify_busy),
+        .rd_data(verify_data),.rd_valid(verify_valid),.lookup_addr(lookup_addr),
+        .lookup_crc(lookup_crc),.lookup_valid(lookup_valid),.bad_addr(integrity_bad_addr),
+        .bad_expected(integrity_expected),.bad_actual(integrity_actual),
+        .source_words(integrity_words),.checked_blocks(integrity_blocks));
+
+    safevision_core #(.HD(HD), .FONT_FILE(FONT_FILE),.EMERGENCY_LATENCY(4),.DMA_STREAMING(1),.DMA_CHECKED(STORAGE_INTEGRITY),.FIFO_AW(STORAGE_INTEGRITY?11:12),.BURST_WORDS(STORAGE_INTEGRITY?64:256)) core(
         .sys_clk(sys_clk), .mem_clk(mem_clk), .pixel_clk(pixel_clk), .rst_n(common_rst_n),
         .frame_ready(frame_ready), .wr_frame_index(1'b0), .wr_slot_id(slot_sys),
         .wr_generation(gen_sys), .wr_crc_ok(crc_sys),
@@ -572,8 +607,8 @@ module safevision_top #(
         .frame_start_evt_b(), .swap_ack_evt_b(),
         .wr_req(prod_wr_req), .wr_addr(prod_wr_addr), .wr_data(prod_wr_data),
         .wr_len(prod_wr_len), .wr_ack(prod_wr_ack), .wr_busy(prod_wr_busy),
-        .sd_req(1'b0), .sd_wr(1'b0), .sd_addr(32'd0), .sd_wdata(32'd0), .sd_len(16'd0),
-        .sd_ack(), .sd_busy(), .sd_rdata(), .sd_rdata_valid(),
+        .sd_req(verify_req&&STORAGE_INTEGRITY), .sd_wr(1'b0), .sd_addr(verify_addr), .sd_wdata(32'd0), .sd_len(16'd64),
+        .sd_ack(verify_ack), .sd_busy(verify_busy), .sd_rdata(verify_data), .sd_rdata_valid(verify_valid),
         .mem_req(mem_req), .mem_wr(mem_wr), .mem_addr(mem_addr),
         .mem_wdata(mem_wdata), .mem_wstrb(mem_wstrb),
         .mem_ready(mem_ready), .mem_rdata(mem_rdata), .mem_rdata_valid(mem_rvalid),
@@ -589,8 +624,9 @@ module safevision_top #(
         .pix_generation(), .pix_frame_index(), .pix_active_valid(active),
         .pix_frame_fault(frame_fault), .pix_underflow_count(underflows),
         .pix_missed_frame_count(missed), .mem_overflow_count(overflows),
-        .mem_fifo_pixels(), .mem_dma_bytes(), .mem_dma_active(), .mem_dma_done(),
-        .mem_fetch_state());
+        .mem_fifo_pixels(display_fifo_level), .mem_dma_bytes(), .mem_dma_active(display_dma_active), .mem_dma_done(),
+        .mem_fetch_state(),.expected_crc(lookup_crc),.expected_valid(lookup_valid),.crc_lookup_addr(lookup_addr),
+        .integrity_fault(video_integrity_fault),.bad_addr(video_bad_addr),.bad_expected(video_expected),.bad_actual(video_actual));
 
     // sys → mem：换帧进行中（单 bit 两级同步）
     wire swap_busy_sys = (swap_state != 3'd0);
@@ -685,9 +721,14 @@ module safevision_top #(
     //   ★ 每字节分两步（先算进寄存器、再送），避免把一个大 mux 直接压在
     //     UART 握手路径上（既有踩坑：报告选择器曾是最差路径）。
     // ========================================================================
-    localparam integer RPT_LEN    = 107;
+    localparam integer RPT_LEN    = 189;
     localparam [31:0]  RPT_PERIOD = RPT_PERIOD_N;          // 见模块 parameter 注释
 
+    // Snapshot integrity diagnostics at packet start. PH: 0 writing/idle,
+    // 1 readback, 2 approved, 3 source/readback fault, 4 playback CRC fault.
+    reg [3:0] diagnostic_phase;
+    reg [31:0] diagnostic_addr,diagnostic_expected,diagnostic_actual,diagnostic_words;
+    reg [15:0] diagnostic_blocks;
     reg [7:0]  ridx;
     reg [31:0] rper;
     reg        rbusy, rload;
@@ -703,10 +744,17 @@ module safevision_top #(
         if (!mem_rst_n) begin
             ridx <= 8'd0; rper <= 32'd0; rbusy <= 1'b0; rload <= 1'b0; rbyte <= 8'd0;
             rwait <= 1'b0;
+            diagnostic_phase<=0;diagnostic_addr<=0;diagnostic_expected<=0;
+            diagnostic_actual<=0;diagnostic_words<=0;diagnostic_blocks<=0;
         end else begin
             if (!rbusy) begin
                 if (rper >= RPT_PERIOD) begin
                     rper <= 32'd0; rbusy <= 1'b1; ridx <= 8'd0; rload <= 1'b1;
+                    diagnostic_phase<=playback_fault?4:integrity_fault?3:integrity_pass?2:sk_state==4?1:0;
+                    diagnostic_addr<=playback_fault?playback_bad_addr:integrity_bad_addr;
+                    diagnostic_expected<=playback_fault?playback_expected:integrity_expected;
+                    diagnostic_actual<=playback_fault?playback_actual:integrity_actual;
+                    diagnostic_words<=integrity_words;diagnostic_blocks<=integrity_blocks;
                 end else rper <= rper + 32'd1;
             end else if (rload) begin
                 // ★ 时序（mem→mem 多米诺，2026-10-06）：ridx 刚更新后**故意等 1 拍**
@@ -795,6 +843,88 @@ module safevision_top #(
             8'd103: rbyte_c = 8'h3D;                                          // " SQ="
             8'd104: rbyte_c = hexc({1'b0, t_seq});
             8'd105: rbyte_c = 8'h0D; 8'd106: rbyte_c = 8'h0A;                 // CRLF
+            8'd107: rbyte_c = 8'h53;
+            8'd108: rbyte_c = 8'h56;
+            8'd109: rbyte_c = 8'h2d;
+            8'd110: rbyte_c = 8'h4d;
+            8'd111: rbyte_c = 8'h45;
+            8'd112: rbyte_c = 8'h4d;
+            8'd113: rbyte_c = 8'h20;
+            8'd114: rbyte_c = 8'h49;
+            8'd115: rbyte_c = 8'h44;
+            8'd116: rbyte_c = 8'h3d;
+            8'd117: rbyte_c = 8'h32;
+            8'd118: rbyte_c = 8'h36;
+            8'd119: rbyte_c = 8'h31;
+            8'd120: rbyte_c = 8'h30;
+            8'd121: rbyte_c = 8'h31;
+            8'd122: rbyte_c = 8'h30;
+            8'd123: rbyte_c = 8'h30;
+            8'd124: rbyte_c = 8'h31;
+            8'd125: rbyte_c = 8'h20;
+            8'd126: rbyte_c = 8'h50;
+            8'd127: rbyte_c = 8'h48;
+            8'd128: rbyte_c = 8'h3d;
+            8'd129: rbyte_c = hexc(diagnostic_phase[3:0]);
+            8'd130: rbyte_c = 8'h20;
+            8'd131: rbyte_c = 8'h42;
+            8'd132: rbyte_c = 8'h41;
+            8'd133: rbyte_c = 8'h44;
+            8'd134: rbyte_c = 8'h3d;
+            8'd135: rbyte_c = hexc(diagnostic_addr[31:28]);
+            8'd136: rbyte_c = hexc(diagnostic_addr[27:24]);
+            8'd137: rbyte_c = hexc(diagnostic_addr[23:20]);
+            8'd138: rbyte_c = hexc(diagnostic_addr[19:16]);
+            8'd139: rbyte_c = hexc(diagnostic_addr[15:12]);
+            8'd140: rbyte_c = hexc(diagnostic_addr[11:8]);
+            8'd141: rbyte_c = hexc(diagnostic_addr[7:4]);
+            8'd142: rbyte_c = hexc(diagnostic_addr[3:0]);
+            8'd143: rbyte_c = 8'h20;
+            8'd144: rbyte_c = 8'h45;
+            8'd145: rbyte_c = 8'h58;
+            8'd146: rbyte_c = 8'h50;
+            8'd147: rbyte_c = 8'h3d;
+            8'd148: rbyte_c = hexc(diagnostic_expected[31:28]);
+            8'd149: rbyte_c = hexc(diagnostic_expected[27:24]);
+            8'd150: rbyte_c = hexc(diagnostic_expected[23:20]);
+            8'd151: rbyte_c = hexc(diagnostic_expected[19:16]);
+            8'd152: rbyte_c = hexc(diagnostic_expected[15:12]);
+            8'd153: rbyte_c = hexc(diagnostic_expected[11:8]);
+            8'd154: rbyte_c = hexc(diagnostic_expected[7:4]);
+            8'd155: rbyte_c = hexc(diagnostic_expected[3:0]);
+            8'd156: rbyte_c = 8'h20;
+            8'd157: rbyte_c = 8'h47;
+            8'd158: rbyte_c = 8'h4f;
+            8'd159: rbyte_c = 8'h54;
+            8'd160: rbyte_c = 8'h3d;
+            8'd161: rbyte_c = hexc(diagnostic_actual[31:28]);
+            8'd162: rbyte_c = hexc(diagnostic_actual[27:24]);
+            8'd163: rbyte_c = hexc(diagnostic_actual[23:20]);
+            8'd164: rbyte_c = hexc(diagnostic_actual[19:16]);
+            8'd165: rbyte_c = hexc(diagnostic_actual[15:12]);
+            8'd166: rbyte_c = hexc(diagnostic_actual[11:8]);
+            8'd167: rbyte_c = hexc(diagnostic_actual[7:4]);
+            8'd168: rbyte_c = hexc(diagnostic_actual[3:0]);
+            8'd169: rbyte_c = 8'h20;
+            8'd170: rbyte_c = 8'h57;
+            8'd171: rbyte_c = 8'h3d;
+            8'd172: rbyte_c = hexc(diagnostic_words[31:28]);
+            8'd173: rbyte_c = hexc(diagnostic_words[27:24]);
+            8'd174: rbyte_c = hexc(diagnostic_words[23:20]);
+            8'd175: rbyte_c = hexc(diagnostic_words[19:16]);
+            8'd176: rbyte_c = hexc(diagnostic_words[15:12]);
+            8'd177: rbyte_c = hexc(diagnostic_words[11:8]);
+            8'd178: rbyte_c = hexc(diagnostic_words[7:4]);
+            8'd179: rbyte_c = hexc(diagnostic_words[3:0]);
+            8'd180: rbyte_c = 8'h20;
+            8'd181: rbyte_c = 8'h42;
+            8'd182: rbyte_c = 8'h3d;
+            8'd183: rbyte_c = hexc(diagnostic_blocks[15:12]);
+            8'd184: rbyte_c = hexc(diagnostic_blocks[11:8]);
+            8'd185: rbyte_c = hexc(diagnostic_blocks[7:4]);
+            8'd186: rbyte_c = hexc(diagnostic_blocks[3:0]);
+            8'd187: rbyte_c = 8'h0d;
+            8'd188: rbyte_c = 8'h0a;
             default: rbyte_c = 8'h20;
         endcase
     end

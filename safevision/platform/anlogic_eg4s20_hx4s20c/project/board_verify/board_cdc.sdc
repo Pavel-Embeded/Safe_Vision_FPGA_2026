@@ -117,7 +117,7 @@ set_false_path -through [get_nets {tx_reset}] -to [get_pins {*.sr */*.sr}]
 # that already passed routed STA. Add I/O delays once measured on hardware.
 
 # ---- UART status reporter: ridx -> report mux is a true 2-cycle path ----
-# Current memory profile is 50 MHz: the same 2-cycle protocol gives a 40 ns
+# Current memory profile is 40 MHz: the same 2-cycle protocol gives a 50 ns
 # setup budget and about 4340 clocks/byte. The 125 MHz figures below describe
 # the historical 2026-10-06 diagnosis, not the current operating frequency.
 # 2026-10-06, mem->mem domino #2 (after the fetch guarded_level cut). The status
@@ -139,7 +139,7 @@ set_false_path -through [get_nets {tx_reset}] -to [get_pins {*.sr */*.sr}]
 # merged report logic (ridx is not a sink port). Relaxed with a real multicycle
 # (not a false path), hold moves 1 cycle together with the data.
 # VERIFY after every STA run: ridx paths must show Budget 16.000ns in
-# legacy route.timing (current 50 MHz: 40 ns); an empty match leaves one period
+# legacy route.timing (current 40 MHz: 50 ns); an empty match leaves one period
 # (defect 23 lesson: TD does NOT warn on empty collections).
 # ★ 2026-10-06 订正（guardfix2 的 route.check 第 4 节实证这两条被判 invalid）：
 #   ① get_regs 按 **Q 端 net 名**匹配（SWUG200 §3.1.9），Q 网名是 `ridx[N]`
@@ -149,12 +149,6 @@ set_false_path -through [get_nets {tx_reset}] -to [get_pins {*.sr */*.sr}]
 set_multicycle_path -setup -from [get_regs {ridx*}] 2
 set_multicycle_path -hold -end -from [get_regs {ridx*}] 1
 
-# Writer CRC state feedback only. have_lo/wr_pending make sampled pair events
-# at least three clocks apart at full input rate. crc_src_pend consumes the
-# pair one edge later. Conservatively allow two clocks from crc_src Q to
-# crc_src D; the newly latched crc_pair_q and its enable retain ONE clock.
-# Never use crc_src*: it also selects crc_src_pend. Exact 16-bit collections
-# are checked after legalize_phy_inst in td_flow.tcl. Regress the contract with
-# tb_frame_writer_crc_feedback (stride 1/2/1024, backpressure, pending reset).
-set_multicycle_path -setup -end -from [get_regs {fb_writer/crc_src[0] fb_writer/crc_src[1] fb_writer/crc_src[2] fb_writer/crc_src[3] fb_writer/crc_src[4] fb_writer/crc_src[5] fb_writer/crc_src[6] fb_writer/crc_src[7] fb_writer/crc_src[8] fb_writer/crc_src[9] fb_writer/crc_src[10] fb_writer/crc_src[11] fb_writer/crc_src[12] fb_writer/crc_src[13] fb_writer/crc_src[14] fb_writer/crc_src[15]}] -to [get_regs {fb_writer/crc_src[0] fb_writer/crc_src[1] fb_writer/crc_src[2] fb_writer/crc_src[3] fb_writer/crc_src[4] fb_writer/crc_src[5] fb_writer/crc_src[6] fb_writer/crc_src[7] fb_writer/crc_src[8] fb_writer/crc_src[9] fb_writer/crc_src[10] fb_writer/crc_src[11] fb_writer/crc_src[12] fb_writer/crc_src[13] fb_writer/crc_src[14] fb_writer/crc_src[15]}] 2
-set_multicycle_path -hold -end -from [get_regs {fb_writer/crc_src[0] fb_writer/crc_src[1] fb_writer/crc_src[2] fb_writer/crc_src[3] fb_writer/crc_src[4] fb_writer/crc_src[5] fb_writer/crc_src[6] fb_writer/crc_src[7] fb_writer/crc_src[8] fb_writer/crc_src[9] fb_writer/crc_src[10] fb_writer/crc_src[11] fb_writer/crc_src[12] fb_writer/crc_src[13] fb_writer/crc_src[14] fb_writer/crc_src[15]}] -to [get_regs {fb_writer/crc_src[0] fb_writer/crc_src[1] fb_writer/crc_src[2] fb_writer/crc_src[3] fb_writer/crc_src[4] fb_writer/crc_src[5] fb_writer/crc_src[6] fb_writer/crc_src[7] fb_writer/crc_src[8] fb_writer/crc_src[9] fb_writer/crc_src[10] fb_writer/crc_src[11] fb_writer/crc_src[12] fb_writer/crc_src[13] fb_writer/crc_src[14] fb_writer/crc_src[15]}] 1
+# Production storage integrity runs all CRC32 feedback paths at one MEM clock.
+# The synthetic fallback is disabled and eliminated in this board profile;
+# its historical CRC16 multicycle exception must not target an empty collection.

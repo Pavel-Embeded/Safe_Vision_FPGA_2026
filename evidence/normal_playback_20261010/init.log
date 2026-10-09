@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 00:31:13 2026
+# Process ID: 29396
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/integrity_regression_20261010/init
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/integrity_regression_20261010/init/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/integrity_regression_20261010/init\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] independent 8-bit RGB pattern samples include x/y and all channels
+[PASS] row/column high bits remain distinct after RGB565 quantization
+[PASS] REAL INIT: default divider=249; init SCLK=100kHz; rises=464; min_period=10000000; ready_at=4646630000; product timeouts
+$finish called at time : 4646630 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_safevision_real_sd_init.sv" Line 37
+## quit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 00:31:19 2026...

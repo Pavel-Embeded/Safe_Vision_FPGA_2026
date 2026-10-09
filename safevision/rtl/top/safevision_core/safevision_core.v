@@ -10,7 +10,7 @@ module safevision_core #(
     parameter integer HD=0,FIFO_AW=10,BURST_WORDS=64,MAX_BURSTS=4,STARVE_LIMIT=64,
     parameter [31:0] SWAP_TIMEOUT_N=32'd5_000_000,
     parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
-    parameter integer EMERGENCY_LATENCY=0,DMA_STREAMING=0
+    parameter integer EMERGENCY_LATENCY=0,DMA_STREAMING=0,DMA_CHECKED=0
 )(
     // SYS domain: producer retains payload until swap_state_o returns IDLE.
     input wire frame_ready,wr_frame_index,input wire [1:0] wr_slot_id,
@@ -40,7 +40,9 @@ module safevision_core #(
     output wire pix_frame_index,pix_active_valid,pix_frame_fault,
     output wire [31:0] pix_underflow_count,pix_missed_frame_count,mem_overflow_count,
     output wire [15:0] mem_fifo_pixels,output wire [31:0] mem_dma_bytes,
-    output wire mem_dma_active,mem_dma_done,output wire [2:0] mem_fetch_state
+    output wire mem_dma_active,mem_dma_done,output wire [2:0] mem_fetch_state,
+    input wire [31:0] expected_crc,input wire expected_valid,
+    output wire [31:0] crc_lookup_addr,bad_addr,bad_expected,bad_actual,output wire integrity_fault
 );
     wire srn,mrn;
     reset_sync sys_reset(.clk(sys_clk),.async_rst_n(rst_n),.rst_n(srn));
@@ -79,9 +81,11 @@ module safevision_core #(
     // burst lengths nor the safety space check and breaks the priority path.
     reg [15:0] arbitration_level;
     always @(posedge mem_clk or negedge mrn)
-        if(!mrn)arbitration_level<=0;else arbitration_level<=mem_fifo_pixels;
+        if(!mrn)arbitration_level<=DMA_CHECKED?16'hffff:16'd0;
+        else arbitration_level<=(DMA_CHECKED&&!mem_dma_active)?16'hffff:mem_fifo_pixels;
     memory_arbiter #(.MAX_BURSTS(MAX_BURSTS),.STARVE_LIMIT(STARVE_LIMIT),
-      .COMPACT_CONSEC_COUNTER(1)) arbiter(
+      .COMPACT_CONSEC_COUNTER(1),.HIGH_WATER(DMA_CHECKED?16'd3600:16'd48),
+      .CRITICAL_WATER(DMA_CHECKED?16'd3000:16'd0)) arbiter(
       .clk(mem_clk),.rst_n(mrn),.video_fifo_level(arbitration_level),
       .rd_req(rd_req),.rd_addr(rd_addr),.rd_len(rd_len),.rd_ack(rd_ack),
       .rd_busy(rd_busy),.rd_data(rd_data),.rd_data_valid(rd_data_valid),
@@ -92,7 +96,7 @@ module safevision_core #(
       .mem_req(mem_req),.mem_wr(mem_wr),.mem_addr(mem_addr),.mem_wdata(mem_wdata),
       .mem_wstrb(mem_wstrb),.mem_ready(mem_ready),.mem_rdata(mem_rdata),
       .mem_rdata_valid(mem_rdata_valid),.wr_starve_cnt(wr_starve_cnt),.rd_starve_cnt(rd_starve_cnt));
-    a_video_display_core #(.HD(HD),.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS),.EMERGENCY_LATENCY(EMERGENCY_LATENCY),.DMA_STREAMING(DMA_STREAMING),.FONT_FILE(FONT_FILE)) display(
+    a_video_display_core #(.HD(HD),.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS),.EMERGENCY_LATENCY(EMERGENCY_LATENCY),.DMA_STREAMING(DMA_STREAMING),.DMA_CHECKED(DMA_CHECKED),.FONT_FILE(FONT_FILE)) display(
       .sys_clk(sys_clk),
       .mem_clk(mem_clk),
       .pixel_clk(pixel_clk),
@@ -152,5 +156,7 @@ module safevision_core #(
       .mem_dma_bytes(mem_dma_bytes),
       .mem_dma_active(mem_dma_active),
       .mem_dma_done(mem_dma_done),
-      .mem_fetch_state(mem_fetch_state));
+      .mem_fetch_state(mem_fetch_state),
+      .expected_crc(expected_crc),.expected_valid(expected_valid),.crc_lookup_addr(crc_lookup_addr),
+      .integrity_fault(integrity_fault),.bad_addr(bad_addr),.bad_expected(bad_expected),.bad_actual(bad_actual));
 endmodule

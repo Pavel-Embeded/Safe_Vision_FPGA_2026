@@ -30,6 +30,10 @@ if($rtl.Count -lt 30){ throw 'canonical A source list not found' }
 
 # The board top itself + the B-chain pieces Plan A added (not in the A list).
 $extra=@(
+  'rtl/memory/frame_integrity_guard.v',
+  'rtl/memory/video_read_dma_checked.v',
+  'platform/anlogic_eg4s20_hx4s20c/rtl/board_display_guard.v',
+  'rtl/video/emergency_graphics/emergency_graphics.v',
   'rtl/top/safevision_core/safevision_core.v',
   'rtl/top/safevision_core/bmp_frame_write_bridge.v',
   'rtl/storage/sd_bmp_player.v',

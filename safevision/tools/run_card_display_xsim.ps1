@@ -5,8 +5,8 @@ param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/card_display_xsim'),
- [ValidateSet('dma','adapter','timeout','safety','memory','slowinit','drain','writer','crc','top','card','init','player','edid','idle','bridge')][string[]]$Case=@('adapter','timeout','dma','drain','writer','crc','idle','bridge','edid','top','safety','init','card'),
- [int]$ReadLatency=4,[ValidateSet(0,1)][int]$HD=0,[ValidateSet(0,1)][int]$FastRead=0,[ValidateSet(0,1,2)][int]$WriteLoad=0,[switch]$Waves
+ [ValidateSet('dma','adapter','timeout','safety','memory','slowinit','drain','writer','crc','top','card','init','player','edid','idle','bridge','integrity','reservation')][string[]]$Case=@('adapter','timeout','dma','drain','writer','crc','idle','bridge','edid','top','safety','init','integrity','reservation','card'),
+ [int]$ReadLatency=4,[ValidateSet(0,1)][int]$HD=0,[ValidateSet(0,1)][int]$FastRead=0,[ValidateSet(0,1,2)][int]$WriteLoad=0,[switch]$Waves,[switch]$StressSdClock
 )
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'xsim_project.ps1')
@@ -19,7 +19,13 @@ try{
  foreach($c in $Case){
   $run=Join-Path $runRoot $c;New-Item -ItemType Directory -Force (Join-Path $run 'tmp')|Out-Null
   $env:TMP=Join-Path $run 'tmp';$env:TEMP=$env:TMP
-  if($c -eq 'dma'){
+  if($c -eq 'reservation'){
+   $rtl=@('rtl/memory/memory_arbiter.v')
+   $top='tb_video_bus_reservation';$sim=@("verification/unit/$top.sv")
+  }elseif($c -eq 'integrity'){
+   $rtl=@('rtl/memory/frame_integrity_guard.v','rtl/memory/video_read_dma_checked.v')
+   $top='tb_frame_integrity';$sim=@("verification/unit/$top.sv")
+  }elseif($c -eq 'dma'){
    $rtl=@('rtl/memory/video_read_dma.v','rtl/memory/memory_arbiter.v')
    $top='tb_video_read_dma_integration';$sim=@("verification/unit/$top.sv")
   }elseif($c -in @('idle','bridge')){
@@ -55,6 +61,7 @@ try{
    if($c -eq 'init'){$sim+='verification/unit/tb_safevision_real_sd_init.sv'}
    Copy-Item -LiteralPath (Join-Path $sv 'assets/fonts/font8x16.mem') -Destination $run -Force
   }
+  $rtl+=@('rtl/memory/frame_integrity_guard.v','rtl/memory/video_read_dma_checked.v')
   $rtl=@($rtl|Select-Object -Unique|ForEach-Object{Join-Path $sv $_})
   $sim=@($sim|ForEach-Object{Join-Path $sv $_})
   Push-Location -LiteralPath $run
@@ -72,6 +79,10 @@ try{
    if($Waves){$elab+=@('-debug','typical')}
    if($c -eq 'adapter'){$elab+=@('-generic_top',('"RD_LAT={0}"' -f $ReadLatency),'-generic_top',('"FAST_READ={0}"' -f $FastRead))}
    if($c -eq 'dma'){$elab+=@('-generic_top','"STREAMING=1"')}
+   if($c -eq 'card'){
+    $elab+=@('-generic_top',('"HD={0}"' -f $HD))
+    if($StressSdClock){$elab+=@('-generic_top','"SD_HALF_NS=1"')}
+   }
    if($c -eq 'memory'){$elab+=@('-generic_top',('"HD={0}"' -f $HD),'-generic_top',('"RD_LAT={0}"' -f $ReadLatency),'-generic_top',('"WR_LOAD={0}"' -f $WriteLoad))}
    & (Join-Path $XSimBin 'xelab.bat') @elab > elab.console.log 2>&1
    if($LASTEXITCODE){throw "$c elaboration failed: $run/elab.log"}
@@ -108,13 +119,7 @@ try{
     elseif($c -eq 'writer'){$tcl+="log_wave /$top/dut/px_cnt /$top/dut/frame_full /$top/dut/wr_req /$top/dut/wr_done /$top/dut/err_code"}
     else{$tcl+="log_wave /$top/dut_player/state_o /$top/dut_player/frame_active /$top/dut_player/slot_o /$top/dut_player/frame_cnt /$top/dut_player/err_code"}
    }
-   if($c -eq 'card' -and $Waves){
-    $tcl+='for {set chunk 0} {$chunk < 100} {incr chunk} {'
-    $tcl+=' run 20 ms'
-    $tcl+=' puts "CARD simulated time: [current_time]"'
-    $tcl+=' if {[get_value /tb_safevision_card_display/test_done]} {break}'
-    $tcl+='}'
-   }else{$tcl+='run all'}
+   $tcl+='run all'
    $tcl+='quit'
    $tcl -join "`n" | Set-Content -LiteralPath run.tcl -Encoding ASCII
    $simArgs=@('board_test','-tclbatch','run.tcl','--log','sim.log')
