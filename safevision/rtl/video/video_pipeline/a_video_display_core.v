@@ -8,7 +8,7 @@
 module a_video_display_core #(
     parameter integer HD=0,FIFO_AW=10,BURST_WORDS=64,
     parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
-    parameter integer EMERGENCY_LATENCY=0
+    parameter integer EMERGENCY_LATENCY=0,DMA_STREAMING=0
 )(
     input wire sys_clk,mem_clk,pixel_clk,rst_n,
     input wire swap_req_b,mb_frame_index_b,input wire [1:0] mb_slot_id_b,
@@ -57,7 +57,7 @@ module a_video_display_core #(
       .commit(commit),.invalid_payload(invalid_payload));
     wire [15:0] fifo_data;wire fifo_valid,fifo_empty,fifo_re,fifo_ae,armed;
     wire [FIFO_AW:0] fifo_pixels;
-    a_frame_fetch_bridge #(.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS)) fetch(
+    a_frame_fetch_bridge #(.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS),.DMA_STREAMING(DMA_STREAMING)) fetch(
       .pixel_clk(pixel_clk),.pixel_rst_n(prn),.mem_clk(mem_clk),.mem_rst_n(mrn),
       .frame_start(scan_frame_start),.frame_enable(fetch_enable),.frame_base(fetch_base),
       .rd_req(rd_req),.rd_addr(rd_addr),.rd_len(rd_len),.rd_ack(rd_ack),.rd_busy(rd_busy),

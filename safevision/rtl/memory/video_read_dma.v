@@ -32,7 +32,8 @@
 module video_read_dma #(
     parameter integer BURST_WORDS = 16,     // 单次突发 word 数（O-3 建议 16，待实测）
     parameter integer PIX_DEPTH   = 512,    // 像素 FIFO 深度（16bit 项）
-    parameter integer LOW_WATER   = 64      // 低水位：低于它就预取
+    parameter integer LOW_WATER   = 64,     // 低水位：低于它就预取
+    parameter integer STREAMING   = 0      // overlap buffered receipt and pixel drain
 )(
     input  wire        clk,                 // mem_clk 125MHz
     input  wire        rst_n,
@@ -108,6 +109,7 @@ module video_read_dma #(
     reg  [INDEX_W-1:0] collect_cnt;                // 已收 word 数
     reg  [INDEX_W-1:0] drain_word;                 // 正在拆的 word
     reg         drain_half;                 // 0=低 16bit（左像素）1=高 16bit
+    reg [INDEX_W:0] collected,drained;
 
     // A single synchronous write port keeps the landing buffer inferable as
     // memory. Its contents need no reset: every word is captured before drain.
@@ -131,6 +133,7 @@ module video_read_dma #(
             collect_cnt  <= 0;
             drain_word   <= 0;
             drain_half   <= 1'b0;
+            collected<=0;drained<=0;
             rd_req       <= 1'b0;
             rd_addr      <= 32'd0;
             rd_len       <= 16'd0;
@@ -175,10 +178,11 @@ module video_read_dma #(
                 if (rd_ack) begin
                     rd_req      <= 1'b0;
                     collect_cnt <= 0;
+                    collected<=rd_data_valid?1:0;drained<=0;drain_word<=0;drain_half<=0;
                     state       <= V_COLLECT;
                     // A target may return the first word together with its ack.
                     if(rd_data_valid) begin
-                        if(burst_words==1) begin
+                        if(burst_words==1 && !STREAMING) begin
                             rd_bytes_cnt <= rd_bytes_cnt+32'd4;
                             drain_word <= 0;
                             drain_half <= 0;
@@ -190,7 +194,10 @@ module video_read_dma #(
             // ---- 整突发收进 landing buffer（1 word/cycle）---------------------
             V_COLLECT: begin
                 if (rd_data_valid) begin
-                    if (collect_cnt == (burst_words-1)) begin
+                    if(STREAMING)begin
+                        collected<=collected+1'b1;
+                        collect_cnt<=collect_cnt+1'b1;
+                    end else if (collect_cnt == (burst_words-1)) begin
                         rd_bytes_cnt <= rd_bytes_cnt + {14'd0,burst_words,2'b00};
                         drain_word   <= 0;
                         drain_half   <= 1'b0;
@@ -198,6 +205,19 @@ module video_read_dma #(
                     end else begin
                         collect_cnt <= collect_cnt + 1'b1;
                     end
+                end
+                if(STREAMING && drained<collected)begin
+                    // The whole burst's FIFO space was reserved in V_CHECK.
+                    // Only drain committed RAM words; receipt can outrun the
+                    // two-halfword consumer without backpressuring B.
+                    fifo_wr_en<=1;
+                    fifo_wr_data<=drain_half?rd_buf[drain_word][31:16]:rd_buf[drain_word][15:0];
+                    if(drain_half)begin
+                        drain_half<=0;drained<=drained+1'b1;
+                        if(drained==burst_words-1'b1)begin
+                            rd_bytes_cnt<=rd_bytes_cnt+{14'd0,burst_words,2'b00};state<=V_SETTLE;
+                        end else drain_word<=drain_word+1'b1;
+                    end else drain_half<=1;
                 end
             end
             // ---- 拆成 16bit 像素推入 FIFO ------------------------------------

@@ -10,7 +10,7 @@ module tb_safevision_board_recovery;
  wire sda;
  safevision_top #(.HD(0),.MODE_TO_N(32'd100),.RPT_PERIOD_N(32'd1000000),
    .FONT_FILE("font8x16.mem")) dut(
-   .clk(clk),.rst_n(rst_n),.btn_next(1'b1),.btn_auto(1'b1),
+   .clk(clk),.rst_n(rst_n),.btn_next(1'b1),.btn_auto(1'b1),.btn_emergency(1'b1),
    .uart_txd(uart_txd),.led(led),.sd_ncs(cs),.sd_dclk(sclk),.sd_mosi(mosi),
    .sd_miso(1'b1),.HDMI_D0_P(d0),.HDMI_D1_P(d1),.HDMI_D2_P(d2),
    .HDMI_CLK_P(dc),.HDMI_DDC_SCL(ddc),.HDMI_DDC_SDA(sda));

@@ -159,7 +159,7 @@ module tb_safevision_card_display;
  wire sd_ncs,sd_dclk,sd_mosi,sd_miso,uart_txd;
  wire [3:0] led;wire d0,d1,d2,dc,scl;tri1 sda;
  safevision_top #(.FONT_FILE("font8x16.mem"),.PLAYER_SPI_INIT_DIV(1)) dut(
- .clk(clk),.rst_n(rst_n),.btn_next(btn_next),.btn_auto(btn_auto),.uart_txd(uart_txd),.led(led),
+ .clk(clk),.rst_n(rst_n),.btn_next(btn_next),.btn_auto(btn_auto),.btn_emergency(1'b1),.uart_txd(uart_txd),.led(led),
  .sd_ncs(sd_ncs),.sd_dclk(sd_dclk),.sd_mosi(sd_mosi),.sd_miso(sd_miso),
  .HDMI_D0_P(d0),.HDMI_D1_P(d1),.HDMI_D2_P(d2),.HDMI_CLK_P(dc),
  .HDMI_DDC_SCL(scl),.HDMI_DDC_SDA(sda));
@@ -198,7 +198,7 @@ module tb_safevision_card_display;
  always @(posedge dut.pixel_clk)if(dut.axis_valid&&dut.axis_ready)begin
    if(dut.axis_user)begin
      if(compare_axis&&axis_k!=FRAME_PIX)tag_bad=tag_bad+1;
-     compare_axis=dut.active&&!dut.frame_fault;axis_k=0;
+     compare_axis=dut.active&&!dut.frame_fault&&!dut.safety_active;axis_k=0;
      axis_slot=dut.core.display.pix_active_slot[0];
    end
    if(compare_axis)begin

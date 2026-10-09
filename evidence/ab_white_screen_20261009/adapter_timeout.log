@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct  9 20:21:12 2026
+# Process ID: 41892
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/final_fault_sim/timeout
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/final_fault_sim/timeout/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/final_fault_sim/timeout\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] SDRAM LOST RESPONSE: 16 commands, bounded fault, no partial data, late response fenced, reset recovery
+$finish called at time : 941 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdram_response_timeout.sv" Line 24
+## quit
+INFO: [Common 17-206] Exiting xsim at Fri Oct  9 20:21:17 2026...

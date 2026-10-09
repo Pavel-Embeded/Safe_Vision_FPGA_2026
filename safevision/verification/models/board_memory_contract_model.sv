@@ -63,3 +63,9 @@ module sdram #(parameter integer RD_LAT=4)(
    end
  end
 endmodule
+
+module sv_board_memory_pll(input wire refclk,reset,output wire extlock,
+ output wire clk0_out,clk1_out,clk2_out);
+ reg sys=0;always #5 sys=~sys;
+ assign clk0_out=sys;assign clk1_out=refclk;assign #8 clk2_out=refclk;assign extlock=1;
+endmodule

@@ -11,5 +11,8 @@
 `define   ROW_WIDTH                        11
 `define   BA_WIDTH                        2
 
-`define	  SDR_CLK_PERIOD				1000000000/125000000
+`ifndef SAFEVISION_SDRAM_CLK_HZ
+`define SAFEVISION_SDRAM_CLK_HZ 125000000
+`endif
+`define   SDR_CLK_PERIOD                    (1000000000/`SAFEVISION_SDRAM_CLK_HZ)
 `define   SELF_REFRESH_INTERVAL			64000000/`SDR_CLK_PERIOD/2**(`ROW_WIDTH)

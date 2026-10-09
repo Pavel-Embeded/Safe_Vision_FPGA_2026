@@ -7,7 +7,10 @@
 // the board's frame publisher; CRC of the input stream is not SDRAM readback.
 // req/wr/addr/wdata/wstrb must be held until ready accepts the transaction.
 // Writes have one registered address-check cycle before their acceptance.
-module sdram_app_adapter (
+module sdram_app_adapter #(
+    parameter [31:0] READ_TIMEOUT=32'd4096,
+    parameter integer FAST_READ=0
+) (
     input wire clk,rst_n,req,wr,
     input wire [31:0] addr,wdata,input wire [3:0] wstrb,
     output reg [31:0] rdata,output reg rdata_valid,
@@ -17,7 +20,8 @@ module sdram_app_adapter (
     output reg [3:0] App_wr_dm,output reg [31:0] App_wr_din,
     output reg App_rd_en,output reg [20:0] App_rd_addr,
     input wire Sdr_rd_en,input wire [31:0] Sdr_rd_dout,
-    output wire write_idle
+    output wire write_idle,
+    output reg protocol_fault
 );
     localparam integer WB=16,RB=16;
     localparam [2:0] H_IDLE=0,H_WRITE=1,H_WGAP=2,H_READ=3,H_WAIT=4,H_RGAP=5;
@@ -32,16 +36,23 @@ module sdram_app_adapter (
     reg [31:0] rfbase,rexp;
     reg [4:0] rcnt,rhead,rcmd_i,rcv_i;
     reg r_go,r_sv;
+    reg [31:0] read_wait;
     wire idle_hw=(state==H_IDLE);
     wire w_can=Sdr_init_done&&idle_hw&&(wcnt<WB)&&w_checked&&w_contiguous&&!r_go&&!r_sv;
     wire w_accept=req&&wr&&w_can;
     wire r_hit=(rcnt!=0)&&(addr==rexp);
     wire r_serve=req&&!wr&&idle_hw&&(wcnt==0)&&r_hit&&!r_sv;
+    // Completed cache words are independent of the physical command bus.
+    // Drain them during the mandatory read quiet interval too. No new SDRAM
+    // command can start until H_RGAP expires; this preserves all 16 quiet
+    // clocks while avoiding a second, unnecessary 16-clock host stall.
+    wire r_fast_can=(idle_hw||state==H_RGAP)&&(wcnt==0)&&r_hit;
+    wire r_fast_fire=req&&!wr&&r_fast_can&&Sdr_init_done;
     wire need_flush=(wcnt!=0)&&((wcnt==WB)||(widle>=48)||
                     (req&&(!wr||(w_checked&&!w_contiguous))));
-    assign init_done=Sdr_init_done;
-    assign ready=rst_n&&Sdr_init_done&&(wr?w_can:r_go);
-    assign write_idle=rst_n&&Sdr_init_done&&idle_hw&&(wcnt==0)&&!App_wr_en;
+    assign init_done=Sdr_init_done&&!protocol_fault;
+    assign ready=rst_n&&Sdr_init_done&&!protocol_fault&&(wr?w_can:(FAST_READ?r_fast_can:r_go));
+    assign write_idle=rst_n&&Sdr_init_done&&!protocol_fault&&idle_hw&&(wcnt==0)&&!App_wr_en;
 
     always @(posedge clk or negedge rst_n)begin
       if(!rst_n)begin
@@ -50,8 +61,18 @@ module sdram_app_adapter (
         rfbase<=0;rexp<=0;rcnt<=0;rhead<=0;rcmd_i<=0;rcv_i<=0;r_go<=0;r_sv<=0;
         rdata<=0;rdata_valid<=0;App_wr_en<=0;App_wr_addr<=0;App_wr_dm<=15;App_wr_din<=0;
         App_rd_en<=0;App_rd_addr<=0;
+        read_wait<=0;protocol_fault<=0;
+      end else if(protocol_fault)begin
+        // A lost vendor response makes the transaction/slot epoch ambiguous.
+        // Fence the client until common reset; never serve a partial cache.
+        App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;r_go<=0;r_sv<=0;
       end else begin
         App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;
+        if(state==H_READ||state==H_WAIT)begin
+          if(Sdr_rd_en)read_wait<=0;
+          else if(read_wait>=READ_TIMEOUT)protocol_fault<=1;
+          else read_wait<=read_wait+1'b1;
+        end else read_wait<=0;
         // The arbiter holds the complete word transaction while ready is low.
         // Capture its continuity check separately from the acceptance/CE cone.
         // Never reuse a check after acceptance, cancellation or a HW burst.
@@ -60,11 +81,19 @@ module sdram_app_adapter (
           w_checked<=1;w_contiguous<=(wcnt==0)||(addr==wnext);
         end
         // Only the externally observed ready/req edge consumes a cached word.
-        r_go<=Sdr_init_done&&r_serve&&!r_go;
-        if(r_go&&req&&!wr)begin
-          rdata<=rbuf[rhead];r_sv<=1;rhead<=rhead+1'b1;
-          rcnt<=rcnt-1'b1;rexp<=rexp+1'b1;
-        end else if(r_sv)begin rdata_valid<=1;r_sv<=0;end
+        if(FAST_READ)begin
+          r_go<=0;r_sv<=0;
+          if(r_fast_fire)begin
+            rdata<=rbuf[rhead];rdata_valid<=1;rhead<=rhead+1'b1;
+            rcnt<=rcnt-1'b1;rexp<=rexp+1'b1;
+          end
+        end else begin
+          r_go<=Sdr_init_done&&r_serve&&!r_go;
+          if(r_go&&req&&!wr)begin
+            rdata<=rbuf[rhead];r_sv<=1;rhead<=rhead+1'b1;
+            rcnt<=rcnt-1'b1;rexp<=rexp+1'b1;
+          end else if(r_sv)begin rdata_valid<=1;r_sv<=0;end
+        end
 
         if(w_accept)begin
           wbuf[wcnt]<=wdata;wdm[wcnt]<=~wstrb;
@@ -83,7 +112,7 @@ module sdram_app_adapter (
             if(Sdr_init_done&&need_flush&&!w_accept)begin
               wi<=0;physical_words<=(wcnt==1)?5'd2:wcnt;state<=H_WRITE;
             end else if(Sdr_init_done&&req&&!wr&&!r_hit&&(wcnt==0)&&!r_sv&&!r_go)begin
-              // No cache acceptance is possible in H_READ/H_WAIT/H_RGAP.
+              // No cache acceptance is possible in H_READ/H_WAIT.
               // Keep the old count until the complete replacement block is
               // received. Clearing here is redundant and puts addr==rexp
               // through a wide comparator into the counter's update cone.

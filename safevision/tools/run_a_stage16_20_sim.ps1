@@ -7,6 +7,7 @@ param(
  [string[]]$Top=@('tb_memory_arbiter_compact','tb_emergency_command_adapter','tb_emergency_control','tb_emergency_graphics','tb_hdmi_edid_control','tb_hdmi_video_bridge')
 )
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'xsim_project.ps1')
 $RepoRoot=(Resolve-Path -LiteralPath $RepoRoot).Path
 $RunDir=[IO.Path]::GetFullPath($RunDir)
 if($RunDir -match '[^\x00-\x7f]'){throw 'XSim2018.3 requires ASCII RunDir'}
@@ -28,7 +29,8 @@ try{
   Copy-Item -LiteralPath (Join-Path $RepoRoot 'safevision/assets/fonts/font8x16.mem') -Destination (Join-Path $dir 'font8x16.mem') -Force
   Push-Location -LiteralPath $dir
   try{
-   & (Join-Path $XSimBin 'xvlog.bat') -i (Join-Path $RepoRoot 'safevision/rtl/include') @rtl --log rtl.log > rtl.console.log 2>&1
+   Write-XSimProject -Paths $rtl -Path 'rtl.prj'
+   & (Join-Path $XSimBin 'xvlog.bat') -i (Join-Path $RepoRoot 'safevision/rtl/include') --file 'rtl.prj' --log rtl.log > rtl.console.log 2>&1
    if($LASTEXITCODE){throw 'Combined A+B compile failed'}
    & (Join-Path $XSimBin 'xvlog.bat') --sv (Join-Path $RepoRoot "safevision/verification/unit/$case.sv") --log tb.log > tb.console.log 2>&1
    if($LASTEXITCODE){throw "TB compile failed $case"}

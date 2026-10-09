@@ -51,8 +51,8 @@ module tb_safevision_top;
     wire HDMI_DDC_SDA;
 
     // ★ 缩短两个"等"的参数（都只是可测性参数，TD 不覆盖 ⇒ 综合结果不变）：
-    //   MODE_TO_N   = 1.6 ms 判卡不可用
-    //   RPT_PERIOD_N= 1.2 ms 发一次状态行（一行 107 字节 @115200 要 ~0.93 ms）
+    //   MODE_TO_N   = 4 ms 判卡不可用（50 MHz）
+    //   RPT_PERIOD_N= 3 ms 发一次状态行（一行 107 字节 @115200 要 ~9.3 ms）
     safevision_top #(
         .HD(0),
         .MODE_TO_N(32'd200_000),
@@ -60,7 +60,7 @@ module tb_safevision_top;
         .FONT_FILE("font8x16.mem")
     ) dut (
         .clk(clk), .rst_n(rst_n),
-        .btn_next(btn_next), .btn_auto(btn_auto),
+        .btn_next(btn_next), .btn_auto(btn_auto),.btn_emergency(1'b1),
         .uart_txd(uart_txd), .led(led),
         .sd_ncs(sd_ncs), .sd_dclk(sd_dclk), .sd_mosi(sd_mosi), .sd_miso(sd_miso),
         .HDMI_D0_P(HDMI_D0_P), .HDMI_D1_P(HDMI_D1_P), .HDMI_D2_P(HDMI_D2_P),
@@ -81,8 +81,9 @@ module tb_safevision_top;
     );
 
     // ---------------------------------------------------------------- UART 接收（按 mem_clk 采样）
-    //   uart_tx 是按 mem_clk=125 MHz / 115200 波特配的 ⇒ 用 dut.mem_clk 采样最稳
-    localparam integer BIT_TICKS = 125_000_000 / 115_200;      // ≈1085
+    // Board memory/UART domain is now 50 MHz; receive the physical 115200 baud
+    // line using the same declared frequency, rather than the legacy 125 MHz.
+    localparam integer BIT_TICKS = 50_000_000 / 115_200;      // 434
 
     task uart_get_byte;
         output [7:0] b;
@@ -277,6 +278,10 @@ module tb_safevision_top;
         //   ★ core 的"提交 + 显示激活"（active）由 T7 正式覆盖：曾观察到 active 不置起
         //     （fr_pulses=1、swap_state=0、swap_error=0、active=0），根因是顶层打包跨域的
         //     载荷与 frame_ready 同拍捕获导致首帧请求被丢（非 SDRAM 桩问题），已修复。
+        // Submission is a MEM-domain event, not arrival at the SYS mailbox.
+        // Bound the actual crossing instead of sampling on the submission edge.
+        guard=0;
+        while(fr_pulses<1 && guard<100)begin @(posedge dut.sys_clk);guard=guard+1;end
         check(fr_pulses >= 1, "T4d) fallback swap event reached the core sys domain");
         check(dut.player.frame_cnt === 16'd0, "T4e) card path never produced a frame (frame_cnt=0)");
 

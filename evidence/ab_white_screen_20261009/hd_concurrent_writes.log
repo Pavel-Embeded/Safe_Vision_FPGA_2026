@@ -1,0 +1,26 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct  9 20:44:31 2026
+# Process ID: 34012
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/hd_concurrent/memory
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/hd_concurrent/memory/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/hd_concurrent/memory\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] MEMORY DISPLAY HD=1 frame=1 media_pixels=307200
+[PASS] MEMORY DISPLAY HD=1 frame=2 media_pixels=614400
+[PASS] MEMORY DISPLAY HD=1 frame=3 media_pixels=921600
+[PASS] CONCURRENT SD-RATE WRITE HD=1 words=18267 bytes=73068 U=0 O=0
+[PASS] MEMORY BANDWIDTH HD=1 clocks=50MHz/8ns frames=3 pixels=921600 underflows=0 overflows=0 physical_read_bursts=38400
+$finish called at time : 82663130 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_safevision_memory_display.sv" Line 73
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:02:39 . Memory (MB): peak = 219.629 ; gain = 0.000
+## quit
+INFO: [Common 17-206] Exiting xsim at Fri Oct  9 20:47:15 2026...

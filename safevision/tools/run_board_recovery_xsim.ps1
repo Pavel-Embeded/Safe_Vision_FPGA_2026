@@ -7,6 +7,7 @@ param(
  [switch]$Waves
 )
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'xsim_project.ps1')
 $sv=Join-Path $RepoRoot 'safevision';$run=[IO.Path]::GetFullPath($RunDir)
 if($run -match '[^\x00-\x7f]'){throw 'XSim 2018.3 requires ASCII RunDir'}
 New-Item -ItemType Directory -Force (Join-Path $run 'tmp')|Out-Null
@@ -17,6 +18,8 @@ try{
  $rtl=@([regex]::Matches($src,"'((?:platform|rtl)/[^']+\.v)'")|ForEach-Object{$_.Groups[1].Value})
  $rtl+=@('rtl/top/safevision_core/safevision_core.v','rtl/top/safevision_core/bmp_frame_write_bridge.v',
   'rtl/storage/sd_bmp_player.v','rtl/video/hdmi_output/hdmi_video_bridge.v',
+    'rtl/video/emergency_graphics/emergency_graphics.v',
+    'platform/anlogic_eg4s20_hx4s20c/rtl/board_display_guard.v',
   'platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v',
   'platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v',
   'platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v')
@@ -26,9 +29,11 @@ try{
  Copy-Item -LiteralPath (Join-Path $sv 'assets/fonts/font8x16.mem') -Destination $run -Force
  Push-Location -LiteralPath $run
  try{
-  & (Join-Path $XSimBin 'xvlog.bat') -d SIM_FAST_TO -i (Join-Path $sv 'rtl/include') --log rtl.log @rtl > rtl.console.log 2>&1
+  Write-XSimProject -Paths $rtl -Path 'rtl.prj'
+  & (Join-Path $XSimBin 'xvlog.bat') -d SIM_FAST_TO -i (Join-Path $sv 'rtl/include') --log rtl.log --file 'rtl.prj' > rtl.console.log 2>&1
   if($LASTEXITCODE){throw "RTL compilation failed: $run/rtl.log"}
-  & (Join-Path $XSimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i (Join-Path $sv 'rtl/include') --log tb.log @sim > tb.console.log 2>&1
+  Write-XSimProject -Paths $sim -Path 'sim.prj'
+  & (Join-Path $XSimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i (Join-Path $sv 'rtl/include') --log tb.log --file 'sim.prj' > tb.console.log 2>&1
   if($LASTEXITCODE){throw "TB compilation failed: $run/tb.log"}
   & (Join-Path $XSimBin 'xelab.bat') work.tb_safevision_board_recovery -s board_recovery -debug typical --timescale 1ns/1ps --log elab.log > elab.console.log 2>&1
   if($LASTEXITCODE){throw "Elaboration failed: $run/elab.log"}

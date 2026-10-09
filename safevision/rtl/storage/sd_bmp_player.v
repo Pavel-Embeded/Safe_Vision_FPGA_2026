@@ -59,14 +59,14 @@ module sd_bmp_player #(
     // ★ 行序重映射与逐 word 写出（bmp_frame_write_bridge）已挪到 **mem 侧**的
     //   bmp_frame_sink（它才知道 br_done/crc_ok，换帧握手也一并归它）✓
     // 各阶段超时（各自独立计数器；按 50 MHz 折算的墙钟时间）
-    parameter [31:0]  INIT_TO_N    = 32'd10_000_000,   // 200ms：等 SD 初始化
+    parameter [31:0]  INIT_TO_N    = 32'd100_000_000,  // 2s @50MHz: includes the card's <=1s ACMD41 window
     parameter [31:0]  MOUNT_TO_N   = 32'd5_000_000,    // 100ms：等 MBR/BPB/目录/索引
     parameter [31:0]  STREAM_TO_N  = 32'd150_000_000,  // 3s：等一整幅读完
     parameter [31:0]  SWAP_TO_N    = 32'd5_000_000,    // 100ms：等换帧
     parameter [31:0]  PILOT_TO_N   = 32'd2_500_000,    // 50ms：等索引查找结果落定
     // ★ 2026-10-06 新增：SD 初始化失败后**自动重试**（真卡在复位后偶发不应答时非常有效）。
-    //   重试的总时长仍受 INIT_TO_N(200 ms) 约束（to_cnt 跨重试累加），
-    //   因此不会挤掉顶层 `MODE_TO_N`(300 ms) 的回落窗口。
+    //   总时长受 INIT_TO_N 约束（to_cnt 跨重试累加）。板级显示独立在
+    //   300ms 后回落；慢卡完成后等待回落槽 ACK，再接管写口。
     parameter [3:0]   INIT_RETRY_MAX = 4'd15           // 最多重试 15 次（含首次共 16 次尝试）
 )(
     input  wire        clk,          // 板载 50 MHz（R7）

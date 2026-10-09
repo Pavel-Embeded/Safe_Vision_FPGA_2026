@@ -1,0 +1,58 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct  9 19:57:21 2026
+# Process ID: 50636
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/b_suite
+# Command line: xsim.exe -log tb_bmp_frame_sink_sim.log -mode tcl -source {xsim.dir/tb_bmp_frame_sink_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/b_suite/tb_bmp_frame_sink_sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/b_suite\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_bmp_frame_sink_sim/xsim_script.tcl
+# xsim {tb_bmp_frame_sink_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[TB] T6: stray words while idle must be drained before mem_ready
+[PASS] T6a) mem_ready dropped while the FIFO held stray words
+[PASS] T6b) mem_ready re-asserts after the FIFO is drained
+[PASS] T6c) stray words were drained, not written into a slot
+[PASS] T6d) sink is in S_DRAIN after draining
+[TB] T1: normal frame, top_down=0 -> slot 1 (pixel-exact)
+[PASS] T1a) frame_done toggled for frame 1
+[PASS] T1b) frame_cnt == 1
+[PASS] T1c) exactly 307200 pixels written by the bridge
+[PASS] T1d) swap request carried slot 1
+[PASS] T1e) swap request carried crc_ok=1
+[PASS] T1f) last_frame_ok = 1
+[PASS] T1g) no error code after a good frame
+[PASS] T1h) back to S_DRAIN with mem_ready=1
+[PASS] T1i) slot 1 content (frame 1, top_down=0) : 153600 words pixel-exact
+[TB] T2: next frame with top_down=1 -> slot 0 (catches stale orientation)
+[PASS] T2a) frame_done toggled for frame 2
+[PASS] T2b) frame_cnt == 2
+[PASS] T2c) swap request carried slot 0
+[PASS] T2d) swap_generation incremented twice (now 3)
+[PASS] T2e) slot 0 content (frame 2, top_down=1) : 153600 words pixel-exact
+[TB] T3: swap_busy stuck HIGH must still time out (liveness)
+[PASS] T3a) frame_done still toggled while swap_busy stayed high
+[PASS] T3b) recovered to S_DRAIN with mem_ready=1
+[TB] T4: swap_busy never asserts must still time out
+[PASS] T4a) frame_done toggled although swap_busy never asserted
+[PASS] T4b) recovered to S_DRAIN with mem_ready=1
+[TB] T5: starve the frame -> S_WRITE no-progress timeout -> S_ERROR, sticky err_code
+[PASS] T5a) sink entered S_ERROR on frame stall
+[PASS] T5b) sink latched a non-zero err_code
+[PASS] T5c) frame_done toggled from S_ERROR (SD side can advance)
+[PASS] T5d) sink returned to S_DRAIN after the error
+[PASS] T5e) err_code is STICKY after leaving S_ERROR
+[PASS] T5f) a subsequent good frame completes
+[PASS] T5g) sticky err_code cleared by a successful frame
+============================================
+  BMP-FRAME-SINK PASS (0 error)
+============================================
+$finish called at time : 61601670 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_frame_sink.sv" Line 444
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:53 . Memory (MB): peak = 219.770 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct  9 19:58:17 2026...

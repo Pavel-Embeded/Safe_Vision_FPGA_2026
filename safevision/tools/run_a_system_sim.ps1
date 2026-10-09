@@ -1,4 +1,4 @@
-﻿# Actual A+B sources. Auto uses ModelSim when configured, otherwise XSim.
+# Actual A+B sources. Auto uses ModelSim when configured, otherwise XSim.
 # Generated logs and bounded VCD files remain in ignored/private RunDir.
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
@@ -15,6 +15,7 @@ param(
  [switch]$Waves
 )
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'xsim_project.ps1')
 $RepoRoot=(Resolve-Path -LiteralPath $RepoRoot).Path
 $haveMsim=$ModelSimBin -and (Test-Path -LiteralPath (Join-Path $ModelSimBin 'vsim.exe'))
 if($Tool -eq 'Auto'){if($haveMsim){$Tool='ModelSim'}else{$Tool='XSim'}}
@@ -45,9 +46,11 @@ Push-Location -LiteralPath $RunDir
 try{
  $env:TEMP=Join-Path $RunDir 'tmp';$env:TMP=$env:TEMP
  if($Tool -eq 'XSim'){
-  & (Join-Path $XSimBin 'xvlog.bat') -d SIM_FAST_TO -i $inc @rtl --log rtl.log > rtl.console.log 2>&1
+  Write-XSimProject -Paths $rtl -Path 'rtl.prj'
+  & (Join-Path $XSimBin 'xvlog.bat') -d SIM_FAST_TO -i $inc --file 'rtl.prj' --log rtl.log > rtl.console.log 2>&1
   if($LASTEXITCODE){throw 'A+B RTL compile failed'}
-  & (Join-Path $XSimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i $inc @sv --log tb.log > tb.console.log 2>&1
+  Write-XSimProject -Paths $sv -Path 'sv.prj'
+  & (Join-Path $XSimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i $inc --file 'sv.prj' --log tb.log > tb.console.log 2>&1
   if($LASTEXITCODE){throw 'A+B verification compile failed'}
   # Literal quotes survive the Vivado .bat wrapper's second cmd parsing pass.
   $generic=@();if(-not $isCard){$generic=@('-generic_top',('"HD='+$HD+'"'),'-generic_top',('"SUBMIT_LEAD='+$SubmitLead+'"'))}

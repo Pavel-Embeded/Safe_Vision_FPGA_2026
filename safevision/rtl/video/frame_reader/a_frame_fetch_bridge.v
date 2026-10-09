@@ -1,7 +1,7 @@
 // Pixel vblank -> stable base mailbox -> mem DMA -> official async pixel FIFO.
 // Each new frame discards old prefetched pixels. Quiesce the external B read
 // channel BEFORE resetting FIFO/DMA; shared arbiter and SDRAM are not reset.
-module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64)(
+module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_STREAMING=0)(
     input wire pixel_clk,pixel_rst_n,mem_clk,mem_rst_n,
     input wire frame_start,frame_enable,input wire [31:0] frame_base,
     output wire rd_req,output wire [31:0] rd_addr,output wire [15:0] rd_len,
@@ -13,7 +13,10 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64)(
     output wire dma_active,dma_done,output wire [2:0] fetch_state
 );
     localparam integer CAPACITY=2*((1<<FIFO_AW)-1);
-    localparam integer LOW_WATER=CAPACITY/2;
+    // A 720p line consumes its 640 media pixels faster than memory supplies
+    // them. Fill most of the FIFO during blanking, retaining one complete
+    // outstanding burst plus the registered watermark/packer guard.
+    localparam integer LOW_WATER=DMA_STREAMING ? CAPACITY-2*BURST_WORDS-16 : CAPACITY/2;
     localparam [2:0] IDLE=0,QUIET=1,CLEAR=2,RELEASE=3,LAUNCH=4,RUN=5;
     reg [2:0] state;reg [3:0] phase_count;reg [1:0] quiet_count;
     reg [31:0] requested_base,mem_base;reg begin_pending;
@@ -73,7 +76,7 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64)(
     end
     // mem_local_reset_n already asserts immediately if EITHER upstream domain
     // resets. Use its local release only; pixel release must not feed mem CEs.
-    wire fifo_reset=!mem_local_reset_n || state==IDLE || state==CLEAR;
+    (* keep="true" *) wire fifo_reset=!mem_local_reset_n || state==IDLE || state==CLEAR;
     wire dma_reset_n=mem_local_reset_n && state!=IDLE && state!=CLEAR;
     wire dma_req,dma_we;wire [15:0] dma_pixel;
     wire [31:0] packed_word;wire packed_valid,packer_ready,half_pending;
@@ -93,7 +96,7 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64)(
     assign fifo_mem_pixels=guarded_level;
     assign fetch_state=state;
     assign rd_req=dma_req && state==RUN;
-    video_read_dma #(.BURST_WORDS(BURST_WORDS),.PIX_DEPTH(CAPACITY),.LOW_WATER(LOW_WATER)) dma(
+    video_read_dma #(.BURST_WORDS(BURST_WORDS),.PIX_DEPTH(CAPACITY),.LOW_WATER(LOW_WATER),.STREAMING(DMA_STREAMING)) dma(
       .clk(mem_clk),.rst_n(dma_reset_n),.start(state==LAUNCH),.frame_base(mem_base),
       .pix_fifo_level(guarded_level),.rd_req(dma_req),.rd_addr(rd_addr),.rd_len(rd_len),
       .rd_ack(rd_ack),.rd_busy(rd_busy),.rd_data(response_data),.rd_data_valid(response_valid),

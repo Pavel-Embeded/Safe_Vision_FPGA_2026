@@ -10,7 +10,7 @@ module safevision_core #(
     parameter integer HD=0,FIFO_AW=10,BURST_WORDS=64,MAX_BURSTS=4,STARVE_LIMIT=64,
     parameter [31:0] SWAP_TIMEOUT_N=32'd5_000_000,
     parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
-    parameter integer EMERGENCY_LATENCY=0
+    parameter integer EMERGENCY_LATENCY=0,DMA_STREAMING=0
 )(
     // SYS domain: producer retains payload until swap_state_o returns IDLE.
     input wire frame_ready,wr_frame_index,input wire [1:0] wr_slot_id,
@@ -92,7 +92,7 @@ module safevision_core #(
       .mem_req(mem_req),.mem_wr(mem_wr),.mem_addr(mem_addr),.mem_wdata(mem_wdata),
       .mem_wstrb(mem_wstrb),.mem_ready(mem_ready),.mem_rdata(mem_rdata),
       .mem_rdata_valid(mem_rdata_valid),.wr_starve_cnt(wr_starve_cnt),.rd_starve_cnt(rd_starve_cnt));
-    a_video_display_core #(.HD(HD),.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS),.EMERGENCY_LATENCY(EMERGENCY_LATENCY),.FONT_FILE(FONT_FILE)) display(
+    a_video_display_core #(.HD(HD),.FIFO_AW(FIFO_AW),.BURST_WORDS(BURST_WORDS),.EMERGENCY_LATENCY(EMERGENCY_LATENCY),.DMA_STREAMING(DMA_STREAMING),.FONT_FILE(FONT_FILE)) display(
       .sys_clk(sys_clk),
       .mem_clk(mem_clk),
       .pixel_clk(pixel_clk),

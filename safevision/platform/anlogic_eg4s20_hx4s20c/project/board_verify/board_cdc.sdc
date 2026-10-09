@@ -30,7 +30,10 @@ set_false_path -through [get_nets {core/display/fetch/common_reset_n}] -to [get_
 # Only their asynchronous SR pins are exempt; stage D/CE and every FIFO data,
 # Gray pointer and local released-reset path remain timed. TD folds fifo_reset
 # into state decode, so use the confirmed routed SR endpoint (not an empty net).
-set_false_path -to [get_pins {core/display/fetch/fifo/fifo/asy_r_rst*.sr}]
+# Preserve the raw flush net in RTL so the exception survives TD cell packing.
+# It feeds only the vendor reset synchronizers' asynchronous SR inputs. Their
+# released resets, D paths, FIFO data and Gray pointers retain ordinary STA.
+set_false_path -through [get_nets {core/display/fetch/fifo_reset}] -to [get_pins {*.sr */*.sr}]
 # Bundled-data mailboxes: bound propagation instead of exempting (same 8 ns as A).
 set_max_delay -datapath_only -from [get_regs {core/display/config_mailbox/payload*}] -to [get_regs {core/display/config_mailbox/dst_data*}] 8.000
 set_max_delay -datapath_only -from [get_regs {core/display/fetch/frame_request/payload*}] -to [get_regs {core/display/fetch/frame_request/dst_data*}] 8.000
@@ -101,6 +104,7 @@ set_max_delay -datapath_only -from [get_regs {sink/u_fifo/fifo/rd_to_wr_cross_in
 # by get_regs. These ports feed ONLY their input synchronizers. A port-origin
 # exception ends at that first register; stage-to-stage paths remain timed.
 set_false_path -from [get_ports {btn_next btn_auto}]
+set_false_path -to [get_regs {display_guard/media_meta display_guard/storage_meta display_guard/manual_meta}]
 
 # HDMI queue overflow asserts transmitter/PHY reset. Only the asynchronous
 # assertion into the serial-clock reset synchronizer is exempt; release and
@@ -113,6 +117,9 @@ set_false_path -through [get_nets {tx_reset}] -to [get_pins {*.sr */*.sr}]
 # that already passed routed STA. Add I/O delays once measured on hardware.
 
 # ---- UART status reporter: ridx -> report mux is a true 2-cycle path ----
+# Current memory profile is 50 MHz: the same 2-cycle protocol gives a 40 ns
+# setup budget and about 4340 clocks/byte. The 125 MHz figures below describe
+# the historical 2026-10-06 diagnosis, not the current operating frequency.
 # 2026-10-06, mem->mem domino #2 (after the fetch guarded_level cut). The status
 # rbyte_c mux spans telemetry sources across the whole die; its select tree is
 # driven by ridx (fanout 54, net-dominated 70~73%, worst single-cycle path was
@@ -132,7 +139,7 @@ set_false_path -through [get_nets {tx_reset}] -to [get_pins {*.sr */*.sr}]
 # merged report logic (ridx is not a sink port). Relaxed with a real multicycle
 # (not a false path), hold moves 1 cycle together with the data.
 # VERIFY after every STA run: ridx paths must show Budget 16.000ns in
-# route.timing; a silently-empty get_regs match would leave them at 8 ns
+# legacy route.timing (current 50 MHz: 40 ns); an empty match leaves one period
 # (defect 23 lesson: TD does NOT warn on empty collections).
 # ★ 2026-10-06 订正（guardfix2 的 route.check 第 4 节实证这两条被判 invalid）：
 #   ① get_regs 按 **Q 端 net 名**匹配（SWUG200 §3.1.9），Q 网名是 `ridx[N]`

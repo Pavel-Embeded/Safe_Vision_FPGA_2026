@@ -77,3 +77,8 @@ __pycache__/
 /evidence/clock_video_20261002/
 /evidence/a_only_push_20261002/
 /evidence/A_clock_video_runs/
+# Locally installed official HDMI dependencies and GUI preparation audits.
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/vendor_hdmi/
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/vendor_hdmi_manifest.json
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/gui_*.manifest.json
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/font8x16.mem

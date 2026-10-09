@@ -1,0 +1,61 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct  9 20:57:54 2026
+# Process ID: 40456
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/accepted_recovery
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_recovery/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/accepted_recovery/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/accepted_recovery\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_recovery/xsim_script.tcl
+# xsim {board_recovery} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] card timeout selects fallback writer ownership
+[PASS] no frame publishes before a completed producer
+[PASS] unselected card toggle is consumed without publication
+[PASS] late card is held off while fallback has no swap acknowledgement
+[PASS] fallback slot CRC and generation arrive atomically in SYS
+[PASS] fallback publish alone cannot authorize late-card takeover
+[PASS] swap-busy assertion retains fallback ownership
+[PASS] acknowledged fallback still fences an in-flight writer
+[PASS] idle writer and acknowledged fallback allow late-card takeover
+[PASS] owner change between opposite source toggles creates no false event
+[PASS] metadata changes without a producer event do not publish
+[PASS] card metadata publishes once with shared monotonic generation
+[PASS] mailbox acknowledgement drains the selected event with no duplicates
+[PASS] SOF is queued before a short receiver stall
+[PASS] AXIS data SOF and EOL stay stable under stall edge 1
+[PASS] AXIS data SOF and EOL stay stable under stall edge 2
+[PASS] AXIS data SOF and EOL stay stable under stall edge 3
+[PASS] bounded stall preserves all four ordered beats including EOL
+[PASS] EOL beat is queued before receiver stall
+[PASS] asserted EOL tag and data remain stable under receiver stall
+[PASS] stalled EOL and following line restart drain in exact order
+[PASS] overflow drives transmitter reset
+[PASS] overflow asynchronously asserts serial PHY reset
+[PASS] PHY reset remains asserted at first serial release edge
+[PASS] PHY reset releases at second serial edge
+[PASS] long stall produces exactly one overflow drop and sticky fault
+[PASS] overflow clears the damaged stream and waits for fresh SOF
+[PASS] serial-domain reset recovery completed
+[PASS] receiver ready cannot restart an incomplete frame
+[PASS] recovery resumes on a complete new-frame SOF
+[PASS] post-recovery SOF drains and both transmitter and PHY leave reset
+[PASS] native fixed-rate scan continues through stalls overflow and recovery
+[PASS] HDMI recovery does not duplicate memory-frame publications
+[PASS] control injection scope performs no physical memory transaction
+[PASS] F1 swap ambiguity fences new frame admission
+[PASS] F1 swap ambiguity blocks local KEY2 restart
+[PASS] failed player remains stopped without launching another frame
+[PASS] clearing F1 telemetry cannot bypass the latched slot-ownership fence
+[PASS] KEY2 cannot retry an aborted media stream with dirty child state
+[PASS] common KEY1 reset restores INIT-only KEY2 retry and frame admission
+[PASS] BOARD RECOVERY checks=40 mailbox_frames=2 AXIS_beats=6 scan_edges=54
+$finish called at time : 9710003 ps : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_safevision_board_recovery.sv" Line 198
+## quit
+INFO: [Common 17-206] Exiting xsim at Fri Oct  9 20:57:58 2026...

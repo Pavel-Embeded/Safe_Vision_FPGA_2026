@@ -1,0 +1,43 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct  9 19:56:44 2026
+# Process ID: 36964
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/b_suite
+# Command line: xsim.exe -log tb_b_frame_memory_sim.log -mode tcl -source {xsim.dir/tb_b_frame_memory_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/b_suite/tb_b_frame_memory_sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/b_suite\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_b_frame_memory_sim/xsim_script.tcl
+# xsim {tb_b_frame_memory_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PROG] t=2000000000 bi=125015 bu_done=0 fw_px=41653 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=4000000000 bi=250015 bu_done=0 fw_px=83319 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=6000000000 bi=375015 bu_done=0 fw_px=124986 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=8000000000 bi=500015 bu_done=0 fw_px=166653 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=10000000000 bi=625015 bu_done=0 fw_px=208319 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=12000000000 bi=750015 bu_done=0 fw_px=249986 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=14000000000 bi=875015 bu_done=0 fw_px=291653 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PASS] ÿÿÿ¤ÿÿÿÿÿÿçÿÿÿ®ÿÿÿ½ÿÿÿæÿÿÿÿÿÿ‰
+[PASS] 2) BMPÿÿÿ´ÿÿÿéÿÿÿ€ÿÿÿ‡
+[PASS] ÿÿÿèÿÿÿÿÿÿºÿÿÿåÿ¦ = 640
+[PASS] ÿÿÿèÿÿÿÿÿÿºÿÿÿåÿ¦ = 480
+[PASS] 5) frame_writer ÿÿÿåÿÿÿ—ÿÿÿ™
+[PASS] rame_writer ÿÿÿæÿ¡ 30720ÿÿÿƒÿÿÿ 
+[PASS] 7) frame_writer CRC ÿÿÿéÿÿÿ€ÿÿÿ‡
+[PASS] valiÿÿÿ½ÿÿÿÿÿˆAÿÿÿÿÿÿèÿÿÿ¯ÿÿÿ‰
+[PROG] t=16000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 bst=2096 vcnt=134082 wok=134082 wbad=0
+[PASS] BMP ÿÿÿçÿÿÿ¯ÿÿÿ€ÿÿ´*ÿÿÿˆÿÿÿ”ÿÿÿ‰
+[PASS] ÿÿÿ•° = 1536ÿÿÿ¼ÿÿÿÿÿÿäÿÿÿ°ÿÿÿ‰
+[PASS] 2400ÿÿÿæÿÿÿ¸ÿÿÿÿÿÿäÿÿÿ¬¡ acÿÿÿ‰
+[PASS] _ackÿÿÿ•ÿÿÿïÿÿÿ—ÿÿÿÿÿÿäÿÿÿ‹ÿÿÿ‰
+[PASS] alidÿÿÿªÿÿ¨ rd_busy ÿÿÿéÿÿÿ‡ÿÿÿ°
+[PASS] 1ÿÿÿèÿÿÿ›ÿÿÿ—ÿÿ° = 153600
+[TB] tb_b_frame_memory done, errors=0 (wok=153600 wbad=0 bursts=2400 vcnt=153600)
+$finish called at time : 16183236 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_b_frame_memory.sv" Line 392
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 219.633 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct  9 19:56:53 2026...

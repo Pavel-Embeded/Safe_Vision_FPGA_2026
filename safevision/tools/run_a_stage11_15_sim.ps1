@@ -9,6 +9,7 @@ param(
  'tb_a_video_display_core_stress','tb_pixel_word_packer_stress')
 )
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'xsim_project.ps1')
 $RepoRoot=(Resolve-Path -LiteralPath $RepoRoot).Path
 $RunDir=$ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($RunDir)
 if($RunDir -match '[^\x00-\x7f]'){throw 'XSim2018.3 requires an ASCII RunDir'}
@@ -91,7 +92,8 @@ try {
   Copy-Item -LiteralPath (Join-Path $RepoRoot 'safevision/assets/fonts/font8x16.mem') -Destination (Join-Path $dir 'font8x16.mem') -Force
   Push-Location -LiteralPath $dir
   try {
-   & (Join-Path $XSimBin 'xvlog.bat') -i (Join-Path $RepoRoot 'safevision/rtl/include') @files --log rtl.log > rtl.console.log 2>&1
+   Write-XSimProject -Paths $files -Path 'files.prj'
+   & (Join-Path $XSimBin 'xvlog.bat') -i (Join-Path $RepoRoot 'safevision/rtl/include') --file 'files.prj' --log rtl.log > rtl.console.log 2>&1
    if($LASTEXITCODE){throw 'Combined A+B RTL compile failed'}
    & (Join-Path $XSimBin 'xvlog.bat') --sv -i (Join-Path $RepoRoot 'safevision/rtl/include') (Join-Path $RepoRoot "safevision/verification/unit/$case.sv") --log tb.log > tb.console.log 2>&1
    if($LASTEXITCODE){throw 'TB compile failed'}

@@ -19,43 +19,17 @@ cd $out
 set hd [expr {$board_mode eq "hd"}]
 set video_pll [expr {$hd ? "sv_video_hd_pll.v" : "sv_video_vga_pll.v"}]
 
-set paths [list \
-    [file join $platform rtl safevision_top safevision_top.v] \
-    [file join $platform rtl clock reset_sync.v] \
-    [file join $platform rtl sdram_app_adapter.v] \
-    [file join $platform ip pll sv_system_pll.v] \
-    [file join $platform ip pll $video_pll] \
-    [file join $platform ip sdram global_def.v] \
-    [file join $platform ip sdram sdr_as_ram.enc.v] \
-    [file join $platform ip sdram sdr_init_ref.enc.v] \
-    [file join $platform ip sdram sdr_wrrd.enc.v] \
-    [file join $platform ip sdram sdram.v] \
-    [file join $platform ip a_pixel_fifo a_pixel_fifo_ip.v] \
-    [file join $platform ip a_pixel_fifo a_pixel_fifo_eram.v] \
-    [file join $platform rtl pixel_fifo a_pixel_fifo.v] \
-    [file join $platform rtl bmp_frame_sink.v] \
-    [file join $vend hdmi_phy_warpper.v] \
-    [file join $vend lane_lvds_10_1.v] \
-    [file join $vend hdmi1.4b_transmitter_core hdmi_1_4b_transmitter_core_wrapper.enc.v]]
-foreach p {rtl/video/frame_reader/pixel_word_packer.v rtl/video/frame_reader/frame_slot_commit.v
-           rtl/video/frame_reader/frame_reader.v rtl/video/frame_reader/a_frame_fetch_bridge.v
-           rtl/video/video_pipeline/a_video_display_core.v rtl/video/video_pipeline/video_pipeline.v
-           rtl/video/video_cdc/video_cdc_mailbox.v rtl/video/video_cdc/video_level_sync.v
-           rtl/video/video_compositor/video_layer_delay.v rtl/video/video_compositor/video_compositor.v
-           rtl/video/osd_overlay/osd_text_layer.v rtl/video/osd_overlay/osd_status_text.v
-           rtl/video/graphics_rom/font8x16_rom.v rtl/video/video_timing/video_timing.v
-           rtl/video/hdmi_output/hdmi_video_bridge.v
-           rtl/memory/video_read_dma.v rtl/memory/frame_swap_cdc.v rtl/memory/memory_arbiter.v
-           rtl/memory/frame_swap_ctrl.v rtl/memory/frame_writer.v rtl/memory/frame_address_gen.v
-           rtl/memory/mem_ctrl.v rtl/common/crc16_ccitt.v
-           rtl/common/crc7.v rtl/common/uart_tx.v
-           rtl/storage/spi_master.v rtl/storage/sd_initializer.v rtl/storage/sd_sector_reader.v
-           rtl/storage/mbr_parser.v rtl/storage/fat32_boot_parser.v
-           rtl/storage/fat32_directory_scanner.v rtl/storage/fat32_cluster_walker.v
-           rtl/storage/file_index.v rtl/storage/file_streamer.v rtl/storage/sd_bmp_player.v
-           rtl/media/bmp_parser.v rtl/media/bmp_unpack.v
-           rtl/top/safevision_core/safevision_core.v rtl/top/safevision_core/bmp_frame_write_bridge.v} {
-    lappend paths [file join $root safevision $p]
+set paths {}
+set source_file [open [file join $here board_sources.list] r]
+set source_lines [split [read $source_file] "\n"]
+close $source_file
+foreach line $source_lines {
+    set line [string trim $line]
+    if {$line eq "" || [string index $line 0] eq "#"} {continue}
+    set line [string map [list @video_pll@ $video_pll] $line]
+    if {[string match vendor/* $line]} {
+        lappend paths [file join $vend [string range $line 7 end]]
+    } else {lappend paths [file join $root safevision $line]}
 }
 foreach f $paths {if {![file isfile $f]} {error "Missing source: $f"}}
 
@@ -89,6 +63,7 @@ if {[catch {
     set crc_names {}
     for {set i 0} {$i < 16} {incr i} {lappend crc_names [format {fb_writer/crc_src[%d]} $i]}
     if {[llength [get_regs $crc_names]] != 16} {error "Incomplete writer CRC state collection"}
+    if {[llength [get_nets {core/display/fetch/fifo_reset}]] == 0} {error "Missing preserved FIFO asynchronous assertion net"}
     update_timing -mode basic
     report_timing_summary -ep_num 30 -file gate.timing
     export_db gate.db

@@ -6,8 +6,8 @@
 //
 //   sd_bmp_player（B，rtl/storage/sd_bmp_player.v）—— ★ **跑板载 50 MHz（clk，R7）**
 //     SD 卡 → FAT32 → file_streamer → bmp_parser → bmp_unpack → 2 像素打包成 32 位字
-//   bmp_frame_sink（B，platform/.../rtl/bmp_frame_sink.v）—— 跑 mem_clk 125 MHz
-//     官方 a_pixel_fifo（写 50M / 读 125M）+ A 的 bmp_frame_write_bridge（行序重映射）
+//   bmp_frame_sink（B，platform/.../rtl/bmp_frame_sink.v）—— 跑 mem_clk 50 MHz
+//     官方 a_pixel_fifo（写 50M / 读 50M）+ A 的 bmp_frame_write_bridge（行序重映射）
 //     + 帧控制器 → 逐 word 写请求 + 换帧请求
 //   safevision_core（A）
 //     memory_arbiter ← 写请求；帧读取/双缓冲换帧/合成/OSD/固定速率扫描 → RGB+同步
@@ -15,16 +15,16 @@
 //
 // ★★ 三条路要分清（别混为一谈）
 //   ① SD 卡里的真 BMP → 屏幕：card_mode=1（本顶层主用途）
-//   ② 片上固定测试图案 → 屏幕：card_mode=0 时的**回落**（卡不可用也保证 HDMI
-//      有画面；该回落路径 2026-10-05 已上板点亮过）
+//   ② 片上应急图形 → 屏幕：启动、媒体/存储故障、KEY3 均有独立 BRAM 画面。
+//      旧回落写入器仍保留，但安全画面不依赖它或 SDRAM。
 //   ③ ①②都不是 HDMI 电气合规 / 显示器兼容 / 音频的验收证据 ✗
 //
 // ★ 跨时钟域（通过同步器、mailbox 或双时钟 FIFO）
-//   · 像素流 50M → 125M：**官方 a_pixel_fifo**（双时钟 + 32→16 位宽转换），
+//   · 像素流 50M → 50M：**官方 a_pixel_fifo**（双时钟 + 32→16 位宽转换），
 //     写侧 wr_clk = clk、读侧 = mem_clk；`px_word_ready`（FIFO wr_ready）留在 50M 域 ✓
-//   · 帧控制 125M → 50M：`mem_ready`（电平）/`frame_done`（toggle）/`last_frame_ok`
+//   · 帧控制 50M → 50M：`mem_ready`（电平）/`frame_done`（toggle）/`last_frame_ok`
 //     （电平）都在 player 内部两级同步 ✓
-//   · 帧控制 50M → 125M：`frame_active`/`top_down`/`slot` 由 sink 内部两级同步 ✓
+//   · 帧控制 50M → 50M：`frame_active`/`top_down`/`slot` 由 sink 内部两级同步 ✓
 //   · 写口 wr_*（mem 域）直连 core 的 memory_arbiter（mem 域）✓
 //   · 换帧请求 mem → sys：统一发布事件，使用带确认的 video_cdc_mailbox
 //     传输 slot/generation/crc_ok，目的域寄存完整载荷及 valid ✓
@@ -38,6 +38,7 @@
 //     EC 报"有效错误码"——sink 报错时优先报 sink 的（否则板上只看得到 E3）。
 // ★ 本文件不生成位流；由 tools/run_board_sta.ps1 控制（默认关）。
 // ============================================================================
+`define SAFEVISION_SDRAM_CLK_HZ 50000000
 `include "pixel_format_defs.vh"
 // Default video mode; the TD flow overrides it with -define SAFEVISION_BOARD_HD.
 `ifndef SAFEVISION_BOARD_HD
@@ -45,16 +46,16 @@
 `endif
 module safevision_top #(
     parameter integer HD = `SAFEVISION_BOARD_HD,
-    parameter integer MEM_CLK_HZ = 125000000,
+    parameter integer MEM_CLK_HZ = 50000000,
     // ★ 合并 origin/main 后：字体路径用对方的（相对工程路径，A 侧改动），
     //   同时保留本轮新增的两个"可测性参数"（MODE_TO_N / RPT_PERIOD_N）——两者正交。
-    parameter FONT_FILE = "../../../assets/fonts/font8x16.mem",
+    parameter FONT_FILE = "font8x16.mem",
     // 上电后等多久判定“卡不可用”而回落到片上测试图案（mem 拍）
-    parameter [31:0] MODE_TO_N = 32'd37_500_000,       // 300 ms @125MHz
-    // UART 状态行的发送周期（mem 拍）。默认 500 ms @125MHz。
+    parameter [31:0] MODE_TO_N = MEM_CLK_HZ*3/10,       // 300 ms @50MHz
+    // UART 状态行的发送周期（mem 拍）。默认 500 ms @50MHz。
     // ★ 提成 parameter 只是**为了可测**：整行 107 字节在 115200 波特下要 ~9.3 ms，
     //   仿真里等 500 ms 太贵。TD 流程不覆盖它 ⇒ 综合结果与原来完全一致。
-    parameter [31:0] RPT_PERIOD_N = 32'd62_500_000,
+    parameter [31:0] RPT_PERIOD_N = MEM_CLK_HZ/2,
     parameter [15:0] PLAYER_SPI_INIT_DIV=16'd249,
     parameter [15:0] PLAYER_SPI_FAST_DIV=16'd0
 )(
@@ -63,6 +64,7 @@ module safevision_top #(
     input  wire        rst_n,           // A2  KEY_1（低有效）
     input  wire        btn_next,        // B2  下一幅
     input  wire        btn_auto,        // C1  自动连播
+    input  wire        btn_emergency,   // B1  KEY3, hold for on-chip safety scene
     output wire        uart_txd,        // D12 板载 CH340G，115200 8N1
     output wire [3:0]  led,             // A4/A3/C10/B12
     // SD 卡（SPI 模式）
@@ -85,7 +87,7 @@ module safevision_top #(
 
     reset_sync reset_ref(.clk(clk), .async_rst_n(rst_n), .rst_n(ref_rst_n));
 
-    sv_system_pll system_pll(.refclk(clk), .reset(1'b0), .extlock(sys_lock),
+    sv_board_memory_pll system_pll(.refclk(clk), .reset(1'b0), .extlock(sys_lock),
         .clk0_out(sys_clk), .clk1_out(mem_clk), .clk2_out(mem_clk_sft));
 
     generate
@@ -121,15 +123,17 @@ module safevision_top #(
 
     wire        adapter_req, adapter_wr, adapter_ready, adapter_rvalid, adapter_init;
     wire adapter_write_idle;
+    wire adapter_fault,memory_error;
     reg card_mode; reg [31:0] mode_cnt;
     wire [31:0] adapter_addr, adapter_wdata, adapter_rdata;
     wire [3:0]  adapter_wstrb;
 
-    sdram_app_adapter adapter(.clk(mem_clk), .rst_n(mem_rst_n),
+    sdram_app_adapter #(.FAST_READ(1)) adapter(.clk(mem_clk), .rst_n(mem_rst_n),
         .req(adapter_req), .wr(adapter_wr), .addr(adapter_addr),
         .wdata(adapter_wdata), .wstrb(adapter_wstrb),
         .rdata(adapter_rdata), .rdata_valid(adapter_rvalid),
         .ready(adapter_ready), .init_done(adapter_init), .write_idle(adapter_write_idle),
+        .protocol_fault(adapter_fault),
         .Sdr_init_done(sdr_init_done), .Sdr_init_ref_vld(sdr_ref_valid),
         .Sdr_busy(sdr_busy), .App_wr_en(app_wr_en), .App_wr_addr(app_wr_addr),
         .App_wr_dm(app_wr_dm), .App_wr_din(app_wr_din),
@@ -143,7 +147,7 @@ module safevision_top #(
     mem_ctrl memory(.clk(mem_clk), .rst_n(mem_rst_n), .init_done(),
         .req(mem_req), .wr(mem_wr), .addr(mem_addr), .wdata(mem_wdata),
         .wstrb(mem_wstrb), .rdata(mem_rdata), .rdata_valid(mem_rvalid),
-        .ready(mem_ready), .mem_error(),
+        .ready(mem_ready), .mem_error(memory_error),
         .sdram_req(adapter_req), .sdram_wr(adapter_wr), .sdram_addr(adapter_addr),
         .sdram_wdata(adapter_wdata), .sdram_wstrb(adapter_wstrb),
         .sdram_rdata(adapter_rdata), .sdram_rdata_valid(adapter_rvalid),
@@ -151,20 +155,26 @@ module safevision_top #(
 
     // ---- core 的写通道应答（同一时刻只有一个生产者，两边共用）----
     wire prod_wr_ack, prod_wr_busy;
+    // Board writers issue one word and retain its data until wr_ready.
+    // The arbiter's wr_ack is only a GRANT: its prime cycle, a cache quiet
+    // interval or a physical write flush may still delay mem_ready. Releasing
+    // the writer at grant lets a queued next pixel pair replace the current
+    // data before acceptance. Complete this producer word at the real edge.
+    wire prod_word_accepted=prod_wr_busy&&mem_req&&mem_wr&&mem_ready;
 
     // ========================================================================
     // ① SD 卡 BMP 播放引擎（**50 MHz 域**，方案 A）+ mem 侧帧接收器
     //
     //   ★ 方案 A 的跨界结构（2026-10-06）：
     //       sd_bmp_player（clk 50M）── 32 位打包像素 ──► 官方 a_pixel_fifo
-    //                                                  （写 50M / 读 125M）
+    //                                                  （写 50M / 读 50M）
     //         ◄── mem_ready / frame_done / last_frame_ok ── bmp_frame_sink（mem 域）
     //       sink 拿着 FIFO 的读侧 + A 的 bmp_frame_write_bridge + 帧控制器，
     //       写出 wr_* 给 core 的 memory_arbiter，并发出换帧请求。
     //
     //   ★ 为什么整条媒体链回到 50 MHz：它原本就是按 50 MHz 设计并 STA 过的
     //     （`top_stage6_fat32_mount.v` 头注 / `constraints/timing.sdc`），
-    //     塞进 125 MHz 的 mem 域后链内长路径（88 位目录名解码＋十进制乘法、
+    //     历史上塞进 125 MHz 的 mem 域后链内长路径（88 位目录名解码＋十进制乘法、
     //     bmp_unpack 的乘法器、LBA 计算）在 8 ns 预算下过不去。
     //     50 MHz 下 SPI 仍是瓶颈 ⇒ **不损失吞吐**。
     // ========================================================================
@@ -185,7 +195,7 @@ module safevision_top #(
     wire        pl_frame_ok;
     wire [15:0] pl_frame_cnt;
 
-    // ---- 帧接收器（mem_clk = 125 MHz 域）----
+    // ---- 帧接收器（mem_clk = 50 MHz 域）----
     wire        sk_wr_req;
     wire [31:0] sk_wr_addr, sk_wr_data;
     wire [15:0] sk_wr_len;
@@ -293,7 +303,7 @@ module safevision_top #(
         .frame_cnt(pl_frame_cnt)
     );
 
-    // ---- 帧接收器：官方 a_pixel_fifo（写 50M / 读 125M）+ A 的桥 + 帧控制器 ----
+    // ---- 帧接收器：官方 a_pixel_fifo（写 50M / 读 50M）+ A 的桥 + 帧控制器 ----
     //   ★ wr_clk 必须是 player 的时钟（clk）；clk/rst_n 是 mem 域
     //   ★ swap_busy 用 `swap_busy_mem`（已从 sys 域两级同步进 mem 域）：
     //     core 的 frame_swap_ctrl 跑在 **sys_clk**（见 frame_swap_ctrl.v 头注），
@@ -306,7 +316,7 @@ module safevision_top #(
         .mem_ready(sk_mem_ready), .frame_done(sk_frame_done),
         .last_frame_ok(sk_frame_ok),
         .wr_req(sk_wr_req), .wr_addr(sk_wr_addr), .wr_data(sk_wr_data),
-        .wr_len(sk_wr_len), .wr_ready(prod_wr_ack && card_mode),
+        .wr_len(sk_wr_len), .wr_ready(prod_word_accepted && card_mode),
         .write_drained(adapter_write_idle && !prod_wr_busy),
         .swap_toggle(sk_swap_toggle), .swap_slot(sk_swap_slot),
         .swap_generation(sk_swap_gen), .swap_crc_ok(sk_swap_crc_ok),
@@ -316,7 +326,7 @@ module safevision_top #(
     );
 
     // ========================================================================
-    // ★★ 50 MHz（player）→ 125 MHz（mem）：遥测/状态字段**逐字段两级同步**
+    // ★★ 50 MHz（player）→ 50 MHz（mem）：遥测/状态字段**逐字段两级同步**
     //
     //   为什么必须有这一层：Plan A 把 player 搬到了 50 MHz 域，但 **UART 状态行、
     //   card_mode 回落判据、LED** 都还在 mem 域。如果让 mem 域的组合逻辑直接读
@@ -447,7 +457,7 @@ module safevision_top #(
         .slot_base(`SV_IMG0_BASE),
         .din(fb_rgb565), .din_valid(fb_valid), .din_ready(fb_ready),
         .wr_req(fb_wr_req), .wr_addr(fb_wr_addr), .wr_data(fb_wr_data),
-        .wr_len(fb_wr_len), .wr_ready(prod_wr_ack && !card_mode), .wr_done(fb_wr_done),
+        .wr_len(fb_wr_len), .wr_ready(prod_word_accepted && !card_mode), .wr_done(fb_wr_done),
         .slot_valid(fb_slot_valid), .crc_ok(fb_crc_ok), .crc_value(), .px_cnt(fb_px),
         .wr_error(fb_wr_error), .err_code(), .err_detail());
 
@@ -532,8 +542,28 @@ module safevision_top #(
     wire        out_de, out_vs, active, swap_error, frame_fault;
     wire [2:0]  swap_state;
     wire [31:0] underflows, missed, overflows;
+    wire [11:0] scan_x,scan_y;
+    wire scan_de,scan_frame_start,safety_active;
+    wire [1:0] safety_level;
+    wire [23:0] safety_rgb;wire safety_valid;
+    reg media_fault_ref,storage_fault_mem;
+    always @(posedge clk or negedge ref_rst_n)
+        if(!ref_rst_n)media_fault_ref<=0;else media_fault_ref<=(pl_state==4'd10);
+    always @(posedge mem_clk or negedge mem_rst_n)
+        if(!mem_rst_n)storage_fault_mem<=0;
+        else storage_fault_mem<=memory_error||adapter_fault||swap_fault_latched||fb_wr_error||(sk_ec!=0);
+    board_display_guard display_guard(
+        .pixel_clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(scan_frame_start),
+        .active_frame(active),.frame_fault(frame_fault),
+        .media_fault_async(media_fault_ref),
+        .storage_fault_async(storage_fault_mem),
+        .manual_async(!btn_emergency),.safety_active(safety_active),.warning_level(safety_level));
+    emergency_graphics #(.HD(HD),.FONT_FILE(FONT_FILE)) safety_scene(
+        .clk(pixel_clk),.rst_n(pixel_rst_n),.de(scan_de),.frame_start(scan_frame_start),
+        .x(scan_x),.y(scan_y),.active(safety_active),.direction(2'd2),
+        .warning_level(safety_level),.rgb(safety_rgb),.valid(safety_valid));
 
-    safevision_core #(.HD(HD), .FONT_FILE(FONT_FILE)) core(
+    safevision_core #(.HD(HD), .FONT_FILE(FONT_FILE),.EMERGENCY_LATENCY(4),.DMA_STREAMING(1),.FIFO_AW(12),.BURST_WORDS(256)) core(
         .sys_clk(sys_clk), .mem_clk(mem_clk), .pixel_clk(pixel_clk), .rst_n(common_rst_n),
         .frame_ready(frame_ready), .wr_frame_index(1'b0), .wr_slot_id(slot_sys),
         .wr_generation(gen_sys), .wr_crc_ok(crc_sys),
@@ -551,8 +581,8 @@ module safevision_top #(
         .cfg_valid(1'b0), .cfg_ready(), .cfg_osd_enable(1'b0), .cfg_mode(2'd0),
         .cfg_fps_tens(4'd6), .cfg_fps_ones(4'd0), .cfg_sd_ok(1'b1),
         .cfg_origin_x(12'd0), .cfg_origin_y(12'd0), .cfg_foreground(24'hffffff),
-        .emergency_rgb(24'd0), .emergency_valid(1'b0),
-        .scan_x(), .scan_y(), .scan_de(), .scan_frame_start(),
+        .emergency_rgb(safety_rgb), .emergency_valid(safety_valid),
+        .scan_x(scan_x), .scan_y(scan_y), .scan_de(scan_de), .scan_frame_start(scan_frame_start),
         .rgb(rgb), .x(out_x), .y(out_y), .hsync(), .vsync(out_vs), .de(out_de),
         .pixel_valid(), .line_start(), .frame_start(), .active_frame_start(),
         .hblank(), .vblank(), .selected_layer(), .pix_active_slot(),
@@ -683,8 +713,8 @@ module safevision_top #(
                 //   再把 rbyte_c 算进 rbyte —— 使"ridx → 90 路报告 mux → rbyte"成为
                 //   **真实的 2 周期路径**，配合 board_cdc.sdc 的 set_multicycle_path 2
                 //   （理由见那边）。ridx 扇出 54、net 占 73%，mux 数据源横跨全芯片，
-                //   单周期切不动，只能给足采样周期。代价：每字节多 1 拍（8 ns），
-                //   相对 ~10850 拍/字节（115200@125M）可忽略。
+                //   单周期切不动，只能给足采样周期。代价：每字节多 1 拍（当前 20 ns；旧配置 8 ns），
+                //   相对 ~4340 拍/字节（115200@50M）可忽略。
                 if (rwait) begin
                     rbyte <= rbyte_c;                     // 第 1 步：把字节算进寄存器
                     rload <= 1'b0;

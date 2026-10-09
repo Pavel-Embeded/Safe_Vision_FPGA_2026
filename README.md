@@ -1,5 +1,10 @@
 # SafeVision FPGA 2026
 
+2026-10-09 板级白屏修复入口：[修复与验证报告](docs/verification/AB_WHITE_SCREEN_REPAIR_20261009.md)。
+真实图片显示工程为 `safevision/platform/anlogic_eg4s20_hx4s20c/project/safevision.al`
+（顶层 `safevision_top`，HDMI B）；准备与构建命令见该目录 README。
+下文部分初期状态说明保留历史背景，当前 A/B 能力与验收状态以本轮报告为准。
+
 > 全国大学生嵌入式芯片与系统设计竞赛 2026 · FPGA 赛道 · 赛题一
 > 《HDMI 多媒体播放与应急视听疏散终端》—— 平台：康芯 HX4S20C / 安路 EG4S20BG256
 

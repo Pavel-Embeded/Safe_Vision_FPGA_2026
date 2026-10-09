@@ -42,7 +42,7 @@ function Get-BoardSourceSnapshot {
   (Join-Path $RepoRoot 'safevision/platform/anlogic_eg4s20_hx4s20c/project/board_verify'),
   (Join-Path $RepoRoot 'safevision/assets/fonts'),$env:SAFEVISION_HDMI_VENDOR)
  $files=@($sourceRoots | ForEach-Object {
-  Get-ChildItem -LiteralPath $_ -Recurse -File | Where-Object {$_.Extension -in @('.v','.sv','.vh','.sdc','.tcl','.adc','.mem')}
+  Get-ChildItem -LiteralPath $_ -Recurse -File | Where-Object {$_.Extension -in @('.v','.sv','.vh','.sdc','.tcl','.adc','.mem','.list')}
  })
  $files+=@(Get-Item -LiteralPath (Join-Path $PSScriptRoot 'check_board_timing.py'),(Join-Path $PSScriptRoot 'run_board_sta.ps1'))
  foreach($f in @($files | Sort-Object FullName -Unique)){

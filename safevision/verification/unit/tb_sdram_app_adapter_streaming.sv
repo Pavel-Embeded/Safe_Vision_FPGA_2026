@@ -2,14 +2,14 @@
 // recorded by the project's M-11 hardware tests, not the encrypted SDRAM IP.
 // Sparse writes, turnarounds and cache coherency were absent from the old TB.
 `timescale 1ns/1ps
-module tb_sdram_app_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=4);
+module tb_sdram_app_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=4,FAST_READ=0);
  reg clk=0; always #4 clk=~clk;
  reg rst_n=0,init=0,req=0,wr=1;
  reg [31:0] addr=0,data=0; reg [3:0] strb=15;
  wire ready,idone,rv,aw,ar; wire [31:0] dout,wd;
  wire [20:0] wa,ra; wire [3:0] dm;
  reg sr=0; reg [31:0] sd=0;
- sdram_app_adapter dut(.clk(clk),.rst_n(rst_n),.req(req),.wr(wr),.addr(addr),
+ sdram_app_adapter #(.FAST_READ(FAST_READ)) dut(.clk(clk),.rst_n(rst_n),.req(req),.wr(wr),.addr(addr),
  .wdata(data),.wstrb(strb),.ready(ready),.init_done(idone),.rdata(dout),.rdata_valid(rv),
  .Sdr_init_done(init),.Sdr_init_ref_vld(1'b0),.Sdr_busy(1'b0),
  .App_wr_en(aw),.App_wr_addr(wa),.App_wr_dm(dm),.App_wr_din(wd),

@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-module dma_frame_case #(parameter integer BURST=16)(input wire clk,rst_n,start,output reg finished=0);
+module dma_frame_case #(parameter integer BURST=16,STREAMING=0)(input wire clk,rst_n,start,output reg finished=0);
     localparam [31:0] BASE=32'h100000;
     reg [31:0] cycle=0;
     reg [15:0] level=0;
@@ -20,7 +20,7 @@ module dma_frame_case #(parameter integer BURST=16)(input wire clk,rst_n,start,o
         reg [31:0] index;
         begin index=(a-BASE)>>1;packed_pixels={(index[15:0]+16'd1),index[15:0]};end
     endfunction
-    video_read_dma #(.BURST_WORDS(BURST),.PIX_DEPTH(256),.LOW_WATER(192)) dma(
+    video_read_dma #(.BURST_WORDS(BURST),.PIX_DEPTH(256),.LOW_WATER(192),.STREAMING(STREAMING)) dma(
         .clk(clk),.rst_n(rst_n),.start(start),.frame_base(BASE),.pix_fifo_level(level),
         .rd_req(req),.rd_addr(addr),.rd_len(len),.rd_ack(ack),.rd_busy(busy),
         .rd_data(rd_data),.rd_data_valid(rd_valid),.fifo_wr_data(pixel),.fifo_wr_en(fifo_en),
@@ -74,14 +74,14 @@ module dma_frame_case #(parameter integer BURST=16)(input wire clk,rst_n,start,o
         end
     end
 endmodule
-module tb_video_read_dma_integration;
+module tb_video_read_dma_integration #(parameter integer STREAMING=0);
     reg clk=0,rst_n=0,start=0;
     always #4 clk=~clk;
     wire [3:0] finished;
-    dma_frame_case #(.BURST(1)) c1(clk,rst_n,start,finished[0]);
-    dma_frame_case #(.BURST(7)) c7(clk,rst_n,start,finished[1]);
-    dma_frame_case #(.BURST(16)) c16(clk,rst_n,start,finished[2]);
-    dma_frame_case #(.BURST(64)) c64(clk,rst_n,start,finished[3]);
+    dma_frame_case #(.BURST(1),.STREAMING(STREAMING)) c1(clk,rst_n,start,finished[0]);
+    dma_frame_case #(.BURST(7),.STREAMING(STREAMING)) c7(clk,rst_n,start,finished[1]);
+    dma_frame_case #(.BURST(16),.STREAMING(STREAMING)) c16(clk,rst_n,start,finished[2]);
+    dma_frame_case #(.BURST(64),.STREAMING(STREAMING)) c64(clk,rst_n,start,finished[3]);
     initial begin
         repeat(5)@(negedge clk);rst_n=1;
         @(negedge clk);start=1;
