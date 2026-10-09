@@ -1,0 +1,88 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct  9 20:55:55 2026
+# Process ID: 35124
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/accepted_card/card
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/accepted_card/card/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/accepted_card/card\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] independent 8-bit RGB pattern samples include x/y and all channels
+[PASS] row/column high bits remain distinct after RGB565 quantization
+[PASS] FAT32 indexed four files at 50 MHz
+[PASS] card owns producer after first frame
+[PASS] first frame CRC accepted after memory drain and swap
+[PASS] slot 1 has all 153600 correct words from bottom-up BMP
+[TB] checked full display frame 1 (307200 pixels), underflows=0
+[TB] checked full display frame 2 (307200 pixels), underflows=0
+[PASS] two full VGA AXIS frames: RGB and SOF/EOL pixel-exact
+[TB] checked full display frame 3 (307200 pixels), underflows=0
+[TB] checked full display frame 4 (307200 pixels), underflows=0
+[TB] checked full display frame 5 (307200 pixels), underflows=0
+[TB] checked full display frame 6 (307200 pixels), underflows=0
+[TB] checked full display frame 7 (307200 pixels), underflows=0
+[TB] checked full display frame 8 (307200 pixels), underflows=0
+[TB] checked full display frame 9 (307200 pixels), underflows=0
+[TB] checked full display frame 10 (307200 pixels), underflows=0
+[TB] checked full display frame 11 (307200 pixels), underflows=0
+[TB] checked full display frame 12 (307200 pixels), underflows=0
+[TB] checked full display frame 13 (307200 pixels), underflows=0
+[TB] checked full display frame 14 (307200 pixels), underflows=0
+[TB] checked full display frame 15 (307200 pixels), underflows=0
+[TB] checked full display frame 16 (307200 pixels), underflows=0
+[TB] checked full display frame 17 (307200 pixels), underflows=0
+[TB] checked full display frame 18 (307200 pixels), underflows=0
+[TB] checked full display frame 19 (307200 pixels), underflows=0
+[TB] checked full display frame 20 (307200 pixels), underflows=0
+[TB] checked full display frame 21 (307200 pixels), underflows=0
+[TB] checked full display frame 22 (307200 pixels), underflows=0
+[TB] checked full display frame 23 (307200 pixels), underflows=0
+[TB] checked full display frame 24 (307200 pixels), underflows=0
+[TB] checked full display frame 25 (307200 pixels), underflows=0
+[TB] checked full display frame 26 (307200 pixels), underflows=0
+[TB] checked full display frame 27 (307200 pixels), underflows=0
+[TB] checked full display frame 28 (307200 pixels), underflows=0
+[TB] checked full display frame 29 (307200 pixels), underflows=0
+[TB] checked full display frame 30 (307200 pixels), underflows=0
+[TB] checked full display frame 31 (307200 pixels), underflows=0
+[TB] checked full display frame 32 (307200 pixels), underflows=0
+[TB] checked full display frame 33 (307200 pixels), underflows=0
+[TB] checked full display frame 34 (307200 pixels), underflows=0
+[TB] checked full display frame 35 (307200 pixels), underflows=0
+[TB] checked full display frame 36 (307200 pixels), underflows=0
+[TB] checked full display frame 37 (307200 pixels), underflows=0
+[TB] checked full display frame 38 (307200 pixels), underflows=0
+[TB] checked full display frame 39 (307200 pixels), underflows=0
+[TB] checked full display frame 40 (307200 pixels), underflows=0
+[TB] checked full display frame 41 (307200 pixels), underflows=0
+[TB] checked full display frame 42 (307200 pixels), underflows=0
+[TB] checked full display frame 43 (307200 pixels), underflows=0
+[TB] checked full display frame 44 (307200 pixels), underflows=0
+[TB] checked full display frame 45 (307200 pixels), underflows=0
+[TB] checked full display frame 46 (307200 pixels), underflows=0
+[TB] checked full display frame 47 (307200 pixels), underflows=0
+[TB] checked full display frame 48 (307200 pixels), underflows=0
+[PASS] slot 0 has all 153600 correct words after next-button frame
+[TB] checked full display frame 49 (307200 pixels), underflows=0
+[TB] checked full display frame 50 (307200 pixels), underflows=0
+[PASS] no player or sink error on two physical-rate card frames
+[PASS] exactly two frame events, both after physical write drain
+[PASS] displayed slot never overwritten by card producer
+[PASS] no display underflow, FIFO overflow or frame fault
+[PASS] all accepted active-frame pixels and line markers match
+[PASS] no HDMI queue overflow
+[PASS] strict SDRAM application burst contract respected
+CARD DISPLAY checks=15 errors=0 checked_frames=50 write_bursts=256035 read_bursts=489600 publishes=2 undrained_publishes=0
+[PASS] CARD DISPLAY PASS
+$finish called at time : 1616187405601 ps : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_safevision_card_display.sv" Line 262
+run: Time (s): cpu = 00:00:01 ; elapsed = 00:26:52 . Memory (MB): peak = 218.176 ; gain = 0.000
+## quit
+INFO: [Common 17-206] Exiting xsim at Fri Oct  9 21:22:52 2026...

@@ -8,15 +8,15 @@
   "source_scope": "conservative board RTL, IP, include, font, constraints, flow, and checker snapshot",
   "sources": [
     {
-      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\vendor_hdmi\\hdl_source\\hdmi_phy_warpper.v",
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\vendor_hdmi\\hdl_source\\hdmi_phy_warpper.v",
       "sha256": "416b082b0987001bdbc0a7e20a557cb8fb1dca34e25dc881e6d28a8cb3cf4300"
     },
     {
-      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\vendor_hdmi\\hdl_source\\hdmi1.4b_transmitter_core\\hdmi_1_4b_transmitter_core_wrapper.enc.v",
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\vendor_hdmi\\hdl_source\\hdmi1.4b_transmitter_core\\hdmi_1_4b_transmitter_core_wrapper.enc.v",
       "sha256": "867e0b0bdd874bc383d00918c9e1be3fe01edf41f343b6a0d73e262776596a63"
     },
     {
-      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\vendor_hdmi\\hdl_source\\lane_lvds_10_1.v",
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\vendor_hdmi\\hdl_source\\lane_lvds_10_1.v",
       "sha256": "de9529321354f04837e051d0ec1681cf44783d4be3284703a788e081147500bc"
     },
     {
@@ -37,7 +37,7 @@
     },
     {
       "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_board_memory_pll.v",
-      "sha256": "35cc527b29f36e865541309f4457602863cb7f929259dd54bddb97a518042aeb"
+      "sha256": "25d32f5514f1b34b6a9237c1cf9b6fb83c024055c628028e78b0f548d229a3d2"
     },
     {
       "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_system_pll.v",
@@ -456,26 +456,26 @@
   "gate_status": "PASS",
   "timing_passed": true,
   "bit_generated": true,
-  "created_at_utc": "2026-10-09T13:01:13.1659344Z",
-  "timing_gate": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\base\\timing.gate.json",
+  "created_at_utc": "2026-10-09T13:27:57.8914530Z",
+  "timing_gate": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\base\\timing.gate.json",
   "reports": [
     {
-      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\base\\route.timing",
-      "sha256": "b7925115206a80804dd3aca9527d3e19afe99569e817bfa9fc40c7c2210d9345"
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\base\\route.timing",
+      "sha256": "e9135eb5dcdca29355fd0183b1f2c6d987a7ab5ad4af9b6a56a40334f8808a44"
     },
     {
-      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\base\\route.check",
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\base\\route.check",
       "sha256": "5ed1e948dbe98939cb9d145fb68ef7b03df06a97e6c2945e39a925e0ee79e2e5"
     },
     {
-      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\base\\route.db",
-      "sha256": "108a5f195211ea3e886da5c44905fe54a9be668e5f3caeea3e427e61eb34a07b"
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\base\\route.db",
+      "sha256": "389d3325eed6db2ee9400db21a627fbb08b008eba20704db604ef305692d2734"
     }
   ],
   "bitstream": {
-    "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\base\\safevision_top.bit",
+    "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\base\\safevision_top.bit",
     "bytes": 633127,
-    "sha256": "6af795d87d5fb96a361fc89e71a4479079af7a261854af96de3d7c2b172252b7",
+    "sha256": "b447d1328a8ef7e23b10f89ef6940d8cdec1ecc1d3f6b31976c0127a98ca4a43",
     "timing_passed": true,
     "experimental": false
   }

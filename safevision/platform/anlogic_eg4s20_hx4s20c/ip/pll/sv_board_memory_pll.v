@@ -11,7 +11,7 @@ module sv_board_memory_pll (
   extlock,
   clk0_out,
   clk1_out,
-  clk2_out 
+  clk2_out
 );
 
   input refclk;
@@ -61,7 +61,7 @@ module sv_board_memory_pll (
     .CLKC2_ENABLE("ENABLE"),
     .CLKC2_DIV(20),
     .CLKC2_CPHASE(7),
-    .CLKC2_FPHASE(0) 
+    .CLKC2_FPHASE(0)
   ) pll_inst (
     .refclk(refclk),
     .reset(reset),
@@ -84,4 +84,3 @@ module sv_board_memory_pll (
   );
 
 endmodule
-

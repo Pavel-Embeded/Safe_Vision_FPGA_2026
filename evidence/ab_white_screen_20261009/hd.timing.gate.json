@@ -240,13 +240,13 @@
   "limitation": "Classification covers reported final routed paths. An experimental SDRAM boundary exception is not timing closure, SDRAM AC validation, proof of a vendor defect, or board/HDMI acceptance.",
   "reports": [
     {
-      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\hd\\route.timing",
-      "sha256": "d45c22611f2be0a08a018aabfc155ec66ffd06c481bbf17e7e0ea9822e713a68"
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\hd\\route.timing",
+      "sha256": "94316b2a93f481f0b25816aecb29ca2de6457db40ee9bbe4aae3a85271e05900"
     },
     {
-      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_sta\\hd\\route.check",
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\delivery_sta\\hd\\route.check",
       "sha256": "6203fd6d6a3c281f2feacef1b29e6706306af308bf96c790a7ec9a9219cc1b44"
     }
   ],
-  "checked_at_utc": "2026-10-09T13:06:58.189717+00:00"
+  "checked_at_utc": "2026-10-09T13:31:35.954453+00:00"
 }

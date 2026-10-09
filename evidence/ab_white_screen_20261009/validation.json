@@ -59,6 +59,24 @@
     "original_log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\a_system_final\\tb_a_video_system_core_hd1_immediate1\\sim.log",
     "sha256": "20d6b621a0b0079aac0e959e5d0e680c8aee7b5776829310f5525317ee247d17"
   },
+  "sd_card_two_images": {
+    "passed": true,
+    "original_log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\accepted_card\\card\\sim.log",
+    "sha256": "15797bceec3c297dba20885d3fe1accc39d8f8ddcbb250a52be8d70b266f2938",
+    "checked_frames": 50,
+    "checked_active_pixels": 15360000,
+    "checks": 15,
+    "errors": 0,
+    "publishes": 2,
+    "undrained_publishes": 0
+  },
+  "grant_handshake_negative_control": {
+    "expected_failure_detected": true,
+    "mismatch_word": 89,
+    "only_mutation": "Restore board writer wr_ready to arbitration grant",
+    "original_log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\grant_full_sink_negative\\memory\\sim.log",
+    "sha256": "7f8101731327e2950f5f35525ded8257c77e03afcf231dfb0f56799efd12fa97"
+  },
   "existing_B": [
     {
       "test": "tb_ab_storage_contract_sim",

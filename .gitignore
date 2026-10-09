@@ -1,6 +1,7 @@
 # Source and evidence allowlist. Large vendor packages and personal references stay outside Git.
 /*
 !/.gitignore
+!/.gitattributes
 !/README.md
 !/.github/
 !/docs/
