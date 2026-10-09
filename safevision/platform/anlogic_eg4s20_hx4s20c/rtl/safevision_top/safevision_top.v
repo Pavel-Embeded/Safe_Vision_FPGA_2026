@@ -599,7 +599,11 @@ module safevision_top #(
         if (!pixel_rst_n) begin edid_count <= 17'd0; edid_trig <= 1'b0; end
         else begin
             edid_trig <= 1'b0;
-            if (edid_count < 17'd100000) begin
+            // Queue resync resets the entire transmitter, including its DDC
+            // state. Start a new settling epoch and read EDID once again.
+            // tx_reset is pixel-domain; no new asynchronous reset is created.
+            if (tx_reset) edid_count <= 17'd0;
+            else if (edid_count < 17'd100000) begin
                 edid_count <= edid_count + 17'd1;
                 if (edid_count == 17'd99999) edid_trig <= 1'b1;
             end

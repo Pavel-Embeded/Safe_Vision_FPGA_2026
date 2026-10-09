@@ -56,11 +56,12 @@ set_false_path -to [get_regs {sink_fatal_sync/meta}]
 #
 # (a) Reset. bmp_frame_sink drives the official pixel FIFO's asynchronous reset
 #     from mem_rst_n. Asynchronous assertion is by design and the per-domain
-#     synchronous release lives inside the IP (wr_rst_done), exactly like the
-#     board-level reset epoch handled above. Only the receiving reset
-#     synchronizer SR pins are exempt; ordinary local reset releases stay timed.
-#     The raw mem_rst_n net is folded into duplicated release flops in HD mode.
-set_false_path -to [get_pins {sink/u_fifo/fifo/asy_w_rst*.sr}]
+#     synchronous release lives inside the IP (wr_rst_done).
+# Keep normal recovery/removal checks on the write-reset synchronizer SR pins.
+# The clocks share the board oscillator; the routed release paths pass these
+# checks. A physical asy_w_rst*.sr exception can silently become invalid when
+# TD packs/renames the cells. It is deliberately absent, rather than replacing
+# it with a broader reset or clock exception. Recheck after each route.
 # Raw MEM reset also gates wrapper wr_ready. The vendor asy_w_rst0/1 holds
 # wr_rst_done=0 and full_flag reset for at least one 20 ns write-clock period
 # after raw reset releases. Bound ONLY that reset-origin control to 8 ns,
@@ -140,3 +141,13 @@ set_false_path -through [get_nets {tx_reset}] -to [get_pins {*.sr */*.sr}]
 #   ③ setup N 周期时 hold 需显式补 N-1 且同侧（-end），否则 hold 仍在原边。
 set_multicycle_path -setup -from [get_regs {ridx*}] 2
 set_multicycle_path -hold -end -from [get_regs {ridx*}] 1
+
+# Writer CRC state feedback only. have_lo/wr_pending make sampled pair events
+# at least three clocks apart at full input rate. crc_src_pend consumes the
+# pair one edge later. Conservatively allow two clocks from crc_src Q to
+# crc_src D; the newly latched crc_pair_q and its enable retain ONE clock.
+# Never use crc_src*: it also selects crc_src_pend. Exact 16-bit collections
+# are checked after legalize_phy_inst in td_flow.tcl. Regress the contract with
+# tb_frame_writer_crc_feedback (stride 1/2/1024, backpressure, pending reset).
+set_multicycle_path -setup -end -from [get_regs {fb_writer/crc_src[0] fb_writer/crc_src[1] fb_writer/crc_src[2] fb_writer/crc_src[3] fb_writer/crc_src[4] fb_writer/crc_src[5] fb_writer/crc_src[6] fb_writer/crc_src[7] fb_writer/crc_src[8] fb_writer/crc_src[9] fb_writer/crc_src[10] fb_writer/crc_src[11] fb_writer/crc_src[12] fb_writer/crc_src[13] fb_writer/crc_src[14] fb_writer/crc_src[15]}] -to [get_regs {fb_writer/crc_src[0] fb_writer/crc_src[1] fb_writer/crc_src[2] fb_writer/crc_src[3] fb_writer/crc_src[4] fb_writer/crc_src[5] fb_writer/crc_src[6] fb_writer/crc_src[7] fb_writer/crc_src[8] fb_writer/crc_src[9] fb_writer/crc_src[10] fb_writer/crc_src[11] fb_writer/crc_src[12] fb_writer/crc_src[13] fb_writer/crc_src[14] fb_writer/crc_src[15]}] 2
+set_multicycle_path -hold -end -from [get_regs {fb_writer/crc_src[0] fb_writer/crc_src[1] fb_writer/crc_src[2] fb_writer/crc_src[3] fb_writer/crc_src[4] fb_writer/crc_src[5] fb_writer/crc_src[6] fb_writer/crc_src[7] fb_writer/crc_src[8] fb_writer/crc_src[9] fb_writer/crc_src[10] fb_writer/crc_src[11] fb_writer/crc_src[12] fb_writer/crc_src[13] fb_writer/crc_src[14] fb_writer/crc_src[15]}] -to [get_regs {fb_writer/crc_src[0] fb_writer/crc_src[1] fb_writer/crc_src[2] fb_writer/crc_src[3] fb_writer/crc_src[4] fb_writer/crc_src[5] fb_writer/crc_src[6] fb_writer/crc_src[7] fb_writer/crc_src[8] fb_writer/crc_src[9] fb_writer/crc_src[10] fb_writer/crc_src[11] fb_writer/crc_src[12] fb_writer/crc_src[13] fb_writer/crc_src[14] fb_writer/crc_src[15]}] 1

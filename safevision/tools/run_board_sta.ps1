@@ -26,7 +26,9 @@ if(-not(Test-Path -LiteralPath $tdExe)){throw "TD executable missing: $tdExe"}
 $pythonExe=$Python
 if(-not(Test-Path -LiteralPath $pythonExe)){
  $command=Get-Command $Python -ErrorAction SilentlyContinue
- if($command){$pythonExe=$command.Source}
+ # Windows' App Execution Alias exists as a file but is not an installed
+ # interpreter. Do not select it instead of the bundled runtime fallback.
+ if($command -and $command.Source -notmatch '[\\/]WindowsApps[\\/]'){$pythonExe=$command.Source}
  elseif($Python -eq 'python'){$pythonExe=Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'}
 }
 if(-not(Test-Path -LiteralPath $pythonExe)){throw 'Python 3 is required. Pass -Python with its executable path.'}

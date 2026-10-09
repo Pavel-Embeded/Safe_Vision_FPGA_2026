@@ -24,7 +24,11 @@ module hdmi_video_bridge #(
     wire full_drop=want&&!push;
     assign queue_level=count;
     assign axis_valid=rst_n&&(count!=0);
-    assign {axis_user,axis_last,axis_data}=q[head];
+    // RAM is intentionally not reset. While no beat is valid, never expose
+    // uninitialized/stale SOF/EOL/data to the vendor boundary. This also makes
+    // reset/overflow idle deterministic without adding RAM reset fanout.
+    // A valid stalled beat still reads the same head and remains unchanged.
+    assign {axis_user,axis_last,axis_data}=axis_valid?q[head]:26'd0;
     always @(posedge clk or negedge rst_n)begin
         if(!rst_n)begin head<=0;tail<=0;count<=0;wait_sof<=1;
             resync<=0;overflow_sticky<=0;dropped_frames<=0;end

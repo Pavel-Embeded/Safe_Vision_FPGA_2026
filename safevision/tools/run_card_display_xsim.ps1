@@ -5,7 +5,7 @@ param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/card_display_xsim'),
- [ValidateSet('adapter','drain','writer','top','card','player')][string[]]$Case=@('adapter','drain','writer','top','card'),
+ [ValidateSet('adapter','drain','writer','crc','top','card','player','edid','idle','bridge')][string[]]$Case=@('adapter','drain','writer','crc','idle','bridge','edid','top','card'),
  [int]$ReadLatency=4,[switch]$Waves
 )
 $ErrorActionPreference='Stop'
@@ -18,12 +18,17 @@ try{
  foreach($c in $Case){
   $run=Join-Path $runRoot $c;New-Item -ItemType Directory -Force (Join-Path $run 'tmp')|Out-Null
   $env:TMP=Join-Path $run 'tmp';$env:TEMP=$env:TMP
-  if($c -eq 'adapter'){
+  if($c -in @('idle','bridge')){
+   $rtl=@('rtl/video/hdmi_output/hdmi_video_bridge.v')
+   $top=if($c -eq 'idle'){'tb_hdmi_video_bridge_idle'}else{'tb_hdmi_video_bridge'}
+   $sim=@("verification/unit/$top.sv")
+  }elseif($c -eq 'adapter'){
    $rtl=@('platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v')
    $sim=@('verification/unit/tb_sdram_app_adapter_streaming.sv');$top='tb_sdram_app_adapter_streaming'
-  }elseif($c -eq 'writer'){
+  }elseif($c -in @('writer','crc')){
    $rtl=@('rtl/common/crc16_ccitt.v','rtl/memory/frame_address_gen.v','rtl/memory/frame_writer.v')
-   $sim=@('verification/unit/tb_frame_writer_full_flag_equivalence.sv');$top='tb_frame_writer_full_flag_equivalence'
+   $top=if($c -eq 'crc'){'tb_frame_writer_crc_feedback'}else{'tb_frame_writer_full_flag_equivalence'}
+   $sim=@("verification/unit/$top.sv")
   }elseif($c -in @('drain','player')){
    $src=Get-Content -LiteralPath (Join-Path $sv 'tools/run_sd_bmp_player_sim.ps1') -Raw
    $rtl=@([regex]::Matches($src,"'((?:platform|rtl)/[^']+\.v)'")|ForEach-Object{$_.Groups[1].Value})
@@ -37,7 +42,7 @@ try{
     'platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v',
     'platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v',
     'platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v')
-   $top=if($c -eq 'card'){'tb_safevision_card_display'}else{'tb_safevision_top'}
+   $top=if($c -eq 'card'){'tb_safevision_card_display'}elseif($c -eq 'edid'){'tb_safevision_hdmi_reset'}else{'tb_safevision_top'}
    $memory=if($c -eq 'card'){'verification/models/board_memory_contract_model.sv'}else{'verification/models/vendor_ip_stub.sv'}
    $sim=@($memory,'verification/models/top_ip_stub.sv','verification/models/sd_spi_card_model.sv',"verification/unit/$top.sv")
    Copy-Item -LiteralPath (Join-Path $sv 'assets/fonts/font8x16.mem') -Destination $run -Force
@@ -57,7 +62,21 @@ try{
    if($LASTEXITCODE){throw "$c elaboration failed: $run/elab.log"}
    $tcl=@()
    if($Waves){
-    if($c -in @('card','top')){
+    if($c -eq 'crc'){
+     foreach($name in @('a','b','c')){
+      $tcl+="log_wave /$top/$name/dut/crc_src /$top/$name/dut/crc_src_pend /$top/$name/dut/crc_pair_q /$top/$name/dut/have_lo /$top/$name/dut/wr_pending /$top/$name/rst_n"
+     }
+    }elseif($c -eq 'edid'){
+     foreach($name in @('pixel_rst_n','tx_reset','hdmi_resync','edid_count','edid_trig')){
+      $tcl+="log_wave /$top/dut/$name"
+     }
+    }elseif($c -eq 'idle'){
+     $tcl+="log_wave /$top/valid /$top/ready /$top/user /$top/last /$top/data /$top/resync /$top/level"
+    }elseif($c -eq 'bridge'){
+     foreach($name in @('a','b')){
+      $tcl+="log_wave /$top/$name/valid /$top/$name/ready /$top/$name/user /$top/$name/last /$top/$name/data /$top/$name/resync /$top/$name/level"
+     }
+    }elseif($c -in @('card','top')){
      # Selected protocol/control signals only; no clocks, scan counters, arrays
      # or recursive whole-chip logging. Keep wave size manageable.
      foreach($name in @('app_wr_en','app_rd_en','app_wr_dm','adapter_write_idle','sk_state',
@@ -85,7 +104,7 @@ try{
    & (Join-Path $XSimBin 'xsim.bat') @simArgs > sim.console.log 2>&1
    if($LASTEXITCODE){throw "$c simulator failed"}
    $log=Get-Content -LiteralPath sim.log -Raw
-   if($log -notmatch '\[PASS\]' -or $log -notmatch '\$finish called' -or
+   if($log -notmatch '(?m)^\s*(\[PASS\]|PASS\b)' -or $log -notmatch '\$finish called' -or
       $log -match '(?im)^\s*(\[FAIL\]|FAIL\b|FATAL\b|ERROR:|(?!(?:\[PASS\]))[^\r\n]*\bFAILED\b)'){
      throw "$c assertion/finish gate failed: $run/sim.log"
    }

@@ -84,9 +84,16 @@ if {[catch {
     legalize_phy_inst
     read_sdc [file join $here board_b.sdc]
     read_sdc [file join $here board_cdc.sdc]
+    # The CRC feedback exception must resolve all 16 state bits, excluding
+    # crc_pair_q (new data) and crc_src_pend (enable), both still single-cycle.
+    set crc_names {}
+    for {set i 0} {$i < 16} {incr i} {lappend crc_names [format {fb_writer/crc_src[%d]} $i]}
+    if {[llength [get_regs $crc_names]] != 16} {error "Incomplete writer CRC state collection"}
     update_timing -mode basic
     report_timing_summary -ep_num 30 -file gate.timing
     export_db gate.db
+    report_param -detail -stage place -file place.params
+    report_param -detail -stage route -file route.params
     place
     route
     update_timing -mode final
