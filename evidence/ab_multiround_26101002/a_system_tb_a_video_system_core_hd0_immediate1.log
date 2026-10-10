@@ -1,0 +1,135 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:27:14 2026
+# Process ID: 9196
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/a_system/tb_a_video_system_core_hd0_immediate1
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_a_video_system_core/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/a_system/tb_a_video_system_core_hd0_immediate1/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/a_system/tb_a_video_system_core_hd0_immediate1\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_a_video_system_core/xsim_script.tcl
+# xsim {tb_a_video_system_core} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PROG] t=2000000000 bi=125002 bu_done=0 fw_px=41648 fw_done=0 slotv=0000 active=0 frames=0 ok=0 bad=0
+[PROG] t=4000000000 bi=250002 bu_done=0 fw_px=83315 fw_done=0 slotv=0000 active=0 frames=0 ok=0 bad=0
+[PROG] t=6000000000 bi=375002 bu_done=0 fw_px=124982 fw_done=0 slotv=0000 active=0 frames=0 ok=0 bad=0
+[PROG] t=8000000000 bi=500002 bu_done=0 fw_px=166648 fw_done=0 slotv=0000 active=0 frames=0 ok=0 bad=0
+[PROG] t=10000000000 bi=625002 bu_done=0 fw_px=208315 fw_done=0 slotv=0000 active=0 frames=0 ok=0 bad=0
+[PROG] t=12000000000 bi=750002 bu_done=0 fw_px=249982 fw_done=0 slotv=0000 active=0 frames=0 ok=0 bad=0
+[PROG] t=14000000000 bi=875002 bu_done=0 fw_px=291648 fw_done=0 slotv=0000 active=0 frames=0 ok=0 bad=0
+[PASS] 1) bmp_unpackÿÿÿ ÿÿÿïÿˆBMÿÿÿ¤ÿÿÿÿÿÿçÿÿÿ®ÿÿÿ½ÿÿÿæÿÿÿÿÿÿ‰
+[PASS] 2) bmp_parsÿÿÿèÿÿÿÿÿÿºÿÿÿåÿ¦ = 640
+[PASS] 3) bmp_parsÿÿÿèÿÿÿÿÿÿºÿÿÿåÿ¦ = 480
+[PASS] 4) BMPÿÿÿ´ÿÿÿéÿÿÿ€ÿÿÿ‡
+[PASS] 5) frame_writer ÿÿÿåÿÿÿ—ÿÿÿ™
+[PASS] 6) frame_writer ÿÿÿæÿ¡ 30720ÿÿÿƒÿÿÿ 
+[PASS] 7) frame_writer CRC ÿÿÿéÿÿÿ€ÿÿÿ‡
+[PASS] 8)ÿÿÿ½ÿÿÿçÿ„ slot_valiÿÿÿ½ÿÿÿÿÿˆAÿÿÿÿÿÿèÿÿÿ¯ÿÿÿ‰
+[FSM] t=14746505000 state 0 -> 1  active_commit=0
+[FSM] t=14746515000 state 1 -> 2  active_commit=0
+[SWAP] t=15000000000 st=2 req=1 fs_b=0 ack_b=0 reqa=z commits=0 err=0 | fsB=0 ackB=0
+[PHASE] A frame-boundary commit t=15253745000
+[PHASE] B commit t=15253775000 delta=30000
+[FSM] t=15253785000 state 2 -> 3  active_commit=1
+[FSM] t=15253795000 state 3 -> 4  active_commit=0
+[FSM] t=15253805000 state 4 -> 0  active_commit=0
+[PROG] t=16000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=1 ok=0 bad=0
+[SWAP] t=16000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[SWAP] t=17000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[PROG] t=18000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=1 ok=26572 bad=0
+[SWAP] t=18000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[SWAP] t=19000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[PROG] t=20000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=1 ok=66842 bad=0
+[SWAP] t=20000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[SWAP] t=21000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[PROG] t=22000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=1 ok=107112 bad=0
+[SWAP] t=22000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[SWAP] t=23000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[PROG] t=24000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=1 ok=147382 bad=0
+[SWAP] t=24000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[SWAP] t=25000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[PROG] t=26000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=1 ok=187652 bad=0
+[SWAP] t=26000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[SWAP] t=27000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[PROG] t=28000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=1 ok=227922 bad=0
+[SWAP] t=28000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[SWAP] t=29000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[PROG] t=30000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=1 ok=268192 bad=0
+[SWAP] t=30000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[SWAP] t=31000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=1 ackB=1
+[PROG] t=32000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=2 ok=307200 bad=0
+[SWAP] t=32000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[SWAP] t=33000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[PROG] t=34000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=2 ok=307200 bad=0
+[SWAP] t=34000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[SWAP] t=35000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[PROG] t=36000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=2 ok=307200 bad=0
+[SWAP] t=36000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[SWAP] t=37000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[PROG] t=38000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=2 ok=307200 bad=0
+[SWAP] t=38000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[SWAP] t=39000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[PROG] t=40000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=2 ok=307200 bad=0
+[SWAP] t=40000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[SWAP] t=41000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[PROG] t=42000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=2 ok=307200 bad=0
+[SWAP] t=42000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[SWAP] t=43000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[PROG] t=44000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=2 ok=307200 bad=0
+[SWAP] t=44000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[SWAP] t=45000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[PROG] t=46000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=2 ok=307200 bad=0
+[SWAP] t=46000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[SWAP] t=47000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[PROG] t=48000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=2 ok=307200 bad=0
+[SWAP] t=48000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=2 ackB=1
+[SWAP] t=49000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[PROG] t=50000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=3 ok=307200 bad=0
+[SWAP] t=50000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[SWAP] t=51000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[PROG] t=52000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=3 ok=346521 bad=0
+[SWAP] t=52000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[SWAP] t=53000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[PROG] t=54000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=3 ok=386791 bad=0
+[SWAP] t=54000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[SWAP] t=55000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[PROG] t=56000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=3 ok=427061 bad=0
+[SWAP] t=56000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[SWAP] t=57000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[PROG] t=58000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=3 ok=467331 bad=0
+[SWAP] t=58000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[SWAP] t=59000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[PROG] t=60000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=3 ok=507601 bad=0
+[SWAP] t=60000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[SWAP] t=61000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[PROG] t=62000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=3 ok=547871 bad=0
+[SWAP] t=62000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[SWAP] t=63000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[PROG] t=64000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 active=1 frames=3 ok=588160 bad=0
+[SWAP] t=64000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[SWAP] t=65000000000 st=0 req=1 fs_b=0 ack_b=0 reqa=z commits=1 err=0 | fsB=3 ackB=1
+[PASS] one apply for each C emergency request
+[PASS] full Emergency raster matched
+[SYSTEM] HD=0 IMMEDIATE=1 normal=614400 emergency=307200 applied=2
+[PASS] submitted generation matches active generation
+[PASS] A commits only at a raw frame boundary
+[PASS] B commit follows A within 100ns, not a whole frame
+[PASS] one request has one ACK and one B commit
+[PASS] independent red/green/blue color anchors
+[PASS] all color channels exercised
+[PASS] ÿÿÿæÿÿÿ¸ÿÿÿ¡ÿÿÿæÿÿÿ¶ÿÿÿ¶
+[PASS] 9ÿÿÿæÿÿÿ¸ÿÿÿ®ÿÿÿæÿÿÿºÿÿÿ†ÿÿˆactive_commitÿÿÿ³ÿÿ‘ ÿÿÿ¬ÿÿÿ‰
+[PASS] 10) ÿÿÿçÿÿÿ¾ÿÿÿ³ÿÿÿæÿÿÿ¯ÿÿÿŠ 200000 ÿÿÿåÿÿÿ´ÿÿÿˆÿÿÿéÿÿÿœÿÿÿ„ÿÿÿæÿÿÿºÿÿÿ‰
+[PASS] 11ÿÿÿ˜ÿÿÿ˜ÿÿÿºÿÿÿçÿÿÿ¸ÿÿÿ BMPÿÿÿÿÿ *ÿÿÿÿÿÿäÿÿÿ‡ÿÿÿïÿˆ0 ÿÿÿäÿÿÿ¬ÿÿÿ‰
+[PASS] 12)ÿÿÿ ÿÿÿçÿÿÿ¬ÿÿÿÿÿˆAÿÿÿ„ underflÿÿÿèÿÿÿ•° = ÿÿÿ‰
+[PASS] 13)ÿÿÿ  FIFÿÿÿºÿÿÿº
+[PASS] 14ÿÿÿ—ÿÿÿ§ÿÿÿéÿÿÿ ÿÿÿ°
+[TB] tb_a_video_system_core done, errors=0 (pix_ok=614400 pix_bad=0 frames=3 commits=1 swapst=0 swap_err=0 fsB=3 ackB=1 acmt=1 stchg=5)
+$finish called at time : 65298062333 ps : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_video_system_core.sv" Line 691
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:49 . Memory (MB): peak = 218.945 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:28:06 2026...

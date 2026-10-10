@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:39:20 2026
+# Process ID: 31276
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a16_20/tb_memory_arbiter_compact
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_memory_arbiter_compact/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a16_20/tb_memory_arbiter_compact/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a16_20/tb_memory_arbiter_compact\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_memory_arbiter_compact/xsim_script.tcl
+# xsim {tb_memory_arbiter_compact} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS compact arbiter N=1 compared=300000 cycles read=32508 write=7989 sd=1377
+PASS compact arbiter N=4 compared=300000 cycles read=34632 write=1948 sd=1298
+PASS compact arbiter N=8 compared=300000 cycles read=34633 write=1461 sd=1298
+PASS tb_memory_arbiter_compact exact public-output equivalence
+$finish called at time : 2400032 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_memory_arbiter_compact.sv" Line 113
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:39:25 2026...

@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:26:33 2026
+# Process ID: 39684
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/clock_video/frame_swap_real_frame
+# Command line: xsim.exe -log xsim.log -mode tcl -source {xsim.dir/tb_frame_swap_real_frame_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/clock_video/frame_swap_real_frame/xsim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/clock_video/frame_swap_real_frame\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_frame_swap_real_frame_sim/xsim_script.tcl
+# xsim {tb_frame_swap_real_frame_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS tb_frame_swap_real_frame: 2 events spaced 1666667 sys_clk cycles; explicit TIMEOUT_N 5000000 (B default unchanged); 2 commits; 0 errors
+$finish called at time : 33333480 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_frame_swap_real_frame.sv" Line 121
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:26:37 2026...

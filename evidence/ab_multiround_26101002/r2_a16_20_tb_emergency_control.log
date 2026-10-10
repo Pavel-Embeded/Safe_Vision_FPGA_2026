@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:39:35 2026
+# Process ID: 40052
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a16_20/tb_emergency_control
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_emergency_control/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a16_20/tb_emergency_control/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a16_20/tb_emergency_control\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_emergency_control/xsim_script.tcl
+# xsim {tb_emergency_control} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS emergency control policy=1 half=6.734 accepted/applied=256/256 two epochs all 32 payloads
+PASS emergency control policy=1 half=19.861 accepted/applied=256/256 two epochs all 32 payloads
+PASS emergency control policy=0 half=6.734 accepted/applied=256/256 two epochs all 32 payloads
+PASS emergency control policy=0 half=19.861 accepted/applied=256/256 two epochs all 32 payloads
+PASS tb_emergency_control
+$finish called at time : 390963785 ps : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_emergency_control.sv" Line 64
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:39:38 2026...

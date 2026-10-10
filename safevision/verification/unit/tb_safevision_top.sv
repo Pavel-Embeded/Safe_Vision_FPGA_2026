@@ -269,7 +269,7 @@ module tb_safevision_top;
         force dut.integrity_actual=32'h76543210;
         uart_get_line;
         check(line_len==82 && line[80]==8'h0D && line[81]==8'h0A,"UART integrity line has 82 bytes and CRLF");
-        check(find_str("SV-MEM",6)==0 && find_str("26101001",8)==10,"UART carries exact integrity build ID");
+        check(find_str("SV-MEM",6)==0 && find_str("26101002",8)==10,"UART carries exact integrity build ID");
         check(find_str(" PH=0",5)==18,"UART snapshot phase matches packet start");
         check(find_str(" BAD=",5)==23 && line[28]==8'h30 && line[35]==8'h30,"UART bad address retains packet snapshot");
         check(find_str(" EXP=",5)==36 && line[41]==8'h30 && line[48]==8'h30,"UART expected CRC retains packet snapshot");

@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:31:51 2026
+# Process ID: 39084
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a11_15/tb_frame_slot_commit
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_frame_slot_commit/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a11_15/tb_frame_slot_commit/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a11_15/tb_frame_slot_commit\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_frame_slot_commit/xsim_script.tcl
+# xsim {tb_frame_slot_commit} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS tb_frame_slot_commit: 109 atomic vblank commits/acks, 11 CRC rejects, same-edge base and in-flight common reset
+$finish called at time : 68110 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_frame_slot_commit.sv" Line 56
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:31:55 2026...

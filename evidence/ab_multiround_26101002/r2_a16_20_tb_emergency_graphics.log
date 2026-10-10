@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:39:42 2026
+# Process ID: 40836
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a16_20/tb_emergency_graphics
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_emergency_graphics/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a16_20/tb_emergency_graphics/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_a16_20/tb_emergency_graphics\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_emergency_graphics/xsim_script.tcl
+# xsim {tb_emergency_graphics} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS emergency graphics HD=0 checks=1540824 active_pixels=1228800 BRAM font/4 directions/4 levels/blank/latency4
+PASS emergency graphics HD=1 checks=4615224 active_pixels=3686400 BRAM font/4 directions/4 levels/blank/latency4
+PASS tb_emergency_graphics
+$finish called at time : 46152270 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_emergency_graphics.sv" Line 80
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:17 . Memory (MB): peak = 218.441 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:40:02 2026...

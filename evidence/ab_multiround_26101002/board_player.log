@@ -1,0 +1,42 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:27:36 2026
+# Process ID: 38396
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r1_board/player
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r1_board/player/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r1_board/player\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[TB] card volume built: 4 x SV00xx.BMP, 921654 bytes each
+[PASS] 1) SD init done within window (sd_ready=1)
+[PASS] 2) MBR+BPB+dir+index all done (card_usable=1)
+[PASS] 3) indexed 4 valid BMP files
+[PASS] 4) frame 1 completed (frame_cnt >= 1)
+[PASS] 5) never entered an error stage
+[PASS] 6) sink never entered S_ERROR
+[PASS] 7) frame 1 CRC passed (sink last_frame_ok=1)
+[PASS] 8) frame 1 written into slot 1
+[PASS] 9) exactly 307200 pixels written by the bridge
+[PASS] 10) file size = 921654 bytes
+[PASS] 11) all 921654 bytes streamed from card
+[PASS] 12) swap completed, back to S_READY
+[PASS] 13) slot alternated to 0 for the next frame
+[PASS] 14) slot 1 content (frame 1) : 153600 words pixel-exact
+[PASS] 15) re-entered S_STREAM for frame 2
+[PASS] 16) frame 2 targets slot 0 (double buffering OK)
+[PASS] 17) still no error stage after re-entry
+============================================
+  SD-BMP-PLAYER PASS (0 error)
+============================================
+$finish called at time : 303144124 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_bmp_player.sv" Line 409
+run: Time (s): cpu = 00:00:01 ; elapsed = 00:03:37 . Memory (MB): peak = 219.332 ; gain = 0.000
+## quit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:31:17 2026...

@@ -4,3 +4,6 @@ evidence/ab_white_screen_20261009/** -text
 # Preserve their hashes; source-code whitespace checks remain enabled.
 evidence/normal_playback_20261010/** -text -whitespace
 evidence/normal_playback_20261010/README.md whitespace
+evidence/ab_multiround_26101002/** -text -whitespace
+evidence/ab_multiround_26101002/README.md text eol=lf whitespace
+releases/ab_multiround_26101002/**/*.bit -text

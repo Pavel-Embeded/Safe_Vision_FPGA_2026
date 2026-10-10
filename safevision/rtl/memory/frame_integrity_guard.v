@@ -36,7 +36,12 @@ module frame_integrity_guard #(
     wire query_slot=lookup_addr>=`SV_IMG1_BASE;
     wire [31:0] query_offset=lookup_addr-(query_slot?`SV_IMG1_BASE:`SV_IMG0_BASE);
     wire [12:0] query_index=(query_slot?BLOCKS:0)+(query_offset>>8);
-    wire source_beat=building&&accepted&&!fault&&write_addr==expected_addr;
+    // frame_begin precedes the BMP header result. Match the bridge's contract:
+    // latch orientation on the first accepted word, when the header is valid.
+    // Later words use only this latched direction and the sequential address.
+    wire [31:0] source_expected=(source_words==0)?
+        base+(top_down?0:(WORDS-ROW_WORDS)*4):expected_addr;
+    wire source_beat=building&&accepted&&!fault&&write_addr==source_expected;
     wire signature_write=source_beat&&in_block==BLOCK_WORDS-1;
     // Port B writes while building and reads while verifying. These phases
     // never overlap; a true dual-port RAM also serves playback on port A.
@@ -69,15 +74,16 @@ module frame_integrity_guard #(
                 verify_done<=0;verify_pass<=0;state<=IDLE;checked_blocks<=0;
                 if(frame_slot>1)begin fault<=1;building<=0;bad_addr<=write_addr;end
             end else if(building&&accepted&&!fault)begin
-                if(write_addr!=expected_addr||addr_slot!=slot_latched)begin
-                    fault<=1;building<=0;bad_addr<=write_addr;bad_expected<=expected_addr;bad_actual<=write_addr;
+                if(write_addr!=source_expected||addr_slot!=slot_latched)begin
+                    fault<=1;building<=0;bad_addr<=write_addr;bad_expected<=source_expected;bad_actual<=write_addr;
                 end else begin
+                    if(source_words==0)direction<=top_down;
                     source_words<=source_words+1'b1;
                     if(in_block==BLOCK_WORDS-1)begin in_block<=0;source_crc<=32'hffffffff;end
                     else begin in_block<=in_block+1'b1;source_crc<=crc32_word(source_crc,write_data);end
                     if(column==ROW_WORDS-1)begin
                         column<=0;expected_addr<=direction?expected_addr+4:expected_addr-ROW_WORDS*8+4;
-                    end else begin column<=column+1'b1;expected_addr<=expected_addr+4;end
+                    end else begin column<=column+1'b1;expected_addr<=source_expected+4;end
                     if(source_words==WORDS-1)begin source_complete<=1;building<=0;end
                 end
             end

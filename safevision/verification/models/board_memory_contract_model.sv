@@ -33,7 +33,7 @@ module sdram #(parameter integer RD_LAT=4)(
      Sdr_rd_en<=rv[RD_LAT-1];
      if(rv[RD_LAT-1])Sdr_rd_dout<=mem[ra[RD_LAT-1]];
      for(i=RD_LAT-1;i>0;i=i-1)ra[i]=ra[i-1];
-     ra[0]=App_rd_addr;rv={rv[RD_LAT-2:0],App_rd_en};
+     ra[0]=App_rd_addr;rv=(rv<<1)|App_rd_en;
      if(App_wr_en&&App_rd_en)violation("simultaneous read and write");
      if((App_wr_en&&!last_w)||(App_rd_en&&!last_r))
        if(cycle-last_cmd<17)violation("fewer than 16 quiet clocks between bursts");

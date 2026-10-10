@@ -2,14 +2,14 @@
 // recorded by the project's M-11 hardware tests, not the encrypted SDRAM IP.
 // Sparse writes, turnarounds and cache coherency were absent from the old TB.
 `timescale 1ns/1ps
-module tb_sdram_app_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=4,FAST_READ=0);
+module tb_sdram_app_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=4,FAST_READ=0,PREFETCH_READ=0);
  reg clk=0; always #4 clk=~clk;
  reg rst_n=0,init=0,req=0,wr=1;
  reg [31:0] addr=0,data=0; reg [3:0] strb=15;
  wire ready,idone,rv,aw,ar; wire [31:0] dout,wd;
  wire [20:0] wa,ra; wire [3:0] dm;
  reg sr=0; reg [31:0] sd=0;
- sdram_app_adapter #(.FAST_READ(FAST_READ)) dut(.clk(clk),.rst_n(rst_n),.req(req),.wr(wr),.addr(addr),
+ sdram_app_adapter #(.FAST_READ(FAST_READ),.PREFETCH_READ(PREFETCH_READ)) dut(.clk(clk),.rst_n(rst_n),.req(req),.wr(wr),.addr(addr),
  .wdata(data),.wstrb(strb),.ready(ready),.init_done(idone),.rdata(dout),.rdata_valid(rv),
  .Sdr_init_done(init),.Sdr_init_ref_vld(1'b0),.Sdr_busy(1'b0),
  .App_wr_en(aw),.App_wr_addr(wa),.App_wr_dm(dm),.App_wr_din(wd),
@@ -21,6 +21,12 @@ module tb_sdram_app_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=
  integer cycles=0,wr_count=0,write_bursts=0,single_bursts=0,overlap=0,gap_bad=0;
  integer last_cmd=-1000,last_read=-1000; reg last_w=0,last_r=0;
  integer i,b,j,errors=0,checks=0;
+ reg stream_compare=0;integer stream_received=0,stream_start_cycle=0,stream_cycles=0;
+ always @(negedge clk)if(stream_compare&&rv)begin
+   if(stream_received>=4096||dout!==32'h9abc0000+stream_received)
+     $fatal(1,"stream prefetch order/data mismatch index=%0d got=%08x",stream_received,dout);
+   stream_received=stream_received+1;
+ end
  task check(input bit ok,input string name);
  begin checks=checks+1;if(!ok)begin errors=errors+1;$display("[FAIL] %s",name);end
  else $display("[PASS] %s",name);end endtask
@@ -82,6 +88,41 @@ module tb_sdram_app_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=
   read_word(2048,v);check(v===32'h11112222,"first contiguous segment");
   read_word(2200,v);check(v===32'h55556666,"jump starts a new physical write segment");
   read_word(2201,v);check(v===32'h77778888,"jump segment tail");
+  // Continuous accepted requests isolate the adapter's word-rate budget.
+  // A 640-pixel row in 720p needs 320 words every 22.22us, i.e. 14.4M words/s.
+  // The bound below uses 40MHz MEM, independent of this test's faster clock.
+  for(k=0;k<4096;k=k+1)mem[12000+k]=32'h9abc0000+k;
+  repeat(3)@(negedge clk);stream_compare=1;stream_received=0;
+  req=1;wr=0;stream_start_cycle=cycles;
+  for(k=0;k<4096;k=k+1)begin
+   addr=12000+k;n=0;
+   @(posedge clk);while(ready!==1'b1&&n<5000)begin @(posedge clk);n=n+1;end
+   if(n==5000)$fatal(1,"stream handshake timeout");
+   @(negedge clk);
+  end
+  req=0;stream_cycles=cycles-stream_start_cycle;repeat(3)@(negedge clk);stream_compare=0;
+  check(stream_received==4096,"4096 continuous reads match independent address/data scoreboard");
+  if(PREFETCH_READ&&RD_LAT<=11)
+    check(stream_cycles<=11377,"prefetch sustains at least 14.4M words/s at 40MHz through latency 11");
+  $display("[BANDWIDTH] RD_LAT=%0d FAST_READ=%0d PREFETCH_READ=%0d words=4096 cycles=%0d",RD_LAT,FAST_READ,PREFETCH_READ,stream_cycles);
+  if(PREFETCH_READ)begin
+   for(k=0;k<128;k=k+1)mem[17000+k]=32'h13570000+k;
+   j=0;
+   while(j<16&&!(dut.state==3&&dut.contiguous_refill))begin
+    read_word(17000+j,v);
+    if(v!==32'h13570000+j)$fatal(1,"prefetch cancellation setup mismatch");
+    j=j+1;
+   end
+   check(dut.state==3&&dut.contiguous_refill,"read prefetch is in flight with a partially drained previous bank");
+   @(negedge clk);req=1;wr=1;addr=18000;data=32'hdeadbeef;strb=15;
+   @(posedge clk);if(ready)$fatal(1,"write unexpectedly accepted during physical read");
+   @(negedge clk);req=0;
+   mismatch=0;
+   for(k=j;k<64;k=k+1)begin
+    read_word(17000+k,v);if(v!==32'h13570000+k)mismatch=mismatch+1;
+   end
+   check(mismatch==0&&mem[18000]===32'hd00df00d,"cancelled write during prefetch preserves read order and never writes memory");
+  end
   read_word(1024,v);write_word(1025,32'hcafebabe,15);repeat(100)@(negedge clk);
   read_word(1025,v);check(v===32'hcafebabe,"write invalidates a prefetched read cache");
   write_word(4096,32'h12345678,15);read_word(4096,v);
@@ -130,7 +171,7 @@ module tb_sdram_app_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=
   check(single_bursts==0,"all physical write bursts contain at least two beats");
   check(overlap==0,"read and write hardware commands never overlap");
   check(gap_bad==0,"all hardware burst boundaries have at least 16 quiet clocks");
-  $display("ADAPTER STREAMING strict=%0d RD_LAT=%0d checks=%0d errors=%0d bursts=%0d singles=%0d overlap=%0d gap_bad=%0d",STRICT_BURST,RD_LAT,checks,errors,write_bursts,single_bursts,overlap,gap_bad);
+  $display("ADAPTER STREAMING strict=%0d RD_LAT=%0d FAST_READ=%0d PREFETCH_READ=%0d checks=%0d errors=%0d bursts=%0d singles=%0d overlap=%0d gap_bad=%0d",STRICT_BURST,RD_LAT,FAST_READ,PREFETCH_READ,checks,errors,write_bursts,single_bursts,overlap,gap_bad);
   if(errors)$fatal(1,"adapter streaming mismatch");
   $display("[PASS] ADAPTER STREAMING PASS");$finish;
  end

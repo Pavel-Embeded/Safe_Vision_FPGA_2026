@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:19:19 2026
+# Process ID: 3476
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r1_a1_9/counter_negative_control
+# Command line: xsim.exe -log xsim.log -mode tcl -source {xsim.dir/counter_negative_control_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r1_a1_9/counter_negative_control/xsim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r1_a1_9/counter_negative_control\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/counter_negative_control_sim/xsim_script.tcl
+# xsim {counter_negative_control_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+Fatal: tb_a_basics: counter threshold/count/tick
+Time: 9996 ns  Iteration: 0  Process: /tb_a_basics/check  File: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_basics.sv
+$finish called at time : 9996 ns
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:19:22 2026...

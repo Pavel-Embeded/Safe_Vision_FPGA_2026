@@ -53,7 +53,17 @@ module tb_frame_slot_commit;
    end
   end
   if(commits!=109||invalids!=11||acks!=109)$fatal(1,"slot coverage totals %0d/%0d/%0d",commits,invalids,acks);
-  $display("PASS tb_frame_slot_commit: 109 atomic vblank commits/acks, 11 CRC rejects, same-edge base and in-flight common reset");$finish;
+  // Continuous playback must also survive generation 255 -> 0. Zero is a
+  // valid generation in an active epoch, not an implicit reset/no-frame tag.
+  for(n=0;n<300;n=n+1)begin
+   before_ack=acks;before_commit=commits;
+   @(negedge bc);slot=n%2;gen=n[7:0];fi=n%2;crc=1;
+   @(negedge bc);req=~req;
+   wait(acks==before_ack+1);repeat(4)@(negedge bc);
+   if(commits!=before_commit+1||active_gen!==n[7:0])$fatal(1,"generation rollover lost/duplicate/incorrect commit");
+  end
+  if(commits!=409||invalids!=11||acks!=409)$fatal(1,"rollover coverage totals %0d/%0d/%0d",commits,invalids,acks);
+  $display("PASS tb_frame_slot_commit: 409 atomic vblank commits/acks, 11 CRC rejects, 300 sequential generation values including 255->0, same-edge base and in-flight common reset");$finish;
  end
- initial begin #150000;$fatal(1,"slot timeout");end
+ initial begin #400000;$fatal(1,"slot timeout");end
 endmodule

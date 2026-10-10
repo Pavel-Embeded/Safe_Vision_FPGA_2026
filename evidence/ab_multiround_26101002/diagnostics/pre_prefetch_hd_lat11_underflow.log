@@ -1,0 +1,27 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:29:28 2026
+# Process ID: 40988
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/card_hd_fixed/card
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/card_hd_fixed/card/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/card_hd_fixed/card\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] independent 8-bit RGB pattern samples include x/y and all channels
+[PASS] row/column high bits remain distinct after RGB565 quantization
+[PASS] FAT32 indexed four files at 50 MHz
+[PROGRESS] card t=50000000000 player=8 sink=1 source=101240 blocks=0 gfault=0 vCRC=0 frames=0
+[PASS] card owns producer after first frame
+[PASS] first frame CRC accepted after memory drain and swap
+[PASS] slot 1 has all 153600 correct words in raster order from signed BMP height
+[PROGRESS] card t=100000000000 player=7 sink=0 source=153600 blocks=2400 gfault=0 vCRC=0 frames=1
+[UNDERFLOW] t=104101317000 fifo=14 active=1 dma_state=2 issued=20800 drained=20736 req=0 busy=1 ch=1 hw=3 wbuf=0 wm=17 critical=1
+[UNDERFLOW] t=120767967000 fifo=14 active=1 dma_state=2 issued=20800 drained=20736 req=0 busy=1 ch=1 hw=3 wbuf=0 wm=17 critical=1

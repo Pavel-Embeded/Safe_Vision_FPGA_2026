@@ -1,0 +1,35 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:32:50 2026
+# Process ID: 26384
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_b
+# Command line: xsim.exe -log tb_sdram_app_adapter_sim.log -mode tcl -source {xsim.dir/tb_sdram_app_adapter_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_b/tb_sdram_app_adapter_sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_b\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_sdram_app_adapter_sim/xsim_script.tcl
+# xsim {tb_sdram_app_adapter_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+---- é€‚é…å™¨ç»“æœ ----
+  å†™æ‹æ•°=36 å†™åœ°å€ä¸è¿ç»­æ¬¡æ•°=0
+  è¯»æ‹æ•°=80 è¯»åœ°å€ä¸è¿ç»­æ¬¡æ•°=0 ä¸¤æ¬¡è¯»çªå‘æœ€å°é™é»˜=0 æ‹
+  16 å­—é”™=0 / 32 å­—é”™=0 / éå¯¹é½ 4 å­—é”™=0 / è·³å˜ 8 å­—é”™=0
+  ç­‰ ready è¶…æ—¶=0 æ¬¡ / ç­‰ rdata_valid è¶…æ—¶=0 æ¬¡
+[PASS] D1 init_donÿÿÿ¸ÿÿÿ¬
+[PASS] D2 ÿÿÿçÿÿÿÿÿÿ°ÿÿÿæÿÿÿ‹ +1
+[PASS] ÿÿÿ­ÿÿÿãÿÿÿ‰ 16ÿÿÿ—ÿÿÿåÿÿÿœÿÿÿ€
+[PASS] D4 ÿÿÿçÿÿÿÿÿÿ°ÿÿÿæÿÿÿ‹ +1
+[PASS] ÿÿÿ·ÿÿÿ¤ÿÿÿéÿÿÿÿÿÿ‰ÿÿÿåÿÿÿ›ÿÿÿ‰
+[PASS] ÿÿÿ¯ÿÿÿÿÿÿåÿÿÿ†™ 4 ÿÿ» ÿÿÿ­ÿÿÿ®
+[PASS] ÿÿÿœÿÿÿ€ÿÿÿæÿÿÿ­ÿÿÿÿÿÿæÿÿÿ­ÿÿÿ®
+========================================
+  æ–­è¨€æ€»æ•° 7ï¼Œå¤±è´¥ 0
+ å…¨éƒ¨é€šè¿‡ (PASS)
+========================================
+$finish called at time : 7696 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdram_app_adapter.sv" Line 311
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:32:54 2026...

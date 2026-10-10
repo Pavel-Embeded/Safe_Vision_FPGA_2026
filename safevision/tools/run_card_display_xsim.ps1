@@ -6,7 +6,8 @@ param(
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/card_display_xsim'),
  [ValidateSet('dma','adapter','timeout','safety','memory','slowinit','drain','writer','crc','top','card','init','player','edid','idle','bridge','integrity','reservation')][string[]]$Case=@('adapter','timeout','dma','drain','writer','crc','idle','bridge','edid','top','safety','init','integrity','reservation','card'),
- [int]$ReadLatency=4,[ValidateSet(0,1)][int]$HD=0,[ValidateSet(0,1)][int]$FastRead=0,[ValidateSet(0,1,2)][int]$WriteLoad=0,[switch]$Waves,[switch]$StressSdClock
+ [int]$ReadLatency=4,[ValidateSet(0,1)][int]$HD=0,[ValidateSet(0,1)][int]$FastRead=0,[ValidateSet(0,1)][int]$PrefetchRead=0,[ValidateSet(0,1,2)][int]$WriteLoad=0,[ValidateSet(0,1)][int]$BmpTopDown=0,
+ [ValidateSet(0,1)][int]$AckFirst=0,[ValidateRange(0,32)][int]$ResponseGap=2,[ValidateRange(0,8)][int]$SourceGap=0,[ValidateSet(0,1)][int]$HeaderLate=0,[switch]$Waves,[switch]$StressSdClock
 )
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'xsim_project.ps1')
@@ -77,10 +78,13 @@ try{
    $elab=@("work.$top",'-s','board_test','--timescale','1ns/1ps','--log','elab.log')
    if($c -eq 'init'){$elab+=@('work.tb_safevision_real_sd_init')}
    if($Waves){$elab+=@('-debug','typical')}
-   if($c -eq 'adapter'){$elab+=@('-generic_top',('"RD_LAT={0}"' -f $ReadLatency),'-generic_top',('"FAST_READ={0}"' -f $FastRead))}
+   if($c -eq 'adapter'){$elab+=@('-generic_top',('"RD_LAT={0}"' -f $ReadLatency),'-generic_top',('"FAST_READ={0}"' -f $FastRead),'-generic_top',('"PREFETCH_READ={0}"' -f $PrefetchRead))}
    if($c -eq 'dma'){$elab+=@('-generic_top','"STREAMING=1"')}
+   if($c -eq 'integrity'){
+    $elab+=@('-generic_top',('"ACK_FIRST={0}"' -f $AckFirst),'-generic_top',('"RESPONSE_GAP={0}"' -f $ResponseGap),'-generic_top',('"SOURCE_GAP={0}"' -f $SourceGap),'-generic_top',('"HEADER_LATE={0}"' -f $HeaderLate))
+   }
    if($c -eq 'card'){
-    $elab+=@('-generic_top',('"HD={0}"' -f $HD))
+    $elab+=@('-generic_top',('"HD={0}"' -f $HD),'-generic_top',('"RD_LAT={0}"' -f $ReadLatency),'-generic_top',('"BMP_TOP_DOWN={0}"' -f $BmpTopDown))
     if($StressSdClock){$elab+=@('-generic_top','"SD_HALF_NS=1"')}
    }
    if($c -eq 'memory'){$elab+=@('-generic_top',('"HD={0}"' -f $HD),'-generic_top',('"RD_LAT={0}"' -f $ReadLatency),'-generic_top',('"WR_LOAD={0}"' -f $WriteLoad))}

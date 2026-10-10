@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:31:15 2026
+# Process ID: 39524
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/video_pipeline/tb_video_pipeline_timing
+# Command line: xsim.exe -log xsim.log -mode tcl -source {xsim.dir/tb_video_pipeline_timing_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/video_pipeline/tb_video_pipeline_timing/xsim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/video_pipeline/tb_video_pipeline_timing\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_video_pipeline_timing_sim/xsim_script.tcl
+# xsim {tb_video_pipeline_timing_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS scan HD=0: pixels=420000, active=307200, invalid-active=59778, delay=4
+PASS scan HD=1: pixels=1237500, active=921600, invalid-active=178732, delay=4
+PASS tb_video_pipeline_timing: BASE+HD full-frame checks=1657732
+$finish called at time : 12376196 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_video_pipeline_timing.sv" Line 178
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 219.527 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:31:25 2026...

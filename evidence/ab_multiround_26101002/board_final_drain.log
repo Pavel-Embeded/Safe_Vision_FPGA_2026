@@ -1,0 +1,31 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:51:53 2026
+# Process ID: 27404
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/board_final/drain
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/board_final/drain/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/board_final/drain\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] frame publication held while accepted writes are not physically drained
+[PASS] all words traversed actual async FIFO and writer before drain wait
+[PASS] drained frame published with valid CRC and slot metadata
+[PASS] acknowledged frame returns successful completion
+[PASS] new frame cannot inherit the previous frame's success level
+[PASS] write error after a successful frame returns failure
+[PASS] failed write neither publishes nor counts a frame
+[PASS] missing swap acknowledgement returns failure F1, never successful completion
+[PASS] failed swap does not increase successful frame count
+SINK DRAIN checks=9 errors=0
+[PASS] SINK DRAIN PASS
+$finish called at time : 7377436 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_frame_sink_drain.sv" Line 58
+## quit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:52:00 2026...

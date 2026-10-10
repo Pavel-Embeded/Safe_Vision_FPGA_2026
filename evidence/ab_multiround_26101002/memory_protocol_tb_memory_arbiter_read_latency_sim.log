@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:30:59 2026
+# Process ID: 36064
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/memory_protocol/corrected
+# Command line: xsim.exe -log tb_memory_arbiter_read_latency_sim.log -mode tcl -source {xsim.dir/tb_memory_arbiter_read_latency/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/memory_protocol/corrected/tb_memory_arbiter_read_latency_sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/memory_protocol/corrected\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_memory_arbiter_read_latency/xsim_script.tcl
+# xsim {tb_memory_arbiter_read_latency} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+READ_ACCEPT addr=00001000
+MEMORY_RESPONSE rd_valid=1 current_channel=1
+PASS tb_memory_arbiter_read_latency: delayed read response retains original channel
+$finish called at time : 220 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_memory_arbiter_read_latency.sv" Line 46
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:31:02 2026...

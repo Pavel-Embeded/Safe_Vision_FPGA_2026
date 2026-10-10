@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:27:04 2026
+# Process ID: 35956
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/clock_video/parameters
+# Command line: xsim.exe -log D:\Codex\2026-10-09\github-plugin-github-openai-curated-remote\work\reverify_20261010\clock_video\parameters\video_02\xsim.log -mode tcl -source {xsim.dir/video_02_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/clock_video/parameters/video_02/xsim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/clock_video/parameters\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/video_02_sim/xsim_script.tcl
+# xsim {video_02_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS tb_video_timing_params: CASE_ID=2 checked=24576 two complete frames
+$finish called at time : 245791 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_video_timing_params.sv" Line 84
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:27:07 2026...

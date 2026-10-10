@@ -1,0 +1,50 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 09:30:37 2026
+# Process ID: 4964
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_b
+# Command line: xsim.exe -log tb_sd_initializer_sim.log -mode tcl -source {xsim.dir/tb_sd_initializer_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_b/tb_sd_initializer_sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/reverify_20261010/r2_b\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_sd_initializer_sim/xsim_script.tcl
+# xsim {tb_sd_initializer_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[INFO] е·Іе®љд№‰ SIM_FAST_TOпјљи¶…ж—¶дЅїз”Ёд»їзњџзј©ж”ѕеЂјпј€йќћдє§е“ЃеЂјпј‰
+
+==== T7~T9: ж…ўеЌЎ(CMD0 R1=0x03) / v1 еЌЎ / ж‹”еЌЎ е№¶иЎЊйЄЊиЇЃ ====
+[PASS] яяя—яяяґяяязяяяќяяя€яяяжяяя­яяя‰
+[PASS] яяя—яяяґяяязяяяќяяя€яяяжяяя­яяя‰
+[PASS] яяя—яяяґяяязяяяќяяя€яяяжяяя­яяя‰
+[PASS] T7.1яяяўяяяжяяя»яяяќяяяеяяя€яяяџ
+[PASS] T7яяяжяяяЌяяя яяяияяя яяя—
+[PASS] T7.3 яяяеяяяЇяяя«яяє SDHC
+[PASS] яяя®яяя®яяядя† 3яяяЎ idlяяяЂяяя‰
+[PASS] T7.5яяяЎяяяжяяя€° >=яяя¬Ў ACMD41
+[PASS] CMD8яяя±яяядяяяєяяя­яяяжяяяЁяяя‰
+[PASS] T8.2 vяяяЌяяя яяяияяя яяя—
+[PASS] яяяёє SDяяяј€CCSяяяјяяяћ SDHяяя‰
+[PASS] яяяпя€v1яяяЎяяяеяяяё¦ HCяяяЅяяя‰
+[PASS] T9.1яяя”яяяжяяя»яяя›яяяйяяяЇяяяЃ
+[PASS] T9.2 яяяеяяяёяяяљяяяжяяя€яяяџ
+[PASS] яяя Ѓ = 0x01(SD яяяеяяяЊяяя±яяҐ)
+[PASS] яяя Ѓ = 0x21яяяЅяяяеяяяєяяя…яя¶)
+
+==== T10: жЏ’е›ћеђЋй‡Ќж–° start жЃўе¤Ќ ====
+       жЃўе¤ЌиЂ—ж—¶ 116296 ж‹ЌпјЊжњ«жЂЃ state=7пјЊеЌЎдѕ§зґЇи®Ўе‘Ѕд»¤ 7 жќЎ
+[PASS] яяяЋяяяжя° startяяяќяяяеяяя€яяяџ
+[PASS] T10.2 яяяияяя яяя—яяяияяяёяяя¤
+[PASS] яяяжяяя¤яяяЋяяязяяяЇяяя«яяє SDHC
+[PASS] T10.яяя”яяяЇяяяеяяяёяяя¶
+
+============================================
+ е…ЁйѓЁйЂљиї‡ (PASS)
+============================================
+
+$finish called at time : 4011015 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_initializer.sv" Line 255
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 09:30:41 2026...

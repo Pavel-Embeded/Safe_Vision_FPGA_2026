@@ -1,0 +1,317 @@
+{
+  "result": "PASS",
+  "legal_geometry_cases": 7,
+  "invalid_geometry_cases": 25,
+  "invalid_clock_reset_cases": 9,
+  "cases": [
+    {
+      "case": "video_00",
+      "expected": "legal_geometry_pass",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_00\\xsim.log"
+    },
+    {
+      "case": "video_01",
+      "expected": "legal_geometry_pass",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_01\\xsim.log"
+    },
+    {
+      "case": "video_02",
+      "expected": "legal_geometry_pass",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_02\\xsim.log"
+    },
+    {
+      "case": "video_03",
+      "expected": "legal_geometry_pass",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_03\\xsim.log"
+    },
+    {
+      "case": "video_04",
+      "expected": "legal_geometry_pass",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_04\\xsim.log"
+    },
+    {
+      "case": "video_05",
+      "expected": "legal_geometry_pass",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_05\\xsim.log"
+    },
+    {
+      "case": "video_06",
+      "expected": "legal_geometry_pass",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_06\\xsim.log"
+    },
+    {
+      "case": "video_07",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_07\\xsim.log"
+    },
+    {
+      "case": "video_08",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_08\\xsim.log"
+    },
+    {
+      "case": "video_09",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_09\\xsim.log"
+    },
+    {
+      "case": "video_10",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_10\\xsim.log"
+    },
+    {
+      "case": "video_11",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_11\\xsim.log"
+    },
+    {
+      "case": "video_12",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_12\\xsim.log"
+    },
+    {
+      "case": "video_13",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_13\\xsim.log"
+    },
+    {
+      "case": "video_14",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_14\\xsim.log"
+    },
+    {
+      "case": "video_15",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_15\\xsim.log"
+    },
+    {
+      "case": "video_16",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_16\\xsim.log"
+    },
+    {
+      "case": "video_17",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_17\\xsim.log"
+    },
+    {
+      "case": "video_18",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_18\\xsim.log"
+    },
+    {
+      "case": "video_19",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_19\\xsim.log"
+    },
+    {
+      "case": "video_20",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_20\\xsim.log"
+    },
+    {
+      "case": "video_21",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_21\\xsim.log"
+    },
+    {
+      "case": "video_22",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_22\\xsim.log"
+    },
+    {
+      "case": "video_23",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_23\\xsim.log"
+    },
+    {
+      "case": "video_24",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_24\\xsim.log"
+    },
+    {
+      "case": "video_25",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_25\\xsim.log"
+    },
+    {
+      "case": "video_26",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_26\\xsim.log"
+    },
+    {
+      "case": "video_27",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_27\\xsim.log"
+    },
+    {
+      "case": "video_28",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_28\\xsim.log"
+    },
+    {
+      "case": "video_29",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_29\\xsim.log"
+    },
+    {
+      "case": "video_30",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_30\\xsim.log"
+    },
+    {
+      "case": "video_31",
+      "expected": "invalid_geometry_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\video_31\\xsim.log"
+    },
+    {
+      "case": "clock_00",
+      "expected": "invalid_clock_or_reset_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\clock_00\\xsim.log"
+    },
+    {
+      "case": "clock_01",
+      "expected": "invalid_clock_or_reset_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\clock_01\\xsim.log"
+    },
+    {
+      "case": "clock_02",
+      "expected": "invalid_clock_or_reset_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\clock_02\\xsim.log"
+    },
+    {
+      "case": "clock_03",
+      "expected": "invalid_clock_or_reset_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\clock_03\\xsim.log"
+    },
+    {
+      "case": "clock_04",
+      "expected": "invalid_clock_or_reset_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\clock_04\\xsim.log"
+    },
+    {
+      "case": "clock_05",
+      "expected": "invalid_clock_or_reset_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\clock_05\\xsim.log"
+    },
+    {
+      "case": "clock_06",
+      "expected": "invalid_clock_or_reset_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\clock_06\\xsim.log"
+    },
+    {
+      "case": "clock_07",
+      "expected": "invalid_clock_or_reset_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\clock_07\\xsim.log"
+    },
+    {
+      "case": "clock_08",
+      "expected": "invalid_clock_or_reset_rejected",
+      "observed_as_expected": true,
+      "log": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\reverify_20261010\\clock_video\\parameters\\clock_08\\xsim.log"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\video_timing\\video_timing.v",
+      "sha256": "d462a1afdbef6c48bad3bddeae76539ff3f8d3f2e6fa87ecf0b0adc356d5063e"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\clock\\reset_sync.v",
+      "sha256": "15c31b2102a2497c98da050de24555760b2be71d7bed17c79a72f159d429f017"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\clock\\clock_reset_ctrl.v",
+      "sha256": "9b6984448c4d1adf6a17c3a566c87d03169d76468c4ef7d2cd4cf4160341fc8a"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\clock\\clock_gen.v",
+      "sha256": "573948241ed5c3643ce0fc2c3617b3304777ac454030a96c1fa208e025cf62dc"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\clock\\clock_video_subsystem.v",
+      "sha256": "1d2bfd9279be6475a02cff8a8726526687146891a2f0e9dbf87cc78b28c8127b"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_system_pll.v",
+      "sha256": "07e04792c7cb46863bf057ecc1b5ad03ed9a9c1211269415a239d387405cb528"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_audio_pll.v",
+      "sha256": "4ec8202b045f058cf014017437e3167f6d4f7ae195ff4eb17f0227c385e6e891"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_video_vga_pll.v",
+      "sha256": "68e55f0a221d445703fb4104f6f08b6357b9f3370fb12ef1ef5c31df4ad50b62"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\pll\\sv_video_hd_pll.v",
+      "sha256": "44e28474683a4c7ddd2777d709859603c30deda0c19842967707b234785960b1"
+    },
+    {
+      "path": "D:\\Anlogic\\TD_6.2.1_Engineer_6.2.168.116\\sim_release\\eg4\\eg_logic_clk.v",
+      "sha256": "686ce0c1e4df0bc3cbe1afc4de359f78da57d5521671cc27b8dc5181412a04f2"
+    },
+    {
+      "path": "D:\\Anlogic\\TD_6.2.1_Engineer_6.2.168.116\\sim_release\\eg4\\eg_phy_pll.v",
+      "sha256": "73671e13f74679ac630f68506ce67408455734b21cacae62aeb94f284d7a8eb8"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\verification\\unit\\tb_video_timing_params.sv",
+      "sha256": "6ffb78581fd2c3d75e825dd8379316b80c16328ffe1b7203b67ea1d981f5360c"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\verification\\unit\\tb_clock_parameter_guards.sv",
+      "sha256": "8652f03488aaa2bceeb66a90746230117e1b0718d3bd9ba5aad5980dae2b9637"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\tools\\run_video_clock_params.py",
+      "sha256": "57737b2813839e8f0ce57835fa996fc573341a4beb58c4591dd27141d2d6f661"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\video_mode_defs.vh",
+      "sha256": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997"
+    }
+  ],
+  "scope": "RTL parameter boundary and rejection tests; no physical hardware or formal proof"
+}

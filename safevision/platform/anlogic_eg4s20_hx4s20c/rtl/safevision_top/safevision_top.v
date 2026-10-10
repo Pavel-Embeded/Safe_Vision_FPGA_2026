@@ -130,7 +130,7 @@ module safevision_top #(
     wire [31:0] adapter_addr, adapter_wdata, adapter_rdata;
     wire [3:0]  adapter_wstrb;
 
-    sdram_app_adapter #(.FAST_READ(1)) adapter(.clk(mem_clk), .rst_n(mem_rst_n),
+    sdram_app_adapter #(.FAST_READ(1),.PREFETCH_READ(1)) adapter(.clk(mem_clk), .rst_n(mem_rst_n),
         .req(adapter_req), .wr(adapter_wr), .addr(adapter_addr),
         .wdata(adapter_wdata), .wstrb(adapter_wstrb),
         .rdata(adapter_rdata), .rdata_valid(adapter_rvalid),
@@ -860,7 +860,7 @@ module safevision_top #(
             8'd121: rbyte_c = 8'h31;
             8'd122: rbyte_c = 8'h30;
             8'd123: rbyte_c = 8'h30;
-            8'd124: rbyte_c = 8'h31;
+            8'd124: rbyte_c = 8'h32; // ID=26101002: late BMP header orientation fix
             8'd125: rbyte_c = 8'h20;
             8'd126: rbyte_c = 8'h50;
             8'd127: rbyte_c = 8'h48;

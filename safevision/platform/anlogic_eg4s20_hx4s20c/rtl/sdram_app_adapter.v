@@ -9,7 +9,8 @@
 // Writes have one registered address-check cycle before their acceptance.
 module sdram_app_adapter #(
     parameter [31:0] READ_TIMEOUT=32'd4096,
-    parameter integer FAST_READ=0
+    parameter integer FAST_READ=0,
+    parameter integer PREFETCH_READ=0
 ) (
     input wire clk,rst_n,req,wr,
     input wire [31:0] addr,wdata,input wire [3:0] wstrb,
@@ -32,9 +33,13 @@ module sdram_app_adapter #(
     reg [5:0] widle;
     reg w_checked,w_contiguous;
     reg [4:0] gap;
-    reg [31:0] rbuf[0:RB-1];
+    reg [31:0] rbuf[0:2*RB-1];
     reg [31:0] rfbase,rexp;
-    reg [4:0] rcnt,rhead,rcmd_i,rcv_i;
+    reg [5:0] rcnt;
+    reg [4:0] rhead,rcmd_i,rcv_i;
+    reg fill_bank,next_fill_bank,contiguous_refill;
+    reg [31:0] prefetch_addr;
+    reg [4:0] read_quiet;
     reg r_go,r_sv;
     reg [31:0] read_wait;
     wire idle_hw=(state==H_IDLE);
@@ -46,7 +51,8 @@ module sdram_app_adapter #(
     // Drain them during the mandatory read quiet interval too. No new SDRAM
     // command can start until H_RGAP expires; this preserves all 16 quiet
     // clocks while avoiding a second, unnecessary 16-clock host stall.
-    wire r_fast_can=(idle_hw||state==H_RGAP)&&(wcnt==0)&&r_hit;
+    wire r_fast_can=(idle_hw||state==H_RGAP||
+                    (PREFETCH_READ&&(state==H_READ||state==H_WAIT)))&&(wcnt==0)&&r_hit;
     wire r_fast_fire=req&&!wr&&r_fast_can&&Sdr_init_done;
     wire need_flush=(wcnt!=0)&&((wcnt==WB)||(widle>=48)||
                     (req&&(!wr||(w_checked&&!w_contiguous))));
@@ -59,6 +65,7 @@ module sdram_app_adapter #(
         state<=H_IDLE;wbase<=0;wnext<=0;wcnt<=0;wi<=0;physical_words<=0;widle<=0;gap<=0;
         w_checked<=0;w_contiguous<=0;
         rfbase<=0;rexp<=0;rcnt<=0;rhead<=0;rcmd_i<=0;rcv_i<=0;r_go<=0;r_sv<=0;
+        fill_bank<=0;next_fill_bank<=0;contiguous_refill<=0;prefetch_addr<=0;read_quiet<=0;
         rdata<=0;rdata_valid<=0;App_wr_en<=0;App_wr_addr<=0;App_wr_dm<=15;App_wr_din<=0;
         App_rd_en<=0;App_rd_addr<=0;
         read_wait<=0;protocol_fault<=0;
@@ -68,6 +75,10 @@ module sdram_app_adapter #(
         App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;r_go<=0;r_sv<=0;
       end else begin
         App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;
+        // Count quiet bus edges from the LAST physical command, not from the
+        // last response. Response collection and the legal 16-edge gap overlap.
+        if(App_rd_en||App_wr_en)read_quiet<=0;
+        else if(read_quiet<16)read_quiet<=read_quiet+1'b1;
         if(state==H_READ||state==H_WAIT)begin
           if(Sdr_rd_en)read_wait<=0;
           else if(read_wait>=READ_TIMEOUT)protocol_fault<=1;
@@ -105,7 +116,12 @@ module sdram_app_adapter #(
         // This is conservative (a later read simply refetches) and removes
         // the 32-bit contiguous-address comparator from the cache-counter
         // update path. No write can coexist with a cached read acceptance.
-        if(req&&wr)begin rcnt<=0;r_go<=0;end
+        if(req&&wr)begin
+          rcnt<=0;r_go<=0;
+          // If an unaccepted write is later cancelled, the in-flight refill
+          // must publish a fresh bank/head, not append to an invalidated FIFO.
+          contiguous_refill<=0;
+        end
 
         case(state)
           H_IDLE:begin
@@ -117,6 +133,16 @@ module sdram_app_adapter #(
               // received. Clearing here is redundant and puts addr==rexp
               // through a wide comparator into the counter's update cone.
               rfbase<=addr;rcmd_i<=0;rcv_i<=0;state<=H_READ;
+              fill_bank<=0;contiguous_refill<=0;
+              if(PREFETCH_READ)rcnt<=0;
+            end else if(PREFETCH_READ&&FAST_READ&&Sdr_init_done&&req&&!wr&&r_hit&&
+                        wcnt==0&&rcnt<=RB&&prefetch_addr<32'h00200000)begin
+              // Refill the FREE bank while the client drains completed words
+              // in the other bank. This is read-only speculation; arbitrary
+              // jumps replace the cache and every presented write invalidates
+              // it. Never expose a partially received physical block.
+              rfbase<=prefetch_addr;fill_bank<=next_fill_bank;contiguous_refill<=1;
+              rcmd_i<=0;rcv_i<=0;state<=H_READ;
             end
           end
           H_WRITE:begin
@@ -143,9 +169,18 @@ module sdram_app_adapter #(
         // Receive independently of the command counter; preserve all beats
         // for either short or long vendor response latency.
         if((state==H_READ||state==H_WAIT)&&Sdr_rd_en)begin
-          rbuf[rcv_i]<=Sdr_rd_dout;
+          rbuf[PREFETCH_READ?{fill_bank,rcv_i[3:0]}:rcv_i]<=Sdr_rd_dout;
           if(rcv_i==RB-1)begin
-            rexp<=rfbase;rcnt<=RB;rhead<=0;rcv_i<=0;gap<=16;state<=H_RGAP;
+            if(PREFETCH_READ&&contiguous_refill&&!(req&&wr))
+              rcnt<=rcnt+RB-(r_fast_fire?1'b1:1'b0);
+            else begin
+              rexp<=rfbase;rcnt<=RB;
+              rhead<=PREFETCH_READ?{fill_bank,4'b0}:5'd0;
+            end
+            prefetch_addr<=rfbase+RB;next_fill_bank<=~fill_bank;
+            rcv_i<=0;
+            gap<=PREFETCH_READ?(read_quiet>=16?5'd0:5'd16-read_quiet):5'd16;
+            state<=H_RGAP;
           end else rcv_i<=rcv_i+1'b1;
         end
       end
@@ -153,4 +188,7 @@ module sdram_app_adapter #(
     // Sdr_busy/ref_vld are retained vendor diagnostic ports. This controller
     // interface has no per-beat ready handshake; do not reinterpret them as
     // permission to interrupt a consecutive burst mid-way.
+    // synthesis translate_off
+    initial if(PREFETCH_READ&&!FAST_READ)$fatal(1,"read prefetch requires FAST_READ");
+    // synthesis translate_on
 endmodule
