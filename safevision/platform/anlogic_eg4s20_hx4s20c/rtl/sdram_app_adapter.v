@@ -79,7 +79,15 @@ module sdram_app_adapter #(
         // Fence the client until common reset; never serve a partial cache.
         App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;r_go<=0;r_sv<=0;
       end else begin
-        App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;
+        App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;App_wr_dm<=0;
+        // ★ 2026-10-11 从队友提交 7fb219c 移植（DQM 读掩码真根因修复）：
+        //   The official controller continuously pipelines App_wr_dm to SDRAM
+        //   DQM, even with App_wr_en LOW. DQM also disables READ output after
+        //   two SDRAM clocks. A single-word flush ends with a masked neighbour;
+        //   retaining 4'hf afterwards makes the next read return pull-up ones.
+        //   Mask only the corresponding physical write beat. The existing
+        //   >=16-clock write/read quiet interval drains the DQM pipeline before
+        //   any read; never mask reads or unmask the neighbour's write beat.
         // Count quiet bus edges from the LAST physical command, not from the
         // last response. Response collection and the legal 16-edge gap overlap.
         if(App_rd_en||App_wr_en)read_quiet<=0;

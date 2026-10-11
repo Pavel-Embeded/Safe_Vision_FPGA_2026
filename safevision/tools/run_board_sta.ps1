@@ -1,5 +1,8 @@
 # HX4S20C routed STA. Default and -Bitgen require full reported timing closure.
 # -ExperimentalSdramBitgen allows only classified SDRAM-boundary setup failures.
+# -AllowUnclosedSetupNs waives our own setup violations up to that magnitude (ns);
+# opt-in bring-up trials only (e.g. the 125MHz vendor-clock experiment), never a
+# substitute for closure and never applied to hold/recovery/removal.
 # This generates local candidates only; it never programs hardware.
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
@@ -8,6 +11,7 @@ param(
  [string[]]$Mode=@('base','hd'),
  [switch]$Bitgen,
  [switch]$ExperimentalSdramBitgen,
+ [double]$AllowUnclosedSetupNs=0.0,
  [string]$VendorRoot,
  [string]$Python='python'
 )
@@ -70,7 +74,8 @@ try{
   $record=[ordered]@{mode=$m;repo=$RepoRoot;td_root=$TdRoot;python=$pythonExe;
    requested_bitgen=[bool]($Bitgen -or $ExperimentalSdramBitgen);experimental_sdram_requested=[bool]$ExperimentalSdramBitgen;
    source_scope='conservative board RTL, IP, include, font, constraints, flow, and checker snapshot';
-   sources=$before;source_unchanged=$false;gate_status='NOT_RUN';timing_passed=$false;bit_generated=$false;created_at_utc=[DateTime]::UtcNow.ToString('o')}
+   sources=$before;source_unchanged=$false;gate_status='NOT_RUN';timing_passed=$false;bit_generated=$false;created_at_utc=[DateTime]::UtcNow.ToString('o');
+   allow_unclosed_setup_ns=$AllowUnclosedSetupNs}
   Save-BoardManifest $manifestPath $record
   $flow=Join-Path $RepoRoot "safevision/platform/anlogic_eg4s20_hx4s20c/project/board_verify/$m.tcl"
   $console=Join-Path $RunDir "$m.console.log"
@@ -89,6 +94,10 @@ try{
   $timingPath=Join-Path $modeOut 'route.timing';$checkPath=Join-Path $modeOut 'route.check';$gatePath=Join-Path $modeOut 'timing.gate.json'
   $gateArgs=@((Join-Path $PSScriptRoot 'check_board_timing.py'),'--timing',$timingPath,'--check',$checkPath,'--output',$gatePath)
   if($ExperimentalSdramBitgen){$gateArgs+='--experimental-sdram'}
+  if($AllowUnclosedSetupNs -gt 0){
+   Write-Warning "Waiving our own setup violations up to $AllowUnclosedSetupNs ns. Bring-up trial only."
+   $gateArgs+='--allow-unclosed-setup';$gateArgs+="$AllowUnclosedSetupNs"
+  }
   $gateText=@(& $pythonExe @gateArgs 2>&1);$gateExit=$LASTEXITCODE
   $gateText | Set-Content -LiteralPath (Join-Path $modeOut 'timing.gate.console.log') -Encoding UTF8
   $gateText | ForEach-Object {Write-Output $_}
@@ -106,6 +115,7 @@ try{
  foreach($item in $records){
   $m=$item.mode
   if($item.verdict.timing_passed){Write-Output "PASS board routed STA $m : reported setup/hold/recovery/removal and required clock/constraint health checks accepted."}
+  elseif($item.verdict.status -eq 'EXPERIMENTAL_UNCLOSED'){Write-Warning "EXPERIMENTAL board $m : $($item.verdict.unclosed_setup_count) setup path(s) waived up to $($item.verdict.allow_unclosed_setup_ns) ns (worst $($item.verdict.unclosed_setup_worst_ns) ns). Setup remains UNRESOLVED; bring-up trial only, not STA or hardware acceptance."}
   else{Write-Warning "EXPERIMENTAL board $m : negative paths are reported SDRAM-boundary setup only. Setup remains UNRESOLVED; this is not STA or hardware acceptance."}
   if(-not($Bitgen -or $ExperimentalSdramBitgen)){continue}
   $compiledKeys=@($item.record.sources | ForEach-Object {$_.path+'|'+$_.sha256})

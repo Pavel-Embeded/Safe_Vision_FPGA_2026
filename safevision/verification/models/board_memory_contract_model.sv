@@ -19,6 +19,18 @@ module sdram #(parameter integer RD_LAT=4)(
  reg last_w=0,last_r=0;reg [20:0] previous_r;
  reg [20:0] wa[0:15];reg [31:0] wd[0:15];reg [3:0] dm[0:15];
  reg [RD_LAT-1:0] rv=0;reg [20:0] ra[0:RD_LAT-1];
+ // The native controller sends DM continuously to DQM. Include its read
+ // output suppression: 7 application/IO stages + 2 SDRAM DQM clocks.
+ // This functional model represents masked high-Z bytes by the observed
+ // pull-up value FF. It is still not a vendor silicon/AC simulation.
+ reg [3:0] dqm_pipe[0:8];
+ function [31:0] read_with_dqm(input [31:0] value,input [3:0] mask);
+   integer byte_i;begin
+     read_with_dqm=value;
+     for(byte_i=0;byte_i<4;byte_i=byte_i+1)
+       if(mask[byte_i])read_with_dqm[8*byte_i+:8]=8'hff;
+   end
+ endfunction
  integer i,j,b;
  assign Sdr_init_done=(init_count==100);
  assign Sdr_init_ref_vld=0;assign Sdr_busy=App_wr_en||App_rd_en||(|rv);
@@ -28,10 +40,13 @@ module sdram #(parameter integer RD_LAT=4)(
    cycle=cycle+1;
    if(Rst)begin
      init_count=0;rv=0;Sdr_rd_en<=0;last_w=0;last_r=0;n=0;read_n=0;last_cmd=-1000;
+     for(i=0;i<9;i=i+1)dqm_pipe[i]=15;
    end else begin
      if(init_count<100)init_count=init_count+1;
      Sdr_rd_en<=rv[RD_LAT-1];
-     if(rv[RD_LAT-1])Sdr_rd_dout<=mem[ra[RD_LAT-1]];
+     if(rv[RD_LAT-1])Sdr_rd_dout<=read_with_dqm(mem[ra[RD_LAT-1]],dqm_pipe[8]);
+     for(i=8;i>0;i=i-1)dqm_pipe[i]=dqm_pipe[i-1];
+     dqm_pipe[0]=App_wr_dm;
      for(i=RD_LAT-1;i>0;i=i-1)ra[i]=ra[i-1];
      ra[0]=App_rd_addr;rv=(rv<<1)|App_rd_en;
      if(App_wr_en&&App_rd_en)violation("simultaneous read and write");

@@ -66,7 +66,11 @@
 `define SAFEVISION_MEM_CLK_HZ 40000000
 `endif
 `define SAFEVISION_SDRAM_CLK_HZ `SAFEVISION_MEM_CLK_HZ
-`define SAFEVISION_REFRESH_ROWS 4096
+// ★ 2026-10-11（官方参数实验）：改回**官方例程的值** 2**ROW_WIDTH = 2048。
+//   官方 global_def.v：SELF_REFRESH_INTERVAL = 64000000/8ns/2**11 = 3906 拍
+//   ⇒ 125MHz 下每行 31.25µs、2048 行正好 64ms ✓（器件确实是 2048 行 ×4 bank×256 列）。
+//   原来的 4096 是个**保守 2 倍**的覆盖值（每 15.6µs 刷一行 ⇒ 32ms 全刷），并非官方值。
+`define SAFEVISION_REFRESH_ROWS 2048
 `include "pixel_format_defs.vh"
 // Default video mode; the TD flow overrides it with -define SAFEVISION_BOARD_HD.
 `ifndef SAFEVISION_BOARD_HD
