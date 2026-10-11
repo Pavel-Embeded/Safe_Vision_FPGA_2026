@@ -66,6 +66,10 @@ module sv_board_memory_pll (
 `elsif SAFEVISION_DIAG_MEM100P8
   // 100MHz + **8ns**（288°）：反方向 —— 让 DQ 落在下一个 clk1 沿之前
   localparam integer MEM_DIV=10, MEM_CPH=9, SFT_CPH=7;
+`elsif SAFEVISION_DIAG_D100
+  // ★ 100MHz + 精确 180°（5ns），与 `SAFEVISION_DIAG_MEM100` 同一时钟档；
+  //   单独的宏只为让报头/ID 可辨（这一版带 DQM 修复）。phase = ((4-9) mod 10)=5 → 5ns ✓
+  localparam integer MEM_DIV=10, MEM_CPH=9, SFT_CPH=4;
 `elsif SAFEVISION_DIAG_MEM100
   // ★★ 100MHz + **精确 180°（5ns）**：MEM 域最差路径 8.796ns（去 guard 后 Fmax 113.7MHz）
   //   ⇒ 10ns 周期余量 +1.2ns ✓；相位 ((4-9) mod 10)=5 → 5ns = 10ns 的一半 ✓
