@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Fail-closed TD routed-STA gate; outputs an auditable JSON in the run folder.
 
-The experimental exception classifies only reported SDRAM-boundary setup paths.
-It does not prove SDRAM AC correctness, identify a vendor defect, or close STA.
+The gate requires FULL reported timing closure: any negative setup, hold,
+recovery or removal path, or any required clock/constraint health failure,
+rejects the build. There is no waiver path - the shipped configuration closes
+with 0 negative paths (see docs/B链-构建与复现.md).
 """
 import argparse
 import hashlib
@@ -55,7 +57,7 @@ def one_number(text, expression, label, errors):
     return value
 
 
-def assess(timing, check, experimental=False, unclosed_bound=0.0):
+def assess(timing, check):
     errors = []
     if not re.search(r"^Confidence\s*:\s*Routed\s*$", timing, re.MULTILINE):
         errors.append("Report is not final routed timing")
@@ -166,19 +168,10 @@ def assess(timing, check, experimental=False, unclosed_bound=0.0):
         errors.append("Nonnegative global HWNS disagrees with min path/TNS violations")
     if period is not None and period < 0:
         errors.append(f"Global period WNS is negative: {period} ns")
-    # Negative paths: an SDRAM-boundary setup path may be waived by the
-    # experimental switch. Everything else needs the explicit, bounded
-    # unclosed-setup waiver; hold/recovery/removal are never waivable.
-    unclosed_setup = []
+    # Every reported negative path is a failure - there is no waiver.
     for p in negative:
-        if experimental and p["check_type"] == "setup" and p["sdram_boundary"]:
-            continue
-        if (unclosed_bound > 0 and p["check_type"] == "setup"
-                and abs(p["slack_ns"]) <= unclosed_bound):
-            unclosed_setup.append(p)
-            continue
         errors.append(f"Negative {p['check_type']} {p['slack_ns']} ns: {p['begin']} -> {p['end']}")
-    if setup is not None and setup < 0 and not experimental and not unclosed_setup:
+    if setup is not None and setup < 0:
         errors.append(f"Global setup/recovery WNS is negative: {setup} ns")
     minima = {}
     for kind in ("setup", "hold", "recovery", "removal"):
@@ -186,31 +179,19 @@ def assess(timing, check, experimental=False, unclosed_bound=0.0):
         user_values = [p["slack_ns"] for p in paths if p["check_type"] == kind and not p["sdram_boundary"]]
         minima[kind] = {"reported_min_ns": min(values) if values else None,
                         "non_sdram_reported_min_ns": min(user_values) if user_values else None}
-    experimental_only = not errors and bool(negative)
-    if errors:
-        status = "FAIL"
-    elif unclosed_setup:
-        status = "EXPERIMENTAL_UNCLOSED"
-    elif experimental_only:
-        status = "EXPERIMENTAL_SDRAM_UNCLOSED"
-    else:
-        status = "PASS"
+    status = "FAIL" if errors else "PASS"
     return {"status": status, "gate_accepted": not errors,
             "timing_passed": not errors and not negative and setup is not None and setup >= 0,
-            "experimental_requested": experimental,
-            "allow_unclosed_setup_ns": unclosed_bound,
-            "unclosed_setup_worst_ns": min((p["slack_ns"] for p in unclosed_setup), default=None),
-            "unclosed_setup_count": len(unclosed_setup),
             "global": {"swns_ns": setup, "stns_ns": setup_tns,
                        "hwns_ns": hold, "htns_ns": hold_tns, "period_wns_ns": period},
             "health": health, "reported_path_count": len(paths),
             "negative_path_count": len(negative), "minima": minima,
             "groups": groups, "negative_paths": [{k: v for k, v in p.items() if k != "offset"} for p in negative],
-            "unclosed_setup": [{k: v for k, v in p.items() if k != "offset"} for p in unclosed_setup],
             "errors": errors,
-            "limitation": ("Classification covers reported final routed paths. An experimental SDRAM "
-                           "boundary exception is not timing closure, SDRAM AC validation, proof of a "
-                           "vendor defect, or board/HDMI acceptance.")}
+            "limitation": ("Classification covers reported final routed paths. A pass means every "
+                           "reported setup/hold/recovery/removal path met its constraint and every "
+                           "required clock/constraint health check was clean; it is not SDRAM AC "
+                           "validation or board/HDMI acceptance.")}
 
 
 def main(argv=None):
@@ -218,14 +199,9 @@ def main(argv=None):
     parser.add_argument("--timing", type=Path, required=True)
     parser.add_argument("--check", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--experimental-sdram", action="store_true")
-    parser.add_argument("--allow-unclosed-setup", type=float, default=0.0,
-                        help="Waive setup violations up to this magnitude (ns). Bring-up trials only; "
-                             "never applies to hold/recovery/removal.")
     args = parser.parse_args(argv)
     try:
-        result = assess(read_report(args.timing), read_report(args.check), args.experimental_sdram,
-                        max(0.0, args.allow_unclosed_setup))
+        result = assess(read_report(args.timing), read_report(args.check))
         result["reports"] = [{"path": str(p.resolve()), "sha256": digest(p)} for p in (args.timing, args.check)]
     except (OSError, UnicodeError, ValueError) as exc:
         result = {"status": "FAIL", "gate_accepted": False, "timing_passed": False,
@@ -239,12 +215,6 @@ def main(argv=None):
               f"reported negative paths={result['negative_path_count']}")
     for error in result["errors"][:8]:
         print(f"REJECT: {error}")
-    if result["status"] == "EXPERIMENTAL_SDRAM_UNCLOSED":
-        print("WARNING: SDRAM setup is unresolved. This allows an experimental candidate only; timing has NOT passed.")
-    if result["status"] == "EXPERIMENTAL_UNCLOSED":
-        print(f"WARNING: {result['unclosed_setup_count']} setup path(s) waived by --allow-unclosed-setup "
-              f"(worst {result['unclosed_setup_worst_ns']} ns, bound {result['allow_unclosed_setup_ns']} ns). "
-              "Bring-up trial only; timing has NOT passed.")
     return 0 if result["gate_accepted"] else 1
 
 

@@ -1,3 +1,5 @@
+> ⚠️ 本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（**历史提交全部保留**）；取回方式与收敛清单见 [仓库收敛说明](仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
+
 # B 链 · 交接文档（给下一位接手者 / 多 agent 并行）
 
 > 初稿写于 2026-10-04 11:55；当前状态更新至 2026-10-04 14:19（四级流水修复已重新布线，10 秒/10 分钟/约 60 分钟 soak 均板测零错）。

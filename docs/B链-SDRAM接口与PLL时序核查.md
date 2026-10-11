@@ -1,3 +1,5 @@
+> ⚠️ 本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（**历史提交全部保留**）；取回方式与收敛清单见 [仓库收敛说明](仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
+
 # B链 · SDRAM接口与PLL时序核查（合并历史与当前修正）
 
 核查日期：2026-10-04；基准：A `d6f40a6`，并保留 B 的前期现场核查及 soak 证据；TD 6.2.168116 / EG4S20BG256。

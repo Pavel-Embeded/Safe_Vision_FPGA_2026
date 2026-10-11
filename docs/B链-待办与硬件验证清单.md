@@ -1,3 +1,5 @@
+> ⚠️ 本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（**历史提交全部保留**）；取回方式与收敛清单见 [仓库收敛说明](仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
+
 # B 链 · 待办与硬件验证清单
 
 > 用途：板子还没到，把"现在就能做"和"板到之后必须做"分开列清楚，避免到货后手忙脚乱。

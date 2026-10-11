@@ -80,40 +80,24 @@ module sdram_app_adapter #(
         App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;r_go<=0;r_sv<=0;
       end else begin
         App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;
-`ifdef SAFEVISION_DIAG_D40R
-`define SAFEVISION_DIAG_DMREL
-`endif
-`ifdef SAFEVISION_DIAG_D10R
-`define SAFEVISION_DIAG_DMREL
-`endif
-`ifdef SAFEVISION_DIAG_DMREL
-        // ★★ 2026-10-11 细化版（D10R / D40R）：把"释放 DQM"推迟到写流水排空之后。
+        // DQM (SDRAM write-mask) handling - board-verified behaviour.
         //
-        //   队友原版（7fb219c）是 idle 立刻 `App_wr_dm<=0`。但按他们自己的说明，
-        //   官方控制器把 App_wr_dm **连续**打到 SDRAM DQM；而本适配器在写突发末尾
-        //   会发**填充拍**（`wi>=wcnt ⇒ App_wr_dm<=4'hf`）。如果控制器把写使能也
-        //   流水 1~2 拍，那么突发结束后紧跟的那一拍会**再打一次写**
-        //   —— 此时 dm 已被原版改成 0 ⇒ **把填充字真写进邻字**（本该被掩）。
-        //   后果：每写完一个突发就坏掉一个字 ⇒ 帧内散布错字 = 花屏。
-        //
-        //   ⇒ 现在：前 6 个静默拍保持 15（邻字仍被掩住），之后才释放成 0。
-        //     写→读的最小静默间隔是 16 拍（H_WGAP），DQM 流水约 9 级
-        //     （7 级 app/IO + 2 拍 SDRAM）⇒ 读命令最早在第 17 拍发出时，
-        //     dm 已经 0 满 11 拍 ⇒ 读**不会**被掩。两个约束同时满足。
-        //   D40R = 同一策略放到 **40MHz**（该档 SDRAM 边界余量 +10.5ns，
-        //   是所有构建里最舒适的；而 40MHz + dm 修复至今没被真正测过）。
+        //  (1) The vendor controller keeps piping App_wr_dm to the SDRAM DQM even
+        //      while App_wr_en is LOW, and DQM also suppresses the READ output.
+        //      Leaving the mask at 4'hf after a write burst therefore makes the
+        //      next read return pull-up ones (0xFFFFFFFF) - the root cause the
+        //      board showed as EXP=00000000 / GOT=FFFFFFFF on block 0
+        //      (ported from the board team's fix, commit 7fb219c).
+        //  (2) Releasing the mask on the very first idle cycle is NOT sufficient:
+        //      the write enable is pipelined by the controller too, so the beat
+        //      right after a burst is still issued - and with dm already 0 that
+        //      flush word would be written into the neighbouring address (one
+        //      corrupted word per burst = a garbled frame).
+        //      So hold 4'hf for the first 6 quiet cycles, then release to 0.
+        //      The write->read minimum gap is 16 cycles (H_WGAP) and the DQM
+        //      pipeline is ~9 stages, so by the earliest possible read (cycle 17)
+        //      dm has been 0 for 11 cycles - reads are not masked either.
         App_wr_dm <= (read_quiet>=5'd6) ? 4'h0 : App_wr_dm;
-`else
-        App_wr_dm<=0;
-        // ★ 2026-10-11 从队友提交 7fb219c 移植（DQM 读掩码真根因修复）：
-        //   The official controller continuously pipelines App_wr_dm to SDRAM
-        //   DQM, even with App_wr_en LOW. DQM also disables READ output after
-        //   two SDRAM clocks. A single-word flush ends with a masked neighbour;
-        //   retaining 4'hf afterwards makes the next read return pull-up ones.
-        //   Mask only the corresponding physical write beat. The existing
-        //   >=16-clock write/read quiet interval drains the DQM pipeline before
-        //   any read; never mask reads or unmask the neighbour's write beat.
-`endif
         // Count quiet bus edges from the LAST physical command, not from the
         // last response. Response collection and the legal 16-edge gap overlap.
         if(App_rd_en||App_wr_en)read_quiet<=0;

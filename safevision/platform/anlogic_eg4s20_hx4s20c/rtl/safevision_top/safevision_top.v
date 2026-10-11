@@ -38,53 +38,11 @@
 //     EC 报"有效错误码"——sink 报错时优先报 sink 的（否则板上只看得到 E3）。
 // ★ 本文件不生成位流；由 tools/run_board_sta.ps1 控制（默认关）。
 // ============================================================================
-// ★★ 2026-10-11：存储器时钟档。`Clk_sft` 必须是半周期(180°)，见 sv_board_memory_pll.v 的长注释。
-//   ★★ 关键教训：`MEM_CLK_HZ`（下面的模块参数）**必须与这里一致** —— 它决定
-//      UART 波特率分频（uart_tx 的 CLK_FREQ）、sink 超时、guard 超时。
-//      改时钟而忘了它 ⇒ 波特率偏 ⇒ **串口全是乱码**（本轮踩过两次：50MHz 与 100MHz 档）。
-//   ⇒ 现在统一成一个宏 `SAFEVISION_MEM_CLK_HZ`，同时喂 `SAFEVISION_SDRAM_CLK_HZ`
-//      （给 global_def.v 算刷新）与模块参数 `MEM_CLK_HZ`（给波特率/超时）。
-`ifdef SAFEVISION_DIAG_MEM100P0
-`define SAFEVISION_MEM_CLK_HZ 100000000
-`elsif SAFEVISION_DIAG_MEM100P1
-`define SAFEVISION_MEM_CLK_HZ 100000000
-`elsif SAFEVISION_DIAG_MEM100P2
-`define SAFEVISION_MEM_CLK_HZ 100000000
-`elsif SAFEVISION_DIAG_MEM100P8
-`define SAFEVISION_MEM_CLK_HZ 100000000
-`elsif SAFEVISION_DIAG_D40R
-// ★ 2026-10-11：**40MHz（已验证的 +10ns 相位）+ 细化版 dm 释放策略**。
-//   为什么是这一档：40MHz 的 SDRAM 边界余量 +10.5ns，是所有构建里最舒适的；
-//   而"40MHz + dm 修复"这个组合至今没被真正测过（两次都赶上卡初始化偶发失败）。
-//   ⇒ 若它出干净图，就说明"时钟不用动、把 dm 策略修对"就够了。
+// Memory clock - single source of truth. `SAFEVISION_MEM_CLK_HZ` feeds both
+// `SAFEVISION_SDRAM_CLK_HZ` (refresh maths in ip/sdram/global_def.v) and the
+// MEM_CLK_HZ parameter (UART baud divider, sink/guard timeouts). They MUST agree:
+// changing the clock without this macro garbles the whole UART report.
 `define SAFEVISION_MEM_CLK_HZ 40000000
-`elsif SAFEVISION_DIAG_D4KR
-// ★ 2026-10-11：100MHz + 精确 180° + **dm 修复（队友原版策略）** + **REFRESH_ROWS=4096**。
-//   与上午那版 `SV-100M`（4096、无修复、"撕裂但认得出"）**只差 dm 修复这一个变量**——
-//   用来把"花屏到底是 dm 修复造成、还是 2048 刷新不足造成"一刀切开。
-`define SAFEVISION_MEM_CLK_HZ 100000000
-`elsif SAFEVISION_DIAG_D10R
-// ★ 2026-10-11：与 D100 同一时钟档，但适配器的 DQM 释放策略改成"细化版"
-//   （写流水排空后才把 App_wr_dm 放成 0，见 sdram_app_adapter.v 里的长注释）。
-`define SAFEVISION_MEM_CLK_HZ 100000000
-`elsif SAFEVISION_DIAG_D100
-// ★ 2026-10-11：100MHz + 精确 180°(5ns) + **DQM 修复**。与上午那版 `SV-100M` 的
-//   唯一区别就是 DQM 修复（那次没带修复，屏幕是"撕裂但认得出是卡里的图"）。
-//   ⇒ 用来把"100MHz 下的撕裂"到底是"被 DQM 掩掉的读"还是"换帧不同步"分开。
-`define SAFEVISION_MEM_CLK_HZ 100000000
-`elsif SAFEVISION_DIAG_MEM100
-`define SAFEVISION_MEM_CLK_HZ 100000000
-`elsif SAFEVISION_DIAG_MEM111
-`define SAFEVISION_MEM_CLK_HZ 111111111
-`elsif SAFEVISION_DIAG_MEM125
-`define SAFEVISION_MEM_CLK_HZ 125000000
-`elsif SAFEVISION_DIAG_MEM62
-`define SAFEVISION_MEM_CLK_HZ 62500000
-`elsif SAFEVISION_DIAG_MEM180
-`define SAFEVISION_MEM_CLK_HZ 50000000
-`else
-`define SAFEVISION_MEM_CLK_HZ 40000000
-`endif
 `define SAFEVISION_SDRAM_CLK_HZ `SAFEVISION_MEM_CLK_HZ
 // ★ 2026-10-11 18:55 改回 4096，并说明为什么（这是一次被证实的实验错误）：
 //   17:32 我把它从 4096 改成官方 global_def.v 的 2**ROW_WIDTH=2048（每行 31.25µs、
@@ -100,17 +58,11 @@
 `ifndef SAFEVISION_BOARD_HD
 `define SAFEVISION_BOARD_HD 0
 `endif
-// ★★ 诊断开关（2026-10-10）：板上 `PH=3 B=0000 BAD=<槽基址>` ⇒ 读回校验**从第 0 块起全灭**。
-//   要分清"校验器/签名表坏了"还是"SDRAM 读写真的不通"，必须做一次**二分**：
-//     正常位流                       STORAGE_INTEGRITY=1（读回校验 + 显示块校验都开）
-//     `-define SAFEVISION_DIAG_NO_INTEGRITY` ⇒ STORAGE_INTEGRITY=0（走旧路径：
-//       写排空后直接发布、显示用未校验 DMA）—— 若此时图能正常出，说明**数据通路是好的**，
-//       问题在校验器；若仍是白屏/花屏，说明 SDRAM 往返本身有问题。
-`ifdef SAFEVISION_DIAG_NO_INTEGRITY
+// Storage-integrity feature switch. 0 = legacy path: publish as soon as the write
+// queue drains and use the unchecked display DMA. 1 = guarded path (read-back
+// verification). The shipped configuration uses 0; the guard module is still in
+// the tree (see the note at its instantiation site).
 `define SV_INT_DEF 0
-`else
-`define SV_INT_DEF 1
-`endif
 module safevision_top #(
     parameter integer HD = `SAFEVISION_BOARD_HD,
     parameter integer MEM_CLK_HZ = `SAFEVISION_MEM_CLK_HZ,
@@ -196,17 +148,8 @@ module safevision_top #(
     wire [31:0] adapter_addr, adapter_wdata, adapter_rdata;
     wire [3:0]  adapter_wstrb;
 
-    // ★ 2026-10-11：适配器读模式开关。
-    //   背景：d28（2026-10-06，唯一验证过能出图的状态）的顶层**根本没有适配器**，
-    //   core 是直连 SDRAM IP 的。适配器（含读缓存 rbuf / rexp / 预取）是 d28 之后
-    //   才加进来的，而它正是"读回全 1"最可疑的一段（TB 只用契约模型验过）。
-    //   `-define SAFEVISION_DIAG_SLOW_READ` ⇒ 关掉 FAST_READ/PREFETCH，退回适配器
-    //   自带的简单读握手（r_go/r_sv），把"两 bank 预取缓存"这条最新逻辑整段去掉。
-`ifdef SAFEVISION_DIAG_SLOW_READ
-    localparam integer ADAPTER_FAST_READ=0, ADAPTER_PREFETCH=0;
-`else
+    // Adapter read mode: FAST_READ + two-bank prefetch (the board-verified mode).
     localparam integer ADAPTER_FAST_READ=1, ADAPTER_PREFETCH=1;
-`endif
     sdram_app_adapter #(.FAST_READ(ADAPTER_FAST_READ),.PREFETCH_READ(ADAPTER_PREFETCH)) adapter(.clk(mem_clk), .rst_n(mem_rst_n),
         .req(adapter_req), .wr(adapter_wr), .addr(adapter_addr),
         .wdata(adapter_wdata), .wstrb(adapter_wstrb),
@@ -567,19 +510,7 @@ module safevision_top #(
     always @(posedge mem_clk or negedge mem_rst_n) begin
         if (!mem_rst_n) begin
             card_mode<=1'b1;mode_cnt<=0;fb_swap_seen<=0;fb_swap_acked<=0;
-`ifdef SAFEVISION_DIAG_FORCE_FALLBACK
-            // ★★ 诊断（2026-10-10）：强制走**回落路径**。彩条图案由**片上生成**
-            //   （不经过 SD 卡 / FAT32 / FIFO），写进 SDRAM 槽 0，再由显示读回。
-            //   用途：把"真实 SDRAM 的写+读往返"从卡路径里**单独拎出来**——
-            //     彩条显示正常  ⇒ SDRAM 往返是好的 ⇒ 问题在卡路径的数据
-            //     彩条花屏/白屏 ⇒ SDRAM 往返真的坏了
-            //   这条路径 2026-10-05 曾在板上点亮过，是已知可用的参照。
-            card_mode<=1'b0;
-`endif
         end else begin
-`ifdef SAFEVISION_DIAG_FORCE_FALLBACK
-            card_mode<=1'b0;      // 常驻回落：卡路径让位，只跑彩条
-`endif
             if(fb_submitted && swap_busy_mem)fb_swap_seen<=1;
             if(fb_swap_seen && !swap_busy_mem)fb_swap_acked<=1;
             // A late/restarted card may take over only after fallback display
@@ -677,46 +608,22 @@ module safevision_top #(
         .warning_level(safety_level),.rgb(safety_rgb),.valid(safety_valid));
 
     // ========================================================================
-    // ★★ 2026-10-11：guard 的**写入侧跟踪**是 MEM 域的最差路径，必须能整块去掉。
+    // Storage-integrity guard: NOT instantiated in this configuration.
     //
-    //   实测（NOINTG 档 route.timing）：
-    //     Begin: integrity/source_words_reg[11].clk
-    //     End  : integrity/source_words_reg[27].ce
-    //     Data Path Delay 14.683ns, Logic Level 12  ⇒ MEM 域 Fmax 仅 66.8MHz
-    //   ⇒ 存储器时钟被迫从 125MHz 降到 40MHz（为容纳 guard）。
-    //
-    //   而 SDRAM IP 的**所有**验证过能工作的配置都是 125MHz：
-    //     · 厂商例程 lab_ex4_tf 的 sys_pll（C1=125M 0° / C2=125M 180°）
-    //     · 仓库里上板跑通过的 SDRAM 回环自检 top_sdram_loopback（同一套 sys_pll）
-    //     · d28（2026-10-06，唯一验证过能出图的一版，旧 PLL = 125MHz）
-    //   而 40MHz / 50MHz 全部失败（白屏 / 故障 / 设计不稳）。
-    //
-    //   `STORAGE_INTEGRITY=0` 时 guard 的跟踪逻辑**毫无用处**，却把 MEM 域拖到 14.7ns。
-    //   ⇒ `-define SAFEVISION_DIAG_NO_GUARD`：整块不例化，输出全部置 0，
-    //     把 MEM 域让出来给 125MHz。
+    //   The guard's write-side tracking is the MEM-domain critical path
+    //   (integrity/source_words_reg[11] -> [27].ce, 14.683 ns, 12 logic levels),
+    //   which would cap the memory clock at 66.8 MHz. With STORAGE_INTEGRITY=0
+    //   that tracking is dead logic, so the block is left out and its outputs are
+    //   tied off. The module (rtl/memory/frame_integrity_guard.v) and its tests
+    //   stay in the tree - re-instantiate it here to re-enable the feature
+    //   (see docs/B链-构建与复现.md).
     // ========================================================================
-`ifdef SAFEVISION_DIAG_NO_GUARD
     assign integrity_fault=1'b0, integrity_pass=1'b0, integrity_done=1'b0;
     assign integrity_bad_addr=32'd0, integrity_expected=32'd0, integrity_actual=32'd0;
     assign integrity_word_last=32'd0, integrity_fail_cnt=12'd0;
     assign integrity_words=32'd0, integrity_blocks=16'd0;
     assign lookup_crc=32'd0, lookup_valid=1'b0;
     assign verify_req=1'b0, verify_addr=32'd0;
-`else
-    frame_integrity_guard #(.TIMEOUT(MEM_CLK_HZ)) integrity(
-        .clk(mem_clk),.rst_n(mem_rst_n),.frame_begin(integrity_begin),.frame_slot(integrity_slot),
-        .top_down(integrity_top_down),.accepted(prod_word_accepted&&card_mode),
-        .write_addr(prod_wr_addr),.write_data(prod_wr_data),
-        .verify_start(STORAGE_INTEGRITY && sk_state==4 && adapter_write_idle && !prod_wr_busy),
-        .verify_allow(!display_dma_active || display_fifo_level>=16'd3000),
-        .verify_done(integrity_done),.verify_pass(integrity_pass),.fault(integrity_fault),
-        .rd_req(verify_req),.rd_addr(verify_addr),.rd_len(),.rd_ack(verify_ack),.rd_busy(verify_busy),
-        .rd_data(verify_data),.rd_valid(verify_valid),.lookup_addr(lookup_addr),
-        .lookup_crc(lookup_crc),.lookup_valid(lookup_valid),.bad_addr(integrity_bad_addr),
-        .bad_expected(integrity_expected),.bad_actual(integrity_actual),
-        .last_read_word(integrity_word_last),.fail_cnt(integrity_fail_cnt),
-        .source_words(integrity_words),.checked_blocks(integrity_blocks));
-`endif
 
     safevision_core #(.HD(HD), .FONT_FILE(FONT_FILE),.EMERGENCY_LATENCY(4),.DMA_STREAMING(1),.DMA_CHECKED(STORAGE_INTEGRITY),.FIFO_AW(STORAGE_INTEGRITY?11:12),.BURST_WORDS(STORAGE_INTEGRITY?64:256)) core(
         .sys_clk(sys_clk), .mem_clk(mem_clk), .pixel_clk(pixel_clk), .rst_n(common_rst_n),
@@ -874,21 +781,7 @@ module safevision_top #(
                     diagnostic_addr<=playback_fault?playback_bad_addr:integrity_bad_addr;
                     diagnostic_expected<=playback_fault?playback_expected:integrity_expected;
                     diagnostic_actual<=playback_fault?playback_actual:integrity_actual;
-`ifdef SAFEVISION_DIAG_WORDPROBE
-                    // ★ 诊断 v4 报文语义（与 v3 不同，务必按 v4 判读）：
-                    //   W  = **整个校验过程最后一次读回的第 0 个字**
-                    //        （反向校验 ⇒ 最后一次读的是第 0 块=槽基址）
-                    //   B  = {sdr_init_done, adapter_init, adapter_fault(protocol_fault),
-                    //         memory_error, fail_cnt[11:0]}
-                    //        高 4 位 = 存储子系统健康位；低 12 位 = **坏块数**（不是通过数！）
-                    //        2400 ⇒ 全部块都错；1 ⇒ 只有最先校验的那块错。
-                    //   先确认抬头是 `SV-WPR4`（ID=26101004）再采数。
-                    diagnostic_words<=integrity_word_last;
-                    diagnostic_blocks<={sdr_init_done,adapter_init,adapter_fault,
-                                        memory_error,integrity_fail_cnt};
-`else
                     diagnostic_words<=integrity_words;diagnostic_blocks<=integrity_blocks;
-`endif
                 end else rper <= rper + 32'd1;
             end else if (rload) begin
                 // ★ 时序（mem→mem 多米诺，2026-10-06）：ridx 刚更新后**故意等 1 拍**
@@ -925,94 +818,9 @@ module safevision_top #(
     always @* begin
         case (ridx)
             8'd0: rbyte_c = 8'h53; 8'd1: rbyte_c = 8'h56; 8'd2: rbyte_c = 8'h2D;
-`ifdef SAFEVISION_DIAG_FORCE_FALLBACK
-            // 诊断版 F：强制回落彩条 ⇒ 抬头 `SV-FBK `（53 56 2D 46 42 4B 20）
-            8'd3: rbyte_c = 8'h46; 8'd4: rbyte_c = 8'h42; 8'd5: rbyte_c = 8'h4B;
-            8'd6: rbyte_c = 8'h20;
-`elsif SAFEVISION_DIAG_MEM100P0
-            // 100MHz + 0ns 相位 ⇒ 抬头 `SV-P0NS`（53 56 2D 50 30 4E 53）
-            8'd3: rbyte_c = 8'h50; 8'd4: rbyte_c = 8'h30; 8'd5: rbyte_c = 8'h4E;
-            8'd6: rbyte_c = 8'h53;
-`elsif SAFEVISION_DIAG_MEM100P1
-            // 100MHz + 1ns 相位 ⇒ 抬头 `SV-P1NS`（53 56 2D 50 31 4E 53）
-            8'd3: rbyte_c = 8'h50; 8'd4: rbyte_c = 8'h31; 8'd5: rbyte_c = 8'h4E;
-            8'd6: rbyte_c = 8'h53;
-`elsif SAFEVISION_DIAG_MEM100P2
-            // 100MHz + 2ns 相位 ⇒ 抬头 `SV-P2NS`（53 56 2D 50 32 4E 53）
-            8'd3: rbyte_c = 8'h50; 8'd4: rbyte_c = 8'h32; 8'd5: rbyte_c = 8'h4E;
-            8'd6: rbyte_c = 8'h53;
-`elsif SAFEVISION_DIAG_MEM100P8
-            // 100MHz + 8ns 相位 ⇒ 抬头 `SV-P8NS`（53 56 2D 50 38 4E 53）
-            8'd3: rbyte_c = 8'h50; 8'd4: rbyte_c = 8'h38; 8'd5: rbyte_c = 8'h4E;
-            8'd6: rbyte_c = 8'h53;
-`elsif SAFEVISION_DIAG_D40R
-            // ★ 诊断版 D40R：**40MHz（验证过的 +10ns）** + 细化版 dm 释放
-            //   ⇒ 抬头 `SV-D40R`（53 56 2D 44 34 30 52）。
+            // Build identity on the UART: "SV-D40R" (53 56 2D 44 34 30 52).
             8'd3: rbyte_c = 8'h44; 8'd4: rbyte_c = 8'h34; 8'd5: rbyte_c = 8'h30;
             8'd6: rbyte_c = 8'h52;
-`elsif SAFEVISION_DIAG_D4KR
-            // ★ 诊断版 D4KR：100MHz/精确180° + dm 修复 + **REFRESH_ROWS=4096**
-            //   ⇒ 抬头 `SV-D4KR`（53 56 2D 44 34 4B 52）。与上午 `SV-100M` 只差 dm 修复。
-            8'd3: rbyte_c = 8'h44; 8'd4: rbyte_c = 8'h34; 8'd5: rbyte_c = 8'h4B;
-            8'd6: rbyte_c = 8'h52;
-`elsif SAFEVISION_DIAG_D10R
-            // ★ 诊断版 D10R：100MHz/精确180° + **细化版 DQM 释放策略** ⇒ 抬头 `SV-D10R`
-            //   （53 56 2D 44 31 30 52）。与 `SV-D100`（队友原版策略）一对一对照。
-            8'd3: rbyte_c = 8'h44; 8'd4: rbyte_c = 8'h31; 8'd5: rbyte_c = 8'h30;
-            8'd6: rbyte_c = 8'h52;
-`elsif SAFEVISION_DIAG_D100
-            // ★ 诊断版 D100：100MHz + 精确 180°(5ns) + **DQM 修复** ⇒ 抬头 `SV-D100`
-            //   （53 56 2D 44 31 30 30）。与 `SV-100M`（同一时钟档但无 DQM 修复）一眼可分。
-            8'd3: rbyte_c = 8'h44; 8'd4: rbyte_c = 8'h31; 8'd5: rbyte_c = 8'h30;
-            8'd6: rbyte_c = 8'h30;
-`elsif SAFEVISION_DIAG_MEM100
-            // ★ 诊断版 M100：去 guard + 100MHz + 精确 180°(5ns) ⇒ 抬头 `SV-100M`
-            //   （53 56 2D 31 30 30 4D）
-            8'd3: rbyte_c = 8'h31; 8'd4: rbyte_c = 8'h30; 8'd5: rbyte_c = 8'h30;
-            8'd6: rbyte_c = 8'h4D;
-`elsif SAFEVISION_DIAG_MEM111
-            // 111.1MHz + 4ns ⇒ `SV-111M`（53 56 2D 31 31 31 4D），备用
-            8'd3: rbyte_c = 8'h31; 8'd4: rbyte_c = 8'h31; 8'd5: rbyte_c = 8'h31;
-            8'd6: rbyte_c = 8'h4D;
-`elsif SAFEVISION_DIAG_MEM125
-            // ★ 诊断版 M125：去掉 guard + 存储器时钟回 125MHz/180° ⇒ 抬头 `SV-125M`
-            //   （53 56 2D 31 32 35 4D）
-            8'd3: rbyte_c = 8'h31; 8'd4: rbyte_c = 8'h32; 8'd5: rbyte_c = 8'h35;
-            8'd6: rbyte_c = 8'h4D;
-`elsif SAFEVISION_DIAG_MEM187
-            // ★ 诊断版 M8：40MHz + Clk_sft=+13ns(187.2°) ⇒ 抬头 `SV-M187`
-            //   （53 56 2D 4D 31 38 37）。建立窗口最大，SDRAM 边界余量 +2.2ns。
-            8'd3: rbyte_c = 8'h4D; 8'd4: rbyte_c = 8'h31; 8'd5: rbyte_c = 8'h38;
-            8'd6: rbyte_c = 8'h37;
-`elsif SAFEVISION_DIAG_MEM172
-            // ★ 诊断版 M7：40MHz + Clk_sft=+12ns(172.8°≈180°) ⇒ 抬头 `SV-M172`
-            //   （53 56 2D 4D 31 37 32）。只动相位、不动频率的干净实验。
-            8'd3: rbyte_c = 8'h4D; 8'd4: rbyte_c = 8'h31; 8'd5: rbyte_c = 8'h37;
-            8'd6: rbyte_c = 8'h32;
-`elsif SAFEVISION_DIAG_MEM180
-            // ★ 诊断版 M：SDRAM Clk_sft 修正为半周期(180°) + 50MHz ⇒ 抬头 `SV-M180`
-            //   （53 56 2D 4D 31 38 30）。这是"修根因"的那一版。
-            8'd3: rbyte_c = 8'h4D; 8'd4: rbyte_c = 8'h31; 8'd5: rbyte_c = 8'h38;
-            8'd6: rbyte_c = 8'h30;
-`elsif SAFEVISION_DIAG_SLOW_READ
-            // ★ 诊断版 S：关掉适配器预取缓存 ⇒ 抬头 `SV-SLOW`（53 56 2D 53 4C 4F 57）
-            8'd3: rbyte_c = 8'h53; 8'd4: rbyte_c = 8'h4C; 8'd5: rbyte_c = 8'h4F;
-            8'd6: rbyte_c = 8'h57;
-`elsif SAFEVISION_DIAG_NO_INTEGRITY
-            // ★ 诊断版 D：整包**第一个词**就不同 ⇒ 一眼可辨，不用找 ID=。
-            //   正常版 `SV-PLAY`（53 56 2D 50 4C 41 59）
-            //   诊断版 `SV-DIAG`（53 56 2D 44 49 41 47）
-            8'd3: rbyte_c = 8'h44; 8'd4: rbyte_c = 8'h49; 8'd5: rbyte_c = 8'h41;
-            8'd6: rbyte_c = 8'h47;
-`elsif SAFEVISION_DIAG_WORDPROBE
-            // ★ 诊断版 W4：字探针 v4（反向校验 + 原始读回字 + 坏块总数）⇒ 抬头 `SV-WPR4`
-            //   （53 56 2D 57 50 52 34）。与 v3 的 `SV-WPR3`（…52 33）一眼可分。
-            8'd3: rbyte_c = 8'h57; 8'd4: rbyte_c = 8'h50; 8'd5: rbyte_c = 8'h52;
-            8'd6: rbyte_c = 8'h34;
-`else
-            8'd3: rbyte_c = 8'h50; 8'd4: rbyte_c = 8'h4C; 8'd5: rbyte_c = 8'h41;
-            8'd6: rbyte_c = 8'h59;
-`endif
             8'd7: rbyte_c = 8'h20; 8'd8: rbyte_c = 8'h53;
             8'd9: rbyte_c = 8'h54; 8'd10: rbyte_c = 8'h3D;                    // "SV-PLAY ST="
             8'd11: rbyte_c = hexc(t_state);
@@ -1081,48 +889,7 @@ module safevision_top #(
             8'd121: rbyte_c = 8'h31;
             8'd122: rbyte_c = 8'h30;
             8'd123: rbyte_c = 8'h30;
-`ifdef SAFEVISION_DIAG_FORCE_FALLBACK
-            8'd124: rbyte_c = 8'h46; // 'F' = FORCE_FALLBACK build
-`elsif SAFEVISION_DIAG_MEM100P0
-            8'd124: rbyte_c = 8'h41; // 'A' = 100MHz/0ns 相位
-`elsif SAFEVISION_DIAG_MEM100P1
-            8'd124: rbyte_c = 8'h42; // 'B' = 100MHz/1ns 相位
-`elsif SAFEVISION_DIAG_MEM100P2
-            8'd124: rbyte_c = 8'h32; // '2' = 100MHz/2ns 相位
-`elsif SAFEVISION_DIAG_MEM100P8
-            8'd124: rbyte_c = 8'h38; // '8' = 100MHz/8ns 相位
-`elsif SAFEVISION_DIAG_D40R
-            8'd124: rbyte_c = 8'h47; // 'G' = D40R build（40MHz验证相位 + 细化版 dm 释放）
-`elsif SAFEVISION_DIAG_D4KR
-            8'd124: rbyte_c = 8'h4B; // 'K' = D4KR build（100MHz/180° + dm 修复 + 刷新4096）
-`elsif SAFEVISION_DIAG_D10R
-            8'd124: rbyte_c = 8'h52; // 'R' = D10R build（100MHz/180° + 细化版 DQM 释放）
-`elsif SAFEVISION_DIAG_D100
-            8'd124: rbyte_c = 8'h51; // 'Q' = D100 build（100MHz/180° + DQM 修复）
-`elsif SAFEVISION_DIAG_MEM100
-            8'd124: rbyte_c = 8'h30; // '0' = MEM100 build（无 guard + 100MHz/180°）
-`elsif SAFEVISION_DIAG_MEM111
-            8'd124: rbyte_c = 8'h31; // '1' = MEM111 build（无 guard + 111MHz/4ns）
-`elsif SAFEVISION_DIAG_MEM125
-            8'd124: rbyte_c = 8'h4D; // 'M' = MEM125 build（无 guard + 125MHz/180°）
-`elsif SAFEVISION_DIAG_MEM187
-            8'd124: rbyte_c = 8'h39; // '9' = MEM187 build（40MHz, Clk_sft=+13ns）
-`elsif SAFEVISION_DIAG_MEM172
-            8'd124: rbyte_c = 8'h37; // '7' = MEM172 build（40MHz, Clk_sft=+12ns≈180°）
-`elsif SAFEVISION_DIAG_MEM180
-            8'd124: rbyte_c = 8'h38; // '8' = MEM180 build（Clk_sft=180°, 50MHz）
-`elsif SAFEVISION_DIAG_SLOW_READ
-            8'd124: rbyte_c = 8'h53; // 'S' = SLOW_READ build（适配器预取关闭）
-`elsif SAFEVISION_DIAG_NO_INTEGRITY
-            // ★ 诊断版自报身份（2026-10-10）：末位由 '2' 改 'D' ⇒ 串口报 `ID=2610100D`。
-            //   目的：确认"诊断位流到底有没有烧进去"。正常版仍是 `ID=26101002`，TB 不受影响。
-            8'd124: rbyte_c = 8'h44; // 'D' = DIAG build, STORAGE_INTEGRITY=0
-`elsif SAFEVISION_DIAG_WORDPROBE
-            // 字探针 v4 ⇒ `ID=26101004`（v3 是 26101003）。与抬头 `SV-WPR4` 双重可辨。
-            8'd124: rbyte_c = 8'h34; // '4' = wordprobe v4
-`else
-            8'd124: rbyte_c = 8'h32; // ID=26101002: late BMP header orientation fix
-`endif
+            8'd124: rbyte_c = 8'h47; // 'G' -> ID=2610100G
             8'd125: rbyte_c = 8'h20;
             8'd126: rbyte_c = 8'h50;
             8'd127: rbyte_c = 8'h48;

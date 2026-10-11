@@ -1,7 +1,0 @@
-{
-  "verified": true,
-  "baseline": "27cb1394506337e3366215e1658e5c3b739202cd",
-  "expected_failure": "late-header first source address rejected",
-  "assertion": "complete top/bottom image in either slot verifies",
-  "old_guard_sha256": "c8816e57c9d1f73025b2c30275dcdfab6a00464db554abb231b9e4bc3660a7c6"
-}

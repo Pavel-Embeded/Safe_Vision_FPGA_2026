@@ -1,13 +1,15 @@
 # TD 板级工程入口
 
 `safevision.al` 的顶层为 **safevision_top**，输出使用 **HDMI B**。
-旧版 `safevision.al` 指向 SDRAM 回环顶层，不能作为完整图片显示工程；旧工程保留为
-`safevision_loopback.al`。不要将回环测试产生的下载文件当成图片播放器。
+
+> 旧的回环顶层工程（`safevision_loopback.al`、`top_stage10_framebuffer`）与
+> `prepare_board_project.*` 已在 2026-10-11 的仓库收敛中删除，见
+> `docs/仓库收敛说明_20261011.md`。`top_sdram_loopback` / `top_stage5/6` 仍保留，
+> 因为它们是 `run_sim.ps1` 的编译单元。
 
 第一次使用或换机器后，从仓库根目录执行：
 
 ```powershell
-./safevision/tools/prepare_board_project.ps1
 ./safevision/tools/run_board_sta.ps1 -Mode base,hd -Bitgen
 ```
 
@@ -20,7 +22,8 @@ GUI 与命令行采用同一份 HDL 依赖表和 `board_verify/board_b.adc`、`b
 GUI 入口默认 BASE 640×480；720p 使用命令行 `-Mode hd`，不猜测 GUI 宏设置格式。
 只有严格时序检查通过，`run_board_sta.ps1 -Bitgen` 才生成对应模式的 `safevision_top.bit`。
 
-发布存储配置：SYS 100 MHz、MEM 50 MHz、SDRAM 时钟 50 MHz 且上升沿延后 8 ns；
+发布存储配置（2026-10-11 收敛后的默认档，板级已验证）：SYS 100 MHz、**MEM 40 MHz、
+SDRAM 时钟 40 MHz 且上升沿延后 10 ns**（`sv_board_memory_pll.v` 的默认档）。
 BASE 像素时钟约 25.185 MHz，720p 为 74.25 MHz。原 125 MHz PLL 保留给独立旧测试。
 新工程的 SDRAM 控制器时间参数与 MEM 频率一致。不要只替换 PLL、却留下旧控制器频率。
 

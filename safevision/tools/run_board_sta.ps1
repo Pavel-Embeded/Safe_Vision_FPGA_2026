@@ -1,8 +1,6 @@
-# HX4S20C routed STA. Default and -Bitgen require full reported timing closure.
-# -ExperimentalSdramBitgen allows only classified SDRAM-boundary setup failures.
-# -AllowUnclosedSetupNs waives our own setup violations up to that magnitude (ns);
-# opt-in bring-up trials only (e.g. the 125MHz vendor-clock experiment), never a
-# substitute for closure and never applied to hold/recovery/removal.
+# HX4S20C routed STA + bitgen for the board (base / hd modes).
+# Requires FULL reported timing closure: any negative setup/hold/recovery/removal
+# path, or any required clock/constraint health failure, fails the build.
 # This generates local candidates only; it never programs hardware.
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
@@ -10,8 +8,6 @@ param(
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/board_verify'),
  [string[]]$Mode=@('base','hd'),
  [switch]$Bitgen,
- [switch]$ExperimentalSdramBitgen,
- [double]$AllowUnclosedSetupNs=0.0,
  [string]$VendorRoot,
  [string]$Python='python'
 )
@@ -19,7 +15,6 @@ $ErrorActionPreference='Stop'
 # The checker intentionally returns exit 1 for a rejected report. Handle that
 # explicitly even when a PowerShell 7 profile enables native-command exceptions.
 $PSNativeCommandUseErrorActionPreference=$false
-if($Bitgen -and $ExperimentalSdramBitgen){throw 'Select -Bitgen OR -ExperimentalSdramBitgen, not both.'}
 $RepoRoot=(Resolve-Path -LiteralPath $RepoRoot).Path
 $RunDir=$ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($RunDir)
 if(-not $Mode.Count){throw 'At least one board mode is required.'}
@@ -59,7 +54,6 @@ try{
  . (Join-Path $PSScriptRoot 'resolve_hdmi_vendor.ps1')
  $env:SAFEVISION_HDMI_VENDOR=Resolve-SafeVisionHdmiVendor -VendorRoot $VendorRoot -RepoRoot $RepoRoot -RunDir $RunDir
  $records=@();$rejected=@()
- if($ExperimentalSdramBitgen){Write-Warning 'Experimental SDRAM bitgen requested. Hardware is unverified; unresolved setup is not timing closure.'}
  # Classify ALL requested modes before generating any bitstream.
  foreach($m in $Mode){
   $modeOut=Join-Path $RunDir $m
@@ -72,10 +66,9 @@ try{
    if(Compare-Object -ReferenceObject $firstKeys -DifferenceObject $currentKeys){throw 'Sources changed between requested board modes. No bitstream generated.'}
   }
   $record=[ordered]@{mode=$m;repo=$RepoRoot;td_root=$TdRoot;python=$pythonExe;
-   requested_bitgen=[bool]($Bitgen -or $ExperimentalSdramBitgen);experimental_sdram_requested=[bool]$ExperimentalSdramBitgen;
+   requested_bitgen=[bool]$Bitgen;
    source_scope='conservative board RTL, IP, include, font, constraints, flow, and checker snapshot';
-   sources=$before;source_unchanged=$false;gate_status='NOT_RUN';timing_passed=$false;bit_generated=$false;created_at_utc=[DateTime]::UtcNow.ToString('o');
-   allow_unclosed_setup_ns=$AllowUnclosedSetupNs}
+   sources=$before;source_unchanged=$false;gate_status='NOT_RUN';timing_passed=$false;bit_generated=$false;created_at_utc=[DateTime]::UtcNow.ToString('o')}
   Save-BoardManifest $manifestPath $record
   $flow=Join-Path $RepoRoot "safevision/platform/anlogic_eg4s20_hx4s20c/project/board_verify/$m.tcl"
   $console=Join-Path $RunDir "$m.console.log"
@@ -93,11 +86,6 @@ try{
   $record.source_unchanged=$true
   $timingPath=Join-Path $modeOut 'route.timing';$checkPath=Join-Path $modeOut 'route.check';$gatePath=Join-Path $modeOut 'timing.gate.json'
   $gateArgs=@((Join-Path $PSScriptRoot 'check_board_timing.py'),'--timing',$timingPath,'--check',$checkPath,'--output',$gatePath)
-  if($ExperimentalSdramBitgen){$gateArgs+='--experimental-sdram'}
-  if($AllowUnclosedSetupNs -gt 0){
-   Write-Warning "Waiving our own setup violations up to $AllowUnclosedSetupNs ns. Bring-up trial only."
-   $gateArgs+='--allow-unclosed-setup';$gateArgs+="$AllowUnclosedSetupNs"
-  }
   $gateText=@(& $pythonExe @gateArgs 2>&1);$gateExit=$LASTEXITCODE
   $gateText | Set-Content -LiteralPath (Join-Path $modeOut 'timing.gate.console.log') -Encoding UTF8
   $gateText | ForEach-Object {Write-Output $_}
@@ -115,9 +103,8 @@ try{
  foreach($item in $records){
   $m=$item.mode
   if($item.verdict.timing_passed){Write-Output "PASS board routed STA $m : reported setup/hold/recovery/removal and required clock/constraint health checks accepted."}
-  elseif($item.verdict.status -eq 'EXPERIMENTAL_UNCLOSED'){Write-Warning "EXPERIMENTAL board $m : $($item.verdict.unclosed_setup_count) setup path(s) waived up to $($item.verdict.allow_unclosed_setup_ns) ns (worst $($item.verdict.unclosed_setup_worst_ns) ns). Setup remains UNRESOLVED; bring-up trial only, not STA or hardware acceptance."}
-  else{Write-Warning "EXPERIMENTAL board $m : negative paths are reported SDRAM-boundary setup only. Setup remains UNRESOLVED; this is not STA or hardware acceptance."}
-  if(-not($Bitgen -or $ExperimentalSdramBitgen)){continue}
+  else{Write-Warning "Board $m : routed STA reported negative paths. See timing.gate.json."}
+  if(-not $Bitgen){continue}
   $compiledKeys=@($item.record.sources | ForEach-Object {$_.path+'|'+$_.sha256})
   $currentKeys=@(Get-BoardSourceSnapshot | ForEach-Object {$_.path+'|'+$_.sha256})
   if(Compare-Object -ReferenceObject $compiledKeys -DifferenceObject $currentKeys){throw "Sources changed before approved bitgen: $m"}
@@ -147,10 +134,10 @@ exit 0
   Move-Item -LiteralPath $candidate -Destination $bit -Force
   $item.record.bit_generated=$true
   $item.record['bitstream']=[ordered]@{path=$bit;bytes=(Get-Item -LiteralPath $bit).Length;
-   sha256=(Get-FileHash -Algorithm SHA256 -LiteralPath $bit).Hash.ToLower();timing_passed=[bool]$item.verdict.timing_passed;experimental=[bool](-not $item.verdict.timing_passed)}
+   sha256=(Get-FileHash -Algorithm SHA256 -LiteralPath $bit).Hash.ToLower();timing_passed=[bool]$item.verdict.timing_passed}
   Save-BoardManifest $item.manifest $item.record
   Write-Output "BIT $m : $bit SHA256 $($item.record.bitstream.sha256)"
-  Write-Output 'BIT note: this script never programs hardware. Experimental candidates are not timing-closed releases.'
+Write-Output 'BIT note: this script never programs hardware.'
  }
 }finally{
  $env:SAFEVISION_REPO=$oldRepo;$env:SAFEVISION_BOARD_OUT=$oldOut;$env:SAFEVISION_HDMI_VENDOR=$oldVendor

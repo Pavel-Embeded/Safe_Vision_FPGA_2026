@@ -1,3 +1,5 @@
+> ⚠️ 本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（**历史提交全部保留**）；取回方式与收敛清单见 [仓库收敛说明](../仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
+
 # 需求 → 模块 → 测试 → 证据
 
 状态为本次盘点口径，不是赛题验收结论。`evidence/` 尚未填入原始结果。B 文档记载的单元仿真不等于整项需求完成。

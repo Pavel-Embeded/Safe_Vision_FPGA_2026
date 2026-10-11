@@ -1,3 +1,5 @@
+> ⚠️ 本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（**历史提交全部保留**）；取回方式与收敛清单见 [仓库收敛说明](../../docs/仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
+
 # reports 证据索引
 
 尚无本次目录整理新增的测试证据。新记录只追加，不覆盖原始记录。
