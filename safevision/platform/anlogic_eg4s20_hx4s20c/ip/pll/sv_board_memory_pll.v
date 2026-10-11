@@ -66,6 +66,9 @@ module sv_board_memory_pll (
 `elsif SAFEVISION_DIAG_MEM100P8
   // 100MHz + **8ns**（288°）：反方向 —— 让 DQ 落在下一个 clk1 沿之前
   localparam integer MEM_DIV=10, MEM_CPH=9, SFT_CPH=7;
+`elsif SAFEVISION_DIAG_D4KR
+  // 与 D100/D10R 同一时钟档（100MHz + 精确 180°）；差别只在刷新行数与报头/ID。
+  localparam integer MEM_DIV=10, MEM_CPH=9, SFT_CPH=4;
 `elsif SAFEVISION_DIAG_D10R
   // 与 D100 完全同一时钟档（100MHz + 精确 180°）；单独宏只为报头/ID 可辨。
   localparam integer MEM_DIV=10, MEM_CPH=9, SFT_CPH=4;

@@ -52,6 +52,11 @@
 `define SAFEVISION_MEM_CLK_HZ 100000000
 `elsif SAFEVISION_DIAG_MEM100P8
 `define SAFEVISION_MEM_CLK_HZ 100000000
+`elsif SAFEVISION_DIAG_D4KR
+// ★ 2026-10-11：100MHz + 精确 180° + **dm 修复（队友原版策略）** + **REFRESH_ROWS=4096**。
+//   与上午那版 `SV-100M`（4096、无修复、"撕裂但认得出"）**只差 dm 修复这一个变量**——
+//   用来把"花屏到底是 dm 修复造成、还是 2048 刷新不足造成"一刀切开。
+`define SAFEVISION_MEM_CLK_HZ 100000000
 `elsif SAFEVISION_DIAG_D10R
 // ★ 2026-10-11：与 D100 同一时钟档，但适配器的 DQM 释放策略改成"细化版"
 //   （写流水排空后才把 App_wr_dm 放成 0，见 sdram_app_adapter.v 里的长注释）。
@@ -75,11 +80,15 @@
 `define SAFEVISION_MEM_CLK_HZ 40000000
 `endif
 `define SAFEVISION_SDRAM_CLK_HZ `SAFEVISION_MEM_CLK_HZ
-// ★ 2026-10-11（官方参数实验）：改回**官方例程的值** 2**ROW_WIDTH = 2048。
-//   官方 global_def.v：SELF_REFRESH_INTERVAL = 64000000/8ns/2**11 = 3906 拍
-//   ⇒ 125MHz 下每行 31.25µs、2048 行正好 64ms ✓（器件确实是 2048 行 ×4 bank×256 列）。
-//   原来的 4096 是个**保守 2 倍**的覆盖值（每 15.6µs 刷一行 ⇒ 32ms 全刷），并非官方值。
-`define SAFEVISION_REFRESH_ROWS 2048
+// ★ 2026-10-11 18:55 改回 4096，并说明为什么（这是一次被证实的实验错误）：
+//   17:32 我把它从 4096 改成官方 global_def.v 的 2**ROW_WIDTH=2048（每行 31.25µs、
+//   2048 行正好 64ms）。**从那以后的所有构建全部花屏**，而 17:32 之前唯一出过
+//   "认得出卡里的图"的构建（上午 12:52 的 SV-100M）用的正是 4096（每行 15.6µs、
+//   32ms 全刷 = 2 倍余量）。⇒ 2048 与 4096 成了**没被控制的变量**：
+//   "dm 修复有害"与"2048 刷新不足"两个解释目前无法区分。
+//   ⇒ 先回到所有已知结果对应的 4096，把刷新这一项从方程里去掉；
+//     4096 = 2 倍余量，官方值只是"恰好满足"，对本板并未证明够用。
+`define SAFEVISION_REFRESH_ROWS 4096
 `include "pixel_format_defs.vh"
 // Default video mode; the TD flow overrides it with -define SAFEVISION_BOARD_HD.
 `ifndef SAFEVISION_BOARD_HD
@@ -930,6 +939,11 @@ module safevision_top #(
             // 100MHz + 8ns 相位 ⇒ 抬头 `SV-P8NS`（53 56 2D 50 38 4E 53）
             8'd3: rbyte_c = 8'h50; 8'd4: rbyte_c = 8'h38; 8'd5: rbyte_c = 8'h4E;
             8'd6: rbyte_c = 8'h53;
+`elsif SAFEVISION_DIAG_D4KR
+            // ★ 诊断版 D4KR：100MHz/精确180° + dm 修复 + **REFRESH_ROWS=4096**
+            //   ⇒ 抬头 `SV-D4KR`（53 56 2D 44 34 4B 52）。与上午 `SV-100M` 只差 dm 修复。
+            8'd3: rbyte_c = 8'h44; 8'd4: rbyte_c = 8'h34; 8'd5: rbyte_c = 8'h4B;
+            8'd6: rbyte_c = 8'h52;
 `elsif SAFEVISION_DIAG_D10R
             // ★ 诊断版 D10R：100MHz/精确180° + **细化版 DQM 释放策略** ⇒ 抬头 `SV-D10R`
             //   （53 56 2D 44 31 30 52）。与 `SV-D100`（队友原版策略）一对一对照。
@@ -1066,6 +1080,8 @@ module safevision_top #(
             8'd124: rbyte_c = 8'h32; // '2' = 100MHz/2ns 相位
 `elsif SAFEVISION_DIAG_MEM100P8
             8'd124: rbyte_c = 8'h38; // '8' = 100MHz/8ns 相位
+`elsif SAFEVISION_DIAG_D4KR
+            8'd124: rbyte_c = 8'h4B; // 'K' = D4KR build（100MHz/180° + dm 修复 + 刷新4096）
 `elsif SAFEVISION_DIAG_D10R
             8'd124: rbyte_c = 8'h52; // 'R' = D10R build（100MHz/180° + 细化版 DQM 释放）
 `elsif SAFEVISION_DIAG_D100
