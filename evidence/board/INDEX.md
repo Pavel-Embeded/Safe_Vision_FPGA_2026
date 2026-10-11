@@ -83,3 +83,21 @@ SHA-256 `31A4D727DC67C8F190AF15AB88B9AF31E5C18872FB0B45E95CB739F2A54E8769` —�
 ⇒ **21:25 那次重新综合跑的仍是阶段 6–7 顶层，不是 SDRAM 回环顶层**。
 （`safevision.al` 的 `TOP_MODULE` 当时已被改成 `top_sdram_loopback`，但 **TD 是从内存里的工程状态运行的**，
 磁盘上的 `.al` 并没有被采用 —— 详见 [module_registry.md](../../docs/architecture/module_registry.md) 的说明。）
+---
+
+## 2026-10-10 红框故障采集（★ 当前唯一挡路问题的证据）
+
+> 完整分析见 [`docs/B链-红框故障排查交接_20261010.md`](../../docs/B链-红框故障排查交接_20261010.md)。
+> 报告格式：**189 字节 = `SV-PLAY` 107 + `SV-MEM` 82**（`ID=26101002`）。
+> 运行位流：`releases/ab_multiround_26101002/BASE/safevision_top.bit`（`3af4146c…907c`）。
+
+| 文件 | 行数 | 内容 | 关键结论 |
+|---|---:|---|---|
+| `uart_play_status_20261010_1546_boot_to_fault_hex.txt`（3969 B，SHA-256 `66BC1A4F…8E79`）<br>`…bin`（1323 B，SHA-256 `FA316406…1689`） | **7 包** | 完整"开机→流式→故障" | **主证据**。`W` 轨迹 53239→115617→**153600** ⇒ **整帧写入 100% 成功**；随后 `PH=3 BAD=000A0000 EXP=0D968558 GOT=FEA8A821 B=0000` ⇒ **读回校验从第 0 块起全灭** |
+| `uart_play_status_20261010_1503_PH3_fullframe_hex.txt`（568 B，SHA-256 `2CEC94C6…8418`）<br>`…bin`（189 B，SHA-256 `E4A0CAF0…49D0`） | 1 包 | 故障态 | `PH=3` 定案为 `integrity_fault` |
+| `uart_play_status_20261010_1458_redfault_hex.txt`（321 B，SHA-256 `3C58A7B5…2101`）<br>`…bin`（107 B，SHA-256 `DA83C9EA…E610`） | 1 行 | 早期（只有第一行，缺 `SV-MEM`） | 教训：**一定要采满 189 字节两行** |
+
+**关键数值**：`RD/PX = 2.998`（≈3 字节/像素）⇒ 像素链正确；
+`BAD=0x000A0000` 正是 `SV_IMG1_BASE`；`B=0000` ⇒ 系统性失败（非随机损坏）。
+
+**已归档的分析产物**：`evidence/reports/sd_card_preview_26101002.png`（4 张测试图 2×2 预览）。

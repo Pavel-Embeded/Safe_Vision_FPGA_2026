@@ -45,7 +45,12 @@ module sdram_app_adapter #(
     wire idle_hw=(state==H_IDLE);
     wire w_can=Sdr_init_done&&idle_hw&&(wcnt<WB)&&w_checked&&w_contiguous&&!r_go&&!r_sv;
     wire w_accept=req&&wr&&w_can;
-    wire r_hit=(rcnt!=0)&&(addr==rexp);
+    // ★ 2026-10-11：地址比较只用低 21 位 —— 恰好等于 SDRAM 容量（ADDR_WIDTH=21，
+    //   2M word），所以**语义完全等价**，但把 32 位比较器缩短 11 位。
+    //   动机：125MHz 档 MEM 域最差路径就是
+    //     core/arbiter/cur_addr → adapter/contiguous_refill（8.516ns，含 2 个 ADDER）
+    //   把 `addr==rexp` 从 32 位缩到 21 位，给 125MHz 让出余量。
+    wire r_hit=(rcnt!=0)&&(addr[20:0]==rexp[20:0]);
     wire r_serve=req&&!wr&&idle_hw&&(wcnt==0)&&r_hit&&!r_sv;
     // Completed cache words are independent of the physical command bus.
     // Drain them during the mandatory read quiet interval too. No new SDRAM
@@ -89,7 +94,7 @@ module sdram_app_adapter #(
         // Never reuse a check after acceptance, cancellation or a HW burst.
         if(!Sdr_init_done||!idle_hw||!req||!wr||w_accept)w_checked<=0;
         else if(!w_checked)begin
-          w_checked<=1;w_contiguous<=(wcnt==0)||(addr==wnext);
+          w_checked<=1;w_contiguous<=(wcnt==0)||(addr[20:0]==wnext[20:0]);
         end
         // Only the externally observed ready/req edge consumes a cached word.
         if(FAST_READ)begin
