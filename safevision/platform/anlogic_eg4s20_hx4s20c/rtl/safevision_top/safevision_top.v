@@ -52,6 +52,10 @@
 `define SAFEVISION_MEM_CLK_HZ 100000000
 `elsif SAFEVISION_DIAG_MEM100P8
 `define SAFEVISION_MEM_CLK_HZ 100000000
+`elsif SAFEVISION_DIAG_D10R
+// ★ 2026-10-11：与 D100 同一时钟档，但适配器的 DQM 释放策略改成"细化版"
+//   （写流水排空后才把 App_wr_dm 放成 0，见 sdram_app_adapter.v 里的长注释）。
+`define SAFEVISION_MEM_CLK_HZ 100000000
 `elsif SAFEVISION_DIAG_D100
 // ★ 2026-10-11：100MHz + 精确 180°(5ns) + **DQM 修复**。与上午那版 `SV-100M` 的
 //   唯一区别就是 DQM 修复（那次没带修复，屏幕是"撕裂但认得出是卡里的图"）。
@@ -926,6 +930,11 @@ module safevision_top #(
             // 100MHz + 8ns 相位 ⇒ 抬头 `SV-P8NS`（53 56 2D 50 38 4E 53）
             8'd3: rbyte_c = 8'h50; 8'd4: rbyte_c = 8'h38; 8'd5: rbyte_c = 8'h4E;
             8'd6: rbyte_c = 8'h53;
+`elsif SAFEVISION_DIAG_D10R
+            // ★ 诊断版 D10R：100MHz/精确180° + **细化版 DQM 释放策略** ⇒ 抬头 `SV-D10R`
+            //   （53 56 2D 44 31 30 52）。与 `SV-D100`（队友原版策略）一对一对照。
+            8'd3: rbyte_c = 8'h44; 8'd4: rbyte_c = 8'h31; 8'd5: rbyte_c = 8'h30;
+            8'd6: rbyte_c = 8'h52;
 `elsif SAFEVISION_DIAG_D100
             // ★ 诊断版 D100：100MHz + 精确 180°(5ns) + **DQM 修复** ⇒ 抬头 `SV-D100`
             //   （53 56 2D 44 31 30 30）。与 `SV-100M`（同一时钟档但无 DQM 修复）一眼可分。
@@ -1057,6 +1066,8 @@ module safevision_top #(
             8'd124: rbyte_c = 8'h32; // '2' = 100MHz/2ns 相位
 `elsif SAFEVISION_DIAG_MEM100P8
             8'd124: rbyte_c = 8'h38; // '8' = 100MHz/8ns 相位
+`elsif SAFEVISION_DIAG_D10R
+            8'd124: rbyte_c = 8'h52; // 'R' = D10R build（100MHz/180° + 细化版 DQM 释放）
 `elsif SAFEVISION_DIAG_D100
             8'd124: rbyte_c = 8'h51; // 'Q' = D100 build（100MHz/180° + DQM 修复）
 `elsif SAFEVISION_DIAG_MEM100
