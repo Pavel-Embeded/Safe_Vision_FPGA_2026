@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/models/board_memory_contract_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module sv_system_pll
+INFO: [VRFC 10-311] analyzing module sdram
+INFO: [VRFC 10-311] analyzing module sv_board_memory_pll
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdram_read_dqm.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_sdram_read_dqm

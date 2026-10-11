@@ -1,0 +1,38 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sun Oct 11 02:42:32 2026
+# Process ID: 32552
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_contract/scan_epoch
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_contract/scan_epoch/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_contract/scan_epoch\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] full candidate window starts another directory scan
+[PASS] window frontier advances past processed candidates
+[PASS] old sticky completion cannot commit new window
+[PASS] old sticky completion cannot commit new window
+[PASS] old sticky completion cannot commit new window
+[PASS] old sticky completion cannot commit new window
+[PASS] old sticky completion cannot commit new window
+[PASS] old sticky completion cannot commit new window
+[PASS] old sticky completion cannot commit new window
+[PASS] old sticky completion cannot commit new window
+[PASS] verified slots survive repeated scan
+[PASS] new scan must first acknowledge clearing DONE
+[PASS] only new completion commits refreshed index
+[PASS] next valid candidate is selected for missing fourth resident slot
+[PASS] full candidate window starts another directory scan
+[PASS] window frontier advances past processed candidates
+[PASS] missing scan acknowledgment has bounded error exit
+PASS tb_player_scan_epoch checks=17
+$finish called at time : 2091 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_player_scan_epoch.sv" Line 41
+## quit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:42:35 2026...

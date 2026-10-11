@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 21:51:45 2026
+# Process ID: 19688
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_resident_units/resident_row_integrity
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/unit/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_resident_units/resident_row_integrity/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_resident_units/resident_row_integrity\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/unit/xsim_script.tcl
+# xsim {unit} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+PASS tb_resident_row_integrity checks=15: four slots / signed rows / 320-word CRC / abort / reset
+$finish called at time : 130275 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_resident_row_integrity.sv" Line 52
+## quit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 21:51:48 2026...

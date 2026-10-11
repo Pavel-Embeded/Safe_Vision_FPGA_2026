@@ -132,7 +132,7 @@ module tb_bmp_frame_sink;
     ) dut (
         .clk(clk), .rst_n(rst_n), .wr_clk(wr_clk),
         .px_word(px_word), .px_word_valid(px_word_valid), .px_word_ready(px_word_ready),
-        .frame_active(frame_active), .top_down(top_down), .slot(slot),
+        .preload_only(1'b0),.cached_frame(1'b0),.abort_frame(1'b0),.frame_active(frame_active), .top_down(top_down), .slot(slot),
         .mem_ready(mem_ready), .frame_done(frame_done), .last_frame_ok(last_frame_ok),
         .wr_req(wr_req), .wr_addr(wr_addr), .wr_data(wr_data), .wr_len(wr_len),
         .wr_ready(wr_ready),

@@ -15,7 +15,7 @@ module tb_frame_integrity #(parameter integer ACK_FIRST=0,RESPONSE_GAP=2,SOURCE_
    physical_index=(address>=32'h000a0000 ? 128:0)+((address>=32'h000a0000 ? address-32'h000a0000:address)>>2);
  endfunction
  frame_integrity_guard #(.WORDS(128),.ROW_WORDS(64),.TIMEOUT(2000)) guard(
-   .clk(clk),.rst_n(rst_n),.frame_begin(begin_frame),.frame_slot(slot),.top_down(td),
+   .clk(clk),.rst_n(rst_n),.frame_abort(1'b0),.frame_begin(begin_frame),.frame_slot(slot),.top_down(td),
    .accepted(accepted),.write_addr(wa),.write_data(wd),.verify_start(verify_start),.verify_allow(1'b1),
    .verify_done(done),.verify_pass(pass),.fault(gfault),.rd_req(greq),.rd_addr(ga),.rd_len(),
    .rd_ack(ack&&phase==1),.rd_busy(busy),.rd_data(data),.rd_valid(valid&&phase==1),

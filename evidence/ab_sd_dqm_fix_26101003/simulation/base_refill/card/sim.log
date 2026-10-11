@@ -1,0 +1,95 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sun Oct 11 09:13:48 2026
+# Process ID: 40736
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/final_base_refill/card
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/final_base_refill/card/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/final_base_refill/card\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] independent 8-bit RGB pattern samples include x/y and all channels
+[PASS] row/column high bits remain distinct after RGB565 quantization
+[PASS] FAT32 indexed four distinct files and selected index 0
+[PROGRESS] card t=50000000000 player=8 sink=1 source=101240 blocks=0 gfault=0 vCRC=0 frames=0
+[PASS] card owns producer after first frame
+[PASS] first frame CRC accepted after memory drain and swap
+[PASS] slot 1 has all 153600 correct words in raster order from signed BMP height
+[PROGRESS] card t=100000000000 player=12 sink=0 source=0 blocks=0 gfault=0 vCRC=0 frames=1
+[TB] checked full display frame 1 (307200 pixels), underflows=0
+[TB] checked full display frame 2 (307200 pixels), underflows=0
+[PASS] two full BASE/720p AXIS frames: RGB and SOF/EOL pixel-exact
+[PROGRESS] card t=150000000000 player=12 sink=0 source=0 blocks=0 gfault=0 vCRC=0 frames=1
+[TB] checked full display frame 3 (307200 pixels), underflows=0
+[TB] checked full display frame 4 (307200 pixels), underflows=0
+[TB] checked full display frame 5 (307200 pixels), underflows=0
+[PROGRESS] card t=200000000000 player=8 sink=1 source=48036 blocks=0 gfault=0 vCRC=0 frames=1
+[TB] checked full display frame 6 (307200 pixels), underflows=0
+[TB] checked full display frame 7 (307200 pixels), underflows=0
+[TB] checked full display frame 8 (307200 pixels), underflows=0
+[PROGRESS] card t=250000000000 player=8 sink=1 source=140388 blocks=0 gfault=0 vCRC=0 frames=1
+[TB] checked full display frame 9 (307200 pixels), underflows=0
+[TB] checked full display frame 10 (307200 pixels), underflows=0
+[TB] checked full display frame 11 (307200 pixels), underflows=0
+[PROGRESS] card t=300000000000 player=8 sink=1 source=41513 blocks=0 gfault=0 vCRC=0 frames=2
+[TB] checked full display frame 12 (307200 pixels), underflows=0
+[TB] checked full display frame 13 (307200 pixels), underflows=0
+[TB] checked full display frame 14 (307200 pixels), underflows=0
+[PROGRESS] card t=350000000000 player=8 sink=1 source=133829 blocks=0 gfault=0 vCRC=0 frames=2
+[TB] checked full display frame 15 (307200 pixels), underflows=0
+[TB] checked full display frame 16 (307200 pixels), underflows=0
+[TB] checked full display frame 17 (307200 pixels), underflows=0
+[PROGRESS] card t=400000000000 player=8 sink=1 source=34095 blocks=0 gfault=0 vCRC=0 frames=3
+[TB] checked full display frame 18 (307200 pixels), underflows=0
+[TB] checked full display frame 19 (307200 pixels), underflows=0
+[TB] checked full display frame 20 (307200 pixels), underflows=0
+[PROGRESS] card t=450000000000 player=8 sink=1 source=126447 blocks=0 gfault=0 vCRC=0 frames=3
+[TB] checked full display frame 21 (307200 pixels), underflows=0
+[TB] checked full display frame 22 (307200 pixels), underflows=0
+[PASS] all four files resident after autonomous preload
+[PASS] resident slot has complete distinct raster
+[PASS] resident slot has complete distinct raster
+[PASS] resident slot has complete distinct raster
+[PASS] resident slot has complete distinct raster
+[TB] checked full display frame 23 (307200 pixels), underflows=0
+[PROGRESS] card t=500000000000 player=7 sink=0 source=153600 blocks=480 gfault=0 vCRC=0 frames=5
+[TB] checked full display frame 24 (307200 pixels), underflows=0
+[TB] checked full display frame 25 (307200 pixels), underflows=0
+[TB] checked full display frame 26 (307200 pixels), underflows=0
+[PROGRESS] card t=550000000000 player=7 sink=0 source=153600 blocks=480 gfault=0 vCRC=0 frames=6
+[TB] checked full display frame 27 (307200 pixels), underflows=0
+[TB] checked full display frame 28 (307200 pixels), underflows=0
+[TB] checked full display frame 29 (307200 pixels), underflows=0
+[PROGRESS] card t=600000000000 player=7 sink=0 source=153600 blocks=480 gfault=0 vCRC=0 frames=7
+[TB] checked full display frame 30 (307200 pixels), underflows=0
+[TB] checked full display frame 31 (307200 pixels), underflows=0
+[TB] checked full display frame 32 (307200 pixels), underflows=0
+[PASS] four cached manual selections including wraparound
+[PASS] cached selections perform no SDRAM image writes
+[PASS] cached selections leave the SD bus idle
+[PASS] preload and cached selections preserve slot ownership
+[PASS] all four resident images are pixel-exact without starvation
+[PASS] row CRC and SDRAM command contract remain valid
+[PROGRESS] card t=650000000000 player=7 sink=0 source=153600 blocks=480 gfault=0 vCRC=0 frames=8
+[TB] checked full display frame 33 (307200 pixels), underflows=0
+[TB] checked full display frame 34 (307200 pixels), underflows=0
+[TB] checked full display frame 35 (307200 pixels), underflows=0
+[PROGRESS] card t=700000000000 player=7 sink=0 source=153600 blocks=480 gfault=0 vCRC=0 frames=11
+[PASS] short press stops automatic changes
+[CACHE COUNTS] commands before=9294 after=9294 image writes before=614400 after=614400
+[PASS] automatic cached playback issues no new SD commands
+[PASS] automatic cached playback issues no new image writes
+[PASS] automatic cached playback preserves exact frames and timing
+RESIDENT DISPLAY HD=0 SD_HALF_NS=1 checks=22 errors=0 frames=35 images=4 publishes=8
+[PASS] RESIDENT CARD DISPLAY PASS
+$finish called at time : 705281904 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_safevision_card_display.sv" Line 369
+run: Time (s): cpu = 00:00:01 ; elapsed = 00:44:20 . Memory (MB): peak = 218.117 ; gain = 0.000
+## quit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 09:58:12 2026...

@@ -1,0 +1,13 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_pattern_generator -s tb_pattern_generator_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.pattern_generator_default
+Compiling module work.pattern_generator(H_ACTIVE=1280,...
+Compiling module work.tb_pattern_generator
+Built simulation snapshot tb_pattern_generator_sim

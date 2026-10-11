@@ -1,0 +1,6 @@
+{
+  "compiled_fixture": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\verification\\unit\\tb_safevision_card_display.sv",
+  "archived_fixture": "inputs/tb_safevision_card_display.sv",
+  "sha256": "c277bb37e094d0be15555efffb5e20663fae6cc1c4a5ae9d152245c12999eeca",
+  "reason": "Exact fixture used by completed production-rate and init tests. The resident-only final command assertion was subsequently corrected; the production FIRST_ONLY path is unchanged. Final four-image tests compile the corrected current fixture."
+}

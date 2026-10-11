@@ -1,0 +1,18 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_a_basics -s tb_a_basics_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.a_counter
+Compiling module work.a_counter(MODULO=1,WIDTH=1)
+Compiling module work.a_debounce(STABLE_CYCLES=4)
+Compiling module work.a_debounce(STABLE_CYCLES=1)
+Compiling module work.a_debounce(STABLE_CYCLES=4,RESET...
+Compiling module work.a_edge_detect
+Compiling module work.a_mode_fsm
+Compiling module work.tb_a_basics
+Built simulation snapshot tb_a_basics_sim

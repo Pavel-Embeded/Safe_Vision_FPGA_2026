@@ -1,0 +1,804 @@
+{
+  "id": "26101003",
+  "base_commit": "cbbe5314da59d3f4a8820dd13939680da608df49",
+  "positive_cases": 77,
+  "negative_cases": 3,
+  "runs": [
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/adapter/sim.log",
+      "sha256": "2851af225d63d79f47ea8bafa7be27ebb4867ef096e0b0977001bb390e8b6697",
+      "pass_summary": [
+        "[PASS] read and write hardware commands never overlap",
+        "[PASS] all hardware burst boundaries have at least 16 quiet clocks",
+        "ADAPTER STREAMING strict=1 RD_LAT=4 FAST_READ=0 PREFETCH_READ=0 checks=19 errors=0 bursts=244 singles=0 overlap=0 gap_bad=0",
+        "[PASS] ADAPTER STREAMING PASS"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/bridge/sim.log",
+      "sha256": "aea6332c279854bda5897b9dc0821b61593b736d073d126f68857f7e0e23cefb",
+      "pass_summary": [
+        "PASS HDMI bridge HD=0 compared=615239 complete_recovered_frames=2 drops=1 stable stalls/SOF/TLAST",
+        "PASS HDMI bridge HD=1 compared=1844676 complete_recovered_frames=2 drops=1 stable stalls/SOF/TLAST",
+        "PASS tb_hdmi_video_bridge"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/crc/sim.log",
+      "sha256": "a82ae5ee03bd1d3c9739b890760db80b57a953d8f3d0caa18fa9e4c445deb45f",
+      "pass_summary": [
+        "[PASS] CRC feedback stride=1 updates=4096 min_capture_gap=3 data/write/CRC/reset",
+        "[PASS] CRC feedback stride=2 updates=2048 min_capture_gap=6 data/write/CRC/reset",
+        "[PASS] CRC feedback stride=1024 updates=4 min_capture_gap=3072 data/write/CRC/reset",
+        "[PASS] CRC FEEDBACK enable contract"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/dma/sim.log",
+      "sha256": "c9618ce891584fb85b142e3e0dec2a63013e2039b6c200c5ff590263c8a4f0f8",
+      "pass_summary": [
+        "FRAME PASS BURST=16 pixels=307200 reads=153600 competing-write-words=32598",
+        "FRAME PASS BURST=7 pixels=307200 reads=153600 competing-write-words=32601",
+        "FRAME PASS BURST=1 pixels=307200 reads=153600 competing-write-words=44184",
+        "PASS tb_video_read_dma_integration: four full RGB565 frames, 1228800 pixels; bursts 1/7/16/64, shortened frame tail, FIFO capacity, memory stalls, delayed responses, competing writer, reset restart"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/drain/sim.log",
+      "sha256": "6bf25c36be1e605b53a83f25c963467ff6a98a555379756f4af091b6d728d91d",
+      "pass_summary": [
+        "[PASS] missing swap acknowledgement returns failure F1, never successful completion",
+        "[PASS] failed swap does not increase successful frame count",
+        "SINK DRAIN checks=9 errors=0",
+        "[PASS] SINK DRAIN PASS"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/edid/sim.log",
+      "sha256": "f77438776e84e22bbb786afe1d691bcc4d66a3da88e1c7df86c78809dc747dfe",
+      "pass_summary": [
+        "[PASS] HDMI top EDID reset/re-read/interrupted settling/KEY1 checks=400000 triggers=4"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/idle/sim.log",
+      "sha256": "378f88ccdd2fc7460c8525a32d51e29394fdca83309868af98220b396c5fdb08",
+      "pass_summary": [
+        "PASS tb_hdmi_video_bridge_idle checks=14 reset/empty/stall/EOL/overflow/recovery"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/init/sim.log",
+      "sha256": "9bafebb18d32964d43b009cdabb3725b69216cdc18af8667c74e01cad9825395",
+      "pass_summary": [
+        "[PASS] independent 8-bit RGB pattern samples include x/y and all channels",
+        "[PASS] row/column high bits remain distinct after RGB565 quantization",
+        "[PASS] REAL INIT: default divider=249; init SCLK=100kHz; rises=464; min_period=10000000; ready_at=4646630000; product timeouts"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/integrity/sim.log",
+      "sha256": "493e64fb0dfd48efd7fa80542fcdca8883836e10383681334622351ab77837b8",
+      "pass_summary": [
+        "[PASS] reset cancels an outstanding playback ownership epoch",
+        "[PASS] new slot and orientation play correctly after in-flight reset",
+        "[PASS] common reset invalidates all old signatures and faults",
+        "[PASS] FRAME INTEGRITY ACK_FIRST=0 RESPONSE_GAP=2 SOURCE_GAP=0 HEADER_LATE=0 checks=38"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/player/sim.log",
+      "sha256": "75da2bfe3c99cfc25b59db4edd07fa85fb902528564fe905c02726336342fc69",
+      "pass_summary": [
+        "[PASS] 15) re-entered S_STREAM for frame 2",
+        "[PASS] 16) frame 2 targets slot 0 (double buffering OK)",
+        "[PASS] 17) still no error stage after re-entry",
+        "  SD-BMP-PLAYER PASS (0 error)"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/reservation/sim.log",
+      "sha256": "746de8f65e54cb81bad4d8e7b2eb414523e94ce51b67f6ffcc0c54b50c17827c",
+      "pass_summary": [
+        "[PASS] VIDEO RESERVATION: startup write, 100-cycle urgent-writer request gap fenced, complete 64-word read, idle writer recovery"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/resident_sink/sim.log",
+      "sha256": "0f0d2d11af1e83a11b135fa1061a469c6f71806ac3b4633801381c15641a7ee6",
+      "pass_summary": [
+        "PASS tb_bmp_frame_sink_resident checks=9: verified first/background/cache/abort"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/safety/sim.log",
+      "sha256": "f0dd450824fb8361c994ab4c7c2f0f87c8e7a237533aaf49964bd201a530d1ff",
+      "pass_summary": [
+        "[PASS] BOARD SAFETY frames=3 pixels=921600 sample_checks=15: absent memory, KEY3, memory fault; complete SOF/EOL; no HDMI reset"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/scan_epoch/sim.log",
+      "sha256": "9c27370f22f949a3ff7925bddb636334e3e86c98501f72aaf2a812a16eb5665b",
+      "pass_summary": [
+        "[PASS] full candidate window starts another directory scan",
+        "[PASS] window frontier advances past processed candidates",
+        "[PASS] missing scan acknowledgment has bounded error exit",
+        "PASS tb_player_scan_epoch checks=17"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/timeout/sim.log",
+      "sha256": "b8d26f54ceff3f546f6230c1520a492847a079eb05e0e58cdb75c96fa487b340",
+      "pass_summary": [
+        "[PASS] SDRAM LOST RESPONSE: 16 commands, bounded fault, no partial data, late response fenced, reset recovery"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/top/sim.log",
+      "sha256": "2d53cb24140a13ad3068fa276a46263e261e4ef51580262a9f76698e42febad3",
+      "pass_summary": [
+        "[PASS] T7c) led[2]=1 (picture active, no swap error)",
+        "[PASS] T8a) SD init failure did go through the auto-retry path",
+        "[PASS] T8b) init_arm was cleared on every retry entry (defect 26)",
+        "  SAFEVISION-TOP PASS (0 error)"
+      ]
+    },
+    {
+      "group": "contract",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/contract/writer/sim.log",
+      "sha256": "6d61f6ababd7bd692797aed687e741541ad977a033e99a6ca6af054567440677",
+      "pass_summary": [
+        "[PASS] accepted start clears counter and full together",
+        "[PASS] post-reset frame has no stale half-pixel or pending write",
+        "[PASS] full flag equals original predicate on every sampled edge",
+        "[PASS] frame full equivalence checks=15 invariant_edges=1046592 stall_edges=124899"
+      ]
+    },
+    {
+      "group": "resident_units",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/resident_units/board_play_control/sim.log",
+      "sha256": "900ea25de925184d1766b528344ba38b90bbda20f994f3291a92853d9275dd8c",
+      "pass_summary": [
+        "PASS tb_board_play_control checks=11: manual/auto/2-5-10-30/busy/long-hold"
+      ]
+    },
+    {
+      "group": "resident_units",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/resident_units/file_index_window/sim.log",
+      "sha256": "e5cabcfe81a22be79c8b9d47e4e5507c86e320c4f2fd164f6b87aa629ca6fa17",
+      "pass_summary": [
+        "PASS tb_file_index_window checks=6: sorted windows / monotonic boundary / directory end"
+      ]
+    },
+    {
+      "group": "resident_units",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/resident_units/resident_row_integrity/sim.log",
+      "sha256": "617a8a6533f42ef83d9fc2f1666faca20a5cb0c01cda98d325ebf7be69d792f0",
+      "pass_summary": [
+        "PASS tb_resident_row_integrity checks=15: four slots / signed rows / 320-word CRC / abort / reset"
+      ]
+    },
+    {
+      "group": "dqm",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/dqm/lat_1/sim.log",
+      "sha256": "2fef06d37b55938f3b0f782d82f8e18ecfb71ffbc34823750078b52e9657399f",
+      "pass_summary": [
+        "DQM REPRO LAT=1 WORDS=64 PAD=64 EXPECTED=0D968558 ACTUAL=0d968558 DM=0",
+        "PASS tb_sdram_read_dqm: 64 slow writes / untouched neighbour / exact first-block CRC"
+      ]
+    },
+    {
+      "group": "dqm",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/dqm/lat_11/sim.log",
+      "sha256": "3608441dbfc4b32eb4b53b1829d53158c7c193342015a67a5464705884df921e",
+      "pass_summary": [
+        "DQM REPRO LAT=11 WORDS=64 PAD=64 EXPECTED=0D968558 ACTUAL=0d968558 DM=0",
+        "PASS tb_sdram_read_dqm: 64 slow writes / untouched neighbour / exact first-block CRC"
+      ]
+    },
+    {
+      "group": "dqm",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/dqm/lat_32/sim.log",
+      "sha256": "923d408afb5bf5463a652823f0f7db3b3965204dc63053116a4463a18c209fd8",
+      "pass_summary": [
+        "DQM REPRO LAT=32 WORDS=64 PAD=64 EXPECTED=0D968558 ACTUAL=0d968558 DM=0",
+        "PASS tb_sdram_read_dqm: 64 slow writes / untouched neighbour / exact first-block CRC"
+      ]
+    },
+    {
+      "group": "dqm",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/dqm/lat_4/sim.log",
+      "sha256": "d1a685ec38429c810cf36e78ccb3a7dbd1638a1f3eab75567eaf91d02bc19fdc",
+      "pass_summary": [
+        "DQM REPRO LAT=4 WORDS=64 PAD=64 EXPECTED=0D968558 ACTUAL=0d968558 DM=0",
+        "PASS tb_sdram_read_dqm: 64 slow writes / untouched neighbour / exact first-block CRC"
+      ]
+    },
+    {
+      "group": "dqm",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/dqm/lat_64/sim.log",
+      "sha256": "25eff11b09f9b7cb436ec3e4618fb3e65a71d45bb86ac28d603f48d00a1888a8",
+      "pass_summary": [
+        "DQM REPRO LAT=64 WORDS=64 PAD=64 EXPECTED=0D968558 ACTUAL=0d968558 DM=0",
+        "PASS tb_sdram_read_dqm: 64 slow writes / untouched neighbour / exact first-block CRC"
+      ]
+    },
+    {
+      "group": "dqm",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/dqm/lat_7/sim.log",
+      "sha256": "c8bbc04329c1b74991bf57373247f21ec87196d6c6e7fb98bea9c77bb03b3075",
+      "pass_summary": [
+        "DQM REPRO LAT=7 WORDS=64 PAD=64 EXPECTED=0D968558 ACTUAL=0d968558 DM=0",
+        "PASS tb_sdram_read_dqm: 64 slow writes / untouched neighbour / exact first-block CRC"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_ab_storage_contract_sim.log",
+      "sha256": "1774f6e7cefa9f77f0eb0d006275abc9b2faf9244b48ce2ba6ca10b6c3c29a17",
+      "pass_summary": [
+        "[PASS] T6g swap_ack_evt������������",
+        "[PASS] ������� ������swap_r������������",
+        "[PASS] �� C�������������� active_commit",
+        "[PASS] ������� ������������������������"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_b_frame_memory_sim.log",
+      "sha256": "f7b5300edb53bfc7faccbe5a8852c93bf4d9e1ab73b67ec57112f0a4227672b0",
+      "pass_summary": [
+        "[PASS] 2400��������������������� ac����",
+        "[PASS] _ack����������������������������",
+        "[PASS] alid������� rd_busy ������������",
+        "[PASS] 1��������������� = 153600"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_bmp_frame_sink_sim.log",
+      "sha256": "3487271cf4e0892a7eb6ef3646b41a6e68c78a55ba877112e4e1ca6c17a383b6",
+      "pass_summary": [
+        "[PASS] T5e) err_code is STICKY after leaving S_ERROR",
+        "[PASS] T5f) a subsequent good frame completes",
+        "[PASS] T5g) sticky err_code cleared by a successful frame",
+        "  BMP-FRAME-SINK PASS (0 error)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_bmp_frame_write_bridge_sim.log",
+      "sha256": "5868b19a8a2b521f422e45a61e58e4aa4f47e70fdf0826126507f5ca3cddf3ff",
+      "pass_summary": [
+        "[PASS] BMP direction=0 slot=0 words=153600 gap=70000",
+        "[PASS] BMP direction=1 slot=3 words=153600 gap=70000",
+        "PASS tb_bmp_frame_write_bridge: checks=307200"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_bmp_parser_sim.log",
+      "sha256": "de33bc3bf865bafdc9d05c51aff4719391d7d58d77eb3237696550d8fb250ad3",
+      "pass_summary": [
+        "[PASS] ��������� 20��������������������",
+        "[PASS] T50������������������������",
+        "[PASS] T50.5 ������������������������",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_bmp_unpack_sim.log",
+      "sha256": "e879c628d8e6d77538fa18e42c61bc199f95a64dcf46083554e55b25f40664ad",
+      "pass_summary": [
+        "[PASS] T9.1������������������� ��������",
+        "[PASS] T9.2 ROUNDING=0 ������ -> 0x0821",
+        "[PASS] T9.3 ROUNDING=1 ������ -> 0x1042",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_common_fifo_sim.log",
+      "sha256": "28548f40dff855f9b42900424586a39824d9dc16e009a2f6f73faee9fa0cd9b0",
+      "pass_summary": [
+        "[PASS] ������ evt_value��������� err_co��������������������������������",
+        "[PASS] error-������������������evt_valid ������ 1",
+        "[SUMMARY] tb_common_fifo : PASS=58 FAIL=0",
+        "[RESULT] ALL PASS"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_crc_sim.log",
+      "sha256": "5b1c15f75af98198e0499c7f2cb40c08f238eb6febdaec8b1d183dd1bdc13060",
+      "pass_summary": [
+        "[PASS] CMD8 frame byte 0 == 0x48",
+        "[PASS] CMD8 check pattern == 0xAA",
+        "  tb_crc : PASS=11 FAIL=0",
+        "[PASS] tb_crc all 11 checks passed"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_fat32_boot_parser_sim.log",
+      "sha256": "c258081472a5c416ce19adc4a27f270f9ceb657c0483175704e3ada4921ff50d",
+      "pass_summary": [
+        "[PASS] T15������������������������",
+        "[PASS] T15.��������������������",
+        "[PASS] T15.4 ������������������������",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_fat32_cluster_walker_sim.log",
+      "sha256": "f0970d43ddc9d6ea983fe858a5218c2121c4cef47bd82c0be5baaa5585db40eb",
+      "pass_summary": [
+        "[PASS] == 3������� walk����������������",
+        "[PASS] ��������������������������������",
+        "  PASS = 33   FAIL = 0",
+        "[RESULT] ALL PASS"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_fat32_directory_scanner_sim.log",
+      "sha256": "ca99f8c6af567d5f241f22643468879b1286c97f2d9fafc6b4583407463f66b9",
+      "pass_summary": [
+        "[PASS] T28.��������������������",
+        "[PASS] T28.4 ������ 1����",
+        "[PASS] T28.5 ������������",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_file_index_sim.log",
+      "sha256": "f678bcad997dabcbdf46ab502eed1ff1323a4f69e0028c3d7d0c274eb6e1d04c",
+      "pass_summary": [
+        "[PASS] 0101������ 0x010�������0x000����",
+        "[PASS] 0101������ 0x010�������0x000����",
+        "[PASS] T69.5 bmp_se������ 3",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_file_streamer_sim.log",
+      "sha256": "58c4446c0fe204a0f3aadbed7c1aab4e7eb40c21bb1fa352833e23074c6a1ed8",
+      "pass_summary": [
+        "[PASS] T38.�������� sof",
+        "[PASS] T38.�������� eof",
+        "[PASS] T38.6 bytes_rd = 0",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_frame_swap_ctrl_sim.log",
+      "sha256": "5fd7026eb9eba954185e512452f44419ff658aa57a6543f94d2cfa44e769ec8c",
+      "pass_summary": [
+        "[PASS] OUT2����������������������� ����",
+        "[PASS] ��������������������������� SAFE",
+        "  PASS = 23   FAIL = 0",
+        "[RESULT] ALL PASS"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_frame_writer_bounds_sim.log",
+      "sha256": "f72a2bc3d49df498fb8b092d792b7f8c06b73adf4a87c86dc5b75803632b1468",
+      "pass_summary": [
+        "[PASS] rejected base=00400000",
+        "[PASS] rejected base=00360004",
+        "[PASS] rejected base=00000001",
+        "PASS tb_frame_writer_bounds: checks=5"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_frame_writer_sim.log",
+      "sha256": "6ee0d1390ef2ca3a1d9a115eaef4cd644b7e459f051ceab58cd4c50c5cdc40a0",
+      "pass_summary": [
+        "[PASS] T5���������� DET_BMP_TRUNC",
+        "[PASS] T5 slot_valid[������������",
+        "[PASS] �������� slot_valid ������������",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_framebuffer_loopback_core_sim.log",
+      "sha256": "b01d6d946c6101a6b0e62d725eb4fcffb422c69d4c946760d413ada309594afd",
+      "pass_summary": [
+        "[PASS] T9����������������������������",
+        "[PASS] ������� ��������������36 wor����",
+        "[PASS] ��������������������32+4 wor����",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_mbr_parser_sim.log",
+      "sha256": "716b2c8b7d11a88eb3043e2addb89970acf5a51dc9c70fd9b2b13be6230b1a7a",
+      "pass_summary": [
+        "[PASS] ����������� ��������������MB����",
+        "[PASS] ��������������� ����������������",
+        "[PASS] ������-> has_mbr�������������� 0",
+        "[PASS] has_mbr=���������� M������������"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_memory_arbiter_sim.log",
+      "sha256": "387efbe872edbe623bf93cec7f0a7f7c4dfc86f7dca6fd88c56d6262da032e4a",
+      "pass_summary": [
+        "[PASS] ARB: rd_starve_cnt == 0",
+        "[PASS] ve_cnt =������������������������",
+        "  PASS = 7   FAIL = 0",
+        "[RESULT] ALL PASS"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_sd_clock_params_sim.log",
+      "sha256": "92c46d002b74c5e1dd876a7cfc6340a22c567134a99a835a74de24eb6fa18d02",
+      "pass_summary": [
+        "[PASS] SD clk=100000000 init_div=124 fast_div=1 bytes=512 init_edges=463 data_edges=4183",
+        "[PASS] SD clk=125000000 init_div=156 fast_div=2 bytes=512 init_edges=463 data_edges=4183",
+        "[PASS] SD clk=50000000 init_div=62 fast_div=0 bytes=512 init_edges=463 data_edges=4183",
+        "PASS tb_sd_clock_params: 50/100/125MHz real SD initialization + sector CRC + SCLK limits"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_sd_initializer_sim.log",
+      "sha256": "7aad3e9bc1d2c05b2acf82ec7fba00ac8b8f6c1dc388f9b4fda76c2f99528177",
+      "pass_summary": [
+        "[PASS] T10.2 ������������������������",
+        "[PASS] ��������������������������� SDHC",
+        "[PASS] T10.��������������������",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_sd_sector_reader_sim.log",
+      "sha256": "94a27bc099cee874d8691c6249eadf9451ae2f34c5047d5c7f1fc15db80a282e",
+      "pass_summary": [
+        "[PASS] ��������������� LBA ������������",
+        "[PASS] en=2����������������������������",
+        "[PASS] ��������������������������������",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_sdr_pat_gen_sim.log",
+      "sha256": "3245340cbb9010e63e7ce41b19fc4299ef63253f13e102c30d68e542b1b23f66",
+      "pass_summary": [
+        "[PASS] ode4��������1 a[0]=0 -> 00000000",
+        "[PASS] ode4��������1 a[0]=1 -> FFFFFFFF",
+        "[PASS] ������������� a[0]=0 -> 55555555",
+        "[PASS] ������������� a[0]=1 -> AAAAAAAA"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_sdram_app_adapter_sim.log",
+      "sha256": "0b76b70fe4926ee5fcb1c7c4843ba2c574230f9e48f32b33607be284164401d4",
+      "pass_summary": [
+        "[PASS] ��������������������������������",
+        "[PASS] ����������������� 4 ��� ��������",
+        "[PASS] ��������������������������������",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_top_sdram_loopback_sim.log",
+      "sha256": "aa334ae3d5f212e07e18d5158ac20d2f589fa27b2b04fd38a7e6cc886e3dd9db",
+      "pass_summary": [
+        "[PASS] ����������������������� ��������",
+        "[PASS] ���� BAD=000����� BA������������",
+        "[PASS] ��������������� ����������������",
+        "[PASS] T6 led ������������������������"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_top_stage5_sector_rd_sim.log",
+      "sha256": "03dd09a163ecd17bc273a623f83720cd52e68b2b8b9a4a372313349332ebc3df",
+      "pass_summary": [
+        "[PASS] T3 512 Byte 逐字节与卡模型一致",
+        "[PASS] T1 卡模型收到完整命令序列 cmd_cnt=6 acmd41_cnt=1",
+        "[PASS] T2 CMD17 参数 = 1000",
+        "[PASS] T4 顶层到达成功态 led=8"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_top_stage6_fat32_mount_sim.log",
+      "sha256": "809f4d1a2568ee3dd80e54212cf1dfbde815435c61bd4b6365359b66d913e952",
+      "pass_summary": [
+        "[PASS]  LED������������������ 4���� = 2",
+        "[PASS] ���������� ST_ER����������������",
+        "[PASS] �������������������������� 0D 0A",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "b",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/b/tb_wav_parser_sim.log",
+      "sha256": "510f276e05a4ab9468e0257d283acfd6b14e8c91ea9f6356111ca541f76cd251",
+      "pass_summary": [
+        "[PASS] ��������� = 0x74������ 16 bi����",
+        "[PASS] T16.��������",
+        "[PASS] ������ = 0x7������� RIFF/WAV����",
+        " 全部通过 (PASS)"
+      ]
+    },
+    {
+      "group": "a11_15",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a11_15/tb_a_pixel_fifo/sim.log",
+      "sha256": "87acd7dcd40bee8ef76c24b2e39628e740375af4fd3e633fcca1e6fb310b8645",
+      "pass_summary": [
+        "PASS tb_a_pixel_fifo: checks=6818 actual TD FIFO/RAM, async clocks, 32/16 low-first, capacity126, stalls, wrap, counts, reset"
+      ]
+    },
+    {
+      "group": "a11_15",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a11_15/tb_a_video_display_core/sim.log",
+      "sha256": "c5b022a0d88527b551aab794871571cbefe13d578c4584d62f8799c1c21dc7fb",
+      "pass_summary": [
+        "display HD=0 checks=2484007 normal=1232512 emergency=180 fault_pixels=303488 competing_write_beats=47876 commits=2",
+        "display HD=1 checks=7375507 normal=1232384 emergency=180 fault_pixels=303616 competing_write_beats=48292 commits=2",
+        "PASS tb_a_video_display_core: actual B DMA+arbiter+swap, official async FIFO, complete BASE/HD frames, starvation/recovery, atomic slots and emergency priority"
+      ]
+    },
+    {
+      "group": "a11_15",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a11_15/tb_a_video_display_core_stress/sim.log",
+      "sha256": "bd9388f9d6b20af330c936f12dd109184c4f16afb34cd2d16b96cd8e28b20d39",
+      "pass_summary": [
+        "stress HD=0 checks=5014543 normal=2473480 emergency=3120 fault_pixels=606976 competing_write_beats=47844 commits=2 cfg=18 osd=11658 overlap=826 epochs=2",
+        "stress HD=1 checks=15020332 normal=2473143 emergency=3120 fault_pixels=607232 competing_write_beats=48256 commits=2 cfg=18 osd=11654 overlap=826 epochs=2",
+        "PASS tb_a_video_display_core_stress: BASE/HD, independent font/packet scoreboard, mid-line configuration, OSD+Normal+Emergency, clock phase offsets, common reset during outstanding read, two complete epochs"
+      ]
+    },
+    {
+      "group": "a11_15",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a11_15/tb_frame_reader/sim.log",
+      "sha256": "2b5ffcb1f18d2a9cea2c22b6ea430420de59ccfc9a80f89fd1d6f37f85441173",
+      "pass_summary": [
+        "reader W=640 H=480 checks=1260000 underflows=1",
+        "reader W=1280 H=720 checks=3712500 underflows=1",
+        "PASS tb_frame_reader: BASE+HD three complete frames, pixel order, tags, underflow and recovery"
+      ]
+    },
+    {
+      "group": "a11_15",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a11_15/tb_frame_slot_commit/sim.log",
+      "sha256": "07e710d643c14d23424b90897b232b5a2645f40a7c0eee7acea60622f4d9e851",
+      "pass_summary": [
+        "PASS tb_frame_slot_commit: 409 atomic vblank commits/acks, 11 CRC rejects, 300 sequential generation values including 255->0, same-edge base and in-flight common reset"
+      ]
+    },
+    {
+      "group": "a11_15",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a11_15/tb_osd_text_layer/sim.log",
+      "sha256": "5d564e954c2b05c7f1155a5afff36489ba97f33aef23addebac57b10920b6863",
+      "pass_summary": [
+        "PASS tb_osd_text_layer: 1637 font mask/color samples, transparent margins, disabled and reset"
+      ]
+    },
+    {
+      "group": "a11_15",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a11_15/tb_pixel_word_packer_stress/sim.log",
+      "sha256": "41169021a6269c5202a35065077d1d3b90ab3488dd335c42b1ee37cbccc910f7",
+      "pass_summary": [
+        "PASS tb_pixel_word_packer_stress: 2025 independently ordered words, stalls=3311, odd pending pixel flush and fresh epoch"
+      ]
+    },
+    {
+      "group": "a11_15",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a11_15/tb_video_compositor/sim.log",
+      "sha256": "dbf65dfde4f06d238725f20a2cf4329f98de97ad6cbc2d1e2513653857b9df80",
+      "pass_summary": [
+        "compositor N/O/E=1/4/0 checks=3000",
+        "compositor N/O/E=0/0/0 checks=3000",
+        "compositor N/O/E=4/1/2 checks=3000",
+        "PASS tb_video_compositor: three latency configurations, all layer priorities, tag alignment, reset"
+      ]
+    },
+    {
+      "group": "a11_15",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a11_15/tb_video_stream_cdc/sim.log",
+      "sha256": "6221c056b64b544ecfb0683d78d0d9bbfc94dea4e959da4abfee82616376bf33",
+      "pass_summary": [
+        "PASS tb_video_stream_cdc: checks=3008 stream+last, stalls, fast/slow domains, common reset epochs"
+      ]
+    },
+    {
+      "group": "a16_20",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a16_20/tb_emergency_command_adapter/sim.log",
+      "sha256": "694b017b6e21cd5944c1fca0bf892dcfe6b5d57abfdb93703859ddfa33c921a6",
+      "pass_summary": [
+        "PASS tb_emergency_command_adapter accepted=512 all32payloads stalls reset"
+      ]
+    },
+    {
+      "group": "a16_20",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a16_20/tb_emergency_control/sim.log",
+      "sha256": "df55ba3c35ce680d126fa2cda879c89c27b6889c0acd2dfb137e0cf422877f19",
+      "pass_summary": [
+        "PASS emergency control policy=1 half=19.861 accepted/applied=256/256 two epochs all 32 payloads",
+        "PASS emergency control policy=0 half=6.734 accepted/applied=256/256 two epochs all 32 payloads",
+        "PASS emergency control policy=0 half=19.861 accepted/applied=256/256 two epochs all 32 payloads",
+        "PASS tb_emergency_control"
+      ]
+    },
+    {
+      "group": "a16_20",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a16_20/tb_emergency_graphics/sim.log",
+      "sha256": "3dba8c9e2d5f61af060a297239e1ecb7c5821fc66165a4fed5a5d40cf1bd41b6",
+      "pass_summary": [
+        "PASS emergency graphics HD=0 checks=1540824 active_pixels=1228800 BRAM font/4 directions/4 levels/blank/latency4",
+        "PASS emergency graphics HD=1 checks=4615224 active_pixels=3686400 BRAM font/4 directions/4 levels/blank/latency4",
+        "PASS tb_emergency_graphics"
+      ]
+    },
+    {
+      "group": "a16_20",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a16_20/tb_hdmi_edid_control/sim.log",
+      "sha256": "4cdbb3eada30abf487f93583e89f977b933c01a68030e1c52fc91f17e43b9dc4",
+      "pass_summary": [
+        "PASS tb_hdmi_edid_control insertion/removal/held request/reinsert/reset pulses=4"
+      ]
+    },
+    {
+      "group": "a16_20",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a16_20/tb_hdmi_video_bridge/sim.log",
+      "sha256": "8db582e28f4e678c6165639e8aaa74c6634eb1a6f0b23513d76cd74579c389cd",
+      "pass_summary": [
+        "PASS HDMI bridge HD=0 compared=615239 complete_recovered_frames=2 drops=1 stable stalls/SOF/TLAST",
+        "PASS HDMI bridge HD=1 compared=1844676 complete_recovered_frames=2 drops=1 stable stalls/SOF/TLAST",
+        "PASS tb_hdmi_video_bridge"
+      ]
+    },
+    {
+      "group": "a16_20",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a16_20/tb_memory_arbiter_compact/sim.log",
+      "sha256": "db22dc65a80a92da08807f4b36fd462113e6f506218624cd279934d81175d5eb",
+      "pass_summary": [
+        "PASS compact arbiter N=1 compared=300000 cycles read=32508 write=7989 sd=1377",
+        "PASS compact arbiter N=4 compared=300000 cycles read=34632 write=1948 sd=1298",
+        "PASS compact arbiter N=8 compared=300000 cycles read=34633 write=1461 sd=1298",
+        "PASS tb_memory_arbiter_compact exact public-output equivalence"
+      ]
+    },
+    {
+      "group": "a1_9",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a1_9/tb_a_basics/xsim.log",
+      "sha256": "a31a3a630e4c1678688d02935abff37321a67b7d5ea861ace68de5e983afaed4",
+      "pass_summary": [
+        "PASS tb_a_basics: 16616 checks"
+      ]
+    },
+    {
+      "group": "a1_9",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a1_9/tb_a_graphics_frontend/xsim.log",
+      "sha256": "54cf2eccea4611b8fc76a40437201c16215f4dc452bbfd99a9e8ed8a84bc3384",
+      "pass_summary": [
+        "PASS tb_a_graphics_frontend: BASE and HD complete frames, 4-cycle alignment"
+      ]
+    },
+    {
+      "group": "a1_9",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a1_9/tb_font8x16_rom/xsim.log",
+      "sha256": "1b2dc6894f127a2e9fd144789c07dee8c92041e5894a5c5affddcf508c7bfe33",
+      "pass_summary": [
+        "PASS tb_font8x16_rom: 53407 checks"
+      ]
+    },
+    {
+      "group": "a1_9",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a1_9/tb_osd_overlay/xsim.log",
+      "sha256": "69e69ba9ce439d10bee3c79b4b4bafbc789d370651b5d966c088fe00b7c6363e",
+      "pass_summary": [
+        "PASS tb_osd_overlay: 14013 bundles"
+      ]
+    },
+    {
+      "group": "a1_9",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/a1_9/tb_pattern_generator/xsim.log",
+      "sha256": "305ae660099d6636f0bf44c75c55808265f42f90778e665b21edf021951e098b",
+      "pass_summary": [
+        "PASS tb_pattern_generator: 12930420 checks"
+      ]
+    },
+    {
+      "group": "base_refill",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/base_refill/card/sim.log",
+      "sha256": "62e6dfe89bde2cc841154c62938453611c5ca3567b7d08bf1bdf3bd6f7a701bf",
+      "pass_summary": [
+        "[PASS] automatic cached playback issues no new image writes",
+        "[PASS] automatic cached playback preserves exact frames and timing",
+        "RESIDENT DISPLAY HD=0 SD_HALF_NS=1 checks=22 errors=0 frames=35 images=4 publishes=8",
+        "[PASS] RESIDENT CARD DISPLAY PASS"
+      ]
+    },
+    {
+      "group": "hd_tail",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/hd_tail/card/sim.log",
+      "sha256": "84e65851bb0c7bf57da25519b1d82ef63f36645bbc1a046141ea47b5136a6309",
+      "pass_summary": [
+        "[PASS] automatic cached playback issues no new image writes",
+        "[PASS] automatic cached playback preserves exact frames and timing",
+        "RESIDENT DISPLAY HD=1 SD_HALF_NS=1 checks=23 errors=0 frames=49 images=4 publishes=8",
+        "[PASS] RESIDENT CARD DISPLAY PASS"
+      ]
+    },
+    {
+      "group": "production",
+      "path": "evidence/ab_sd_dqm_fix_26101003/simulation/production/card/sim.log",
+      "sha256": "e588b365d6f7e5800307abbd651309a03a5cbab83e462f88899f1c3b90c3515f",
+      "pass_summary": [
+        "[PASS] slot 1 has all 153600 correct words in raster order from signed BMP height",
+        "[PASS] two full BASE/720p AXIS frames: RGB and SOF/EOL pixel-exact",
+        "[PASS] production-rate first image remains healthy",
+        "[PASS] FIRST CARD IMAGE production_spi=1 SD_HALF_NS=10 pixels=614400"
+      ]
+    }
+  ],
+  "bits": {
+    "BASE": {
+      "sha256": "6625416e03dc7f610c515d15f4a6918529002be7eb155557e088eb88bfbce6fd",
+      "bytes": 642439
+    },
+    "720p": {
+      "sha256": "1e6ca0de37c3c4f7e44aa03c2b895e2d9721b6a3eaaf0429fae08cc8a77096f1",
+      "bytes": 642439
+    }
+  },
+  "timing": {
+    "BASE": {
+      "swns_ns": 0.635,
+      "stns_ns": 0.0,
+      "hwns_ns": 0.027,
+      "htns_ns": 0.0,
+      "period_wns_ns": 0.0
+    },
+    "720p": {
+      "swns_ns": 0.107,
+      "stns_ns": 0.0,
+      "hwns_ns": 0.024,
+      "htns_ns": 0.0,
+      "period_wns_ns": 0.0
+    }
+  },
+  "hardware_verified": false,
+  "ab_all_verified": false,
+  "external_io_fully_budgeted": false,
+  "ordinary_osd_menu_integrated": false,
+  "audio_b04_complete": false,
+  "checked_at": "2026-10-11T02:16:44.874220+00:00"
+}

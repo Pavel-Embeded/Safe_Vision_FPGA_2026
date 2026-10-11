@@ -1,0 +1,17 @@
+PASS tb_a_pixel_fifo: checks=6818 actual TD FIFO/RAM, async clocks, 32/16 low-first, capacity126, stalls, wrap, counts, reset
+PASS tb_video_stream_cdc: checks=3008 stream+last, stalls, fast/slow domains, common reset epochs
+PASS tb_frame_slot_commit: 409 atomic vblank commits/acks, 11 CRC rejects, 300 sequential generation values including 255->0, same-edge base and in-flight common reset
+reader W=640 H=480 checks=1260000 underflows=1
+reader W=1280 H=720 checks=3712500 underflows=1
+PASS tb_frame_reader: BASE+HD three complete frames, pixel order, tags, underflow and recovery
+PASS tb_osd_text_layer: 1637 font mask/color samples, transparent margins, disabled and reset
+compositor N/O/E=1/4/0 checks=3000
+compositor N/O/E=0/0/0 checks=3000
+compositor N/O/E=4/1/2 checks=3000
+PASS tb_video_compositor: three latency configurations, all layer priorities, tag alignment, reset
+display HD=0 checks=2484007 normal=1232512 emergency=180 fault_pixels=303488 competing_write_beats=47876 commits=2
+display HD=1 checks=7375507 normal=1232384 emergency=180 fault_pixels=303616 competing_write_beats=48292 commits=2
+PASS tb_a_video_display_core: actual B DMA+arbiter+swap, official async FIFO, complete BASE/HD frames, starvation/recovery, atomic slots and emergency priority
+PASS tb_a_video_display_core_stress: BASE/HD, independent font/packet scoreboard, mid-line configuration, OSD+Normal+Emergency, clock phase offsets, common reset during outstanding read, two complete epochs
+PASS tb_pixel_word_packer_stress: 2025 independently ordered words, stalls=3311, odd pending pixel flush and fresh epoch
+PASS A stages11-15 suite: 9 selected tests

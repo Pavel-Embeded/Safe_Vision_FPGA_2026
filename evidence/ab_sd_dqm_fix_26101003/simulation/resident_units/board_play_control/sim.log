@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 21:51:37 2026
+# Process ID: 29784
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_resident_units/board_play_control
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/unit/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_resident_units/board_play_control/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_resident_units/board_play_control\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/unit/xsim_script.tcl
+# xsim {unit} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+PASS tb_board_play_control checks=11: manual/auto/2-5-10-30/busy/long-hold
+$finish called at time : 9940 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_board_play_control.sv" Line 30
+## quit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 21:51:41 2026...

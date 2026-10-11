@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sun Oct 11 02:42:13 2026
+# Process ID: 28100
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_contract/resident_sink
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_contract/resident_sink/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_contract/resident_sink\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+PASS tb_bmp_frame_sink_resident checks=9: verified first/background/cache/abort
+$finish called at time : 44513775 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_frame_sink_resident.sv" Line 58
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:10 . Memory (MB): peak = 218.152 ; gain = 0.000
+## quit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:42:27 2026...

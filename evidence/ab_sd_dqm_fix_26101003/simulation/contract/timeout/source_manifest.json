@@ -1,0 +1,61 @@
+{
+  "read_latency": 4,
+  "bad_tail_image": -1,
+  "extra_file": false,
+  "bad_image": -1,
+  "sources": [
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\assets\\fonts\\font8x16.mem",
+      "sha256": "e3a0d1e5271bf030ec21374ad8fc5581f28a6814c8ab09b66231e9d07cd0a7af"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\sdram_app_adapter.v",
+      "sha256": "361007de25f4868a57d69dfe06328776224947543cdc68440d53ad43de5d191c"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\crc32_word.vh",
+      "sha256": "51a28d130447841672582f4d4d80c1b7e090ef85b66172f4fffdf09be296e347"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\event_code_defs.vh",
+      "sha256": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\fault_code_defs.vh",
+      "sha256": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\pixel_format_defs.vh",
+      "sha256": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\safevision_defs.vh",
+      "sha256": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\video_mode_defs.vh",
+      "sha256": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\frame_integrity_guard.v",
+      "sha256": "13db7dea26271f5c565ae48f16334e8aa6f3812a7d75f0a3b8ec01bdc6160532"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\video_read_dma_checked.v",
+      "sha256": "47462e0fa0b7df4d76190ef1a2517c57da7828ba967d0d315a8a54370086d654"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\tools\\run_card_display_xsim.ps1",
+      "sha256": "35d8d5dd16440d396abe187e82531c2b998a1f67bbe18af87e183ddb3f6bf28f"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\verification\\unit\\tb_sdram_response_timeout.sv",
+      "sha256": "3b67204ba5b5c7f09a58d408aa4fd795fbd3f9a7bf939e6305bd404eaa8df57d"
+    }
+  ],
+  "resident": false,
+  "hd": 0,
+  "production_spi": false,
+  "stage": "compiled-inputs",
+  "case": "timeout"
+}

@@ -1,0 +1,18 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_frame_reader -s tb_frame_reader --timescale 1ns/1ps --log elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.video_timing_default
+Compiling module work.video_pipeline_default
+Compiling module work.frame_reader(UNDERFLOW_COLOR=24'...
+Compiling module work.reader_case
+Compiling module work.video_timing(H_ACTIVE=1280,H_FRO...
+Compiling module work.frame_reader(IMAGE_W=1280,IMAGE_...
+Compiling module work.reader_case(W=1280,H=720,HP=110,...
+Compiling module work.tb_frame_reader
+Built simulation snapshot tb_frame_reader

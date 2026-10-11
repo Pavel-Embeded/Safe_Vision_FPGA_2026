@@ -1,0 +1,357 @@
+{
+  "production_spi": true,
+  "extra_file": false,
+  "case": "card",
+  "bad_tail_image": -1,
+  "read_latency": 11,
+  "hd": 0,
+  "bad_image": -1,
+  "stage": "compiled-inputs",
+  "sources": [
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\assets\\fonts\\font8x16.mem",
+      "sha256": "e3a0d1e5271bf030ec21374ad8fc5581f28a6814c8ab09b66231e9d07cd0a7af"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\a_pixel_fifo\\a_pixel_fifo_eram.v",
+      "sha256": "d5e032216b6c7020e3687757e668f04010a85e6901837d5f853f6d8ce2138f3f"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\ip\\a_pixel_fifo\\a_pixel_fifo_ip.v",
+      "sha256": "715cf67dcf788d2d8cece432851efc9450c33bd4259379b9c145a33524acd6e6"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\bmp_frame_sink.v",
+      "sha256": "4b44ea4bd9f5107f13bae836de028ded3fcb4f908e7e6f157b6ea2f7195f8812"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\board_display_guard.v",
+      "sha256": "73f2c82037fe1d2759a2bc1518d98c79178581be44d037f27881bd5c3154695b"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\clock\\reset_sync.v",
+      "sha256": "15c31b2102a2497c98da050de24555760b2be71d7bed17c79a72f159d429f017"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\pixel_fifo\\a_pixel_fifo.v",
+      "sha256": "e8e7d0e057720a4bcea93481b43a44a985dfc3773c6b3f1a88a792c6561d7ac1"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\safevision_top\\safevision_top.v",
+      "sha256": "561ac36948ab01009c1f7384ccf21c2008c5adbf657dbf744c38a8fbd1c21330"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\sdram_app_adapter.v",
+      "sha256": "361007de25f4868a57d69dfe06328776224947543cdc68440d53ad43de5d191c"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\top_sdram_loopback.v",
+      "sha256": "2c96aa6f9a9187ebc084c67838a3219f8df75950f0832d4171c1d0f7198a2160"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\top_stage5_sector_rd.v",
+      "sha256": "35297229c425343f2901ca194fb7d0ceeccbfea7218361a59f9eec8f65204e31"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\rtl\\top_stage6_fat32_mount.v",
+      "sha256": "86d8ffc08f417a35195f91e848be2511334dd3b4462469f9b6b807c4027e24f3"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\a_counter.v",
+      "sha256": "a187560cc1800f5336e4c3ef6db535f88374402467f81268230ebae9842e3353"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\a_debounce.v",
+      "sha256": "79f8e862287aaac4e92e4c6e818e073919e7dc20870e06c15484ebc66a99b031"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\a_edge_detect.v",
+      "sha256": "c2ea1efc3555f861c96e55a0b6a131a9b31dadf3b94c2d86132b97a81825f45d"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\a_mode_fsm.v",
+      "sha256": "cfe1e729a8327b0c487a0e02dbc4099f3dd6e7d924a64ed9280d05da9b3169ba"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\crc16_ccitt.v",
+      "sha256": "d3db31da501fec7a009c80f82c4dccaf70be23216a3b557cc14d203ce2a00204"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\crc7.v",
+      "sha256": "f7dd4d1d84ba877b23b4087fc249a292f4c98caff3c1aac7c7479b21dd5201c7"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\error_report.v",
+      "sha256": "fe399944a8228a65a5c5df73e6394c874cf66bc12f918ddd40ca0d9bb1ddc94e"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\rv_skid_buffer.v",
+      "sha256": "91699610280f33e9aa7724eb18e8f82db27cb0edfe384e9c430929864ca48d46"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\shift_reg.v",
+      "sha256": "104e032a6d859dce2e1d9c0b68ebcefb4593dd50505f016a76519a936f18881b"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\spi_byte_rx.v",
+      "sha256": "2f2afa4faa0277237d9d5f97bee62f851d081e54e7b4ae4e3f368b5493ad6efd"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\sync_fifo.v",
+      "sha256": "085ec7d9c385bb1c2474e700243c41fbd32fdd506539f0409dcbb558117e8780"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\common\\uart_tx.v",
+      "sha256": "29ce436b0638005bcd03416b9df7ba379eac71e55f22f47f7caccf366774eeb5"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\crc32_word.vh",
+      "sha256": "51a28d130447841672582f4d4d80c1b7e090ef85b66172f4fffdf09be296e347"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\event_code_defs.vh",
+      "sha256": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\fault_code_defs.vh",
+      "sha256": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\pixel_format_defs.vh",
+      "sha256": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\safevision_defs.vh",
+      "sha256": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\include\\video_mode_defs.vh",
+      "sha256": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\media\\bmp_parser.v",
+      "sha256": "ee620739261c8f5a2f274043e0572b5a2175e7fc368efcb9260aba971aa27b83"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\media\\bmp_unpack.v",
+      "sha256": "87ea20b9f3a55acb7315e46a73cfcbe1c7cf50327264d4afdb64f73809ab3cd9"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\media\\wav_parser.v",
+      "sha256": "dd13fee4ec7dc37063f8a1a1ca66f50038ee7ea1b3ea2f24f9328043d1a48714"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\fifo_health_monitor.v",
+      "sha256": "77c070b02f9db8be3afabb29ab45399d37d1db165e98fc47ea8064b1ae258236"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\frame_address_gen.v",
+      "sha256": "ecb545d7cd234dce40d31e0d4de63d39c5a4a7eb746e6b05524fb92b928526a5"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\frame_buffer_manager.v",
+      "sha256": "d733ae811058470278c90b764218aa9abbfb04db99114ff0baafcf99d669cb8f"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\frame_integrity_guard.v",
+      "sha256": "13db7dea26271f5c565ae48f16334e8aa6f3812a7d75f0a3b8ec01bdc6160532"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\frame_swap_cdc.v",
+      "sha256": "30db62b77fdb1058140c6018aa69868c9fa54d4730e730b188d2ac956072fdd2"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\frame_swap_ctrl.v",
+      "sha256": "24e6422c30341eb6dba9de0a67dc76d8bd295678c413de07eee64f5aeb9e6177"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\frame_writer.v",
+      "sha256": "eed12704320012b56d62dd4ac84c39c2d88e3a37ab3d412ff5eac07eb37e1792"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\framebuffer_loopback_core.v",
+      "sha256": "84d02db13aad6aebf543c6325c005a52fd6c0cdfdd6c84014413b0530af1cee8"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\mem_ctrl.v",
+      "sha256": "c11419377ad988a0841642060ccb3b266316a1f2c63c7d145e38d3526c307b37"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\mem_read_burst.v",
+      "sha256": "c1c9ddbb7f6c3728025604c840af28da0fb478d9928410cd77a224b611658b91"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\memory_arbiter.v",
+      "sha256": "7245a974a0a3a5cda385621eea33e54e43e66160003debbee1a4110445be1638"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\memory_bandwidth_monitor.v",
+      "sha256": "4878035833a8c2f83b5528ef40ca5f1e1fae5812ac63e672f289ec2a41245856"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\sdr_pat_gen.v",
+      "sha256": "b8f84555659eb59b511b91d205d1d6d59621b42438fe7b6902b4a2343c5a573e"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\video_read_dma_checked.v",
+      "sha256": "47462e0fa0b7df4d76190ef1a2517c57da7828ba967d0d315a8a54370086d654"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\memory\\video_read_dma.v",
+      "sha256": "a04d1842f0f4df7902a416c45f625d9e2420e2b29b85a0fc678d51a3168101e4"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\fat32_boot_parser.v",
+      "sha256": "2cad47d358279d850088b5f2d26599ba282cfb60eb01c261ccaa1fcd15d1e2a8"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\fat32_cluster_walker.v",
+      "sha256": "31d72e69f7dd2aaba2cddcd3a147a290022ba4d9a82983b11463e00ec2b86958"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\fat32_directory_scanner.v",
+      "sha256": "3b3b1e777b30b12c6f9925ee788b85e57543bac5b0df3bd04f891f3512ac50f1"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\file_index.v",
+      "sha256": "3180af89eca5fd848cdf69531dba673160519d4400a45c0f3415c4d5d90a0d23"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\file_streamer.v",
+      "sha256": "6ecff99b4202c4f9554d058ea93eabff973174dd482a76f2772da9f4e6ff5f9c"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\mbr_parser.v",
+      "sha256": "2f0e724ae84d09f0b1d03746d86d4276ff71fb5a0e92bb0c2f2aa9d274454493"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\sd_bmp_player.v",
+      "sha256": "85e4e8784c7ee6b25928b81ca672bafe4cc3e351d11d7b36430f3f3779a05bfe"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\sd_initializer.v",
+      "sha256": "21398989696cc7212ba0fe876a7a5ef0bea9f1455391d0040197dfc7f4b9ce9a"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\sd_sector_reader.v",
+      "sha256": "1ea7094514a75940fe2773a62a49dd7559ad75dad2bf7bc3d367876035f0ccde"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\storage\\spi_master.v",
+      "sha256": "ac020012ed085ae3bae5aca322577403fb7990e2fefa34a5e2c9bfcb50d58e85"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\top\\safevision_core\\bmp_frame_write_bridge.v",
+      "sha256": "9fcd7d71e23a41c38e677a06ef3293a4062ddc5b5f1257362439b5b93f05d25e"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\top\\safevision_core\\safevision_core.v",
+      "sha256": "335637bf6a6da7643b05f230e5f25136ebf52f07f64e78af3621c855bbb8c9b4"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\emergency_graphics\\emergency_graphics.v",
+      "sha256": "20f6cec87a559480b23d4439353617843bc7bd048b0e570b19031154a337e737"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\frame_reader\\a_frame_fetch_bridge.v",
+      "sha256": "366339301fc4176c3a8456037896a4fbe4ed25ac3da30c7432a27f71a7e71e09"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\frame_reader\\frame_reader.v",
+      "sha256": "bcca6f02f5f8f9304a6217a7bde5a2f257f896aa79aa8d19c7eed032dc220e8c"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\frame_reader\\frame_slot_commit.v",
+      "sha256": "3405059486ce9a381ff77bc820572628e3c0c5911025442a91631a4bfe0e4bc6"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\frame_reader\\pixel_word_packer.v",
+      "sha256": "528b8a9fad94002bd6a01eaaed7c335f22041eeb5041c830aa8817d1a4cbad7b"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\graphics_rom\\font8x16_rom.v",
+      "sha256": "a1a1499b310eb51b279fd460533a968280ddb52641ca674f63e7e336eecec358"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\hdmi_output\\hdmi_video_bridge.v",
+      "sha256": "c5d49b9752b356a605eec89705ba820c27015bc256c80aa947eecb07e4677dbc"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\osd_overlay\\a_graphics_frontend.v",
+      "sha256": "ff74c0d90c07bb11df9161eb3c9fa0d2a495835312ead77e2a43e7e4a1253a90"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\osd_overlay\\osd_coordinate_text.v",
+      "sha256": "0a0d2ec2c689cfdd8e34e6115dd06c000e126690e8469c6c622a03b451e690ce"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\osd_overlay\\osd_overlay.v",
+      "sha256": "1f4ca86c5914318013fc068890609f65880e243b5c4f4b337961ae450f4015ef"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\osd_overlay\\osd_status_text.v",
+      "sha256": "f9331d96ddae14370f0b835b9caaae11927d6fb8cfba564af427d3f31c4d9d62"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\osd_overlay\\osd_text_layer.v",
+      "sha256": "10199662fbaadbbdcfa551d9927a37c801134646e98ca05c13605cca221a3bec"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\pattern_generator\\pattern_generator.v",
+      "sha256": "ef8df72d6fdb7db11afbda81995ccb3f4c285e035c22a86d8766d4f80d8e15ca"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\video_cdc\\video_cdc_mailbox.v",
+      "sha256": "bfca54eafc13ae9054d766ece19453305c1ee9c5ab8343a0155ceec340e63993"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\video_cdc\\video_level_sync.v",
+      "sha256": "9fcb3217f3271937df3f8c95642ea1a26eeb53753501c98a53185c815db2fec0"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\video_compositor\\video_compositor.v",
+      "sha256": "deccbfdc7d6a4bd4e46752d74e64f2bb373f8cfcb348fc97084f7fcef6b095c7"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\video_compositor\\video_layer_delay.v",
+      "sha256": "846f4c7984e9b228fe02705aaf7d87e156361aa5efb63c9e6c5966e15dbfab66"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\video_pipeline\\a_video_display_core.v",
+      "sha256": "de61370b12e0d7a45fad44cfcd39bccfa1ed85242c2c10ec38a6ae2761247a8b"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\video_pipeline\\video_pipeline.v",
+      "sha256": "36798ad734e1518dfca00bb782111ef325e23e59476be9ffb2fd2dc37306ef3b"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\video_pipeline\\video_stream_slice.v",
+      "sha256": "2cdabe0c99c724e3634c569939a6a564b9da4a1350b34d29d41f98cba8bbeb34"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\rtl\\video\\video_timing\\video_timing.v",
+      "sha256": "d462a1afdbef6c48bad3bddeae76539ff3f8d3f2e6fa87ecf0b0adc356d5063e"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\tools\\run_card_display_xsim.ps1",
+      "sha256": "35d8d5dd16440d396abe187e82531c2b998a1f67bbe18af87e183ddb3f6bf28f"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\verification\\models\\board_memory_contract_model.sv",
+      "sha256": "9b95ac220343671efde3903ea4a025c1e07db7ed820de4b6934cd8aa3ed546e9"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\verification\\models\\sd_spi_card_model.sv",
+      "sha256": "03617c8ac5c1dc60b1dbe942884505afb9a22b9e3d47276e7c74183640526157"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\verification\\models\\top_ip_stub.sv",
+      "sha256": "433b595ea18374da72b543a27964b0312b97dc5701e8df5510c6e82091e0a1e1"
+    },
+    {
+      "path": "D:\\Codex\\2026-10-09\\github-plugin-github-openai-curated-remote\\work\\repo\\safevision\\verification\\unit\\tb_safevision_card_display.sv",
+      "sha256": "c277bb37e094d0be15555efffb5e20663fae6cc1c4a5ae9d152245c12999eeca"
+    }
+  ],
+  "resident": true
+}

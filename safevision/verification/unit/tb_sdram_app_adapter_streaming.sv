@@ -32,7 +32,12 @@ module tb_sdram_app_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=
  else $display("[PASS] %s",name);end endtask
  always @(posedge clk)begin
   cycles=cycles+1;
-  sr<=read_valid[RD_LAT-1]; if(read_valid[RD_LAT-1]) sd<=mem[read_addr[RD_LAT-1][14:0]];
+  sr<=read_valid[RD_LAT-1]; if(read_valid[RD_LAT-1])begin
+    sd<=mem[read_addr[RD_LAT-1][14:0]];
+    // A held write mask also suppresses SDRAM read output. Command quiet
+    // intervals in this TB exceed the native DM + read-DQM pipeline.
+    for(b=0;b<4;b=b+1)if(dm[b])sd[8*b+:8]<=8'hff;
+  end
   read_valid<=(read_valid<<1)|ar;read_addr[0]<=ra;
   for(i=1;i<RD_LAT;i=i+1)read_addr[i]<=read_addr[i-1];
   if(aw&&ar)overlap=overlap+1;

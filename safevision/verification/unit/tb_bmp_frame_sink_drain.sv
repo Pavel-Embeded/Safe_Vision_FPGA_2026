@@ -8,7 +8,7 @@ module tb_bmp_frame_sink_drain;
  wire [15:0] len,fc;wire [1:0] slot;wire [7:0] gen,ec,ed;wire [3:0] state;wire [18:0] px;
  bmp_frame_sink #(.REQUIRE_WRITE_DRAIN(1),.SWAP_TO_N(200),.WRITE_TO_N(200000)) dut(
  .clk(mc),.rst_n(rst),.wr_clk(wc),.px_word(word),.px_word_valid(valid),.px_word_ready(ready),
- .frame_active(fa),.top_down(1'b1),.slot(2'd1),.mem_ready(mready),.frame_done(fd),.last_frame_ok(ok),
+ .preload_only(1'b0),.cached_frame(1'b0),.abort_frame(1'b0),.frame_active(fa),.top_down(1'b1),.slot(2'd1),.mem_ready(mready),.frame_done(fd),.last_frame_ok(ok),
  .wr_req(req),.wr_addr(addr),.wr_data(data),.wr_len(len),.wr_ready(1'b1),
  .swap_toggle(sw),.swap_slot(slot),.swap_generation(gen),.swap_crc_ok(crc),.swap_busy(busy),
  .state_o(state),.err_code(ec),.err_detail(ed),.frame_cnt(fc),.px_written(px),.write_drained(drained));

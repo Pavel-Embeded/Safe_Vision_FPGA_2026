@@ -53,7 +53,7 @@ module tb_safevision_top;
     // ★ 缩短两个"等"的参数（都只是可测性参数，TD 不覆盖 ⇒ 综合结果不变）：
     //   MODE_TO_N   = 4 ms 判卡不可用（50 MHz）
     //   RPT_PERIOD_N= 3 ms 发一次状态行（一行 107 字节 @115200 要 ~9.3 ms）
-    safevision_top #(.STORAGE_INTEGRITY(0),
+    safevision_top #(.RESIDENT_FRAMES(0),.STORAGE_INTEGRITY(0),
         .HD(0),
         .MODE_TO_N(32'd200_000),
         .RPT_PERIOD_N(32'd150_000),
@@ -268,8 +268,9 @@ module tb_safevision_top;
         force dut.integrity_expected=32'h89abcdef;
         force dut.integrity_actual=32'h76543210;
         uart_get_line;
-        check(line_len==82 && line[80]==8'h0D && line[81]==8'h0A,"UART integrity line has 82 bytes and CRLF");
-        check(find_str("SV-MEM",6)==0 && find_str("26101002",8)==10,"UART carries exact integrity build ID");
+        check(line_len==95 && line[93]==8'h0D && line[94]==8'h0A,"UART integrity line has 95 bytes and CRLF");
+        check(find_str(" RAW=",5)==80 && line[85]==8'h30 && line[92]==8'h30,"UART raw read word belongs to the packet snapshot");
+        check(find_str("SV-MEM",6)==0 && find_str("26101003",8)==10,"UART carries exact integrity build ID");
         check(find_str(" PH=0",5)==18,"UART snapshot phase matches packet start");
         check(find_str(" BAD=",5)==23 && line[28]==8'h30 && line[35]==8'h30,"UART bad address retains packet snapshot");
         check(find_str(" EXP=",5)==36 && line[41]==8'h30 && line[48]==8'h30,"UART expected CRC retains packet snapshot");

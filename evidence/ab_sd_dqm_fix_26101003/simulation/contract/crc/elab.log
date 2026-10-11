@@ -1,0 +1,19 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_frame_writer_crc_feedback -s board_test --timescale 1ns/1ps --log elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer(FRAME_WIDTH=10'b010...
+Compiling module work.writer_crc_case
+Compiling module work.frame_writer(FRAME_WIDTH=10'b010...
+Compiling module work.writer_crc_case(STRIDE=2)
+Compiling module work.frame_writer(FRAME_WIDTH=10'b010...
+Compiling module work.writer_crc_case(STRIDE=1024)
+Compiling module work.tb_frame_writer_crc_feedback
+Built simulation snapshot board_test

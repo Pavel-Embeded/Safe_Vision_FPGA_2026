@@ -7,3 +7,6 @@ evidence/normal_playback_20261010/README.md whitespace
 evidence/ab_multiround_26101002/** -text -whitespace
 evidence/ab_multiround_26101002/README.md text eol=lf whitespace
 releases/ab_multiround_26101002/**/*.bit -text
+evidence/ab_sd_dqm_fix_26101003/** -text -whitespace
+evidence/ab_sd_dqm_fix_26101003/README.md text eol=lf whitespace
+releases/ab_sd_dqm_fix_26101003/**/*.bit -text

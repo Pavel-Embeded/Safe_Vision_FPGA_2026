@@ -30,7 +30,9 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module file_index (
+module file_index #(parameter integer WINDOW_SCAN=0) (
+    input wire [15:0] after_key,
+    output wire [15:0] max_key,
     input  wire        clk,
     input  wire        rst_n,
 
@@ -121,7 +123,7 @@ module file_index (
     wire [15:0] ent_key = { nk0, nk1, nk2, nk3 };
     wire num_ok = (ent_key != 16'd0);
 
-    wire is_bmp_c = ent_valid && name_ok && num_ok && ext_bmp;
+    wire is_bmp_c = ent_valid && name_ok && num_ok && ext_bmp && (!WINDOW_SCAN || ent_key>after_key);
     wire is_wav_c = ent_valid && name_ok && num_ok && ext_wav;
 
     // ★★ 译码打一拍（流水第 1 段 → 第 2 段）：
@@ -352,6 +354,7 @@ module file_index (
     // ------------------------------------------------------------------------
     // 4. 查表口（组合读）
     // ------------------------------------------------------------------------
+    assign max_key=s_val[3]?s_key[3]:(s_val[2]?s_key[2]:(s_val[1]?s_key[1]:s_key[0]));
     assign sel_first_clus     = s_clus[sel_slot];
     assign sel_size           = s_size[sel_slot];
     assign sel_valid          = s_val[sel_slot];

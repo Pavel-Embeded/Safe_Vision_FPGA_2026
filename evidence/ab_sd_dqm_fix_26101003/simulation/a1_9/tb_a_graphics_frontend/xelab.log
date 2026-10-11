@@ -1,0 +1,27 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_a_graphics_frontend -s tb_a_graphics_frontend_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.video_timing_default
+Compiling module work.pattern_generator_default
+Compiling module work.osd_status_text
+Compiling module work.osd_coordinate_text
+Compiling module work.font8x16_rom(FONT_FILE="font8x16...
+Compiling module work.video_pipeline(LATENCY=4)
+Compiling module work.osd_overlay(FONT_FILE="font8x16....
+Compiling module work.a_graphics_frontend(FONT_FILE="f...
+Compiling module work.graphics_frame_checker_default
+Compiling module work.video_timing(H_ACTIVE=1280,H_FRO...
+Compiling module work.pattern_generator(H_ACTIVE=1280,...
+Compiling module work.video_pipeline(LATENCY=4,HSYNC_A...
+Compiling module work.osd_overlay(FONT_FILE="font8x16....
+Compiling module work.a_graphics_frontend(HD=1,FONT_FI...
+Compiling module work.graphics_frame_checker(HD=1)
+Compiling module work.graphics_frame_checker(COORD=1)
+Compiling module work.tb_a_graphics_frontend
+Built simulation snapshot tb_a_graphics_frontend_sim

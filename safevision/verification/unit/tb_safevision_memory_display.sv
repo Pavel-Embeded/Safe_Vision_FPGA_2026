@@ -6,7 +6,7 @@
 module tb_safevision_memory_display #(parameter integer HD=0,RD_LAT=4,WR_LOAD=0);
  reg clk=0;always #10 clk=~clk;reg rst_n=0;
  wire cs,sck,mosi,uart;wire[3:0]led;wire d0,d1,d2,dc,scl;tri1 sda;
- safevision_top #(.STORAGE_INTEGRITY(0),.HD(HD),.FONT_FILE("font8x16.mem")) dut(.clk(clk),.rst_n(rst_n),
+ safevision_top #(.RESIDENT_FRAMES(0),.STORAGE_INTEGRITY(0),.HD(HD),.FONT_FILE("font8x16.mem")) dut(.clk(clk),.rst_n(rst_n),
   .btn_next(1'b1),.btn_auto(1'b1),.btn_emergency(1'b1),.uart_txd(uart),.led(led),
   .sd_ncs(cs),.sd_dclk(sck),.sd_mosi(mosi),.sd_miso(1'b1),
   .HDMI_D0_P(d0),.HDMI_D1_P(d1),.HDMI_D2_P(d2),.HDMI_CLK_P(dc),

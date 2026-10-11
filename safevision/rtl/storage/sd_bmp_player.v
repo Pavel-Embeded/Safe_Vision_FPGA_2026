@@ -49,6 +49,8 @@
 module sd_bmp_player #(
     // ★ 本模块的时钟就是**板载 50 MHz**（方案 A）；名字不再叫 CLK_HZ_MEM
     parameter integer CLK_HZ      = 50_000_000,
+    // Board mode preloads each indexed image once, then selects resident slots.
+    parameter integer RESIDENT_FRAMES = 0,
     // SPI 分频（见文件头推导；按 50 MHz 取默认）
     // ★★ 2026-10-06 板级实测后：初始化时钟由 396.8 kHz **降到 100 kHz**。
     //   背景：真卡初始化约 1/10 成功、`ED=11`（CMD0 的 R1 ≠ 0x01）；加内部上拉后
@@ -61,7 +63,7 @@ module sd_bmp_player #(
     // 各阶段超时（各自独立计数器；按 50 MHz 折算的墙钟时间）
     parameter [31:0]  INIT_TO_N    = 32'd100_000_000,  // 2s @50MHz: includes the card's <=1s ACMD41 window
     parameter [31:0]  MOUNT_TO_N   = 32'd5_000_000,    // 100ms：等 MBR/BPB/目录/索引
-    parameter [31:0]  STREAM_TO_N  = 32'd150_000_000,  // 3s：等一整幅读完
+    parameter [31:0]  STREAM_TO_N  = 32'd150_000_000,  // 3s without progress; not total frame duration
     parameter [31:0]  SWAP_TO_N    = 32'd5_000_000,    // 100ms：等换帧
     parameter [31:0]  PILOT_TO_N   = 32'd2_500_000,    // 50ms：等索引查找结果落定
     // ★ 2026-10-06 新增：SD 初始化失败后**自动重试**（真卡在复位后偶发不应答时非常有效）。
@@ -93,6 +95,7 @@ module sd_bmp_player #(
     input  wire        px_word_ready, // ← FIFO 的 wr_ready
     output reg         frame_active,  // 本帧正在产出像素（电平，随帧起落）
     output reg         top_down_o,    // 本帧行序（帧内稳定，随 frame_active 打包）
+    output reg cached_frame, abort_frame,preload_only,source_stream_ok,
     output wire [1:0]  slot_o,        // 本帧目标槽（帧内稳定）
 
     // ---- 与 mem 侧帧控制器握手（跨界只走这 3 个慢信号）----
@@ -135,6 +138,7 @@ module sd_bmp_player #(
                      S_STREAM = 4'd8,
                      S_SWAP   = 4'd9,
                      S_ERROR  = 4'd10,
+                     S_SKIP=4'd12,S_CLEAN=4'd13,
                      S_INITR  = 4'd11;     // ★ SD 初始化失败后**重试**：停一拍再回 S_INIT
 
     // 本模块细分码（对外主码沿用项目错误码表；阶段与超时单列）
@@ -192,6 +196,9 @@ module sd_bmp_player #(
     wire [31:0] wd_rd_addr; wire [15:0] wd_rd_len; wire wd_rd_en, wd_data_ready;
 
     // file_index
+    wire [3:0] candidate_count;
+    reg [15:0] scan_after;wire [15:0] candidate_max;reg [2:0] resident_count;
+    reg [31:0] resident_size[0:3];
     reg         idx_clear, idx_commit;
     wire        idx_done;
     wire [3:0]  file_valid;
@@ -257,6 +264,22 @@ module sd_bmp_player #(
     wire [7:0]  spi_rxd;
 
     // ---- 控制侧寄存器（必须声明在**例化之前**：file_index 要用 pick_slot）----
+    reg [3:0] resident_valid; reg boot_loading;
+    assign file_cnt=(RESIDENT_FRAMES&&!boot_loading)?{1'b0,resident_count}:candidate_count;
+    reg [1:0] first_display_file;
+    reg [6:0] clean_count;
+    reg transfer_reset;
+    // Registered reset request avoids glitches from decoding several FSM bits.
+    // Only transfer engines reset; mounted geometry and resident slots persist.
+    wire media_rst_n=rst_n && !transfer_reset;
+    function [1:0] next_resident;
+      input [1:0] previous;input [3:0] available;integer k;reg [1:0] candidate;reg found;
+      begin next_resident=previous;found=0;
+        for(k=1;k<=4;k=k+1)begin candidate=previous+k;
+          if(!found&&available[candidate])begin next_resident=candidate;found=1;end
+        end
+      end
+    endfunction
     reg  [1:0]  out_slot;       // 本帧目标槽（0/1 交替）
     reg  [1:0]  pick_slot;      // 给 file_index 的查找槽（= 目标文件号）
     reg  [31:0] pick_to;        // S_PICK 等 sel_* 落定
@@ -268,27 +291,27 @@ module sd_bmp_player #(
     //   （形态照抄 top_stage6_fat32_mount.v 的既有做法）
     // ========================================================================
     wire scan_wk = (state_o == S_SCAN)   && dn_wk_busy;
-    wire strm_wk = (state_o == S_STREAM) && fst_wk_busy;
+    wire strm_wk = (state_o == S_STREAM || state_o == S_SKIP) && fst_wk_busy;
 
     wire        bus_rd_en   = (state_o == S_MBR)  ? mp_rd_en :
                               (state_o == S_BOOT) ? bp_rd_en :
                               (state_o == S_SCAN) ? (scan_wk ? wd_rd_en : dn_rd_en) :
-                              (state_o == S_STREAM) ? (strm_wk ? wf_rd_en : fst_rd_en) :
+                              (state_o == S_STREAM || state_o == S_SKIP) ? (strm_wk ? wf_rd_en : fst_rd_en) :
                               1'b0;
     wire [31:0] bus_rd_addr = (state_o == S_MBR)  ? mp_rd_addr :
                               (state_o == S_BOOT) ? bp_rd_addr :
                               (state_o == S_SCAN) ? (scan_wk ? wd_rd_addr : dn_rd_addr) :
-                              (state_o == S_STREAM) ? (strm_wk ? wf_rd_addr : fst_rd_addr) :
+                              (state_o == S_STREAM || state_o == S_SKIP) ? (strm_wk ? wf_rd_addr : fst_rd_addr) :
                               32'd0;
     wire [15:0] bus_rd_len  = (state_o == S_MBR)  ? mp_rd_len :
                               (state_o == S_BOOT) ? bp_rd_len :
                               (state_o == S_SCAN) ? (scan_wk ? wd_rd_len : dn_rd_len) :
-                              (state_o == S_STREAM) ? (strm_wk ? wf_rd_len : fst_rd_len) :
+                              (state_o == S_STREAM || state_o == S_SKIP) ? (strm_wk ? wf_rd_len : fst_rd_len) :
                               16'd0;
     wire        bus_data_ready = (state_o == S_MBR)  ? mp_data_ready :
                                  (state_o == S_BOOT) ? bp_data_ready :
                                  (state_o == S_SCAN) ? (scan_wk ? wd_data_ready : dn_data_ready) :
-                                 (state_o == S_STREAM) ? (strm_wk ? wf_data_ready : fst_data_ready) :
+                                 (state_o == S_STREAM || state_o == S_SKIP) ? (strm_wk ? wf_data_ready : fst_data_ready) :
                                  1'b1;
 
     // ★★ 卷基址只加一次（interface_spec §3.2.1）：mbr_parser 读卡 0 号扇区时
@@ -394,13 +417,14 @@ module sd_bmp_player #(
         end
     end
 
-    file_index u_idx (
+    file_index #(.WINDOW_SCAN(RESIDENT_FRAMES)) u_idx (
+        .after_key(scan_after),.max_key(candidate_max),
         .clk(clk), .rst_n(rst_n),
         .ent_name(ent_name_q), .ent_attr(ent_attr_q), .ent_first_clus(ent_first_clus_q),
         .ent_size(ent_size_q), .ent_index(ent_index_q),
         .ent_valid(ent_valid_q), .ent_ready(ent_ready),
         .idx_clear(idx_clear), .idx_commit(idx_commit), .idx_done(idx_done),
-        .file_cnt(file_cnt), .file_valid(file_valid), .insufficient(insufficient),
+        .file_cnt(candidate_count), .file_valid(file_valid), .insufficient(insufficient),
         .err_code(idx_ec), .err_detail(idx_ed),
         .sel_slot(pick_slot), .sel_first_clus(sel_first_clus), .sel_size(sel_size),
         .sel_valid(sel_valid),
@@ -410,12 +434,12 @@ module sd_bmp_player #(
     );
 
     file_streamer u_fst (
-        .clk(clk), .rst_n(rst_n),
+        .clk(clk), .rst_n(media_rst_n),
         .start(fst_start), .first_clus(sel_first_clus), .file_size(sel_size),
         .busy(fst_busy), .done(fst_done), .error(fst_error),
         .err_code(fst_ec), .err_detail(fst_ed),
         .bytes_rd(fst_bytes), .dbg_state(),
-        .data(fst_data), .valid(fst_valid), .ready(bp_ready), .sof(fst_sof), .eof(fst_eof),
+        .data(fst_data), .valid(fst_valid), .ready(state_o==S_SKIP?1'b1:bp_ready), .sof(fst_sof), .eof(fst_eof),
         .sec_per_clus(bp_spc), .fat_start_lba(bp_fat_lba),
         .data_start_lba(bp_data_lba), .total_clus(bp_tot_clus),
         .wk_cur_clus(fst_wk_cur), .wk_start(fst_wk_start), .wk_rst_walk(fst_wk_rst),
@@ -430,7 +454,7 @@ module sd_bmp_player #(
     );
 
     fat32_cluster_walker u_wk_fst (
-        .clk(clk), .rst_n(rst_n), .rst_walk(fst_wk_rst), .start(fst_wk_start),
+        .clk(clk), .rst_n(media_rst_n), .rst_walk(fst_wk_rst), .start(fst_wk_start),
         .cur_clus(fst_wk_cur), .busy(fst_wk_busy), .done(fst_wk_done), .next_clus(fst_wk_next),
         .eoc(fst_wk_eoc), .error(fst_wk_err), .err_code(fst_wk_ec), .err_detail(fst_wk_ed),
         .hop_cnt(), .dbg_state(),
@@ -444,8 +468,8 @@ module sd_bmp_player #(
 
     // ---- 媒体链：字节流 → 像素 → 行序重映射 → 逐 word 写请求 ----
     bmp_parser u_bmp (
-        .clk(clk), .rst_n(rst_n),
-        .data(fst_data), .valid(fst_valid), .ready(bp_ready), .eof(fst_eof),
+        .clk(clk), .rst_n(media_rst_n),
+        .data(fst_data), .valid(fst_valid&&state_o!=S_SKIP), .ready(bp_ready), .eof(fst_eof),
         .file_size(sel_size),
         .check_done(bmp_check_done), .check_error(bmp_check_error),
         .err_code(bmp_ec), .err_detail(bmp_ed),
@@ -457,8 +481,8 @@ module sd_bmp_player #(
     );
 
     // 打包器：2 个像素 → 1 个 32 位字（低半字先），带 1 字保持位
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
+    always @(posedge clk or negedge media_rst_n) begin
+        if (!media_rst_n) begin
             lo_px <= 16'd0; have_lo <= 1'b0; hold_word <= 32'd0; hold_valid <= 1'b0;
         end else begin
             if (hold_valid && px_word_ready) hold_valid <= 1'b0;   // 先出队
@@ -478,7 +502,7 @@ module sd_bmp_player #(
     assign bpu_ready = !hold_valid || px_word_ready;
 
     bmp_unpack u_unpack (
-        .clk(clk), .rst_n(rst_n),
+        .clk(clk), .rst_n(media_rst_n),
         .din(bpo_data), .din_valid(bpo_valid), .din_ready(bpo_ready),
         .din_sof(bpo_sof), .din_eof(bpo_eof),
         .width(bmp_width), .height(bmp_height), .top_down(bmp_top_down),
@@ -494,7 +518,7 @@ module sd_bmp_player #(
     sd_sector_reader #(
         .CLK_DIV_FAST(CLK_DIV_FAST)
     ) u_rd (
-        .clk(clk), .rst_n(rst_n), .sdhc(sdhc),
+        .clk(clk), .rst_n(media_rst_n), .sdhc(sdhc),
         .rd_en(bus_rd_en), .rd_addr(rd_addr_to_reader), .rd_len(bus_rd_len),
         .rd_ready(rd_ready),
         .data(rd_data), .data_valid(rd_data_valid), .data_ready(bus_data_ready),
@@ -518,7 +542,7 @@ module sd_bmp_player #(
     spi_master #(
         .CLK_FREQ(CLK_HZ)
     ) u_spi (
-        .clk(clk), .rst_n(rst_n), .clk_div(spi_div), .cs_n(sd_ncs),
+        .clk(clk), .rst_n(media_rst_n), .clk_div(spi_div), .cs_n(sd_ncs),
         .tx_valid(spi_txv), .tx_data(spi_txd), .tx_ready(spi_tx_ready),
         .rx_data(spi_rxd), .rx_valid(spi_rxv), .busy(spi_busy),
         .sclk(sd_dclk), .mosi(sd_mosi), .miso(sd_miso)
@@ -532,6 +556,8 @@ module sd_bmp_player #(
     reg [31:0] to_cnt;
     reg [1:0]  scan_sub;        // S_SCAN 子步：0=idx_clear，1=scan_en，2=等 done
     reg        stream_kicked;   // S_STREAM 只踢一次 start
+    reg        stream_seen;     // A stale previous-file done level cannot approve a new transfer.
+    reg [31:0] stream_bytes_d;
     reg [3:0]  init_try;        // ★ SD 初始化已重试次数（init_done 清零）
     reg [2:0]  init_arm;        // ★ 每次发 start 后的"沉降窗"：等 initializer 清掉上一次的 init_error
     reg        fd_d, fd_pending;// frame_done（toggle）边沿检测
@@ -596,6 +622,8 @@ module sd_bmp_player #(
             to_cnt         <= 32'd0;
             scan_sub       <= 2'd0;
             stream_kicked  <= 1'b0;
+            stream_seen    <= 1'b0;
+            stream_bytes_d <= 32'd0;
             init_try       <= 4'd0;
             init_arm       <= 3'd0;
             pick_slot      <= 2'd0;
@@ -606,6 +634,7 @@ module sd_bmp_player #(
             cur_px_written <= 19'd0;
             last_frame_ok_o <= 1'b0;
             frame_cnt      <= 16'd0;
+            scan_after<=0;resident_count<=0;source_stream_ok<=0;resident_valid <= 0; boot_loading <= 1; cached_frame <= 0;abort_frame<=0;clean_count<=0;preload_only<=0;first_display_file<=0;transfer_reset<=0;
             out_slot       <= 2'd1;     // 先写 1 号槽（与 core 初始 active_next 错开）
             frame_active   <= 1'b0;
             top_down_o     <= 1'b0;
@@ -614,6 +643,7 @@ module sd_bmp_player #(
             //   `HDL-8007 net is constantly driven from multiple places` 并把它变成
             //   黑盒 ⇒ 综合直接失败 ✗（已踩过）
         end else begin
+            stream_bytes_d<=fst_bytes;
             // ---- 默认：所有单拍脉冲归零 ----
             init_start <= 1'b0;
             mp_start   <= 1'b0;
@@ -745,6 +775,15 @@ module sd_bmp_player #(
                     case (scan_sub)
                         2'd0: begin idx_clear <= 1'b1; scan_sub <= 2'd1; end
                         2'd1: begin scan_en   <= 1'b1; scan_sub <= 2'd2; end
+                        2'd2: begin
+                            // scan_done is sticky until the scanner ACCEPTS scan_en.
+                            // A repeated window must see that old completion cleared
+                            // before accepting the next rising completion.
+                            if(!scan_done)scan_sub<=2'd3;
+                            else if(to_cnt>=MOUNT_TO_N)begin
+                                fail_stage<=ST_SCAN;err_code<=MY_TO_MOUNT;state_o<=S_ERROR;
+                            end
+                        end
                         default: begin
                             if (scan_done) begin
                                 if (dir_bad) begin
@@ -771,7 +810,9 @@ module sd_bmp_player #(
                     to_cnt <= to_cnt + 32'd1;
                     if (idx_done) begin
                         to_cnt <= 32'd0;
-                        if (file_cnt == 4'd0) begin
+                        if(RESIDENT_FRAMES&&file_cnt==0&&resident_valid!=0)begin
+                            boot_loading<=0;cur_file<=0;pick_slot<=0;state_o<=S_READY;
+                        end else if (file_cnt == 4'd0) begin
                             fail_stage <= ST_IDX;
                             err_code   <= MY_NO_FILE;
                             state_o    <= S_ERROR;
@@ -779,7 +820,7 @@ module sd_bmp_player #(
                             card_usable <= 1'b1;
                             cur_file    <= 2'd0;
                             pick_slot   <= 2'd0;
-                            state_o     <= S_READY;
+                            state_o     <= RESIDENT_FRAMES?S_PICK:S_READY;
                         end
                     end else if (to_cnt >= MOUNT_TO_N) begin
                         fail_stage <= ST_IDX;
@@ -797,12 +838,19 @@ module sd_bmp_player #(
                     pick_to   <= pick_to + 32'd1;
                     if (pick_to >= 32'd3) begin
                         pick_to <= 32'd0;
-                        if (!sel_valid) begin
+                        if(RESIDENT_FRAMES&&!boot_loading&&resident_valid[cur_file])begin
+                            cur_file_size<=resident_size[cur_file];out_slot<=cur_file+2'd1;
+                            cached_frame<=1;preload_only<=0;state_o<=S_STREAM;
+                        end else if (!sel_valid) begin
                             fail_stage <= ST_PICK;
                             err_code   <= MY_NO_FILE;
                             state_o    <= S_ERROR;
                         end else begin
                             cur_file_size <= sel_size;
+                            if(RESIDENT_FRAMES)begin
+                                out_slot<=resident_count[1:0]+2'd1;cached_frame<=0;
+                                preload_only<=boot_loading&&(resident_valid!=0);
+                            end
                             state_o       <= S_STREAM;
                         end
                     end
@@ -812,7 +860,7 @@ module sd_bmp_player #(
                 // 等“开播 / 下一幅”：首幅自动播；之后看 btn_auto 或 btn_next
                 S_READY: begin
                     to_cnt <= 32'd0;
-                    if (frame_cnt == 16'd0) begin
+                    if (frame_cnt == 16'd0 && (!RESIDENT_FRAMES || boot_loading)) begin
                         // 首幅：播 0 号
                         cur_file  <= 2'd0;
                         pick_slot <= 2'd0;
@@ -820,8 +868,8 @@ module sd_bmp_player #(
                         state_o   <= S_PICK;
                     end else if (btn_next || btn_auto) begin
                         // 换下一幅（到末尾回绕；last_slot 已保证在合法范围）
-                        cur_file  <= (cur_file == last_slot) ? 2'd0 : (cur_file + 2'd1);
-                        pick_slot <= (cur_file == last_slot) ? 2'd0 : (cur_file + 2'd1);
+                        cur_file <= RESIDENT_FRAMES?next_resident(cur_file,resident_valid):((cur_file==last_slot)?2'd0:cur_file+1'b1);
+                        pick_slot <= RESIDENT_FRAMES?next_resident(cur_file,resident_valid):((cur_file==last_slot)?2'd0:cur_file+1'b1);
                         pick_to   <= 32'd0;
                         state_o   <= S_PICK;
                     end
@@ -829,11 +877,11 @@ module sd_bmp_player #(
 
                 // ------------------------------------------------------------
                 S_STREAM: begin
-                    to_cnt <= to_cnt + 32'd1;
+                    to_cnt <= (fst_bytes!=stream_bytes_d)?32'd0:(to_cnt+32'd1);
                     // ★ 等 mem 侧空闲（官方 FIFO 已排空）才开帧：
                     //   避免上一帧残留像素被当成本帧的开头（那会让本帧 CRC 必错）
                     if (!stream_kicked && mem_ready_s) begin
-                        fst_start     <= 1'b1;              // ★ 单拍
+                        abort_frame<=0;stream_seen<=0;source_stream_ok<=cached_frame;fst_start     <= !cached_frame;     // Cached selections perform no SD transaction.
                         frame_active  <= 1'b1;
                         stream_kicked <= 1'b1;
                     end
@@ -842,17 +890,26 @@ module sd_bmp_player #(
                     //    开帧时它还是**上一幅**的值 ⇒ 会拿错行序 ✗（已踩过）。
                     //    头解析（54 字节）远早于第一个像素（要读几十个扇区），
                     //    所以 mem 侧的桥在"首个被接受的像素"捕获行序时它早已稳定 ✓
-                    if (stream_kicked && bmp_check_done) top_down_o <= bmp_top_down;
-                    cur_file_size <= sel_size;
+                    if(stream_kicked&&!cached_frame&&fst_busy)stream_seen<=1;
+                    if(stream_kicked&&stream_seen&&!cached_frame&&fst_done&&rd_ready&&!rd_crc&&!rd_to&&!fst_error&&!bpu_error&&!bmp_check_error) source_stream_ok<=1;
+                    if (stream_kicked && !cached_frame && bmp_check_done) top_down_o <= bmp_top_down;
+                    if(!cached_frame)cur_file_size <= sel_size;
 
                     // 本帧像素产完（bmp_unpack.done）后，等 mem 侧"写完 + 换帧走完"
-                    if (stream_kicked && fd_pending) begin
+                    if (stream_kicked && fd_pending && (cached_frame || !(fst_error||bpu_error||bmp_check_error||rd_crc||rd_to))) begin
                         frame_active  <= 1'b0;
                         last_frame_ok_o <= lok_sync[1];    // 采样 mem 侧电平（已两级同步）
                         stream_kicked <= 1'b0;
                         to_cnt        <= 32'd0;
                         if (lok_sync[1]) begin
-                            frame_cnt <= frame_cnt + 16'd1;
+                            if(frame_cnt!=16'hffff)frame_cnt <= frame_cnt + 16'd1;
+                            if(RESIDENT_FRAMES)begin
+                                if(boot_loading)begin
+                                    resident_valid[resident_count[1:0]]<=1;resident_size[resident_count[1:0]]<=sel_size;
+                                    resident_count<=resident_count+1'b1;first_display_file<=0;
+                                end
+                            end
+                            fail_stage<=0;err_code<=0;err_detail<=0;
                             state_o <= S_SWAP;
                         end else begin
                             // A failed sink completion must not transfer slot
@@ -862,15 +919,16 @@ module sd_bmp_player #(
                             err_detail <= 8'h01;
                             state_o <= S_ERROR;
                         end
-                    end else if (fst_error || bpu_error || bmp_check_error) begin
-                        stream_kicked <= 1'b0;
+                    end else if (!cached_frame && (fst_error || bpu_error || bmp_check_error || rd_crc || rd_to)) begin
+                        source_stream_ok<=0;stream_kicked <= 1'b0;
                         frame_active  <= 1'b0;
                         fail_stage    <= ST_STREAM;
-                        err_code      <= fst_error ? fst_ec : (bpu_error ? bpu_ec : bmp_ec);
-                        err_detail    <= fst_error ? fst_ed : (bpu_error ? bpu_ed : bmp_ed);
-                        state_o       <= S_ERROR;
+                        err_code      <= (rd_crc||rd_to)?`ERR_SD_IO:(fst_error ? fst_ec : (bpu_error ? bpu_ec : bmp_ec));
+                        err_detail    <= rd_crc?`DET_SD_DATA_CRC:(rd_to?rd_ed:(fst_error ? fst_ed : (bpu_error ? bpu_ed : bmp_ed)));
+                        if(RESIDENT_FRAMES)begin abort_frame<=1;state_o<=S_SKIP;to_cnt<=0;end
+                        else state_o<=S_ERROR;
                     end else if (to_cnt >= STREAM_TO_N) begin
-                        stream_kicked <= 1'b0;
+                        source_stream_ok<=0;stream_kicked <= 1'b0;
                         frame_active  <= 1'b0;
                         fail_stage    <= ST_STREAM;
                         err_code      <= MY_TO_STREAM;
@@ -881,12 +939,51 @@ module sd_bmp_player #(
                 // ------------------------------------------------------------
                 // 换帧已在 mem 侧完成（含 core 的 swap）⇒ 换另一槽、准备下一幅
                 S_SWAP: begin
-                    out_slot <= out_slot ^ 2'b01;    // ★ 1<->0 交替（~1 会得 2'd2）
-                    to_cnt   <= 32'd0;
-                    state_o  <= S_READY;
+                    to_cnt<=0;
+                    if(RESIDENT_FRAMES && boot_loading)begin
+                        pick_to<=0;
+                        if(resident_count==4)begin
+                            boot_loading<=0;cur_file<=0;pick_slot<=0;state_o<=S_READY;
+                        end else if(cur_file!=last_slot)begin
+                            cur_file<=cur_file+1'b1;pick_slot<=cur_file+1'b1;state_o<=S_PICK;
+                        end else if(file_cnt==4)begin
+                            // Continue above the last sorted candidate; already verified slots survive.
+                            scan_after<=candidate_max;scan_sub<=0;state_o<=S_SCAN;
+                        end else begin
+                            boot_loading<=0;cur_file<=0;pick_slot<=0;state_o<=S_READY;
+                        end
+                    end else begin
+                        if(!RESIDENT_FRAMES)out_slot<=out_slot^2'b01;
+                        state_o<=S_READY;
+                    end
                 end
 
                 // ------------------------------------------------------------
+                // Invalid media is drained to a sector/file boundary before
+                // resetting only the transfer pipeline. Mounted geometry and
+                // the verified resident images survive. Nothing is published.
+                S_SKIP:begin
+                    to_cnt<=(fst_bytes!=stream_bytes_d)?32'd0:(to_cnt+1'b1);frame_active<=0;source_stream_ok<=0;
+                    if((fst_done||fst_error)&&rd_ready&&mem_ready_s)begin
+                        clean_count<=0;transfer_reset<=1;state_o<=S_CLEAN;
+                    end else if(to_cnt>=STREAM_TO_N)begin
+                        err_code<=MY_TO_STREAM;state_o<=S_ERROR;
+                    end
+                end
+                S_CLEAN:begin
+                    clean_count<=clean_count+1'b1;
+                    if(clean_count==63)begin
+                        transfer_reset<=0;abort_frame<=0;stream_kicked<=0;to_cnt<=0;pick_to<=0;
+                        if(boot_loading&&cur_file!=last_slot)begin
+                            cur_file<=cur_file+1'b1;pick_slot<=cur_file+1'b1;state_o<=S_PICK;
+                        end else if(boot_loading&&file_cnt==4)begin
+                            scan_after<=candidate_max;scan_sub<=0;state_o<=S_SCAN;
+                        end else if(resident_valid!=0)begin
+                            boot_loading<=0;cur_file<=first_display_file;
+                            pick_slot<=first_display_file;state_o<=S_READY;
+                        end else begin err_code<=MY_NO_FILE;state_o<=S_ERROR;end
+                    end
+                end
                 S_ERROR: begin
                     sd_ready    <= 1'b0;
                     card_usable <= 1'b0;

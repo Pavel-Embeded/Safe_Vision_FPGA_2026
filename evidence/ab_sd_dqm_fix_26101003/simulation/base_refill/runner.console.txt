@@ -1,0 +1,1 @@
+PASS card : D:\Codex\2026-10-09\github-plugin-github-openai-curated-remote\work\board_diagnosis_26101003\final_base_refill\card/sim.log

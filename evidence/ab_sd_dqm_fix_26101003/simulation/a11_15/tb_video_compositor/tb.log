@@ -1,0 +1,3 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_video_compositor.sv" into library work
+INFO: [VRFC 10-311] analyzing module compositor_case
+INFO: [VRFC 10-311] analyzing module tb_video_compositor

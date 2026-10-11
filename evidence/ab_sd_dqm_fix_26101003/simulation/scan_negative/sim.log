@@ -1,0 +1,25 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sun Oct 11 02:43:12 2026
+# Process ID: 9708
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_epoch_negative
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/scan_negative/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_epoch_negative/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_epoch_negative\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/scan_negative/xsim_script.tcl
+# xsim {scan_negative} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] full candidate window starts another directory scan
+[PASS] window frontier advances past processed candidates
+[PASS] old sticky completion cannot commit new window
+[PASS] old sticky completion cannot commit new window
+Fatal: SCAN EPOCH: old sticky completion cannot commit new window state=5 sub=2
+Time: 151 ns  Iteration: 0  Process: /tb_player_scan_epoch/check  File: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_player_scan_epoch.sv
+$finish called at time : 151 ns
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:43:16 2026...

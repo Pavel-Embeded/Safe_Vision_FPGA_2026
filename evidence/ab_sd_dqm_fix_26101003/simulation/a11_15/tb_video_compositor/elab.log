@@ -1,0 +1,23 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_video_compositor -s tb_video_compositor --timescale 1ns/1ps --log elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.video_layer_delay(LATENCY=3)
+Compiling module work.video_layer_delay_default
+Compiling module work.video_layer_delay(LATENCY=4)
+Compiling module work.video_pipeline(LATENCY=5)
+Compiling module work.video_compositor(SAFE_COLOR=24'b...
+Compiling module work.compositor_case_default
+Compiling module work.video_pipeline_default
+Compiling module work.video_compositor(NORMAL_LATENCY=...
+Compiling module work.compositor_case(N=0,O=0)
+Compiling module work.video_layer_delay(LATENCY=2)
+Compiling module work.video_compositor(NORMAL_LATENCY=...
+Compiling module work.compositor_case(N=4,O=1,E=2)
+Compiling module work.tb_video_compositor
+Built simulation snapshot tb_video_compositor

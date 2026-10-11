@@ -1,0 +1,412 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module a_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module a_debounce
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_edge_detect.v" into library work
+INFO: [VRFC 10-311] analyzing module a_edge_detect
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_mode_fsm.v" into library work
+INFO: [VRFC 10-311] analyzing module a_mode_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/pattern_generator/pattern_generator.v" into library work
+INFO: [VRFC 10-311] analyzing module pattern_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v" into library work
+INFO: [VRFC 10-311] analyzing module font8x16_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_status_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_status_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_coordinate_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_coordinate_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_overlay.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_overlay
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/a_graphics_frontend.v" into library work
+INFO: [VRFC 10-311] analyzing module a_graphics_frontend
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_pipeline/video_pipeline.v" into library work
+INFO: [VRFC 10-311] analyzing module video_pipeline
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v" into library work
+INFO: [VRFC 10-311] analyzing module video_timing
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_basics.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_a_basics
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_a_basics -s tb_a_basics_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.a_counter
+Compiling module work.a_counter(MODULO=1,WIDTH=1)
+Compiling module work.a_debounce(STABLE_CYCLES=4)
+Compiling module work.a_debounce(STABLE_CYCLES=1)
+Compiling module work.a_debounce(STABLE_CYCLES=4,RESET...
+Compiling module work.a_edge_detect
+Compiling module work.a_mode_fsm
+Compiling module work.tb_a_basics
+Built simulation snapshot tb_a_basics_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_a1_9/tb_a_basics/xsim.dir/tb_a_basics_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:28:14 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_a_basics_sim/xsim_script.tcl
+# xsim {tb_a_basics_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS tb_a_basics: 16616 checks
+$finish called at time : 33226 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_basics.sv" Line 68
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:28:18 2026...
+VERIFIED tb_a_basics
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module a_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module a_debounce
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_edge_detect.v" into library work
+INFO: [VRFC 10-311] analyzing module a_edge_detect
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_mode_fsm.v" into library work
+INFO: [VRFC 10-311] analyzing module a_mode_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/pattern_generator/pattern_generator.v" into library work
+INFO: [VRFC 10-311] analyzing module pattern_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v" into library work
+INFO: [VRFC 10-311] analyzing module font8x16_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_status_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_status_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_coordinate_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_coordinate_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_overlay.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_overlay
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/a_graphics_frontend.v" into library work
+INFO: [VRFC 10-311] analyzing module a_graphics_frontend
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_pipeline/video_pipeline.v" into library work
+INFO: [VRFC 10-311] analyzing module video_pipeline
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v" into library work
+INFO: [VRFC 10-311] analyzing module video_timing
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_pattern_generator.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_pattern_generator
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_pattern_generator -s tb_pattern_generator_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.pattern_generator_default
+Compiling module work.pattern_generator(H_ACTIVE=1280,...
+Compiling module work.tb_pattern_generator
+Built simulation snapshot tb_pattern_generator_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_a1_9/tb_pattern_generator/xsim.dir/tb_pattern_generator_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:28:21 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_pattern_generator_sim/xsim_script.tcl
+# xsim {tb_pattern_generator_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS tb_pattern_generator: 12930420 checks
+$finish called at time : 6465210 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_pattern_generator.sv" Line 51
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:12 . Memory (MB): peak = 219.766 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:28:37 2026...
+VERIFIED tb_pattern_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module a_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module a_debounce
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_edge_detect.v" into library work
+INFO: [VRFC 10-311] analyzing module a_edge_detect
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_mode_fsm.v" into library work
+INFO: [VRFC 10-311] analyzing module a_mode_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/pattern_generator/pattern_generator.v" into library work
+INFO: [VRFC 10-311] analyzing module pattern_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v" into library work
+INFO: [VRFC 10-311] analyzing module font8x16_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_status_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_status_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_coordinate_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_coordinate_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_overlay.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_overlay
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/a_graphics_frontend.v" into library work
+INFO: [VRFC 10-311] analyzing module a_graphics_frontend
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_pipeline/video_pipeline.v" into library work
+INFO: [VRFC 10-311] analyzing module video_pipeline
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v" into library work
+INFO: [VRFC 10-311] analyzing module video_timing
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_font8x16_rom.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_font8x16_rom
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_font8x16_rom -s tb_font8x16_rom_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.font8x16_rom(FONT_FILE="font8x16...
+Compiling module work.osd_coordinate_text
+Compiling module work.osd_status_text
+Compiling module work.tb_font8x16_rom
+Built simulation snapshot tb_font8x16_rom_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_a1_9/tb_font8x16_rom/xsim.dir/tb_font8x16_rom_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:28:40 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_font8x16_rom_sim/xsim_script.tcl
+# xsim {tb_font8x16_rom_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS tb_font8x16_rom: 53407 checks
+$finish called at time : 86179 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_font8x16_rom.sv" Line 49
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:28:44 2026...
+VERIFIED tb_font8x16_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module a_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module a_debounce
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_edge_detect.v" into library work
+INFO: [VRFC 10-311] analyzing module a_edge_detect
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_mode_fsm.v" into library work
+INFO: [VRFC 10-311] analyzing module a_mode_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/pattern_generator/pattern_generator.v" into library work
+INFO: [VRFC 10-311] analyzing module pattern_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v" into library work
+INFO: [VRFC 10-311] analyzing module font8x16_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_status_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_status_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_coordinate_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_coordinate_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_overlay.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_overlay
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/a_graphics_frontend.v" into library work
+INFO: [VRFC 10-311] analyzing module a_graphics_frontend
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_pipeline/video_pipeline.v" into library work
+INFO: [VRFC 10-311] analyzing module video_pipeline
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v" into library work
+INFO: [VRFC 10-311] analyzing module video_timing
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_osd_overlay.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_osd_overlay
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_osd_overlay -s tb_osd_overlay_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.font8x16_rom(FONT_FILE="font8x16...
+Compiling module work.video_pipeline(LATENCY=4)
+Compiling module work.osd_overlay(FONT_FILE="font8x16....
+Compiling module work.tb_osd_overlay
+Built simulation snapshot tb_osd_overlay_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_a1_9/tb_osd_overlay/xsim.dir/tb_osd_overlay_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:28:47 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_osd_overlay_sim/xsim_script.tcl
+# xsim {tb_osd_overlay_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+PASS tb_osd_overlay: 14013 bundles
+$finish called at time : 140119 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_osd_overlay.sv" Line 67
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:28:51 2026...
+VERIFIED tb_osd_overlay
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module a_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module a_debounce
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_edge_detect.v" into library work
+INFO: [VRFC 10-311] analyzing module a_edge_detect
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_mode_fsm.v" into library work
+INFO: [VRFC 10-311] analyzing module a_mode_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/pattern_generator/pattern_generator.v" into library work
+INFO: [VRFC 10-311] analyzing module pattern_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v" into library work
+INFO: [VRFC 10-311] analyzing module font8x16_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_status_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_status_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_coordinate_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_coordinate_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_overlay.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_overlay
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/a_graphics_frontend.v" into library work
+INFO: [VRFC 10-311] analyzing module a_graphics_frontend
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_pipeline/video_pipeline.v" into library work
+INFO: [VRFC 10-311] analyzing module video_pipeline
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v" into library work
+INFO: [VRFC 10-311] analyzing module video_timing
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_graphics_frontend.sv" into library work
+INFO: [VRFC 10-311] analyzing module graphics_frame_checker
+INFO: [VRFC 10-311] analyzing module tb_a_graphics_frontend
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_a_graphics_frontend -s tb_a_graphics_frontend_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.video_timing_default
+Compiling module work.pattern_generator_default
+Compiling module work.osd_status_text
+Compiling module work.osd_coordinate_text
+Compiling module work.font8x16_rom(FONT_FILE="font8x16...
+Compiling module work.video_pipeline(LATENCY=4)
+Compiling module work.osd_overlay(FONT_FILE="font8x16....
+Compiling module work.a_graphics_frontend(FONT_FILE="f...
+Compiling module work.graphics_frame_checker_default
+Compiling module work.video_timing(H_ACTIVE=1280,H_FRO...
+Compiling module work.pattern_generator(H_ACTIVE=1280,...
+Compiling module work.video_pipeline(LATENCY=4,HSYNC_A...
+Compiling module work.osd_overlay(FONT_FILE="font8x16....
+Compiling module work.a_graphics_frontend(HD=1,FONT_FI...
+Compiling module work.graphics_frame_checker(HD=1)
+Compiling module work.graphics_frame_checker(COORD=1)
+Compiling module work.tb_a_graphics_frontend
+Built simulation snapshot tb_a_graphics_frontend_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_a1_9/tb_a_graphics_frontend/xsim.dir/tb_a_graphics_frontend_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:28:54 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_a_graphics_frontend_sim/xsim_script.tcl
+# xsim {tb_a_graphics_frontend_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+FRAME HD=0 COORD=1: 420005 bundles active=307200 line=525 blank-event=1 active-event=1
+FRAME HD=0 COORD=0: 420005 bundles active=307200 line=525 blank-event=1 active-event=1
+FRAME HD=1 COORD=0: 1237505 bundles active=921600 line=750 blank-event=1 active-event=1
+PASS tb_a_graphics_frontend: BASE and HD complete frames, 4-cycle alignment
+$finish called at time : 12375046 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_graphics_frontend.sv" Line 69
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:10 . Memory (MB): peak = 219.582 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:29:08 2026...
+VERIFIED tb_a_graphics_frontend
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_a1_9/counter_negative_control/a_counter_mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module a_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module a_debounce
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_edge_detect.v" into library work
+INFO: [VRFC 10-311] analyzing module a_edge_detect
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_mode_fsm.v" into library work
+INFO: [VRFC 10-311] analyzing module a_mode_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/pattern_generator/pattern_generator.v" into library work
+INFO: [VRFC 10-311] analyzing module pattern_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v" into library work
+INFO: [VRFC 10-311] analyzing module font8x16_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_status_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_status_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_coordinate_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_coordinate_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_overlay.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_overlay
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/a_graphics_frontend.v" into library work
+INFO: [VRFC 10-311] analyzing module a_graphics_frontend
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_pipeline/video_pipeline.v" into library work
+INFO: [VRFC 10-311] analyzing module video_pipeline
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v" into library work
+INFO: [VRFC 10-311] analyzing module video_timing
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_basics.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_a_basics
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_a_basics -s counter_negative_control_sim --timescale 1ns/1ps --log xelab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.a_counter
+Compiling module work.a_counter(MODULO=1,WIDTH=1)
+Compiling module work.a_debounce(STABLE_CYCLES=4)
+Compiling module work.a_debounce(STABLE_CYCLES=1)
+Compiling module work.a_debounce(STABLE_CYCLES=4,RESET...
+Compiling module work.a_edge_detect
+Compiling module work.a_mode_fsm
+Compiling module work.tb_a_basics
+Built simulation snapshot counter_negative_control_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_a1_9/counter_negative_control/xsim.dir/counter_negative_control_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:29:11 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/counter_negative_control_sim/xsim_script.tcl
+# xsim {counter_negative_control_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+Fatal: tb_a_basics: counter threshold/count/tick
+Time: 9996 ns  Iteration: 0  Process: /tb_a_basics/check  File: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_basics.sv
+$finish called at time : 9996 ns
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:29:15 2026...
+VERIFIED counter negative control: expected assertion failure
+PASS A stages 1-9 simulation suite (including negative control)

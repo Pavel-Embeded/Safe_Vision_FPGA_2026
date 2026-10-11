@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/models/sd_spi_card_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_spi_card_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_bmp_player.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_sd_bmp_player

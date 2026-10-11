@@ -30,7 +30,8 @@ module video_read_dma_checked #(
     reg [1:0] bank_ready;
     reg [BW:0] fill_count;
     reg [BW-1:0] drain_index;
-    reg [31:0] landing[0:2*BURST_WORDS-1];
+    // Each bank is padded to a binary address boundary; valid words remain BURST_WORDS.
+    reg [31:0] landing[0:2*(1<<BW)-1];
     reg [31:0] base,issued_words,drained_words,crc_state,burst_crc,wait_count;
     reg [1:0] settle;
     wire capture=rd_data_valid&&((read_state==REQUEST&&rd_ack)||read_state==COLLECT);
@@ -120,8 +121,8 @@ module video_read_dma_checked #(
         end
     end
     // synthesis translate_off
-    initial if(BURST_WORDS<2||(BURST_WORDS&(BURST_WORDS-1))!=0||
+    initial if(BURST_WORDS<2||
                FRAME_WORDS%BURST_WORDS!=0||PIX_DEPTH<=RESERVE||LOW_WATER<1)
-        $fatal(1,"checked DMA requires power-of-two blocks and a complete frame");
+        $fatal(1,"checked DMA requires complete blocks and a complete frame");
     // synthesis translate_on
 endmodule

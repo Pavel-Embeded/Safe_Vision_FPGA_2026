@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 10 21:52:22 2026
+# Process ID: 33024
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_dqm/lat_11
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/dqm/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_dqm/lat_11/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/verified_dqm/lat_11\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/dqm/xsim_script.tcl
+# xsim {dqm} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+DQM REPRO LAT=11 WORDS=64 PAD=64 EXPECTED=0D968558 ACTUAL=0d968558 DM=0
+PASS tb_sdram_read_dqm: 64 slow writes / untouched neighbour / exact first-block CRC
+$finish called at time : 333050 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdram_read_dqm.sv" Line 50
+## quit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 10 21:52:25 2026...

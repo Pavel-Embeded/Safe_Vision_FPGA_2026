@@ -59,7 +59,8 @@ module safevision_top #(
     parameter [31:0] RPT_PERIOD_N = MEM_CLK_HZ/2,
     parameter [15:0] PLAYER_SPI_INIT_DIV=16'd249,
     parameter [15:0] PLAYER_SPI_FAST_DIV=16'd1,
-    parameter integer STORAGE_INTEGRITY=1
+    parameter integer STORAGE_INTEGRITY=1, RESIDENT_FRAMES=1,
+    parameter integer CONTROL_SECOND_CYCLES=50000000
 )(
     // ---- 板级引脚（引脚号见 project/board_verify/board_b.adc）----
     input  wire        clk,             // R7  50 MHz
@@ -183,7 +184,8 @@ module safevision_top #(
     // ---- 播放引擎（clk = 板载 50 MHz 域）----
     wire [31:0] pl_px_word;                  // 2 像素打包（低半字先）
     wire        pl_px_word_valid, pl_px_word_ready;
-    wire        pl_frame_active, pl_top_down;
+    wire        pl_frame_active, pl_top_down, pl_cached_frame,pl_abort_frame,pl_preload_only,pl_source_stream_ok;
+    localparam integer STORAGE_BLOCK_WORDS=RESIDENT_FRAMES?320:64;
     wire [1:0]  pl_slot;
     wire [3:0]  pl_state, pl_fail_stage;
     wire [7:0]  pl_ec, pl_ed;
@@ -198,12 +200,12 @@ module safevision_top #(
     wire [15:0] pl_frame_cnt;
 
     // ---- 帧接收器（mem_clk = 50 MHz 域）----
-    wire integrity_begin,integrity_top_down,integrity_done,integrity_pass,integrity_fault;
+    wire integrity_begin,integrity_abort,integrity_top_down,integrity_done,integrity_pass,integrity_fault;
     wire [1:0] integrity_slot;
     wire verify_req,verify_ack,verify_busy,verify_valid;
     wire [31:0] verify_addr,verify_data,lookup_addr,lookup_crc;
     wire lookup_valid,video_integrity_fault;
-    wire [31:0] integrity_bad_addr,integrity_expected,integrity_actual;
+    wire [31:0] integrity_bad_addr,integrity_expected,integrity_actual,integrity_first_word;
     wire [31:0] video_bad_addr,video_expected,video_actual,integrity_words;
     wire [15:0] integrity_blocks,display_fifo_level;
     wire display_dma_active;
@@ -245,7 +247,9 @@ module safevision_top #(
     // HX4S20 schematic 6_EX_DEVICE.pdf: 10k pull-ups, switches to GND.
     // Board pins are active LOW. The player receives normalized press signals.
     wire next_pressed=~next_sync[1],auto_pressed=~auto_sync[1];
-    reg [15:0] dn_cnt, da_cnt;
+    // About 21 ms on the actual 50 MHz board; legacy unit mode retains 1.31 ms.
+    localparam [19:0] BUTTON_STABLE_N=RESIDENT_FRAMES?20'hfffff:20'h0ffff;
+    reg [19:0] dn_cnt, da_cnt;
     reg        dn_s, da_s;
     reg        dn_db, dn_db_d, da_db;
 
@@ -265,11 +269,11 @@ module safevision_top #(
             dn_s <= next_pressed; da_s <= auto_pressed;
 
             if (next_pressed != dn_s)        dn_cnt <= 16'd0;
-            else if (dn_cnt != 16'hFFFF) dn_cnt <= dn_cnt + 16'd1;
+            else if (dn_cnt != BUTTON_STABLE_N) dn_cnt <= dn_cnt + 20'd1;
             else                         dn_db  <= next_pressed;    // 稳定满窗才更新输出
 
             if (auto_pressed != da_s)        da_cnt <= 16'd0;
-            else if (da_cnt != 16'hFFFF) da_cnt <= da_cnt + 16'd1;
+            else if (da_cnt != BUTTON_STABLE_N) da_cnt <= da_cnt + 20'd1;
             else                         da_db  <= auto_pressed;
 
             dn_db_d <= dn_db;
@@ -278,6 +282,11 @@ module safevision_top #(
 
     wire btn_next_db = dn_db & ~dn_db_d;   // 按下沿 → 单拍脉冲（"下一幅"）
     wire btn_auto_db = da_db;              // 电平（"自动连播"开关）
+    wire auto_next,auto_enabled;wire [1:0] auto_period;
+    board_play_control #(.SECOND_CYCLES(CONTROL_SECOND_CYCLES)) play_control(
+        .clk(clk),.rst_n(ref_rst_n),.manual_next(btn_next_db),.auto_down(btn_auto_db),
+        .ready(pl_state==7),.auto_next(auto_next),.enabled(auto_enabled),.period(auto_period));
+
 
     // A missing swap acknowledgement leaves active-slot ownership uncertain.
     // Latch this fault until common reset. Transfer only the stable single-bit
@@ -294,11 +303,11 @@ module safevision_top #(
     sd_bmp_player #(
         // ★ 本模块的时钟就是板载 50 MHz（R7 的原始晶振），不再经过 PLL：
         //   top_stage5/6 原本就是 "single 50 MHz domain, no PLL"，零风险。
-        .CLK_HZ(50_000_000),.CLK_DIV_INIT(PLAYER_SPI_INIT_DIV),.CLK_DIV_FAST(PLAYER_SPI_FAST_DIV)
+        .RESIDENT_FRAMES(RESIDENT_FRAMES),.CLK_HZ(50_000_000),.CLK_DIV_INIT(PLAYER_SPI_INIT_DIV),.CLK_DIV_FAST(PLAYER_SPI_FAST_DIV)
     ) player (
         .clk(clk), .rst_n(ref_rst_n),
         .run(1'b1),
-        .btn_next(btn_next_db), .btn_auto(btn_auto_db),
+        .btn_next(btn_next_db), .btn_auto(RESIDENT_FRAMES?auto_next:btn_auto_db),
         // A swap-ACK timeout can mean PIX already committed while SYS lost
         // the acknowledgement. Local retry cannot infer the active slot.
         // Preserve that slot until KEY1/common reset reinitializes both sides.
@@ -309,7 +318,7 @@ module safevision_top #(
         .sd_ncs(sd_ncs), .sd_dclk(sd_dclk), .sd_mosi(sd_mosi), .sd_miso(sd_miso),
         .px_word(pl_px_word), .px_word_valid(pl_px_word_valid),
         .px_word_ready(pl_px_word_ready),
-        .frame_active(pl_frame_active), .top_down_o(pl_top_down), .slot_o(pl_slot),
+        .source_stream_ok(pl_source_stream_ok),.preload_only(pl_preload_only),.abort_frame(pl_abort_frame),.cached_frame(pl_cached_frame),.frame_active(pl_frame_active), .top_down_o(pl_top_down), .slot_o(pl_slot),
         .mem_ready(sk_mem_ready && card_mode && adapter_init && !(STORAGE_INTEGRITY && (integrity_fault || playback_fault)) && !swap_fault_latched && (sk_ec != 8'hF1)), .frame_done(sk_frame_done),
         .last_frame_ok(sk_frame_ok),
         .state_o(pl_state), .fail_stage(pl_fail_stage),
@@ -327,19 +336,21 @@ module safevision_top #(
     //   ★ swap_busy 用 `swap_busy_mem`（已从 sys 域两级同步进 mem 域）：
     //     core 的 frame_swap_ctrl 跑在 **sys_clk**（见 frame_swap_ctrl.v 头注），
     //     所以不能把 `swap_state_o` 直接接进来（那是 sys→mem 的 CDC）✗
-    bmp_frame_sink #(.REQUIRE_WRITE_DRAIN(1),.REQUIRE_READBACK(STORAGE_INTEGRITY),
-        .GAP_TIMEOUT(MEM_CLK_HZ/250),.SWAP_TO_N(MEM_CLK_HZ/10),.WRITE_TO_N(MEM_CLK_HZ/2)) sink (
+    bmp_frame_sink #(.REQUIRE_WRITE_DRAIN(1),.REQUIRE_READBACK(STORAGE_INTEGRITY),.REQUIRE_STREAM_DONE(1),
+        // Reader allows 200 ms for a data token at 50 MHz. A legal slow
+        // sector must not be rejected by a shorter pixel-gap watchdog.
+        .GAP_TIMEOUT(MEM_CLK_HZ/4),.SWAP_TO_N(MEM_CLK_HZ/10),.WRITE_TO_N(MEM_CLK_HZ/2)) sink (
         .clk(mem_clk), .rst_n(mem_rst_n), .wr_clk(clk),
         .px_word(pl_px_word), .px_word_valid(pl_px_word_valid),
         .px_word_ready(pl_px_word_ready),
-        .frame_active(pl_frame_active), .top_down(pl_top_down), .slot(pl_slot),
+        .source_stream_ok(pl_source_stream_ok),.preload_only(pl_preload_only),.abort_frame(pl_abort_frame),.cached_frame(pl_cached_frame),.frame_active(pl_frame_active), .top_down(pl_top_down), .slot(pl_slot),
         .mem_ready(sk_mem_ready), .frame_done(sk_frame_done),
         .last_frame_ok(sk_frame_ok),
         .wr_req(sk_wr_req), .wr_addr(sk_wr_addr), .wr_data(sk_wr_data),
         .wr_len(sk_wr_len), .wr_ready(prod_word_accepted && card_mode),
         .write_drained(adapter_write_idle && !prod_wr_busy),
         .verify_done(integrity_done),.verify_pass(integrity_pass),
-        .source_begin(integrity_begin),.source_slot(integrity_slot),.source_top_down(integrity_top_down),
+        .source_begin(integrity_begin),.source_abort(integrity_abort),.source_slot(integrity_slot),.source_top_down(integrity_top_down),
         .swap_toggle(sk_swap_toggle), .swap_slot(sk_swap_slot),
         .swap_generation(sk_swap_gen), .swap_crc_ok(sk_swap_crc_ok),
         .swap_busy(swap_busy_mem),
@@ -585,9 +596,9 @@ module safevision_top #(
         .x(scan_x),.y(scan_y),.active(safety_active),.direction(2'd2),
         .warning_level(safety_level),.rgb(safety_rgb),.valid(safety_valid));
 
-    frame_integrity_guard #(.TIMEOUT(MEM_CLK_HZ)) integrity(
-        .clk(mem_clk),.rst_n(mem_rst_n),.frame_begin(integrity_begin),.frame_slot(integrity_slot),
-        .top_down(integrity_top_down),.accepted(prod_word_accepted&&card_mode),
+    frame_integrity_guard #(.SLOTS(RESIDENT_FRAMES?4:2),.BLOCK_WORDS(STORAGE_BLOCK_WORDS),.TIMEOUT(MEM_CLK_HZ)) integrity(
+        .clk(mem_clk),.rst_n(mem_rst_n),.frame_abort(integrity_abort),.frame_begin(integrity_begin),.frame_slot(integrity_slot),
+        .top_down(integrity_top_down),.accepted(prod_word_accepted&&card_mode&&sk_state==1),
         .write_addr(prod_wr_addr),.write_data(prod_wr_data),
         .verify_start(STORAGE_INTEGRITY && sk_state==4 && adapter_write_idle && !prod_wr_busy),
         .verify_allow(!display_dma_active || display_fifo_level>=16'd3000),
@@ -595,10 +606,10 @@ module safevision_top #(
         .rd_req(verify_req),.rd_addr(verify_addr),.rd_len(),.rd_ack(verify_ack),.rd_busy(verify_busy),
         .rd_data(verify_data),.rd_valid(verify_valid),.lookup_addr(lookup_addr),
         .lookup_crc(lookup_crc),.lookup_valid(lookup_valid),.bad_addr(integrity_bad_addr),
-        .bad_expected(integrity_expected),.bad_actual(integrity_actual),
+        .bad_expected(integrity_expected),.bad_actual(integrity_actual),.bad_first_word(integrity_first_word),
         .source_words(integrity_words),.checked_blocks(integrity_blocks));
 
-    safevision_core #(.HD(HD), .FONT_FILE(FONT_FILE),.EMERGENCY_LATENCY(4),.DMA_STREAMING(1),.DMA_CHECKED(STORAGE_INTEGRITY),.FIFO_AW(STORAGE_INTEGRITY?11:12),.BURST_WORDS(STORAGE_INTEGRITY?64:256)) core(
+    safevision_core #(.HD(HD), .FONT_FILE(FONT_FILE),.EMERGENCY_LATENCY(4),.DMA_STREAMING(1),.DMA_CHECKED(STORAGE_INTEGRITY),.FIFO_AW(STORAGE_INTEGRITY?11:12),.BURST_WORDS(STORAGE_INTEGRITY?STORAGE_BLOCK_WORDS:256)) core(
         .sys_clk(sys_clk), .mem_clk(mem_clk), .pixel_clk(pixel_clk), .rst_n(common_rst_n),
         .frame_ready(frame_ready), .wr_frame_index(1'b0), .wr_slot_id(slot_sys),
         .wr_generation(gen_sys), .wr_crc_ok(crc_sys),
@@ -607,7 +618,7 @@ module safevision_top #(
         .frame_start_evt_b(), .swap_ack_evt_b(),
         .wr_req(prod_wr_req), .wr_addr(prod_wr_addr), .wr_data(prod_wr_data),
         .wr_len(prod_wr_len), .wr_ack(prod_wr_ack), .wr_busy(prod_wr_busy),
-        .sd_req(verify_req&&STORAGE_INTEGRITY), .sd_wr(1'b0), .sd_addr(verify_addr), .sd_wdata(32'd0), .sd_len(16'd64),
+        .sd_req(verify_req&&STORAGE_INTEGRITY), .sd_wr(1'b0), .sd_addr(verify_addr), .sd_wdata(32'd0), .sd_len(STORAGE_BLOCK_WORDS),
         .sd_ack(verify_ack), .sd_busy(verify_busy), .sd_rdata(verify_data), .sd_rdata_valid(verify_valid),
         .mem_req(mem_req), .mem_wr(mem_wr), .mem_addr(mem_addr),
         .mem_wdata(mem_wdata), .mem_wstrb(mem_wstrb),
@@ -721,13 +732,13 @@ module safevision_top #(
     //   ★ 每字节分两步（先算进寄存器、再送），避免把一个大 mux 直接压在
     //     UART 握手路径上（既有踩坑：报告选择器曾是最差路径）。
     // ========================================================================
-    localparam integer RPT_LEN    = 189;
+    localparam integer RPT_LEN    = 202;
     localparam [31:0]  RPT_PERIOD = RPT_PERIOD_N;          // 见模块 parameter 注释
 
     // Snapshot integrity diagnostics at packet start. PH: 0 writing/idle,
     // 1 readback, 2 approved, 3 source/readback fault, 4 playback CRC fault.
     reg [3:0] diagnostic_phase;
-    reg [31:0] diagnostic_addr,diagnostic_expected,diagnostic_actual,diagnostic_words;
+    reg [31:0] diagnostic_addr,diagnostic_expected,diagnostic_actual,diagnostic_words,diagnostic_first_word;
     reg [15:0] diagnostic_blocks;
     reg [7:0]  ridx;
     reg [31:0] rper;
@@ -745,7 +756,7 @@ module safevision_top #(
             ridx <= 8'd0; rper <= 32'd0; rbusy <= 1'b0; rload <= 1'b0; rbyte <= 8'd0;
             rwait <= 1'b0;
             diagnostic_phase<=0;diagnostic_addr<=0;diagnostic_expected<=0;
-            diagnostic_actual<=0;diagnostic_words<=0;diagnostic_blocks<=0;
+            diagnostic_actual<=0;diagnostic_words<=0;diagnostic_blocks<=0;diagnostic_first_word<=0;
         end else begin
             if (!rbusy) begin
                 if (rper >= RPT_PERIOD) begin
@@ -754,7 +765,7 @@ module safevision_top #(
                     diagnostic_addr<=playback_fault?playback_bad_addr:integrity_bad_addr;
                     diagnostic_expected<=playback_fault?playback_expected:integrity_expected;
                     diagnostic_actual<=playback_fault?playback_actual:integrity_actual;
-                    diagnostic_words<=integrity_words;diagnostic_blocks<=integrity_blocks;
+                    diagnostic_first_word<=integrity_first_word;diagnostic_words<=integrity_words;diagnostic_blocks<=integrity_blocks;
                 end else rper <= rper + 32'd1;
             end else if (rload) begin
                 // ★ 时序（mem→mem 多米诺，2026-10-06）：ridx 刚更新后**故意等 1 拍**
@@ -829,7 +840,7 @@ module safevision_top #(
             8'd73: rbyte_c = hexc(sk_frame_cnt[7:4]);   8'd74: rbyte_c = hexc(sk_frame_cnt[3:0]);
             8'd75: rbyte_c = 8'h20; 8'd76: rbyte_c = 8'h53; 8'd77: rbyte_c = 8'h4C;
             8'd78: rbyte_c = 8'h4F; 8'd79: rbyte_c = 8'h54; 8'd80: rbyte_c = 8'h3D; // " SLOT="
-            8'd81: rbyte_c = hexc({2'd0, sk_swap_slot});
+            8'd81: rbyte_c = hexc({2'd0, publish_slot});
             8'd82: rbyte_c = 8'h20; 8'd83: rbyte_c = 8'h43; 8'd84: rbyte_c = 8'h52;
             8'd85: rbyte_c = 8'h43; 8'd86: rbyte_c = 8'h3D;                   // " CRC="
             8'd87: rbyte_c = hexc({3'd0, sk_swap_crc_ok});
@@ -860,7 +871,7 @@ module safevision_top #(
             8'd121: rbyte_c = 8'h31;
             8'd122: rbyte_c = 8'h30;
             8'd123: rbyte_c = 8'h30;
-            8'd124: rbyte_c = 8'h32; // ID=26101002: late BMP header orientation fix
+            8'd124: rbyte_c = 8'h33; // ID=26101003: DQM read release and resident frames
             8'd125: rbyte_c = 8'h20;
             8'd126: rbyte_c = 8'h50;
             8'd127: rbyte_c = 8'h48;
@@ -923,8 +934,21 @@ module safevision_top #(
             8'd184: rbyte_c = hexc(diagnostic_blocks[11:8]);
             8'd185: rbyte_c = hexc(diagnostic_blocks[7:4]);
             8'd186: rbyte_c = hexc(diagnostic_blocks[3:0]);
-            8'd187: rbyte_c = 8'h0d;
-            8'd188: rbyte_c = 8'h0a;
+            8'd187: rbyte_c = 8'h20;
+            8'd188: rbyte_c = 8'h52;
+            8'd189: rbyte_c = 8'h41;
+            8'd190: rbyte_c = 8'h57;
+            8'd191: rbyte_c = 8'h3d;
+            8'd192: rbyte_c = hexc(diagnostic_first_word[31:28]);
+            8'd193: rbyte_c = hexc(diagnostic_first_word[27:24]);
+            8'd194: rbyte_c = hexc(diagnostic_first_word[23:20]);
+            8'd195: rbyte_c = hexc(diagnostic_first_word[19:16]);
+            8'd196: rbyte_c = hexc(diagnostic_first_word[15:12]);
+            8'd197: rbyte_c = hexc(diagnostic_first_word[11:8]);
+            8'd198: rbyte_c = hexc(diagnostic_first_word[7:4]);
+            8'd199: rbyte_c = hexc(diagnostic_first_word[3:0]);
+            8'd200: rbyte_c = 8'h0d;
+            8'd201: rbyte_c = 8'h0a;
             default: rbyte_c = 8'h20;
         endcase
     end
@@ -951,4 +975,36 @@ module safevision_top #(
                    (card_mode ? t_card : fb_submitted) && frame_ok_any,
                    sys_lock && video_lock && sdr_init_done };
 
+endmodule
+
+// Debounced board controls, entirely in the 50 MHz reference-clock domain.
+// Short KEY2 press/release toggles automatic playback. A >=1 second hold
+// changes its period among 2/5/10/30 seconds once, without toggling playback.
+module board_play_control #(parameter integer SECOND_CYCLES=50000000)(
+ input wire clk,rst_n,manual_next,auto_down,ready,
+ output reg auto_next,enabled,output reg [1:0] period
+);
+ reg down_d,long_seen;reg [31:0] held,timer;reg [31:0] interval;
+ always @* case(period)
+   0:interval=SECOND_CYCLES*2;1:interval=SECOND_CYCLES*5;
+   2:interval=SECOND_CYCLES*10;default:interval=SECOND_CYCLES*30;
+ endcase
+ always @(posedge clk or negedge rst_n)begin
+   if(!rst_n)begin auto_next<=0;enabled<=0;period<=0;down_d<=0;long_seen<=0;held<=0;timer<=0;end
+   else begin
+     auto_next<=0;down_d<=auto_down;
+     if(!auto_down)begin
+       held<=0;long_seen<=0;
+       if(down_d&&!long_seen)begin enabled<=!enabled;timer<=0;end
+     end else if(held<SECOND_CYCLES)held<=held+1'b1;
+     else if(!long_seen)begin period<=period+1'b1;long_seen<=1;timer<=0;end
+     // Both manual changes and non-ready phases begin a new full interval.
+     if(!enabled||!ready||manual_next||(down_d&&!auto_down)||(!long_seen&&held>=SECOND_CYCLES))timer<=0;
+     else if(timer>=interval-1)begin auto_next<=1;timer<=0;end
+     else timer<=timer+1'b1;
+   end
+ end
+ // synthesis translate_off
+ initial if(SECOND_CYCLES<2||SECOND_CYCLES>71582788)$fatal(1,"invalid control second length");
+ // synthesis translate_on
 endmodule

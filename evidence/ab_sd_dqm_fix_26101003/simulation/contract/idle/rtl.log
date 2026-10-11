@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/hdmi_output/hdmi_video_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module hdmi_video_bridge
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_integrity_guard.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_integrity_guard
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/video_read_dma_checked.v" into library work
+INFO: [VRFC 10-311] analyzing module video_read_dma_checked

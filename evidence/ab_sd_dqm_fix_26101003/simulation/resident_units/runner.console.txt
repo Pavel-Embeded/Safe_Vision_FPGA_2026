@@ -1,0 +1,3 @@
+PASS resident board_play_control
+PASS resident resident_row_integrity
+PASS resident file_index_window

@@ -4,7 +4,12 @@
 // HDMI: vendor core/PHY contract stubs; pixel checks stop at accepted AXIS data.
 `timescale 1ns/1ps
 `include "pixel_format_defs.vh"
-module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=4,BMP_TOP_DOWN=0);
+module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=4,BMP_TOP_DOWN=0,RESIDENT=0,PRODUCTION_SPI=0,FIRST_ONLY=0,BAD_IMAGE=-1,BAD_TAIL_IMAGE=-1,EXTRA_FILE=0);
+    localparam integer GOOD_COUNT=4+EXTRA_FILE-((BAD_IMAGE>=0||BAD_TAIL_IMAGE>=0)?1:0);
+    localparam integer REJECT_IMAGE=(BAD_IMAGE>=0)?BAD_IMAGE:BAD_TAIL_IMAGE;
+    function integer resident_image(input integer packed_index);
+      resident_image=(REJECT_IMAGE>=0&&packed_index>=REJECT_IMAGE)?packed_index+1:packed_index;
+    endfunction
     localparam integer SCREEN_W=HD?1280:640,SCREEN_PIX=HD?921600:307200;
     localparam integer W = 640;
     localparam integer H = 480;
@@ -18,15 +23,15 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
     localparam [7:0]  SPC      = 8'd32;
     localparam [15:0] RSVD     = 16'd1;
     localparam [7:0]  NFAT     = 8'd1;
-    localparam [31:0] FATSZ    = 32'd2;
-    localparam [31:0] TOTSEC   = 32'd8192;
+    localparam [31:0] FATSZ    = 32'd4;
+    localparam [31:0] TOTSEC   = 32'd16384;
     localparam [31:0] ROOTCLUS = 32'd2;
     localparam [31:0] FILE_CLUS = 32'd3;
     localparam integer FILE_CLUS_N = (FILE_SECTORS + 31)/32;  // 57
     localparam [31:0] FILE_CLUS_LAST = FILE_CLUS + FILE_CLUS_N - 1;  // 59
     localparam [31:0] VOL_FAT_LBA   = 32'd1;
-    localparam [31:0] VOL_ROOT_LBA  = 32'd3;
-    localparam [31:0] VOL_FILE0_LBA = 32'd35;
+    localparam [31:0] VOL_ROOT_LBA  = 32'd5;
+    localparam [31:0] VOL_FILE0_LBA = 32'd37;
 
     localparam [31:0] SLOT1_WORD = `SV_IMG1_BASE >> 2;        // 163840
     localparam [31:0] SLOT0_WORD = `SV_IMG0_BASE >> 2;        // 0
@@ -65,6 +70,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
         1:image_mask24=24'h5a3cc3;
         2:image_mask24=24'ha55aa5;
         3:image_mask24=24'h3cc35a;
+        4:image_mask24=24'hcc6699;
         default:image_mask24=0;
       endcase
     endfunction
@@ -74,10 +80,11 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
         1:image_mask565=16'h59f8;
         2:image_mask565=16'ha2d4;
         3:image_mask565=16'h3e0b;
+        4:image_mask565=16'hcb33;
         default:image_mask565=0;
       endcase
     endfunction
-    reg file_pattern=0;
+    reg file_pattern=0,card_dead=0;integer tail_faults=0;
     reg [7:0] bmp_hdr [0:53];
     initial begin
         integer i;
@@ -110,7 +117,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
         integer p, n, c, r, x, y;
         reg [23:0] pxv;
         begin
-            if (j < 54) filebyte = bmp_hdr[j];
+            if (j < 54) filebyte = (j==0&&image_id==BAD_IMAGE)?8'h00:bmp_hdr[j];
             else begin
                 p = j - 54;
                 n = p / 3;
@@ -157,6 +164,8 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
             // this explicitly synthetic small FAT32 volume.
             u_card.vol_zero(VOL_FAT_LBA);
             u_card.vol_zero(VOL_FAT_LBA+1);
+            u_card.vol_zero(VOL_FAT_LBA+2);
+            u_card.vol_zero(VOL_FAT_LBA+3);
             u_card.vol_set_le(VOL_FAT_LBA, 16'd8, 32'h0FFF_FFFF, 3'd4);
             // 根目录：4 条目录项
             u_card.vol_zero(VOL_ROOT_LBA);
@@ -164,7 +173,8 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd32, "SV0002  BMP", 8'h20, FILE_CLUS+FILE_CLUS_N, FILE_BYTES);
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd64, "SV0003  BMP", 8'h20, FILE_CLUS+2*FILE_CLUS_N, FILE_BYTES);
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd96, "SV0004  BMP", 8'h20, FILE_CLUS+3*FILE_CLUS_N, FILE_BYTES);
-            for(image_id=0;image_id<4;image_id=image_id+1)begin
+            if(EXTRA_FILE)u_card.mk_dir_entry(VOL_ROOT_LBA,16'd128,"SV0005  BMP",8'h20,FILE_CLUS+4*FILE_CLUS_N,FILE_BYTES);
+            for(image_id=0;image_id<4+EXTRA_FILE;image_id=image_id+1)begin
             first_cluster=FILE_CLUS+image_id*FILE_CLUS_N;
             last_cluster=first_cluster+FILE_CLUS_N-1;
             file_lba=VOL_FILE0_LBA+image_id*FILE_CLUS_N*SPC;
@@ -192,16 +202,16 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
  reg clk=0;always #(SD_HALF_NS) clk=~clk;
  reg rst_n=0,btn_next=1,btn_auto=1;
  wire sd_ncs,sd_dclk,sd_mosi,sd_miso,uart_txd;
- wire [3:0] led;wire d0,d1,d2,dc,scl;tri1 sda;
- safevision_top #(.HD(HD),.PLAYER_SPI_FAST_DIV(0),.FONT_FILE("font8x16.mem"),.PLAYER_SPI_INIT_DIV(1)) dut(
+ wire [7:0] card_commands;wire [3:0] led;wire d0,d1,d2,dc,scl;tri1 sda;
+ safevision_top #(.RESIDENT_FRAMES(RESIDENT),.CONTROL_SECOND_CYCLES(RESIDENT?2000000:50000000),.HD(HD),.PLAYER_SPI_FAST_DIV(0),.FONT_FILE("font8x16.mem"),.PLAYER_SPI_INIT_DIV(PRODUCTION_SPI?249:1)) dut(
  .clk(clk),.rst_n(rst_n),.btn_next(btn_next),.btn_auto(btn_auto),.btn_emergency(1'b1),.uart_txd(uart_txd),.led(led),
  .sd_ncs(sd_ncs),.sd_dclk(sd_dclk),.sd_mosi(sd_mosi),.sd_miso(sd_miso),
  .HDMI_D0_P(d0),.HDMI_D1_P(d1),.HDMI_D2_P(d2),.HDMI_CLK_P(dc),
  .HDMI_DDC_SCL(scl),.HDMI_DDC_SDA(sda));
  defparam dut.memory_ip.RD_LAT=RD_LAT;
- sd_spi_card_model #(.VOL_BASE(VOL_BASE),.VOL_SECTORS(8192)) u_card(
- .sclk(sd_dclk),.cs_n(sd_ncs),.mosi(sd_mosi),.miso(sd_miso),.i_dead(1'b0),
- .o_cmd(),.o_arg(),.o_acmd41_arg(),.o_cmd_cnt(),.o_acmd41_cnt(),.o_cmd_valid());
+ sd_spi_card_model #(.VOL_BASE(VOL_BASE),.VOL_SECTORS(16384)) u_card(
+ .sclk(sd_dclk),.cs_n(sd_ncs),.mosi(sd_mosi),.miso(sd_miso),.i_dead(card_dead),
+ .o_cmd(),.o_arg(),.o_acmd41_arg(),.o_cmd_cnt(card_commands),.o_acmd41_cnt(),.o_cmd_valid());
  integer errors=0,checks=0;reg test_done=0;
  task check(input bit cond,input string name);
  begin checks=checks+1;if(cond)$display("[PASS] %s",name);
@@ -221,16 +231,19 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
    end
    pub_d=dut.publish_toggle;
    if(dut.app_wr_en&&dut.app_wr_dm!=15&&dut.active)begin
-     if(dut.app_wr_addr>=SLOT1_WORD&&dut.app_wr_addr<SLOT1_WORD+FRAME_PIX/2&&
+     if(!RESIDENT&&dut.app_wr_addr>=SLOT1_WORD&&dut.app_wr_addr<SLOT1_WORD+FRAME_PIX/2&&
         dut.core.display.pix_active_slot==1)active_writes=active_writes+1;
-     if(dut.app_wr_addr<FRAME_PIX/2&&dut.core.display.pix_active_slot==0)
+     if(!RESIDENT&&dut.app_wr_addr<FRAME_PIX/2&&dut.core.display.pix_active_slot==0)
        active_writes=active_writes+1;
+   if(RESIDENT && dut.app_wr_addr>=(`SV_SLOT_BASE(dut.core.display.pix_active_slot)>>2) &&
+        dut.app_wr_addr<(`SV_SLOT_BASE(dut.core.display.pix_active_slot)>>2)+FRAME_PIX/2)
+        active_writes=active_writes+1;
    end
  end
  integer media_k,screen_x,screen_y;
  integer full_frames=0,new_slot_frames=0,axis_k=0,pixel_bad=0,tag_bad=0;
- integer image_frames[0:3];integer image_n;
- reg axis_slot=0;reg [7:0] axis_generation=0;reg injecting_fault=0,recovered_epoch=0;
+ integer image_frames[0:4];integer image_n;
+ reg [1:0] axis_slot=0;reg [7:0] axis_generation=0;reg injecting_fault=0,recovered_epoch=0;
  reg compare_axis=0;
  always @(posedge dut.mem_clk)if(dut.mem_rst_n&&dut.integrity_fault&&!injecting_fault)
    $fatal(1,"unexpected source/readback integrity fault: words=%0d blocks=%0d bad=%08x expected=%08x actual=%08x direction=%b",dut.integrity_words,dut.integrity_blocks,dut.integrity_bad_addr,dut.integrity_expected,dut.integrity_actual,dut.integrity_top_down);
@@ -242,7 +255,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
    if(dut.axis_user)begin
      if(compare_axis&&axis_k!=SCREEN_PIX)tag_bad=tag_bad+1;
      compare_axis=dut.active&&!dut.frame_fault&&!dut.safety_active&&!injecting_fault;axis_k=0;
-     axis_slot=dut.core.display.pix_active_slot[0];axis_generation=dut.core.display.pix_generation;
+     axis_slot=dut.core.display.pix_active_slot;axis_generation=dut.core.display.pix_generation;
    end
    if(compare_axis)begin
      if(axis_k>=SCREEN_PIX)tag_bad=tag_bad+1;
@@ -250,8 +263,8 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
        screen_x=axis_k%SCREEN_W;screen_y=axis_k/SCREEN_W;
        if(!HD||(screen_x>=320&&screen_x<960&&screen_y>=120&&screen_y<600))begin
          media_k=HD?(screen_y-120)*640+(screen_x-320):axis_k;
-         expected_p=exp565_k(media_k)^image_mask565((axis_generation+3)&3);
-         if(!(axis_slot&&axis_generation==1&&!recovered_epoch))expected_p=~expected_p;
+         expected_p=exp565_k(media_k)^image_mask565(RESIDENT?resident_image((axis_slot+3)&3):((axis_generation+3)&3));
+         if(!RESIDENT&&!(axis_slot&&axis_generation==1&&!recovered_epoch))expected_p=~expected_p;
          expected_rgb=rgb565(expected_p);
        end else expected_rgb=0;
        if(dut.axis_data!==expected_rgb)begin
@@ -262,7 +275,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
      end
      axis_k=axis_k+1;
      if(axis_k==SCREEN_PIX)begin full_frames=full_frames+1;compare_axis=0;
-       image_frames[(axis_generation+3)&3]=image_frames[(axis_generation+3)&3]+1;
+       image_frames[RESIDENT?resident_image((axis_slot+3)&3):((axis_generation+3)&3)]=image_frames[RESIDENT?resident_image((axis_slot+3)&3):((axis_generation+3)&3)]+1;
        if(!axis_slot)new_slot_frames=new_slot_frames+1;
        $display("[TB] checked full display frame %0d (%0d pixels), underflows=%0d",full_frames,SCREEN_PIX,dut.underflows);end
    end
@@ -277,14 +290,24 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
      bad=bad+1;
    end
  end check(bad==0,name);end endtask
- integer before_frames,auto_count;
+ integer before_frames,auto_count,command_snapshot;
+ // Count decoded command events independently: the model's 8-bit diagnostic
+ // counter wraps on a full BMP transfer and cannot prove an idle SD bus.
+ integer total_card_commands=0;
  reg [31:0] previous_underflows=0;
  always @(posedge dut.pixel_clk)if(dut.underflows!=previous_underflows)begin
    previous_underflows<=dut.underflows;
    $display("[UNDERFLOW] t=%0t fifo=%0d active=%b dma_state=%0d issued=%0d drained=%0d req=%b busy=%b ch=%0d hw=%0d wbuf=%0d wm=%0d critical=%b",$time,dut.display_fifo_level,dut.display_dma_active,dut.core.display.fetch.checked_read.dma.read_state,dut.core.display.fetch.checked_read.dma.issued_words,dut.core.display.fetch.checked_read.dma.drained_words,dut.core.rd_req,dut.core.rd_busy,dut.core.arbiter.cur_ch,dut.adapter.state,dut.adapter.wcnt,dut.core.arbitration_level,dut.core.arbiter.video_critical);
  end
+ always @(posedge u_card.o_cmd_valid)begin
+   total_card_commands=total_card_commands+1;
+   if(u_card.o_cmd==17&&(^u_card.crc_val===1'bx))$fatal(1,"SD fixture has undefined sector bytes");
+   if(BAD_TAIL_IMAGE>=0&&u_card.o_cmd==17&&u_card.o_arg==VOL_BASE+VOL_FILE0_LBA+BAD_TAIL_IMAGE*FILE_CLUS_N*SPC+FILE_SECTORS-1)begin
+     #1;u_card.crc_val=u_card.crc_val^16'h0001;tail_faults=tail_faults+1;
+   end
+ end
  initial begin
-   for(image_n=0;image_n<4;image_n=image_n+1)image_frames[image_n]=0;
+   for(image_n=0;image_n<5;image_n=image_n+1)image_frames[image_n]=0;
    forever begin #50000000;
      if(rst_n)$display("[PROGRESS] card t=%0t player=%0d sink=%0d source=%0d blocks=%0d gfault=%b vCRC=%b frames=%0d",$time,dut.pl_state,dut.sk_state,dut.integrity_words,dut.integrity_blocks,dut.integrity_fault,dut.playback_fault,dut.pl_frame_cnt);
    end
@@ -303,6 +326,48 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
    cmp_mem(SLOT1_WORD,0,0,"slot 1 has all 153600 correct words in raster order from signed BMP height");
    wait(full_frames>=2);
    check(pixel_bad==0&&tag_bad==0,"two full BASE/720p AXIS frames: RGB and SOF/EOL pixel-exact");
+   if(FIRST_ONLY)begin
+     check(dut.underflows==0&&dut.overflows==0&&!dut.frame_fault&&!dut.playback_fault,"production-rate first image remains healthy");
+     if(errors)$fatal(1,"FIRST IMAGE FAILED");
+     test_done=1;$display("[PASS] FIRST CARD IMAGE production_spi=%0d SD_HALF_NS=%0d pixels=%0d",PRODUCTION_SPI,SD_HALF_NS,full_frames*SCREEN_PIX);$finish;
+   end
+   if(RESIDENT)begin
+     wait(!dut.player.boot_loading&&dut.pl_state==7);
+     check(dut.player.resident_valid==((1<<GOOD_COUNT)-1),"all four files resident after autonomous preload");
+     for(auto_count=0;auto_count<GOOD_COUNT;auto_count=auto_count+1)
+       cmp_mem((`SV_SLOT_BASE((auto_count+1)&3)>>2),resident_image(auto_count),0,"resident slot has complete distinct raster");
+     before_frames=publish_count;auto_count=dut.memory_ip.stored_words;
+     repeat(4)begin
+       @(negedge clk);btn_next=0;repeat(1100000)@(negedge clk);btn_next=1;
+       wait(dut.pl_state==7);repeat(200000)@(negedge clk);
+       // Background preload intentionally kept only the first image visible.
+       // Give each selected cached image two complete frames before advancing.
+       wait(image_frames[resident_image(dut.pl_cur_file)]>=2);
+     end
+     for(image_n=0;image_n<GOOD_COUNT;image_n=image_n+1)wait(image_frames[resident_image(image_n)]>=2);
+     check(publish_count==before_frames+4,"four cached manual selections including wraparound");
+     check(dut.memory_ip.stored_words==auto_count,"cached selections perform no SDRAM image writes");
+     check(!dut.player.fst_busy&&dut.sd_ncs,"cached selections leave the SD bus idle");
+     check(active_writes==0&&unsafe_publish==0,"preload and cached selections preserve slot ownership");
+     check(pixel_bad==0&&tag_bad==0&&dut.underflows==0&&dut.overflows==0,"all four resident images are pixel-exact without starvation");
+     check(!dut.playback_fault&&!dut.integrity_fault&&dut.memory_ip.protocol_errors==0,"row CRC and SDRAM command contract remain valid");
+     if(BAD_TAIL_IMAGE>=0)check(tail_faults==1,"final BMP sector CRC failure is injected and the file remains unpublished");
+     card_dead=1; // All resident image switching must work with the card physically unavailable.
+     command_snapshot=total_card_commands;before_frames=dut.pl_frame_cnt;
+     @(negedge clk);btn_auto=0;repeat(1100000)@(negedge clk);btn_auto=1;
+     wait(dut.auto_enabled);wait(dut.pl_frame_cnt>=before_frames+3);
+     @(negedge clk);btn_auto=0;repeat(1100000)@(negedge clk);btn_auto=1;
+     wait(!dut.auto_enabled);wait(dut.pl_state==7);before_frames=dut.pl_frame_cnt;
+     repeat(1000000)@(negedge clk);
+     check(dut.pl_frame_cnt==before_frames,"short press stops automatic changes");
+     $display("[CACHE COUNTS] commands before=%0d after=%0d image writes before=%0d after=%0d",command_snapshot,total_card_commands,auto_count,dut.memory_ip.stored_words);
+     check(total_card_commands==command_snapshot,"automatic cached playback issues no new SD commands");
+     check(dut.memory_ip.stored_words==auto_count,"automatic cached playback issues no new image writes");
+     check(pixel_bad==0&&tag_bad==0&&dut.underflows==0&&dut.overflows==0,"automatic cached playback preserves exact frames and timing");
+     $display("RESIDENT DISPLAY HD=%0d SD_HALF_NS=%0d checks=%0d errors=%0d frames=%0d images=4 publishes=%0d",HD,SD_HALF_NS,checks,errors,full_frames,publish_count);
+     if(errors)$fatal(1,"RESIDENT CARD DISPLAY FAILED");
+     test_done=1;$display("[PASS] RESIDENT CARD DISPLAY PASS");$finish;
+   end
    before_frames=full_frames;
    // A second, DIFFERENT image must reach the other slot and the screen;
    // otherwise a stale buffer could pass a repeated-identical-image test.

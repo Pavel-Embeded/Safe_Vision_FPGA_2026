@@ -1,0 +1,20 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_memory_arbiter_compact -s tb_memory_arbiter_compact --timescale 1ns/1ps --log elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.memory_arbiter(MAX_BURSTS=1)
+Compiling module work.memory_arbiter(MAX_BURSTS=1,COMP...
+Compiling module work.arb_compact_case(N=1)
+Compiling module work.memory_arbiter_default
+Compiling module work.memory_arbiter(COMPACT_CONSEC_CO...
+Compiling module work.arb_compact_case
+Compiling module work.memory_arbiter(MAX_BURSTS=8)
+Compiling module work.memory_arbiter(MAX_BURSTS=8,COMP...
+Compiling module work.arb_compact_case(N=8)
+Compiling module work.tb_memory_arbiter_compact
+Built simulation snapshot tb_memory_arbiter_compact

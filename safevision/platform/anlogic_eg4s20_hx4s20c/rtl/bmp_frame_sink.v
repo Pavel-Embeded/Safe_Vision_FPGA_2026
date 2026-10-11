@@ -38,7 +38,7 @@ module bmp_frame_sink #(
     //   每帧只写进去约 2/3 就被判超时。TB 里没暴露是因为 tb_sd_bmp_player 把
     //   SPI 分频调到最快档（236 ms < 400 ms）—— 仿真跑得快反而掩盖了真问题。
     parameter [31:0]  WRITE_TO_N  = 32'd50_000_000  // 400 ms：**无进展**才算超时
-    ,parameter integer REQUIRE_WRITE_DRAIN = 0, REQUIRE_READBACK = 0
+    ,parameter integer REQUIRE_WRITE_DRAIN = 0, REQUIRE_READBACK = 0, REQUIRE_STREAM_DONE = 0
 )(
     input  wire        clk,            // mem_clk 125 MHz（读侧 / 帧控制器）
     input  wire        rst_n,          // mem 域低有效
@@ -48,6 +48,7 @@ module bmp_frame_sink #(
     input  wire [31:0] px_word,        // 32 位打包像素（低半字 = 先到的像素）
     input  wire        px_word_valid,
     output wire        px_word_ready,  // = FIFO wr_ready（反压回 SD 侧，**本就在 50M 域**）
+    input wire cached_frame,abort_frame,preload_only,source_stream_ok, // stable with slot before the frame-active edge
     input  wire        frame_active,   // 电平：SD 侧本帧正在产像素
     input  wire        top_down,       // 电平：本帧行序（帧内稳定）
     input  wire [1:0]  slot,           // 电平：本帧目标槽（帧内稳定）
@@ -76,7 +77,7 @@ module bmp_frame_sink #(
     output reg  [15:0] frame_cnt,
     output reg  [18:0] px_written,
     input wire write_drained,verify_done,verify_pass,
-    output wire source_begin,output wire [1:0] source_slot,output wire source_top_down
+    output wire source_begin,source_abort,output wire [1:0] source_slot,output wire source_top_down
 );
 
     // ========================================================================
@@ -94,6 +95,9 @@ module bmp_frame_sink #(
     // ========================================================================
     // 50 MHz → 125 MHz：电平两级同步（帧内稳定 ⇒ 打包数据）
     // ========================================================================
+    (* keep = "true" *) reg [1:0] cached_sync,abort_sync,preload_sync,stream_sync;reg preload_latched;
+    wire bridge_rst_n=rst_n&&!abort_sync[1];
+    assign source_abort=abort_sync[1];
     reg [2:0] fa_sync;
     reg [1:0] td_sync;
     reg [3:0] sl_sync;      // ★ 2 位总线 × 2 级 = 4 位（写成 [1:0] 会被截断，
@@ -101,8 +105,9 @@ module bmp_frame_sink #(
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            fa_sync <= 3'd0; td_sync <= 2'd0; sl_sync <= 4'd0;
+            stream_sync<=0;preload_sync<=0;abort_sync<=0;cached_sync<=0;fa_sync <= 3'd0; td_sync <= 2'd0; sl_sync <= 4'd0;
         end else begin
+            stream_sync<={stream_sync[0],source_stream_ok};preload_sync<={preload_sync[0],preload_only};abort_sync<={abort_sync[0],abort_frame};cached_sync<={cached_sync[0],cached_frame};
             fa_sync <= {fa_sync[1:0], frame_active};
             td_sync <= {td_sync[0],    top_down};
             sl_sync <= {sl_sync[1:0],  slot};
@@ -152,7 +157,7 @@ module bmp_frame_sink #(
 
     reg  [1:0]  slot_lat;        // 开帧时锁存的槽（帧内不变）
     assign source_begin=br_start;assign source_slot=slot_lat;assign source_top_down=td_sync[1];
-    wire [31:0] slot_base = (slot_lat == 2'd0) ? `SV_IMG0_BASE : `SV_IMG1_BASE;
+    wire [31:0] slot_base = `SV_SLOT_BASE(slot_lat);
     wire        br_din_ready;
 
     // ========================================================================
@@ -191,7 +196,7 @@ module bmp_frame_sink #(
     bmp_frame_write_bridge #(
         .GAP_TIMEOUT(GAP_TIMEOUT)
     ) u_bridge (
-        .clk(clk), .rst_n(rst_n), .start(br_start), .top_down(td_sync[1]),
+        .clk(clk), .rst_n(bridge_rst_n), .start(br_start), .top_down(td_sync[1]),
         .slot_sel(slot_lat), .slot_base(slot_base),
         .din(sk_data), .din_valid(br_din_valid), .din_ready(br_din_ready),
         .wr_req(wr_req), .start_ready(br_start_ready),
@@ -225,7 +230,7 @@ module bmp_frame_sink #(
             swap_slot      <= 2'd0;
             swap_generation<= 8'd1;
             swap_crc_ok    <= 1'b0;
-            slot_lat       <= 2'd1;
+            slot_lat       <= 2'd1;preload_latched<=0;
             to_cnt         <= 32'd0;
             swap_seen      <= 1'b0;
             empty_settle   <= 3'd0;
@@ -253,13 +258,18 @@ module bmp_frame_sink #(
                     if (fa_rise) begin
                         // 开帧：采样槽号（已稳定多拍）并启动桥
                         //   ★ 行序不在这里锁存，见 u_bridge 例化处注释
-                        slot_lat     <= sl_sync[3:2];
+                        slot_lat     <= sl_sync[3:2];preload_latched<=preload_sync[1];
                         br_start     <= 1'b1;               // ★ 单拍
                         mem_ready    <= 1'b0;
                         to_cnt       <= 32'd0;
                         swap_seen    <= 1'b0;
                         last_frame_ok<= 1'b0;
-                        state_o      <= S_WRITE;
+                        if(cached_sync[1])begin
+                            // Already verified resident image: change only display ownership.
+                            br_start<=0;swap_slot<=sl_sync[3:2];swap_crc_ok<=1;
+                            swap_generation<=swap_generation+1'b1;
+                            swap_toggle<=~swap_toggle;last_frame_ok<=1;state_o<=S_SWAP;
+                        end else state_o<=S_WRITE;
                     end
                 end
 
@@ -270,7 +280,9 @@ module bmp_frame_sink #(
                     if (br_px_cnt != px_d) to_cnt <= 32'd0;
                     else                   to_cnt <= to_cnt + 32'd1;
 
-                    if (br_done) begin
+                    if(abort_sync[1])begin
+                        br_start<=0;last_frame_ok<=0;to_cnt<=0;empty_settle<=0;state_o<=S_ERROR;
+                    end else if (br_done) begin
                         last_frame_ok  <= br_crc_ok;
                         // ★ 一帧成功 ⇒ 清掉粘滞的错误码（"证明能工作了"才清）
                         err_code       <= 8'h00;
@@ -305,12 +317,17 @@ module bmp_frame_sink #(
                     // Hold frame metadata until the adapter's buffered tail and
                     // the granted write transaction have both drained.
                     to_cnt <= to_cnt + 32'd1;
-                    if (REQUIRE_READBACK && verify_done && !verify_pass) begin
+                    if(abort_sync[1])begin
+                        last_frame_ok<=0;swap_crc_ok<=0;to_cnt<=0;empty_settle<=0;state_o<=S_ERROR;
+                    end else if (REQUIRE_READBACK && verify_done && !verify_pass) begin
                         last_frame_ok<=0;swap_crc_ok<=0;err_code<=8'hF3;state_o<=S_ERROR;
-                    end else if (write_drained && (!REQUIRE_READBACK || (verify_done && verify_pass))) begin
-                        swap_toggle <= ~swap_toggle;
-                        to_cnt <= 32'd0;
-                        state_o <= S_SWAP;
+                    end else if (write_drained && (!REQUIRE_READBACK || (verify_done && verify_pass)) && (!REQUIRE_STREAM_DONE || stream_sync[1])) begin
+                        to_cnt<=0;
+                        if(preload_latched)begin
+                            // Verified background load: preserve the displayed first image.
+                            if(frame_cnt!=16'hffff)frame_cnt<=frame_cnt+1'b1;
+                            frame_done<=~frame_done;empty_settle<=0;state_o<=S_DRAIN;
+                        end else begin swap_toggle<=~swap_toggle;state_o<=S_SWAP;end
                     end else if (to_cnt >= WRITE_TO_N) begin
                         last_frame_ok <= 1'b0;
                         err_code <= MY_TO_FRAME;
@@ -332,7 +349,7 @@ module bmp_frame_sink #(
                         empty_settle <= 3'd0;
                         state_o      <= S_DRAIN;
                     end else if (swap_seen && !swap_busy) begin
-                        if (last_frame_ok) frame_cnt <= frame_cnt + 16'd1;
+                        if (last_frame_ok && frame_cnt!=16'hffff) frame_cnt <= frame_cnt + 16'd1;
                         swap_seen    <= 1'b0;
                         frame_done   <= ~frame_done;        // ★ 通知 SD 侧本帧完成
                         to_cnt       <= 32'd0;

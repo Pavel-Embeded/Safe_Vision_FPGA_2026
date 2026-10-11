@@ -1,0 +1,48 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_a_video_display_core_stress -s tb_a_video_display_core_stress --timescale 1ns/1ps --log elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'expected_crc' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_a_video_display_core_stress.sv:86]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_swap_ctrl
+Compiling module work.reset_sync_default
+Compiling module work.video_timing_default
+Compiling module work.frame_swap_cdc
+Compiling module work.frame_slot_commit
+Compiling module work.video_cdc_mailbox
+Compiling module work.video_read_dma(BURST_WORDS=64,PI...
+Compiling module work.pixel_word_packer
+Compiling module work.a_pixel_fifo_gray_sync(ADDR_WIDT...
+Compiling module work.a_pixel_fifo_gray_sync(ADDR_WIDT...
+Compiling module work.a_pixel_fifo_eram(ADDRWIDTH_A=10...
+Compiling module work.a_pixel_fifo_ip(AL_EMPTY_NUM=32)
+Compiling module work.a_pixel_fifo
+Compiling module work.video_level_sync
+Compiling module work.a_frame_fetch_bridge_default
+Compiling module work.video_pipeline_default
+Compiling module work.frame_reader
+Compiling module work.video_cdc_mailbox(WIDTH=60)
+Compiling module work.osd_status_text
+Compiling module work.font8x16_rom(FONT_FILE="font8x16...
+Compiling module work.osd_text_layer(FONT_FILE="font8x...
+Compiling module work.video_layer_delay(LATENCY=3)
+Compiling module work.video_layer_delay_default
+Compiling module work.video_layer_delay(LATENCY=4)
+Compiling module work.video_pipeline(LATENCY=5)
+Compiling module work.video_compositor_default
+Compiling module work.a_video_display_core(FONT_FILE="...
+Compiling module work.memory_arbiter_default
+Compiling module work.display_stress_case_default
+Compiling module work.video_timing(H_ACTIVE=1280,H_FRO...
+Compiling module work.video_pipeline(HSYNC_ACTIVE=1'b1...
+Compiling module work.frame_reader(ORIGIN_X=320,ORIGIN...
+Compiling module work.video_pipeline(LATENCY=5,HSYNC_A...
+Compiling module work.video_compositor(HSYNC_ACTIVE=1'...
+Compiling module work.a_video_display_core(HD=1,FONT_F...
+Compiling module work.display_stress_case(HD=1,PHASE=2...
+Compiling module work.tb_a_video_display_core_stress
+Built simulation snapshot tb_a_video_display_core_stress

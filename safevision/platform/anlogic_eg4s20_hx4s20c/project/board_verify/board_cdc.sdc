@@ -75,7 +75,7 @@ set_max_delay -datapath_only -from [get_regs {reset_mem/release_pipe*}] -to [get
 #     two-stage synchronizers inside the sink. Exempt only the FIRST stage; the
 #     payload (top_down/slot) is a bundled-data level that is stable for many
 #     source cycles before frame_active rises, so it is sampled safely.
-set_false_path -to [get_regs {sink/fa_sync[0] sink/td_sync[0] sink/sl_sync[1:0]}]
+set_false_path -to [get_regs {sink/fa_sync[0] sink/td_sync[0] sink/sl_sync[1:0] sink/cached_sync[0] sink/abort_sync[0] sink/preload_sync[0] sink/stream_sync[0]}]
 #
 # (c) Frame control, 125 -> 50 MHz: mem_ready / frame_done / last_frame_ok are
 #     captured by two-stage synchronizers inside the player.

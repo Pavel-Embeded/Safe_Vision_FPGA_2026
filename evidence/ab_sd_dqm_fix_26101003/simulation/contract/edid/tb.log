@@ -1,0 +1,13 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/models/vendor_ip_stub.sv" into library work
+INFO: [VRFC 10-311] analyzing module sv_system_pll
+INFO: [VRFC 10-311] analyzing module sdram
+INFO: [VRFC 10-311] analyzing module sv_board_memory_pll
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/models/top_ip_stub.sv" into library work
+INFO: [VRFC 10-311] analyzing module sv_video_vga_pll
+INFO: [VRFC 10-311] analyzing module sv_video_hd_pll
+INFO: [VRFC 10-311] analyzing module hdmi_1_4b_transmitter_core_wrapper
+INFO: [VRFC 10-311] analyzing module hdmi_phy_wrapper
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/models/sd_spi_card_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_spi_card_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_safevision_hdmi_reset.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_safevision_hdmi_reset

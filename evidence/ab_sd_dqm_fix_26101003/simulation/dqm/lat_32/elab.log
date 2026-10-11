@@ -1,0 +1,13 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_sdram_read_dqm -generic_top RD_LAT=32 -s dqm -debug typical --timescale 1ns/1ps --log elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sdram_app_adapter(FAST_READ=1,PR...
+Compiling module work.sdram(RD_LAT=32)
+Compiling module work.tb_sdram_read_dqm(RD_LAT=32)
+Built simulation snapshot dqm

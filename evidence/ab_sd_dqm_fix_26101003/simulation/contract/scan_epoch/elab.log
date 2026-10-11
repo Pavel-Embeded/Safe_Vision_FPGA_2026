@@ -1,0 +1,25 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_player_scan_epoch -s board_test --timescale 1ns/1ps --log elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'restart' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_player_scan_epoch.sv:7]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sd_initializer(CLK_DIV_INIT=16'b...
+Compiling module work.mbr_parser
+Compiling module work.fat32_boot_parser
+Compiling module work.fat32_directory_scanner
+Compiling module work.fat32_cluster_walker
+Compiling module work.file_index(WINDOW_SCAN=1)
+Compiling module work.file_streamer
+Compiling module work.bmp_parser
+Compiling module work.bmp_unpack
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader(CLK_DIV_FAST=16...
+Compiling module work.spi_master(CLK_FREQ=50000000)
+Compiling module work.sd_bmp_player(RESIDENT_FRAMES=1,...
+Compiling module work.tb_player_scan_epoch
+Built simulation snapshot board_test

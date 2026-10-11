@@ -70,6 +70,10 @@ if {[catch {
     report_param -detail -stage route -file route.params
     place
     route
+    # TD's own doc/scripts/MultiSeed.tcl provides this independent hold-fix
+    # stage. Automatic route fix_hold can leave small BRAM-address hold
+    # failures. Repair actual routing before the final full timing gate.
+    fix_hold
     update_timing -mode final
     report_timing_summary -ep_num 100 -path_num 3 -file route.timing
     report_timing_status -file route.status

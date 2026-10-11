@@ -5,9 +5,9 @@ param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/card_display_xsim'),
- [ValidateSet('dma','adapter','timeout','safety','memory','slowinit','drain','writer','crc','top','card','init','player','edid','idle','bridge','integrity','reservation')][string[]]$Case=@('adapter','timeout','dma','drain','writer','crc','idle','bridge','edid','top','safety','init','integrity','reservation','card'),
+ [ValidateSet('dma','adapter','timeout','safety','memory','slowinit','drain','resident_sink','scan_epoch','writer','crc','top','card','init','player','edid','idle','bridge','integrity','reservation')][string[]]$Case=@('adapter','timeout','dma','drain','resident_sink','scan_epoch','writer','crc','idle','bridge','edid','top','safety','init','integrity','reservation','card'),
  [int]$ReadLatency=4,[ValidateSet(0,1)][int]$HD=0,[ValidateSet(0,1)][int]$FastRead=0,[ValidateSet(0,1)][int]$PrefetchRead=0,[ValidateSet(0,1,2)][int]$WriteLoad=0,[ValidateSet(0,1)][int]$BmpTopDown=0,
- [ValidateSet(0,1)][int]$AckFirst=0,[ValidateRange(0,32)][int]$ResponseGap=2,[ValidateRange(0,8)][int]$SourceGap=0,[ValidateSet(0,1)][int]$HeaderLate=0,[switch]$Waves,[switch]$StressSdClock
+ [ValidateSet(0,1)][int]$AckFirst=0,[ValidateRange(0,32)][int]$ResponseGap=2,[ValidateRange(0,8)][int]$SourceGap=0,[ValidateSet(0,1)][int]$HeaderLate=0,[switch]$Waves,[switch]$StressSdClock,[switch]$ResidentFrames,[switch]$ProductionSpi,[switch]$FirstImageOnly,[ValidateRange(-1,3)][int]$BadImage=-1,[ValidateRange(-1,3)][int]$BadTailImage=-1,[switch]$ExtraFile
 )
 $ErrorActionPreference='Stop'
 . (Join-Path $PSScriptRoot 'xsim_project.ps1')
@@ -41,10 +41,10 @@ try{
    $rtl=@('rtl/common/crc16_ccitt.v','rtl/memory/frame_address_gen.v','rtl/memory/frame_writer.v')
    $top=if($c -eq 'crc'){'tb_frame_writer_crc_feedback'}else{'tb_frame_writer_full_flag_equivalence'}
    $sim=@("verification/unit/$top.sv")
-  }elseif($c -in @('drain','player','slowinit')){
+  }elseif($c -in @('drain','resident_sink','scan_epoch','player','slowinit')){
    $src=Get-Content -LiteralPath (Join-Path $sv 'tools/run_sd_bmp_player_sim.ps1') -Raw
    $rtl=@([regex]::Matches($src,"'((?:platform|rtl)/[^']+\.v)'")|ForEach-Object{$_.Groups[1].Value})
-   if($c -eq 'drain'){$sim=@('verification/unit/tb_bmp_frame_sink_drain.sv');$top='tb_bmp_frame_sink_drain'}
+   if($c -in @('drain','resident_sink','scan_epoch')){$top=if($c -eq 'drain'){'tb_bmp_frame_sink_drain'}elseif($c -eq 'scan_epoch'){'tb_player_scan_epoch'}else{'tb_bmp_frame_sink_resident'};$sim=@("verification/unit/$top.sv")}
    else{$top=if($c -eq 'slowinit'){'tb_sd_slow_initialization'}else{'tb_sd_bmp_player'};$sim=@('verification/models/sd_spi_card_model.sv',"verification/unit/$top.sv")}
   }else{
    $src=Get-Content -LiteralPath (Join-Path $sv 'tools/run_a_stage11_15_sim.ps1') -Raw
@@ -65,10 +65,13 @@ try{
   $rtl+=@('rtl/memory/frame_integrity_guard.v','rtl/memory/video_read_dma_checked.v')
   $rtl=@($rtl|Select-Object -Unique|ForEach-Object{Join-Path $sv $_})
   $sim=@($sim|ForEach-Object{Join-Path $sv $_})
+  $checkedSources=@($rtl+$sim+@(Get-ChildItem -LiteralPath (Join-Path $sv 'rtl/include') -File | ForEach-Object {$_.FullName})+@($PSCommandPath,(Join-Path $sv 'assets/fonts/font8x16.mem')) | Sort-Object -Unique)
+  $sourceSnapshot=@($checkedSources|ForEach-Object{[pscustomobject]@{path=$_;sha256=(Get-FileHash -LiteralPath $_ -Algorithm SHA256).Hash.ToLower()}})
+  @{case=$c;stage='compiled-inputs';sources=$sourceSnapshot;production_spi=[bool]$ProductionSpi;resident=[bool]$ResidentFrames;hd=$HD;read_latency=$ReadLatency;bad_image=$BadImage;bad_tail_image=$BadTailImage;extra_file=[bool]$ExtraFile} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $run 'source_manifest.json') -Encoding UTF8
   Push-Location -LiteralPath $run
   try{
    # The init probe restores production SPI rate and asserts product timeouts.
-   $defines=if($c -in @('init','slowinit')){@()}else{@('-d','SIM_FAST_TO')}
+   $defines=if($ProductionSpi -or $c -in @('init','slowinit')){@()}else{@('-d','SIM_FAST_TO')}
    Write-XSimProject -Paths $rtl -Path 'rtl.prj'
    & (Join-Path $XSimBin 'xvlog.bat') @defines -i (Join-Path $sv 'rtl/include') --log rtl.log --file 'rtl.prj' > rtl.console.log 2>&1
    if($LASTEXITCODE){throw "$c RTL compile failed: $run/rtl.log"}
@@ -85,7 +88,14 @@ try{
    }
    if($c -eq 'card'){
     $elab+=@('-generic_top',('"HD={0}"' -f $HD),'-generic_top',('"RD_LAT={0}"' -f $ReadLatency),'-generic_top',('"BMP_TOP_DOWN={0}"' -f $BmpTopDown))
+    if($ProductionSpi -and $StressSdClock){throw 'Production SPI cannot use the accelerated SD clock'}
     if($StressSdClock){$elab+=@('-generic_top','"SD_HALF_NS=1"')}
+    if($ExtraFile){$elab+=@('-generic_top','"EXTRA_FILE=1"')}
+    if($ResidentFrames){$elab+=@('-generic_top','"RESIDENT=1"')}
+    $elab+=@('-generic_top',('"BAD_IMAGE={0}"' -f $BadImage))
+    $elab+=@('-generic_top',('"BAD_TAIL_IMAGE={0}"' -f $BadTailImage))
+    if($ProductionSpi){$elab+=@('-generic_top','"PRODUCTION_SPI=1"')}
+    if($FirstImageOnly){$elab+=@('-generic_top','"FIRST_ONLY=1"')}
    }
    if($c -eq 'memory'){$elab+=@('-generic_top',('"HD={0}"' -f $HD),'-generic_top',('"RD_LAT={0}"' -f $ReadLatency),'-generic_top',('"WR_LOAD={0}"' -f $WriteLoad))}
    & (Join-Path $XSimBin 'xelab.bat') @elab > elab.console.log 2>&1
@@ -131,6 +141,7 @@ try{
    & (Join-Path $XSimBin 'xsim.bat') @simArgs > sim.console.log 2>&1
    if($LASTEXITCODE){throw "$c simulator failed"}
    $log=Get-Content -LiteralPath sim.log -Raw
+   foreach($entry in $sourceSnapshot){if((Get-FileHash -LiteralPath $entry.path -Algorithm SHA256).Hash.ToLower() -ne $entry.sha256){throw "Source changed during simulation: $($entry.path)"}}
    if(($c -eq 'init' -and $log -notmatch '\[PASS\] REAL INIT') -or
       $log -notmatch '(?m)^\s*(\[PASS\]|PASS\b)' -or $log -notmatch '\$finish called' -or
       $log -match '(?im)^\s*(\[FAIL\]|FAIL\b|FATAL\b|ERROR:|(?!(?:\[PASS\]))[^\r\n]*\bFAILED\b)'){

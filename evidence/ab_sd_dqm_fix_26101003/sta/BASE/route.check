@@ -1,0 +1,734 @@
+Table of Contents
+-----------------
+1. checking no clock(0) (HIGH)
+2. checking clock definition(2) (HIGH)
+3. checking dummy node(4) (HIGH)
+4. checking invalid constraint(0) (HIGH)
+5. checking pll/clock buffer clock constraints(0) (HIGH)
+6. checking combinational loops(0) (HIGH)
+7. checking soft fifo timing exception constraints(0) (HIGH)
+8. checking no path constraints(0) (MEDIUM)
+9. checking shadowed/ignored timing exception constraints(0) (MEDIUM)
+10. checking no input delay(6) (MEDIUM)
+11. checking no output delay(14) (MEDIUM)
+12. checking partial input delay(0) (MEDIUM)
+13. checking partial output delay(0) (MEDIUM)
+14. checking abnormal input delay(0) (MEDIUM)
+
+
+1. checking nets with no clock driven. (HIGH)
+---------------------------------------------
+2. checking clock definition problems. (HIGH)
+---------------------------------------------
+2.1 There are 0 leaf clock pins driven by multiple clocks. (HIGH)
+
+
+2.2 There are 0 clocks created on internal clock network. (HIGH)
+
+
+2.3 There are 0 unexpandable clock sets. (HIGH)
+
+
+2.4 There are 2 local clocks. (HIGH)
+
+	board_clk
+	system_pll/pll_inst.clkc[2]
+
+2.5 There are 2 generated clocks that are not connected to their master clocks. (HIGH)
+
+
+3. checking dummy nodes. (HIGH)
+---------------------------------------------
+There are 4 nodes are dangling. (HIGH)
+
+DummyNode in Model: EG_PHY_LSLICE
+	transmitter/u_hdmi_tx_controller_wrapper/u1_hdmi_tmds_encode/S_N_1_D_reg[3]_syn_4.c[0]
+	rbyte_reg[3]_syn_308.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.e[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.d[0]
+	core/display/fetch/checked_read$dma/read_state_reg[0]_syn_28.b[0]
+	core/display/fetch/checked_read$dma/crc_state_b2[19]_syn_82.b[0]
+	core/display/fetch/checked_read$dma/landing_n_syn_412.b[1]
+	core/display/fetch/frame_request/dst_data_reg[23]_syn_4.b[0]
+	core/display/fetch/frame_request/payload_reg[9]_syn_4.c[0]
+	core/display/fetch/frame_request/payload_reg[8]_syn_4.c[0]
+	core/display/fetch/checked_read$dma/read_state_reg[0]_syn_28.c[0]
+	core/display/fetch/checked_read$dma/crc_state_b2[19]_syn_82.c[0]
+	core/display/fetch/checked_read$dma/landing_n_syn_412.c[1]
+	core/display/fetch/frame_request/dst_data_reg[23]_syn_4.c[0]
+	core/display/fetch/checked_read$dma/mux81_syn_30.b[1]
+	core/display/fetch/checked_read$dma/mux81_syn_31.d[0]
+	core/display/fetch/checked_read$dma/mux81_syn_33.d[0]
+	core/display/fetch/checked_read$dma/mux81_syn_35.d[0]
+	core/display/fetch/checked_read$dma/mux81_syn_37.d[0]
+	core/display/fetch/checked_read$dma/mux81_syn_30.c[1]
+	core/display/fetch/checked_read$dma/mux81_syn_31.b[0]
+	core/display/fetch/checked_read$dma/mux81_syn_33.b[0]
+	core/display/fetch/checked_read$dma/mux81_syn_35.b[0]
+	core/display/fetch/checked_read$dma/mux81_syn_37.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.e[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_122.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_123.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_122.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_123.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_122.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_123.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_122.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_123.a[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_30.e[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_30.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_119.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_120.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_119.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_120.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_119.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_120.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_122.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_123.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_119.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_120.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_122.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_123.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.d[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_226.b[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_226.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.e[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.e[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_226.a[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_226.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_120.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_120.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.b[0]
+	core/display/fetch/checked_read$dma/bank_ready_reg[1]_syn_44.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[3]_syn_111.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[3]_syn_111.c[1]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_30.d[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_227.d[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_227.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.e[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_120.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_120.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_120.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_120.c[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_227.d[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_227.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_122.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_122.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_123.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_123.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.b[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_226.d[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_226.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_120.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_120.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_122.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_119.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_119.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_123.d[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_226.c[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_226.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_123.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_123.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_122.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_122.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_119.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_122.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_123.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_120.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[7]_syn_17.mi[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[4]_syn_162.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[6]_syn_23.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[5]_syn_35.mi[1]
+	core/display/fetch/checked_read$dma/landing_n_syn_398.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_111.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_108.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_73.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[5]_syn_35.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_119.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[6]_syn_19.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_104.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[6]_syn_21.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[15]_syn_142.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[15]_syn_140.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[3]_syn_87.mi[1]
+	core/arbiter/cur_addr_b[19]_syn_31.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[5]_syn_143.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_99.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[3]_syn_111.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_124.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[6]_syn_25.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_73.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_91.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_108.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_152.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_100.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_105.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[3]_syn_102.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_84.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_104.mi[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[0]_syn_112.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[13]_syn_155.mi[0]
+	core/display/fetch/checked_read$dma/crc_state_b2[19]_syn_70.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_87.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_113.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[3]_syn_79.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_118.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_119.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_111.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_95.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_91.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_114.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_102.mi[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[4]_syn_152.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_107.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_93.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_93.mi[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[11]_syn_152.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_74.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_84.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_72.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_82.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[5]_syn_141.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[7]_syn_143.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_120.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_122.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_122.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_123.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_90.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_111.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_95.mi[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_156.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_100.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[4]_syn_20.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_119.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_107.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[1]_syn_93.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_77.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[6]_syn_135.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_82.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_87.mi[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[7]_syn_139.mi[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_77.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_120.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_122.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_123.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_125.mi[1]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_30.a[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_30.c[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_227.a[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_227.b[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_30.b[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_227.a[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[14]_syn_227.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_120.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_122.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_123.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_120.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_119.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[2]_syn_120.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_122.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_123.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_122.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_123.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_122.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_123.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_124.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_124.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_125.d[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_125.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_124.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_124.c[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_125.c[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_125.c[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[2]_syn_27.mi[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_22.mi[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[1]_syn_21.mi[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[1]_syn_19.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[3]_syn_108.mi[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_26.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[1]_syn_114.mi[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[1]_syn_21.mi[1]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_26.mi[1]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_22.mi[1]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_30.mi[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[3]_syn_111.d[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[3]_syn_111.d[1]
+	core/display/fetch/frame_request/payload_reg[9]_syn_4.d[0]
+	core/display/fetch/frame_request/payload_reg[8]_syn_4.d[0]
+	core/display/fetch/checked_read$dma/bank_ready_reg[1]_syn_44.d[1]
+	core/display/fetch/checked_read$dma/mux81_syn_30.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_121.d[0]
+	core/display/fetch/checked_read$dma/mux81_syn_30.d[1]
+	core/display/fetch/checked_read$dma/mux81_syn_31.c[0]
+	core/display/fetch/checked_read$dma/mux81_syn_33.c[0]
+	core/display/fetch/checked_read$dma/mux81_syn_35.c[0]
+	core/display/fetch/checked_read$dma/mux81_syn_37.c[0]
+	core/display/fetch/frame_request/payload_reg[9]_syn_4.b[0]
+	core/display/fetch/frame_request/payload_reg[8]_syn_4.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_124.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_124.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_125.b[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_125.b[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_124.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_124.a[0]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_125.a[1]
+	core/display/fetch/checked_read$dma/drain_index_reg[0]_syn_125.a[0]
+	core/display/fetch/frame_request/dst_data_reg[23]_syn_4.d[0]
+	core/display/fetch/checked_read$dma/read_state_reg[0]_syn_28.d[0]
+	core/display/fetch/checked_read$dma/landing_n_syn_412.d[1]
+	core/display/fetch/checked_read$dma/crc_state_b2[19]_syn_82.d[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_33.mi[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_40.mi[1]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_37.mi[0]
+	core/display/pixel_reset/release_pipe_reg[1]_syn_33.mi[1]
+	integrity/bad_actual_b[12]_syn_6.d[0]
+	playback_expected_reg[17]_syn_4.c[0]
+	playback_expected_reg[17]_syn_4.d[0]
+	playback_expected_reg[17]_syn_4.b[0]
+	integrity/bad_actual_b[12]_syn_6.c[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_3d_reg[7]_syn_5.a[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_3d_reg[7]_syn_5.c[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_3d_reg[7]_syn_5.mi[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_3d_reg[7]_syn_5.d[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_3d_reg[7]_syn_5.b[1]
+	player/u_boot/root_clus_reg[28]_syn_4.d[0]
+	player/media_rst_n_syn_101.d[1]
+	player/media_rst_n_syn_109.d[1]
+	sink/fa_sync_reg[1]_syn_4.d[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_6d_reg[7]_syn_4.d[0]
+	player/u_idx/size_d_reg[10]_syn_4.d[0]
+	player/state_o_reg[2]_syn_102.d[0]
+	player/media_rst_n_syn_103.d[1]
+	sd_ncs_syn_6.d[0]
+	reset_ref/release_pipe_reg[1]_syn_171.d[0]
+	player/u_bmp/mstate_reg[1]_syn_15.mi[1]
+	player/u_bmp/mstate_reg[1]_syn_15.mi[0]
+	player/u_boot/sel35_syn_155.mi[0]
+	player/u_boot/sel35_syn_157.mi[0]
+	player/u_boot/sel35_syn_150.c[1]
+	player/u_boot/bps_h_reg[4]_syn_4.c[0]
+	player/u_boot/sel35_syn_152.c[1]
+	player/u_boot/sel35_syn_150.d[1]
+	player/u_boot/bps_h_reg[4]_syn_4.d[0]
+	player/u_boot/sel35_syn_152.d[1]
+	player/u_fst/mstate_reg[0]_syn_5.a[1]
+	player/u_fst/mstate_reg[0]_syn_5.b[1]
+	player/cur_bytes_rd_reg[3]_syn_5.mi[1]
+	player/cur_bytes_rd_reg[3]_syn_5.mi[0]
+	player/u_fst/mstate_reg[0]_syn_5.d[1]
+	player/u_fst/mstate_reg[0]_syn_5.d[0]
+	player/u_fst/mstate_reg[0]_syn_5.c[0]
+	player/u_fst/mstate_reg[0]_syn_5.c[1]
+	player/u_fst/mstate_reg[0]_syn_5.b[0]
+	player/u_fst/mstate_reg[0]_syn_5.a[0]
+	player/u_idx/mux45_syn_241.a[1]
+	player/u_idx/mux44_syn_986.a[0]
+	player/u_idx/mux45_syn_241.b[1]
+	player/u_idx/mux44_syn_986.b[0]
+	player/u_idx/mux45_syn_241.c[1]
+	player/u_idx/mux44_syn_986.c[0]
+	player/u_idx/mux45_syn_241.d[1]
+	player/u_idx/mux44_syn_986.d[0]
+	player/u_fst/mux90_syn_1187.d[0]
+	player/u_fst/mux90_syn_1170.d[0]
+	player/u_idx/key_d_reg[1]_syn_4.d[0]
+	player/u_idx/key_d_reg[1]_syn_5.d[0]
+	player/cur_bytes_rd_reg[29]_syn_4.d[0]
+	player/cur_bytes_rd_reg[18]_syn_4.d[0]
+	player/u_idx/key_d_reg[1]_syn_6.d[0]
+	player/u_idx/key_d_reg[1]_syn_5.mi[1]
+	player/u_idx/key_d_reg[1]_syn_6.mi[1]
+	player/cur_bytes_rd_reg[18]_syn_4.c[0]
+	player/u_idx/key_d_reg[1]_syn_4.c[0]
+	player/u_idx/key_d_reg[1]_syn_5.c[0]
+	player/u_idx/key_d_reg[1]_syn_6.c[0]
+	player/u_scan/ent_name_reg[57]_syn_4.d[0]
+	player/u_scan/ent_name_reg[57]_syn_4.c[0]
+	player/u_idx/s_size[0]_b[95]_syn_15.d[1]
+	player/cur_bytes_rd_reg[3]_syn_5.d[1]
+	player/u_fst/mux90_syn_1187.c[0]
+	player/cur_bytes_rd_reg[29]_syn_4.c[0]
+	player/u_fst/mux90_syn_1170.c[0]
+	player/u_idx/s_size[0]_b[95]_syn_15.c[1]
+	player/cur_bytes_rd_reg[18]_syn_4.b[0]
+	player/cur_bytes_rd_reg[3]_syn_5.c[1]
+	player/u_idx/key_d_reg[1]_syn_4.b[0]
+	player/u_idx/key_d_reg[1]_syn_5.b[0]
+	player/u_idx/key_d_reg[1]_syn_6.b[0]
+	player/u_scan/ent_name_reg[57]_syn_4.a[0]
+	player/u_scan/ent_name_reg[57]_syn_4.b[0]
+	player/cur_bytes_rd_reg[8]_syn_4.a[0]
+	player/media_rst_n_syn_99.a[0]
+	player/u_scan/name_raw_reg[5]_syn_4.c[1]
+	player/u_scan/name_raw_reg[5]_syn_4.c[0]
+	player/cur_bytes_rd_reg[8]_syn_4.e[0]
+	player/media_rst_n_syn_99.e[0]
+	player/cur_bytes_rd_reg[8]_syn_4.d[0]
+	player/media_rst_n_syn_99.d[0]
+	player/u_idx/key_d_reg[1]_syn_5.mi[0]
+	player/u_idx/key_d_reg[1]_syn_6.mi[0]
+	player/u_scan/name_raw_reg[5]_syn_4.e[1]
+	player/u_scan/name_raw_reg[5]_syn_4.e[0]
+	player/u_scan/mstate_reg[0]_syn_95.c[1]
+	player/u_scan/mstate_reg[0]_syn_93.c[1]
+	player/u_scan/mstate_reg[0]_syn_94.c[1]
+	player/u_scan/mstate_reg[0]_syn_95.b[1]
+	player/u_scan/mstate_reg[0]_syn_93.b[1]
+	player/u_scan/mstate_reg[0]_syn_94.b[1]
+	player/u_scan/name_raw_reg[5]_syn_4.b[1]
+	player/u_scan/name_raw_reg[5]_syn_4.b[0]
+	player/cur_bytes_rd_reg[8]_syn_4.b[0]
+	player/media_rst_n_syn_99.b[0]
+	integrity/second_index[0]_syn_277.d[0]
+	reset_mem/release_pipe_reg[1]_syn_109.mi[0]
+	core/display/fetch/checked_read$dma/rd_req_reg_syn_100.mi[0]
+	integrity/state_reg[0]_syn_45.mi[0]
+	integrity/source_complete_reg_syn_15.mi[0]
+	integrity/bad_expected_b[11]_syn_6.mi[0]
+	reset_mem/release_pipe_reg[1]_syn_99.mi[0]
+	integrity/second_index[0]_syn_263.mi[0]
+	integrity/second_index[0]_syn_243.mi[0]
+	reset_mem/release_pipe_reg[1]_syn_80.mi[0]
+	player/u_boot/root_clus_reg[28]_syn_4.c[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_6d_reg[7]_syn_4.c[0]
+	player/media_rst_n_syn_101.c[1]
+	player/media_rst_n_syn_109.c[1]
+	sink/fa_sync_reg[1]_syn_4.c[1]
+	player/state_o_reg[2]_syn_102.c[0]
+	player/media_rst_n_syn_103.c[1]
+	sd_ncs_syn_6.c[0]
+	reset_ref/release_pipe_reg[1]_syn_171.c[0]
+	player/u_idx/size_d_reg[10]_syn_4.c[0]
+	reset_ref/release_pipe_reg[1]_syn_166.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_177.mi[0]
+	player/u_wk_dir/mux44_syn_86.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_214.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_148.mi[1]
+	reset_ref/release_pipe_reg[1]_syn_204.mi[1]
+	reset_ref/release_pipe_reg[1]_syn_163.mi[0]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[5]_syn_149.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_177.mi[1]
+	reset_ref/release_pipe_reg[1]_syn_208.mi[0]
+	play_control/interval[25]_syn_7.mi[0]
+	player/u_bmp/err_detail_reg[2]_syn_186.mi[0]
+	player/u_scan/mstate_reg[0]_syn_77.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_181.mi[1]
+	player/u_scan/mstate_reg[0]_syn_75.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_228.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_195.mi[1]
+	player/u_idx/mux45_syn_229.mi[0]
+	player/err_code_reg[0]_syn_27.mi[0]
+	player/err_detail_reg[3]_syn_26.mi[0]
+	player/state_o_reg[3]_syn_47.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_197.mi[0]
+	player/err_code_reg[5]_syn_75.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_171.mi[0]
+	player/u_fst/mux83_syn_238.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_160.mi[0]
+	player/scan_after_b[4]_syn_6.mi[0]
+	player/u_boot/sel35_syn_155.d[0]
+	player/u_boot/sel35_syn_157.d[0]
+	player/u_boot/sel35_syn_155.c[0]
+	player/u_boot/sel35_syn_157.c[0]
+	integrity/second_index[0]_syn_277.c[0]
+	player/u_boot/sel35_syn_155.b[0]
+	player/u_boot/sel35_syn_157.b[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_gen/sel4_syn_1516.mi[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/O_bit_tx_data_type_b1[1]_syn_114.mi[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/O_bit_tx_data_type_b1[1]_syn_112.mi[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_25.mi[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_34.b[1]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_34.c[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_34.b[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_34.a[1]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_34.a[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_34.c[1]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_34.d[1]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_34.d[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u1_hdmi_tmds_encode/S_N_1_D_reg[3]_syn_4.d[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_iic_sda_i_syn_23.mi[0]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_30.d[1]
+	core/display/fetch/checked_read$dma/fill_count_reg[0]_syn_30.b[0]
+	player/u_boot/sel35_syn_150.b[1]
+	player/u_boot/bps_h_reg[4]_syn_4.b[0]
+	player/u_boot/sel35_syn_152.b[1]
+	player/u_scan/name_raw_reg[5]_syn_4.d[1]
+	player/u_scan/name_raw_reg[5]_syn_4.d[0]
+	player/u_scan/mstate_reg[0]_syn_95.d[1]
+	player/u_scan/mstate_reg[0]_syn_93.d[1]
+	player/u_scan/mstate_reg[0]_syn_94.d[1]
+	player/u_scan/name_raw_reg[5]_syn_4.a[1]
+	player/u_scan/name_raw_reg[5]_syn_4.a[0]
+	player/cur_bytes_rd_reg[8]_syn_4.c[0]
+	player/media_rst_n_syn_99.c[0]
+	player/u_scan/mstate_reg[2]_syn_18.mi[0]
+
+DummyNode in Model: EG_PHY_MSLICE
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_video_data_assemble/O_video_data_ch2_reg[0]_syn_4.c[0]
+	adapter/rcnt_reg[5]_syn_46.c[1]
+	memory_ip/u2_ram/u2_wrrd/addr_reg[8]_syn_7.c[0]
+	core/display/fetch/checked_read$dma/crc_state_b2[19]_syn_76.b[1]
+	core/display/fetch/checked_read$dma/crc_state_b2[19]_syn_76.c[1]
+	core/display/fetch/checked_read$dma/crc_state_b2[19]_syn_76.d[1]
+	core/display/fetch/checked_read$dma/settle_reg[1]_syn_48.mi[0]
+	core/display/sys_reset/release_pipe_reg[1]_syn_8.mi[1]
+	core/display/fetch/checked_read$dma/fifo_wr_data_b4[9]_syn_152.mi[0]
+	hdmi_queue/ramread0_syn_97.d[1]
+	hdmi_queue/ramread0_syn_97.d[0]
+	hdmi_queue/ramread0_syn_97.c[1]
+	hdmi_queue/ramread0_syn_97.c[0]
+	hdmi_queue/ramread0_syn_97.b[1]
+	hdmi_queue/ramread0_syn_97.b[0]
+	hdmi_queue/ramread0_syn_97.a[1]
+	hdmi_queue/ramread0_syn_97.a[0]
+	memory_ip/u2_ram/u2_wrrd/addr_reg[8]_syn_7.d[0]
+	adapter/rcnt_reg[5]_syn_46.d[1]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/u_iic_w11_d1024_fifo/u_logic_ramfifo[0]__4_syn_4.d[1]
+	integrity/source_crc_b1[19]_syn_62.d[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/u_iic_w11_d1024_fifo/u_logic_ramfifo[0]__4_syn_4.d[0]
+	player/u_bmp/err_detail_reg[2]_syn_222.d[0]
+	player/media_rst_n_syn_111.d[1]
+	player/u_scan/ent_size_reg[11]_syn_4.d[1]
+	player/u_spi/sclk_r_reg_syn_11.d[0]
+	player/media_rst_n_syn_114.d[0]
+	player/u_idx/size_d_reg[20]_syn_4.d[0]
+	player/u_fst/mux83_syn_242.d[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/u_iic_w11_d1024_fifo/u_logic_ramfifo[7]__0_syn_4.d[1]
+	player/media_rst_n_syn_124.d[0]
+	player/media_rst_n_syn_128.d[0]
+	player/u_bmp/mstate_reg[1]_syn_19.mi[1]
+	player/u_bmp/mstate_reg[1]_syn_19.mi[0]
+	player/u_boot/sel35_syn_154.c[1]
+	player/u_wk_dir/sd_rd_addr_reg[16]_syn_4.c[1]
+	player/u_boot/sel35_syn_154.d[1]
+	player/u_wk_dir/sd_rd_addr_reg[16]_syn_4.d[1]
+	player/u_fst/mstate_reg[1]_syn_10.mi[1]
+	player/u_fst/mux90_syn_1198.a[1]
+	player/u_fst/mux90_syn_1199.a[1]
+	player/u_fst/mux90_syn_1200.a[1]
+	player/u_fst/mux90_syn_1198.b[1]
+	player/u_fst/mux90_syn_1199.b[1]
+	player/u_fst/mux90_syn_1200.b[1]
+	player/u_fst/mux90_syn_1198.d[1]
+	player/u_fst/mux90_syn_1199.d[1]
+	player/u_fst/mux90_syn_1200.d[1]
+	player/u_fst/mux90_syn_1198.c[1]
+	player/u_fst/mux90_syn_1199.c[1]
+	player/u_fst/mux90_syn_1200.c[1]
+	player/u_idx/mux43_syn_977.d[1]
+	player/ent_name_q_reg[40]_syn_4.d[1]
+	player/u_idx/size_d_reg[31]_syn_4.a[0]
+	player/ent_size_q_reg[30]_syn_4.a[0]
+	player/u_idx/size_d_reg[31]_syn_4.b[0]
+	player/ent_size_q_reg[30]_syn_4.b[0]
+	player/u_idx/size_d_reg[31]_syn_4.c[0]
+	player/ent_size_q_reg[30]_syn_4.c[0]
+	player/u_idx/size_d_reg[31]_syn_4.d[0]
+	player/ent_size_q_reg[30]_syn_4.d[0]
+	player/u_idx/mux45_syn_281.d[1]
+	player/u_fst/mux90_syn_1185.d[0]
+	player/u_fst/mux90_syn_1183.d[0]
+	player/cur_file_reg[0]_syn_65.d[0]
+	player/cur_file_reg[0]_syn_65.d[1]
+	player/cur_file_reg[0]_syn_65.c[1]
+	player/u_idx/mux45_syn_281.c[1]
+	player/u_fst/mux90_syn_1185.c[0]
+	player/u_fst/mux90_syn_1183.c[0]
+	player/u_scan/ent_name_reg[56]_syn_4.d[1]
+	player/u_scan/ent_name_reg[56]_syn_4.d[0]
+	player/u_scan/ent_name_reg[56]_syn_4.c[1]
+	player/u_scan/ent_name_reg[56]_syn_4.c[0]
+	player/u_idx/size_d_reg[31]_syn_4.d[1]
+	player/u_idx/s_size[0]_b[95]_syn_18.d[1]
+	player/u_idx/s_size[0]_b[95]_syn_19.d[1]
+	player/u_idx/s_size[0]_b[95]_syn_20.d[1]
+	player/ent_size_q_reg[30]_syn_4.d[1]
+	player/u_fst/mux90_syn_1189.d[0]
+	player/ent_name_q_reg[40]_syn_4.c[1]
+	player/u_idx/mux43_syn_977.c[1]
+	player/cur_file_reg[0]_syn_65.c[0]
+	player/u_idx/size_d_reg[31]_syn_4.c[1]
+	player/cur_file_reg[0]_syn_65.b[1]
+	player/u_idx/s_size[0]_b[95]_syn_18.c[1]
+	player/u_idx/s_size[0]_b[95]_syn_19.c[1]
+	player/u_idx/s_size[0]_b[95]_syn_20.c[1]
+	player/u_fst/mux90_syn_1189.c[0]
+	player/u_idx/mux45_syn_281.b[1]
+	player/u_fst/mux90_syn_1185.b[0]
+	player/u_fst/mux90_syn_1183.b[0]
+	player/ent_size_q_reg[30]_syn_4.c[1]
+	player/u_scan/ent_name_reg[56]_syn_4.a[1]
+	player/u_scan/ent_name_reg[56]_syn_4.a[0]
+	player/u_scan/ent_name_reg[56]_syn_4.b[1]
+	player/u_scan/ent_name_reg[56]_syn_4.b[0]
+	core/display/fetch/requested_base_reg[17]_syn_14.mi[0]
+	integrity/source_crc_b1[19]_syn_62.c[0]
+	player/u_scan/ent_size_reg[11]_syn_4.c[1]
+	player/u_spi/sclk_r_reg_syn_11.c[0]
+	player/media_rst_n_syn_114.c[0]
+	player/media_rst_n_syn_128.c[0]
+	player/media_rst_n_syn_124.c[0]
+	player/u_fst/mux83_syn_242.c[0]
+	player/u_bmp/err_detail_reg[2]_syn_222.c[0]
+	player/media_rst_n_syn_111.c[1]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/u_iic_w11_d1024_fifo/u_logic_ramfifo[7]__0_syn_4.c[1]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/u_iic_w11_d1024_fifo/u_logic_ramfifo[0]__4_syn_4.c[1]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/u_iic_w11_d1024_fifo/u_logic_ramfifo[0]__4_syn_4.c[0]
+	player/u_idx/size_d_reg[20]_syn_4.c[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_41.mi[1]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/O_bit_tx_data_type_b1[1]_syn_116.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_video_data_assemble/O_video_data_ch2_reg[0]_syn_4.d[0]
+	transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_bit_transmitter/O_bit_tx_ready_reg_syn_49.mi[0]
+	memory_ip/u2_ram/u2_wrrd/addr_reg[8]_syn_7.b[0]
+	adapter/rcnt_reg[5]_syn_46.b[1]
+	player/cur_file_reg[0]_syn_65.mi[1]
+	player/u_boot/sel35_syn_154.b[1]
+	player/u_wk_dir/sd_rd_addr_reg[16]_syn_4.b[1]
+	player/u_scan/mstate_reg[1]_syn_37.mi[0]
+
+DummyNode in Model: EG_PHY_MULT18
+	player/u_fst/mult0_syn_84.b[17]
+	player/u_fst/mult0_syn_84.b[16]
+	player/u_fst/mult0_syn_84.b[15]
+	player/u_fst/mult0_syn_84.b[14]
+	player/u_scan/mult0_syn_84.b[17]
+	player/u_scan/mult0_syn_84.b[16]
+	player/u_scan/mult0_syn_84.b[15]
+	player/u_scan/mult0_syn_84.b[14]
+
+DummyNode in Model: EG_PHY_PAD
+	memory_ip/sdram_syn_5.opad
+	memory_ip/sdram_syn_10.opad
+
+4. checking invalid constraints. (HIGH)
+---------------------------------------------
+There are 0 invalid constraints. (HIGH)
+
+
+5. checking PLL/buffer clocks. (HIGH)
+---------------------------------------------
+PLL/buffer inst: system_pll/pll_inst
+{
+	There are 0 clock pins that have no clock constraints. (HIGH)
+
+
+	There are 0 clocks whose clock frequency do not match the PLL setting. (HIGH)
+
+
+}
+
+PLL/buffer inst: video_base$video_pll/pll_inst
+{
+	There are 0 clock pins that have no clock constraints. (HIGH)
+
+
+	There are 0 clocks whose clock frequency do not match the PLL setting. (HIGH)
+
+
+}
+
+6. checking combinational loops. (HIGH)
+---------------------------------------------
+There are 0 combinational loops. (HIGH)
+
+
+7. checking soft fifo set_max_delay constraints. (HIGH)
+---------------------------------------------
+There are 0 max-delay datapath-only paths that are part of the provided async clock paths, whereas the timing between other registers is not relaxed or ignored. (HIGH)
+
+
+8. checking no path constraints. (MEDIUM)
+---------------------------------------------
+There are 0 constraints that have no timing paths. (MEDIUM)
+
+
+9. checking path exception constraints shadowed/ignored by other constraints. (MEDIUM)
+---------------------------------------------
+
+MCP/SMD Summary
+--------------------
+
+		Max Check
+		--------------------
+		     Total    Dominated     Shadowed      Ignored   Constraint
+		         6            6            0            0   set_max_delay -datapath_only -from [get_regs {board_frame_mailbox/payload*}] -to [get_regs {board_frame_mailbox/dst_data*}] 8.000
+		       120          120            0            0   set_max_delay -datapath_only -from [get_regs {core/display/config_mailbox/payload*}] -to [get_regs {core/display/config_mailbox/dst_data*}] 8.000
+		        64           64            0            0   set_max_delay -datapath_only -from [get_regs {core/display/fetch/frame_request/payload*}] -to [get_regs {core/display/fetch/frame_request/dst_data*}] 8.000
+		        10           10            0            0   set_max_delay -datapath_only -from [get_regs {core/swap_ctrl/slot_id* core/swap_ctrl/generation* core/swap_ctrl/frame_index core/swap_ctrl/crc_ok}] -to [get_regs {core/display/swaps/mb_slot_id_a_r* core/display/swaps/mb_generation_a_r* core/display/swaps/frame_index_a_r core/display/swaps/mb_crc_ok_a_r}] 8.000
+		        22           22            0            0   set_max_delay -datapath_only -from [get_regs {core/display/fetch/fifo/fifo/wr_to_rd*/primary_addr_gray_reg*}] -to [get_regs {core/display/fetch/fifo/fifo/wr_to_rd*/sync_r1*}] 8.000
+		        22           22            0            0   set_max_delay -datapath_only -from [get_regs {core/display/fetch/fifo/fifo/rd_to_wr*/primary_addr_gray_reg*}] -to [get_regs {core/display/fetch/fifo/fifo/rd_to_wr*/sync_r1*}] 8.000
+		         0            0            0            0   set_max_delay -datapath_only -from [get_regs {reset_mem/release_pipe*}] -to [get_regs {sink/u_fifo/fifo/full_flag}] 8.000
+		        20           20            0            0   set_max_delay -datapath_only -from [get_regs {sink/u_fifo/fifo/wr_to_rd_cross_inst/primary_addr_gray_reg*}] -to [get_regs {sink/u_fifo/fifo/wr_to_rd_cross_inst/sync_r1*}] 8.000
+		        20           20            0            0   set_max_delay -datapath_only -from [get_regs {sink/u_fifo/fifo/rd_to_wr_cross_inst/primary_addr_gray_reg*}] -to [get_regs {sink/u_fifo/fifo/rd_to_wr_cross_inst/sync_r1*}] 8.000
+		       180          180            0            0   set_multicycle_path -setup -from [get_regs {ridx*}] 2
+
+		Min Check
+		--------------------
+		     Total    Dominated     Shadowed      Ignored   Constraint
+		       180          180            0            0   set_multicycle_path -hold -end -from [get_regs {ridx*}] 1
+
+10. checking no input delay (MEDIUM)
+--------------------------
+There are 6 input ports that with no input delay specified. (MEDIUM)
+
+	HDMI_DDC_SDA
+	btn_auto
+	btn_emergency
+	btn_next
+	rst_n
+	sd_miso
+
+11. checking no output delay (MEDIUM)
+--------------------------
+There are 14 output ports that with no output delay specified. (MEDIUM)
+
+	HDMI_CLK_P
+	HDMI_D0_P
+	HDMI_D1_P
+	HDMI_D2_P
+	HDMI_DDC_SCL
+	HDMI_DDC_SDA
+	led[3]
+	led[2]
+	led[1]
+	led[0]
+	sd_dclk
+	sd_mosi
+	sd_ncs
+	uart_txd
+
+12. checking partial input delay (MEDIUM)
+--------------------------
+There are 0 input ports with partial input delay specified. (MEDIUM)
+
+
+13. checking partial output delay (MEDIUM)
+--------------------------
+There are 0 output ports with partial output delay specified. (MEDIUM)
+
+
+14. checking abnormal set_input_delay constraints. (MEDIUM)
+---------------------------------------------
+There are 0 abnormal set_input_delay constraints. (MEDIUM)
+
+

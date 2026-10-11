@@ -7,7 +7,7 @@ module tb_safevision_hdmi_reset;
  wire sd_ncs,sd_dclk,sd_mosi;
  wire HDMI_D0_P,HDMI_D1_P,HDMI_D2_P,HDMI_CLK_P,HDMI_DDC_SCL;
  tri HDMI_DDC_SDA;
- safevision_top #(.STORAGE_INTEGRITY(0),.HD(0),.FONT_FILE("font8x16.mem")) dut(
+ safevision_top #(.RESIDENT_FRAMES(0),.STORAGE_INTEGRITY(0),.HD(0),.FONT_FILE("font8x16.mem")) dut(
   .clk(clk),.rst_n(rst_n),.btn_next(1'b1),.btn_auto(1'b1),.btn_emergency(1'b1),
   .uart_txd(uart_txd),.led(led),.sd_ncs(sd_ncs),.sd_dclk(sd_dclk),
   .sd_mosi(sd_mosi),.sd_miso(1'b1),.HDMI_D0_P(HDMI_D0_P),

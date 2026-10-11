@@ -1,0 +1,2277 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/rv_skid_buffer.v" into library work
+INFO: [VRFC 10-311] analyzing module rv_skid_buffer
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module sync_fifo
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/fifo_health_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module fifo_health_monitor
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/error_report.v" into library work
+INFO: [VRFC 10-311] analyzing module error_report
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/shift_reg.v" into library work
+INFO: [VRFC 10-311] analyzing module shift_reg
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/spi_byte_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_byte_rx
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/crc16_ccitt.v" into library work
+INFO: [VRFC 10-311] analyzing module crc16_ccitt
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/crc7.v" into library work
+INFO: [VRFC 10-311] analyzing module crc7
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/spi_master.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_master
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_initializer.v" into library work
+INFO: [VRFC 10-311] analyzing module sd_initializer
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_sector_reader.v" into library work
+INFO: [VRFC 10-311] analyzing module sd_sector_reader
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/mbr_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module mbr_parser
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_boot_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_boot_parser
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_directory_scanner.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_directory_scanner
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_cluster_walker.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_cluster_walker
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_streamer.v" into library work
+INFO: [VRFC 10-311] analyzing module file_streamer
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_index.v" into library work
+INFO: [VRFC 10-311] analyzing module file_index
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module bmp_parser
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_unpack.v" into library work
+INFO: [VRFC 10-311] analyzing module bmp_unpack
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/wav_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module wav_parser
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/mem_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module mem_ctrl
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/mem_read_burst.v" into library work
+INFO: [VRFC 10-311] analyzing module mem_read_burst
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_address_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_address_gen
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_writer.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_writer
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module bmp_frame_write_bridge
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_buffer_manager.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_buffer_manager
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/memory_arbiter.v" into library work
+INFO: [VRFC 10-311] analyzing module memory_arbiter
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/video_read_dma.v" into library work
+INFO: [VRFC 10-311] analyzing module video_read_dma
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_swap_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_swap_ctrl
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_swap_cdc.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_swap_cdc
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/memory_bandwidth_monitor.v" into library work
+INFO: [VRFC 10-311] analyzing module memory_bandwidth_monitor
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/framebuffer_loopback_core.v" into library work
+INFO: [VRFC 10-311] analyzing module framebuffer_loopback_core
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/sdr_pat_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module sdr_pat_gen
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v" into library work
+INFO: [VRFC 10-311] analyzing module reset_sync
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v" into library work
+INFO: [VRFC 10-311] analyzing module top_stage5_sector_rd
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v" into library work
+INFO: [VRFC 10-311] analyzing module top_stage6_fat32_mount
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_sdram_loopback.v" into library work
+INFO: [VRFC 10-311] analyzing module top_sdram_loopback
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v" into library work
+INFO: [VRFC 10-311] analyzing module sdram_app_adapter
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v" into library work
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_ip
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_gray_sync
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v" into library work
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_eram
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v" into library work
+INFO: [VRFC 10-311] analyzing module bmp_frame_sink
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_pipeline/video_pipeline.v" into library work
+INFO: [VRFC 10-311] analyzing module video_pipeline
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v" into library work
+INFO: [VRFC 10-311] analyzing module video_timing
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_counter.v" into library work
+INFO: [VRFC 10-311] analyzing module a_counter
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module a_debounce
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_edge_detect.v" into library work
+INFO: [VRFC 10-311] analyzing module a_edge_detect
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/a_mode_fsm.v" into library work
+INFO: [VRFC 10-311] analyzing module a_mode_fsm
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/pattern_generator/pattern_generator.v" into library work
+INFO: [VRFC 10-311] analyzing module pattern_generator
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v" into library work
+INFO: [VRFC 10-311] analyzing module font8x16_rom
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_status_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_status_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_coordinate_text.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_coordinate_text
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_overlay.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_overlay
+INFO: [VRFC 10-2263] Analyzing Verilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/a_graphics_frontend.v" into library work
+INFO: [VRFC 10-311] analyzing module a_graphics_frontend
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/models/sd_spi_card_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_spi_card_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/models/frame_memory_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module frame_memory_model
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/models/vendor_ip_stub.sv" into library work
+INFO: [VRFC 10-311] analyzing module sv_system_pll
+INFO: [VRFC 10-311] analyzing module sdram
+INFO: [VRFC 10-311] analyzing module sv_board_memory_pll
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_sector_reader.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_sd_sector_reader
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_mbr_parser.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_mbr_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_initializer.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_sd_initializer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_fat32_boot_parser.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_fat32_boot_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_fat32_directory_scanner.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_fat32_directory_scanner
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_fat32_cluster_walker.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_fat32_cluster_walker
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_file_streamer.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_file_streamer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_parser.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_bmp_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_file_index.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_file_index
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_common_fifo.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_common_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_crc.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_crc
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_unpack.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_bmp_unpack
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_wav_parser.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_wav_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_frame_writer.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_frame_writer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_memory_arbiter.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_memory_arbiter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_frame_swap_ctrl.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_frame_swap_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_top_stage5_sector_rd.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_top_stage5_sector_rd
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_top_stage6_fat32_mount.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_top_stage6_fat32_mount
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_framebuffer_loopback_core.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_framebuffer_loopback_core
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdram_app_adapter.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_sdram_app_adapter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdr_pat_gen.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_sdr_pat_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_top_sdram_loopback.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_top_sdram_loopback
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_ab_storage_contract.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_ab_storage_contract
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_b_frame_memory.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_b_frame_memory
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_frame_write_bridge.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_bmp_frame_write_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_frame_writer_bounds.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_frame_writer_bounds
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_clock_params.sv" into library work
+INFO: [VRFC 10-311] analyzing module sd_clock_param_case
+INFO: [VRFC 10-311] analyzing module tb_sd_clock_params
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_frame_sink.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_bmp_frame_sink
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_sd_sector_reader -s tb_sd_sector_reader_sim --timescale 1ns/1ps --log tb_sd_sector_reader_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_sector_reader.sv:78]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.spi_master
+Compiling module work.sd_initializer
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader
+Compiling module work.sd_spi_card_model
+Compiling module work.tb_sd_sector_reader
+Built simulation snapshot tb_sd_sector_reader_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_sd_sector_reader_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:50:14 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_sd_sector_reader_sim/xsim_script.tcl
+# xsim {tb_sd_sector_reader_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== T1: SD 初始化序列 ====
+[PASS] T1.1 init_don��������
+[PASS] T1.��������������������
+[PASS] T1.����������� SDHC (CCS=1)
+[PASS] T1.4����������������������������
+       err_code=0x00 err_detail=0x00 retry=0
+
+==== T2~T4: CMD17 读 LBA=1000 ====
+[PASS]  = LBA 1������������������������
+[PASS] �������������������������� CMD17
+[PASS] T3.1������� 512 Byte
+[PASS] T3������������
+[PASS] T4.1 CRC16 ������������
+[PASS] 3 512 By������������������������
+
+==== T5: 连续多次读 ====
+[PASS] ��������������� LBA ������������
+
+==== T6: CMD18 未实现时的拒绝行为 ====
+[PASS] en=2����������������������������
+[PASS] ��������������������������������
+
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 1981255 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_sector_reader.sv" Line 354
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:50:18 2026...
+VERIFIED EXISTING tb_sd_sector_reader
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_mbr_parser -s tb_mbr_parser_sim --timescale 1ns/1ps --log tb_mbr_parser_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_mbr_parser.sv:75]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.spi_master
+Compiling module work.sd_initializer
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader
+Compiling module work.mbr_parser
+Compiling module work.sd_spi_card_model
+Compiling module work.tb_mbr_parser
+Built simulation snapshot tb_mbr_parser_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_mbr_parser_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:50:22 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_mbr_parser_sim/xsim_script.tcl
+# xsim {tb_mbr_parser_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] T1.1������� MBR -> has_mbr=1
+[PASS] LBA 8192������������������������
+[PASS] ��������������������������������
+[PASS] ����������� ��������������MB����
+[PASS] ��������������� ����������������
+[PASS] ������-> has_mbr�������������� 0
+[PASS] has_mbr=���������� M������������
+[TB] tb_mbr_parser done, errors=0
+$finish called at time : 1977686 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_mbr_parser.sv" Line 299
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:50:26 2026...
+VERIFIED EXISTING tb_mbr_parser
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_sd_initializer -s tb_sd_initializer_sim --timescale 1ns/1ps --log tb_sd_initializer_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_initializer.sv:62]
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_initializer.sv:103]
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_initializer.sv:143]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.spi_master
+Compiling module work.sd_initializer
+Compiling module work.sd_spi_card_model(SLOW_INIT_POLL...
+Compiling module work.sd_spi_card_model(OCR_VALUE=32'b...
+Compiling module work.sd_spi_card_model
+Compiling module work.tb_sd_initializer
+Built simulation snapshot tb_sd_initializer_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_sd_initializer_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:50:28 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_sd_initializer_sim/xsim_script.tcl
+# xsim {tb_sd_initializer_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[INFO] 已定义 SIM_FAST_TO：超时使用仿真缩放值（非产品值）
+
+==== T7~T9: 慢卡(CMD0 R1=0x03) / v1 卡 / 拔卡 并行验证 ====
+[PASS] ��������������������������������
+[PASS] ��������������������������������
+[PASS] ��������������������������������
+[PASS] T7.1����������������������������
+[PASS] T7������������������������
+[PASS] T7.3 ��������������� SDHC
+[PASS] �������������� 3���� idl��������
+[PASS] T7.5������������� >=����� ACMD41
+[PASS] CMD8����������������������������
+[PASS] T8.2 v��������������������
+[PASS] ����� SD�����CCS�������� SDH����
+[PASS] ������v1������������� HC��������
+[PASS] T9.1����������������������������
+[PASS] T9.2 ������������������������
+[PASS] ����� = 0x01(SD ���������������)
+[PASS] ����� = 0x21�������������������)
+
+==== T10: 插回后重新 start 恢复 ====
+       恢复耗时 116296 拍，末态 state=7，卡侧累计命令 7 条
+[PASS] ���������� start����������������
+[PASS] T10.2 ������������������������
+[PASS] ��������������������������� SDHC
+[PASS] T10.��������������������
+
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 4011015 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_initializer.sv" Line 255
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:50:33 2026...
+VERIFIED EXISTING tb_sd_initializer
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_fat32_boot_parser -s tb_fat32_boot_parser_sim --timescale 1ns/1ps --log tb_fat32_boot_parser_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_fat32_boot_parser.sv:81]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.spi_master
+Compiling module work.sd_initializer
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader
+Compiling module work.fat32_boot_parser
+Compiling module work.sd_spi_card_model
+Compiling module work.tb_fat32_boot_parser
+Built simulation snapshot tb_fat32_boot_parser_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_fat32_boot_parser_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:50:35 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_fat32_boot_parser_sim/xsim_script.tcl
+# xsim {tb_fat32_boot_parser_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== 前置：SD 初始化 ====
+[PASS] P1 SD����������������
+[PASS] ������������ SDH����������������
+
+==== T11: 正常 FAT32 挂载 ====
+[PASS] T11.1 mount_don��������
+[PASS] T11.2����������������
+[PASS] ����������� ��������������DB����
+[PASS] T11.4 BytsPerSec = 512
+[PASS] T11.5 SecPerClus = 8
+[PASS] T11.6 NumFATs = 2
+[PASS]  fat_start_lba = RsvdSecCnt = 32
+[PASS] T11.8 root_clus = 2
+[PASS] a_start_lba = 32 + 2*1024 = 2080
+[PASS] _dir_lba = 2080 + (2-2)*8 = 2080
+[PASS] T11.11 total_sec = 65536
+[PASS] tal_clus = (65536-2080)/8 = 7932
+
+==== T12: 签名不是 0x55AA ====
+[PASS] T12.1 ������������������������
+[PASS] T12.��������������������
+[PASS] ����� = 0x03�������������������)
+[PASS] ������������� = 0x31(BPB�������)
+
+==== T13: 不是 FAT32 ====
+[PASS] T13.1���� FAT������������
+[PASS] �������������� = 0x3����� FAT32)
+
+==== T14: BytsPerSec != 512 ====
+[PASS] T14.1 BytsPerSec=10������������
+[PASS] ������������� = 0x31(BPB�������)
+
+==== T15: 修复卷内容后重新挂载 ====
+[PASS] T15.��������������������
+[PASS] T15������������������������
+[PASS] T15.��������������������
+[PASS] T15.4 ������������������������
+
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 2181865 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_fat32_boot_parser.sv" Line 316
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:50:39 2026...
+VERIFIED EXISTING tb_fat32_boot_parser
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_fat32_directory_scanner -s tb_fat32_directory_scanner_sim --timescale 1ns/1ps --log tb_fat32_directory_scanner_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_fat32_directory_scanner.sv:89]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.spi_master
+Compiling module work.sd_initializer
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader
+Compiling module work.fat32_boot_parser
+Compiling module work.fat32_directory_scanner
+Compiling module work.fat32_cluster_walker
+Compiling module work.sd_spi_card_model
+Compiling module work.tb_fat32_directory_scanner
+Built simulation snapshot tb_fat32_directory_scanner_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_fat32_directory_scanner_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:50:41 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_fat32_directory_scanner_sim/xsim_script.tcl
+# xsim {tb_fat32_directory_scanner_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== 前置：SD 初始化 ====
+[PASS] P1 SD����������������
+[PASS] P����������� SDHC
+
+==== T21: 正常扫描 + 跳过规则 ====
+[PASS] T21.1 ������������
+[PASS] T21.2 data_start_lba = 2
+[PASS] T21.3 root_dir_lba = 2
+[PASS] T21.4 scan_don��������
+[PASS] T21������������������������
+[PASS] T21.6 ������������
+[PASS] ��������������������������������
+[PASS] T21.��������������� = SV0001.BMP
+[PASS] 1.9 ���1��������� = 0x20�������)
+[PASS] T21.10�������������� = 100
+[PASS] T21.1��������������� = 307266
+[PASS] ���������� =������������� LF����
+[PASS] 21.1��������������� = SV0002.BMP
+[PASS] T21.14�������������� = 200
+[PASS] ������ =������������������������
+[PASS] ��������������������������������
+
+==== T22: 空目录 ====
+[PASS] 22.1����������������������������
+[PASS] T22.2����������������
+[PASS] T22.3 ������������
+[PASS] T22.4 ������������
+
+==== T23: 簇满 + FAT=EOC ====
+[PASS] �������4������������������������
+[PASS] T23.2����������������
+[PASS] ����� 4 ������ = 64 ������������
+[PASS] ��������������������������������
+[PASS] T23.5 ������������������������
+[PASS] �������1����(0x0001)������������
+[PASS] T23.7 ������������������������
+
+==== T24: 根目录跨簇 ====
+[PASS] T24.1 ������������������������
+[PASS] T24.2����������������
+[PASS] 24.3 64(���2) + �����3) = 65����
+[PASS] ��������������������������������
+[PASS] 24.5����������������������������
+[PASS] 24.6����������������������������
+[PASS] �������������������������(LBA 6)
+
+==== T25: 簇链成环 ====
+[PASS] T25��������� total_clus = 4
+[PASS] 25.2����������������������������
+[PASS] T25.3 dir_ba��������
+[PASS] ����� = 0x03�������������������)
+[PASS] ����������� = 0x���������������)
+
+==== T26: 簇号越界 ====
+[PASS] T26.1 dir_ba��������
+[PASS] �������� = 0x33(���������������)
+[PASS] T26��������� = 0x03
+
+==== T27: 下游反压 ====
+[PASS] ��������� ent_valid ������������
+[PASS] ��������������������������������
+[PASS] ��������������������������������
+[PASS] T27.4 ������������������������
+[PASS] T27.5 ������������������������
+[PASS] T27.��������������������
+[PASS] T27.������������������������
+[PASS] T27.������������������������
+
+==== T28: 恢复后重扫 ====
+[PASS] T28.1 ������������
+[PASS] T28.2 dir_b������������
+[PASS] T28.��������������������
+[PASS] T28.4 ������ 1����
+[PASS] T28.5 ������������
+
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 11966425 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_fat32_directory_scanner.sv" Line 526
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:50:47 2026...
+VERIFIED EXISTING tb_fat32_directory_scanner
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_fat32_cluster_walker -s tb_fat32_cluster_walker_sim --timescale 1ns/1ps --log tb_fat32_cluster_walker_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'sd_rd_ready' [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_fat32_cluster_walker.sv:100]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.fat32_cluster_walker
+Compiling module work.tb_fat32_cluster_walker
+Built simulation snapshot tb_fat32_cluster_walker_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_fat32_cluster_walker_sim/webtalk/xsim_webtalk.tcl -notrace
+webtalk_transmit: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 83.379 ; gain = 1.316
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:50:53 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_fat32_cluster_walker_sim/xsim_script.tcl
+# xsim {tb_fat32_cluster_walker_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+==== A 正常跳簇 ====
+[PASS] WALK: 2 -> 3 ������������
+[PASS] ������������� eoc/error ������ 0
+[PASS] ������� LBA ������(2*4)/512=����
+[PASS] LK: done������������������� IDLE
+[PASS] WALK: don����� bu������ 0
+==== B EOC 判定 ====
+[PASS] WALK: 3 -> 4
+[PASS] ALK: 0xFFFFFFFF ������������ EOC
+[PASS] clus������������� 4 ������������
+[PASS] ��������������������������������
+[PASS] ��������������������������� ����
+[PASS] FF8 ���������������E������������
+[PASS] ��EO�������������� 0x0FFFFFF����
+[PASS] -> ERR_MEDIA_INVALID/DET_DIR_OOB
+==== C 越界 ====
+[PASS]  < 2������������� -> DET_DIR_OOB
+[PASS] us+1������������� -> DET_DIR_OOB
+==== D 跨扇区寻址 ====
+[PASS] ALK: rst_wal��������������������
+[PASS] ���512*1 = (130*4)/5������������
+[PASS] �������������������130 -> 13����
+[PASS] WALK: 131 -> 132
+[PASS] ����� hop_cn����� 0 ������������
+[PASS] WALK: 132 -> EOC
+==== E 判环 ====
+[PASS] �� total_clu��������������������
+[PASS] ���� 20 ��� hop_cnt ��������� 20
+[PASS] -> ERR_MEDIA_INVALID/DET_FS_LOOP
+[PASS] ������������������������ hop_cnt
+==== F 错误透传 ====
+[PASS] WALK: sd_crc16_err ������ error
+[PASS] ��������������������ERR_SD_I����
+[PASS] ��������������DET_SD_DATA_CR����
+==== G 读请求超时 ====
+[PASS] ������� read��������������������
+[PASS] ������ ERR_SD_IO/DET_SD_TOKEN_TO
+[PASS] WALK: ��������� bu������ 0
+==== H 全局监视 ====
+[PASS] == 3������� walk����������������
+[PASS] ��������������������������������
+========================================
+  PASS = 33   FAIL = 0
+========================================
+[RESULT] ALL PASS
+$finish called at time : 2160490 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_fat32_cluster_walker.sv" Line 362
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:50:57 2026...
+VERIFIED EXISTING tb_fat32_cluster_walker
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_file_streamer -s tb_file_streamer_sim --timescale 1ns/1ps --log tb_file_streamer_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_file_streamer.sv:88]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.spi_master
+Compiling module work.sd_initializer
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader
+Compiling module work.fat32_boot_parser
+Compiling module work.fat32_cluster_walker
+Compiling module work.file_streamer
+Compiling module work.sd_spi_card_model
+Compiling module work.tb_file_streamer
+Built simulation snapshot tb_file_streamer_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_file_streamer_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:50:59 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_file_streamer_sim/xsim_script.tcl
+# xsim {tb_file_streamer_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== 前置：SD 初始化 ====
+[PASS] P1 SD����������������
+
+==== T31: 单簇文件 2048 B ====
+[PASS] T31.1 ������������
+[PASS] T31������������
+[PASS] T31������������
+[PASS] T31��������� 20������������
+[PASS] .5 2048 ������������������������
+[PASS] T31.6 sof���������� 1����
+[PASS] T31.7 eof���������� 1����
+[PASS]  eof������� 2048����������������
+[PASS] T31.9 bytes_rd = 2048
+[PASS] 1.10����������������������������
+
+==== T32: 跨簇文件 4096 B ====
+[PASS] T32������������
+[PASS] T32������������
+[PASS] T32��������� 40������������
+[PASS] 32.4����������������������������
+[PASS] T32.5 sof���������� 1����
+[PASS] T32.6 eof���������� 1����
+[PASS] T32.7 bytes_rd = 4096
+[PASS] T32��������������� ��������
+
+==== T33: 只取 3000 B（簇里还有货也不许多发）====
+[PASS] T33������������
+[PASS] T33������������
+[PASS] ��������������������������������
+[PASS] 33.4���� 300��������������������
+[PASS] 3.5 eof ��������� 30������������
+[PASS] T33.6 bytes_rd = 3000
+
+==== T34: 文件比簇链长 ====
+[PASS] T34������������������������
+[PASS] T34.2 erro��������
+[PASS] T34��������� = 0x03
+[PASS] ����� = 0x36�������������������)
+[PASS] ��������������������������������
+
+==== T35: 簇链成环 ====
+[PASS] T35��������� total_clus = 4
+[PASS] T35.2 erro��������
+[PASS] ����������� = 0x���������������)
+[PASS] T35��������� = 0x03
+
+==== T36: 簇号越界 ====
+[PASS] T36.1 erro��������
+[PASS] ����������� = 0x���������������)
+
+==== T37: 下游反压 ====
+[PASS] T37��������������� vali��������
+[PASS] 37.2����������������������������
+[PASS] T37.3������������� so��������
+[PASS] T37.4����������������
+[PASS] T37������������������������
+[PASS] T37������������������������
+[PASS] T37.7 bytes_rd����������������
+
+==== T38: file_size = 0 ====
+[PASS] T38������������������������
+[PASS] T38.2 ������������
+[PASS] T38������������������������
+[PASS] T38.�������� sof
+[PASS] T38.�������� eof
+[PASS] T38.6 bytes_rd = 0
+
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 15638235 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_file_streamer.sv" Line 475
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:51:05 2026...
+VERIFIED EXISTING tb_file_streamer
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_bmp_parser -s tb_bmp_parser_sim --timescale 1ns/1ps --log tb_bmp_parser_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.bmp_parser
+Compiling module work.tb_bmp_parser
+Built simulation snapshot tb_bmp_parser_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_bmp_parser_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:51:08 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_bmp_parser_sim/xsim_script.tcl
+# xsim {tb_bmp_parser_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== T41: 合法 BMP ====
+[PASS] T41.1 check_done���������� 1����
+[PASS] T41������������
+[PASS] T41.�������� = 0
+[PASS] T41������ = 640
+[PASS] ����� = ��������� = bottom-u����
+[PASS] T41.6������� top-down
+[PASS] T41.7 bpp = 24
+[PASS] T41.8 compression = 0 (BI_RGB)
+[PASS] T41.9 pixel_off = 54
+[PASS] ��������������������� 20��������
+[PASS] .11 ��������������������� = 0xA0
+[PASS] T41.12 out_sof���������� 1����
+[PASS] T41.13 out_eof���������� 1����
+[PASS] ����������������������(0xA0+199)
+
+==== T42: 签名不是 BM ====
+[PASS] T42.��������
+[PASS] ����������� = 0x������������ BM)
+[PASS] T42��������� = 0x03
+[PASS] T42.4 ������������������������
+
+==== T43: biSize = 39 ====
+[PASS] T43.��������
+[PASS] ������� = 0x38(D������������ 40)
+[PASS] T43������������
+
+==== T44: 宽度 800 ====
+[PASS] T44.��������
+[PASS] ������ = 0x3����������� 640x480)
+
+==== T45: biBitCount = 32 ====
+[PASS] T45.��������
+[PASS] ���������� = 0x3A(bp�����������)
+
+==== T46: biCompression = 1 ====
+[PASS] T46.��������
+[PASS] �� = 0x3�����������������������)
+
+==== T47: 声明长度差 1 Byte ====
+[PASS] T47.��������
+[PASS] ����������� = 0x���������������)
+
+==== T48: bfOffBits = 70 ====
+[PASS] T48.1 ������������
+[PASS] T48.2 pixel_off = 70
+[PASS] ��������������������� 20��������
+[PASS] ���������� 1��������������������
+
+==== T49: 高 = -480 ====
+[PASS] T49.��������������������
+[PASS] T49.2 top_dow��������
+[PASS] 9.3 heig������������������(-480)
+
+==== T50: 下游反压 ====
+[PASS] ��������������� out_vali��������
+[PASS] 50.2����������������������������
+[PASS] ��������� 20��������������������
+[PASS] T50������������������������
+[PASS] T50.5 ������������������������
+
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 2037515 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_parser.sv" Line 412
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:51:11 2026...
+VERIFIED EXISTING tb_bmp_parser
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_file_index -s tb_file_index_sim --timescale 1ns/1ps --log tb_file_index_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'after_key' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_file_index.sv:65]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.file_index
+Compiling module work.tb_file_index
+Built simulation snapshot tb_file_index_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_file_index_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:51:13 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_file_index_sim/xsim_script.tcl
+# xsim {tb_file_index_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] ������ 1������������������������
+
+==== T61: 乱序 -> 升序 ====
+[PASS] 61.1 idx_don�������������� 1����
+[PASS] T61.2 file_cnt = 4
+[PASS] T61.3 file_val������ 1
+[PASS] T61.4 ������������
+[PASS] T61.5 ������������
+[PASS] T61������0 = SV0001
+[PASS] T61������0 = SV0001
+[PASS] T61������0 = SV0001
+[PASS] T61������1 = SV0002
+[PASS] T61������1 = SV0002
+[PASS] T61������1 = SV0002
+[PASS] T61������2 = SV0003
+[PASS] T61������2 = SV0003
+[PASS] T61������2 = SV0003
+[PASS] T61������3 = SV0004
+[PASS] T61������3 = SV0004
+[PASS] T61������3 = SV0004
+[PASS] T61.10 bmp_seen = 4
+
+==== T62: 6 幅只留最小的 4 幅 ====
+[PASS] T62.1 file_cnt = 4
+[PASS] T62������0 = SV0001
+[PASS] T62������0 = SV0001
+[PASS] T62������0 = SV0001
+[PASS] 3 = SV00�����0005/00������������
+[PASS] 3 = SV00�����0005/00������������
+[PASS] 3 = SV00�����0005/00������������
+[PASS] ��������������������������� ����
+
+==== T63: 只有 2 幅 ====
+[PASS] T63.1 file_cnt = 2
+[PASS] T63.2 file_valid = 0011
+[PASS] T63.3 insufficien��������
+[PASS] T63��������� = 0x03
+[PASS] = 0x��������������������� 4 ���)
+[PASS] T63.6������������
+[PASS] T63.6������������
+[PASS] T63.6������������
+
+==== T64: 非法名跳过 ====
+[PASS] T64.��������������������
+[PASS] T64.2 bmp_seen = 1
+[PASS] T64��������� SV0001.BMP
+[PASS] T64��������� SV0001.BMP
+[PASS] T64��������� SV0001.BMP
+
+==== T65: WAV 配对 ====
+[PASS] T65������0 ������������ WAV
+[PASS] T65.2 W��������� = 1100
+[PASS] T65.3 WA�������� = 96000
+[PASS] ���� WAV������������������������
+[PASS] ������� �������� -> ������������
+[PASS] T65.6 wav_seen = 2
+
+==== T66: WAV 串号 ====
+[PASS]  SV0001.BMP ��������� SV0003.WAV
+
+==== T67: 清表后重扫 ====
+[PASS] T67.����������� file_cnt = 0
+[PASS] T67.2 ��������� file_valid = 0
+[PASS] T67.����������� bmp_seen = 0
+[PASS] ��������������������������������
+[PASS] T67.����������� file_cnt = 1
+[PASS] T67.6 ��������� SV0009�������0
+[PASS] T67.6 ��������� SV0009�������0
+[PASS] T67.6 ��������� SV0009�������0
+
+==== T68: 重复编号 ====
+[PASS] T68.1 ������������������ 1����
+[PASS] 68.2����������������������������
+[PASS] 68.2����������������������������
+[PASS] 68.2����������������������������
+[PASS] ������ 2������������������������
+
+==== T69: 编号位数边界（缺陷 25）====
+[PASS] 0100�������������=0 ������������
+[PASS] ������0 = SV0001������ 0x000����
+[PASS] ������0 = SV0001������ 0x000����
+[PASS] ������0 = SV0001������ 0x000����
+[PASS] ������1 = SV0100������ 0x010����
+[PASS] ������1 = SV0100������ 0x010����
+[PASS] ������1 = SV0100������ 0x010����
+[PASS] 0101������ 0x010�������0x000����
+[PASS] 0101������ 0x010�������0x000����
+[PASS] 0101������ 0x010�������0x000����
+[PASS] T69.5 bmp_se������ 3
+
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 2538 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_file_index.sv" Line 309
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:51:17 2026...
+VERIFIED EXISTING tb_file_index
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_common_fifo -s tb_common_fifo_sim --timescale 1ns/1ps --log tb_common_fifo_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.rv_skid_buffer
+Compiling module work.sync_fifo_default
+Compiling module work.fifo_health_monitor
+Compiling module work.memory_bandwidth_monitor_default
+Compiling module work.sync_fifo(W=44,DEPTH=8,ALMOST_FU...
+Compiling module work.error_report
+Compiling module work.tb_common_fifo
+Built simulation snapshot tb_common_fifo_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_common_fifo_sim/webtalk/xsim_webtalk.tcl -notrace
+webtalk_transmit: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 83.555 ; gain = 1.258
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:51:24 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_common_fifo_sim/xsim_script.tcl
+# xsim {tb_common_fifo_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] skid-A1��������������������������������
+[PASS] skid-A������������������ 1���� out_dat��������
+[PASS] skid-A������������������ 2���� out_dat��������
+[PASS] kid-A1: ������������������������ in_read������������������������
+[PASS] skid-A1: ������������������������������������������������
+[PASS] skid-A1:������������������� 0x11 -> 0x22
+[PASS] skid-A1����������� out_vali��������
+[PASS] skid-A2: ������ 8����������������������������������������
+[PASS] skid-A2: ������ 8���� out_val������������
+[PASS] skid-A2: ������������������ 0x30..0x3��������
+[PASS] fifo-B1: ��������� empty=����data_count=0
+[PASS] fifo-B1:���� 10 ������ data_count=10
+[PASS] fifo-B1:���� 10 ������ empty������������ almost_empt��������
+[PASS] fifo-B������ 3������� data_count=7
+[PASS] fifo-B2:������� ������ data_count=47
+[PASS] fifo-B2: 47��������� 48���almost_full=0
+[PASS] fifo-B2�������������� 4����� almost_ful��������
+[PASS] ifo-B3: ������ 6����� full=1���data_coun����������� DEPT��������
+[PASS] ��������������������data_cou��������� 64������������������������
+[PASS] fifo-B������������������ -> overflow_cnt=4
+[PASS] fifo-B4:������������������� = 64
+[PASS] fifo-B������������ 64 ������������������������������������
+[PASS] fifo-B4: ��������� empty=����data_count=0
+[PASS] fifo-B4:���������� min_level��������������������������������
+[PASS] ������ 4�������empty / data_coun��������������������������������
+[PASS] fifo-B4����������� ����� -> underflow_cnt=4
+[PASS] fifo-B������������������ 1���� -> data_count=1
+[PASS] ����������������������������������������������������������������
+[PASS] fifo-B4:����������������������������
+[PASS] fifo-B������������������������
+[PASS] fifo-B������������������ underflow / overflow ������������
+[PASS] fifo-B6: ��������� 10����������� overflow_cnt = 0
+[PASS] fifo-B6: ������������������������������� -> underflow_cnt = 0
+[PASS] fifo-B6: min_level ������������
+[PASS] ��������������� ������������������������������������������������
+[PASS] fifo-B������������ FIF��������
+[PASS] monitor-C: clr ��������������������� 10������������������������
+[PASS] monitor-C�������������������������� min_level
+[PASS] monitor-C:���������������������� min_level
+[PASS] monitor-C: cur_lev��������� data_count
+[PASS] monitor-C����������� ����� -> underflow_cnt=3
+[PASS] monitor-������������������ -> overflow_cnt=5
+[PASS] bw-D: 4 B/��� @125MHz -> rd_bw = 500 M������������������������
+[PASS] bw-D: 2 B/��� @125MHz -> wr_bw = 250 M������������������������
+[PASS] bw-D: ������������������ 4000 Byte
+[PASS] bw-D: ������������������ 2000 Byte
+[PASS] bw-D: window_done����������������
+[PASS] bw-D: ������������������������������ 8000 Byte
+[PASS] bw-������������������������������������
+[PASS] error-E:���������� evt_valid�����evt_ful������drop_cnt=0
+[PASS] error-E:������� �������� evt_valid=1
+[PASS] error-E: 8���������������� 8 -> evt_full=1
+[PASS] error-E����������������� drop_cnt=0
+[PASS] error-E: ������������������ -> drop_cnt=2
+[PASS] error-E����������� evt_full���������� 1
+[PASS] �������� evt_type = ������ err_s��������������������������������
+[PASS] ������ evt_value��������� err_co��������������������������������
+[PASS] error-������������������evt_valid ������ 1
+--------------------------------------------------
+[SUMMARY] tb_common_fifo : PASS=58 FAIL=0
+[RESULT] ALL PASS
+--------------------------------------------------
+$finish called at time : 24 us : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_common_fifo.sv" Line 568
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:51:28 2026...
+VERIFIED EXISTING tb_common_fifo
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_crc -s tb_crc_sim --timescale 1ns/1ps --log tb_crc_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.crc16_ccitt
+Compiling module work.crc7
+Compiling module work.tb_crc
+Built simulation snapshot tb_crc_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_crc_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:51:30 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_crc_sim/xsim_script.tcl
+# xsim {tb_crc_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] CRC16 XMODEM(123456789)==0x31C3
+[PASS] C16 empty message == init 0x0000
+[PASS] CRC7 empty message == init 0x00
+[PASS] ian 4-stage cascade == byte-wise
+[PASS] 7(CMD0) == 0x4A (from algorithm)
+[PASS] nd-bit byte == SD_CRC_CMD0 macro
+[PASS] CMD0 frame byte 0 == 0x40
+[PASS] 7(CMD8) == 0x43 (from algorithm)
+[PASS] nd-bit byte == SD_CRC_CMD8 macro
+[PASS] CMD8 frame byte 0 == 0x48
+[PASS] CMD8 check pattern == 0xAA
+
+============================================
+  tb_crc : PASS=11 FAIL=0
+============================================
+[PASS] tb_crc all 11 checks passed
+$finish called at time : 29 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_crc.sv" Line 170
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:51:33 2026...
+VERIFIED EXISTING tb_crc
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_bmp_unpack -s tb_bmp_unpack_sim --timescale 1ns/1ps --log tb_bmp_unpack_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.bmp_unpack
+Compiling module work.bmp_unpack(ROUNDING=1'b1)
+Compiling module work.tb_bmp_unpack
+Built simulation snapshot tb_bmp_unpack_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_bmp_unpack_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:51:36 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_bmp_unpack_sim/xsim_script.tcl
+# xsim {tb_bmp_unpack_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== T1: BGR->RGB565 纯色 ====
+[PASS] ��������������������������������
+[PASS]  FF -> F������������������������
+[PASS] T1������: 00 FF 00 -> 07E0
+[PASS] T1������: FF 00 00 -> 001F
+[PASS] T1.5 x = 0,1,2
+[PASS] T1.6������ 0
+[PASS] T1.7 img_sof/img_e������ 1����
+[PASS] T1.8 done 1����
+[PASS] T1������������
+[PASS] 10 ROUNDING=��������������������
+
+==== T2: 行填充 + 跨行 x/y ====
+[PASS] 1 px_cnt������10����������������
+[PASS] T2.2������������������� 0..4
+[PASS] ������ 5������������������������
+[PASS] T2.4 x������� 0..4
+[PASS] T2.5 y 0,0,..,1
+[PASS] T2������������
+
+==== T3: top_down=1 y 递增 ====
+[PASS] T3.1 px_cnt=6
+[PASS] T3.2 y = 0,0,1,1,2,2
+[PASS] T3.3 �������� 0,1
+
+==== T4: top_down=0 y 递减 ====
+[PASS] T4.1 px_cnt=6
+[PASS]  = 2,2,1,1,0��������������������
+[PASS] T4.3 x ������������
+
+==== T5: 输出反压 ====
+[PASS] ��������������������������������
+[PASS] T5.��������������������
+[PASS] T5.3 ������������������������
+
+==== T6: 像素数不足 ====
+[PASS] T6������������������������
+[PASS] T6.��������
+[PASS] ���� = 0������������������������
+[PASS] T6��������� = 0x03
+[PASS] T6.5 do������������
+
+==== T7: 像素数超限 ====
+[PASS] T7.��������
+[PASS] ���� = 0������������������������
+[PASS] T7.3 ������������������������
+
+==== T8: 640x480 全尺寸计数 ====
+[PASS] T8��������������� = 307200
+[PASS] T8.2 img_s������ 1����
+[PASS] T8.3 img_e������ 1����
+[PASS] T8.4 done 1����
+[PASS] T8.��������
+[PASS] 8.6 ������������������ (639,479)
+[PASS] 8.7 ��������� = ������� ��������
+[PASS] T8.8 ROUNDING=1 ������������
+
+==== T9: ROUNDING 截断 vs 舍入 ====
+[PASS] T9.1������������������� ��������
+[PASS] T9.2 ROUNDING=0 ������ -> 0x0821
+[PASS] T9.3 ROUNDING=1 ������ -> 0x1042
+
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 12293975 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_unpack.sv" Line 419
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:51:41 2026...
+VERIFIED EXISTING tb_bmp_unpack
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_wav_parser -s tb_wav_parser_sim --timescale 1ns/1ps --log tb_wav_parser_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.wav_parser
+Compiling module work.tb_wav_parser
+Built simulation snapshot tb_wav_parser_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_wav_parser_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:51:43 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_wav_parser_sim/xsim_script.tcl
+# xsim {tb_wav_parser_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== T10: 合法 WAV（含未知块跳过）====
+[PASS] T10.1 header_done 1����
+[PASS] T10������������
+[PASS] T10.3 fmt_code = 1 (PCM)
+[PASS] T10������������ = 2
+[PASS] T10������������ = 48000
+[PASS] T10.6������� = 16
+[PASS] T10.7 data_size = 16
+[PASS] ������������� 8+5+1 ������������
+[PASS] T10.8 samples_rd = 4
+[PASS] T10.��������������������
+[PASS] T10.10 pcm_end 1����
+[PASS] T10.11 track_i��������
+
+==== T11: 左右声道打包顺序 ====
+[PASS] T11���������0 l=0100 r=0200
+[PASS] 11.2 sample = {r,l} = 0x02000100
+[PASS] T11���������1 l=FFF0 r=7FFF
+[PASS] sample = {r,��������������������
+
+==== T12: 非 PCM ====
+[PASS] T12.��������
+[PASS] ������������ = 0��������� PC����
+[PASS] 2.3 ������ = 0x07(WA�����������)
+[PASS] T12������������������������
+[PASS] T12������������������������
+
+==== T13: 单声道 ====
+[PASS] T13.��������
+[PASS] ������� = 0x��������������������
+[PASS] T13.3����������������
+
+==== T14: 采样率 44100 ====
+[PASS] T14.��������
+[PASS] ��� = 0x����������������� 48����
+[PASS] T14.3 ������������������������
+
+==== T15: 8 bit ====
+[PASS] T15.��������
+[PASS] ��������� = 0x74������ 16 bi����
+
+==== T16: 非 RIFF ====
+[PASS] T16.��������
+[PASS] ������ = 0x7������� RIFF/WAV����
+
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 5215 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_wav_parser.sv" Line 349
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:51:47 2026...
+VERIFIED EXISTING tb_wav_parser
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_frame_writer -s tb_frame_writer_sim --timescale 1ns/1ps --log tb_frame_writer_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer_default
+Compiling module work.mem_ctrl
+Compiling module work.frame_memory_model_default
+Compiling module work.tb_frame_writer
+Built simulation snapshot tb_frame_writer_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_frame_writer_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:51:49 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_frame_writer_sim/xsim_script.tcl
+# xsim {tb_frame_writer_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] T0 SDRAM init_done
+[PASS] ������ mem_error
+---- T1 正常一帧写入 ----
+[PASS] ������������ slot_valid[0]=0
+[PASS] T1 wr_don��������
+[PASS] T1 slot_valid[0��������
+[PASS] T1 crc_o��������
+[PASS] T1 px_cnt=307200
+[PASS] T1 ������������
+[PASS] T��������������������
+[PASS] T1�������(0,0)
+[PASS] ���������(639,0)
+[PASS] ���������(0,479)
+[PASS] T1�������(639,479)
+[PASS] T1�������(320,240)
+[PASS] T��������(100,50)
+---- T2 像素数少一个 ----
+[PASS] T2 ������������
+[PASS] T����������� DET_FS_SHORT
+[PASS] T2 ������ ERR_MEDIA_INVALID
+[PASS] T2 slot_valid[������������
+[PASS] T2 px_cnt=307199
+---- T3 像素数多一个 ----
+[PASS] T3 ������������
+[PASS] T����������� DET_BMP_SIZE
+[PASS] T3 slot_valid[������������
+---- T4 slot_valid 时序 ----
+[PASS] �������������+CR����������������
+---- T5 越界写被拒绝 ----
+[PASS] T5����������������������������
+[PASS] T5���������� DET_BMP_TRUNC
+[PASS] T5 slot_valid[������������
+[PASS] �������� slot_valid ������������
+========================================
+  断言总数 28，失败 0
+ 全部通过 (PASS)
+========================================
+$finish called at time : 11065312 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_frame_writer.sv" Line 348
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:51:56 2026...
+VERIFIED EXISTING tb_frame_writer
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_memory_arbiter -s tb_memory_arbiter_sim --timescale 1ns/1ps --log tb_memory_arbiter_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.memory_arbiter_default
+Compiling module work.tb_memory_arbiter
+Built simulation snapshot tb_memory_arbiter_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_memory_arbiter_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:51:58 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_memory_arbiter_sim/xsim_script.tcl
+# xsim {tb_memory_arbiter_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+==== 阶段 A：仲裁器 ====
+  rd_words=2035  wr_bursts=34  sd_bursts=10  consec max: rd=4 wr=1 sd=1
+[PASS] ���������������>=10 ������������
+[PASS] ������������������>=1000 wor����
+[PASS] gran�������������������������� N
+[PASS] gran�������������������������� N
+[PASS] gran�������������������������� N
+[PASS] ARB: rd_starve_cnt == 0
+[PASS] ve_cnt =������������������������
+========================================
+  PASS = 7   FAIL = 0
+========================================
+[RESULT] ALL PASS
+$finish called at time : 30135 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_memory_arbiter.sv" Line 196
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:52:02 2026...
+VERIFIED EXISTING tb_memory_arbiter
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_frame_swap_ctrl -s tb_frame_swap_ctrl_sim --timescale 1ns/1ps --log tb_frame_swap_ctrl_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_buffer_manager
+Compiling module work.frame_swap_ctrl(TIMEOUT_N=32'b01...
+Compiling module work.frame_swap_cdc
+Compiling module work.tb_frame_swap_ctrl
+Built simulation snapshot tb_frame_swap_ctrl_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_frame_swap_ctrl_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:52:04 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_frame_swap_ctrl_sim/xsim_script.tcl
+# xsim {tb_frame_swap_ctrl_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+==== 阶段 B：正常帧交换 ====
+[PASS] FBM����������������� IMG0..IMG3
+[PASS] FBM: line_stride / frame_bytes
+[PASS] FBM: ��������������� IMG2
+[PASS] FBM: slot_valid[1��������
+[PASS] E->WAIT_VBLANK->COMMIT->WAIT_ACK
+[PASS] SWAP:������������������� IDLE
+[PASS] SWAP:����������������
+[PASS] active_slot ������������������ 1
+[PASS] SWA��������������������� = IMG1
+[PASS]  generation ������������������ 1
+[PASS] ���� frame_start����������������
+[PASS] SWAP: swap_req����������������
+[PASS] �� A�������������slot=1 gen=����
+[PASS] yloa����� re��������������������
+[PASS]  ack������� payload ������������
+[PASS] ����togg������������������������
+==== 阶段 C1：超时（无 frame_start）====
+[PASS] rame_sta������ swap_erro��������
+[PASS] TIMEOUT: FSM������� SAFE
+[PASS] ��������������� ����������������
+[PASS] ��������������������������������
+==== 阶段 C2：超时（无 swap_ack）====
+[PASS] � swap_a������ swap_erro��������
+[PASS] OUT2����������������������� ����
+[PASS] ��������������������������� SAFE
+========================================
+  PASS = 23   FAIL = 0
+========================================
+[RESULT] ALL PASS
+$finish called at time : 3445 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_frame_swap_ctrl.sv" Line 369
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:52:07 2026...
+VERIFIED EXISTING tb_frame_swap_ctrl
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_top_stage5_sector_rd -s tb_top_stage5_sector_rd_sim --timescale 1ns/1ps --log tb_top_stage5_sector_rd_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage5_sector_rd.v:253]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sd_spi_card_model
+Compiling module work.reset_sync_default
+Compiling module work.sd_initializer
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader
+Compiling module work.spi_master(CLK_FREQ=50000000)
+Compiling module work.uart_tx(CLK_FREQ=50000000)
+Compiling module work.top_stage5_sector_rd(TARGET_LBA=...
+Compiling module work.tb_top_stage5_sector_rd
+Built simulation snapshot tb_top_stage5_sector_rd_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_top_stage5_sector_rd_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:52:10 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_top_stage5_sector_rd_sim/xsim_script.tcl
+# xsim {tb_top_stage5_sector_rd_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] T3 UART 收满 512 Byte
+[PASS] T3 512 Byte 逐字节与卡模型一致
+[PASS] T1 卡模型收到完整命令序列 cmd_cnt=6 acmd41_cnt=1
+[PASS] T2 CMD17 参数 = 1000
+[PASS] T4 顶层到达成功态 led=8
+[TB] sim end at 46785430000 ns
+$finish called at time : 46785430 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_top_stage5_sector_rd.sv" Line 186
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:52:16 2026...
+VERIFIED EXISTING tb_top_stage5_sector_rd
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_top_stage6_fat32_mount -s tb_top_stage6_fat32_mount_sim --timescale 1ns/1ps --log tb_top_stage6_fat32_mount_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v:799]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sd_spi_card_model(VOL_BASE=32'b0...
+Compiling module work.reset_sync_default
+Compiling module work.sd_initializer
+Compiling module work.mbr_parser
+Compiling module work.fat32_boot_parser
+Compiling module work.fat32_directory_scanner
+Compiling module work.fat32_cluster_walker
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader
+Compiling module work.spi_master(CLK_FREQ=50000000)
+Compiling module work.uart_tx(CLK_FREQ=50000000)
+Compiling module work.top_stage6_fat32_mount(POWERUP_C...
+Compiling module work.tb_top_stage6_fat32_mount
+Built simulation snapshot tb_top_stage6_fat32_mount_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_top_stage6_fat32_mount_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:52:18 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_top_stage6_fat32_mount_sim/xsim_script.tcl
+# xsim {tb_top_stage6_fat32_mount_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+---- scenario A: UART report begin ----
+SAFEVISION B STAGE6
+
+MBR=00000001 BASE=00000010 SECS=00010000
+
+BPS=0200 SPC=01 NFAT=02
+
+FATLBA=00000020 DATALBA=00000022 ROOTLBA=00000022
+
+TOTSEC=00000030 TOTCLUS=0000000E
+
+ENT=0003
+
+E 0000 5356303030312020424D50 20 00000005 000E1036
+
+E 0001 5356303030322020424D50 20 00000006 000E1036
+
+E 0002 5356303030332020424D50 20 00000007 000E1036
+
+RPT=0064 OK=0064 BAD=0000
+
+DONE
+
+
+---- scenario A: UART report end ----
+[PASS] pars��������� 0 ���������(arg=0)
+[PASS] ����������������� LBA = base(16)
+[PASS] T3 F������������ = base + 32
+[PASS] �������������������� = base + 34
+[PASS] T5���������������������� led=8
+[PASS] ���������� = 372���������� 0x00)
+[PASS] T7 ������������
+[PASS] ���������� S������������ 0x0����
+[PASS] T9 ������������������ 0D 0A
+[PASS] T10 MBR/BASE/SECS����
+[PASS] T11 B������������
+[PASS] 2 FA������������������������ LBA
+[PASS] T13 TOTSEC/TOTCLUS����
+[PASS] T��������������� ENT=0003
+[PASS] ������0 ���/��������������������
+[PASS] ������1 ���/��������������������
+[PASS] ������2 ���/��������������������
+[PASS] ������������� RPT OK=total BAD=0
+[PASS] T19 ��������������� DONE
+[PASS] ����������� rep_ok=100 rep_bad=0
+---- scenario B: UART report begin ----
+SAFEVISION B STAGE6
+
+MBR=00000001 BASE=00000010 SECS=00010000
+
+BPS=0200 SPC=01 NFAT=02
+
+FATLBA=00000020 DATALBA=00000022 ROOTLBA=00000022
+
+TOTSEC=00000030 TOTCLUS=0000000E
+
+ENT=0003
+
+E 0000 5356303030312020424D50 20 00000005 000E1036
+
+E 0001 5356303030322020424D50 20 00000006 000E1036
+
+E 0002 5356303030332020424D50 20 00000007 000E1036
+
+RPT=0064 OK=0000 BAD=0064
+
+ERR=02
+
+
+---- scenario B: UART report end ----
+[PASS] T21������������������ = 374
+[PASS] ��������������� RPT OK=0 BAD=100
+[PASS] T��������������������� ERR=02
+[PASS]  LED������������������ 4���� = 2
+[PASS] ���������� ST_ER����������������
+[PASS] �������������������������� 0D 0A
+============================================
+ 全部通过 (PASS)
+============================================
+
+$finish called at time : 118781970 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_top_stage6_fat32_mount.sv" Line 461
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 218.527 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:52:29 2026...
+VERIFIED EXISTING tb_top_stage6_fat32_mount
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_framebuffer_loopback_core -s tb_framebuffer_loopback_core_sim --timescale 1ns/1ps --log tb_framebuffer_loopback_core_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer(GAP_TIMEOUT=32'b010...
+Compiling module work.mem_read_burst
+Compiling module work.video_read_dma(PIX_DEPTH=128,LOW...
+Compiling module work.sync_fifo(DEPTH=128,ALMOST_FULL_...
+Compiling module work.mem_ctrl
+Compiling module work.framebuffer_loopback_core_defaul...
+Compiling module work.frame_memory_model_default
+Compiling module work.tb_framebuffer_loopback_core
+Built simulation snapshot tb_framebuffer_loopback_core_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_framebuffer_loopback_core_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:52:32 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_framebuffer_loopback_core_sim/xsim_script.tcl
+# xsim {tb_framebuffer_loopback_core_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+---- 帧缓存回环结果 ----
+  wr_px=307200 rd_px=307200 bad=0 err=00 rep_n=208
+  探针写访问数=153636 A首址=00001000 B首址=00001035 值错=0 A段地址错=0 B段地址错=0
+[PASS] ��������������� ok=1
+[PASS] T2 ������������
+[PASS] T3 ��������������� = 307200
+[PASS] T4 ��������������� = 307200
+[PASS] ������������������������
+[PASS] 6 frame_writ��������� CR��������
+[PASS] T7 slot_vali��������
+[PASS] ��������� = 208 Byte
+[PASS] T9����������������������������
+[PASS] ������� ��������������36 wor����
+[PASS] ��������������������32+4 wor����
+========================================
+  断言总数 11，失败 0
+ 全部通过 (PASS)
+========================================
+$finish called at time : 12625472 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_framebuffer_loopback_core.sv" Line 211
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:52:39 2026...
+VERIFIED EXISTING tb_framebuffer_loopback_core
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_sdram_app_adapter -s tb_sdram_app_adapter_sim --timescale 1ns/1ps --log tb_sdram_app_adapter_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'write_idle' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdram_app_adapter.sv:75]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sdram_app_adapter
+Compiling module work.tb_sdram_app_adapter
+Built simulation snapshot tb_sdram_app_adapter_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_sdram_app_adapter_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:52:41 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_sdram_app_adapter_sim/xsim_script.tcl
+# xsim {tb_sdram_app_adapter_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+---- 适配器结果 ----
+  写拍数=36 写地址不连续次数=0
+  读拍数=80 读地址不连续次数=0 两次读突发最小静默=0 拍
+  16 字错=0 / 32 字错=0 / 非对齐 4 字错=0 / 跳变 8 字错=0
+  等 ready 超时=0 次 / 等 rdata_valid 超时=0 次
+[PASS] D1 init_don��������
+[PASS] D2 ��������������������� +1
+[PASS] ������������� 16����������������
+[PASS] D4 ��������������������� +1
+[PASS] ��������������������������������
+[PASS] ����������������� 4 ��� ��������
+[PASS] ��������������������������������
+========================================
+  断言总数 7，失败 0
+ 全部通过 (PASS)
+========================================
+$finish called at time : 7696 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdram_app_adapter.sv" Line 311
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:52:45 2026...
+VERIFIED EXISTING tb_sdram_app_adapter
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_sdr_pat_gen -s tb_sdr_pat_gen_sim --timescale 1ns/1ps --log tb_sdr_pat_gen_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sdr_pat_gen
+Compiling module work.tb_sdr_pat_gen
+Built simulation snapshot tb_sdr_pat_gen_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_sdr_pat_gen_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:52:47 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_sdr_pat_gen_sim/xsim_script.tcl
+# xsim {tb_sdr_pat_gen_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] ��������������������������������
+[PASS] ������10������������������������
+[PASS] ��������������������� >=��������
+[PASS] ��������������������������������
+[PASS]  mode0 addr=0x000000 -> A55A3CC3
+[PASS]  mode0 addr=0x000001 -> A45B3DCB
+[PASS]  mode0 addr=0x0000FF -> 5AA2C33C
+[PASS]  mode0 addr=0x001800 -> A59A3CC3
+[PASS]  mode0 addr=0x1FFFFF -> A55AC33C
+[PASS] T6.1 mode0 addr=0���������� 0
+[PASS] T6.2 mode1 addr=0���������� 0
+[PASS] ����������walking-1 ��� ��������
+[PASS] ���������������� T1 ������������
+[PASS] 1024����������������������������
+[PASS] 2 walking-1 a[4:0]=0 -> 00000001
+[PASS]  walking-1 a[4:0]=31 -> 80000000
+[PASS] 3 walking-0 a[4:0]=0 -> FFFFFFFE
+[PASS]  walking-0 a[4:0]=31 -> 7FFFFFFF
+[PASS] ode4��������1 a[0]=0 -> 00000000
+[PASS] ode4��������1 a[0]=1 -> FFFFFFFF
+[PASS] ������������� a[0]=0 -> 55555555
+[PASS] ������������� a[0]=1 -> AAAAAAAA
+[TB] tb_sdr_pat_gen done, errors=0 (sparse_distinct=1024 consecutive=1024 lfsr=1024 bytes=256/256/256/256 old_formula=2)
+$finish called at time : 3110 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdr_pat_gen.sv" Line 185
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:52:51 2026...
+VERIFIED EXISTING tb_sdr_pat_gen
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_top_sdram_loopback -s tb_top_sdram_loopback_sim --timescale 1ns/1ps --log tb_top_sdram_loopback_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.reset_sync_default
+Compiling module work.sv_system_pll
+Compiling module work.sdr_pat_gen
+Compiling module work.sdram
+Compiling module work.uart_tx(CLK_FREQ=125000000)
+Compiling module work.top_sdram_loopback(POWERUP_CYC=2...
+Compiling module work.tb_top_sdram_loopback
+Built simulation snapshot tb_top_sdram_loopback_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_top_sdram_loopback_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:52:53 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_top_sdram_loopback_sim/xsim_script.tcl
+# xsim {tb_top_sdram_loopback_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] ������������ 190 Byt������������
+[PASS] �������190 B������3 ������������
+[PASS] ��RND=00000003/00000003 PAT=����
+[PASS] T3 led = ����������������
+[PASS] ����������������������� ��������
+[PASS] ���� BAD=000����� BA������������
+[PASS] ��������������� ����������������
+[PASS] T6 led ������������������������
+[TB] tb_top_sdram_loopback done, errors=0 (rx_n=380, led=3)
+$finish called at time : 33276740 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_top_sdram_loopback.sv" Line 226
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:53:01 2026...
+VERIFIED EXISTING tb_top_sdram_loopback
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_ab_storage_contract -s tb_ab_storage_contract_sim --timescale 1ns/1ps --log tb_ab_storage_contract_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.memory_arbiter_default
+Compiling module work.frame_swap_ctrl(TIMEOUT_N=32'b01...
+Compiling module work.frame_swap_cdc
+Compiling module work.tb_ab_storage_contract
+Built simulation snapshot tb_ab_storage_contract_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_ab_storage_contract_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:53:03 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_ab_storage_contract_sim/xsim_script.tcl
+# xsim {tb_ab_storage_contract_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] T1 rd_le����������������� 64
+[PASS] ��������������������������������
+[PASS] � rd_data_valid ������ == rd_len
+[PASS] alid������� rd_busy ������������
+[PASS] addr������� ��������������������
+[PASS] ��������������������������������
+[PASS] ��������������������������������
+[PASS] T6b������������������ N���� ack
+[PASS] �������C������������������������
+[PASS] ����togg������������������������
+[PASS] �������������swap_error ��� ����
+[PASS] T6f frame_start_evt������������
+[PASS] T6g swap_ack_evt������������
+[PASS] ������� ������swap_r������������
+[PASS] �� C�������������� active_commit
+[PASS] ������� ������������������������
+[TB] tb_ab_storage_contract done, errors=0 (bursts=6 rd_words_ok=6 req=5 acks=5 commits=5 toggles=5)
+$finish called at time : 8720 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_ab_storage_contract.sv" Line 392
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:53:07 2026...
+VERIFIED EXISTING tb_ab_storage_contract
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_b_frame_memory -s tb_b_frame_memory_sim --timescale 1ns/1ps --log tb_b_frame_memory_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'start_ready' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_b_frame_memory.sv:215]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.bmp_parser
+Compiling module work.bmp_unpack
+Compiling module work.frame_address_gen
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer(GAP_TIMEOUT=32'b010...
+Compiling module work.bmp_frame_write_bridge
+Compiling module work.memory_arbiter_default
+Compiling module work.tb_b_frame_memory
+Built simulation snapshot tb_b_frame_memory_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_b_frame_memory_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:53:09 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_b_frame_memory_sim/xsim_script.tcl
+# xsim {tb_b_frame_memory_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PROG] t=2000000000 bi=125015 bu_done=0 fw_px=41653 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=4000000000 bi=250015 bu_done=0 fw_px=83319 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=6000000000 bi=375015 bu_done=0 fw_px=124986 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=8000000000 bi=500015 bu_done=0 fw_px=166653 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=10000000000 bi=625015 bu_done=0 fw_px=208319 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=12000000000 bi=750015 bu_done=0 fw_px=249986 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PROG] t=14000000000 bi=875015 bu_done=0 fw_px=291653 fw_done=0 slotv=0000 bst=0 vcnt=0 wok=0 wbad=0
+[PASS] ��������������������������������
+[PASS] 2) BMP����������������
+[PASS] ������������������ = 640
+[PASS] ������������������ = 480
+[PASS] 5) frame_writer ������������
+[PASS] rame_writer ������ 30720��������
+[PASS] 7) frame_writer CRC ������������
+[PASS] vali�����������A����������������
+[PROG] t=16000000000 bi=921654 bu_done=0 fw_px=307200 fw_done=0 slotv=0010 bst=2096 vcnt=134082 wok=134082 wbad=0
+[PASS] BMP ���������������*������������
+[PASS] ����� = 1536��������������������
+[PASS] 2400��������������������� ac����
+[PASS] _ack����������������������������
+[PASS] alid������� rd_busy ������������
+[PASS] 1��������������� = 153600
+[TB] tb_b_frame_memory done, errors=0 (wok=153600 wbad=0 bursts=2400 vcnt=153600)
+$finish called at time : 16183236 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_b_frame_memory.sv" Line 392
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 218.598 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:53:20 2026...
+VERIFIED EXISTING tb_b_frame_memory
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_bmp_frame_write_bridge -s tb_bmp_frame_write_bridge_sim --timescale 1ns/1ps --log tb_bmp_frame_write_bridge_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'start_ready' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_frame_write_bridge.sv:10]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_address_gen
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer(GAP_TIMEOUT=32'b011...
+Compiling module work.bmp_frame_write_bridge(GAP_TIMEO...
+Compiling module work.tb_bmp_frame_write_bridge
+Built simulation snapshot tb_bmp_frame_write_bridge_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_bmp_frame_write_bridge_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:53:22 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_bmp_frame_write_bridge_sim/xsim_script.tcl
+# xsim {tb_bmp_frame_write_bridge_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] BMP direction=0 slot=0 words=153600 gap=70000
+[PASS] BMP direction=1 slot=3 words=153600 gap=70000
+PASS tb_bmp_frame_write_bridge: checks=307200
+$finish called at time : 13408208 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_frame_write_bridge.sv" Line 54
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:53:28 2026...
+VERIFIED EXISTING tb_bmp_frame_write_bridge
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_frame_writer_bounds -s tb_frame_writer_bounds_sim --timescale 1ns/1ps --log tb_frame_writer_bounds_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer_default
+Compiling module work.tb_frame_writer_bounds
+Built simulation snapshot tb_frame_writer_bounds_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_frame_writer_bounds_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:53:30 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_frame_writer_bounds_sim/xsim_script.tcl
+# xsim {tb_frame_writer_bounds_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] rejected base=fffffffc
+[PASS] rejected base=fff60000
+[PASS] rejected base=00400000
+[PASS] rejected base=00360004
+[PASS] rejected base=00000001
+PASS tb_frame_writer_bounds: checks=5
+$finish called at time : 360 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_frame_writer_bounds.sv" Line 20
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:53:34 2026...
+VERIFIED EXISTING tb_frame_writer_bounds
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_sd_clock_params -s tb_sd_clock_params_sim --timescale 1ns/1ps --log tb_sd_clock_params_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_clock_params.sv:13]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sd_initializer(CLK_DIV_INIT=16'b...
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader(CLK_DIV_FAST=16...
+Compiling module work.spi_master(CLK_FREQ=50000000)
+Compiling module work.sd_spi_card_model
+Compiling module work.sd_clock_param_case(CLK_HZ=50000...
+Compiling module work.sd_initializer
+Compiling module work.sd_sector_reader
+Compiling module work.spi_master
+Compiling module work.sd_clock_param_case(CLK_HZ=10000...
+Compiling module work.sd_initializer(CLK_DIV_INIT=16'b...
+Compiling module work.sd_sector_reader(CLK_DIV_FAST=16...
+Compiling module work.spi_master(CLK_FREQ=125000000)
+Compiling module work.sd_clock_param_case_default
+Compiling module work.tb_sd_clock_params
+Built simulation snapshot tb_sd_clock_params_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_sd_clock_params_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:53:36 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_sd_clock_params_sim/xsim_script.tcl
+# xsim {tb_sd_clock_params_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] SD clk=100000000 init_div=124 fast_div=1 bytes=512 init_edges=463 data_edges=4183
+[PASS] SD clk=125000000 init_div=156 fast_div=2 bytes=512 init_edges=463 data_edges=4183
+[PASS] SD clk=50000000 init_div=62 fast_div=0 bytes=512 init_edges=463 data_edges=4183
+PASS tb_sd_clock_params: 50/100/125MHz real SD initialization + sector CRC + SCLK limits
+$finish called at time : 1583120 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sd_clock_params.sv" Line 65
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:53:40 2026...
+VERIFIED EXISTING tb_sd_clock_params
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_bmp_frame_sink -s tb_bmp_frame_sink_sim --timescale 1ns/1ps --log tb_bmp_frame_sink_elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'source_stream_ok' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_frame_sink.sv:128]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.a_pixel_fifo_gray_sync(ADDR_WIDT...
+Compiling module work.a_pixel_fifo_gray_sync(ADDR_WIDT...
+Compiling module work.a_pixel_fifo_eram(ADDRWIDTH_A=10...
+Compiling module work.a_pixel_fifo_ip(AL_EMPTY_NUM=32)
+Compiling module work.a_pixel_fifo
+Compiling module work.frame_address_gen
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer(GAP_TIMEOUT=32'b011...
+Compiling module work.bmp_frame_write_bridge(GAP_TIMEO...
+Compiling module work.bmp_frame_sink(GAP_TIMEOUT=32'b0...
+Compiling module work.tb_bmp_frame_sink
+Built simulation snapshot tb_bmp_frame_sink_sim
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_b/xsim.dir/tb_bmp_frame_sink_sim/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Sun Oct 11 02:53:42 2026...
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_bmp_frame_sink_sim/xsim_script.tcl
+# xsim {tb_bmp_frame_sink_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[TB] T6: stray words while idle must be drained before mem_ready
+[PASS] T6a) mem_ready dropped while the FIFO held stray words
+[PASS] T6b) mem_ready re-asserts after the FIFO is drained
+[PASS] T6c) stray words were drained, not written into a slot
+[PASS] T6d) sink is in S_DRAIN after draining
+[TB] T1: normal frame, top_down=0 -> slot 1 (pixel-exact)
+[PASS] T1a) frame_done toggled for frame 1
+[PASS] T1b) frame_cnt == 1
+[PASS] T1c) exactly 307200 pixels written by the bridge
+[PASS] T1d) swap request carried slot 1
+[PASS] T1e) swap request carried crc_ok=1
+[PASS] T1f) last_frame_ok = 1
+[PASS] T1g) no error code after a good frame
+[PASS] T1h) back to S_DRAIN with mem_ready=1
+[PASS] T1i) slot 1 content (frame 1, top_down=0) : 153600 words pixel-exact
+[TB] T2: next frame with top_down=1 -> slot 0 (catches stale orientation)
+[PASS] T2a) frame_done toggled for frame 2
+[PASS] T2b) frame_cnt == 2
+[PASS] T2c) swap request carried slot 0
+[PASS] T2d) swap_generation incremented twice (now 3)
+[PASS] T2e) slot 0 content (frame 2, top_down=1) : 153600 words pixel-exact
+[TB] T3: swap_busy stuck HIGH must still time out (liveness)
+[PASS] T3a) frame_done still toggled while swap_busy stayed high
+[PASS] T3b) recovered to S_DRAIN with mem_ready=1
+[TB] T4: swap_busy never asserts must still time out
+[PASS] T4a) frame_done toggled although swap_busy never asserted
+[PASS] T4b) recovered to S_DRAIN with mem_ready=1
+[TB] T5: starve the frame -> S_WRITE no-progress timeout -> S_ERROR, sticky err_code
+[PASS] T5a) sink entered S_ERROR on frame stall
+[PASS] T5b) sink latched a non-zero err_code
+[PASS] T5c) frame_done toggled from S_ERROR (SD side can advance)
+[PASS] T5d) sink returned to S_DRAIN after the error
+[PASS] T5e) err_code is STICKY after leaving S_ERROR
+[PASS] T5f) a subsequent good frame completes
+[PASS] T5g) sticky err_code cleared by a successful frame
+============================================
+  BMP-FRAME-SINK PASS (0 error)
+============================================
+$finish called at time : 61601670 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_bmp_frame_sink.sv" Line 444
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:48 . Memory (MB): peak = 218.047 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:54:34 2026...
+VERIFIED EXISTING tb_bmp_frame_sink
+B+A COMPILE AND B FUNCTIONAL PASS: tests=28 checks=668

@@ -1,0 +1,12 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_hdmi_edid_control -s tb_hdmi_edid_control --timescale 1ns/1ps --log elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.hdmi_edid_control(SETTLE_CYCLES=...
+Compiling module work.tb_hdmi_edid_control
+Built simulation snapshot tb_hdmi_edid_control

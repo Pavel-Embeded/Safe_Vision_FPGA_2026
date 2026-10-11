@@ -1,0 +1,42 @@
+[
+  {
+    "name": "SV0001.BMP",
+    "bytes": 921654,
+    "sha256": "1f6117a84c83a5fc365392c4dad76be7015bf6412672ec24936a2b0491a69e82",
+    "width": 640,
+    "height": 480,
+    "bpp": 24,
+    "compression": "BI_RGB",
+    "rows": "bottom-up"
+  },
+  {
+    "name": "SV0002.BMP",
+    "bytes": 921654,
+    "sha256": "a82ff45a97d922d25ac0426c0dd7c2893d44bd54f97e99009ed2a21dd2428f0d",
+    "width": 640,
+    "height": 480,
+    "bpp": 24,
+    "compression": "BI_RGB",
+    "rows": "bottom-up"
+  },
+  {
+    "name": "SV0003.BMP",
+    "bytes": 921654,
+    "sha256": "90f28fbbce3ee891461ee4fd4902fdc14e2ee0f9ad2822b21ab34288066e7f50",
+    "width": 640,
+    "height": 480,
+    "bpp": 24,
+    "compression": "BI_RGB",
+    "rows": "bottom-up"
+  },
+  {
+    "name": "SV0004.BMP",
+    "bytes": 921654,
+    "sha256": "eb6361840144533725fc109d1bfb5dac7cd4d3a20e43c4297f027d9efced7b0c",
+    "width": 640,
+    "height": 480,
+    "bpp": 24,
+    "compression": "BI_RGB",
+    "rows": "bottom-up"
+  }
+]

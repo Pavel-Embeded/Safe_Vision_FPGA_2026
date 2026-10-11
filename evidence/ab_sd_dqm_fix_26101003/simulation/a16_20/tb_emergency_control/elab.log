@@ -1,0 +1,18 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_emergency_control -s tb_emergency_control --timescale 1ns/1ps --log elab.log 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.video_cdc_mailbox(WIDTH=5)
+Compiling module work.emergency_control_bridge
+Compiling module work.emergency_control_case
+Compiling module work.emergency_control_bridge(IMMEDIA...
+Compiling module work.emergency_control_case(POLICY=1)
+Compiling module work.emergency_control_case(HALF=19.8...
+Compiling module work.emergency_control_case(POLICY=1,...
+Compiling module work.tb_emergency_control
+Built simulation snapshot tb_emergency_control

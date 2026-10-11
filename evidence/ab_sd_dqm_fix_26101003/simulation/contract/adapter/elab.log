@@ -1,0 +1,13 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_sdram_app_adapter_streaming -s board_test --timescale 1ns/1ps --log elab.log -generic_top RD_LAT=4 -generic_top FAST_READ=0 -generic_top PREFETCH_READ=0 
+Multi-threading is on. Using 30 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'write_idle' remains unconnected for this instance [D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_sdram_app_adapter_streaming.sv:12]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sdram_app_adapter
+Compiling module work.tb_sdram_app_adapter_streaming
+Built simulation snapshot board_test

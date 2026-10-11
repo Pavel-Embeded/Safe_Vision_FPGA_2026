@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sun Oct 11 09:32:01 2026
+# Process ID: 40156
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/counter_width_probe
+# Command line: xsim.exe -mode tcl -source {xsim.dir/probe/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/counter_width_probe/xsim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/counter_width_probe\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/probe/xsim_script.tcl
+# xsim {probe} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+COUNT WIDTH wide=zzzzzz37 snapshot=zzzzzz37 equal=x
+[PASS] corrected width is known; independent command events detect all 256 commands despite 8-bit wrap
+$finish called at time : 514 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/counter_width_probe/tb.sv" Line 27
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 09:32:04 2026...

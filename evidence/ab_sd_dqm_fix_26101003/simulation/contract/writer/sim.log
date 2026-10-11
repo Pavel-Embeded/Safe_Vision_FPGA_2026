@@ -1,0 +1,36 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sun Oct 11 02:44:19 2026
+# Process ID: 2616
+# Current directory: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_contract/writer
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/board_test/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_contract/writer/sim.log
+# Journal file: D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/board_diagnosis_26101003/scan_contract/writer\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/board_test/xsim_script.tcl
+# xsim {board_test} -autoloadwcfg -tclbatch {run.tcl}
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+source run.tcl
+## run all
+[PASS] accepted start clears counter and full together
+[PASS] complete default frame: every pixel/153600 write words correct
+[PASS] exact-length frame completes once with CRC and valid slot
+[PASS] word stability checked under deterministic backpressure
+[PASS] rejected illegal start retains counter/full and emits no write
+[PASS] accepted start clears counter and full together
+[PASS] extra pixel is rejected after exactly one complete frame of writes
+[PASS] overflow reports size error without publishing the new slot
+[PASS] asynchronous reset clears full/counter/slot-valid
+[PASS] accepted start clears counter and full together
+[PASS] partial odd-pixel frame stays non-full before reset
+[PASS] asynchronous reset clears full/counter/slot-valid
+[PASS] accepted start clears counter and full together
+[PASS] post-reset frame has no stale half-pixel or pending write
+[PASS] full flag equals original predicate on every sampled edge
+[PASS] frame full equivalence checks=15 invariant_edges=1046592 stall_edges=124899
+$finish called at time : 8372736 ns : File "D:/Codex/2026-10-09/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_frame_writer_full_flag_equivalence.sv" Line 188
+## quit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 11 02:44:24 2026...
