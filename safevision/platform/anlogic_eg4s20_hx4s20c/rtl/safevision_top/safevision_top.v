@@ -52,6 +52,12 @@
 `define SAFEVISION_MEM_CLK_HZ 100000000
 `elsif SAFEVISION_DIAG_MEM100P8
 `define SAFEVISION_MEM_CLK_HZ 100000000
+`elsif SAFEVISION_DIAG_D40R
+// ★ 2026-10-11：**40MHz（已验证的 +10ns 相位）+ 细化版 dm 释放策略**。
+//   为什么是这一档：40MHz 的 SDRAM 边界余量 +10.5ns，是所有构建里最舒适的；
+//   而"40MHz + dm 修复"这个组合至今没被真正测过（两次都赶上卡初始化偶发失败）。
+//   ⇒ 若它出干净图，就说明"时钟不用动、把 dm 策略修对"就够了。
+`define SAFEVISION_MEM_CLK_HZ 40000000
 `elsif SAFEVISION_DIAG_D4KR
 // ★ 2026-10-11：100MHz + 精确 180° + **dm 修复（队友原版策略）** + **REFRESH_ROWS=4096**。
 //   与上午那版 `SV-100M`（4096、无修复、"撕裂但认得出"）**只差 dm 修复这一个变量**——
@@ -939,6 +945,11 @@ module safevision_top #(
             // 100MHz + 8ns 相位 ⇒ 抬头 `SV-P8NS`（53 56 2D 50 38 4E 53）
             8'd3: rbyte_c = 8'h50; 8'd4: rbyte_c = 8'h38; 8'd5: rbyte_c = 8'h4E;
             8'd6: rbyte_c = 8'h53;
+`elsif SAFEVISION_DIAG_D40R
+            // ★ 诊断版 D40R：**40MHz（验证过的 +10ns）** + 细化版 dm 释放
+            //   ⇒ 抬头 `SV-D40R`（53 56 2D 44 34 30 52）。
+            8'd3: rbyte_c = 8'h44; 8'd4: rbyte_c = 8'h34; 8'd5: rbyte_c = 8'h30;
+            8'd6: rbyte_c = 8'h52;
 `elsif SAFEVISION_DIAG_D4KR
             // ★ 诊断版 D4KR：100MHz/精确180° + dm 修复 + **REFRESH_ROWS=4096**
             //   ⇒ 抬头 `SV-D4KR`（53 56 2D 44 34 4B 52）。与上午 `SV-100M` 只差 dm 修复。
@@ -1080,6 +1091,8 @@ module safevision_top #(
             8'd124: rbyte_c = 8'h32; // '2' = 100MHz/2ns 相位
 `elsif SAFEVISION_DIAG_MEM100P8
             8'd124: rbyte_c = 8'h38; // '8' = 100MHz/8ns 相位
+`elsif SAFEVISION_DIAG_D40R
+            8'd124: rbyte_c = 8'h47; // 'G' = D40R build（40MHz验证相位 + 细化版 dm 释放）
 `elsif SAFEVISION_DIAG_D4KR
             8'd124: rbyte_c = 8'h4B; // 'K' = D4KR build（100MHz/180° + dm 修复 + 刷新4096）
 `elsif SAFEVISION_DIAG_D10R

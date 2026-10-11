@@ -80,13 +80,19 @@ module sdram_app_adapter #(
         App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;r_go<=0;r_sv<=0;
       end else begin
         App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;
+`ifdef SAFEVISION_DIAG_D40R
+`define SAFEVISION_DIAG_DMREL
+`endif
 `ifdef SAFEVISION_DIAG_D10R
-        // ★★ 2026-10-11 细化版（D10R）：把"释放 DQM"推迟到写流水排空之后。
+`define SAFEVISION_DIAG_DMREL
+`endif
+`ifdef SAFEVISION_DIAG_DMREL
+        // ★★ 2026-10-11 细化版（D10R / D40R）：把"释放 DQM"推迟到写流水排空之后。
         //
         //   队友原版（7fb219c）是 idle 立刻 `App_wr_dm<=0`。但按他们自己的说明，
         //   官方控制器把 App_wr_dm **连续**打到 SDRAM DQM；而本适配器在写突发末尾
-        //   会发**填充拍**（第 163/164 行：`wi>=wcnt ⇒ App_wr_dm<=4'hf`）。
-        //   如果控制器把写使能也流水 1~2 拍，那么突发结束后紧跟的那一拍会**再打一次写**
+        //   会发**填充拍**（`wi>=wcnt ⇒ App_wr_dm<=4'hf`）。如果控制器把写使能也
+        //   流水 1~2 拍，那么突发结束后紧跟的那一拍会**再打一次写**
         //   —— 此时 dm 已被原版改成 0 ⇒ **把填充字真写进邻字**（本该被掩）。
         //   后果：每写完一个突发就坏掉一个字 ⇒ 帧内散布错字 = 花屏。
         //
@@ -94,6 +100,8 @@ module sdram_app_adapter #(
         //     写→读的最小静默间隔是 16 拍（H_WGAP），DQM 流水约 9 级
         //     （7 级 app/IO + 2 拍 SDRAM）⇒ 读命令最早在第 17 拍发出时，
         //     dm 已经 0 满 11 拍 ⇒ 读**不会**被掩。两个约束同时满足。
+        //   D40R = 同一策略放到 **40MHz**（该档 SDRAM 边界余量 +10.5ns，
+        //   是所有构建里最舒适的；而 40MHz + dm 修复至今没被真正测过）。
         App_wr_dm <= (read_quiet>=5'd6) ? 4'h0 : App_wr_dm;
 `else
         App_wr_dm<=0;
