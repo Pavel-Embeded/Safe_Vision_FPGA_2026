@@ -1,0 +1,409 @@
+﻿Model Technology ModelSim SE-64 vlog 10.7 Compiler 2017.12 Dec  7 2017
+Start time: 21:22:14 on Oct 14,2026
+vlog "+incdir+D:/program C/Safe_Vision_FPGA_2026/safevision/rtl/include" D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\common\sync_fifo.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\common\error_report.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\control\input_sync.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\control\key_debounce.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\control\priority_arbiter.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\control\control_event_queue.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\control\playback_fsm.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\safety\watchdog.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\safety\fault_manager.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\safety\emergency_fsm.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\audio\audio_scheduler.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\audio\alarm_tone_gen.v D:\program C\Safe_Vision_FPGA_2026\safevision\rtl\audio\audio_priority_arbiter.v 
+-- Compiling module sync_fifo
+-- Compiling module error_report
+-- Compiling module input_sync
+-- Compiling module key_debounce
+-- Compiling module priority_arbiter
+-- Compiling module control_event_queue
+-- Compiling module playback_fsm
+-- Compiling module watchdog
+-- Compiling module fault_manager
+-- Compiling module emergency_fsm
+-- Compiling module audio_scheduler
+-- Compiling module alarm_tone_gen
+-- Compiling module audio_priority_arbiter
+
+Top level modules:
+	error_report
+	key_debounce
+	priority_arbiter
+	control_event_queue
+	playback_fsm
+	watchdog
+	fault_manager
+	emergency_fsm
+	audio_scheduler
+	alarm_tone_gen
+	audio_priority_arbiter
+End time: 21:22:14 on Oct 14,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+Model Technology ModelSim SE-64 vlog 10.7 Compiler 2017.12 Dec  7 2017
+Start time: 21:22:14 on Oct 14,2026
+vlog -sv "+incdir+D:/program C/Safe_Vision_FPGA_2026/safevision/rtl/include" D:\program C\Safe_Vision_FPGA_2026\safevision\verification\unit\tb_c_input_sync.sv D:\program C\Safe_Vision_FPGA_2026\safevision\verification\unit\tb_c_priority_arbiter.sv D:\program C\Safe_Vision_FPGA_2026\safevision\verification\unit\tb_c_playback_fsm.sv D:\program C\Safe_Vision_FPGA_2026\safevision\verification\unit\tb_c_emergency_fsm.sv D:\program C\Safe_Vision_FPGA_2026\safevision\verification\unit\tb_c_watchdog.sv D:\program C\Safe_Vision_FPGA_2026\safevision\verification\unit\tb_c_fault_manager.sv D:\program C\Safe_Vision_FPGA_2026\safevision\verification\unit\tb_c_audio.sv 
+-- Compiling module tb_c_input_sync
+-- Compiling module tb_c_priority_arbiter
+-- Compiling module tb_c_playback_fsm
+-- Compiling module tb_c_emergency_fsm
+-- Compiling module tb_c_watchdog
+-- Compiling module tb_c_fault_manager
+-- Compiling module tb_c_audio
+
+Top level modules:
+	tb_c_input_sync
+	tb_c_priority_arbiter
+	tb_c_playback_fsm
+	tb_c_emergency_fsm
+	tb_c_watchdog
+	tb_c_fault_manager
+	tb_c_audio
+End time: 21:22:14 on Oct 14,2026, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+
+=== tb_c_input_sync ===
+# vsim -c -l C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\tb_c_input_sync.vsim.log -do "C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do" tb_c_input_sync_o 
+# Start time: 21:22:16 on Oct 14,2026
+# //  ModelSim SE-64 10.7 Dec  7 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_c_input_sync(fast)
+# Loading work.input_sync(fast)
+# Loading work.key_debounce(fast)
+# do {C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do}
+# [PASS] 锛歭evel=0 press=0 evt_pending=0
+# [PASS] €涓婂崌娌?-> press 鎭板ソ涓€鎷?
+# [PASS] I2b 鍘绘姈鍚?level 绋冲畾涓洪珮
+# [PASS] 凡鑷姩钀藉洖锛?1 鎷嶈剦鍐诧級
+# [PASS] 骇鐢熶簨浠讹紙闈炶繛缁簨浠讹級
+# [PASS] 骇鐢?press锛堝繀椤荤敤杈规部锛?
+# [PASS] I7b 鍘绘姈鍚?level 绋冲畾涓轰綆
+# [PASS] ss锛堜竴娆℃寜閿竴娆′簨浠讹級
+# [PASS] I5 press 鍚?evt_pending 閿佸瓨
+# [PASS] g 淇濇寔锛堥槻绐勮剦鍐蹭涪澶憋級
+# [PASS] I5c evt_clear 娓呴櫎 pending
+# [PASS] 8 key0 -> press_any 鎭板ソ涓€鎷?
+# [PASS] _key=0 宸查攣瀛?(evt_pending=1)
+# [PASS] I8c kclr 娓呴櫎浜嬩欢閿佸瓨
+# [PASS] 鍚屾媿鍙岄敭 -> press_any 鍗曟媿
+# [PASS] EY0) 浼樺厛锛堝浐瀹氬彲澶嶇幇锛?
+# [PASS] suite 鏃犻敊璇?
+# [TB] tb_c_input_sync done, errors=0
+# ** Note: $finish    : D:/program C/Safe_Vision_FPGA_2026/safevision/verification/unit/tb_c_input_sync.sv(159)
+#    Time: 5026 ns  Iteration: 0  Instance: /tb_c_input_sync
+# End time: 21:22:17 on Oct 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+
+  -> PASS=17 FAIL=0 exit=0
+
+=== tb_c_priority_arbiter ===
+# vsim -c -l C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\tb_c_priority_arbiter.vsim.log -do "C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do" tb_c_priority_arbiter_o 
+# Start time: 21:22:19 on Oct 14,2026
+# //  ModelSim SE-64 10.7 Dec  7 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_c_priority_arbiter(fast)
+# Loading work.priority_arbiter(fast)
+# do {C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do}
+# [PASS] P1 000 -> EV_NONE valid=0
+# [PASS] P2 001 -> EV_NOTICE
+# [PASS] P3 010 -> EV_MEDIAFAULT
+# [PASS]  EV_MEDIAFAULT (濯掍綋閬櫘閫?
+# [PASS] P5 100 -> EV_FIRE
+# [PASS] P6 101 -> EV_FIRE
+# [PASS]  EV_FIRE (鐏儏閬獟浣撴晠闅?
+# [PASS] P8 111 -> EV_FIRE (鍏ㄥ悓鏃?
+# [PASS] 剧枏鏁ｏ紝涓嶆槸 SD 鎻愮ず鏉★級
+# [PASS] 笅浜嬩欢鐮佺ǔ瀹氾紙鏃犳姈鍔級
+# [PASS] suite 鏃犻敊璇?
+# [TB] tb_c_priority_arbiter done, errors=0
+# ** Note: $finish    : D:/program C/Safe_Vision_FPGA_2026/safevision/verification/unit/tb_c_priority_arbiter.sv(79)
+#    Time: 59 ns  Iteration: 0  Instance: /tb_c_priority_arbiter
+# End time: 21:22:20 on Oct 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+
+  -> PASS=11 FAIL=0 exit=0
+
+=== tb_c_playback_fsm ===
+# vsim -c -l C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\tb_c_playback_fsm.vsim.log -do "C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do" tb_c_playback_fsm_o 
+# Start time: 21:22:22 on Oct 14,2026
+# //  ModelSim SE-64 10.7 Dec  7 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_c_playback_fsm(fast)
+# Loading work.playback_fsm(fast)
+# do {C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do}
+# [PASS] P1 澶嶄綅 -> BOOT锛岃緭鍑洪潤闊?
+# [PASS] P2 boot_ready -> SCAN
+# [PASS] P2b SCAN 瑙ｉ櫎闈欓煶
+# [PASS] P3 scan_done -> PRELOAD
+# [PASS] 4 preload_ok(auto off) -> MANUAL
+# [PASS] !trans_en) -> commit_next 鍗曟媿
+# [PASS] P5b slot_index 閫掑
+# [PASS] P6 MANUAL auto_en -> AUTO
+# [PASS] uto_tick -> commit_next + slot++
+# [PASS] P8 AUTO 鍏抽棴鑷姩 -> MANUAL
+# [PASS] P8b 鍐嶆 auto_en -> AUTO
+# [PASS] P8c AUTO uart_stop -> MANUAL
+# [PASS] NUAL KEY1+trans_en -> TRANSITION
+# [PASS] _done -> commit+slot++ -> MANUAL
+# [PASS] AL alarm_in -> SAFE (safe_req=1)
+# [PASS] 綋澶嶄綅鍙湪 RECOVER 鏈夋晥锛?
+# [PASS] 0 SAFE confirm_stable -> RECOVER
+# [PASS] active=1锛堝彧澶嶄綅濯掍綋閾撅級
+# [PASS] 屾垚(recover_done=0) -> 鍥?SAFE
+# [PASS] P11 SAFE -> RECOVER
+# [PASS] P11b recover_done -> MANUAL
+# [PASS] € RECOVER 鍚?media_rst_active=0
+# [PASS] P16 鍓嶇疆锛氳繘鍏?TRANSITION
+# [PASS] 6 TRANSITION trans_fault -> SAFE
+# [PASS] P15 鍓嶇疆锛氬埌杈?PRELOAD
+# [PASS] 鍥?-> SAFE锛堝厹搴曚笉榛戝睆锛?
+# [PASS] suite 鏃犻敊璇?
+# [TB] tb_c_playback_fsm done, errors=0
+# ** Note: $finish    : D:/program C/Safe_Vision_FPGA_2026/safevision/verification/unit/tb_c_playback_fsm.sv(188)
+#    Time: 296 ns  Iteration: 0  Instance: /tb_c_playback_fsm
+# End time: 21:22:23 on Oct 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+
+  -> PASS=27 FAIL=0 exit=0
+
+=== tb_c_emergency_fsm ===
+# vsim -c -l C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\tb_c_emergency_fsm.vsim.log -do "C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do" tb_c_emergency_fsm_o 
+# Start time: 21:22:25 on Oct 14,2026
+# //  ModelSim SE-64 10.7 Dec  7 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_c_emergency_fsm(fast)
+# Loading work.emergency_fsm(fast)
+# do {C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do}
+# [PASS]  澶嶄綅 -> NORMAL锛岃浇鑽锋竻闆?
+# [PASS] E2 fire_in -> EMERGENCY
+# [PASS] 嵎 active=1 level=2(绾? alarm=1
+# [PASS] 寔缁?鏂瑰悜鏈夋晥 -> EVACUATION
+# [PASS] ATION 杞借嵎 direction=2(鍙屽悜)
+# [PASS] 瑰悜鏀瑰彉 -> direction 鏇存柊=1
+# [PASS] や笖绋冲畾绐楀彛閫氳繃 -> NORMAL
+# [PASS] 锋竻闆?(active=0 alarm=0 dir=0)
+# [PASS] 鍙敤 -> FAIL_SAFE (bram_req=1)
+# [PASS] ctive=1 dir=1(鍙崇澶? alarm=1
+# [PASS] AFE recover_ack+鑷 -> NORMAL
+# [PASS] E7b NORMAL 杞借嵎娓呴浂
+# [PASS] E8 fatal -> FAIL_SAFE
+# [PASS] ?-> 淇濇寔锛堜笉鑷姩閫€鍑猴級
+# [PASS] fault 涓斿洓鍥惧彲鎾?-> WARNING
+# [PASS] 嵎 active=1 level=1(榛? alarm=1
+# [PASS] ︽秷澶变笖绐楀彛璁℃弧 -> NORMAL
+# [PASS] E12 鍓嶇疆锛歐ARNING
+# [PASS] MERGENCY锛堥珮浼樺厛绾ц鐩栵級
+# [PASS] E13 鍓嶇疆锛歐ARNING
+# [PASS] 掍綋閾惧畬鍏ㄥけ鏁?-> FAIL_SAFE
+# [PASS] 紙澶氫綅鎺у埗涓嶉€愪綅璺ㄥ煙锛?
+# [PASS] suite 鏃犻敊璇?
+# [TB] tb_c_emergency_fsm done, errors=0 mailbox_violation=0
+# ** Note: $finish    : D:/program C/Safe_Vision_FPGA_2026/safevision/verification/unit/tb_c_emergency_fsm.sv(214)
+#    Time: 1056 ns  Iteration: 0  Instance: /tb_c_emergency_fsm
+# End time: 21:22:26 on Oct 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+
+  -> PASS=23 FAIL=0 exit=0
+
+=== tb_c_watchdog ===
+# vsim -c -l C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\tb_c_watchdog.vsim.log -do "C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do" tb_c_watchdog_o 
+# Start time: 21:22:28 on Oct 14,2026
+# //  ModelSim SE-64 10.7 Dec  7 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_c_watchdog(fast)
+# Loading work.watchdog(fast)
+# do {C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do}
+# [PASS] 綅 -> wdt_timeout=0 鍘熷洜娓呴浂
+# [PASS] ｅ父 -> 涓嶈秴鏃讹紙涓嶈鍒わ級
+# [PASS] 蹇冭烦鍋滄 -> 瓒呮椂 channel=0
+# [PASS] W3b 閿佸瓨浜嗘晠闅滄椂鍒?
+# [PASS] 姩娓呫€憈imeout锛堢孩绾夸竴锛?
+# [PASS] _ack -> 娓呴櫎 timeout 涓庡師鍥?
+# [PASS] W9a 鍐嶆瓒呮椂
+# [PASS] 繚鎸侀攣瀛橈紙鏃犺嚜鍔ㄦ竻闄わ級
+# [PASS] W9b 鍏ㄥ眬澶嶄綅娓呴櫎 timeout
+# [PASS] > channel=1锛堝叾浠栬矾宸插杺锛?
+# [PASS] > channel=2锛堝叾浠栬矾宸插杺锛?
+# [PASS] rame)鍏堣Е鍙戯紙闃堝€间簰寮傦級
+# [PASS] 杺鐙楀彧璁ゆ湰璺湡瀹炴椿鍔級
+# [PASS] suite 鏃犻敊璇?
+# [TB] tb_c_watchdog done, errors=0
+# ** Note: $finish    : D:/program C/Safe_Vision_FPGA_2026/safevision/verification/unit/tb_c_watchdog.sv(134)
+#    Time: 1186 ns  Iteration: 0  Instance: /tb_c_watchdog
+# End time: 21:22:29 on Oct 14,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+
+  -> PASS=14 FAIL=0 exit=0
+
+=== tb_c_fault_manager ===
+# vsim -c -l C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\tb_c_fault_manager.vsim.log -do "C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do" tb_c_fault_manager_o 
+# Start time: 21:22:32 on Oct 14,2026
+# //  ModelSim SE-64 10.7 Dec  7 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_c_fault_manager(fast)
+# Loading work.fault_manager(fast)
+# do {C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do}
+# [PASS]  -> fault_valid=0 fatal=0 code=0
+# [PASS] 鏉℃晠闅?-> 涓荤爜/绛夌骇閿佸瓨
+# [PASS] F2b 閿佸瓨浜嗘晠闅滄椂鍒?
+# [PASS] 嗙洊棣栧洜锛堢爜/绛夌骇淇濇寔锛?
+# [PASS] 骇鍗囩骇 FATAL锛堢爜涓嶈鐩栵級
+# [PASS] 浣嶆竻闄わ細recover_ack 涓嶆竻
+# [PASS] 锛?> level=0 浠嶇疆 fault_valid
+# [PASS] 娓呴鍥?+ 鍚屾媿 media_rst_req
+# [PASS] 媿鑴夊啿锛堝彧澶嶄綅濯掍綋閾撅級
+# [PASS]  wdt_reason 閿佸瓨锛岀瓑绾?SAFE
+# [PASS] atal -> 绛夌骇 FATAL 涓?fatal=1
+# [PASS] suite 鏃犻敊璇?
+# [TB] tb_c_fault_manager done, errors=0
+# ** Note: $finish    : D:/program C/Safe_Vision_FPGA_2026/safevision/verification/unit/tb_c_fault_manager.sv(158)
+#    Time: 286 ns  Iteration: 0  Instance: /tb_c_fault_manager
+# End time: 21:22:32 on Oct 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+
+  -> PASS=12 FAIL=0 exit=0
+
+=== tb_c_audio ===
+# vsim -c -l C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\tb_c_audio.vsim.log -do "C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do" tb_c_audio_o 
+# Start time: 21:22:35 on Oct 14,2026
+# //  ModelSim SE-64 10.7 Dec  7 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_c_audio(fast)
+# Loading work.audio_scheduler(fast)
+# Loading work.alarm_tone_gen(fast)
+# Loading work.audio_priority_arbiter(fast)
+# do {C:\Users\Mechrevo\AppData\Local\Temp\safevision_c_sim\run.do}
+# [PASS] S1.1 澶嶄綅鍚?audio_l = 0
+# [PASS] S1.2 澶嶄綅鍚?audio_r = 0
+# [PASS] S1.3 澶嶄綅鍚?audio_valid = 0
+# [PASS] .4 澶嶄綅鍚?audio_underflow = 0
+# [PASS] S1.5 澶嶄綅鍚?pcm_rd = 0
+# [PASS] 墿灞曪紙姝ｏ級0x1234 -> 0x001234
+# [PASS] 墿灞曪紙璐燂級0x8000 -> 0xFF8000
+# [PASS] 栧埌鏍锋湰鏃?audio_valid 鎷夐珮
+# [PASS] 鍒版牱鏈椂 pcm_rd 鍗曟媿鑴夊啿
+# [PASS] 5 track_id 鎸夋牱鏈妭鎷嶉€忎紶
+# [PASS] S2.6 闈炵┖鏃?underflow 涓嶅
+# [PASS] d 涓嬩竴鎷嶅嵆鎾ら攢锛堝崟鎷嶏級
+# [PASS] S2.8 audio_valid 鍙寔缁竴鎷?
+# [PASS]  绗﹀彿鎵╁睍 0xFFFF -> 0xFFFFFF
+# [PASS]  绗﹀彿鎵╁睍 0x0001 -> 0x000001
+# [PASS] S4.1 绌?-> audio_l 鏄庣‘涓?0
+# [PASS] S4.2 绌?-> audio_r 鏄庣‘涓?0
+# [PASS] S4.3 绌?-> underflow +1
+# [PASS] S4.4 绌烘椂涓嶆帹杩?pcm_rd
+# [PASS] flow 姣忎釜绌鸿妭鎷嶅悇璁′竴娆?
+# [PASS] 5.1 濂芥牱鏈笉鏀瑰彉 underflow
+# [PASS] S6 sample_tick 鍛ㄦ湡 = TICK_N+1
+# [PASS] T1.1 鏈娇鑳?-> tone_l = 0
+# [PASS] T1.2 鏈娇鑳?-> tone_r = 0
+# [PASS] hase 0x0200 -> +sin_q(1) = 98135
+# [PASS] e 0x3E00 -> +sin_q(31) = 1997591
+# [PASS] 0锛坬uad1 璧风偣锛?> +sin_q(31)
+# [PASS] e 0x4200 -> +sin_q(30) = 1990369
+# [PASS] .5 phase 0x8000锛?80 搴︼級-> 0
+# [PASS] ase 0x8200 -> -sin_q(1) = -98135
+# [PASS]  0xC000 -> -sin_q(31) = -1997591
+# [PASS]  0xC200 -> -sin_q(30) = -1990369
+# [PASS] T2.9 tone_r 涓?tone_l 涓€鑷?
+# [PASS] z锛堝洖缁曟鏁板湪 990..1010锛?
+# [PASS] A1.1 澶嶄綅/绌洪棽 gain = 0
+# [PASS] .2 澶嶄綅/绌洪棽 audio_valid = 0
+# [PASS] A2.1 alarm=0 -> gain 淇濇寔 0
+# [PASS] A2.2 gain=0 -> 杈撳嚭鎭掔瓑 WAV
+# [PASS] 锋湰鏈夋晥鏃?audio_valid 鎷夐珮
+# [PASS] 崟璋冦€佹瘡姝ヤ笉瓒呰繃 STEP(32)
+# [PASS] arm 鎸佺画 -> gain 楗卞拰鍒?256
+# [PASS] .3 gain=256 & tone=0 -> 杈撳嚭 0
+# [PASS] in=32 -> out=(wav*224)>>8=875000
+# [PASS]  alarm 鎸佺画鏃?gain 淇濇寔 256
+# [PASS] ain=256 -> 杈撳嚭鎭掔瓑鎶ヨ闊?
+# [PASS] .1 alarm 鎾ら攢 -> gain 鍥炲埌 0
+# [PASS] gain=0 -> 杈撳嚭鎭㈠鎭掔瓑 WAV
+# [PASS] 贩鍚?0x100000*96/256 = 0x060000
+# [PASS] 锋湰鏈夋晥鏃?audio_valid 鎷夐珮
+# [PASS] A7.2 audio_valid 鍙寔缁竴鎷?
+# [TB] tb_c_audio done, errors=0 (tick_period=4 tone_wraps=1000)
+# ** Note: $finish    : D:/program C/Safe_Vision_FPGA_2026/safevision/verification/unit/tb_c_audio.sv(342)
+#    Time: 480776 ns  Iteration: 0  Instance: /tb_c_audio
+# End time: 21:22:35 on Oct 14,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+
+  -> PASS=50 FAIL=0 exit=0
+
+============================================
+  C-chain TOTAL PASS=154 FAIL=0
+============================================

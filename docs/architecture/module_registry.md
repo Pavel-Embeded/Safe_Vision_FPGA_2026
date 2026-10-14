@@ -131,6 +131,28 @@
 
 文件名为计划建议，若实现时变更，先更新本表与接口规范。`pcm_ring`、`audio_cdc_fifo`、HDMI 音频包装、PLL/FIFO/SDRAM/HDMI 厂商适配仍是待定义/待实现，不可因目录存在而视作完成。
 
+**C 行状态更新（2026-10-14）**：上表 C 负责的 `input_sync/key_debounce/playback_fsm/control_event_queue/fault_manager/watchdog/emergency_fsm/audio_scheduler/audio_priority_arbiter/alarm_tone_gen` 已全部实现，另补 `priority_arbiter`；详见下节。
+
+## C 控制/安全/音频链已实现（2026-10-14）
+
+C 负责的控制可靠性链与音频消费共 11 个模块已落地（全部 `.v` + Verilog-2001 子集，可过安路 TD 综合），并配 7 个 ModelSim 单元 TB 与独立入口 `tools/run_c_sim.ps1`（已登记进 `run_all.ps1` 的条目表）。
+
+| 目录 | 模块 | 关键约定 |
+|---|---|---|
+| `rtl/control` | `input_sync.v`、`key_debounce.v` | 四级前级链：异步输入→两级同步器→去抖（`DEB_N`）→边沿检测→FSM；`press` 单拍、`evt_pending` 锁存位（多路最低编号优先组合编码） |
+| `rtl/control` | `priority_arbiter.v` | 纯组合；Fire > MediaFault > Notice > Normal（if-else if 顺序即优先级）；端口名 `evt_code` 仅规避 Verilog 保留字 `event` |
+| `rtl/control` | `control_event_queue.v` | 52bit 元素，`sync_fifo` DEPTH=16 / AFULL_TH=12，FWFT；`ovf_cnt[15:0]`；文件头如实登记接口缺口 **O-12** |
+| `rtl/control` | `playback_fsm.v` | 八态 BOOT/SCAN/PRELOAD/MANUAL/AUTO/TRANSITION/SAFE/RECOVER（表 8-3）；SAFE 只由 `confirm_stable` 退出→RECOVER |
+| `rtl/safety` | `watchdog.v` | 三路独立阈值（frame 100ms / mem 200ms / progress 500ms，两两不同）；喂狗来自被监控真实活动；`wdt_timeout` 只由全局复位或 `recover_ack` 清（**禁止下次心跳自动清**） |
+| `rtl/safety` | `fault_manager.v` | 五级 INFO/WARNING/DEGRADED/SAFE/FATAL（表 8-4）；首因粘滞；FATAL 只由全局复位清；`recover_ack` 清锁存并同拍给 `media_rst_req` |
+| `rtl/safety` | `emergency_fsm.v` | 五态 NORMAL/WARNING/EMERGENCY/EVACUATION/FAIL_SAFE（表 8-1）；多比特 payload **整组 mailbox 锁存 + commit/ack toggle**（C 红线三） |
+| `rtl/audio` | `audio_scheduler.v` | 48 kHz 节拍（`TICK_N=255` @12.288 MHz）；`pcm_empty`→输出零样本并计 `audio_underflow`（**绝不输出旧/随机样本**）；16→24 符号扩展 |
+| `rtl/audio` | `alarm_tone_gen.v` | 片上 32 项四分之一正弦 ROM（`function`+`case`）+ 象限对称；`PHASE_INC=1365` → 999.76 Hz（误差 0.024% < 1%） |
+| `rtl/audio` | `audio_priority_arbiter.v` | WAV/报警音交叉淡入淡出；抢占 5 ms 音量斜坡（`gain` 0↔256，`STEP=FULL_SCALE/RAMP_N`） |
+
+**验证状态**：11 个模块 + 7 个 `tb_c_*.sv` 已用 ModelSim `vlog` 编译 **EXIT=0**（`+incdir+rtl/include`），并用 `vsim` **本机跑通**：`tools/run_c_sim.ps1` 汇总 **`C-chain TOTAL PASS=154 FAIL=0`**（7 个 TB 的 `errors=0`）。原始日志 `evidence/sim/run_c_sim_20261014.log`。
+**本机运行条件**：需先设 `MGLS_LICENSE_FILE` 指向本机 ModelSim 许可证文件（不设则 `vsim` 报 `Unable to checkout a license`）；本机 `vsim` 内建优化路径会报 `vopt returned success but vsim could not find a design to simulate`，故脚本走显式 `vopt` + `vsim <optname>`（正常安装等价）。**未上板、未 STA**，不宣称整项需求完成。
+
 ## A 阶段 1–9 新模块登记（2026-10-04，开发验证通过，硬件验收未完成）
 
 接口详见 [A 阶段 1–9](../A_stages1_9.md)。负责人 A；`rtl/common/a_{counter,debounce,edge_detect,mode_fsm}.v` 是基础练习；`rtl/video/pattern_generator/pattern_generator.v` 为组合图案；`graphics_rom/font8x16_rom.v` 为同步字模；`osd_overlay/{osd_overlay,osd_status_text,osd_coordinate_text,a_graphics_frontend}.v` 为四级图形链。5 个新 TB 位于 `verification/unit/`，入口 `tools/run_a_stage1_9_sim.ps1`。上述功能已替代待实现表里的 pattern/字库/OSD 项；图标、C 控制接入及其他后续模块仍未实现。不改变 B/C 协议或产品顶层。

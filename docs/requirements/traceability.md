@@ -18,6 +18,16 @@
 
 测试编号来自手册 V2.0 §11 的示例/基线；实际用例定义与执行命令登记在 `docs/verification/test_matrix.md`。证据索引必须填具体文件名、Git 构建 tag、设备/条件、结论，禁止预填“通过”。
 
+## C 控制/安全/音频链落地（2026-10-14）
+
+| ID | 目标 | 模块 | 计划测试 | 状态 |
+|---|---|---|---|---|
+| B03 | 按键/自动切换 | `control/{input_sync,key_debounce,priority_arbiter,control_event_queue,playback_fsm}` | `tb_c_input_sync` / `tb_c_priority_arbiter` / `tb_c_playback_fsm` | RTL+TB 已实现并跑通（17+11+27，FAIL=0）；未整机集成 |
+| B04 | HDMI 音频 | `audio/{audio_scheduler,alarm_tone_gen,audio_priority_arbiter}` | `tb_c_audio` | 同上（50，FAIL=0） |
+| E02 | 音画联动 | `audio_scheduler`（`track_id` 随 generation 透传） | `tb_c_audio` | 同上（50，FAIL=0） |
+| E04 | 鲁棒性与恢复 | `safety/{watchdog,fault_manager,emergency_fsm}` | `tb_c_watchdog` / `tb_c_fault_manager` / `tb_c_emergency_fsm` | 同上（14+12+23，FAIL=0） |
+
+**证据**：`evidence/sim/run_c_sim_20261014.log`（入口 `tools/run_c_sim.ps1`，汇总 `C-chain TOTAL PASS=154 FAIL=0`，SHA-256 `BC6C2AF5…25DE5`）。需先设 `MGLS_LICENSE_FILE` 指向本机许可证文件。**边界**：未上板、未 STA。
 
 ## A Clock / Video Timing 发布补充（2026-10-02）
 

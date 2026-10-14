@@ -59,6 +59,20 @@
 那只是**脚本里的默认值（A 的机器）**，而 B 这台机器**装了 TD**（在 `D:\Anlogic`），
 所以 #11 在本机实测 PASS。**引用路径时务必注明"谁的机器"。**
 
+## C 链验证入口（2026-10-14）
+
+新增入口 `run_c_sim.ps1`（ModelSim），覆盖 C 的控制/安全/音频共 11 个模块、7 个单元 TB。
+
+| 入口 | 工具链 | 覆盖什么 | 通过判据 |
+|---|---|---|---|
+| `run_c_sim.ps1` | **ModelSim** | C 链：`input_sync`/`key_debounce`/`priority_arbiter`/`control_event_queue`/`playback_fsm`/`watchdog`/`fault_manager`/`emergency_fsm`/`audio_scheduler`/`alarm_tone_gen`/`audio_priority_arbiter`，7 个 TB | 末行 `C-chain TOTAL PASS=n FAIL=0`，且每个 TB exit 0、无 `[FAIL]` |
+
+- **本机实测（2026-10-14）**：11 模块 + 7 TB 用 `vlog` 编译 **EXIT=0**（`+incdir+rtl/include`）；`run_c_sim.ps1` 汇总 **`C-chain TOTAL PASS=154 FAIL=0`**（7 个 TB 的 `errors=0`）。原始日志 `evidence/sim/run_c_sim_20261014.log`（SHA-256 `BC6C2AF5…25DE5`）。
+- **本机运行条件**：先设 `MGLS_LICENSE_FILE` 指向本机 ModelSim 许可证文件（不设则 `vsim` 报 `Unable to checkout a license`；本机路径不入库）。本机 `vsim` 内建优化路径会报 `vopt returned success but vsim could not find a design to simulate`，故脚本改为显式 `vopt` + `vsim <optname>` 两步；该两步流在正常安装上等价。许可证检出偶发抖动（`License request for qhsimvl feature failed`），脚本对每个 TB 最多重试 3 次（只跨抖动，不放宽判据）。
+- **局限**：未上板、未 STA。
+
+**各 TB 判据（写入 TB 内部）**：`tb_c_input_sync`（消抖/单拍 press/pending 锁存/多路最低编号优先）、`tb_c_priority_arbiter`（8 组合 + FIRE 压过 SD_ERROR）、`tb_c_playback_fsm`（八态全路径 + TRANSITION 故障兜底）、`tb_c_emergency_fsm`（表 8-1 各转移 + payload 只在 commit toggle 翻转时改变）、`tb_c_watchdog`（三路独立超时、恢复心跳不清、`recover_ack` 清）、`tb_c_fault_manager`（首因粘滞、FATAL 不可 recover 清）、`tb_c_audio`（48 kHz 节拍/符号扩展/欠载计数、ROM 精确值、~1 kHz 频率、5 ms 斜坡端点与混合值）。
+
 ### ★ 三条最容易误读的地方
 
 1. **`run_sim.ps1` 不含 A 的 9 个 `tb_a_*`** ⇒ 它 `TOTAL PASS=604 FAIL=0` **不代表 A 的模块通过**。

@@ -69,6 +69,7 @@ function Show-Tool {
 # Name / script / required toolchain / what it covers
 $Entries = @(
     @{ N = 'B main regression (23 TBs / 604 assertions)';        S = 'run_sim.ps1';                     T = 'ModelSim' },
+    @{ N = 'C control/safety/audio chain (7 TBs)';               S = 'run_c_sim.ps1';                   T = 'ModelSim' },
     @{ N = 'Clock+reset checks (88 checks)';                     S = 'run_clock_sim.ps1';               T = 'ModelSim' },
     @{ N = 'Current B suite on XSim (all current TBS)'; S = 'run_b_xsim_compat.ps1';        T = 'XSim' },
     @{ N = 'Memory protocol suite (7 TBs + negative controls)';   S = 'run_memory_protocol_sim.ps1';     T = 'XSim' },

@@ -1367,6 +1367,9 @@ UART / C 侧可见的事件码。**全队统一，任何一方不得自行扩展
 | O-9 | 为满足"图像提交与首个新音频样本相差不超过一帧"，切图前需预取多少对样本（按 60fps 一帧估算约 800 对） | B / C | 待实测 |
 | O-10 | `pcm_ring` 环形容量的最终取值（当前按取满 256 KiB 设计，是否留一部分给 WORK 区未定） | B | 待定 |
 | O-11 | `sd_sector_reader` 目前只实现 CMD17 单扇区；CMD18 多扇区读（含 STOP_TRANSMISSION）未实现，`rd_len` 必须为 1，否则明确报错。带宽优化阶段再补 | B | 待实现 |
+| O-12 | B 的 `common/error_report.v` 只有 `wr_en` 输入、`rd_en` 恒 0，冻结的 Control Event Interface **无读出信号**，C 的 `control_event_queue` 无法从 B 取回错误事件。已在 `control_event_queue.v` 文件头如实登记，**不擅自改 B 文件**；待双方评审后定接口 | B / C | 已登记，待评审 |
+| O-13 | C 内部曾有两个同名 `media_rst_req`：`fault_manager` 的是**请求脉冲**（单拍，`recover_ack` 清除那一拍发出），`playback_fsm` 的是**执行电平**（RECOVER 期间保持）。同名不同义，集成时若 1:1 直连会出错。**已在 C 侧改名消歧**：`fault_manager` 保留 `media_rst_req`，`playback_fsm` 改为 `media_rst_active`（电平） | C | 已处理（C 侧改名），待 A/B 复核 |
+| O-14 | `fault_manager.media_rst_req`（请求脉冲）在 `playback_fsm` 中**没有对应输入**；`playback_fsm` 的 RECOVER 目前只由 `confirm_stable` 进入，"由 RECOVER 执行媒体复位"这条接线尚未落地 | C | 待定（集成期接线） |
 
 ---
 
@@ -1478,3 +1481,17 @@ Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内
 | v1.34 | 2026-10-05 | 新增A阶段11–15独立接口及集成核心；保持B/C冻结端口；登记FWFT容量/单位、B换帧与突发接线、C配置邮箱、5拍图层延迟、BASE/HD格式与验证边界。 | A |
 
 | v1.35 | 2026-10-05 | **B 对 v1.34 补充契约的应答：新增 [B链-整机集成-存储侧接线表.md](B链-整机集成-存储侧接线表.md)。** 把 A 的两段要求落成**可执行的逐根接线**：① **存储器读口 7 根**（`rd_req`/`rd_addr[31:0]`/`rd_len[15:0]`/`rd_ack`/`rd_busy`/`rd_data[31:0]`/`rd_data_valid`）—— 与 B `memory_arbiter` 的 Video Read 口**同名同宽、方向互补、单位一致**（地址 = 逻辑**字节**地址；`rd_len` = **32bit word 数**，集成取值 **64**）⇒ **直连**，且**两侧同在 `mem_clk` 域、不需要同步器**；② **帧交换口 7 根** —— B 的 `frame_swap_ctrl` 与 A 的 core 互为对端，**`frame_swap_cdc` 已由 A 的 `a_video_display_core` 例化**（`a_video_display_core.v:43`）⇒ **B 侧不要再例化一份**；A 的 `frame_start_evt_b`/`swap_ack_evt_b` **已是边沿检测过的单拍脉冲，不要再转 toggle**。③ 文档含**时序语义 11 条**、**"不该做什么" 6 条**（每条都有真实教训）、**复位约定**（三域各自 `reset_sync`，`rst_n` 共同断言）、**与契约条款的逐条对照**（全部一致）、**验证状态表**、**5 项未决**。④ 同时订正两处误导性注释：`frame_swap_ctrl.v` 把 `swap_ack` 写成"A→B toggle 的边沿事件"（实际是已取边沿的单拍，易被读成"还得自己再检测一次"）；`memory_arbiter.v` 头注写"O-3 建议 16 或 32 word"（与集成实取值 64 不一致）。⑤ **接口/端口/引脚一字未改**，只补文档与注释。 | B |
+
+## C 控制/安全/音频链接口落地（v1.36，2026-10-14）
+
+新增 C 链 11 个模块与 7 个单元 TB，入口 `safevision/tools/run_c_sim.ps1`（登记进 `run_all.ps1`）。**不改 B/A 既有 RTL、端口、TB 或上板工程**。
+
+- **控制**：`rtl/control/{input_sync,key_debounce,priority_arbiter,control_event_queue,playback_fsm}.v`。四级输入前级链（异步输入 → 两级同步器 → 去抖 → 边沿检测 → FSM，`press` 单拍 + `evt_pending` 锁存）；`priority_arbiter` 纯组合、if-else 顺序即优先级（Fire > MediaFault > Notice > Normal）；`playback_fsm` 八态（BOOT/SCAN/PRELOAD/MANUAL/AUTO/TRANSITION/SAFE/RECOVER，表 8-3）。
+- **安全**：`rtl/safety/{watchdog,fault_manager,emergency_fsm}.v`。看门狗三路心跳阈值互异（frame 100 ms / mem 200 ms / progress 500 ms），**喂狗来自被监控真实活动，`wdt_timeout` 只由全局复位或 `recover_ack` 清除**；`fault_manager` 五级分级（INFO/WARNING/DEGRADED/SAFE/FATAL，表 8-4）首因粘滞；`emergency_fsm` 五态（NORMAL/WARNING/EMERGENCY/EVACUATION/FAIL_SAFE，表 8-1）。
+- **音频**：`rtl/audio/{audio_scheduler,alarm_tone_gen,audio_priority_arbiter}.v`。按 48 kHz 节拍取样本、符号扩展 16→24 bit、FIFO 空输出零样本并计 `underflow_cnt`；报警音优先于普通 WAV，抢占做 5 ms 音量斜坡；**不走外部 I²S Codec**，样本进 HDMI 数据岛（B04）。
+- **CDC 约定**：多比特控制信号一律**整组 mailbox 锁存 + commit/ack toggle**（`emergency_fsm` payload），**禁止逐位打两拍**；音画同步以同一 `generation` 生效（E02）。
+- **接口缺口 O-12**：B 的 `common/error_report.v` 无读出信号，已在 `control_event_queue.v` 文件头登记，不改 B 文件。
+
+| v1.36 | 2026-10-14 | 登记 C 控制/安全/音频链 11 模块 + 7 个单元 TB + 入口 `run_c_sim.ps1`；新增 O-12（B `error_report` 无读出信号）。11 模块 + 7 TB 用 ModelSim `vlog` 编译 **EXIT=0**，并用 `vsim` **本机跑通**（`C-chain TOTAL PASS=154 FAIL=0`，日志 `evidence/sim/run_c_sim_20261014.log`；需先设 `MGLS_LICENSE_FILE`，且本机走显式 `vopt`+`vsim <optname>`）。`playback_fsm` 的媒体复位输出由寄存器单拍改为 `(state==S_RECOVER)` 电平、并改名为 `media_rst_active`（与 fault_manager 的请求脉冲 `media_rst_req` 区分，见 O-13）。未上板、未 STA。B/A 既有端口、地址表、错误码一字未改。 | C |
+
+| v1.37 | 2026-10-14 | **消除 C 内部同名信号歧义：新增 O-13 / O-14，`playback_fsm` 的媒体复位输出改名 `media_rst_req`→`media_rst_active`（电平）。** 起因：复查断言补强时发现 `fault_manager.media_rst_req`（请求**脉冲**）与 `playback_fsm.media_rst_req`（执行**电平**）同名不同义，集成时 1:1 直连会出错。处理：`fault_manager` 保留 `media_rst_req`（语义本就是"请求"），`playback_fsm` 改为 `media_rst_active`（RECOVER 期间为电平），两模块头注互指并指向本文档 O-13/O-14。`playback_fsm` 及 `tb_c_playback_fsm.sv` 同步改名，其余端口/行为/断言一字未改。同时登记 O-14：`fault_manager` 的请求脉冲尚无对应输入接到 `playback_fsm`，RECOVER 目前只由 `confirm_stable` 进入（集成期待接线）。**B/A 既有端口、地址表、错误码一字未改**；回归仍 154 断言全 PASS。 | C |
