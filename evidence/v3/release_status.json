@@ -1,138 +1,71 @@
 {
-  "created_at_utc": "2026-10-16T02:44:59.478245+00:00",
-  "status": "PENDING_RESOURCE_AND_FINAL_PHYSICAL_SIGNOFF",
+  "created_at_utc": "2026-10-16T03:44:10.293422+00:00",
+  "status": "PENDING_CURRENT_LONG_TESTS_RESOURCE_AND_PHYSICAL_SIGNOFF",
   "release_ready": false,
   "current_suites": [
     {
-      "suite": "audio_complete",
-      "native_tests": 11,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_audio_complete",
+      "suite": "video_v3_fps",
+      "evidence": "evidence/v3/fps_cluster_20261016/contracts_video_v3_fps",
       "current_pass": true
     },
     {
-      "suite": "bmp_bounds",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/post_bmp_bounds",
+      "suite": "v3_board_clocks",
+      "evidence": "evidence/v3/fps_cluster_20261016/contracts_v3_board_clocks",
       "current_pass": true
     },
     {
       "suite": "v3_board_top",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/post_v3_board_top",
-      "current_pass": true
-    },
-    {
-      "suite": "legacy_a",
-      "native_tests": 5,
-      "evidence": "evidence/v3/bmp_row_20261016/post_legacy_a",
-      "current_pass": true
-    },
-    {
-      "suite": "legacy_b",
-      "native_tests": 28,
-      "evidence": "evidence/v3/bmp_row_20261016/post_legacy_b",
-      "current_pass": true
-    },
-    {
-      "suite": "media",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/post_media",
-      "current_pass": true
-    },
-    {
-      "suite": "media_crc",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/post_media_crc",
-      "current_pass": true
-    },
-    {
-      "suite": "row_integrity_full",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/post_row_integrity_full",
-      "current_pass": true
-    },
-    {
-      "suite": "v3",
-      "native_tests": 12,
-      "evidence": "evidence/v3/bmp_row_20261016/post_v3",
-      "current_pass": true
-    },
-    {
-      "suite": "shared_storage",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/shared_true_spi",
+      "evidence": "evidence/v3/fps_cluster_20261016/contracts_v3_board_top",
       "current_pass": true
     },
     {
       "suite": "audio_modes",
-      "native_tests": 2,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_audio_modes",
+      "evidence": "evidence/v3/fps_cluster_20261016/contracts_audio_modes",
       "current_pass": true
     },
     {
-      "suite": "audio_priority_phase",
-      "native_tests": 2,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_audio_priority_phase",
-      "current_pass": true
-    },
-    {
-      "suite": "audio_priority_underflow",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_audio_priority_underflow",
-      "current_pass": true
-    },
-    {
-      "suite": "audio_priority_volume",
-      "native_tests": 4,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_audio_priority_volume",
-      "current_pass": true
-    },
-    {
-      "suite": "c",
-      "native_tests": 8,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_c",
-      "current_pass": true
-    },
-    {
-      "suite": "directory_compact",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_directory_compact",
-      "current_pass": true
-    },
-    {
-      "suite": "directory_sv",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_directory_sv",
+      "suite": "cluster_shift",
+      "evidence": "evidence/v3/fps_cluster_20261016/contracts_cluster_shift",
       "current_pass": true
     },
     {
       "suite": "fat_geometry",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_fat_geometry",
+      "evidence": "evidence/v3/fps_cluster_20261016/contracts_fat_geometry",
       "current_pass": true
     },
     {
-      "suite": "layers",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_layers",
+      "suite": "directory_sv",
+      "evidence": "evidence/v3/fps_cluster_20261016/contracts_directory_sv",
       "current_pass": true
     },
     {
-      "suite": "priority_serial",
-      "native_tests": 3,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_priority_serial",
+      "suite": "directory_compact",
+      "evidence": "evidence/v3/fps_cluster_20261016/contracts_directory_compact",
       "current_pass": true
     },
     {
-      "suite": "v3_board",
-      "native_tests": 4,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_v3_board",
+      "suite": "legacy_a",
+      "evidence": "evidence/v3/fps_cluster_20261016/system_legacy_a",
       "current_pass": true
     },
     {
-      "suite": "volume_serial",
-      "native_tests": 1,
-      "evidence": "evidence/v3/bmp_row_20261016/stable_volume_serial",
+      "suite": "legacy_b",
+      "evidence": "evidence/v3/fps_cluster_20261016/system_legacy_b",
+      "current_pass": true
+    },
+    {
+      "suite": "v3",
+      "evidence": "evidence/v3/fps_cluster_20261016/system_v3",
+      "current_pass": true
+    },
+    {
+      "suite": "bmp_bounds",
+      "evidence": "evidence/v3/fps_cluster_20261016/system_bmp_bounds",
+      "current_pass": true
+    },
+    {
+      "suite": "row_integrity_full",
+      "evidence": "evidence/v3/fps_cluster_20261016/system_row_integrity_full",
       "current_pass": true
     }
   ],
@@ -142,33 +75,42 @@
     "all_native_normal_finish": true
   },
   "production_resources": {
-    "base_lut": 17817,
-    "hd_lut": 18472,
+    "current_source_native_assessment_pending": true,
+    "previous_commit_0c8955c": {
+      "base_lut": 17817,
+      "hd_lut": 18472
+    },
+    "current_candidate_same_path_study": {
+      "base_lut": 17286,
+      "hd_lut": 17957,
+      "profile": "area_prior/min_control_set1/min_ripple64; not adopted default build parameters",
+      "source": "work/runs/cluster_shift_area/barrel_shift"
+    },
     "hard_cap_lut": 15680,
-    "passed": false,
-    "source": "work/runs/v3_resource_followup/bmp_row"
+    "passed": false
   },
   "isolated_candidate_studies_are_not_production": true,
   "pending": [
-    "Resource closure with all functions retained",
-    "Final selected-source video and physical regression",
-    "Fresh BASE/HD all-corner routed STA and constraint health",
-    "Committed-source reproducible BASE and HD bitstreams",
+    "Finish current full BASE/HD 32-frame and complete-output regressions",
+    "Finish current true-SPI 4-image/4-audio and full 11-test audio matrix",
+    "Close resources without deleting functionality",
+    "Both modes all-corner routed STA and constraint health",
+    "Committed-source reproducible BASE/HD bitstreams",
     "Final original checkout and GitHub main fast-forward"
   ],
   "github_main_last_verified": "98fb43beaa12bf903186ec73f6dc64e00d9259c7",
   "original_project_existing_config_preserved_sha256": "183accc362ae8db3ffac3279579c14f3046907197fa65ec0c431ccb355088901",
   "hardware_verified": false,
-  "source_baseline_commit": "f25f0704ca8e7d300c933f1a98b76be6f626fa1f",
+  "source_baseline_commit": "0c8955c9acd3806262a7713553ce4c166a38cb13",
   "implementation_checkpoint_branch": "codex/safevision-v3-20261016",
   "github_main_contains_current_implementation": false,
   "checkpoint_branch_upload_status": "See outputs/github_checkpoint_sync.json for the actual push and readback receipt; this file does not assert an upload outcome.",
-  "previous_checkpoint_positive_native_tests": 68,
+  "previous_checkpoint_positive_native_tests": 91,
   "post_checkpoint_changes": [
-    "safevision/rtl/media/bmp_parser.v",
-    "safevision/rtl/memory/v3_row_integrity.v"
+    "FPS saturation and nominal clock propagation",
+    "Exact three-stage FAT cluster address network"
   ],
-  "post_promotion_current_test_inventory_pending": false,
+  "post_promotion_current_test_inventory_pending": true,
   "shared_true_spi_candidate_completed": {
     "normal_exit": 0,
     "errors": 0,
@@ -176,7 +118,7 @@
     "pcm_pairs": 24000,
     "actual_source_bytes_now_promoted": true
   },
-  "positive_current_native_tests": 91,
+  "positive_current_native_tests": null,
   "strict_negative_controls": {
     "functional_mutants": 7,
     "audio_mutants": 6,
@@ -188,5 +130,6 @@
     "hd_mslices": 5041,
     "device_mslices": 4900,
     "final_routed_sta_completed": false
-  }
+  },
+  "current_test_total_note": "Pending final selected-run audit; previous 91 applies to commit 0c8955c before FPS/clock/FAT edits"
 }

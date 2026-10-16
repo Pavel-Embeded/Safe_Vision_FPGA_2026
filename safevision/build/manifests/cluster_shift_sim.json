@@ -1,0 +1,10 @@
+{
+  "sources": [
+    "safevision/rtl/storage/fat32_directory_scanner.v",
+    "safevision/rtl/storage/v3_file_streamer_compact_ctx.v"
+  ],
+  "tops": [
+    "tb_v3_cluster_shift"
+  ],
+  "assets": []
+}

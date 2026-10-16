@@ -14,6 +14,10 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  output wire sd_ncs,sd_dclk,sd_mosi,input wire sd_miso,
  output wire HDMI_D0_P,HDMI_D1_P,HDMI_D2_P,HDMI_CLK_P,HDMI_DDC_SCL,
  inout wire HDMI_DDC_SDA);
+ // Official PLL counters, rounded to the nearest counter cycle per second.
+ // BASE: 50MHz*17*4/(3*45); HD: 50MHz*1*89/(4*15).
+ // These are configured nominal frequencies, not measured oscillator values.
+ localparam integer PIXEL_HZ=HD?74166667:25185185;
  wire sys_clk,mem_clk,mem_clk_sft,pixel_clk,serial_clk,audio_clk;
  wire sys_lock,video_lock,audio_lock,ref_rst_n,common_rst_n,control_common_rst_n;
  wire sys_rst_n,mem_rst_n,pixel_rst_n,audio_rst_n;
@@ -209,7 +213,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  energy,fault_code,audio_underflows,generation};
  wire[11:0] raw_x,raw_y,out_x,out_y;wire raw_de,raw_hs,raw_vs;
  wire[23:0] rgb;wire out_hs,out_vs,out_de;
- v3_video_display_core #(.HD(HD),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
+ v3_video_display_core #(.HD(HD),.PIXEL_HZ(PIXEL_HZ),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
  .sys_rst_n(sys_rst_n),.mem_rst_n(mem_rst_n),.pixel_rst_n(pixel_rst_n),.media_reset(media_reset),
  .cfg_valid(1'b1),.cfg_ready(cfg_ready),.cfg_data(cfg_data),.cache_valid(cache_sys),.next_request(next_request || auto_tick),
  .safety_active(safe_active),.media_ready(media_ready),.media_ready_generation(media_ready_generation),

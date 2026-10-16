@@ -42,7 +42,7 @@ module sv_video_vga_pll (
 endmodule
 
 // ----------------------------------------------------------------------------
-// 视频 PLL 桩（HD 档）：C1 = 74.25 MHz、C2 = 371.25 MHz
+// 视频 PLL 桩（HD 档）：名义 C1 = 74.166667 MHz、C2 = 370.833333 MHz
 // ----------------------------------------------------------------------------
 module sv_video_hd_pll (
     input  wire refclk,
@@ -54,8 +54,8 @@ module sv_video_hd_pll (
 );
     reg pix = 1'b0;
     reg ser = 1'b0;
-    always #6.734 pix = ~pix;         // 13.468 ns = 74.25 MHz
-    always #1.347 ser = ~ser;         // 2.694 ns  = 371.25 MHz
+    always #6.742 pix = ~pix;         // Half-period rounded to 1 ps from 6.741573 ns
+    always #1.348 ser = ~ser;         // Half-period rounded to 1 ps from 1.348315 ns
     assign extlock  = 1'b1;
     assign clk0_out = ser;
     assign clk1_out = pix;

@@ -22,7 +22,9 @@
     "safevision/rtl/storage/spi_master.v",
     "safevision/rtl/storage/sd_sector_reader.v",
     "safevision/rtl/storage/sd_checked_sector_reader.v",
-    "safevision/verification/models/sd_spi_card_model.sv"
+    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/rtl/storage/fat32_directory_scanner.v",
+    "safevision/rtl/storage/v3_file_streamer_compact_ctx.v"
   ],
   "tops": [
     "tb_v3_math",
@@ -36,7 +38,8 @@
     "tb_v3_uart_link",
     "tb_v3_checked_sector",
     "tb_v3_controls_period",
-    "tb_v3_parser_digit_seen"
+    "tb_v3_parser_digit_seen",
+    "tb_v3_cluster_shift"
   ],
   "assets": [
     "safevision/verification/fixtures/alpha_golden.mem",

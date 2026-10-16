@@ -1,0 +1,275 @@
+{
+  "complete": true,
+  "results": [
+    {
+      "case": "current_control",
+      "mode": "base",
+      "status": "RESOURCE_REJECTED",
+      "resources": {
+        "resources": {
+          "lut": {
+            "used": 17374,
+            "available": 19600,
+            "percent": 88.64285714285714
+          },
+          "reg": {
+            "used": 13181,
+            "available": 19600,
+            "percent": 67.25
+          },
+          "bram": {
+            "used": 50,
+            "available": 64,
+            "percent": 78.125
+          },
+          "bram32k": {
+            "used": 0,
+            "available": 16,
+            "percent": 0.0
+          },
+          "dsp": {
+            "used": 13,
+            "available": 29,
+            "percent": 44.827586206896555
+          },
+          "pll": {
+            "used": 3,
+            "available": 4,
+            "percent": 75.0
+          },
+          "ram": {
+            "used_9k_tiles": 50,
+            "available_9k_tiles": 64,
+            "note": "A RAM32K macro consumes four of the physical RAM9K tiles.",
+            "percent": 78.125
+          }
+        },
+        "resource_targets_percent": {
+          "lut": 70,
+          "reg": 65,
+          "ram": 75
+        },
+        "resource_hard_caps_percent": {
+          "lut": 80,
+          "reg": 80,
+          "ram": 85
+        },
+        "resource_target_met": {
+          "lut": false,
+          "reg": false,
+          "ram": false
+        },
+        "errors": [
+          "lut 88.643% exceeds hard cap 80%"
+        ],
+        "accepted": false
+      },
+      "source_unchanged": true,
+      "normal_runner_completion": true,
+      "exit": 1
+    },
+    {
+      "case": "current_control",
+      "mode": "hd",
+      "status": "RESOURCE_REJECTED",
+      "resources": {
+        "resources": {
+          "lut": {
+            "used": 18117,
+            "available": 19600,
+            "percent": 92.43367346938776
+          },
+          "reg": {
+            "used": 13357,
+            "available": 19600,
+            "percent": 68.14795918367346
+          },
+          "bram": {
+            "used": 50,
+            "available": 64,
+            "percent": 78.125
+          },
+          "bram32k": {
+            "used": 0,
+            "available": 16,
+            "percent": 0.0
+          },
+          "dsp": {
+            "used": 26,
+            "available": 29,
+            "percent": 89.65517241379311
+          },
+          "pll": {
+            "used": 3,
+            "available": 4,
+            "percent": 75.0
+          },
+          "ram": {
+            "used_9k_tiles": 50,
+            "available_9k_tiles": 64,
+            "note": "A RAM32K macro consumes four of the physical RAM9K tiles.",
+            "percent": 78.125
+          }
+        },
+        "resource_targets_percent": {
+          "lut": 70,
+          "reg": 65,
+          "ram": 75
+        },
+        "resource_hard_caps_percent": {
+          "lut": 80,
+          "reg": 80,
+          "ram": 85
+        },
+        "resource_target_met": {
+          "lut": false,
+          "reg": false,
+          "ram": false
+        },
+        "errors": [
+          "lut 92.434% exceeds hard cap 80%"
+        ],
+        "accepted": false
+      },
+      "source_unchanged": true,
+      "normal_runner_completion": true,
+      "exit": 1
+    },
+    {
+      "case": "barrel_shift",
+      "mode": "base",
+      "status": "RESOURCE_REJECTED",
+      "resources": {
+        "resources": {
+          "lut": {
+            "used": 17286,
+            "available": 19600,
+            "percent": 88.1938775510204
+          },
+          "reg": {
+            "used": 13179,
+            "available": 19600,
+            "percent": 67.23979591836735
+          },
+          "bram": {
+            "used": 50,
+            "available": 64,
+            "percent": 78.125
+          },
+          "bram32k": {
+            "used": 0,
+            "available": 16,
+            "percent": 0.0
+          },
+          "dsp": {
+            "used": 13,
+            "available": 29,
+            "percent": 44.827586206896555
+          },
+          "pll": {
+            "used": 3,
+            "available": 4,
+            "percent": 75.0
+          },
+          "ram": {
+            "used_9k_tiles": 50,
+            "available_9k_tiles": 64,
+            "note": "A RAM32K macro consumes four of the physical RAM9K tiles.",
+            "percent": 78.125
+          }
+        },
+        "resource_targets_percent": {
+          "lut": 70,
+          "reg": 65,
+          "ram": 75
+        },
+        "resource_hard_caps_percent": {
+          "lut": 80,
+          "reg": 80,
+          "ram": 85
+        },
+        "resource_target_met": {
+          "lut": false,
+          "reg": false,
+          "ram": false
+        },
+        "errors": [
+          "lut 88.194% exceeds hard cap 80%"
+        ],
+        "accepted": false
+      },
+      "source_unchanged": true,
+      "normal_runner_completion": true,
+      "exit": 1
+    },
+    {
+      "case": "barrel_shift",
+      "mode": "hd",
+      "status": "RESOURCE_REJECTED",
+      "resources": {
+        "resources": {
+          "lut": {
+            "used": 17957,
+            "available": 19600,
+            "percent": 91.61734693877551
+          },
+          "reg": {
+            "used": 13357,
+            "available": 19600,
+            "percent": 68.14795918367346
+          },
+          "bram": {
+            "used": 50,
+            "available": 64,
+            "percent": 78.125
+          },
+          "bram32k": {
+            "used": 0,
+            "available": 16,
+            "percent": 0.0
+          },
+          "dsp": {
+            "used": 26,
+            "available": 29,
+            "percent": 89.65517241379311
+          },
+          "pll": {
+            "used": 3,
+            "available": 4,
+            "percent": 75.0
+          },
+          "ram": {
+            "used_9k_tiles": 50,
+            "available_9k_tiles": 64,
+            "note": "A RAM32K macro consumes four of the physical RAM9K tiles.",
+            "percent": 78.125
+          }
+        },
+        "resource_targets_percent": {
+          "lut": 70,
+          "reg": 65,
+          "ram": 75
+        },
+        "resource_hard_caps_percent": {
+          "lut": 80,
+          "reg": 80,
+          "ram": 85
+        },
+        "resource_target_met": {
+          "lut": false,
+          "reg": false,
+          "ram": false
+        },
+        "errors": [
+          "lut 91.617% exceeds hard cap 80%"
+        ],
+        "accepted": false
+      },
+      "source_unchanged": true,
+      "normal_runner_completion": true,
+      "exit": 1
+    }
+  ],
+  "production_changed": false,
+  "signoff": false
+}

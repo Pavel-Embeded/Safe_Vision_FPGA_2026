@@ -1,0 +1,99 @@
+{
+  "complete": true,
+  "corrected_sha256": "55c536bdbf1cb28da6ec6831262a771d5b260cdf59c3093485c11a4e8d654582",
+  "source_unchanged": true,
+  "results": [
+    {
+      "name": "corrected_r2",
+      "exit": 0,
+      "expected_negative": false,
+      "results": {
+        "suite": "fps_boundary",
+        "results": [
+          {
+            "top": "tb_v3_fps_boundary",
+            "status": "PASS",
+            "source_overrides": [],
+            "checks": 1,
+            "data_comparisons": 16396,
+            "elapsed_s": 7.828
+          },
+          {
+            "top": "tb_v3_video_fps",
+            "status": "PASS",
+            "source_overrides": [],
+            "checks": 1,
+            "data_comparisons": 256,
+            "elapsed_s": 6.516
+          }
+        ],
+        "complete": true,
+        "hardware_verified": false,
+        "encrypted_vendor_behavior_verified": false
+      },
+      "raw_audits": [
+        {
+          "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_boundary_fix\\corrected_r2\\tb_v3_fps_boundary\\sim.log",
+          "sha256": "3cd949b29e4ec9eee633a52126f5a510ecb5192635f841d14890ea06776c8649",
+          "accepted": true,
+          "normal_finish": true,
+          "success_markers": 1,
+          "error_values": [
+            0
+          ],
+          "errors": []
+        },
+        {
+          "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_boundary_fix\\corrected_r2\\tb_v3_video_fps\\sim.log",
+          "sha256": "a8e36fc89be148bf6eb96aa728accd18dad9ce20513865e6e92a6b2b8cd99620",
+          "accepted": true,
+          "normal_finish": true,
+          "success_markers": 1,
+          "error_values": [
+            0
+          ],
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "original_overflow_control_r2",
+      "exit": 1,
+      "expected_negative": true,
+      "results": {
+        "suite": "fps_boundary",
+        "results": [
+          {
+            "top": "tb_v3_fps_boundary",
+            "status": "FAIL",
+            "source_overrides": [
+              "safevision/rtl/video/v3_status_layers.v"
+            ],
+            "error": "missing completion/checks or nonzero error: D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_boundary_fix\\original_overflow_control_r2\\tb_v3_fps_boundary\\sim.log",
+            "elapsed_s": 7.25
+          }
+        ],
+        "complete": false,
+        "hardware_verified": false,
+        "encrypted_vendor_behavior_verified": false
+      },
+      "raw_audits": [
+        {
+          "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_boundary_fix\\original_overflow_control_r2\\tb_v3_fps_boundary\\sim.log",
+          "sha256": "e611c3661b28ab29d200a0236f18392ae62d30f71d4742f35a661b555ae8441c",
+          "accepted": false,
+          "normal_finish": true,
+          "success_markers": 0,
+          "error_values": [
+            3075
+          ],
+          "errors": [
+            "missing success check marker",
+            "explicit FAIL/SKIP anywhere in raw log",
+            "nonzero errors summary"
+          ]
+        }
+      ]
+    }
+  ]
+}

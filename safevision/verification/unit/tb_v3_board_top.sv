@@ -61,6 +61,7 @@ module tb_v3_board_top;
  force dut.media_reset=test_media_reset;
  repeat(8)@(negedge clk);rst_n=1;mtick(180);
  check(dut.sys_rst_n && dut.pixel_rst_n && dut.mem_media_rst_n && dut.adapter_init,"all TOP clock/reset and SDRAM-init contracts release");
+ check(dut.PIXEL_HZ==25185185 && dut.video.PIXEL_HZ==25185185 && dut.video.graphics.PIXEL_HZ==25185185,"BASE official PLL nominal frequency reaches HUD counter");
  check(dut.arbiter.video_fifo_level==1024,"idle DMA advertises no reservation");
  // Critical video owns even the gaps between row-fetch requests.
  @(negedge dut.mem_clk);test_dma=1;test_writer=1;test_audio=1;w_before=writer_grants;a_before=audio_grants;

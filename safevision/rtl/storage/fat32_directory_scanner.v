@@ -107,12 +107,15 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
     // Mounted FAT32 contract: sectors/cluster is a power of two in 1..128.
     function [31:0] cluster_sectors;
       input [31:0] delta;input [7:0] spc;
-      begin case(spc)
-       1:cluster_sectors=delta;2:cluster_sectors=delta<<1;4:cluster_sectors=delta<<2;
-       8:cluster_sectors=delta<<3;16:cluster_sectors=delta<<4;32:cluster_sectors=delta<<5;
-       64:cluster_sectors=delta<<6;128:cluster_sectors=delta<<7;
-       default:cluster_sectors=0; // rejected at mount; never an accepted geometry
-      endcase end
+      reg[31:0] shifted1,shifted2,shifted4;
+      reg legal;
+      begin
+       legal=(spc!=0)&&((spc&(spc-8'd1))==0);
+       shifted1=(spc[1]|spc[3]|spc[5]|spc[7]) ? (delta<<1) : delta;
+       shifted2=(spc[2]|spc[3]|spc[6]|spc[7]) ? (shifted1<<2) : shifted1;
+       shifted4=(|spc[7:4]) ? (shifted2<<4) : shifted2;
+       cluster_sectors=legal ? shifted4 : 32'd0;
+      end
     endfunction
 
     // ------------------------------------------------------------------------

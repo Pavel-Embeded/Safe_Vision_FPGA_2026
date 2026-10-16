@@ -4,7 +4,7 @@
 
 ## 时钟、复位与原子跨域
 
-生产时钟为 REF 50MHz、SYS 100MHz、MEM 50MHz、AUDIO 12.288136MHz、PIXEL 25.2MHz 或74.25MHz。独立音频接口回归仍使用MEM 40MHz，目的是验证握手和顺序；生产50MHz的实际共享负载由整机压力用例单独验证，不能拿直连内存模型代替。
+生产配置名义时钟为 REF 50MHz、SYS 100MHz、MEM 50MHz、AUDIO 12.288135593MHz、PIXEL 25.185185185MHz（BASE）或74.166666667MHz（HD），均由厂商PLL整数参数推得，不代表实体振荡器测量。25.2MHz/74.25MHz是既有压力测试的略快时钟，不能称为实际PLL配置频率。独立音频接口回归仍使用MEM 40MHz，目的是验证握手和顺序；生产50MHz的实际共享负载由整机压力用例单独验证，不能拿直连内存模型代替。
 
 所有时钟域均采用同一个原始复位断言事件、异步置复位、两级同步释放。`media_reset` 仅清SD/WAV上下文、媒体FIFO、环形指针和媒体提交邮箱。采样节拍、ROM音源、报警斜坡、HDMI样本与ACR属于global reset组，因此媒体恢复期间报警音继续。板级顶层必须在媒体复位时清除尚未提交的旧 `commit_pending`。
 
@@ -94,7 +94,7 @@ ROOT独立审查、WP188文件oracle、旧5PCM回归68502、FS独立2163872项�
 
 ### 当前紧凑生产快照回归与双模式覆盖
 
-`audio_wpfs_production_freeze/complete11` 的11项均正常结束、零失败：71180次严格PCM数值比较，欠载用例另1548次节拍观测。其整链固定MEM40MHz、HD像素时钟，实际输出5630对HDMI样本和117个ACR窗口，欠载/溢出均零；该旧时钟配置只作为接口/握手压力证明。新增 `audio_modes_sim.json` / `tb_v3_audio_modes.sv` 则明确使用生产MEM50MHz，分别运行BASE像素25.2MHz及HD像素74.25MHz，各自2700次严格PCM比较、5630对HDMI样本、117个实测CTS窗口，均正常结束、欠载/溢出零。入口为 `python safevision/tools/run_v3_sim.py --suite audio_modes --run-dir <ASCII新目录>`，不可改用不识别共享test_sources的旧入口。
+`audio_wpfs_production_freeze/complete11` 的11项均正常结束、零失败：71180次严格PCM数值比较，欠载用例另1548次节拍观测。其整链固定MEM40MHz、HD像素时钟，实际输出5630对HDMI样本和117个ACR窗口，欠载/溢出均零；该旧时钟配置只作为接口/握手压力证明。新增 `audio_modes_sim.json` / `tb_v3_audio_modes.sv` 则明确使用生产MEM50MHz，分别运行BASE压力像素25.2MHz及HD压力像素74.25MHz，各自2700次严格PCM比较、5630对HDMI样本、117个实测CTS窗口，均正常结束、欠载/溢出零。入口为 `python safevision/tools/run_v3_sim.py --suite audio_modes --run-dir <ASCII新目录>`，不可改用不识别共享test_sources的旧入口。
 
 同一快照的共享tag FIFO专项5139、188种RIFF文件8877、FS136上下文独立边界2163872项比较也正常通过。六个正常结束的隔离负控全部准确触发指定断言：generation错误540、左右声道9408、hop丢失1、容器声道8689、容器加法溢出6、fmt扩展截断150；全部mutant与原件/资产来源保全。汇总及每个原始日志哈希见 `work/audio_wpfs_production_handoff.json`，它是该冻结快照的记录，后续目录专用化、混音延迟或其他依赖变化后必须检查来源一致性，不能自动称为最终生产验收。
 

@@ -17,12 +17,13 @@ module v3_status_layers #(
  output wire[7:0] osd_alpha,emergency_alpha,hud_alpha
 );
  localparam integer WIDTH=HD?1280:640,HEIGHT=HD?720:480;
- reg[31:0] second_count;reg[7:0] frame_count,fps;
+ localparam integer SECOND_W=PIXEL_HZ>1?$clog2(PIXEL_HZ):1;
+ reg[SECOND_W-1:0] second_count;reg[7:0] frame_count,fps;
  reg[5:0] blink_count;reg blink;
  always @(posedge pixel_clk or negedge pixel_rst_n)begin
   if(!pixel_rst_n)begin second_count<=0;frame_count<=0;fps<=0;blink_count<=0;blink<=1;end
   else begin
-   if(second_count==PIXEL_HZ-1)begin second_count<=0;fps<=frame_count+(frame_start?1'b1:1'b0);frame_count<=0;end
+   if(second_count==PIXEL_HZ-1)begin second_count<=0;fps<=(frame_count == 8'hff) ? 8'hff : frame_count+(frame_start?1'b1:1'b0);frame_count<=0;end
    else begin second_count<=second_count+1'b1;if(frame_start&&frame_count!=255)frame_count<=frame_count+1'b1;end
    if(frame_start)begin if(blink_count==29)begin blink_count<=0;blink<=~blink;end else blink_count<=blink_count+1'b1;end
   end
