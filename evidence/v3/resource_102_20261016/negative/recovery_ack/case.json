@@ -1,0 +1,12 @@
+{
+  "mutation": "recovery_ack",
+  "top": "tb_v3_recovery_events",
+  "detected": true,
+  "normal_completion": true,
+  "error_counts": [
+    1000
+  ],
+  "original_sha256": "1b2ea7871b758d9b6d1fde1dfafbc95da151c3d51748cb2b7d7398ec75e3a3ad",
+  "mutated_sha256": "eeb575105909038aa0e54bb5cee1028a791869c5c122a143db5a39544b67e225",
+  "mutant_file": "mutant.v"
+}

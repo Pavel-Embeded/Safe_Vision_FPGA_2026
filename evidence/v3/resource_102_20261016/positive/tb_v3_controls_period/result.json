@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_controls_period",
+  "suite": "v3",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "fc7a53f4cbdd13ef37e9341fdf2e4a904660a38a3b23854554bfdf7f0e23cb70",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\system_v3\\tb_v3_controls_period"
+}

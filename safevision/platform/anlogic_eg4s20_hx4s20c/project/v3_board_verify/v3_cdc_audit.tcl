@@ -5,7 +5,7 @@ proc v3_expect_objects {label objects} {
  if {[llength $objects]==0} {error "V3 empty mapped collection: $label"}
  puts $::v3_audit_log "$label\t[llength $objects]"
 }
-v3_expect_objects {first_stage_synchronizers} [get_regs {*req_meta *ack_meta frame_heartbeat_sync/meta pll_loss_sync/meta locks_meta* video/media_m1 video/media_p1 video/safe_p1 video/fault_s1 video/fault_p1 video/cache/pixel_fault_meta video/cache/*store/done_meta video/cache/*store/fault_meta}]
+v3_expect_objects {first_stage_synchronizers} [get_regs {*req_meta *ack_meta frame_heartbeat_sync/meta pll_loss_sync/meta locks_meta* video/media_m1 video/media_p1 video/safe_p1 video/fault_s1 video/fault_p1 video/present_s1 video/cache/pixel_fault_meta video/cache/*store/done_meta video/cache/*store/fault_meta}]
 v3_expect_objects {asynchronous_reset_roots} [get_nets {control_common_rst_n media_common_rst_n tx_reset}]
 v3_expect_objects {ref_status_mailbox.payload} [get_regs {ref_status_mailbox/payload*}]
 v3_expect_objects {ref_status_mailbox.capture} [get_regs {ref_status_mailbox/dst_data*}]
@@ -53,5 +53,7 @@ v3_expect_objects {related_clock_packet.high_data} [get_regs {video/cache/*store
 v3_expect_objects {related_clock_packet.high_position} [get_regs {video/cache/*store/high_position*}]
 v3_expect_objects {related_clock_packet.high_pending} [get_regs {video/cache/*store/high_pending*}]
 v3_expect_objects {related_clock_packet.seen_toggle} [get_regs {video/cache/*store/seen_toggle*}]
+v3_expect_objects {presentation_fault.first} [get_regs {video/present_s1}]
+v3_expect_objects {presentation_fault.second} [get_regs {video/present_s2}]
 close $::v3_audit_log
 unset ::v3_audit_log

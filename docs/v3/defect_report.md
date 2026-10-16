@@ -50,3 +50,9 @@
 | D40 新增隔离构建依赖遗漏 | 音频runner始终登记gen_v3_audio_fixture.py，但原audio_complete/audio_v3清单未显式声明它。只按清单复制的候选快照缺文件，在仿真开始前失败；整个候选不能算通过 | 两份清单显式添加generator_dependencies，不改生产RTL、runner或断言；保留缺文件快照，另建完整快照。正式源码重新执行11项完整音频、6项子集及6项负控，候选另行检查 | current_100_20261016/audio_complete为11项新回归；negative_audio六个正常结束负控全部检出。子集是补充运行，不加到100个不重复正向top中。Alpha/descriptor候选的18项音频修复回归通过；FS104候选另触发旧18字上下文覆盖断言，仍不算通过或生产缺陷 |
 
 时序检查还需实际 TD 报告。多驱动、位宽截断、未用输入、地址越界、CDC 和例外约束按最终 elaboration、综合日志和匹配路径审计补充；不以静态阅读替代工具结果。
+
+
+| D41 物理诊断发现的 CDC 范围遗漏 | PIX 域 presentation_fault 经 present_s1/present_s2 两级进入 SYS，但 first-stage 清单遗漏 present_s1；BASE 放置诊断出现 0.294ns 异步采样边沿预算和 -0.959ns 路径 | 只加入 video/present_s1，单独审计首、次级各1对象；次级继续正常 setup/hold。没有屏蔽 PIX/SYS 整个时钟域 | resource_102_20261016/presentation_cdc_scope：BASE/HD 原生对照，旧范围首级/次级各2条路径；正确范围0/2；故意屏蔽次级负控0/0。属于范围证明，未替代 routed STA |
+| D42 物理诊断发现的 GPIO 组合路径 | 状态/失锁选择逻辑直接驱动 LED/UART，放置诊断 LED 最坏约9.044ns，超过原5ns传播预算 | 在独立50MHz REF 域发布 LED 与 UART 输出，增加一个20ns参考时钟周期；REF继续支持 SYS PLL 失锁后的 FATAL 输出，不放宽5ns约束 | 当前102项中选用新顶层/双模式时钟/串口测试，包含独立 FATAL 的 F/A/T 字节。实际PAD寄存器数8→13；最终5ns传播与全角时序仍以新路由报告验收 |
+| D43 新增命令 ROM 的网表定位检查 | TD 将 generate 层次导出为 uart/g_catalog$parser，初版checker只接受斜杠形式，正确ROM被严格拒绝 | 明确支持TD实际生成的这一层次，仍逐字节比较三个1024字节ROM，不按层次数量或综合完成标记跳过检查 | current_three_rom_check/portable证据：3072字节完全比较；9项来源/缺失映射负控通过；原 FAIL 清单与校正后独立读回分别保留 |
+| D44 本次私有回归汇总路径 | 旧A runner实际写 native/top/xsim.log；新增汇总器误查 top/sim.log，将已通过的5项记成失败 | 独立读取runner记录的五个实际原始日志并比对源码，补跑未启动的B28；不覆盖原失败汇总 | resource_102_20261016 的标准化原始sim.log、每top源指纹与独立portable_audit。原生A退出0、五日志正常finish；私有编排器FAIL不被冒充RTL缺陷 |

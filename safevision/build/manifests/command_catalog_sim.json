@@ -1,0 +1,12 @@
+{
+  "sources": [
+    "safevision/rtl/control/v3_command_parser_catalog.v",
+    "safevision/verification/unit/v3_command_parser_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_command_catalog"
+  ],
+  "assets": [
+    "safevision/assets/control/v3_command_catalog.mem"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_supervisor",
+  "suite": "v3_board",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "dcb012064aaab263bba17ab5b7fb4c962476d09506c66a784aec328da9c70b5b",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\stable_v3_board\\tb_v3_supervisor"
+}

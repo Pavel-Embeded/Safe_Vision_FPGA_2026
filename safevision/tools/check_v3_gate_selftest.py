@@ -43,7 +43,7 @@ def main():
  # historical count. This is gate-parser testing, not mapped-object evidence.
  audit=(ROOT/FLOW/'v3_cdc_audit.tcl').read_text(encoding='utf-8-sig')
  labels=re.findall(r'^v3_expect_objects \{([^}]+)\}',audit,re.M)
- check('current audit contains all 48 groups',len(labels)==48)
+ check('current audit contains all 50 groups',len(labels)==50)
  fixture='label\tmatched_objects\n'+'\n'.join(name+'\t1' for name in labels)+'\n'
  check('all current object groups accepted',not constraint_objects(fixture,audit)[1])
  lines=fixture.splitlines()

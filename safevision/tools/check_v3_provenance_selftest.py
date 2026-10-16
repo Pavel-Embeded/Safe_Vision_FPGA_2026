@@ -21,7 +21,7 @@ def main():
  check('uncommitted dependency rejected',not source_commit_binding(fixture,ROOT,'HEAD',['uncommitted.v'])['verified'])
  check('unknown commit rejected',not source_commit_binding(fixture,ROOT,'refs/heads/this-ref-does-not-exist',[name])['verified'])
  text=a.native_netlist.read_text(encoding='utf-8-sig');native=check_roms(text,ROOT)
- check('native mapped ROM compares all 2048 bytes',sum(x['bytes_compared'] for x in native)==2048)
+ check('native mapped ROM compares all 3072 bytes',sum(x['bytes_compared'] for x in native)==3072)
  for entry in native:
   # Rename just one mapped graphics instance out of the production hierarchy;
   # its asset must then have no eligible physical implementation.

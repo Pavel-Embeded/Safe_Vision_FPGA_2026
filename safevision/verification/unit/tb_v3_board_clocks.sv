@@ -2,6 +2,7 @@
 module board_clock_case #(parameter HD=0,EXPECTED_HZ=25185185)(input clk,output reg done=0,output integer errors=0,comparisons=0);
  reg rst_n=0;
  safevision_v3_top #(.HD(HD)) dut(.clk(clk),.rst_n(rst_n),.btn_next(1'b1),.btn_auto(1'b1),.btn_emergency(1'b1),.uart_rxd(1'b1),.sd_miso(1'b1));
+ defparam dut.uart.g_catalog.parser.CATALOG_FILE="v3_command_catalog.mem";
  defparam dut.video.FONT_FILE="font8x16.mem";
  defparam dut.video.COMPACT_FONT_FILE="font8x16_compact.mem";
  defparam dut.video.STATUS_TEXT_FILE="v3_status_text.mem";

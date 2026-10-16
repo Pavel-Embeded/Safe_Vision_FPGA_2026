@@ -34,6 +34,8 @@ foreach f $paths {if {![file isfile $f]} {error "Missing production source: $f"}
 if {[catch {
  import_device eagle_s20.db -package EG4S20BG256
  source [file join $here v3_build_parameters.tcl]
+ report_param -detail -stage rtl -file rtl.params
+ report_param -detail -stage gate -file gate.params
  read_hdl -file [join $paths " "] -include_dir [file join $root safevision rtl include] -top safevision_v3_top
  read_adc [file join $here v3_board.adc]
  optimize_rtl
@@ -59,6 +61,11 @@ if {[catch {
  report_param -detail -stage place -file place.params
  report_param -detail -stage route -file route.params
  place
+ # Placement estimates are diagnostics; final acceptance uses fresh routed STA.
+ report_timing_summary -ep_num 40 -file place.timing
+ report_timing_exception -file place.exceptions
+ report_area -io_info -file place.area
+ export_db place.db
  route
  update_timing -mode final
  report_timing_summary -ep_num 200 -path_num 3 -file route.timing

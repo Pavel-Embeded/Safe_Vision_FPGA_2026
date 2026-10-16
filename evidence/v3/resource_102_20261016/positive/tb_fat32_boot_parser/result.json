@@ -1,0 +1,9 @@
+{
+  "top": "tb_fat32_boot_parser",
+  "suite": "legacy_b",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": true,
+  "original_runner_result_sha256": "7bc81b6222f31ea95ecb8ff73019a84f658807331dded8b46fffd71452ceaadf",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_followup\\legacy_b"
+}

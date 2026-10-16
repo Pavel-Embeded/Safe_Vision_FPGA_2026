@@ -19,8 +19,14 @@ def resources(text):
   'note':'A RAM32K macro consumes four of the physical RAM9K tiles.'}
  out['ram']['percent']=100*out['ram']['used_9k_tiles']/out['ram']['available_9k_tiles']
  return out
-def resource_gate(text):
+def resource_gate(text,policy=None):
  used=resources(text);targets={'lut':70,'reg':65,'ram':75};caps={'lut':80,'reg':80,'ram':85};errors=[]
+ from v3_resource_policy import CAPACITY,validate
+ if policy is not None:
+  validate(policy);targets=policy['targets_percent'];caps=policy['hard_caps_percent']
+ for name,capacity in CAPACITY.items():
+  if used[name]['available']!=capacity:errors.append(name+' reported capacity differs from EG4S20BG256')
+  if used[name]['used']>capacity:errors.append(name+' exceeds physical capacity')
  for name,cap in caps.items():
   if used[name]['percent']>cap:errors.append(f'{name} {used[name]["percent"]:.3f}% exceeds hard cap {cap}%')
  for name in ('dsp','pll'):
@@ -114,8 +120,15 @@ def check(folder,repo):
  # V3 formal health is captured before the diagnostic clock-tree expansion.
  errors.extend(clock_definition_health(health))
  try:
+  from check_v3_board_reference import check as check_reference
+  result['board_reference']=check_reference(repo,area)
+  from v3_sources import native_parameters
+  result['native_parameters']=native_parameters(repo,folder)
+  files+=['rtl.params','gate.params','place.params','route.params']
   result['mapped_roms']=check_roms(read_report(folder/'gate.netlist.v'),repo)
-  rg=resource_gate(area);errors.extend(rg.pop('errors'));result.update({k:v for k,v in rg.items() if k!='accepted'})
+  from v3_resource_policy import load
+  result['resource_policy']=load(repo)
+  rg=resource_gate(area,result['resource_policy']);errors.extend(rg.pop('errors'));result.update({k:v for k,v in rg.items() if k!='accepted'})
   result['spi_cs_ordinary_paths']=check_cs(timing)
   if not result['spi_cs_ordinary_paths']['accepted']:errors.extend(result['spi_cs_ordinary_paths']['errors'])
   budget=json.loads((repo/FLOW/'io_budget.json').read_text(encoding='utf-8'))

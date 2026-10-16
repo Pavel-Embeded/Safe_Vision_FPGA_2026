@@ -1,0 +1,9 @@
+{
+  "top": "tb_c_emergency_fsm",
+  "suite": "c",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "330e8926b1a7a4460a2228a5d3dd0397dca0e11acbec70135327307eca798133",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\stable_c\\tb_c_emergency_fsm"
+}

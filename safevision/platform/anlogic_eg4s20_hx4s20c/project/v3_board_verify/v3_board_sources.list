@@ -71,6 +71,7 @@ rtl/media/v3_wav_parser_ctx.v
 rtl/control/input_sync.v
 rtl/control/key_debounce.v
 rtl/control/v3_command_parser.v
+rtl/control/v3_command_parser_catalog.v
 rtl/control/v3_user_controls.v
 rtl/control/v3_uart_link.v
 rtl/control/media_recovery_ctrl.v

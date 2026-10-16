@@ -2,10 +2,11 @@
 import argparse,hashlib,json,os,re,subprocess,sys
 from pathlib import Path
 from datetime import datetime,timezone
-from v3_sources import ROOT,FLOW,snapshot,gui_project,check_gui
+from v3_sources import ROOT,FLOW,snapshot,gui_project,check_gui,native_parameters
 from check_v3_board import check,resource_gate,read_report
 from check_v3_rom_netlist import check_roms
 from v3_final_sta import reassess
+from v3_resource_policy import load as load_resource_policy
 def save(path,value):path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 def source_commit_binding(root,source_repo,ref,paths):
  """Tie the actual build bytes to committed Git blobs, including text filters."""
@@ -67,11 +68,13 @@ def main():
    version=re.search(r'Tang Dynasty,\s*(V[0-9.]+)',text)
    if not version:raise RuntimeError('missing TD version banner')
    record['td_version']=version[1]
+   record['native_parameters']=native_parameters(root,folder,('rtl','gate') if a.synth_only else ('rtl','gate','place','route'))
    if snapshot(root)!=before:raise RuntimeError('sources changed during TD run; rerun a frozen snapshot')
    record['source_unchanged']=True
    if a.synth_only:
     record['mapped_roms']=check_roms(read_report(folder/'gate.netlist.v'),root)
-    record['resource_gate']=resource_gate(read_report(folder/'gate.area'))
+    record['resource_policy']=load_resource_policy(root)
+    record['resource_gate']=resource_gate(read_report(folder/'gate.area'),record['resource_policy'])
     record['status']='SYNTHESIZED_ONLY' if record['resource_gate']['accepted'] else 'RESOURCE_REJECTED'
    else:
     record['final_sta_integrity']=reassess(exe,folder,[root/FLOW/'v3_board.sdc',root/FLOW/'v3_cdc.sdc'],root/FLOW/'v3_cdc_audit.tcl',env,route_process_exit_code=route_exit)

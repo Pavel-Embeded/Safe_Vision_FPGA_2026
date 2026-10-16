@@ -3,7 +3,7 @@
 // Reply: $C:ACK=HH,XXXXXXXX*HH\r\n (code byte, signed value as 32-bit hex, XOR).
 // The 128-entry queue holds the replies to a 1000-byte command burst, even
 // when transmit is slower than receive. Any exceeded bound is counted.
-module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200)(
+module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATALOG=0)(
  input wire clk,rst_n,rxd,output wire txd,
  output wire command_valid,output wire[7:0] command_target,
  output wire[95:0] command_name,output wire signed[31:0] command_value,output wire command_query,
@@ -16,10 +16,19 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200)(
  uart_rx #(.CLK_HZ(CLK_HZ),.BAUD(BAUD)) rx(
  .clk(clk),.rst_n(rst_n),.rxd(rxd),.ready(1'b1),.data(byte_rx),.valid(byte_valid),
  .frame_errors(rx_framing),.overruns(rx_overrun));
+ // Default preserves arbitrary-name byte-parser behavior. The board opts
+ // into the finite exact-name ROM catalog; its UART divider is >=32.
+ generate if(BOARD_CATALOG)begin:g_catalog
+ v3_command_parser_catalog #(.TIMEOUT(CLK_HZ/10)) parser(
+ .clk(clk),.rst_n(rst_n),.rx_valid(byte_valid),.rx_data(byte_rx),
+ .command_valid(command_valid),.target(command_target),.name(command_name),.value(command_value),.query(command_query),
+ .reply_valid(parse_reply),.reply_code(parse_code),.rejected(parser_rejected),.catalog_id());
+ end else begin:g_generic
  v3_command_parser #(.TIMEOUT(CLK_HZ/10)) parser(
  .clk(clk),.rst_n(rst_n),.rx_valid(byte_valid),.rx_data(byte_rx),
  .command_valid(command_valid),.target(command_target),.name(command_name),.value(command_value),.query(command_query),
  .reply_valid(parse_reply),.reply_code(parse_code),.rejected(parser_rejected));
+ end endgenerate
  wire full,empty;wire[48:0] head;wire pop;
  assign evt_ready=!full && !reply_valid && !parse_reply;
  wire event_push=evt_valid && evt_ready;

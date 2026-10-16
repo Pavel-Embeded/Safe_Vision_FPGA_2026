@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_board_top",
+  "suite": "v3_board_top",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "3de3ab5ac1c360999e978839b8d04c7ee0e84f8d2fd3bd9f073b019b94bd050c",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\gpio_output_register_validation\\v3_board_top\\tb_v3_board_top"
+}

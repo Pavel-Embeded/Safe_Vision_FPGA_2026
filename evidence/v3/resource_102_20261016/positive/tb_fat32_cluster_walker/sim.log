@@ -1,0 +1,64 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 16 14:08:45 2026
+# Process ID: 11380
+# Current directory: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_followup/legacy_b/native
+# Command line: xsim.exe -log tb_fat32_cluster_walker_sim.log -mode tcl -source {xsim.dir/tb_fat32_cluster_walker_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_followup/legacy_b/native/tb_fat32_cluster_walker_sim.log
+# Journal file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_followup/legacy_b/native\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_fat32_cluster_walker_sim/xsim_script.tcl
+# xsim {tb_fat32_cluster_walker_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+==== A ж­Јеёёи·із°‡ ====
+[PASS] WALK: 2 -> 3 яяяеяяя·яяя‡
+[PASS] яяяёяяязяяя—¶ eoc/error яяядяє 0
+[PASS] яяяЈяяЁ LBA яяяпя€(2*4)/512=яяя‰
+[PASS] LK: doneяяяЋяяяжяяяњяяяћяя° IDLE
+[PASS] WALK: donяяяђЋ buяяяея’ 0
+==== B EOC е€¤е®љ ====
+[PASS] WALK: 3 -> 4
+[PASS] ALK: 0xFFFFFFFF яяядяяя“яяяѕ EOC
+[PASS] clusяяяІяяяжяяя« 4 яяядяяя•яяяЌ
+[PASS] яяяяяяЈяяяжяяя°яяяЊяяязяяя”яяяЇ
+[PASS] яяяжяяя•яяяіяяяпяяя­яяя¶яяє яяя‰
+[PASS] FF8 яяядяяя“яяяѕяя€Eяяяияяя•яяя‰
+[PASS] я€EOяяяѕяяяЊяяяия¤ 0x0FFFFFFяяя‰
+[PASS] -> ERR_MEDIA_INVALID/DET_DIR_OOB
+==== C и¶Љз•Њ ====
+[PASS]  < 2яяя¤яяяйяяяі• -> DET_DIR_OOB
+[PASS] us+1яяя¤яяяияяя•Њ -> DET_DIR_OOB
+==== D и·Ёж‰‡еЊєеЇ»еќЂ ====
+[PASS] ALK: rst_walяяяёяяя¶яяязяяя®яяя°
+[PASS] яя€512*1 = (130*4)/5яяяжяяяЊяяя‰
+[PASS] яяя„яяяеяяя­яяя®яя€130 -> 13яяя‰
+[PASS] WALK: 131 -> 132
+[PASS] яяяђЋ hop_cnяяя»Ћ 0 яяяжяяяґяяяЎ
+[PASS] WALK: 132 -> EOC
+==== E е€¤зЋЇ ====
+[PASS] яЁ total_cluяяя№яяя…яяядяяяЉяяя™
+[PASS] яяяЌ 20 яяі hop_cnt яяяияяяёє 20
+[PASS] -> ERR_MEDIA_INVALID/DET_FS_LOOP
+[PASS] яяяйяяяёяяяЌяяяеяяяЋяяя› hop_cnt
+==== F й”™иЇЇйЂЏдј  ====
+[PASS] WALK: sd_crc16_err яяяея‘ error
+[PASS] яяя яяяџяяяйяяяјяяя€ERR_SD_Iяяя‰
+[PASS] яяя яяяЏяяяпя€DET_SD_DATA_CRяяя‰
+==== G иЇ»иЇ·ж±‚и¶…ж—¶ ====
+[PASS] яяяґяяЌ readяяя—яяя»яяяжяяя¶яяя¶
+[PASS] яяяжяҐ ERR_SD_IO/DET_SD_TOKEN_TO
+[PASS] WALK: яяяжяяяђЋ buяяяея’ 0
+==== H е…Ёе±Ђз›‘и§† ====
+[PASS] == 3яяя€яяЋ walkяяяЎяяядяяя‡яяя‰
+[PASS] яяя‹яяя‰яяяпяяя—яяяћяяядяяя‹яяя‰
+========================================
+  PASS = 33   FAIL = 0
+========================================
+[RESULT] ALL PASS
+$finish called at time : 2160490 ns : File "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/verification/unit/tb_fat32_cluster_walker.sv" Line 362
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 16 14:08:49 2026...

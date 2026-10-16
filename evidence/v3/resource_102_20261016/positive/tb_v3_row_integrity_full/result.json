@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_row_integrity_full",
+  "suite": "row_integrity_full",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "372d144bea1f152be2a2894ec53f441392b07497190f68b4fa769b83c43835ee",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\system_row_integrity_full\\tb_v3_row_integrity_full"
+}

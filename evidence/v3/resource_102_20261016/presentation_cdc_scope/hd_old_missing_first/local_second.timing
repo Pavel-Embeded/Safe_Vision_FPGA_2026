@@ -1,0 +1,177 @@
+Created by          : Tang Dynasty v6.2.168116
+                    : Copyright (c) 2012-2025 Anlogic Inc.
+Generated           : Fri Oct 16 14:35:45 2026
+
+Top Model           : safevision_v3_top
+Device              : EG4S20BG256
+Speed               : NA
+STA coverage        : 99.99%
+
+----------------------------------------------------------------------------------------------------
+Path Group     :     system_pll/pll_inst.clkc[0] -> system_pll/pll_inst.clkc[0]
+Type           :     Self
+From Clock     :     system_pll/pll_inst.clkc[0]
+To Clock       :     system_pll/pll_inst.clkc[0]
+Min Period     :     1.000ns
+Fmax           :     1000.000MHz
+
+Statistics:
+Max            : SWNS      9.033ns, STNS      0.000ns,         0 Viol Endpoints,         1 Total Endpoints,         1 Paths Analyzed
+Min            : HWNS      0.705ns, HTNS      0.000ns,         0 Viol Endpoints,         1 Total Endpoints,         1 Paths Analyzed
+----------------------------------------------------------------------------------------------------
+
+Max Paths
+----------------------------------------------------------------------------------------------------
+Slack               : 9.033ns
+Begin Point         : video/config_mailbox/ack_sync_reg_syn_5.clk (rising edge triggered by clock system_pll/pll_inst.clkc[0]  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })
+End Point           : video/config_mailbox/ack_meta_reg_syn_5.mi[0] (rising edge triggered by clock system_pll/pll_inst.clkc[0]  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 10.000ns { system_pll/pll_inst.clkc[0] rising@10.000ns - system_pll/pll_inst.clkc[0] rising@0.000ns }
+Data Path Delay     : 0.851ns (cell 0.289ns (33%), net 0.562ns (67%))
+Clock Skew          : 0.000ns
+Logic Level         : 0
+Max Fanout          : 1
+Clock Uncertainty   : 0.000ns (sdc uncertainty: 0.000ns, default uncertainty: 0.000ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_3.ipad
+PAD                 x020y071            0.000          0.000          pin: clk_syn_3.di
+net (fo=2214)       x000y071            0.000          0.000          net: clk_dup_2,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(12)
+                                                                      pin: system_pll/pll_inst.refclk
+PLL                 x000y071            0.000          0.000          pin: system_pll/pll_inst.clkc[0]
+net (fo=1445)                           0.000          0.000          net: sys_clk,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(21)
+                                                                      pin: video/config_mailbox/ack_sync_reg_syn_5.clk
+launch edge                             0.000    r     0.000               
+--------------------------------------------------------------------  ---------------
+clk2q               x027y055z2          0.146    r     0.146          pin: video/config_mailbox/ack_sync_reg_syn_5.q[0]
+net (fo=1)                              0.562          0.708          net: video/present_s1,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/rtl/video/v3_video_display_core.v(164)
+                                                                      pin: video/config_mailbox/ack_meta_reg_syn_5.mi[0]
+reg                 x028y053z0          0.143    r     0.851          net: video/present_s2,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/rtl/video/v3_video_display_core.v(164)
+--------------------------------------------------------------------  ---------------
+Arrival                                                0.851               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_3.ipad
+PAD                 x020y071            0.000          0.000          pin: clk_syn_3.di
+net (fo=2214)       x000y071            0.000          0.000          net: clk_dup_2,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(12)
+                                                                      pin: system_pll/pll_inst.refclk
+PLL                 x000y071            0.000          0.000          pin: system_pll/pll_inst.clkc[0]
+net (fo=1445)                           0.000          0.000          net: sys_clk,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(21)
+                                                                      pin: video/config_mailbox/ack_meta_reg_syn_5.clk
+capture edge                           10.000    r    10.000               
+--------------------------------------------------------------------  ---------------
+setup                                  -0.116          9.884               
+clock uncertainty                       0.000          9.884               
+clock pessimism                         0.000          9.884               
+--------------------------------------------------------------------  ---------------
+Required                                               9.884               
+--------------------------------------------------------------------  ---------------
+Slack                                                  9.033               
+
+
+
+Min Paths
+----------------------------------------------------------------------------------------------------
+Slack               : 0.705ns
+Begin Point         : video/config_mailbox/ack_sync_reg_syn_5.clk (rising edge triggered by clock system_pll/pll_inst.clkc[0]  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })
+End Point           : video/config_mailbox/ack_meta_reg_syn_5.mi[0] (rising edge triggered by clock system_pll/pll_inst.clkc[0]  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })
+Check Type          : hold
+Process             : fast
+Budget              : 0.000ns { system_pll/pll_inst.clkc[0] rising@0.000ns - system_pll/pll_inst.clkc[0] rising@0.000ns }
+Data Path Delay     : 0.766ns (cell 0.204ns (26%), net 0.562ns (74%))
+Clock Skew          : 0.000ns
+Logic Level         : 0
+Max Fanout          : 1
+Clock Uncertainty   : 0.000ns (sdc uncertainty: 0.000ns, default uncertainty: 0.000ns)
+
+Delay Type          Location             Incr           Path   Level  Netlist Info
+--------------------------------------------------------------------  ---------------
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_3.ipad
+PAD                 x020y071            0.000          0.000          pin: clk_syn_3.di
+net (fo=2214)       x000y071            0.000          0.000          net: clk_dup_2,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(12)
+                                                                      pin: system_pll/pll_inst.refclk
+PLL                 x000y071            0.000          0.000          pin: system_pll/pll_inst.clkc[0]
+net (fo=1445)                           0.000          0.000          net: sys_clk,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(21)
+                                                                      pin: video/config_mailbox/ack_sync_reg_syn_5.clk
+launch edge                             0.000    r     0.000               
+--------------------------------------------------------------------  ---------------
+clk2q               x027y055z2          0.109    f     0.109          pin: video/config_mailbox/ack_sync_reg_syn_5.q[0]
+net (fo=1)                              0.562          0.671          net: video/present_s1,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/rtl/video/v3_video_display_core.v(164)
+                                                                      pin: video/config_mailbox/ack_meta_reg_syn_5.mi[0]
+reg                 x028y053z0          0.095    f     0.766          net: video/present_s2,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/rtl/video/v3_video_display_core.v(164)
+--------------------------------------------------------------------  ---------------
+Arrival                                                0.766               
+
+source latency                          0.000          0.000               
+port                R7                  0.000          0.000          pin: clk
+hierarchy                               0.000          0.000          pin: clk_syn_3.ipad
+PAD                 x020y071            0.000          0.000          pin: clk_syn_3.di
+net (fo=2214)       x000y071            0.000          0.000          net: clk_dup_2,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(12)
+                                                                      pin: system_pll/pll_inst.refclk
+PLL                 x000y071            0.000          0.000          pin: system_pll/pll_inst.clkc[0]
+net (fo=1445)                           0.000          0.000          net: sys_clk,  D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/control_set_packing_r2/control4_hd/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(21)
+                                                                      pin: video/config_mailbox/ack_meta_reg_syn_5.clk
+capture edge                            0.000    r     0.000               
+--------------------------------------------------------------------  ---------------
+hold                                    0.061          0.061               
+clock uncertainty                       0.000          0.061               
+clock pessimism                         0.000          0.061               
+--------------------------------------------------------------------  ---------------
+Required                                               0.061               
+--------------------------------------------------------------------  ---------------
+Slack                                                  0.705               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

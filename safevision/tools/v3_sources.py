@@ -33,8 +33,13 @@ def scope(root):
  files.update(Path('safevision/tools')/n for n in ('v3_sources.py','v3_final_sta.py','check_board_timing.py','check_v3_board.py','check_v3_rom_netlist.py','check_v3_spi_timing.py','check_v3_io_scope.py','run_v3_board.ps1','run_v3_board.py','configure_v3_pll.py','run_v3_pll.py','gen_v3_cdc.py'))
  files.update(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll')/n for n in ('sv_v3_memory_pll.ipc','sv_v3_memory_pll.provenance.json'))
  files.update(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor')/n for n in ('source.sha256.json','NOTICE.md'))
+ files.update(Path('safevision/tools')/n for n in ('v3_resource_policy.py','check_v3_board_reference.py','check_v3_command_catalog.py'))
  return sorted(files,key=lambda p:p.as_posix())
 def snapshot(root):
+ from v3_resource_policy import load
+ from check_v3_board_reference import check as check_board_reference
+ from check_v3_command_catalog import check as check_catalog
+ load(root);check_board_reference(root);check_catalog(root)
  # TD read_sdc is deferred and has a restricted parser. User Tcl wrappers can
  # silently discard a collection; normal Tcl object auditing is separate.
  allowed={'create_clock','derive_clocks','create_generated_clock','set_input_delay','set_output_delay','set_multicycle_path','set_false_path','set_max_delay','set_clock_uncertainty','set_clock_latency','set_case_analysis'}
@@ -62,11 +67,24 @@ def build_parameters(root):
  for line in text.splitlines():
   line=line.strip()
   if not line or line.startswith('#'):continue
-  match=re.fullmatch(r'set_param (rtl|place|route) (\w+) (\w+)',line)
+  match=re.fullmatch(r'set_param (rtl|gate|place|route) (\w+) (\w+)',line)
   if not match:raise ValueError('unsupported shared build parameter: '+line)
   rows.append(match.groups())
- if len(rows)!=6 or len({(r[0],r[1]) for r in rows})!=len(rows):raise ValueError('missing/duplicate shared build parameters')
+ expected={('rtl','min_control_set'),('rtl','min_ripple_len'),('rtl','infer_fsm'),('gate','map_mode'),('place','effort'),('place','post_place_opt'),('route','timing'),('route','fix_hold')}
+ if len(rows)!=len(expected) or {(r[0],r[1]) for r in rows}!=expected:raise ValueError('missing/duplicate/unapproved shared build parameters')
+ if dict(((s,k),v) for s,k,v in rows).get(('route','timing'))!='on' or dict(((s,k),v) for s,k,v in rows).get(('route','fix_hold'))!='on':raise ValueError('setup/hold optimization must remain enabled')
  return rows
+
+def native_parameters(root,folder,stages=('rtl','gate','place','route')):
+ """Bind every shared parameter to the tool's actual registered-value table."""
+ result=[]
+ for stage,name,value in build_parameters(root):
+  if stage not in stages:continue
+  path=folder/(stage+'.params');text=path.read_text(encoding='utf-8',errors='replace')
+  hits=re.findall(r'^\s*'+re.escape(name)+r'\s*\|\s*(\w+)\s*\|',text,re.M)
+  if hits!=[value]:raise ValueError('native parameter acknowledgement mismatch: '+stage+'/'+name)
+  result.append({'stage':stage,'parameter':name,'actual':hits[0],'report_sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
+ return result
 def gui_project(root,mode):
  """Generate portable .al from the same ordered HDL manifest as CLI."""
  project_dir=root/FLOW/mode
@@ -97,8 +115,8 @@ def gui_project(root,mode):
   r=ET.SubElement(runs,'Run',attrs);strategy_node=ET.SubElement(r,'Strategy',Name=strategy);ET.SubElement(r,'UserParams')
   sections={}
   for stage,param,value in build_parameters(root):
-   if (name=='syn_1')!=(stage=='rtl'):continue
-   if stage not in sections:sections[stage]=ET.SubElement(strategy_node,{'rtl':'RtlProperty','place':'PlaceProperty','route':'RouteProperty'}[stage])
+   if (name=='syn_1')!=(stage in ('rtl','gate')):continue
+   if stage not in sections:sections[stage]=ET.SubElement(strategy_node,{'rtl':'RtlProperty','gate':'GateProperty','place':'PlaceProperty','route':'RouteProperty'}[stage])
    ET.SubElement(sections[stage],param).text=value
  ET.SubElement(p,'Project_Settings')
  ET.indent(p,space='    ');out=project_dir/('safevision_v3_'+mode+'.al')
@@ -115,7 +133,7 @@ def check_gui(root,mode):
  if tree.findtext('./TOP_MODULE/MODULE')!='safevision_v3_top':raise ValueError('GUI top mismatch')
  if tree.findtext('./TOP_MODULE/CREATEINDEX')!='user':raise ValueError('GUI must honor explicit top instead of automatic top discovery')
  actual_parameters=[]
- for run,stages in [('syn_1',{'RtlProperty':'rtl'}),('phy_1',{'PlaceProperty':'place','RouteProperty':'route'})]:
+ for run,stages in [('syn_1',{'RtlProperty':'rtl','GateProperty':'gate'}),('phy_1',{'PlaceProperty':'place','RouteProperty':'route'})]:
   node=tree.find('./Runs/Run[@Name="'+run+'"]/Strategy')
   if node is None:raise ValueError('missing GUI run strategy')
   for child in node:

@@ -10,7 +10,7 @@
 `endif
 module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  input wire clk,rst_n,btn_next,btn_auto,btn_emergency,uart_rxd,
- output wire uart_txd,output wire[3:0] led,
+ output reg uart_txd,output reg[3:0] led,
  output wire sd_ncs,sd_dclk,sd_mosi,input wire sd_miso,
  output wire HDMI_D0_P,HDMI_D1_P,HDMI_D2_P,HDMI_CLK_P,HDMI_DDC_SCL,
  inout wire HDMI_DDC_SDA);
@@ -285,7 +285,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  end end end
  wire normal_uart_txd,fatal_uart_txd;
 
- v3_uart_link uart(.clk(sys_clk),.rst_n(sys_rst_n),.rxd(uart_rxd),.txd(normal_uart_txd),
+ v3_uart_link #(.BOARD_CATALOG(1)) uart(.clk(sys_clk),.rst_n(sys_rst_n),.rxd(uart_rxd),.txd(normal_uart_txd),
  .command_valid(cmd_valid),.command_target(cmd_target),.command_name(cmd_name),.command_value(cmd_value),.command_query(cmd_query),
  .reply_valid(controls_reply || b_reply),.reply_code(b_reply?b_reply_code:controls_reply_code),.reply_value(b_reply?b_reply_value:controls_reply_value),
  .evt_valid(evt_valid),.evt_code(evt_value[7:0]),.evt_src(evt_src),.evt_ts(evt_ts),.evt_ready(evt_ready),
@@ -322,8 +322,17 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  end end
  uart_tx #(.CLK_FREQ(50000000),.BAUD(115200)) fatal_uart(.clk(clk),.rst_n(ref_rst_n),
  .tx_valid(fatal_sending),.tx_data(fatal_byte),.tx_ready(fatal_ready),.txd(fatal_uart_txd));
- assign uart_txd=sys_loss_ref?fatal_uart_txd:normal_uart_txd;
- assign led=sys_loss_ref?4'hf:{safe_active,recovery_busy,transition_busy,cached};
+ // Publish slow external status/serial bits through REF output registers.
+ // This adds one20ns REF edge and removes the long combinational path to
+ // the pads. REF survives SYS-PLL loss, so the independent FATAL path stays
+ // available. SYS/REF clocks are related and retain ordinary setup/hold.
+ always @(posedge clk or negedge ref_rst_n)begin
+  if(!ref_rst_n)begin uart_txd<=1'b1;led<=4'd0;end
+  else begin
+   uart_txd<=sys_loss_ref?fatal_uart_txd:normal_uart_txd;
+   led<=sys_loss_ref?4'hf:{safe_active,recovery_busy,transition_busy,cached};
+  end
+ end
 
  wire[23:0] axis_data;wire axis_valid,axis_user,axis_last,axis_ready,resync,overflow;
  wire[31:0] dropped_frames;wire[4:0] queue_level;

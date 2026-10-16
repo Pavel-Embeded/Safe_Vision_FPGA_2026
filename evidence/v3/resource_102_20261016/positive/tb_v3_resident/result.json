@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_resident",
+  "suite": "media",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "73b7e502c43223e04f79bf06d1f2e4b764d4b280ee149478da10ae662f69490e",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\system_media\\tb_v3_resident"
+}

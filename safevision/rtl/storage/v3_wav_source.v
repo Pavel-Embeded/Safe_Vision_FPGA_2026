@@ -20,9 +20,12 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  localparam FS_BITS=136,WP_BITS=111,CTX_BITS=FS_BITS+WP_BITS+32;
  localparam CTX_WORDS=(CTX_BITS+15)/16,CTX_PAD=CTX_WORDS*16;
  localparam Q_SCAN=0,Q_CHOOSE=1,Q_RESET=2,Q_START=3,Q_RUN=4,Q_SAVE0=5,Q_SAVE=6,
-            Q_LOAD1=7,Q_LOAD2=8,Q_APPLY=9;
+            Q_LOAD1=7,Q_LOAD2=8,Q_APPLY=9,Q_DESC1=10,Q_DESC2=11;
  reg [3:0] state;reg kernel_progress;reg [1:0] active,rr;reg [3:0] saved;
- reg [31:0] track_clus[0:3],track_size[0:3];reg scan_start,scan_seen;
+ // Immutable four-track descriptors share unused words of the existing context
+ // RAM. Only one 64-bit working register is needed during scan and file START.
+ reg[63:0] track_descriptor;reg[3:0] descriptor_pending;
+ reg scan_start,scan_seen;
  wire scan_done,dir_bad;wire [7:0] scan_code;wire [87:0] name;wire [31:0] fc,size;wire ev;
  wire valid_name=name[87:72]==16'h5356&&name[39:24]==16'h2020&&name[23:0]==24'h574156&&
  name[71:64]>=8'h30&&name[71:64]<=8'h39&&name[63:56]>=8'h30&&name[63:56]<=8'h39&&
@@ -34,6 +37,23 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  reg [CTX_PAD-CTX_BITS-1:0] context_padding;
  reg [5:0] context_index;wire [15:0] context_q;
  wire [7:0] context_address=active*CTX_WORDS+context_index;
+ wire entry_ready=state==Q_SCAN&&descriptor_pending==0&&!index_done;
+ wire descriptor_write=state==Q_SCAN&&descriptor_pending!=0;
+ reg[1:0] descriptor_slot;reg[3:0] descriptor_matches;integer descriptor_i;
+ always @*begin
+  descriptor_slot=0;
+  if(descriptor_pending[0])descriptor_slot=0;
+  else if(descriptor_pending[1])descriptor_slot=1;
+  else if(descriptor_pending[2])descriptor_slot=2;
+  else if(descriptor_pending[3])descriptor_slot=3;
+  descriptor_matches=0;
+  for(descriptor_i=0;descriptor_i<4;descriptor_i=descriptor_i+1)
+   if(key==cache_keys[descriptor_i*16+:16]&&!found[descriptor_i])descriptor_matches[descriptor_i]=1;
+ end
+ wire descriptor_capture=ev&&entry_ready&&valid_name&&fc>=2&&size>=44&&|descriptor_matches;
+ // Contexts occupy words 0..71; four descriptors occupy 128..143.
+ wire[7:0] ram_address=descriptor_write?{4'b1000,descriptor_slot,context_index[1:0]}:
+  state==Q_DESC1?{4'b1000,active,context_index[1:0]}:context_address;
  wire [2:0] en,ready,dr,dv,dl,done,toerr,crcerr;
  wire [31:0] addr[0:2];wire [15:0] lens[0:2];wire [3:0] states[0:2];
  wire [31:0] scan_cur,file_cur,w_next,hop_count;
@@ -49,8 +69,9 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  // Single physical port: SAVE and LOAD are disjoint states, so no RDW-copy bank.
  a_pixel_fifo_eram #(.MODE("SP"),.DATAWIDTH_A(16),.DATAWIDTH_B(16),
  .ADDRWIDTH_A(8),.ADDRWIDTH_B(8),.REGMODE_A("NOREG")) context_ram(
- .clka(clk),.rsta(!rst_n),.cea(state==Q_SAVE||state==Q_LOAD1),.ocea(1'b1),.wea(state==Q_SAVE),
- .dia(save_word),.addra(context_address),.doa(context_q),
+ .clka(clk),.rsta(!rst_n),.cea(state==Q_SAVE||state==Q_LOAD1||descriptor_write||state==Q_DESC1),
+ .ocea(1'b1),.wea(state==Q_SAVE||descriptor_write),
+ .dia(descriptor_write?track_descriptor[15:0]:save_word),.addra(ram_address),.doa(context_q),
  .clkb(clk),.rstb(!rst_n),.ceb(1'b0),.oceb(1'b0),.web(1'b0),.dib(16'd0),.addrb(8'd0),.dob());
  assign pcm_data={128'd0}|({96'd0,sample}<<(active*32));
  assign pcm_valid=(state==Q_RUN)?(sample_valid?(4'b1<<active):4'b0):4'b0;
@@ -64,19 +85,33 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
   if(!rst_n)begin
    state<=Q_SCAN;kernel_progress<=0;active<=0;rr<=0;saved<=0;context_padding<=0;context_index<=0;
    scan_start<=0;scan_seen<=0;index_done<=0;fallback<=0;found<=0;
-   for(k=0;k<4;k=k+1)begin track_clus[k]<=0;track_size[k]<=0;end
+   track_descriptor<=0;descriptor_pending<=0;
   end else begin
    scan_start<=0;
    if(!scan_seen&&mounted&&cache_ready&&(!EXTERNAL_SERVICE||external_service_ready))begin scan_seen<=1;scan_start<=1;end
-   if(ev&&valid_name&&!index_done)for(k=0;k<4;k=k+1)
-    if(key==cache_keys[k*16+:16]&&!found[k]&&fc>=2&&size>=44)begin
-     found[k]<=1;track_clus[k]<=fc;track_size[k]<=size;end
+   if(descriptor_capture)begin
+    found<=found|descriptor_matches;descriptor_pending<=descriptor_matches;
+    track_descriptor<={size,fc};context_index<=0;
+   end
    case(state)
-    Q_SCAN:if(scan_seen&&scan_done)begin
-     index_done<=1;fallback<=(dir_bad||scan_code!=0)?4'hf:~found;state<=Q_CHOOSE;
+    Q_SCAN:begin
+     if(descriptor_write)begin
+      track_descriptor<={track_descriptor[15:0],track_descriptor[63:16]};
+      if(context_index==3)begin descriptor_pending[descriptor_slot]<=0;context_index<=0;end
+      else context_index<=context_index+1'b1;
+     end
+     if(scan_seen&&scan_done&&descriptor_pending==0&&!descriptor_capture)begin
+      index_done<=1;fallback<=(dir_bad||scan_code!=0)?4'hf:~found;state<=Q_CHOOSE;
+     end
     end
     Q_CHOOSE:if(eligible)begin kernel_progress<=0;active<=chosen;rr<=chosen+1'b1;context_index<=0;
-     if(saved[chosen])state<=Q_LOAD1;else state<=Q_RESET;
+     if(saved[chosen])state<=Q_LOAD1;else state<=Q_DESC1;
+    end
+    Q_DESC1:state<=Q_DESC2;
+    Q_DESC2:begin
+     track_descriptor<={context_q,track_descriptor[63:16]};
+     if(context_index==3)begin context_index<=0;state<=Q_RESET;end
+     else begin context_index<=context_index+1'b1;state<=Q_DESC1;end
     end
     Q_RESET:begin context_padding<=0;state<=Q_START;end
     Q_START:state<=Q_RUN;
@@ -189,7 +224,7 @@ wire legacy_ds_wk_rst_walk;
 assign scan_wr=EXTERNAL_SERVICE?(external_service_ready?svc_d_wk_rst_walk:1'd0):legacy_ds_wk_rst_walk;
 fat32_directory_scanner ds(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:rst_n),.scan_en(scan_start),.scan_done(legacy_ds_scan_done),.dir_bad(legacy_ds_dir_bad),.err_code(legacy_ds_err_code),
  .dbg_state(legacy_ds_dbg_state),.sec_per_clus(sec_per_clus),.root_clus(root_clus),.root_dir_lba(root_dir_lba),.data_start_lba(data_start_lba),
- .ent_name(legacy_ds_ent_name),.ent_first_clus(legacy_ds_ent_first_clus),.ent_size(legacy_ds_ent_size),.ent_valid(legacy_ds_ent_valid),.ent_ready(1'b1),
+ .ent_name(legacy_ds_ent_name),.ent_first_clus(legacy_ds_ent_first_clus),.ent_size(legacy_ds_ent_size),.ent_valid(legacy_ds_ent_valid),.ent_ready(entry_ready),
  .sd_rd_addr(legacy_ds_sd_rd_addr),.sd_rd_len(legacy_ds_sd_rd_len),.sd_rd_en(legacy_ds_sd_rd_en),.sd_rd_ready(ready[0]),
  .sd_data(data),.sd_data_valid(dv[0]),.sd_data_ready(legacy_ds_sd_data_ready),.sd_data_last(dl[0]),.sd_rd_done(done[0]),
  .sd_timeout_err(toerr[0]),.sd_crc16_err(crcerr[0]),.sd_err_code(err_code),.sd_err_detail(err_detail),
@@ -262,7 +297,7 @@ wire legacy_fs_wk_rst_walk;
 assign file_wr=EXTERNAL_SERVICE?(external_service_ready?svc_f_wk_rst_walk:1'd0):legacy_fs_wk_rst_walk;
 v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rst_n),.context_load(load_context),.context_enable(run_kernel),
  .context_in(next_context[WP_BITS+:FS_BITS]),.context_out(legacy_fs_context_out),.stream_enable(1'b1),.idle_between_sectors(legacy_fs_idle_between_sectors),
- .start(start),.first_clus(track_clus[active]),.file_size(track_size[active]),.busy(legacy_fs_busy),.done(legacy_fs_done),.error(legacy_fs_error),.dbg_state(legacy_fs_dbg_state),
+ .start(start),.first_clus(track_descriptor[31:0]),.file_size(track_descriptor[63:32]),.busy(legacy_fs_busy),.done(legacy_fs_done),.error(legacy_fs_error),.dbg_state(legacy_fs_dbg_state),
  .data(legacy_fs_data),.valid(legacy_fs_valid),.ready((parser_ready||waverr)&&run_kernel),.eof(legacy_fs_eof),
  .sec_per_clus(sec_per_clus),.fat_start_lba(fat_start_lba),.data_start_lba(data_start_lba),.total_clus(total_clus),
  .wk_cur_clus(legacy_fs_wk_cur_clus),.wk_start(legacy_fs_wk_start),.wk_rst_walk(legacy_fs_wk_rst_walk),.wk_busy(wb),.wk_done(wd),
@@ -271,8 +306,8 @@ v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rs
  .sd_data(data),.sd_data_valid(dv[1]),.sd_data_ready(legacy_fs_sd_data_ready),.sd_data_last(dl[1]),.sd_rd_done(done[1]),
  .sd_timeout_err(toerr[1]),.sd_crc16_err(crcerr[1]),.sd_err_code(err_code),.sd_err_detail(err_detail));
  v3_wav_parser_compact_ctx wp(.clk(clk),.rst_n(kernel_rst_n),.context_load(load_context),.context_enable(run_kernel),
- .context_in(next_context[WP_BITS-1:0]),.context_out(wp_context),.start(start),.first_clus(track_clus[active]),
- .file_size(track_size[active]),.track_id({6'd0,active}),.din(bytes_data),.din_valid(fvalid&&!waverr&&run_kernel),
+ .context_in(next_context[WP_BITS-1:0]),.context_out(wp_context),.start(start),.first_clus(track_descriptor[31:0]),
+ .file_size(track_descriptor[63:32]),.track_id({6'd0,active}),.din(bytes_data),.din_valid(fvalid&&!waverr&&run_kernel),
  .din_ready(parser_ready),.din_eof(fend),.sample(sample),.pcm_valid(sample_valid),
  .pcm_ready(pcm_ready[active]&&run_kernel),.wav_error(waverr));
  // Directory, file data and shared walker are mutually serialized sectors.
@@ -302,5 +337,5 @@ v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rs
    default:phase<=0;
   endcase
  end
-assign core_cmd={kernel_rst_n,scan_start,1'b1,load_context,run_kernel,start,track_clus[active],track_size[active],(parser_ready||waverr)&&run_kernel,{129'd0,next_context[WP_BITS+:FS_BITS]},load_context,next_context[WP_BITS+FS_BITS+:32],index_done?(run_kernel&&file_wr):scan_wr,index_done?(run_kernel&&file_ws):scan_ws,index_done?file_cur:scan_cur,ready,dv,dl,done,toerr,crcerr,data,err_code,err_detail};
+assign core_cmd={kernel_rst_n,scan_start,entry_ready,load_context,run_kernel,start,track_descriptor[31:0],track_descriptor[63:32],(parser_ready||waverr)&&run_kernel,{129'd0,next_context[WP_BITS+:FS_BITS]},load_context,next_context[WP_BITS+FS_BITS+:32],index_done?(run_kernel&&file_wr):scan_wr,index_done?(run_kernel&&file_ws):scan_ws,index_done?file_cur:scan_cur,ready,dv,dl,done,toerr,crcerr,data,err_code,err_detail};
 endmodule

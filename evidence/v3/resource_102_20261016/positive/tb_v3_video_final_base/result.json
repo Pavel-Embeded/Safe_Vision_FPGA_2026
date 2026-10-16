@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_video_final_base",
+  "suite": "video_v3_final",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "aebfde3d269e1e9b484545dcaf968d71de507d84621726d09f9a75425273075c",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\video_final_base\\tb_v3_video_final_base"
+}

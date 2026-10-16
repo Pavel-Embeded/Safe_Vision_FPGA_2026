@@ -1,0 +1,220 @@
+`timescale 1ns/1ps
+module tb_v3_command_catalog;
+ reg clk=0,rst=0,rv=0;reg[7:0] data=0;always #5 clk=~clk;
+ wire[6:0] catalog_id;wire cv,ocv,q,oq,pv,opv;wire[7:0] target,otarget,code,ocode;wire[95:0] name,oname;wire signed[31:0] value,ovalue;wire[31:0] rejected,orejected;
+ v3_command_parser_catalog #(.TIMEOUT(10000),.CATALOG_FILE("v3_command_catalog.mem")) dut(clk,rst,rv,data,cv,target,name,value,q,pv,code,rejected,catalog_id);
+ v3_command_parser_reference #(.TIMEOUT(10000)) reference(clk,rst,rv,data,ocv,otarget,oname,ovalue,oq,opv,ocode,orejected);
+ integer errors=0,comparisons=0,commands=0,replies=0,i,k;reg[31:0] seed=32'h8fd47c21;
+ function bit known(input[95:0] n);begin case(n)
+  96'h00000000000000414c504841,
+  96'h00000000000000004155544f,
+  96'h000000004241444552524f52,
+  96'h000000000000004241444944,
+  96'h000000000000425249474854,
+  96'h000000000000004341434845,
+  96'h00000000434f4e5452415354,
+  96'h0000004556454e5444524f50,
+  96'h000000000000000046414445,
+  96'h000000000000004641554c54,
+  96'h00000000000000000047454e,
+  96'h000000000000494448494748,
+  96'h0000000000000049444c4f57,
+  96'h000000494e54454752495459,
+  96'h000000000000004c4556454c,
+  96'h00000000000000004e455854,
+  96'h000000004f564552464c4f57,
+  96'h000000000000504552494f44,
+  96'h50524553454e544154494f4e,
+  96'h00000000005245434f564552,
+  96'h000000005245434f56455259,
+  96'h0000000052454a4543544544,
+  96'h000000000052455452494553,
+  96'h000000000000005343414c45,
+  96'h0000000000005343414c4552,
+  96'h0000000000000000534c4f54,
+  96'h000000000000535441545553,
+  96'h000000005541525444524f50,
+  96'h000000554152544652414d45,
+  96'h00554152544f56455252554e,
+  96'h00005541525452454a454354,
+  96'h000000554e444552464c4f57,
+  96'h000000000000000000564f4c,
+  96'h000056554e444552464c4f57,
+  96'h0057415646414c4c4241434b:
+  known=1;default:known=0;endcase end endfunction
+ task ck(input bit ok,input string message);begin comparisons++;if(!ok)begin errors++;if(errors<9)$display("[FAIL] %s",message);end end endtask
+ always @(posedge clk)begin #1;
+  ck({cv,pv,rejected}==={ocv,opv,orejected},"cycle-exact valid/reply/rejection-count behavior");
+  if(cv)begin commands++;ck({target,value,q}==={otarget,ovalue,oq},"target, full signed value and query match original");
+   ck(known(oname)?name===oname:name===0,"all known names exact; every unknown canonicalized without false recognition");end
+  if(pv)begin replies++;ck(code===ocode,"identical malformed-packet reply code");end
+ end
+ task emit(input[7:0] byte_value);begin
+  @(negedge clk);data=byte_value;rv=1;@(negedge clk);rv=0;
+  repeat(80)begin seed=seed*1664525+1013904223;data=seed[7:0];@(negedge clk);end
+ end endtask
+ function[7:0] hex(input[3:0] n);begin hex=n<10?48+n:55+n;end endfunction
+ task frame(input string body,input bit corrupt);reg[7:0] crc;integer n;begin
+  crc=0;emit(36);for(n=0;n<body.len();n++)begin crc=crc^body[n];emit(body[n]);end
+  if(corrupt)crc=crc^1;emit(42);emit(hex(crc[7:4]));emit(hex(crc[3:0]));emit(13);emit(10);repeat(90)@(negedge clk);
+ end endtask
+ string random_name;
+ initial begin
+  repeat(4)@(negedge clk);rst=1;
+  frame("A:ALPHA?",0);
+  frame("B:ALPHA=0",0);
+  frame("C:ALPHA=-31",0);
+  frame("C:ALPHA=9999999",0);
+  frame("A:AUTO?",0);
+  frame("B:AUTO=0",0);
+  frame("C:AUTO=-31",0);
+  frame("C:AUTO=9999999",0);
+  frame("A:BADERROR?",0);
+  frame("B:BADERROR=0",0);
+  frame("C:BADERROR=-31",0);
+  frame("C:BADERROR=9999999",0);
+  frame("A:BADID?",0);
+  frame("B:BADID=0",0);
+  frame("C:BADID=-31",0);
+  frame("C:BADID=9999999",0);
+  frame("A:BRIGHT?",0);
+  frame("B:BRIGHT=0",0);
+  frame("C:BRIGHT=-31",0);
+  frame("C:BRIGHT=9999999",0);
+  frame("A:CACHE?",0);
+  frame("B:CACHE=0",0);
+  frame("C:CACHE=-31",0);
+  frame("C:CACHE=9999999",0);
+  frame("A:CONTRAST?",0);
+  frame("B:CONTRAST=0",0);
+  frame("C:CONTRAST=-31",0);
+  frame("C:CONTRAST=9999999",0);
+  frame("A:EVENTDROP?",0);
+  frame("B:EVENTDROP=0",0);
+  frame("C:EVENTDROP=-31",0);
+  frame("C:EVENTDROP=9999999",0);
+  frame("A:FADE?",0);
+  frame("B:FADE=0",0);
+  frame("C:FADE=-31",0);
+  frame("C:FADE=9999999",0);
+  frame("A:FAULT?",0);
+  frame("B:FAULT=0",0);
+  frame("C:FAULT=-31",0);
+  frame("C:FAULT=9999999",0);
+  frame("A:GEN?",0);
+  frame("B:GEN=0",0);
+  frame("C:GEN=-31",0);
+  frame("C:GEN=9999999",0);
+  frame("A:IDHIGH?",0);
+  frame("B:IDHIGH=0",0);
+  frame("C:IDHIGH=-31",0);
+  frame("C:IDHIGH=9999999",0);
+  frame("A:IDLOW?",0);
+  frame("B:IDLOW=0",0);
+  frame("C:IDLOW=-31",0);
+  frame("C:IDLOW=9999999",0);
+  frame("A:INTEGRITY?",0);
+  frame("B:INTEGRITY=0",0);
+  frame("C:INTEGRITY=-31",0);
+  frame("C:INTEGRITY=9999999",0);
+  frame("A:LEVEL?",0);
+  frame("B:LEVEL=0",0);
+  frame("C:LEVEL=-31",0);
+  frame("C:LEVEL=9999999",0);
+  frame("A:NEXT?",0);
+  frame("B:NEXT=0",0);
+  frame("C:NEXT=-31",0);
+  frame("C:NEXT=9999999",0);
+  frame("A:OVERFLOW?",0);
+  frame("B:OVERFLOW=0",0);
+  frame("C:OVERFLOW=-31",0);
+  frame("C:OVERFLOW=9999999",0);
+  frame("A:PERIOD?",0);
+  frame("B:PERIOD=0",0);
+  frame("C:PERIOD=-31",0);
+  frame("C:PERIOD=9999999",0);
+  frame("A:PRESENTATION?",0);
+  frame("B:PRESENTATION=0",0);
+  frame("C:PRESENTATION=-31",0);
+  frame("C:PRESENTATION=9999999",0);
+  frame("A:RECOVER?",0);
+  frame("B:RECOVER=0",0);
+  frame("C:RECOVER=-31",0);
+  frame("C:RECOVER=9999999",0);
+  frame("A:RECOVERY?",0);
+  frame("B:RECOVERY=0",0);
+  frame("C:RECOVERY=-31",0);
+  frame("C:RECOVERY=9999999",0);
+  frame("A:REJECTED?",0);
+  frame("B:REJECTED=0",0);
+  frame("C:REJECTED=-31",0);
+  frame("C:REJECTED=9999999",0);
+  frame("A:RETRIES?",0);
+  frame("B:RETRIES=0",0);
+  frame("C:RETRIES=-31",0);
+  frame("C:RETRIES=9999999",0);
+  frame("A:SCALE?",0);
+  frame("B:SCALE=0",0);
+  frame("C:SCALE=-31",0);
+  frame("C:SCALE=9999999",0);
+  frame("A:SCALER?",0);
+  frame("B:SCALER=0",0);
+  frame("C:SCALER=-31",0);
+  frame("C:SCALER=9999999",0);
+  frame("A:SLOT?",0);
+  frame("B:SLOT=0",0);
+  frame("C:SLOT=-31",0);
+  frame("C:SLOT=9999999",0);
+  frame("A:STATUS?",0);
+  frame("B:STATUS=0",0);
+  frame("C:STATUS=-31",0);
+  frame("C:STATUS=9999999",0);
+  frame("A:UARTDROP?",0);
+  frame("B:UARTDROP=0",0);
+  frame("C:UARTDROP=-31",0);
+  frame("C:UARTDROP=9999999",0);
+  frame("A:UARTFRAME?",0);
+  frame("B:UARTFRAME=0",0);
+  frame("C:UARTFRAME=-31",0);
+  frame("C:UARTFRAME=9999999",0);
+  frame("A:UARTOVERRUN?",0);
+  frame("B:UARTOVERRUN=0",0);
+  frame("C:UARTOVERRUN=-31",0);
+  frame("C:UARTOVERRUN=9999999",0);
+  frame("A:UARTREJECT?",0);
+  frame("B:UARTREJECT=0",0);
+  frame("C:UARTREJECT=-31",0);
+  frame("C:UARTREJECT=9999999",0);
+  frame("A:UNDERFLOW?",0);
+  frame("B:UNDERFLOW=0",0);
+  frame("C:UNDERFLOW=-31",0);
+  frame("C:UNDERFLOW=9999999",0);
+  frame("A:VOL?",0);
+  frame("B:VOL=0",0);
+  frame("C:VOL=-31",0);
+  frame("C:VOL=9999999",0);
+  frame("A:VUNDERFLOW?",0);
+  frame("B:VUNDERFLOW=0",0);
+  frame("C:VUNDERFLOW=-31",0);
+  frame("C:VUNDERFLOW=9999999",0);
+  frame("A:WAVFALLBACK?",0);
+  frame("B:WAVFALLBACK=0",0);
+  frame("C:WAVFALLBACK=-31",0);
+  frame("C:WAVFALLBACK=9999999",0);
+  for(k=0;k<100;k++)begin
+   random_name="ZZ";for(i=0;i<k%10;i++)begin seed=seed*1664525+1013904223;random_name={random_name,8'(65+(seed%26))};end
+   frame({"C:",random_name,"?"},0);
+  end
+  frame("A:BRIGHT=-128",0);frame("A:BRIGHT=127",0);frame("C:VOL=0000000000000000",0);
+  frame("C:VOL=0000000000000000-1",0);frame("C:VOL=9999999",0);frame("C:VOL=10000000",0);
+  frame("A:ALPHA=1",1);frame("X:VOL=1",0);frame("C:BAD_NAME=2",0);frame("A:PRESENTATIONX?",0);
+  emit(36);emit("A");emit(58);emit("B");repeat(12000)@(negedge clk);
+  frame("A:CONTRAST=128",0);
+  // Abort in the middle of the actual multi-cycle name matcher.
+  emit(36);emit("C");emit(58);@(negedge clk);data="V";rv=1;@(negedge clk);rv=0;#1;rst=0;#2;rst=1;
+  frame("C:VOL=73",0);repeat(100)@(negedge clk);
+  if(errors==0)$display("[PASS] exact finite-name recognition, unknowns, all consumers, payload/syntax parity, busy-input changes and reset/timeout recovery");
+  $display("[TB] tb_v3_command_catalog done errors=%0d comparisons=%0d commands=%0d replies=%0d",errors,comparisons,commands,replies);$finish;
+ end
+ initial begin #20000000;$display("[FAIL] catalog oracle watchdog errors=1");$finish;end
+endmodule
