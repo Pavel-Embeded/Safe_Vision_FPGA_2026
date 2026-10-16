@@ -1,0 +1,9 @@
+{
+  "top": "tb_osd_overlay",
+  "suite": "legacy_a",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": true,
+  "original_runner_result_sha256": "c643a945eb1f6e1ae4bb8bd004f353971ff1ed1c99129ca24567ca4108fbf62c",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_osd_overlay"
+}

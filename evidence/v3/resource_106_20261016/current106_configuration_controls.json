@@ -1,0 +1,70 @@
+{
+  "complete": true,
+  "cases": [
+    {
+      "case": "every effective BASE native parameter acknowledged",
+      "pass": true
+    },
+    {
+      "case": "BASE common32 and HD override16 resolve separately",
+      "pass": true
+    },
+    {
+      "case": "base explicit GUI/CLI dependencies and constraints match",
+      "pass": true
+    },
+    {
+      "case": "hd explicit GUI/CLI dependencies and constraints match",
+      "pass": true
+    },
+    {
+      "case": "disabled setup optimization",
+      "pass": true
+    },
+    {
+      "case": "disabled hold repair",
+      "pass": true
+    },
+    {
+      "case": "duplicate parameter",
+      "pass": true
+    },
+    {
+      "case": "unknown parameter",
+      "pass": true
+    },
+    {
+      "case": "extra Tcl command",
+      "pass": true
+    },
+    {
+      "case": "duplicate mode override",
+      "pass": true
+    },
+    {
+      "case": "internal ADC cannot alter board pin contract",
+      "pass": true
+    },
+    {
+      "case": "GUI parameter drift",
+      "pass": true
+    },
+    {
+      "case": "native CRLF report bytes retained",
+      "pass": true
+    },
+    {
+      "case": "native six input ports parsed",
+      "pass": true
+    },
+    {
+      "case": "native eleven output ports parsed",
+      "pass": true
+    },
+    {
+      "case": "truncated native I/O detail",
+      "pass": true
+    }
+  ],
+  "scope": "configuration/report-parser fault injection only; no FPGA signoff"
+}

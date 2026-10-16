@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_thirds_scaler",
+  "suite": "thirds_scaler",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "ffeb9b88365c1b727a410a7567d2bc55e9d8ecf9080c7c097ba2d85982737a75",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\publication_candidate\\sim\\thirds_scaler\\tb_v3_thirds_scaler"
+}

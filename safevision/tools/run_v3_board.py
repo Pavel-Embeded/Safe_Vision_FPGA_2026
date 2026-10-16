@@ -7,6 +7,7 @@ from check_v3_board import check,resource_gate,read_report
 from check_v3_rom_netlist import check_roms
 from v3_final_sta import reassess
 from v3_resource_policy import load as load_resource_policy
+from v3_functional_release import acceptance as functional_acceptance,unchanged as proof_unchanged,DEFAULT_MANIFEST
 def save(path,value):path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 def source_commit_binding(root,source_repo,ref,paths):
  """Tie the actual build bytes to committed Git blobs, including text filters."""
@@ -49,7 +50,13 @@ def main():
   folder=out/mode
   if folder.exists() and any(folder.iterdir()):raise ValueError('use a new empty mode directory: '+str(folder))
  for mode in ('base','hd'):gui_project(root,mode)
- gui=[check_gui(root,m) for m in ('base','hd')];before=snapshot(root)
+ gui=[check_gui(root,m) for m in ('base','hd')]
+ functional=None;proof={}
+ if a.bitgen:
+  functional,proof=functional_acceptance(root,DEFAULT_MANIFEST)
+  save(out/'functional.acceptance.json',functional)
+ def current_snapshot():return {**snapshot(root),**{name:hashlib.sha256((root/name).read_bytes()).hexdigest() for name in proof}}
+ before=current_snapshot()
  env=os.environ.copy();env['SAFEVISION_REPO']=str(root);env['SAFEVISION_V3_OUT']=str(out);env['SAFEVISION_V3_SYNTH_ONLY']='1' if a.synth_only else '0'
  binding=source_commit_binding(root,(a.source_repo or root).resolve(),a.source_ref,before)
  if a.bitgen and not binding['verified']:raise RuntimeError('release source is not an exact committed tree: '+json.dumps(binding,ensure_ascii=False))
@@ -57,6 +64,7 @@ def main():
  for mode in modes:
   folder=out/mode;folder.mkdir(exist_ok=True)
   record={'mode':mode,'status':'NOT_RUN','sources':before,'gui_cli':gui,'source_commit':binding['commit'],'source_commit_binding':binding,
+   'functional_acceptance':functional,
    'td_executable':str(exe),'td_executable_sha256':hashlib.sha256(exe.read_bytes()).hexdigest(),
    'source_identity':'actual build SHA-256 bytes plus explicit Git blob comparison; inspect source_commit_binding.verified',
    'source_unchanged':False,'bit_generated':False,'hardware_verified':False,'created_at_utc':datetime.now(timezone.utc).isoformat()}
@@ -69,7 +77,7 @@ def main():
    if not version:raise RuntimeError('missing TD version banner')
    record['td_version']=version[1]
    record['native_parameters']=native_parameters(root,folder,('rtl','gate') if a.synth_only else ('rtl','gate','place','route'))
-   if snapshot(root)!=before:raise RuntimeError('sources changed during TD run; rerun a frozen snapshot')
+   if current_snapshot()!=before:raise RuntimeError('sources/proof changed during TD run; rerun a frozen snapshot')
    record['source_unchanged']=True
    if a.synth_only:
     record['mapped_roms']=check_roms(read_report(folder/'gate.netlist.v'),root)
@@ -78,7 +86,7 @@ def main():
     record['status']='SYNTHESIZED_ONLY' if record['resource_gate']['accepted'] else 'RESOURCE_REJECTED'
    else:
     record['final_sta_integrity']=reassess(exe,folder,[root/FLOW/'v3_board.sdc',root/FLOW/'v3_cdc.sdc'],root/FLOW/'v3_cdc_audit.tcl',env,route_process_exit_code=route_exit)
-    if snapshot(root)!=before:raise RuntimeError('sources changed during fresh-process final STA')
+    if current_snapshot()!=before:raise RuntimeError('sources/proof changed during fresh-process final STA')
     verdict=check(folder,root);save(folder/'timing.gate.json',verdict)
     record['gate']=verdict;record['status']=verdict['status']
   except Exception as ex:record['status']='FAIL';record['error']=str(ex)
@@ -88,14 +96,14 @@ def main():
  if accepted and a.bitgen:
   for record in records:
    mode=record['mode'];folder=out/mode
-   if snapshot(root)!=before:raise RuntimeError('sources changed before bitgen')
+   if current_snapshot()!=before or not proof_unchanged(root,proof):raise RuntimeError('sources/functional proof changed before bitgen')
    for report in record['gate']['reports']:
     if hashlib.sha256(Path(report['path']).read_bytes()).hexdigest()!=report['sha256']:raise RuntimeError('approved routed report/database changed')
    bit=folder/'safevision_v3_top.bit';pending=folder/'safevision_v3_top.pending.bit';tcl=folder/'approved_bitgen.tcl'
    tcl.write_text('if {[catch {\n import_db {'+(folder/'route.db').as_posix()+'}\n bitgen -bit {'+pending.as_posix()+'}\n export_bitgen_param -file {'+(folder/'bitgen.params').as_posix()+'}\n} err]} {puts stderr "V3 TD FAILED: $err";exit 1}\nputs "V3 BITGEN COMPLETE"\nexit 0\n',encoding='ascii')
    bit_exit,text=invoke(exe,tcl,folder/'bitgen.console.log',env)
    if 'V3 BITGEN COMPLETE' not in text or not pending.is_file() or not pending.stat().st_size:raise RuntimeError('bitgen did not finish')
-   if snapshot(root)!=before:raise RuntimeError('sources changed during bitgen')
+   if current_snapshot()!=before or not proof_unchanged(root,proof):raise RuntimeError('sources/functional proof changed during bitgen')
    for report in record['gate']['reports']:
     if hashlib.sha256(Path(report['path']).read_bytes()).hexdigest()!=report['sha256']:raise RuntimeError('routed evidence changed during bitgen')
    pending.replace(bit);record['bit_generated']=True;record['bitstream']={'path':str(bit),'bytes':bit.stat().st_size,'sha256':hashlib.sha256(bit.read_bytes()).hexdigest()}

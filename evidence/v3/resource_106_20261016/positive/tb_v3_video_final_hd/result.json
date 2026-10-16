@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_video_final_hd",
+  "suite": "video_v3_final",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "8b847998371bbf293ef619354ef2f18474aaa9a7cc198411428a3d78e3c13d6b",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\retimed_video_frames\\tb_v3_video_final_hd\\tb_v3_video_final_hd"
+}

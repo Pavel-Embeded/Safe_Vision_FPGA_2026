@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_audio_system",
+  "suite": "audio_complete",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "c712b6a0e2ef8104152013a1a81b805146a92f746f4fba8e7d38f65823d79160",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_v3_audio_system"
+}

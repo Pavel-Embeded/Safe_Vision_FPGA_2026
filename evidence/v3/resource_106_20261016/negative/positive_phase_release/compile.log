@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/phase_safe_candidate/extra/reset_positive_phase_mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module reset_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/phase_safe_candidate/source/safevision/verification/unit/tb_v3_reset_release_phase.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_reset_release_phase

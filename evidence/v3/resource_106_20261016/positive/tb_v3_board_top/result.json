@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_board_top",
+  "suite": "v3_board_top",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "74b498a2f5f7049c285624e41f37287ad9ec0985c9602f6b6583541ea8348686",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\lookahead_supervisor_r2\\sim\\v3_board_top\\tb_v3_board_top"
+}

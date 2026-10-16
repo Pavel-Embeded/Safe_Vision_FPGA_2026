@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_audio_ingress",
+  "suite": "audio_complete",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "ee06468a8697437b1b95dbf2b04376ee82151aa5edc6183abbcb2863599e2b17",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_v3_audio_ingress"
+}

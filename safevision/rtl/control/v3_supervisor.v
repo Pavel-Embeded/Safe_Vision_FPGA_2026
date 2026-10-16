@@ -40,7 +40,39 @@ module v3_supervisor #(
  // never wrap the threshold into a false alarm. Snapshot timing is unchanged.
  reg[32:0] video_limit,audio_limit;
  reg[31:0] last_hd,ms_now;
- wire watch_tick=ms_timer==TICK_DIV-1;
+ // Predict exactly the next counter state; no event receives an extra cycle.
+ wire watch_tick;
+ generate if(TICK_DIV==1)begin:every_cycle_tick
+  assign watch_tick=1'b1;
+ end else begin:divided_tick
+  reg tick_q;
+  assign watch_tick=tick_q;
+  always @(posedge clk or negedge rst_n)
+   if(!rst_n)tick_q<=0;
+   else tick_q<=ms_timer==TICK_DIV-2;
+ end endgenerate
+ reg window_last;wire window_done;
+ always @(posedge clk or negedge rst_n)begin
+  if(!rst_n)window_last<=(WINDOW_LIMIT==1);
+  else if(window_done || media_reset)window_last<=(WINDOW_LIMIT==1);
+  else if(watch_tick)window_last<=window_timer==WINDOW_LIMIT-2;
+ end
+ // Four byte comparisons run in parallel. Preserve these small group nodes
+ // so area mapping cannot turn a33-bit comparison into a serial LUT chain.
+ (* keep="true" *) wire[3:0] video_gt,video_eq,audio_gt,audio_eq;
+ genvar group;
+ generate for(group=0;group<4;group=group+1)begin:compare_byte
+  assign video_gt[group]=video_underflows[8*group+:8]>video_limit[8*group+:8];
+  assign video_eq[group]=video_underflows[8*group+:8]==video_limit[8*group+:8];
+  assign audio_gt[group]=audio_underflows[8*group+:8]>audio_limit[8*group+:8];
+  assign audio_eq[group]=audio_underflows[8*group+:8]==audio_limit[8*group+:8];
+ end endgenerate
+ function ge_groups;
+  input[3:0] g,e;
+  begin ge_groups=g[3] | (e[3]&g[2]) | (e[3]&e[2]&g[1]) | (e[3]&e[2]&e[1]&(g[0]|e[0]));end
+ endfunction
+ wire video_threshold=!video_limit[32] && ge_groups(video_gt,video_eq);
+ wire audio_threshold=!audio_limit[32] && ge_groups(audio_gt,audio_eq);
  reg initialized,fault_i_old,fault_b_old,failed_old,hd_fault_old;
  reg[10:0] pending,selection,new_events;
  reg[15:0] rejected_old;reg[3:0] fallback_old;
@@ -53,14 +85,14 @@ module v3_supervisor #(
  .done(cache_ready && !recover_failed),.failed(recover_failed),.fatal(fatal_latched),
  .busy(recovery_busy),.media_reset(media_reset),.rescan_start(rescan_unused),
  .recovered(recovered),.safe_latched(recover_safe),.attempts(recovery_attempts),.state(recovery_state));
- wire window_done=watch_tick && window_timer==WINDOW_LIMIT-1;
+ assign window_done=watch_tick && window_last;
  always @*begin
   new_events=0;
   if(media_failed && !failed_old && !recovery_busy)new_events[0]=1;
   if(integrity_fault && !fault_i_old && !media_reset)new_events[1]=1;
   if(bus_fault && !fault_b_old && !media_reset)new_events[2]=1;
-  if(window_done && {1'b0,video_underflows}>=video_limit)new_events[3]=1;
-  if(window_done && {1'b0,audio_underflows}>=audio_limit)new_events[4]=1;
+  if(window_done && video_threshold)new_events[3]=1;
+  if(window_done && audio_threshold)new_events[4]=1;
   if(watch_tick && frame_timer==FRAME_LIMIT-1 && !frame_heartbeat && !recovered)new_events[5]=1;
   if(watch_tick && memory_active && mem_timer==MEM_LIMIT-1 && !mem_heartbeat && !media_reset)new_events[6]=1;
   if(watch_tick && media_active && progress_timer==PROGRESS_LIMIT-1 && !progress_heartbeat && !media_reset)new_events[7]=1;

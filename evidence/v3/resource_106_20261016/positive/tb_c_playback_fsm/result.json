@@ -1,0 +1,9 @@
+{
+  "top": "tb_c_playback_fsm",
+  "suite": "c",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "ef5d375d8b0f14c5318c8d8f86dff06ffa17dc09d5a646b3dd626d38ea9d6c3d",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_c_playback_fsm"
+}

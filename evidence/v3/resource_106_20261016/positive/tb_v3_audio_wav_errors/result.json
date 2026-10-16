@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_audio_wav_errors",
+  "suite": "audio_complete",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "839c0634ba52965dbbcc75bba0e6965d2abbd42b6c43ce54950df91c41eec81b",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_v3_audio_wav_errors"
+}

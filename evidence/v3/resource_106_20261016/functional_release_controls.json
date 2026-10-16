@@ -1,0 +1,42 @@
+{
+  "complete": true,
+  "cases": [
+    {
+      "case": "unchanged complete native proof accepted",
+      "pass": true
+    },
+    {
+      "case": "prefixed failure in raw log rejected",
+      "pass": true
+    },
+    {
+      "case": "missing normal completion rejected",
+      "pass": true
+    },
+    {
+      "case": "changed functional source rejected",
+      "pass": true
+    },
+    {
+      "case": "changed generated vector rejected",
+      "pass": true
+    },
+    {
+      "case": "missing required semantic mutant rejected",
+      "pass": true
+    },
+    {
+      "case": "any approved transcript byte drift detected",
+      "pass": true
+    },
+    {
+      "case": "Python optimized assertions cannot bypass gate",
+      "pass": true
+    },
+    {
+      "case": "all fixtures restored",
+      "pass": true
+    }
+  ],
+  "scope": "release gating fault injection only; no FPGA acceptance"
+}

@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "status": "FUNCTIONAL_105_PASS_PHYSICAL_CLOSURE_IN_PROGRESS",
+  "status": "FUNCTIONAL_106_PASS_PHYSICAL_CLOSURE_IN_PROGRESS",
   "release_ready": false,
   "hardware_verified": false,
-  "source_baseline_commit": "b6a12b30329691f85bae19b3521798c2031c7cc3",
+  "source_baseline_commit": "a3588295bc04a7cf226960e310dae4e1f50493bf",
   "historical_functional_acceptance": {
     "source_commit": "6ee2ebed0bb7177783223f53550ea46cbdb192e4",
     "positive_unique_tops": 100,
@@ -11,9 +11,9 @@
     "evidence": "evidence/v3/current_100_20261016/selected_acceptance.json",
     "is_current_source_acceptance": false
   },
-  "current_source_positive_unique_tops": 105,
+  "current_source_positive_unique_tops": 106,
   "post_promotion_current_test_inventory_pending": false,
-  "functional_regression_job": "work/runs/idle_stamp_candidate and exact-source selected regressions",
+  "functional_regression_job": "work/runs/lookahead_supervisor_r2 and exact-source selected regressions",
   "resource_policy": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/resource_policy.json",
   "resource_lut_hard_capacity": 19600,
   "resource_lut_target": 13720,
@@ -29,15 +29,16 @@
     "Original project root and GitHub main synchronization",
     "Physical board display/audio/card compatibility and long-run tests"
   ],
-  "functional_acceptance_evidence": "evidence/v3/resource_105_20261016/acceptance.json",
+  "functional_acceptance_evidence": "evidence/v3/resource_106_20261016/acceptance.json",
   "portable_functional_auditor": "safevision/tools/audit_v3_resource_checkpoint.py",
-  "strict_normal_ending_mutants": 17,
+  "strict_normal_ending_mutants": 19,
   "resource_contract_parser_controls": 20,
   "rom_provenance_controls": 9,
   "presentation_cdc_native_scope_cases": 6,
   "updated_at_utc": "2026-10-16T09:16:08.037887+00:00",
   "configuration_report_parser_controls": 17,
-  "diagnostic_routed_modes": {
+  "portable_configuration_controls": 16,
+  "previous_diagnostic_routed_modes": {
     "base": {
       "setup_wns_ns": 0.205,
       "hold_wns_ns": 0.023,
@@ -57,5 +58,26 @@
       "ram9k": 51
     }
   },
-  "portable_configuration_controls": 16
+  "diagnostic_routed_modes": {
+    "base": {
+      "setup_wns_ns": 0.036,
+      "hold_wns_ns": 0.03,
+      "complete_gate_passed": true,
+      "is_final_committed_source_build": false,
+      "lut": 17009,
+      "reg": 13073,
+      "ram9k": 51
+    },
+    "hd": {
+      "status": "RIPPLE32_TIMING_FAIL_STRATEGY3_TIMING_FAIL",
+      "setup_wns_ns": -0.291,
+      "recovery_wns_ns": -0.372,
+      "hold_wns_ns": 0.023,
+      "complete_gate_passed": false,
+      "is_final_committed_source_build": false
+    }
+  },
+  "functional_release_entry_controls": 9,
+  "functional_proof_dependencies_bound_to_git": 885,
+  "latest_unpromoted_optimization": "Exact audio prefill predicate and local PHY reset placement, RTL oracle15024128 passed, full audio rerun and native builds ongoing"
 }

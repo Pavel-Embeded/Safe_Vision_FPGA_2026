@@ -1,6 +1,6 @@
 # SafeVision V3 实施与验收入口
 
-当前功能与物理进度见 [105 项检查点](timing_closure_checkpoint_105.md)。历史验收目录不能替代修改后源码的测试与时序报告。
+当前功能与物理进度见 [106 项检查点](timing_closure_checkpoint_106.md)。历史验收目录不能替代修改后源码的测试与时序报告。
 
 本次从 GitHub main `98fb43beaa12bf903186ec73f6dc64e00d9259c7` 开始，增加 V3 顶层 `safevision_v3_top`，保留队友 `safevision_top`。队友工程继续使用原来的40 MHz配置；V3完整双图HD并发压力在40 MHz下未通过，独立使用MEM/SDRAM 50 MHz、SYS100 MHz及+8 ns SDRAM移相配置。4096行刷新和FAST_READ/PREFETCH_READ保留，专用PLL的模板、参数及来源单独登记。新增功能的验证不能继承旧位流的板测结论。
 

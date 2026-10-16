@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_final_crc",
+  "suite": "media_crc",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "42d06241359cd897b7c95cf207fe9351181f83a892e57d1c53e93f6da2265cca",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\phase_safe_candidate\\affected_regression\\media_crc\\tb_v3_final_crc"
+}

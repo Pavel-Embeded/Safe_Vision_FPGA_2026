@@ -34,6 +34,7 @@ def scope(root):
  files.update(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll')/n for n in ('sv_v3_memory_pll.ipc','sv_v3_memory_pll.provenance.json'))
  files.update(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor')/n for n in ('source.sha256.json','NOTICE.md'))
  files.update(Path('safevision/tools')/n for n in ('v3_resource_policy.py','check_v3_board_reference.py','check_v3_command_catalog.py'))
+ files.update(Path('safevision/tools')/n for n in ('v3_functional_release.py','audit_v3_resource_checkpoint.py','audit_v3_raw_logs.py'))
  return sorted(files,key=lambda p:p.as_posix())
 def snapshot(root):
  from v3_resource_policy import load

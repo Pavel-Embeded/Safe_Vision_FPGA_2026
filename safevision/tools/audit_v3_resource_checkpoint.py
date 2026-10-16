@@ -37,6 +37,7 @@ def audit(root,manifest):
  supervisor=(root/'safevision/rtl/control/v3_supervisor.v').read_text(encoding='utf-8')
  if 'RELEASE_FALLING' in reset:required.add('tb_v3_reset_release_phase')
  if 'reg[32:0] video_limit,audio_limit' in supervisor:required.add('tb_v3_supervisor_threshold')
+ if 'begin:compare_byte' in supervisor:required.add('tb_v3_supervisor_comparator')
  seen=set();rows=[]
  for row in j['positive_tests']:
   assert row['top'] not in seen;seen.add(row['top'])
@@ -60,12 +61,14 @@ def audit(root,manifest):
   if case.get('required_marker'):assert case['required_marker'] in text
   assert case['mutation'] not in mutants;mutants.append(case['mutation'])
  assert len(mutants)>=13
- if len(required)==105:
+ if len(required)>=105:
   assert {'positive_phase_release','drop threshold carry33_to32','retimed_rounding','message_snapshot_bit'}.issubset(mutants),'new datapath/phase changes need their strict negative controls'
+ if 'begin:compare_byte' in supervisor:
+  assert {'lookahead_high_byte','tick_predict_off_by_one'}.issubset(mutants),'lookahead logic needs comparator and tick semantic mutants'
  return {'accepted':True,'positive_unique_native_tests':len(required),'strict_normal_ending_mutants':len(mutants),'tests':rows,'source_bytes_and_inputs_verified':True,'routed_sta_passed':False,'bitstreams_verified':False,'hardware_verified':False,'release_ready':False}
 
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--manifest',type=Path,default=Path('evidence/v3/resource_105_20261016/acceptance.json'));ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--manifest',type=Path,default=Path('evidence/v3/resource_106_20261016/acceptance.json'));ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
  try:r=audit(a.repo.resolve(),within(a.repo,a.manifest));code=0
  except Exception as ex:r={'accepted':False,'error':str(ex),'release_ready':False};code=1
  a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(r,indent=2),encoding='utf-8')
