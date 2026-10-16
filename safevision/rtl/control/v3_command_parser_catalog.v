@@ -18,7 +18,15 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
  // bank through the validated LF edge, avoiding a duplicate 137-bit bank.
  reg[95:0] catalog_name;
  assign target=dest;assign name=catalog_name;assign query=ask;
- assign value=negative?-$signed({8'd0,number}):$signed({8'd0,number});
+ // UART leaves at least304 SYS edges between bytes. Register decimal
+ // sign conversion before the consumer's range/command decode. At the
+ // validated LF edge, number/sign have been stable for several full bytes;
+ // only command_valid qualifies this payload, as specified by the interface.
+ (* preserve="true" *) reg signed[31:0] value_reg;
+ always @(posedge clk or negedge rst_n)
+  if(!rst_n)value_reg<=0;
+  else value_reg<=negative?-$signed({8'd0,number}):$signed({8'd0,number});
+ assign value=value_reg;
  // Payload names are exact for the finite board command catalog. Unknown
  // names become zero, which is unequal to every consumer command literal.
  // No hashes are used. Minimum name-byte spacing is 72 SYS edges;
@@ -27,7 +35,8 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
  reg[CATALOG_N-1:0] possible;
  reg[1:0] scan_state;reg[CATALOG_AW-1:0] scan_index;
  reg[3:0] held_position;reg[7:0] held_character;
- reg[6:0] command_id;
+ // Limit only this measured high-fanout command decode bank.
+ (* max_fanout=8 *) reg[6:0] command_id;
  assign catalog_id=command_id;
  wire name_byte=rx_valid&&state==1&&length>=2&&length<32&&!argument&&!ask&&names<12&&rx_data>=65&&rx_data<=90;
  wire match_busy=scan_state!=0;

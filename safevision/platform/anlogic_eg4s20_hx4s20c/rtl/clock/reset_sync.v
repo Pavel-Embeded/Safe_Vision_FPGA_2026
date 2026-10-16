@@ -10,7 +10,8 @@
 // 域的同步释放结果直接送到另一个域。
 // ============================================================================
 module reset_sync #(
-    parameter integer STAGES = 2
+    parameter integer STAGES = 2,
+    parameter integer RELEASE_FALLING = 0
 ) (
     input  wire clk,
     input  wire async_rst_n,
@@ -35,6 +36,18 @@ module reset_sync #(
             release_pipe <= {release_pipe[PIPE_STAGES-2:0], 1'b1};
     end
 
-    assign rst_n = release_pipe[PIPE_STAGES-1];
+    // Optional board implementation phase: keep asynchronous assertion, but
+    // release consumer reset at the falling edge after the two rising-edge
+    // synchronizer samples. This gives rising-edge consumers half a cycle
+    // for recovery/removal. The default retains the legacy cycle contract.
+    generate if (RELEASE_FALLING) begin : falling_release
+        (* keep = "true" *) reg released;
+        always @(negedge clk or negedge async_rst_n)
+            if (!async_rst_n) released <= 1'b0;
+            else released <= release_pipe[PIPE_STAGES-1];
+        assign rst_n = released;
+    end else begin : rising_release
+        assign rst_n = release_pipe[PIPE_STAGES-1];
+    end endgenerate
 
 endmodule

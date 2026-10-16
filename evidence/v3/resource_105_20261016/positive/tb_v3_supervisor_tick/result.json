@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_supervisor_tick",
+  "suite": "v3_board",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "9ca397e3cb8e4005968c435469a557db7c99859013c24164b8ef488d1c18147c",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\idle_stamp_remaining\\tb_v3_supervisor_tick\\tb_v3_supervisor_tick"
+}

@@ -183,9 +183,9 @@ module v3_video_display_core #(
   end
  end
  wire[15:0] source_a,source_b,fade_pixel,adjusted;wire av,bv,fv,cv;
- scaler_bilinear sa(.clk(pixel_clk),.rst_n(pixel_rst_n),.valid_in(sample_valid&&rows_ready&&enabled),
+ v3_scaler_bilinear_thirds sa(.clk(pixel_clk),.rst_n(pixel_rst_n),.valid_in(sample_valid&&rows_ready&&enabled),
   .bilinear(cfg[70]),.p00(a00),.p10(a10),.p01(a01),.p11(a11),.fx(fx3),.fy(fy3),.pixel(source_a),.valid_out(av));
- scaler_bilinear sb(.clk(pixel_clk),.rst_n(pixel_rst_n),.valid_in(sample_valid&&rows_ready&&enabled),
+ v3_scaler_bilinear_thirds sb(.clk(pixel_clk),.rst_n(pixel_rst_n),.valid_in(sample_valid&&rows_ready&&enabled),
   .bilinear(cfg[70]),.p00(b00),.p10(b10),.p01(b01),.p11(b11),.fx(fx3),.fy(fy3),.pixel(source_b),.valid_out(bv));
  alpha_blend fade(.clk(pixel_clk),.rst_n(pixel_rst_n),.valid_in(av),
   .front(busy&&!direct_target?source_b:16'd0),.back(source_a),

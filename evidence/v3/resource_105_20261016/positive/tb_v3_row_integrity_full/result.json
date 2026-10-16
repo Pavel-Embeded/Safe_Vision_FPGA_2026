@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_row_integrity_full",
+  "suite": "row_integrity_full",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "8129530422018954cec65cd3426aeba4c1a897e4251d7ea48dbefa0bbc583687",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_v3_row_integrity_full"
+}

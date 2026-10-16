@@ -93,3 +93,5 @@ rtl/storage/v3_shared_fs_service.v
 rtl/audio/v3_pcm_ingress_shared_fifo.v
 rtl/media/v3_wav_parser_compact_ctx.v
 rtl/storage/v3_file_streamer_compact_ctx.v
+
+rtl/video/scaler/v3_scaler_bilinear_thirds.v

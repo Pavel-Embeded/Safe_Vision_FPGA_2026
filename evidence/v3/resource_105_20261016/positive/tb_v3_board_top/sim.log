@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 16 17:09:23 2026
+# Process ID: 44048
+# Current directory: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/idle_stamp_candidate/sim/v3_board_top/tb_v3_board_top
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_board_top/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/idle_stamp_candidate/sim/v3_board_top/tb_v3_board_top/sim.log
+# Journal file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/idle_stamp_candidate/sim/v3_board_top/tb_v3_board_top\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_board_top/xsim_script.tcl
+# xsim {tb_v3_board_top} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] V3 TOP assembly, live memory producers, reservation, descriptors and reset boundaries
+PASS tb_v3_board_top comparisons=634 errors=0
+$finish called at time : 520795320 ps : File "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/idle_stamp_candidate/source/safevision/verification/unit/tb_v3_board_top.sv" Line 149
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 16 17:09:28 2026...

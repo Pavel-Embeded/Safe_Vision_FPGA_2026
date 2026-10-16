@@ -1,0 +1,36 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/common/sync_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module sync_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/common/error_report.v" into library work
+INFO: [VRFC 10-311] analyzing module error_report
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/control/control_event_queue.v" into library work
+INFO: [VRFC 10-311] analyzing module control_event_queue
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/control/input_sync.v" into library work
+INFO: [VRFC 10-311] analyzing module input_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/control/key_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module key_debounce
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/control/media_recovery_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module media_recovery_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/control/playback_fsm.v" into library work
+INFO: [VRFC 10-311] analyzing module playback_fsm
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/control/priority_arbiter.v" into library work
+INFO: [VRFC 10-311] analyzing module priority_arbiter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/safety/emergency_fsm.v" into library work
+INFO: [VRFC 10-311] analyzing module emergency_fsm
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/safety/fault_manager.v" into library work
+INFO: [VRFC 10-311] analyzing module fault_manager
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/safety/watchdog.v" into library work
+INFO: [VRFC 10-311] analyzing module watchdog
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/audio/alarm_tone_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module alarm_tone_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/audio/audio_energy.v" into library work
+INFO: [VRFC 10-311] analyzing module audio_energy
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/audio/audio_priority_arbiter.v" into library work
+INFO: [VRFC 10-311] analyzing module audio_priority_arbiter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/audio/audio_scheduler.v" into library work
+INFO: [VRFC 10-311] analyzing module audio_scheduler
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/audio/hdmi_acr.v" into library work
+INFO: [VRFC 10-311] analyzing module hdmi_acr
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/verification/models/audio_priority_arbiter_reference.sv" into library work
+INFO: [VRFC 10-311] analyzing module audio_priority_arbiter_reference
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/verification/unit/tb_c_priority_arbiter.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_c_priority_arbiter

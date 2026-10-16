@@ -35,7 +35,11 @@ module v3_supervisor #(
  reg[width_for(PROGRESS_LIMIT)-1:0] progress_timer;
  reg[width_for(WINDOW_LIMIT)-1:0] window_timer;
  reg[width_for(TICK_DIV-1)-1:0] ms_timer;
- reg[31:0] last_vu,last_au,last_hd,ms_now;
+ // For unsigned32-bit a,b: (a>=b && a-b>=8) iff
+ // {0,a}>={0,b}+33'd8. Keep the carry; b near0xffffffff must
+ // never wrap the threshold into a false alarm. Snapshot timing is unchanged.
+ reg[32:0] video_limit,audio_limit;
+ reg[31:0] last_hd,ms_now;
  wire watch_tick=ms_timer==TICK_DIV-1;
  reg initialized,fault_i_old,fault_b_old,failed_old,hd_fault_old;
  reg[10:0] pending,selection,new_events;
@@ -55,8 +59,8 @@ module v3_supervisor #(
   if(media_failed && !failed_old && !recovery_busy)new_events[0]=1;
   if(integrity_fault && !fault_i_old && !media_reset)new_events[1]=1;
   if(bus_fault && !fault_b_old && !media_reset)new_events[2]=1;
-  if(window_done && video_underflows>=last_vu && video_underflows-last_vu>=8)new_events[3]=1;
-  if(window_done && audio_underflows>=last_au && audio_underflows-last_au>=8)new_events[4]=1;
+  if(window_done && {1'b0,video_underflows}>=video_limit)new_events[3]=1;
+  if(window_done && {1'b0,audio_underflows}>=audio_limit)new_events[4]=1;
   if(watch_tick && frame_timer==FRAME_LIMIT-1 && !frame_heartbeat && !recovered)new_events[5]=1;
   if(watch_tick && memory_active && mem_timer==MEM_LIMIT-1 && !mem_heartbeat && !media_reset)new_events[6]=1;
   if(watch_tick && media_active && progress_timer==PROGRESS_LIMIT-1 && !progress_heartbeat && !media_reset)new_events[7]=1;
@@ -86,13 +90,17 @@ module v3_supervisor #(
  integer i;
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin boot_timer<=0;frame_timer<=0;mem_timer<=0;progress_timer<=0;
-   window_timer<=0;last_vu<=0;last_au<=0;last_hd<=0;ms_timer<=0;ms_now<=0;
+   window_timer<=0;video_limit<=33'd8;audio_limit<=33'd8;last_hd<=0;ms_timer<=0;ms_now<=0;
    initialized<=0;pending<=0;media_first<=0;fault_i_old<=0;fault_b_old<=0;
    failed_old<=0;hd_fault_old<=0;rejected_old<=0;fallback_old<=0;for(i=0;i<11;i=i+1)stamps[i]<=0;
   end else begin
    pending<=(pending & ~selection) | new_events;
-   for(i=0;i<11;i=i+1)if(new_events[i] && !pending[i])stamps[i]<=ms_now;
-   if(new_events[0] && !pending[0])media_first<=media_code;
+   // An unoccupied slot has no observable timestamp. Track the current time
+   // until its first event captures pending=1, then hold through arbitration.
+   // Thus the timestamp on every valid event is exactly the original ms_now,
+   // including simultaneous clear/retrigger; wide CE no longer decodes events.
+   for(i=0;i<11;i=i+1)if(!pending[i])stamps[i]<=ms_now;
+   if(!pending[0])media_first<=media_code;
    fault_i_old<=integrity_fault;fault_b_old<=bus_fault;failed_old<=media_failed;
    hd_fault_old<=hdmi_drops!=last_hd;
    rejected_old<=rejected_files;fallback_old<=audio_fallback;
@@ -107,7 +115,7 @@ module v3_supervisor #(
    if(!media_active || progress_heartbeat || media_reset)progress_timer<=0;
    else if(watch_tick && progress_timer<PROGRESS_LIMIT)progress_timer<=progress_timer+1'b1;
    if(window_done || media_reset)begin
-    window_timer<=0;last_vu<=video_underflows;last_au<=audio_underflows;last_hd<=hdmi_drops;
+    window_timer<=0;video_limit<={1'b0,video_underflows}+33'd8;audio_limit<={1'b0,audio_underflows}+33'd8;last_hd<=hdmi_drops;
    end else if(watch_tick)window_timer<=window_timer+1'b1;
   end
  end

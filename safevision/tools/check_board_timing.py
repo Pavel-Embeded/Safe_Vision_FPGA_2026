@@ -33,8 +33,12 @@ HEALTH_REQUIRED = (
 def read_report(path):
     raw = path.read_bytes()
     if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
-        return raw.decode("utf-16")
-    return raw.decode("utf-8-sig", errors="strict")
+        text = raw.decode("utf-16")
+    else:
+        text = raw.decode("utf-8-sig", errors="strict")
+    # Native Windows TD reports use CRLF. Normalize the parsed text only;
+    # provenance and approvals still hash the original report bytes.
+    return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
 def digest(path):

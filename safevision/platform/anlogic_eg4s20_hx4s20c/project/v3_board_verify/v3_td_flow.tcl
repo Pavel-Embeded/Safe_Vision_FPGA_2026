@@ -34,10 +34,14 @@ foreach f $paths {if {![file isfile $f]} {error "Missing production source: $f"}
 if {[catch {
  import_device eagle_s20.db -package EG4S20BG256
  source [file join $here v3_build_parameters.tcl]
+ set mode_parameters [file join $here v3_build_parameters_${board_mode}.tcl]
+ if {[file isfile $mode_parameters]} {source $mode_parameters}
  report_param -detail -stage rtl -file rtl.params
  report_param -detail -stage gate -file gate.params
  read_hdl -file [join $paths " "] -include_dir [file join $root safevision rtl include] -top safevision_v3_top
  read_adc [file join $here v3_board.adc]
+ set physical_adc [file join $here v3_physical.adc]
+ if {[file isfile $physical_adc]} {read_adc $physical_adc}
  optimize_rtl
  report_area -file rtl.area
  read_sdc [file join $here v3_board.sdc]
@@ -67,16 +71,21 @@ if {[catch {
  report_area -io_info -file place.area
  export_db place.db
  route
+ # TD skips its automatic hold repair above 90% slice utilization. Invoke the
+ # documented repair explicitly; final fresh all-corner STA remains mandatory.
+ fix_hold
  update_timing -mode final
  report_timing_summary -ep_num 200 -path_num 3 -file route.timing
  report_timing_status -file route.status
- report_clock_summary -levels 20 -expand_buckets -debug -file route.clocks
  report_timing_exception -file route.exceptions
  check_design
  check_timing -verbose -file route.check
  report_area -io_info -file route.area
  export_sdc -file route.derived.sdc
  export_db route.db
+ # This TD release mutates clock objects while expanding clock diagnostics.
+ # Preserve the routed database and all formal reports before that diagnostic.
+ report_clock_summary -levels 20 -expand_buckets -debug -file route.clocks
 } err]} {puts stderr "V3 TD FAILED: $err";exit 1}
 puts "V3 TD ROUTED mode=$board_mode (bitgen still requires strict report gate)"
 exit 0

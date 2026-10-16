@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "status": "FUNCTIONAL_102_PASS_PHYSICAL_CLOSURE_IN_PROGRESS",
+  "status": "FUNCTIONAL_105_PASS_PHYSICAL_CLOSURE_IN_PROGRESS",
   "release_ready": false,
   "hardware_verified": false,
-  "source_baseline_commit": "6ee2ebed0bb7177783223f53550ea46cbdb192e4",
+  "source_baseline_commit": "b6a12b30329691f85bae19b3521798c2031c7cc3",
   "historical_functional_acceptance": {
     "source_commit": "6ee2ebed0bb7177783223f53550ea46cbdb192e4",
     "positive_unique_tops": 100,
@@ -11,9 +11,9 @@
     "evidence": "evidence/v3/current_100_20261016/selected_acceptance.json",
     "is_current_source_acceptance": false
   },
-  "current_source_positive_unique_tops": 102,
+  "current_source_positive_unique_tops": 105,
   "post_promotion_current_test_inventory_pending": false,
-  "functional_regression_job": "work/runs/resource_promotion_regression",
+  "functional_regression_job": "work/runs/idle_stamp_candidate and exact-source selected regressions",
   "resource_policy": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/resource_policy.json",
   "resource_lut_hard_capacity": 19600,
   "resource_lut_target": 13720,
@@ -29,11 +29,33 @@
     "Original project root and GitHub main synchronization",
     "Physical board display/audio/card compatibility and long-run tests"
   ],
-  "functional_acceptance_evidence": "evidence/v3/resource_102_20261016/acceptance.json",
+  "functional_acceptance_evidence": "evidence/v3/resource_105_20261016/acceptance.json",
   "portable_functional_auditor": "safevision/tools/audit_v3_resource_checkpoint.py",
-  "strict_normal_ending_mutants": 13,
+  "strict_normal_ending_mutants": 17,
   "resource_contract_parser_controls": 20,
   "rom_provenance_controls": 9,
   "presentation_cdc_native_scope_cases": 6,
-  "updated_at_utc": "2026-10-16T06:48:20.302701+00:00"
+  "updated_at_utc": "2026-10-16T09:16:08.037887+00:00",
+  "configuration_report_parser_controls": 17,
+  "diagnostic_routed_modes": {
+    "base": {
+      "setup_wns_ns": 0.205,
+      "hold_wns_ns": 0.023,
+      "complete_gate_passed": true,
+      "is_final_committed_source_build": false,
+      "lut": 17003,
+      "reg": 13065,
+      "ram9k": 51
+    },
+    "hd": {
+      "setup_wns_ns": -1.177,
+      "hold_wns_ns": 0.024,
+      "complete_gate_passed": false,
+      "is_final_committed_source_build": false,
+      "lut": 17737,
+      "reg": 13320,
+      "ram9k": 51
+    }
+  },
+  "portable_configuration_controls": 16
 }

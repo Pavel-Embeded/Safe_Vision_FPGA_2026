@@ -36,14 +36,14 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  assign common_rst_n=control_common_rst_n && video_lock && audio_lock;
  // Video/audio loss must not clear the surviving SYS fault records/UART.
  reset_sync reset_sys(.clk(sys_clk),.async_rst_n(control_common_rst_n),.rst_n(sys_rst_n));
- reset_sync reset_mem(.clk(mem_clk),.async_rst_n(control_common_rst_n),.rst_n(mem_rst_n));
+ reset_sync #(.RELEASE_FALLING(1)) reset_mem(.clk(mem_clk),.async_rst_n(control_common_rst_n),.rst_n(mem_rst_n));
  reset_sync reset_pixel(.clk(pixel_clk),.async_rst_n(control_common_rst_n && video_lock),.rst_n(pixel_rst_n));
  reset_sync reset_audio(.clk(audio_clk),.async_rst_n(control_common_rst_n && audio_lock),.rst_n(audio_rst_n));
  // Recovery assertions belong to one common media epoch. SYS safety, fixed
  // PIX raster, ROM, alarm and HDMI PHY remain on their global reset epoch.
  (* keep="true" *) wire media_common_rst_n=control_common_rst_n && !media_reset;
  reset_sync reset_media_ref(.clk(clk),.async_rst_n(media_common_rst_n),.rst_n(ref_media_rst_n));
- reset_sync reset_media_mem(.clk(mem_clk),.async_rst_n(media_common_rst_n),.rst_n(mem_media_rst_n));
+ reset_sync #(.RELEASE_FALLING(1)) reset_media_mem(.clk(mem_clk),.async_rst_n(media_common_rst_n),.rst_n(mem_media_rst_n));
  reset_sync reset_media_sys(.clk(sys_clk),.async_rst_n(media_common_rst_n),.rst_n(sys_media_rst_n));
 
  wire sdr_init_done,sdr_ref_valid,sdr_busy,app_wr_en,app_rd_en,sdr_rd_en;
@@ -322,16 +322,20 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  end end
  uart_tx #(.CLK_FREQ(50000000),.BAUD(115200)) fatal_uart(.clk(clk),.rst_n(ref_rst_n),
  .tx_valid(fatal_sending),.tx_data(fatal_byte),.tx_ready(fatal_ready),.txd(fatal_uart_txd));
- // Publish slow external status/serial bits through REF output registers.
- // This adds one20ns REF edge and removes the long combinational path to
- // the pads. REF survives SYS-PLL loss, so the independent FATAL path stays
- // available. SYS/REF clocks are related and retain ordinary setup/hold.
+ // Related SYS100 -> REF50 publication: launch intermediate values on
+ // falling SYS edges (5ns from REF rising edges). Ordinary setup/hold stays
+ // enabled. The REF output register and independent FATAL transmitter remain
+ // alive when SYS PLL stops; no data-path false path or clock waiver is used.
+ reg normal_uart_half;reg[3:0] status_half;
+ always @(negedge sys_clk or negedge sys_rst_n)begin
+  if(!sys_rst_n)begin normal_uart_half<=1'b1;status_half<=4'd0;end
+  else begin normal_uart_half<=normal_uart_txd;
+   status_half<={safe_active,recovery_busy,transition_busy,cached};end
+ end
  always @(posedge clk or negedge ref_rst_n)begin
   if(!ref_rst_n)begin uart_txd<=1'b1;led<=4'd0;end
-  else begin
-   uart_txd<=sys_loss_ref?fatal_uart_txd:normal_uart_txd;
-   led<=sys_loss_ref?4'hf:{safe_active,recovery_busy,transition_busy,cached};
-  end
+  else begin uart_txd<=sys_loss_ref?fatal_uart_txd:normal_uart_half;
+   led<=sys_loss_ref?4'hf:status_half;end
  end
 
  wire[23:0] axis_data;wire axis_valid,axis_user,axis_last,axis_ready,resync,overflow;

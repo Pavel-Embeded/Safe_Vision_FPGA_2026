@@ -3,7 +3,7 @@
 // Reply: $C:ACK=HH,XXXXXXXX*HH\r\n (code byte, signed value as 32-bit hex, XOR).
 // The 128-entry queue holds the replies to a 1000-byte command burst, even
 // when transmit is slower than receive. Any exceeded bound is counted.
-module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATALOG=0)(
+module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATALOG=0,TX_PIPELINE=BOARD_CATALOG)(
  input wire clk,rst_n,rxd,output wire txd,
  output wire command_valid,output wire[7:0] command_target,
  output wire[95:0] command_name,output wire signed[31:0] command_value,output wire command_query,
@@ -40,28 +40,55 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  .full(full),.almost_full(),.rd_en(pop),.dout(head),.empty(empty),.almost_empty(),.data_count());
  reg sending;reg[4:0] position;reg[48:0] payload;reg[7:0] checksum;
  wire tx_ready;reg[7:0] byte_tx;
+ // Board timing boundary: BRAM payload -> byte formatter -> register;
+ // registered byte -> checksum and serializer. UART busy time hides refill.
+ // Two SYS edges are added before each new response; line baud, byte order,
+ // checksum,128 replies and event backpressure retain their contracts.
+ wire[7:0] byte_stage;wire byte_fresh;
+ wire[48:0] packet;
+ wire send_valid=sending && (!TX_PIPELINE || byte_fresh);
+ wire[7:0] send_data=TX_PIPELINE?byte_stage:byte_tx;
+ wire byte_fire=send_valid && tx_ready;
+ generate if(TX_PIPELINE)begin:g_tx_pipeline
+  (* preserve="true" *) reg[7:0] data_q;reg fresh_q;
+  // Four high padding bits are constant in both ACK and event records.
+  // Keep45 meaningful bits between the BRAM output and byte formatting.
+  (* preserve="true" *) reg[44:0] message_q;
+  assign packet={message_q[44],4'd0,message_q[43:0]};
+  assign byte_stage=data_q;assign byte_fresh=fresh_q;
+  always @(posedge clk or negedge rst_n)begin
+   if(!rst_n)begin data_q<=0;fresh_q<=0;message_q<=0;end
+   else begin data_q<=byte_tx;message_q<={payload[48],payload[43:0]};
+    if(!sending || byte_fire)fresh_q<=0;else fresh_q<=1;
+   end
+  end
+ end else begin:g_tx_direct
+  assign byte_stage=byte_tx;assign byte_fresh=1'b1;
+  assign packet=payload;
+ end endgenerate
+
  assign pop=!sending && !empty;
  function[7:0] hex;input[3:0] nibble;begin hex=nibble<10?48+nibble:55+nibble;end endfunction
  always @*begin
-  if(payload[48])case(position)
+  if(packet[48])case(position)
    // $C:EVT=SS,CC,TTTTTTTT*HH CR LF
    0:byte_tx=36;1:byte_tx=67;2:byte_tx=58;3:byte_tx=69;4:byte_tx=86;5:byte_tx=84;6:byte_tx=61;
-   7:byte_tx=hex(payload[47:44]);8:byte_tx=hex(payload[43:40]);9:byte_tx=44;
-   10:byte_tx=hex(payload[39:36]);11:byte_tx=hex(payload[35:32]);12:byte_tx=44;
+   7:byte_tx=hex(packet[47:44]);8:byte_tx=hex(packet[43:40]);9:byte_tx=44;
+   10:byte_tx=hex(packet[39:36]);11:byte_tx=hex(packet[35:32]);12:byte_tx=44;
    21:byte_tx=42;22:byte_tx=hex(checksum[7:4]);23:byte_tx=hex(checksum[3:0]);24:byte_tx=13;25:byte_tx=10;
-   13:byte_tx=hex(payload[31:28]);14:byte_tx=hex(payload[27:24]);
-   15:byte_tx=hex(payload[23:20]);16:byte_tx=hex(payload[19:16]);
-   17:byte_tx=hex(payload[15:12]);18:byte_tx=hex(payload[11:8]);
-   19:byte_tx=hex(payload[7:4]);20:byte_tx=hex(payload[3:0]);
+   13:byte_tx=hex(packet[31:28]);14:byte_tx=hex(packet[27:24]);
+   15:byte_tx=hex(packet[23:20]);16:byte_tx=hex(packet[19:16]);
+   17:byte_tx=hex(packet[15:12]);18:byte_tx=hex(packet[11:8]);
+   19:byte_tx=hex(packet[7:4]);20:byte_tx=hex(packet[3:0]);
    default:byte_tx=8'h3f;
   endcase else case(position)
    0:byte_tx=36;1:byte_tx=67;2:byte_tx=58;3:byte_tx=65;4:byte_tx=67;5:byte_tx=75;6:byte_tx=61;
-   7:byte_tx=hex(payload[39:36]);8:byte_tx=hex(payload[35:32]);9:byte_tx=44;
+   7:byte_tx=hex(packet[39:36]);8:byte_tx=hex(packet[35:32]);9:byte_tx=44;
    18:byte_tx=42;19:byte_tx=hex(checksum[7:4]);20:byte_tx=hex(checksum[3:0]);21:byte_tx=13;22:byte_tx=10;
-   10:byte_tx=hex(payload[31:28]);11:byte_tx=hex(payload[27:24]);
-   12:byte_tx=hex(payload[23:20]);13:byte_tx=hex(payload[19:16]);
-   14:byte_tx=hex(payload[15:12]);15:byte_tx=hex(payload[11:8]);
-   16:byte_tx=hex(payload[7:4]);17:byte_tx=hex(payload[3:0]);
+   10:byte_tx=hex(packet[31:28]);11:byte_tx=hex(packet[27:24]);
+   12:byte_tx=hex(packet[23:20]);13:byte_tx=hex(packet[19:16]);
+   14:byte_tx=hex(packet[15:12]);15:byte_tx=hex(packet[11:8]);
+   16:byte_tx=hex(packet[7:4]);17:byte_tx=hex(packet[3:0]);
    default:byte_tx=8'h3f;
   endcase
  end
@@ -70,12 +97,12 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
   else begin
    if(lost!=0)reply_dropped<=(reply_dropped>32'hffffffff-lost)?32'hffffffff:reply_dropped+lost;
    if(pop)begin payload<=head;sending<=1;position<=0;checksum<=0;end
-   else if(sending && tx_ready)begin
-    if(position>=1 && position<=(payload[48]?20:17))checksum<=checksum^byte_tx;
-    if(position==(payload[48]?25:22))begin sending<=0;position<=0;end else position<=position+1'b1;
+   else if(byte_fire)begin
+    if(position>=1 && position<=(packet[48]?20:17))checksum<=checksum^send_data;
+    if(position==(packet[48]?25:22))begin sending<=0;position<=0;end else position<=position+1'b1;
    end
   end
  end
  uart_tx #(.CLK_FREQ(CLK_HZ),.BAUD(BAUD)) tx(
- .clk(clk),.rst_n(rst_n),.tx_valid(sending),.tx_data(byte_tx),.tx_ready(tx_ready),.txd(txd));
+ .clk(clk),.rst_n(rst_n),.tx_valid(send_valid),.tx_data(send_data),.tx_ready(tx_ready),.txd(txd));
 endmodule

@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_spi_budget",
+  "suite": "v3_board",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "73a9dffee7349c49773ce81e2c2e7d5f81bf16c42be1137a9cff58da1c03fa45",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\idle_stamp_remaining\\tb_v3_spi_budget\\tb_v3_spi_budget"
+}

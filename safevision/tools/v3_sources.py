@@ -40,6 +40,8 @@ def snapshot(root):
  from check_v3_board_reference import check as check_board_reference
  from check_v3_command_catalog import check as check_catalog
  load(root);check_board_reference(root);check_catalog(root)
+ physical_constraint_files(root)
+ for mode in ('base','hd'):build_parameters(root,mode)
  # TD read_sdc is deferred and has a restricted parser. User Tcl wrappers can
  # silently discard a collection; normal Tcl object auditing is separate.
  allowed={'create_clock','derive_clocks','create_generated_clock','set_input_delay','set_output_delay','set_multicycle_path','set_false_path','set_max_delay','set_clock_uncertainty','set_clock_latency','set_case_analysis'}
@@ -61,24 +63,51 @@ def snapshot(root):
   if not p.is_relative_to(vendor.resolve()):raise ValueError('vendor manifest escaped dependency directory')
   if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=entry['sha256']:raise ValueError('vendor dependency changed or missing: '+str(p))
  return {p.as_posix():hashlib.sha256((root/p).read_bytes()).hexdigest() for p in scope(root)}
-def build_parameters(root):
- text=(root/FLOW/'v3_build_parameters.tcl').read_text(encoding='utf-8-sig')
- rows=[]
- for line in text.splitlines():
-  line=line.strip()
-  if not line or line.startswith('#'):continue
-  match=re.fullmatch(r'set_param (rtl|gate|place|route) (\w+) (\w+)',line)
-  if not match:raise ValueError('unsupported shared build parameter: '+line)
-  rows.append(match.groups())
- expected={('rtl','min_control_set'),('rtl','min_ripple_len'),('rtl','infer_fsm'),('gate','map_mode'),('place','effort'),('place','post_place_opt'),('route','timing'),('route','fix_hold')}
- if len(rows)!=len(expected) or {(r[0],r[1]) for r in rows}!=expected:raise ValueError('missing/duplicate/unapproved shared build parameters')
- if dict(((s,k),v) for s,k,v in rows).get(('route','timing'))!='on' or dict(((s,k),v) for s,k,v in rows).get(('route','fix_hold'))!='on':raise ValueError('setup/hold optimization must remain enabled')
- return rows
+def physical_constraint_files(root):
+ """Keep pin assignments separate from the reviewed internal OE placement."""
+ files=[root/FLOW/'v3_board.adc'];extra=root/FLOW/'v3_physical.adc'
+ if extra.exists():
+  statements=[s.strip() for s in extra.read_text(encoding='utf-8-sig').splitlines() if s.strip() and not s.lstrip().startswith('#')]
+  approved='set_inst_assignment {memory_ip/u2_ram/u2_wrrd/sdr_t_reg} {location = x19y31z1;}'
+  if statements!=[approved]:raise ValueError('unreviewed internal physical constraint')
+  files.append(extra)
+ return files
+
+def build_parameters(root,mode=None):
+ """Resolve reviewed common and optional mode-specific native TD parameters."""
+ if mode not in (None,'base','hd'):raise ValueError('unknown build mode')
+ required={('rtl','min_control_set'),('rtl','min_ripple_len'),('rtl','infer_fsm'),('gate','map_mode'),('place','effort'),('place','post_place_opt'),('route','timing'),('route','fix_hold')}
+ allowed={
+  ('rtl','min_control_set'):{str(n) for n in range(1,9)},
+  ('rtl','min_ripple_len'):{'8','16','32','64'},('rtl','infer_fsm'):{'on','off'},
+  ('gate','map_mode'):{'auto','area_prior','logic_level_prior','balance_explore'},
+  ('gate','pack_effort'):{'low','medium','high'},
+  ('place','effort'):{'low','medium','high'},
+  ('place','post_place_opt'):{'auto','medium','high','ultra'},
+  ('place','hfn_opt_effort'):{'low','medium','high'},
+  ('place','pr_strategy'):{str(n) for n in range(1,18)},
+  ('route','effort'):{'normal','routability'},('route','timing'):{'on'},('route','fix_hold'):{'on'}}
+ values={}
+ paths=[root/FLOW/'v3_build_parameters.tcl']
+ if mode and (root/FLOW/('v3_build_parameters_'+mode+'.tcl')).exists():paths.append(root/FLOW/('v3_build_parameters_'+mode+'.tcl'))
+ for index,path in enumerate(paths):
+  seen=set()
+  for line in path.read_text(encoding='utf-8-sig').splitlines():
+   line=line.strip()
+   if not line or line.startswith('#'):continue
+   match=re.fullmatch(r'set_param (rtl|gate|place|route) (\w+) (\w+)',line)
+   if not match:raise ValueError('unsupported build parameter: '+line)
+   stage,key,value=match.groups();pair=(stage,key)
+   if pair in seen or pair not in allowed or value not in allowed[pair]:raise ValueError('duplicate/unapproved build parameter: '+line)
+   seen.add(pair);values[pair]=value
+  if index==0 and not required.issubset(seen):raise ValueError('missing common build parameters')
+ # Canonical stage order is shared with the GUI strategy serialization.
+ return [(stage,key,value) for stage in ('rtl','gate','place','route') for (s,key),value in values.items() if s==stage]
 
 def native_parameters(root,folder,stages=('rtl','gate','place','route')):
  """Bind every shared parameter to the tool's actual registered-value table."""
  result=[]
- for stage,name,value in build_parameters(root):
+ for stage,name,value in build_parameters(root,folder.name if folder.name in ('base','hd') else None):
   if stage not in stages:continue
   path=folder/(stage+'.params');text=path.read_text(encoding='utf-8',errors='replace')
   hits=re.findall(r'^\s*'+re.escape(name)+r'\s*\|\s*(\w+)\s*\|',text,re.M)
@@ -99,9 +128,11 @@ def gui_project(root,mode):
   f=ET.SubElement(parent,'File',Path=os.path.relpath(path,project_dir).replace('\\','/'));info=ET.SubElement(f,'FileInfo')
   for name,value in (('UsedInSyn','true'),('UsedInP&R','true'),('BelongTo',belong),('CompileOrder',str(order))):ET.SubElement(info,'Attr',Name=name,Val=value)
  for i,path in enumerate(sources(root,mode),1):item(vs,root/path,i,'design_1')
- ad=ET.SubElement(fs,'ADC_FILE');item(ad,root/FLOW/'v3_board.adc',1,'constraint_1')
+ ad=ET.SubElement(fs,'ADC_FILE')
+ physical=physical_constraint_files(root)
+ for i,path in enumerate(physical,1):item(ad,path,i,'constraint_1')
  sd=ET.SubElement(fs,'SDC_FILE')
- for i,name in enumerate(('v3_board.sdc','v3_cdc.sdc'),2):item(sd,root/FLOW/name,i,'constraint_1')
+ for i,name in enumerate(('v3_board.sdc','v3_cdc.sdc'),len(physical)+1):item(sd,root/FLOW/name,i,'constraint_1')
  sets=ET.SubElement(p,'FileSets');ds=ET.SubElement(sets,'FileSet',Name='design_1',Type='DesignFiles')
  config=ET.SubElement(ds,'Config');ET.SubElement(config,'Option',Name='IncludeDir',Val=os.path.relpath(root/'safevision/rtl/include',project_dir).replace('\\','/'))
  ET.SubElement(sets,'FileSet',Name='constraint_1',Type='ConstrainFiles')
@@ -114,7 +145,7 @@ def gui_project(root,mode):
   if name=='phy_1':attrs['SynRun']='syn_1'
   r=ET.SubElement(runs,'Run',attrs);strategy_node=ET.SubElement(r,'Strategy',Name=strategy);ET.SubElement(r,'UserParams')
   sections={}
-  for stage,param,value in build_parameters(root):
+  for stage,param,value in build_parameters(root,mode):
    if (name=='syn_1')!=(stage in ('rtl','gate')):continue
    if stage not in sections:sections[stage]=ET.SubElement(strategy_node,{'rtl':'RtlProperty','gate':'GateProperty','place':'PlaceProperty','route':'RouteProperty'}[stage])
    ET.SubElement(sections[stage],param).text=value
@@ -139,15 +170,15 @@ def check_gui(root,mode):
   for child in node:
    if child.tag not in stages:raise ValueError('unexpected GUI strategy property '+child.tag)
    for param in child:actual_parameters.append((stages[child.tag],param.tag,param.text))
- if actual_parameters!=build_parameters(root):raise ValueError('GUI/CLI build parameters differ')
+ if actual_parameters!=build_parameters(root,mode):raise ValueError('GUI/CLI build parameters differ')
  compile_orders={}
  for node in tree.findall('./Source_Files/*/File'):
   attrs={n.attrib['Name']:n.attrib['Val'] for n in node.findall('./FileInfo/Attr')}
   group=attrs['BelongTo'];order=int(attrs['CompileOrder']);compile_orders.setdefault(group,[]).append(order)
  if any(len(orders)!=len(set(orders)) for orders in compile_orders.values()):raise ValueError('duplicate GUI compile order within file set')
- for section,names in (('ADC_FILE',['v3_board.adc']),('SDC_FILE',['v3_board.sdc','v3_cdc.sdc'])):
+ for section,paths in (('ADC_FILE',physical_constraint_files(root)),('SDC_FILE',[root/FLOW/n for n in ('v3_board.sdc','v3_cdc.sdc')])):
   actual_constraints=[(path.parent/n.attrib['Path']).resolve() for n in tree.findall('./Source_Files/'+section+'/File')]
-  expected_constraints=[(root/FLOW/n).resolve() for n in names]
+  expected_constraints=[p.resolve() for p in paths]
   if actual_constraints!=expected_constraints:raise ValueError('GUI/CLI constraints differ: '+mode+'/'+section)
  for node in tree.findall('./Source_Files/*/File'):
   if Path(node.attrib['Path']).is_absolute():raise ValueError('nonportable absolute GUI path')
@@ -158,7 +189,7 @@ def check_gui(root,mode):
   source_hash=hashlib.sha256((root/rel).read_bytes()).hexdigest()
   if hashlib.sha256((path.parent/rel.name).read_bytes()).hexdigest()!=source_hash:raise ValueError('GUI ROM copy differs: '+rel.name)
   roms.append({'path':rel.as_posix(),'sha256':source_hash})
- return {'mode':mode,'sources':len(expected),'top':'safevision_v3_top','gui':str(path),'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'assets':roms,'build_parameters':build_parameters(root)}
+ return {'mode':mode,'sources':len(expected),'top':'safevision_v3_top','gui':str(path),'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'assets':roms,'build_parameters':build_parameters(root,mode)}
 def main():
  import argparse
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--gui',action='store_true');ap.add_argument('--snapshot',type=Path);ap.add_argument('--estimate-video',type=Path)

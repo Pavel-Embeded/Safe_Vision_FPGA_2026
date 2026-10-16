@@ -1,0 +1,9 @@
+{
+  "sources": [
+    "safevision/rtl/video/scaler/scaler_bilinear.v",
+    "safevision/rtl/video/scaler/v3_scaler_bilinear_thirds.v"
+  ],
+  "tops": [
+    "tb_v3_thirds_scaler"
+  ]
+}

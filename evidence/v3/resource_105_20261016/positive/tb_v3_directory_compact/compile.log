@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/rtl/storage/fat32_directory_scanner.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_directory_scanner
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/verification/models/legacy_directory_scanner_reference.sv" into library work
+INFO: [VRFC 10-311] analyzing module legacy_directory_scanner_reference
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/resource_promotion_regression/source/safevision/verification/unit/tb_v3_directory_compact.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_directory_compact

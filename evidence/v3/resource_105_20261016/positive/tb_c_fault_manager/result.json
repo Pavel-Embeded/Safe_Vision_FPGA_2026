@@ -1,0 +1,9 @@
+{
+  "top": "tb_c_fault_manager",
+  "suite": "c",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "7dba4925a555632042976ea22fb607e0771242365ba7692a3b1b46acf1b3b093",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_c_fault_manager"
+}

@@ -754,6 +754,14 @@
                     <Attr Name="CompileOrder" Val="93" />
                 </FileInfo>
             </File>
+            <File Path="../../../../../rtl/video/scaler/v3_scaler_bilinear_thirds.v">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true" />
+                    <Attr Name="UsedInP&amp;R" Val="true" />
+                    <Attr Name="BelongTo" Val="design_1" />
+                    <Attr Name="CompileOrder" Val="94" />
+                </FileInfo>
+            </File>
         </Verilog>
         <ADC_FILE>
             <File Path="../v3_board.adc">
@@ -764,9 +772,7 @@
                     <Attr Name="CompileOrder" Val="1" />
                 </FileInfo>
             </File>
-        </ADC_FILE>
-        <SDC_FILE>
-            <File Path="../v3_board.sdc">
+            <File Path="../v3_physical.adc">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -774,12 +780,22 @@
                     <Attr Name="CompileOrder" Val="2" />
                 </FileInfo>
             </File>
-            <File Path="../v3_cdc.sdc">
+        </ADC_FILE>
+        <SDC_FILE>
+            <File Path="../v3_board.sdc">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
                     <Attr Name="BelongTo" Val="constraint_1" />
                     <Attr Name="CompileOrder" Val="3" />
+                </FileInfo>
+            </File>
+            <File Path="../v3_cdc.sdc">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true" />
+                    <Attr Name="UsedInP&amp;R" Val="true" />
+                    <Attr Name="BelongTo" Val="constraint_1" />
+                    <Attr Name="CompileOrder" Val="4" />
                 </FileInfo>
             </File>
         </SDC_FILE>
@@ -804,12 +820,13 @@
         <Run Name="syn_1" Type="Synthesis" ConstraintSet="constraint_1" Description="" Active="true">
             <Strategy Name="Default_Synthesis_Strategy">
                 <RtlProperty>
-                    <min_control_set>1</min_control_set>
-                    <min_ripple_len>64</min_ripple_len>
+                    <min_control_set>3</min_control_set>
+                    <min_ripple_len>16</min_ripple_len>
                     <infer_fsm>off</infer_fsm>
                 </RtlProperty>
                 <GateProperty>
                     <map_mode>area_prior</map_mode>
+                    <pack_effort>high</pack_effort>
                 </GateProperty>
             </Strategy>
             <UserParams />
@@ -821,6 +838,7 @@
                     <post_place_opt>high</post_place_opt>
                 </PlaceProperty>
                 <RouteProperty>
+                    <effort>routability</effort>
                     <timing>on</timing>
                     <fix_hold>on</fix_hold>
                 </RouteProperty>

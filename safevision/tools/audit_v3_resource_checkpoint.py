@@ -31,8 +31,12 @@ def audit(root,manifest):
  j=read(manifest);assert j['schema']==1 and j['complete']
  prior=read(root/'evidence/v3/current_100_20261016/selected_acceptance.json')
  required=set(prior['unique_tops'])|{'tb_v3_command_catalog','tb_v3_uart_link_catalog'}
- core=(root/'safevision/rtl/video/v3_video_display_core.v').read_text()
+ core=(root/'safevision/rtl/video/v3_video_display_core.v').read_text(encoding='utf-8')
  if 'v3_scaler_bilinear_thirds s' in core:required.add('tb_v3_thirds_scaler')
+ reset=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v').read_text(encoding='utf-8')
+ supervisor=(root/'safevision/rtl/control/v3_supervisor.v').read_text(encoding='utf-8')
+ if 'RELEASE_FALLING' in reset:required.add('tb_v3_reset_release_phase')
+ if 'reg[32:0] video_limit,audio_limit' in supervisor:required.add('tb_v3_supervisor_threshold')
  seen=set();rows=[]
  for row in j['positive_tests']:
   assert row['top'] not in seen;seen.add(row['top'])
@@ -56,10 +60,12 @@ def audit(root,manifest):
   if case.get('required_marker'):assert case['required_marker'] in text
   assert case['mutation'] not in mutants;mutants.append(case['mutation'])
  assert len(mutants)>=13
+ if len(required)==105:
+  assert {'positive_phase_release','drop threshold carry33_to32','retimed_rounding','message_snapshot_bit'}.issubset(mutants),'new datapath/phase changes need their strict negative controls'
  return {'accepted':True,'positive_unique_native_tests':len(required),'strict_normal_ending_mutants':len(mutants),'tests':rows,'source_bytes_and_inputs_verified':True,'routed_sta_passed':False,'bitstreams_verified':False,'hardware_verified':False,'release_ready':False}
 
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--manifest',type=Path,default=Path('evidence/v3/resource_102_20261016/acceptance.json'));ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--manifest',type=Path,default=Path('evidence/v3/resource_105_20261016/acceptance.json'));ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
  try:r=audit(a.repo.resolve(),within(a.repo,a.manifest));code=0
  except Exception as ex:r={'accepted':False,'error':str(ex),'release_ready':False};code=1
  a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(r,indent=2),encoding='utf-8')
