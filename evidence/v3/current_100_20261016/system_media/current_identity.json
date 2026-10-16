@@ -1,0 +1,32 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\media",
+  "suite": "media",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "63d8199659cbdbc9f383ee1ae8c53abd98e45294cd5a5d87b4b1f9c23737e71e",
+  "tests": [
+    {
+      "top": "tb_v3_resident",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\media\\tb_v3_resident\\sim.log",
+        "sha256": "5edfe962715058aba93930a8d9753e8ace7d1137402c1786bbe42ed89981e79f",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 13,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 12,
+      "data_comparisons": 614400,
+      "elapsed_s": 1021.968,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\media\\tb_v3_resident\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\media\\tb_v3_resident\\sources.sha256.json"
+    }
+  ]
+}

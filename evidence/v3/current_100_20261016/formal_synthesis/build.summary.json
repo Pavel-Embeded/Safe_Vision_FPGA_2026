@@ -1,0 +1,192 @@
+{
+  "accepted": false,
+  "synthesis_only": true,
+  "modes": [
+    {
+      "mode": "base",
+      "status": "RESOURCE_REJECTED",
+      "source_commit": "e3e1ccc08023fc51df41afd6e3198ac00b4a5d29",
+      "source_commit_binding": {
+        "verified": true,
+        "commit": "e3e1ccc08023fc51df41afd6e3198ac00b4a5d29",
+        "source_repository": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo",
+        "dependencies_compared": 140,
+        "errors": []
+      },
+      "td_executable": "D:\\Anlogic\\TD_6.2.1_Engineer_6.2.168.116\\bin\\td_commands_prompt.exe",
+      "td_executable_sha256": "e2e04ada5e256dccd017240c0f4dcface7f96dca67cde0e56e606ac0e02f827a",
+      "source_identity": "actual build SHA-256 bytes plus explicit Git blob comparison; inspect source_commit_binding.verified",
+      "source_unchanged": true,
+      "bit_generated": false,
+      "hardware_verified": false,
+      "created_at_utc": "2026-10-16T05:06:04.389851+00:00",
+      "td_version": "V6.2.168116",
+      "mapped_roms": [
+        {
+          "asset": "font8x16_compact.mem",
+          "mapped_instance": "\\video/graphics/ramread2_syn_5",
+          "bytes_compared": 1024,
+          "payload_sha256": "f7d9be4d66938650d2aef2a693830db9a42981c1334f63c65b6cadef94e2c461"
+        },
+        {
+          "asset": "v3_status_text.mem",
+          "mapped_instance": "\\video/graphics/ramread0_syn_5",
+          "bytes_compared": 1024,
+          "payload_sha256": "61f822a8e1c8ee7dc74f6ed6fc87098b565c13b9d9d0e3de81fc7fa6952dc806"
+        }
+      ],
+      "resource_gate": {
+        "resources": {
+          "lut": {
+            "used": 17634,
+            "available": 19600,
+            "percent": 89.96938775510205
+          },
+          "reg": {
+            "used": 13183,
+            "available": 19600,
+            "percent": 67.26020408163265
+          },
+          "bram": {
+            "used": 50,
+            "available": 64,
+            "percent": 78.125
+          },
+          "bram32k": {
+            "used": 0,
+            "available": 16,
+            "percent": 0.0
+          },
+          "dsp": {
+            "used": 13,
+            "available": 29,
+            "percent": 44.827586206896555
+          },
+          "pll": {
+            "used": 3,
+            "available": 4,
+            "percent": 75.0
+          },
+          "ram": {
+            "used_9k_tiles": 50,
+            "available_9k_tiles": 64,
+            "note": "A RAM32K macro consumes four of the physical RAM9K tiles.",
+            "percent": 78.125
+          }
+        },
+        "resource_targets_percent": {
+          "lut": 70,
+          "reg": 65,
+          "ram": 75
+        },
+        "resource_hard_caps_percent": {
+          "lut": 80,
+          "reg": 80,
+          "ram": 85
+        },
+        "resource_target_met": {
+          "lut": false,
+          "reg": false,
+          "ram": false
+        },
+        "errors": [
+          "lut 89.969% exceeds hard cap 80%"
+        ],
+        "accepted": false
+      }
+    },
+    {
+      "mode": "hd",
+      "status": "RESOURCE_REJECTED",
+      "source_commit": "e3e1ccc08023fc51df41afd6e3198ac00b4a5d29",
+      "source_commit_binding": {
+        "verified": true,
+        "commit": "e3e1ccc08023fc51df41afd6e3198ac00b4a5d29",
+        "source_repository": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo",
+        "dependencies_compared": 140,
+        "errors": []
+      },
+      "td_executable": "D:\\Anlogic\\TD_6.2.1_Engineer_6.2.168.116\\bin\\td_commands_prompt.exe",
+      "td_executable_sha256": "e2e04ada5e256dccd017240c0f4dcface7f96dca67cde0e56e606ac0e02f827a",
+      "source_identity": "actual build SHA-256 bytes plus explicit Git blob comparison; inspect source_commit_binding.verified",
+      "source_unchanged": true,
+      "bit_generated": false,
+      "hardware_verified": false,
+      "created_at_utc": "2026-10-16T05:07:23.365173+00:00",
+      "td_version": "V6.2.168116",
+      "mapped_roms": [
+        {
+          "asset": "font8x16_compact.mem",
+          "mapped_instance": "\\video/graphics/ramread2_syn_5",
+          "bytes_compared": 1024,
+          "payload_sha256": "f7d9be4d66938650d2aef2a693830db9a42981c1334f63c65b6cadef94e2c461"
+        },
+        {
+          "asset": "v3_status_text.mem",
+          "mapped_instance": "\\video/graphics/ramread0_syn_5",
+          "bytes_compared": 1024,
+          "payload_sha256": "61f822a8e1c8ee7dc74f6ed6fc87098b565c13b9d9d0e3de81fc7fa6952dc806"
+        }
+      ],
+      "resource_gate": {
+        "resources": {
+          "lut": {
+            "used": 18340,
+            "available": 19600,
+            "percent": 93.57142857142857
+          },
+          "reg": {
+            "used": 13358,
+            "available": 19600,
+            "percent": 68.15306122448979
+          },
+          "bram": {
+            "used": 50,
+            "available": 64,
+            "percent": 78.125
+          },
+          "bram32k": {
+            "used": 0,
+            "available": 16,
+            "percent": 0.0
+          },
+          "dsp": {
+            "used": 26,
+            "available": 29,
+            "percent": 89.65517241379311
+          },
+          "pll": {
+            "used": 3,
+            "available": 4,
+            "percent": 75.0
+          },
+          "ram": {
+            "used_9k_tiles": 50,
+            "available_9k_tiles": 64,
+            "note": "A RAM32K macro consumes four of the physical RAM9K tiles.",
+            "percent": 78.125
+          }
+        },
+        "resource_targets_percent": {
+          "lut": 70,
+          "reg": 65,
+          "ram": 75
+        },
+        "resource_hard_caps_percent": {
+          "lut": 80,
+          "reg": 80,
+          "ram": 85
+        },
+        "resource_target_met": {
+          "lut": false,
+          "reg": false,
+          "ram": false
+        },
+        "errors": [
+          "lut 93.571% exceeds hard cap 80%"
+        ],
+        "accepted": false
+      }
+    }
+  ]
+}

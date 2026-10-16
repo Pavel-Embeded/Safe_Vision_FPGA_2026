@@ -1,0 +1,24 @@
+{
+  "suite": "audio_priority_phase",
+  "results": [
+    {
+      "top": "tb_v3_priority_base50",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 2780,
+      "elapsed_s": 69.875
+    },
+    {
+      "top": "tb_v3_priority_hd50",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 2780,
+      "elapsed_s": 79.453
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

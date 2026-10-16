@@ -1,0 +1,32 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\volume_serial",
+  "suite": "volume_serial",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "2f6022960681a3782cf0b4280b226307c4cc5fdd1d8d921b70454be39a543c08",
+  "tests": [
+    {
+      "top": "tb_v3_volume_serial",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\volume_serial\\tb_v3_volume_serial\\sim.log",
+        "sha256": "86669ef6cd31974ea8b419eeddf9e68adb989b3f6cc06e3a794ea86c6e262231",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 29404,
+      "elapsed_s": 6.36,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\volume_serial\\tb_v3_volume_serial\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\volume_serial\\tb_v3_volume_serial\\sources.sha256.json"
+    }
+  ]
+}

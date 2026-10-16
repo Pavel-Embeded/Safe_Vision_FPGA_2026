@@ -49,5 +49,8 @@
   "generators": {
     "tb_v3_audio_context": "safevision/tools/gen_v3_audio_unaligned_fixture.py",
     "tb_v3_audio_context_loop": "safevision/tools/gen_v3_audio_unaligned_fixture.py"
-  }
+  },
+  "generator_dependencies": [
+    "safevision/tools/gen_v3_audio_fixture.py"
+  ]
 }

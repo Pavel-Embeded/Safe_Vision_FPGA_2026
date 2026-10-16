@@ -1,0 +1,5 @@
+{
+  "accepted": true,
+  "checks": 3,
+  "scope": "audit helper selftest, not native RTL simulation"
+}

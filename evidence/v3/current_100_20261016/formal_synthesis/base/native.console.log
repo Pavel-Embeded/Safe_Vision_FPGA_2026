@@ -1,0 +1,1300 @@
+============================================================
+   Tang Dynasty, V6.2.168116
+   Copyright (c) 2012-2025 Anlogic Inc.
+   Executable = D:/Anlogic/TD_6.2.1_Engineer_6.2.168.116/bin/td_commands_prompt.exe
+   Built at =   16:32:07 Jun 12 2025
+   Run by =     Çúè÷Ãú
+   Run Date =   Fri Oct 16 13:06:04 2026
+
+   Run on =     CANGLONG16ULTRA
+============================================================
+RUN-1002 : start command "import_device eagle_s20.db -package EG4S20BG256"
+RUN-1001 : Using default speed grade: NA
+ARC-1001 : Device Initialization.
+ARC-1001 : ------------------------------------------------------------------
+ARC-1001 :            OPTION            |          IO          |   SETTING   
+ARC-1001 : ------------------------------------------------------------------
+ARC-1001 :   cso_b/cclk/mosi/miso/dout  |  T3/R11/T10/P10/S11  |    gpio    
+ARC-1001 :             done             |         P13          |    gpio    
+ARC-1001 :           program_b          |          T2          |  dedicate  
+ARC-1001 :        tdi/tms/tck/tdo       |   C12/A15/C14/E14    |  dedicate  
+ARC-1001 : ------------------------------------------------------------------
+ARC-1004 : Device setting, marked 5 dedicate IOs in total.
+RUN-1002 : start command "set_param rtl min_control_set 1"
+RUN-1002 : start command "set_param rtl min_ripple_len 32"
+RUN-1002 : start command "set_param place effort high"
+RUN-1002 : start command "set_param place post_place_opt high"
+RUN-1002 : start command "set_param route timing on"
+RUN-1002 : start command "set_param route fix_hold on"
+RUN-1002 : start command "read_hdl -file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base_mode.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/global_def.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi_phy_warpper.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/lane_lvds_10_1.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_level_sync.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/scaler/scaler_coords.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/scaler/scaler_bilinear.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_compositor/alpha_blend.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_compositor/color_adjust.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_text_layer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_video_display_core.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_presentation_ctrl.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/hdmi_output/hdmi_video_bridge.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/memory_arbiter.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/mem_ctrl.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_address_gen.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_writer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_aux_mux.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/crc16_ccitt.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/crc7.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_tx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_rx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sv_async_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/error_report.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/spi_master.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_spi_cs_guard.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_initializer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_sector_reader.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_checked_sector_reader.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/mbr_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_boot_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_directory_scanner.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_cluster_walker.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_index.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_streamer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_ctx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_cluster_walker_ctx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_unpack.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/wav_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_ctx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/input_sync.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/key_debounce.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_command_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_user_controls.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_uart_link.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/media_recovery_ctrl.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_supervisor.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/safety/fault_manager.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/alarm_tone_gen.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/audio_priority_arbiter.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_priority_serial.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/audio_energy.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/hdmi_acr.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ring.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_volume.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_packet_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ingress_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_sample_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_constant224_blend.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_shared_fs_service.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_compact_ctx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_compact_ctx.v -include_dir D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include -top safevision_v3_top"
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base_mode.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/pixel_format_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(7)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(7)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open0', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(87)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open8', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(93)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open7', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(93)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open6', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(93)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open5', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(93)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open4', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(93)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open3', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(93)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open2', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(93)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open1', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(93)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open10', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(95)
+HDL-1007 : undeclared symbol 'sv_video_vga_pll_open9', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(95)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v
+HDL-1007 : undeclared symbol 'sv_audio_pll_open0', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(80)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open8', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(86)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open7', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(86)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open6', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(86)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open5', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(86)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open4', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(86)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open3', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(86)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open2', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(86)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open1', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(86)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open11', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(88)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open10', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(88)
+HDL-1007 : undeclared symbol 'sv_audio_pll_open9', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(88)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/global_def.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/global_def.v in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v(10)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v(10)
+Copyright (c) 1998-2019 The OpenSSL Project.  All rights reserved.
+This product includes software developed by the OpenSSL Project
+for use in the OpenSSL Toolkit (http://www.openssl.org/)
+Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
+All rights reserved.
+This product includes cryptographic software written by Eric Young (eay@cryptsoft.com)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v(45)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/global_def.v in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v(11)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v(11)
+HDL-1007 : undeclared symbol '**', assumed default net type '**' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v(57)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v(149)
+HDL-5007 WARNING: concatenation with an unsized literal will be treated as 32 bits in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v(47)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v
+HDL-5007 WARNING: concatenation with an unsized literal will be treated as 32 bits in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(283)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(19)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/global_def.v in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v(22)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v(22)
+HDL-1007 : undeclared symbol 'SDR_CKE', assumed default net type 'wire' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v(101)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/pixel_format_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v(28)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v(28)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi_phy_warpper.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/lane_lvds_10_1.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v
+HDL-1007 : undeclared symbol '**', assumed default net type '**' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(2614)
+HDL-1007 : undeclared symbol '**', assumed default net type '**' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(2716)
+HDL-1007 : undeclared symbol '**', assumed default net type '**' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(2724)
+HDL-1007 : undeclared symbol '**', assumed default net type '**' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(4936)
+HDL-1007 : undeclared symbol '**', assumed default net type '**' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(5989)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(77)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/video_mode_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(17)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(17)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_level_sync.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/scaler/scaler_coords.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/scaler/scaler_bilinear.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_compositor/alpha_blend.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_compositor/color_adjust.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_text_layer.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/pixel_format_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v(1)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v(1)
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/crc32_word.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v(20)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v(20)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_video_display_core.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/video_mode_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_video_display_core.v(1)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_video_display_core.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_video_display_core.v(1)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_presentation_ctrl.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/hdmi_output/hdmi_video_bridge.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/memory_arbiter.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/memory_arbiter.v(39)
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/fault_code_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh(21)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh(21)
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/pixel_format_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh(22)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh(22)
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/event_code_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh(23)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh(23)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/memory_arbiter.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/memory_arbiter.v(39)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/mem_ctrl.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_address_gen.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_address_gen.v(31)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_address_gen.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_address_gen.v(31)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_writer.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_writer.v(51)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_writer.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_writer.v(51)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/pixel_format_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v(1)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v(1)
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/crc32_word.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v(19)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v(19)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_aux_mux.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/pixel_format_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v(1)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v(1)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/crc16_ccitt.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/crc7.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_tx.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_rx.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sv_async_fifo.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/error_report.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/spi_master.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/spi_master.v(24)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/spi_master.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/spi_master.v(24)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_spi_cs_guard.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_initializer.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_initializer.v(23)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_initializer.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_initializer.v(23)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_sector_reader.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_sector_reader.v(22)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_sector_reader.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_sector_reader.v(22)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_checked_sector_reader.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_checked_sector_reader.v(1)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_checked_sector_reader.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_checked_sector_reader.v(1)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/mbr_parser.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/mbr_parser.v(36)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/mbr_parser.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/mbr_parser.v(36)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_boot_parser.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_boot_parser.v(18)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_boot_parser.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_boot_parser.v(18)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_directory_scanner.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_directory_scanner.v(46)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_directory_scanner.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_directory_scanner.v(46)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_cluster_walker.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_cluster_walker.v(34)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_cluster_walker.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_cluster_walker.v(34)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_index.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_index.v(31)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_index.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_index.v(31)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_streamer.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_streamer.v(33)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_streamer.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_streamer.v(33)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v(46)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v(46)
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/pixel_format_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v(47)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v(47)
+HDL-5007 WARNING: column 1024 exceeds maximum value 1023 in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v(397)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer.v(33)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer.v(33)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_ctx.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_ctx.v(34)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_ctx.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_ctx.v(34)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_cluster_walker_ctx.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_cluster_walker_ctx.v(34)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_cluster_walker_ctx.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_cluster_walker_ctx.v(34)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_parser.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_parser.v(31)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_parser.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_parser.v(31)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_unpack.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_unpack.v(44)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_unpack.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_unpack.v(44)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/wav_parser.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/wav_parser.v(37)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/wav_parser.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/wav_parser.v(37)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_ctx.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_ctx.v(38)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_ctx.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_ctx.v(38)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/input_sync.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/key_debounce.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_command_parser.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_user_controls.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_uart_link.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/media_recovery_ctrl.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_supervisor.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/fault_code_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_supervisor.v(1)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_supervisor.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_supervisor.v(1)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/safety/fault_manager.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/fault_code_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/safety/fault_manager.v(20)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/safety/fault_manager.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/safety/fault_manager.v(20)
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/alarm_tone_gen.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/audio_priority_arbiter.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_priority_serial.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/audio_energy.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/hdmi_acr.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ring.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_volume.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_packet_fifo.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ingress_fifo.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_sample_fifo.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_constant224_blend.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_shared_fs_service.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_compact_ctx.v
+HDL-1007 : analyze verilog file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_compact_ctx.v
+HDL-1007 : analyze included file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include/safevision_defs.vh in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_compact_ctx.v(34)
+HDL-1007 : back to file 'D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_compact_ctx.v' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_compact_ctx.v(34)
+HDL-1007 : elaborate module safevision_v3_top in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v(11)
+HDL-1007 : elaborate module reset_sync in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v(12)
+HDL-1007 : elaborate module sv_v3_memory_pll in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.v(8)
+HDL-1007 : elaborate module EG_LOGIC_BUFG in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(5)
+HDL-1007 : elaborate module EG_PHY_PLL(FIN="50.000000",FBCLK_DIV=2,CLKC0_DIV=10,CLKC1_DIV=20,CLKC2_DIV=20,CLKC0_ENABLE="ENABLE",CLKC1_ENABLE="ENABLE",CLKC2_ENABLE="ENABLE",FEEDBK_PATH="CLKC0_EXT",STDBY_ENABLE="DISABLE",CLKC0_CPHASE=9,CLKC1_CPHASE=19,CLKC2_CPHASE=7,GMC_GAIN=4,ICP_CURRENT=13,KVCO=4,LPF_CAPACITOR=1,LPF_RESISTOR=4,SYNC_ENABLE="DISABLE") in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(889)
+HDL-1007 : elaborate module sv_video_vga_pll in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v(24)
+HDL-1007 : elaborate module EG_PHY_PLL(FIN="50.000000",REFCLK_DIV=3,FBCLK_DIV=17,CLKC0_DIV=4,CLKC1_DIV=45,CLKC2_DIV=9,CLKC0_ENABLE="ENABLE",CLKC1_ENABLE="ENABLE",CLKC2_ENABLE="ENABLE",FEEDBK_PATH="CLKC0_EXT",STDBY_ENABLE="DISABLE",CLKC0_CPHASE=3,CLKC1_CPHASE=44,CLKC2_CPHASE=8,GMC_GAIN=0,ICP_CURRENT=9,KVCO=2,LPF_CAPACITOR=2,LPF_RESISTOR=8,SYNC_ENABLE="DISABLE") in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(889)
+HDL-1007 : elaborate module sv_audio_pll in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v(23)
+HDL-1007 : elaborate module EG_PHY_PLL(FIN="50.000000",REFCLK_DIV=2,CLKC0_DIV=29,CLKC1_DIV=59,CLKC0_ENABLE="ENABLE",CLKC1_ENABLE="ENABLE",FEEDBK_PATH="CLKC0_EXT",STDBY_ENABLE="DISABLE",CLKC0_CPHASE=28,CLKC1_CPHASE=58,GMC_GAIN=2,ICP_CURRENT=9,KVCO=2,LPF_CAPACITOR=1,LPF_RESISTOR=8,SYNC_ENABLE="DISABLE") in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(889)
+HDL-1007 : elaborate module sdram in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v(24)
+HDL-1007 : elaborate module sdr_as_ram(self_refresh_open=1'b1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v(12)
+HDL-5007 WARNING: concatenation with an unsized literal will be treated as 32 bits in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v(47)
+HDL-1007 : elaborate module sdr_init_ref(self_refresh_open=1'b1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v(13)
+HDL-5007 WARNING: concatenation with an unsized literal will be treated as 32 bits in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(283)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(3)
+HDL-5317 WARNING: input port '**' is not connected on this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v(17)
+HDL-1007 : elaborate module EG_PHY_SDRAM_2M_32 in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(683)
+HDL-1007 : elaborate module sdram_app_adapter(FAST_READ=1,PREFETCH_READ=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v(10)
+HDL-1007 : extracting RAM for identifier 'wbuf' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v(30)
+HDL-1007 : extracting RAM for identifier 'wdm' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v(30)
+HDL-1007 : extracting RAM for identifier 'rbuf' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v(36)
+HDL-1007 : elaborate module mem_ctrl in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/mem_ctrl.v(28)
+HDL-1007 : elaborate module sd_bmp_player(SHARED_SERVICE=1,GUARDED_CS=1,RESIDENT_CACHE=1,CLK_DIV_INIT=249,CLK_DIV_FAST=1,MOUNT_TO_N=100000000) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v(49)
+HDL-1007 : elaborate module sd_initializer(CLK_DIV_INIT=16'b011111001) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_initializer.v(25)
+HDL-1007 : elaborate module mbr_parser in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/mbr_parser.v(38)
+HDL-1007 : elaborate module fat32_boot_parser in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_boot_parser.v(20)
+HDL-1007 : elaborate module v3_shared_fs_service in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_shared_fs_service.v(4)
+HDL-1007 : elaborate module fat32_directory_scanner(SV_MEDIA_ONLY=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_directory_scanner.v(48)
+HDL-1007 : elaborate module v3_file_streamer_compact_ctx in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_compact_ctx.v(38)
+HDL-1007 : elaborate module v3_cluster_walker_ctx in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_cluster_walker_ctx.v(36)
+HDL-1007 : elaborate module fat32_directory_scanner in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_directory_scanner.v(48)
+HDL-1007 : elaborate module fat32_cluster_walker in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_cluster_walker.v(36)
+HDL-1007 : elaborate module file_index(CURSOR_MODE=1,CANDIDATE_SLOTS=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_index.v(33)
+HDL-1007 : elaborate module file_streamer in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_streamer.v(35)
+HDL-1007 : elaborate module bmp_parser in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_parser.v(33)
+HDL-1007 : elaborate module bmp_unpack in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_unpack.v(46)
+HDL-1007 : elaborate module sd_checked_sector_reader in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_checked_sector_reader.v(8)
+HDL-1007 : extracting RAM for identifier 'sector' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_checked_sector_reader.v(20)
+HDL-1007 : elaborate module sd_sector_reader in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_sector_reader.v(24)
+HDL-1007 : elaborate module crc16_ccitt in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/crc16_ccitt.v(31)
+HDL-1007 : elaborate module v3_spi_cs_guard in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_spi_cs_guard.v(6)
+HDL-1007 : elaborate module spi_master(CLK_FREQ=50000000) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/spi_master.v(26)
+HDL-1007 : elaborate module bmp_frame_sink(FIFO_AW=8,GAP_TIMEOUT=200000,SWAP_TO_N=5000000,WRITE_TO_N=25000000,REQUIRE_WRITE_DRAIN=1,REQUIRE_READBACK=1,RESIDENT_LOAD=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v(30)
+HDL-1007 : elaborate module a_pixel_fifo(AW=8) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v(4)
+HDL-1007 : elaborate module a_pixel_fifo_ip(ADDR_WIDTH_W=8,ADDR_WIDTH_R=9,AL_FULL_NUM=232,AL_EMPTY_NUM=32) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v(5)
+HDL-1007 : elaborate module a_pixel_fifo_gray_sync in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v(347)
+HDL-1007 : elaborate module a_pixel_fifo_gray_sync(ADDR_WIDTH=8) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v(347)
+HDL-1007 : elaborate module a_pixel_fifo_eram(ADDRWIDTH_A=8,DATAWIDTH_B=16,ADDRWIDTH_B=9) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(5)
+HDL-1007 : extracting RAM for identifier 'memory' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(115)
+HDL-1007 : elaborate module bmp_frame_write_bridge(GAP_TIMEOUT=32'b0110000110101000000) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v(8)
+HDL-1007 : elaborate module frame_address_gen in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_address_gen.v(33)
+HDL-1007 : elaborate module frame_writer(GAP_TIMEOUT=32'b0110000110101000000) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_writer.v(53)
+HDL-1007 : elaborate module frame_address_gen(FRAME_WIDTH=10'b1010000000,BYTES_PER_PIXEL=32'b010) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_address_gen.v(33)
+HDL-1007 : elaborate module v3_row_integrity(TIMEOUT=50000000) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v(7)
+HDL-1007 : extracting RAM for identifier 'signatures' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v(21)
+HDL-1007 : elaborate module v3_aux_mux in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_aux_mux.v(4)
+HDL-1007 : elaborate module memory_arbiter(COMPACT_CONSEC_COUNTER=1,HIGH_WATER=640,CRITICAL_WATER=320) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/memory_arbiter.v(41)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=192) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=48) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module v3_user_controls in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_user_controls.v(3)
+HDL-1007 : elaborate module key_debounce(KEYS=3,RESET_LEVEL=0) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/key_debounce.v(18)
+HDL-1007 : elaborate module input_sync(RESET_LEVEL=0) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/input_sync.v(19)
+HDL-1007 : elaborate module video_level_sync in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_level_sync.v(2)
+HDL-1007 : elaborate module v3_supervisor in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_supervisor.v(5)
+HDL-1007 : elaborate module media_recovery_ctrl(RESET_CYCLES=64,SETTLE_CYCLES=64,TIMEOUT_CYCLES=2000000000) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/media_recovery_ctrl.v(3)
+HDL-1007 : elaborate module fault_manager in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/safety/fault_manager.v(22)
+HDL-1007 : elaborate module v3_video_display_core(MEM_TIMEOUT=5000000,PACKED_CACHE=1,FONT_FILE="../../../assets/fonts/font8x16.mem",PIXEL_HZ=25185185) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_video_display_core.v(6)
+HDL-1007 : elaborate module video_timing in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(19)
+HDL-5007 WARNING: case equality operator always evaluates to false due to comparison with 'x' or 'z' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(55)
+HDL-5007 WARNING: case equality operator always evaluates to false due to comparison with 'x' or 'z' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(55)
+HDL-5007 WARNING: case equality operator always evaluates to false due to comparison with 'x' or 'z' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(56)
+HDL-5007 WARNING: case equality operator always evaluates to false due to comparison with 'x' or 'z' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(56)
+HDL-5007 WARNING: case equality operator always evaluates to false due to comparison with 'x' or 'z' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(57)
+HDL-5007 WARNING: case equality operator always evaluates to false due to comparison with 'x' or 'z' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(57)
+HDL-5007 WARNING: case equality operator always evaluates to false due to comparison with 'x' or 'z' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(58)
+HDL-5007 WARNING: case equality operator always evaluates to false due to comparison with 'x' or 'z' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v(58)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=100) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=9) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module v3_presentation_ctrl in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_presentation_ctrl.v(4)
+HDL-1007 : elaborate module scaler_coords in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/scaler/scaler_coords.v(4)
+HDL-1007 : elaborate module v3_line_cache(TIMEOUT=5000000,PACKED_ROWS=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v(6)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=24) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module v3_packed_row_store in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(14)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : extracting RAM for identifier 'pixels' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v(89)
+HDL-1007 : elaborate module scaler_bilinear in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/scaler/scaler_bilinear.v(4)
+HDL-1007 : elaborate module alpha_blend in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_compositor/alpha_blend.v(4)
+HDL-1007 : elaborate module color_adjust in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_compositor/color_adjust.v(3)
+HDL-1007 : elaborate module v3_status_layers(PIXEL_HZ=25185185) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v(5)
+HDL-1007 : extracting RAM for identifier 'text_rom' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v(144)
+HDL-1007 : extracting RAM for identifier 'glyph_rom' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v(145)
+HDL-1007 : readmemh: reading from file '../../assets/fonts/v3_status_text.mem' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v(146)
+HDL-1007 : readmemh: reading from file '../../assets/fonts/font8x16_compact.mem' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v(146)
+HDL-5314 WARNING: net 'text_rom' does not have a driver in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v(144)
+HDL-5314 WARNING: net 'glyph_rom' does not have a driver in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v(145)
+HDL-1007 : elaborate module v3_constant224_blend(EMERGENCY=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_constant224_blend.v(6)
+HDL-1007 : elaborate module v3_constant224_blend in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_constant224_blend.v(6)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=56) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : port 'found' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(63)
+HDL-1007 : port 'src_ready' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(71)
+HDL-1007 : port 'src_ready' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(74)
+HDL-1007 : port 'src_ready' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(95)
+HDL-1007 : port 'src_ready' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(106)
+HDL-1007 : port 'gain' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(142)
+HDL-1007 : port 'busy' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(147)
+HDL-1007 : port 'src_ready' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(162)
+HDL-1007 : elaborate module v3_audio_system(EXTERNAL_SERVICE=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(10)
+HDL-1007 : elaborate module v3_audio_reset_release in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v(176)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=64) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module v3_pcm_ingress_shared_fifo in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v(8)
+HDL-1007 : elaborate module sv_async_fifo(WIDTH=16,AW=10) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sv_async_fifo.v(4)
+HDL-1007 : elaborate module a_pixel_fifo_ip(DATA_WIDTH_W=16,ADDR_WIDTH_R=10,AL_FULL_NUM=1008,AL_EMPTY_NUM=8) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v(5)
+HDL-1007 : elaborate module a_pixel_fifo_gray_sync(ADDR_WIDTH=10) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v(347)
+HDL-1007 : elaborate module a_pixel_fifo_eram(DATAWIDTH_A=16,ADDRWIDTH_A=10,DATAWIDTH_B=16,ADDRWIDTH_B=10) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(5)
+HDL-1007 : extracting RAM for identifier 'memory' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(115)
+HDL-1007 : port 'err_detail' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v(190)
+HDL-1007 : port 'ent_attr' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v(190)
+HDL-1007 : port 'ent_index' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v(190)
+HDL-1007 : port 'err_code' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v(263)
+HDL-1007 : port 'err_detail' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v(263)
+HDL-1007 : port 'bytes_rd' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v(263)
+HDL-1007 : port 'sof' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v(263)
+HDL-1007 : elaborate module v3_wav_source(EXTERNAL_SERVICE=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v(7)
+HDL-1007 : elaborate module a_pixel_fifo_eram(MODE="SP",DATAWIDTH_A=16,ADDRWIDTH_A=8,DATAWIDTH_B=16,ADDRWIDTH_B=8) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(5)
+HDL-1007 : extracting RAM for identifier 'memory' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(115)
+HDL-5007 WARNING: actual bit length 265 differs from formal bit length 136 for port 'context_out' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v(264)
+HDL-1007 : elaborate module v3_wav_parser_compact_ctx in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_compact_ctx.v(6)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=5) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=10) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module v3_pcm_ring in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ring.v(7)
+HDL-1007 : port 'rd_level' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_sample_fifo.v(18)
+HDL-1007 : elaborate module v3_pcm_sample_fifo in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_sample_fifo.v(4)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=4) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=18) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module alarm_tone_gen in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/alarm_tone_gen.v(34)
+HDL-1007 : elaborate module v3_audio_priority_serial in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_priority_serial.v(6)
+HDL-1007 : elaborate module v3_audio_volume in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_volume.v(4)
+HDL-1007 : port 'rd_level' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_packet_fifo.v(13)
+HDL-1007 : elaborate module v3_pcm_packet_fifo in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_packet_fifo.v(5)
+HDL-1007 : elaborate module sv_async_fifo(WIDTH=16,AW=8) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sv_async_fifo.v(4)
+HDL-1007 : elaborate module a_pixel_fifo_ip(DATA_WIDTH_W=16,ADDR_WIDTH_W=8,ADDR_WIDTH_R=8,AL_FULL_NUM=240,AL_EMPTY_NUM=8) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v(5)
+HDL-1007 : elaborate module a_pixel_fifo_eram(DATAWIDTH_A=16,ADDRWIDTH_A=8,DATAWIDTH_B=16,ADDRWIDTH_B=8) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(5)
+HDL-1007 : extracting RAM for identifier 'memory' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(115)
+HDL-1007 : elaborate module hdmi_acr in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/hdmi_acr.v(3)
+HDL-1007 : elaborate module audio_energy in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/audio_energy.v(3)
+HDL-1007 : elaborate module video_cdc_mailbox(WIDTH=71) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module error_report in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/error_report.v(37)
+HDL-1007 : elaborate module sync_fifo(W=44,DEPTH=8,ALMOST_FULL_TH=6,ALMOST_EMPTY_TH=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v(37)
+HDL-1007 : extracting RAM for identifier 'mem' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v(65)
+HDL-1007 : elaborate module v3_uart_link in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_uart_link.v(6)
+HDL-1007 : elaborate module uart_rx in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_rx.v(2)
+HDL-1007 : elaborate module v3_command_parser in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_command_parser.v(4)
+HDL-1007 : elaborate module sync_fifo(W=49,DEPTH=128,ALMOST_FULL_TH=120,ALMOST_EMPTY_TH=1) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v(37)
+HDL-1007 : extracting RAM for identifier 'mem' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v(65)
+HDL-1007 : elaborate module uart_tx in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_tx.v(12)
+HDL-1007 : elaborate module uart_tx(CLK_FREQ=50000000) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_tx.v(12)
+HDL-1007 : elaborate module hdmi_video_bridge in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/hdmi_output/hdmi_video_bridge.v(7)
+HDL-1007 : extracting RAM for identifier 'q' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/hdmi_output/hdmi_video_bridge.v(17)
+HDL-1007 : elaborate module video_cdc_mailbox in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v(6)
+HDL-1007 : elaborate module hdmi_1_4b_transmitter_core_wrapper(HTOTAL=800,HSA=96,HFP=16,HBP=48,HACTIVE=640,VTOTAL=525,VSA=2,VFP=10,VBP=33,VACTIVE=480,VIDEO_TPG="Disable",VIDEO_VIC=1,IIC_SCL_DIV=250) in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(2)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(91)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(137)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(208)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(285)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(396)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(803)
+HDL-1007 : elaborate module EG_LOGIC_RAMFIFO(DATA_WIDTH=11,ADDR_WIDTH=10,IMPLEMENT="9K") in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(750)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(1338)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(1480)
+HDL-1007 : elaborate module EG_LOGIC_RAMFIFO(DATA_WIDTH=9,ADDR_WIDTH=10,IMPLEMENT="9K") in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(750)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(2012)
+HDL-1007 : port '**' remains unconnected for this instance in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(2733)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(2403)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(2842)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(2939)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(3138)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(3177)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(3511)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(3666)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(3730)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(3860)
+HDL-5007 WARNING: actual bit length ** differs from formal bit length *** for port '**' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(3307)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(3949)
+HDL-5007 WARNING: actual bit length ** differs from formal bit length *** for port '**' in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(3318)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(4034)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(4127)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(4285)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(4586)
+HDL-1007 : elaborate module EG_LOGIC_RAMFIFO(DATA_WIDTH=96,ADDR_WIDTH=10,IMPLEMENT="9K") in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(750)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(5534)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(5657)
+HDL-1007 : elaborate module EG_LOGIC_RAMFIFO(DATA_WIDTH=24,ADDR_WIDTH=10,IMPLEMENT="9K") in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(750)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(6273)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(6501)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(6575)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(6924)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(6994)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(6994)
+HDL-1007 : elaborate module ** in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(6994)
+HDL-1007 : elaborate module hdmi_phy_wrapper in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi_phy_warpper.v(3)
+HDL-1007 : elaborate module lane_lvds_10_1 in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/lane_lvds_10_1.v(4)
+HDL-1007 : elaborate module EG_LOGIC_ODDR in D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116\arch/eagle_macro.v(66)
+HDL-5001 WARNING: Contains anonymous inst(s) and/or net(s) that have not been renamed
+HDL-5001 WARNING: Contains anonymous inst(s) and/or net(s) that have not been renamed
+HDL-5001 WARNING: Contains anonymous inst(s) and/or net(s) that have not been renamed
+HDL-5001 WARNING: Contains anonymous inst(s) and/or net(s) that have not been renamed
+HDL-5001 WARNING: Contains anonymous inst(s) and/or net(s) that have not been renamed
+HDL-5001 WARNING: Contains anonymous inst(s) and/or net(s) that have not been renamed
+HDL-5001 WARNING: Contains anonymous inst(s) and/or net(s) that have not been renamed
+HDL-5001 WARNING: Contains anonymous inst(s) and/or net(s) that have not been renamed
+HDL-1200 : Current top model is safevision_v3_top
+HDL-1100 : Inferred 24 RAMs.
+RUN-1003 : finish command "read_hdl -file D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base_mode.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/global_def.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi_phy_warpper.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/lane_lvds_10_1.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_cdc_mailbox.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_cdc/video_level_sync.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/scaler/scaler_coords.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/scaler/scaler_bilinear.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_compositor/alpha_blend.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_compositor/color_adjust.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/graphics_rom/font8x16_rom.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/osd_overlay/osd_text_layer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_status_layers.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_line_cache.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_packed_row_store.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_video_display_core.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_presentation_ctrl.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/hdmi_output/hdmi_video_bridge.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/memory_arbiter.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/mem_ctrl.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_address_gen.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/frame_writer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_row_integrity.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/memory/v3_aux_mux.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/crc16_ccitt.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/crc7.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_tx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_rx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sv_async_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/error_report.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/spi_master.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_spi_cs_guard.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_initializer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_sector_reader.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_checked_sector_reader.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/mbr_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_boot_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_directory_scanner.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/fat32_cluster_walker.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_index.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/file_streamer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_bmp_player.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_ctx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_cluster_walker_ctx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_wav_source.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/bmp_unpack.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/wav_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_ctx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/input_sync.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/key_debounce.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_command_parser.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_user_controls.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_uart_link.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/media_recovery_ctrl.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/control/v3_supervisor.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/safety/fault_manager.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/alarm_tone_gen.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/audio_priority_arbiter.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_priority_serial.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/audio_energy.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/hdmi_acr.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ring.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_system.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_volume.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_packet_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ingress_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_sample_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/v3_constant224_blend.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_shared_fs_service.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/media/v3_wav_parser_compact_ctx.v D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/v3_file_streamer_compact_ctx.v -include_dir D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/include -top safevision_v3_top" in  1.565998s wall, 1.453125s user + 0.093750s system = 1.546875s CPU (98.8%)
+
+RUN-1004 : used memory is 490 MB, reserved memory is 472 MB, peak memory is 490 MB
+RUN-1002 : start command "read_adc D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board.adc"
+RUN-1002 : start command "set_pin_assignment  clk   LOCATION = R7; IOSTANDARD = LVCMOS33; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  rst_n   LOCATION = A2; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; "
+RUN-1002 : start command "set_pin_assignment  btn_next   LOCATION = B2; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; "
+RUN-1002 : start command "set_pin_assignment  btn_auto   LOCATION = C1; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; "
+RUN-1002 : start command "set_pin_assignment  btn_emergency   LOCATION = B1; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; "
+RUN-1002 : start command "set_pin_assignment  led[0]   LOCATION = A4; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  led[1]   LOCATION = A3; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  led[2]   LOCATION = C10; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  led[3]   LOCATION = B12; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  uart_txd   LOCATION = D12; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  sd_dclk   LOCATION = A14; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  sd_mosi   LOCATION = A13; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  sd_miso   LOCATION = B14; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; "
+RUN-1002 : start command "set_pin_assignment  sd_ncs   LOCATION = A12; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  HDMI_D0_P   LOCATION = G5; IOSTANDARD = LVDS33; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  HDMI_D1_P   LOCATION = F1; IOSTANDARD = LVDS33; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  HDMI_D2_P   LOCATION = E1; IOSTANDARD = LVDS33; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  HDMI_CLK_P   LOCATION = C3; IOSTANDARD = LVDS33; PULLTYPE = NONE; "
+RUN-1002 : start command "set_pin_assignment  HDMI_DDC_SCL   LOCATION = P2; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = PULLUP; "
+RUN-1002 : start command "set_pin_assignment  HDMI_DDC_SDA   LOCATION = R2; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = PULLUP; "
+RUN-1002 : start command "set_pin_assignment  uart_rxd   LOCATION = F12; IOSTANDARD = LVCMOS33; PULLTYPE = PULLUP; "
+RUN-1001 : Starting of IO setups legality check.
+RUN-1001 : Starting of IO vref setups legality check.
+RUN-1002 : start command "optimize_rtl"
+RUN-1001 : Open license file D:/Anlogic/TD_6.2.1_Engineer_6.2.168.116/license/Anlogic.lic
+SYN-1001 : Stage 1 | Optimize RTL
+SYN-1001 : Stage 1.1 | Check Design Sanity
+SYN-1001 : End Stage 1.1 | Check Design Sanity; Time: 0.018993s wall, 0.015625s user + 0.000000s system = 0.015625s CPU (82.3%); Memory(MB): used = 490, reserved = 472, peak = 490;
+
+SYN-1079 : finish stage Check Design Sanity. Total instances: 75083, Total nets: 201128.
+
+SYN-1001 : Stage 1.2 | Initialize Design
+SYN-1001 : End Stage 1.2 | Initialize Design; Time: 2.085623s wall, 2.093750s user + 0.000000s system = 2.093750s CPU (100.4%); Memory(MB): used = 490, reserved = 472, peak = 490;
+
+SYN-1079 : finish stage Initialize Design. Total instances: 21112, Total nets: 135475.
+
+SYN-1001 : Stage 1.3 | Flatten Module
+SYN-1011 : Flatten model safevision_v3_top
+SYN-1001 : End Stage 1.3 | Flatten Module; Time: 0.437467s wall, 0.437500s user + 0.000000s system = 0.437500s CPU (100.0%); Memory(MB): used = 497, reserved = 480, peak = 497;
+
+SYN-1079 : finish stage Flatten Module. Total instances: 24764, Total nets: 126552.
+
+SYN-1001 : Stage 1.4 | Uniform Instance
+SYN-5013 WARNING: Undriven net: model "safevision_v3_top" / net "memory_ip/u2_ram/u2_wrrd/Sdr_init_ref_ba[1]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0)
+		the net's pin: pin "i1[1]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0)
+SYN-5013 WARNING: Undriven net: model "safevision_v3_top" / net "memory_ip/u2_ram/u2_wrrd/Sdr_init_ref_ba[0]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0)
+		the net's pin: pin "i1[0]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0)
+SYN-5025 WARNING: Using 0 for all undriven pins and nets
+SYN-1001 : End Stage 1.4 | Uniform Instance; Time: 0.100491s wall, 0.093750s user + 0.000000s system = 0.093750s CPU (93.3%); Memory(MB): used = 464, reserved = 456, peak = 497;
+
+SYN-1079 : finish stage Uniform Instance. Total instances: 21698, Total nets: 123475.
+
+SYN-1001 : Stage 1.5 | Optimize Design
+SYN-1066 : Inferred FSM for state register 'adapter/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                   000           000001
+                   001           000010
+                   010           000100
+                   011           001000
+                   101           010000
+                   100           100000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'adapter/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'audio/hdmi_samples/read_part_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'audio/hdmi_samples/read_part_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'audio/ingress_shared/read_part_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'audio/ingress_shared/read_part_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'audio/ring/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'audio/ring/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'audio/samples/read_part_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'audio/samples/read_part_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'audio/source/phase_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'audio/source/phase_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'audio/source/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                  0000       0000000001
+                  0001       0000000010
+                  0111       0000000100
+                  1000       0000001000
+                  1001       0000010000
+                  0100       0000100000
+                  0101       0001000000
+                  0110       0010000000
+                  0010       0100000000
+                  0011       1000000000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'audio/source/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'audio/u_priority/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                   000           000001
+                   001           000010
+                   010           000100
+                   011           001000
+                   100           010000
+                   101           100000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'audio/u_priority/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'audio/volume_scale/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'audio/volume_scale/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'aux_mux/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00             0001
+                    01             0010
+                    10             0100
+                    11             1000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'aux_mux/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'fatal_uart/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00             0001
+                    01             0010
+                    10             0100
+                    11             1000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'fatal_uart/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'memory_ip/u2_ram/u2_wrrd/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                  0000              001
+                  0001              010
+                  0010              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'memory_ip/u2_ram/u2_wrrd/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'player/scan_sub_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00             0001
+                    01             0010
+                    10             0100
+                    11             1000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'player/scan_sub_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'player/checked_reader$u_rd/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                   000            00001
+                   001            00010
+                   010            00100
+                   011            01000
+                   100            10000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'player/checked_reader$u_rd/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'player/checked_reader$u_rd/raw/bstate_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'player/checked_reader$u_rd/raw/bstate_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'player/u_init/bstate_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'player/u_init/bstate_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'player/u_spi/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'player/u_spi/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'player/u_unpack/phase_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00              001
+                    01              010
+                    10              100
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'player/u_unpack/phase_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'row_guard/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                   000           000001
+                   100           000010
+                   101           000100
+                   001           001000
+                   010           010000
+                   011           100000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'row_guard/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'sink/state_o_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                  0000            00001
+                  0001            00010
+                  0100            00100
+                  0010            01000
+                  0011            10000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'sink/state_o_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'uart/parser/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                   000           000001
+                   001           000010
+                   010           000100
+                   011           001000
+                   100           010000
+                   101           100000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'uart/parser/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'uart/rx/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00             0001
+                    01             0010
+                    10             0100
+                    11             1000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'uart/rx/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'uart/tx/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                    00             0001
+                    01             0010
+                    10             0100
+                    11             1000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'uart/tx/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1066 : Inferred FSM for state register 'video/cache/state_reg' in module 'safevision_v3_top'
+--------------------------------------------
+     Previous Encoding     New Encoding
+--------------------------------------------
+                   000         00000001
+                   001         00000010
+                   010         00000100
+                   011         00001000
+                   100         00010000
+                   101         00100000
+                   110         01000000
+                   111         10000000
+--------------------------------------------
+SYN-1067 : encoded FSM with state register 'video/cache/state_reg' using encoding 'one_hot' in model 'safevision_v3_top'
+SYN-1057 : Inferred 24 FSM(s)
+SYN-1001 : Optimize 5 less-than instances
+SYN-1001 : Optimize 8 less-than instances
+SYN-1032 : 90923/1077 useful/useless nets, 19243/75 useful/useless insts
+SYN-1001 : Bypass 6 mux instances
+SYN-1021 : Optimized 76 onehot mux instances.
+SYN-1068 : Optimized 92 binary mux instances.
+SYN-1019 : Optimized 17 mux instances.
+SYN-1021 : Optimized 1 onehot mux instances.
+SYN-1021 : Optimized 1 onehot mux instances.
+SYN-1021 : Optimized 6 onehot mux instances.
+SYN-1001 : Optimize 70 less-than instances
+SYN-1016 : Merged 1984 instances.
+SYN-1025 : Merged 3 RAM ports.
+SYN-1026 : Infer Logic BRAM(adapter/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 32 x 32	 write mode: NORMAL
+	 port b size: 32 x 32	 write mode: READBEFOREWRITE
+SYN-1027 : Infer Logic DRAM(adapter/ramread1_syn_4) read 16x32, write 16x32
+SYN-1027 : Infer Logic DRAM(adapter/ramread2_syn_4) read 16x4, write 16x4
+SYN-1026 : Infer Logic BRAM(audio/hdmi_samples/q/u_fifo/ram_inst/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 256 x 16	 write mode: NORMAL
+	 port b size: 256 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(audio/ingress_shared/q/u_fifo/ram_inst/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 1024 x 16	 write mode: NORMAL
+	 port b size: 1024 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(audio/samples/q/u_fifo/ram_inst/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 1024 x 16	 write mode: NORMAL
+	 port b size: 1024 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(audio/source/context_ram/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 256 x 16	 write mode: NORMAL
+	 port b size: 256 x 16	 write mode: READBEFOREWRITE
+SYN-1027 : Infer Logic DRAM(events/u_evt_fifo/ramread0_syn_4) read 8x44, write 8x44
+SYN-1027 : Infer Logic DRAM(hdmi_queue/ramread0_syn_4) read 16x26, write 16x26
+SYN-1026 : Infer Logic BRAM(player/checked_reader$u_rd/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 8	 write mode: NORMAL
+	 port b size: 512 x 8	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(row_guard/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 2048 x 32	 write mode: NORMAL
+	 port b size: 2048 x 32	 write mode: READBEFOREWRITE
+SYN-1025 : Merged 1 RAM ports.
+SYN-1026 : Infer Logic BRAM(sink/u_fifo/fifo/ram_inst/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 256 x 32	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(uart/replies/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 128 x 49	 write mode: NORMAL
+	 port b size: 128 x 49	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread0_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread1_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread2_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread3_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread4_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread5_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread6_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread7_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread8_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1026 : Infer Logic BRAM(video/cache/packed_data$store/ramread9_syn_4)
+	 port mode: single dual port
+	 port a size: 512 x 16	 write mode: NORMAL
+	 port b size: 512 x 16	 write mode: READBEFOREWRITE
+SYN-1023 : Infer 4 Logic DRAMs, 21 Logic BRAMs.
+SYN-1016 : Merged 4636 instances.
+SYN-1001 : End Stage 1.5 | Optimize Design; Time: 6.478122s wall, 6.390625s user + 0.078125s system = 6.468750s CPU (99.9%); Memory(MB): used = 508, reserved = 494, peak = 519;
+
+SYN-1079 : finish stage Optimize Design. Total instances: 43848, Total nets: 49955.
+
+SYN-1001 : Stage 1.6 | Optimize Iteratively
+SYN-1018 : Transformed 1 mux instances.
+SYN-1019 : Optimized 29 mux instances.
+SYN-1021 : Optimized 1575 onehot mux instances.
+SYN-1014 : Optimize round 1
+SYN-1044 : Optimized 183 inv instances.
+SYN-1017 : Remove 70 const input seq instances
+SYN-1018 : Transformed 1 mux instances.
+SYN-1019 : Optimized 61 mux instances.
+SYN-1020 : Optimized 2840 distributor mux.
+SYN-1001 : Optimize 145 less-than instances
+SYN-1019 : Optimized 353 mux instances.
+SYN-2595 : bram inst: adapter/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: audio/hdmi_samples/q/u_fifo/ram_inst/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: audio/ingress_shared/q/u_fifo/ram_inst/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: audio/samples/q/u_fifo/ram_inst/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: audio/source/context_ram/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: player/checked_reader$u_rd/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: row_guard/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: sink/u_fifo/fifo/ram_inst/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: uart/replies/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread0_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread1_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread2_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread3_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread4_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread5_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread6_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread7_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread8_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-2595 : bram inst: video/cache/packed_data$store/ramread9_syn_4 is set to PDPW/SP from DP for resource saving
+SYN-1001 : Optimize constant input of 1 erams.
+SYN-1016 : Merged 71520 instances.
+SYN-1015 : Optimize round 1, 110315 better
+SYN-1014 : Optimize round 2
+SYN-1044 : Optimized 39 inv instances.
+SYN-1017 : Remove 22 const input seq instances
+SYN-1019 : Optimized 29 mux instances.
+SYN-1020 : Optimized 25 distributor mux.
+SYN-1019 : Optimized 954 mux instances.
+SYN-2593 : bram inst: uart/replies/ramread0_syn_4 will be optimized to a new one with A-width 45 due to unused data out
+SYN-2594 : bram inst: audio/source/context_ram/ramread0_syn_4 will be optimized to a new one with A-addr 7 due to const address
+SYN-1016 : Merged 148 instances.
+SYN-1015 : Optimize round 2, 1531 better
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "audio/source/context_ram/ramread0_syn_4" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(343) / pin "bea[0]"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "audio/source/context_ram/ramread0_syn_4" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(343) / pin "beb[0]"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "uart/replies/ramread0_syn_4" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v(80) / pin "bea[0]"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "uart/replies/ramread0_syn_4" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/sync_fifo.v(80) / pin "beb[0]"
+SYN-5025 WARNING: Using 0 for all undriven pins and nets
+SYN-3010 : Optimized 415 DFF(s)
+SYN-1014 : Optimize round 1
+SYN-1017 : Remove 2 const input seq instances
+SYN-1019 : Optimized 9 mux instances.
+SYN-1020 : Optimized 781 distributor mux.
+SYN-1019 : Optimized 13 mux instances.
+SYN-1016 : Merged 4557 instances.
+SYN-1015 : Optimize round 1, 5510 better
+SYN-1014 : Optimize round 2
+SYN-1017 : Remove 12 const input seq instances
+SYN-1020 : Optimized 65 distributor mux.
+SYN-1019 : Optimized 9 mux instances.
+SYN-1016 : Merged 158 instances.
+SYN-1015 : Optimize round 2, 260 better
+SYN-1014 : Optimize round 3
+SYN-1019 : Optimized 9 mux instances.
+SYN-1015 : Optimize round 3, 18 better
+SYN-1014 : Optimize round 4
+SYN-1015 : Optimize round 4, 9 better
+SYN-1014 : Optimize round 5
+SYN-1015 : Optimize round 5, 0 better
+SYN-1001 : End Stage 1.6 | Optimize Iteratively; Time: 22.656675s wall, 21.140625s user + 0.703125s system = 21.843750s CPU (96.4%); Memory(MB): used = 856, reserved = 853, peak = 1030;
+
+SYN-1079 : finish stage Optimize Iteratively. Total instances: 40718, Total nets: 46018.
+
+SYN-1001 : Stage 1.7 | Check Design
+SYN-1001 : End Stage 1.7 | Check Design; Time: 0.011846s wall, 0.015625s user + 0.000000s system = 0.015625s CPU (131.9%); Memory(MB): used = 856, reserved = 854, peak = 1030;
+
+SYN-1079 : finish stage Check Design. Total instances: 40718, Total nets: 46018.
+
+SYN-1001 : End Stage 1 | Optimize RTL; Time: 31.792671s wall, 30.187500s user + 0.781250s system = 30.968750s CPU (97.4%); Memory(MB): used = 856, reserved = 854, peak = 1030;
+
+SYN-1079 : finish stage Optimize RTL. Total instances: 40718, Total nets: 46018.
+
+RUN-1003 : finish command "optimize_rtl" in  31.800223s wall, 30.203125s user + 0.781250s system = 30.984375s CPU (97.4%)
+
+RUN-1004 : used memory is 856 MB, reserved memory is 854 MB, peak memory is 1030 MB
+RUN-1002 : start command "report_area -file rtl.area"
+RUN-1001 : standard
+***Report Model: safevision_v3_top Device: EG4S20BG256***
+
+IO Statistics
+#IO                        21
+  #input                    7
+  #output                  13
+  #inout                    1
+
+Gate Statistics
+#Basic gates            28661
+  #and                   2773
+  #nand                     0
+  #or                    2008
+  #nor                      0
+  #xor                    393
+  #xnor                     0
+  #buf                      0
+  #not                   3097
+  #bufif1                  33
+  #MX21                  7270
+  #FADD                     0
+  #DFF                  13087
+  #LATCH                    0
+#MACRO_ADD                837
+#MACRO_EQ                 585
+#MACRO_MULT                18
+#MACRO_MUX               7122
+#MACRO_OTHERS              33
+
+RUN-1002 : start command "read_sdc D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board.sdc"
+RUN-1002 : start command "optimize_gate"
+RUN-1001 : Open license file D:/Anlogic/TD_6.2.1_Engineer_6.2.168.116/license/Anlogic.lic
+SYN-1001 : Stage 2 | Optimize Gate
+SYN-1001 : Stage 2.1 | Map Reg
+SYN-1001 : End Stage 2.1 | Map Reg; Time: 0.728656s wall, 0.734375s user + 0.000000s system = 0.734375s CPU (100.8%); Memory(MB): used = 856, reserved = 854, peak = 1030;
+
+SYN-1079 : finish stage Map Reg. Total instances: 40718, Total nets: 46018.
+
+SYN-1001 : Stage 2.2 | Map IO
+SYN-2002 : EG_PHY_SDRAM_2M_32 instance memory_ip/sdram.
+SYN-2001 : Map 76 IOs to PADs of model 'safevision_v3_top'
+SYN-1001 : End Stage 2.2 | Map IO; Time: 0.230939s wall, 0.234375s user + 0.000000s system = 0.234375s CPU (101.5%); Memory(MB): used = 857, reserved = 855, peak = 1030;
+
+SYN-1001 : Stage 2.3 | Map Macro
+RUN-1002 : start command "update_pll_param -module safevision_v3_top"
+SYN-6577 WARNING: The clock signal "memory_ip/u2_ram/SDRAM_CLK" is added with the synthetic instruction (keep/mark_debug/dont_touch/max_fanout), which may create additional logic on this net
+SYN-2501 : Processed 0 LOGIC_BUF instances.
+SYN-2501 : 1 BUFG to GCLK
+SYN-2541 : Logic Ram FIFO "transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/u_iic_w11_d1024_fifo/u_logic_ramfifo"
+SYN-2541 : Logic Ram FIFO "transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_gen/U_audio_sample_packet_2_channel/u_w96_d1024_fifo/u_logic_ramfifo"
+SYN-2541 : Logic Ram FIFO "transmitter/u_hdmi_tx_controller_wrapper/u_video_axi_stream_receiver/u_w24_d1024_fifo/u_logic_ramfifo"
+SYN-6562 WARNING: The init value of "adapter/ramread0_syn_4(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v(121))" will be ignored since gate eram_init is set to off
+SYN-6562 WARNING: The init value of "audio/hdmi_samples/q/u_fifo/ram_inst/ramread0_syn_4(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(398))" will be ignored since gate eram_init is set to off
+SYN-6562 WARNING: The init value of "audio/ingress_shared/q/u_fifo/ram_inst/ramread0_syn_4(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(398))" will be ignored since gate eram_init is set to off
+SYN-6562 WARNING: The init value of "audio/samples/q/u_fifo/ram_inst/ramread0_syn_4(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(398))" will be ignored since gate eram_init is set to off
+SYN-6562 WARNING: The init value of "audio/source/context_ram/ramread0_syn_4(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(343))" will be ignored since gate eram_init is set to off
+SYN-6562 WARNING: The init value of "player/checked_reader$u_rd/ramread0_syn_4(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/storage/sd_checked_sector_reader.v(34))" will be ignored since gate eram_init is set to off
+SYN-6562 WARNING: The init value of "sink/u_fifo/fifo/ram_inst/ramread0_syn_4(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v(398))" will be ignored since gate eram_init is set to off
+SYN-6562 WARNING: The init value of "transmitter/u_hdmi_edid_wrapper/u_iic_master_wrapper/u_iic_transmitter_controller/u_iic_w11_d1024_fifo/u_logic_ramfifo_syn_327(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(0))" will be ignored since gate eram_init is set to off
+SYN-6562 WARNING: The init value of "transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_gen/U_audio_sample_packet_2_channel/u_w96_d1024_fifo/u_logic_ramfifo_syn_497(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(0))" will be ignored since gate eram_init is set to off
+SYN-6562 WARNING: The init value of "transmitter/u_hdmi_tx_controller_wrapper/u_video_axi_stream_receiver/u_w24_d1024_fifo/u_logic_ramfifo_syn_353(D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v(0))" will be ignored since gate eram_init is set to off
+SYN-6562 Similar messages will be suppressed.
+SYN-2571 : Map 18 macro multiplier
+SYN-2571 : Optimize after map_dsp, round 1
+SYN-1016 : Merged 10 instances.
+SYN-2571 : Optimize after map_dsp, round 1, 10 better
+SYN-2571 : Optimize after map_dsp, round 2
+SYN-2571 : Optimize after map_dsp, round 2, 0 better
+SYN-1001 : Generate 97 bigger adders
+SYN-1001 : Convert 10 adder
+SYN-1001 : Optimize 161 adders
+SYN-1001 : Convert 12 adder
+SYN-1001 : Optimize 6 less-than instances
+SYN-2501 : Optimize round 1
+SYN-1016 : Merged 4112 instances.
+SYN-2501 : Optimize round 1, 10927 better
+SYN-2501 : Optimize round 2
+SYN-2501 : Optimize round 2, 0 better
+SYN-2501 : Optimize round 1
+SYN-1016 : Merged 6 instances.
+SYN-2501 : Optimize round 1, 7 better
+SYN-2501 : Optimize round 2
+SYN-2501 : Optimize round 2, 0 better
+SYN-2501 : Map 774 macro adder(s)
+SYN-1019 : Optimized 3886 mux instances.
+SYN-1016 : Merged 3860 instances.
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "uart/rx/meta_reg" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/common/uart_rx.v(11) / pin "clk"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "memory_ip/u2_ram/u2_wrrd/Sdr_rd_dout_reg[0]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0) / pin "clk"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "memory_ip/u2_ram/u2_wrrd/Sdr_rd_dout_reg[1]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0) / pin "clk"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "memory_ip/u2_ram/u2_wrrd/Sdr_rd_dout_reg[2]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0) / pin "clk"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "memory_ip/u2_ram/u2_wrrd/Sdr_rd_dout_reg[3]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0) / pin "clk"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "memory_ip/u2_ram/u2_wrrd/Sdr_rd_dout_reg[4]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0) / pin "clk"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "memory_ip/u2_ram/u2_wrrd/Sdr_rd_dout_reg[5]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0) / pin "clk"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "memory_ip/u2_ram/u2_wrrd/Sdr_rd_dout_reg[6]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0) / pin "clk"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "memory_ip/u2_ram/u2_wrrd/Sdr_rd_dout_reg[7]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0) / pin "clk"
+SYN-5011 WARNING: Undriven pin: model "safevision_v3_top" / inst "memory_ip/u2_ram/u2_wrrd/Sdr_rd_dout_reg[8]" in D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v(0) / pin "clk"
+SYN-5011 Similar messages will be suppressed.
+SYN-5025 WARNING: Using 0 for all undriven pins and nets
+SYN-1001 : End Stage 2.3 | Map Macro; Time: 9.310409s wall, 8.937500s user + 0.203125s system = 9.140625s CPU (98.2%); Memory(MB): used = 918, reserved = 908, peak = 1030;
+
+SYN-1079 : finish stage Map Macro. Total instances: 58409, Total nets: 63434.
+
+SYN-1001 : Stage 2.4 | Map Gate
+SYN-3001 : Collect 11181 PI 8157 PO (57 timing unconstrained) for mapping
+SYN-2581 : Mapping with K=5, #lut = 16555 (3.37), #lev = 23 (4.42), #crit_level = 14
+SYN-2551 : Post LUT mapping optimization.
+SYN-2581 : Mapping with K=5, #lut = 15829 (3.35), #lev = 23 (4.32), #crit_level = 0
+SYN-3001 : Logic optimization opt = 5.28 sec, map = 1.65 sec, post map opt = 5.25 sec.
+SYN-3001 : Mapper removed 1 lut buffers
+SYN-1001 : End Stage 2.4 | Map Gate; Time: 28.995598s wall, 28.125000s user + 0.421875s system = 28.546875s CPU (98.5%); Memory(MB): used = 978, reserved = 966, peak = 1030;
+
+SYN-1001 : Packing model "safevision_v3_top" ...
+SYN-4010 : Pack lib has 58 rtl pack models with 26 top pack blocks
+SYN-1014 : Optimize round 1
+SYN-1015 : Optimize round 1, 0 better
+SYN-4002 : Packing 13216 DFF/LATCH to SEQ ...
+SYN-4009 : Pack 32 carry chain into lslice
+SYN-4007 : Packing 1055 adder to BLE ...
+SYN-4008 : Packed 1055 adder and 55 SEQ to BLE.
+SYN-4007 : Packing 0 gate4 to BLE ...
+SYN-4008 : Packed 0 gate4 and 0 SEQ to BLE.
+SYN-4013 : Packed 27 DRAM and 0 SEQ.
+RUN-1002 : start command "report_qor -step gate -file gate.qor"
+RUN-1002 : start command "start_timer"
+-----------------------------------------------------------
+| QoR metrics               |         value               |
+-----------------------------------------------------------
+| Timing                    |                             |
+|     Setup WNS             |        -5023                |
+|     Setup TNS             |      -484435                |
+|     Num of violated S-EP  |          585                |
+|     Hold WNS              |          471                |
+|     Hold TNS              |            0                |
+|     Num of violated H-EP  |            0                |
+-----------------------------------------------------------
+| Utilization               |                             |
+|     #registers            |        13161                |
+|     #luts                 |        15820                |
+|     #lut1                 |          118                |
+|     #lut1(~A)             |          118                |
+|     #slices               |          907                |
+|     slices percentage     |        9.26%                |
+|     #RAMs                 |           50                |
+|     #DSPs                 |           13                |
+|     #f7mux                |        0.00%                |
+|     #MACROs               |           94                |
+|     #insts in MACRO       |          907                |
+-----------------------------------------------------------
+| kept_net                  |                             |
+|     #syn_keep             |         1593                |
+|     #keep_hier            |            0                |
+|     #dont_touch           |            0                |
+|     #mark_debug           |            0                |
+|     #max_fanout_keep      |            0                |
+|     #async_reg            |          130                |
+-----------------------------------------------------------
+| Top 10% datanet fanout#   |        35.09                |
+| dff(single fanout)->dff   |         1990                |
+| dff(single fanout)->dram  |            0                |
+-----------------------------------------------------------
+| Over-quota path num*      |                             |
+|     sound_pl...           |           14                |
+|     video_ba...           |           10                |
+|     Total                 |           24                |
+-----------------------------------------------------------
+| Rent**                    |                             |
+|     supervisor            |         0.72                |
+-----------------------------------------------------------
+Note*: Over-quota path shows the over-path-level-threshold path number of each clock.
+       The clock will not be shown if no path is with path level over the threshold.
+       The threshold is defined as worst path_margin / 800ps.
+Note**: Rent shows the rent exponent value of the modules whose rent value exceeds the threshold.
+        Only modules under top are reported, and the threshold is defined as 0.7.
+
+Over-quota Path Details
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                  Clock                  |  Index  |  Budget(Period)  |  Level(Quota)  |              Cell Type List              |        Reason        |  Slack  
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+       sound_pll/pll_inst.clkc[1]        |    1    |   -126(81380)    |      2(1)      |    SEQ,BUFKEEP,BUFKEEP,LUT2,LUT2,SEQ     |  large launch delay  |  -4756  
+                                         |    2    |   -126(81380)    |      2(1)      |    SEQ,BUFKEEP,BUFKEEP,LUT2,LUT2,SEQ     |  large launch delay  |  -4756  
+                                         |    3    |   -126(81380)    |      2(1)      |    SEQ,BUFKEEP,BUFKEEP,LUT2,LUT2,SEQ     |  large launch delay  |  -4756  
+                                         |    4    |   -126(81380)    |      2(1)      |    SEQ,BUFKEEP,BUFKEEP,LUT2,LUT2,SEQ     |  large launch delay  |  -4756  
+                                         |    5    |   -126(81380)    |      2(1)      |    SEQ,BUFKEEP,BUFKEEP,LUT2,LUT2,SEQ     |  large launch delay  |  -4756  
+  video_base$video_pll/pll_inst.clkc[1]  |    1    |    152(39706)    |      3(1)      |  SEQ,BUFKEEP,BUFKEEP,LUT2,LUT4,LUT5,SEQ  |  large launch delay  |  -4007  
+                                         |    2    |    156(39706)    |      2(1)      |    SEQ,BUFKEEP,BUFKEEP,LUT2,LUT2,SEQ     |  large launch delay  |  -4007  
+                                         |    3    |    156(39706)    |      2(1)      |    SEQ,BUFKEEP,BUFKEEP,LUT2,LUT2,SEQ     |  large launch delay  |  -4007  
+                                         |    4    |    156(39706)    |      1(1)      |       SEQ,BUFKEEP,BUFKEEP,LUT2,SEQ       |  large launch delay  |  -2999  
+                                         |    5    |    156(39706)    |      1(1)      |       SEQ,BUFKEEP,BUFKEEP,LUT2,SEQ       |  large launch delay  |  -2999  
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Note: Table only show top 5 paths for each clock group in default
+
+Logic Level Distribution
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Clock                                  |  Period              |  0      |  1     |  2     |  3     |  4     |  5     |  6     |  7     |  8     |  9    |  10   |  11   |  12   |  13   |  14   |  15  |  16  |  17  |  18  |  19  |  20  |  21  |  22  |  23  |  24  |  25  |  26  |  27  |  28
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  board_clk                              |  20.000ns (50MHz)    |  3101   |  815   |  737   |  409   |  1778  |  467   |  371   |  371   |  596   |  422  |  428  |  162  |  24   |  45   |  168  |  9   |  9   |  21  |  13  |  1   |  1   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  sd_fast                                |  80.000ns (12MHz)    |  2      |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0    |  0    |  0    |  0    |  0    |  0    |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  sd_ident                               |  10000.000ns (0MHz)  |  0      |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0    |  0    |  0    |  0    |  0    |  0    |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  sound_pll/pll_inst.clkc[0]             |  40.000ns (25MHz)    |  0      |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0    |  0    |  0    |  0    |  0    |  0    |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  sound_pll/pll_inst.clkc[1]             |  81.380ns (12MHz)    |  1113   |  349   |  158   |  84    |  197   |  236   |  163   |  64    |  18    |  16   |  18   |  6    |  4    |  2    |  2    |  2   |  2   |  2   |  2   |  2   |  2   |  2   |  2   |  4   |  2   |  1   |  1   |  2   |  1
+  system_pll/pll_inst.clkc[0]            |  10.000ns (100MHz)   |  4065   |  420   |  281   |  143   |  393   |  489   |  132   |  431   |  124   |  3    |  5    |  0    |  0    |  0    |  0    |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  system_pll/pll_inst.clkc[1]            |  20.000ns (50MHz)    |  2621   |  1172  |  524   |  415   |  365   |  287   |  417   |  333   |  184   |  91   |  143  |  62   |  96   |  196  |  15   |  2   |  7   |  0   |  12  |  1   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  system_pll/pll_inst.clkc[2]            |  20.000ns (50MHz)    |  16     |  32    |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0    |  0    |  0    |  0    |  0    |  0    |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  video_base$video_pll/pll_inst.clkc[0]  |  3.529ns (283MHz)    |  0      |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0    |  0    |  0    |  0    |  0    |  0    |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  video_base$video_pll/pll_inst.clkc[1]  |  39.706ns (25MHz)    |  5581   |  1239  |  348   |  269   |  377   |  217   |  294   |  75    |  111   |  67   |  96   |  37   |  18   |  9    |  3    |  1   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  video_base$video_pll/pll_inst.clkc[2]  |  7.941ns (125MHz)    |  51     |  39    |  0     |  0     |  0     |  0     |  0     |  0     |  0     |  0    |  0    |  0    |  0    |  0    |  0    |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0   |  0
+  Total                                  |  NA                  |  16550  |  4066  |  2048  |  1320  |  3110  |  1696  |  1377  |  1274  |  1033  |  599  |  690  |  267  |  142  |  252  |  188  |  14  |  18  |  23  |  27  |  4   |  3   |  2   |  2   |  4   |  2   |  1   |  1   |  2   |  1
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Note: The table count the worst 100000 paths, each endpoint count only one time.(34716 paths analyzed)
+
+Hierarchical Rent Exponent Report
++---------------------------------------------------------------------------------------------------+
+|Inst                 |Model                                 |Rent     |Cell     |Pin     |Term     |
++---------------------------------------------------------------------------------------------------+
+|top                  |safevision_v3_top                     |0.15     |33478    |132957  |18       |
+|  supervisor         |v3_supervisor_30                      |0.72     |1090     |4771    |686      |
+|  ref_status_mailbox |video_cdc_mailbox_16                  |0.69     |1164     |3055    |341      |
+|  row_guard          |v3_row_integrity_26                   |0.60     |1172     |5335    |322      |
+|  audio              |v3_audio_system_3                     |0.59     |6522     |25369   |711      |
+|  uart               |v3_uart_link_33                       |0.59     |1309     |5720    |302      |
+|  transmitter        |hdmi_1_4b_transmitter_core_wrapper_32 |0.59     |2951     |10547   |398      |
+|  player             |sd_bmp_player_14                      |0.56     |6525     |28146   |579      |
+|  video              |v3_video_display_core_34              |0.50     |6450     |24203   |310      |
+|  sink               |bmp_frame_sink_28                     |0.48     |1101     |4466    |113      |
++---------------------------------------------------------------------------------------------------+
+Note: Cell represents total number of cells inside module; Pin represents total number of pins
+      which have net connection inside module; Term represents total number of PIs and POs of module.
+      Rent represents the relationship between number of terms and number of cells in module.
+      A module with higher rent corresponds to highly connected logic and strong connectivity with others.
+Report gate stage QoR done.
+
+SYN-1001 : The design has 43 dangling syn_keep insts,2 dangling async_reg insts.
+RUN-1003 : finish command "report_qor -step gate -file gate.qor" in  4.125305s wall, 4.078125s user + 0.015625s system = 4.093750s CPU (99.2%)
+
+RUN-1004 : used memory is 972 MB, reserved memory is 960 MB, peak memory is 1030 MB
+SYN-1001 : End Stage 2 | Optimize Gate; Time: 43.756982s wall, 42.484375s user + 0.640625s system = 43.125000s CPU (98.6%); Memory(MB): used = 972, reserved = 960, peak = 1030;
+
+RUN-1003 : finish command "optimize_gate" in  43.764210s wall, 42.484375s user + 0.640625s system = 43.125000s CPU (98.5%)
+
+RUN-1004 : used memory is 972 MB, reserved memory is 960 MB, peak memory is 1030 MB
+RUN-1002 : start command "legalize_phy_inst"
+SYN-1001 : Stage 3 | Legalize Phy Inst
+SYN-1011 : Flatten model safevision_v3_top
+SYN-1001 : End Stage 3 | Legalize Phy Inst; Time: 0.099050s wall, 0.093750s user + 0.000000s system = 0.093750s CPU (94.6%); Memory(MB): used = 972, reserved = 960, peak = 1030;
+
+RUN-1002 : start command "report_area -io_info -file gate.area"
+RUN-1001 : standard
+***Report Model: safevision_v3_top Device: EG4S20BG256***
+
+IO Statistics
+#IO                        21   out of    188   11.17%
+  #input                    7
+  #output                  13
+  #inout                    1
+
+LUT Statistics
+#Total_luts             15820
+  #lut4                 13944
+  #lut5                  1876
+  #lut6                     0
+  #lut5_mx41                0
+  #lut4_alu1b               0
+
+Utilization Statistics
+#lut                    17634   out of  19600   89.97%
+#reg                    13183   out of  19600   67.26%
+#bram                      50   out of     64   78.12%
+  #bram9k                  50
+  #fifo9k                   0
+#bram32k                    0   out of     16    0.00%
+#dsp                       13   out of     29   44.83%
+#pad                       25   out of    188   13.30%
+  #ireg                     1
+  #oreg                     8
+  #treg                     1
+#pll                        3   out of      4   75.00%
+#gclk                       1   out of     16    6.25%
+
+RUN-1002 : start command "report_area -verbose -file gate.hierarchy.area"
+RUN-1001 : standard
+***Report Model: safevision_v3_top Device: EG4S20BG256***
+
+IO Statistics
+#IO                        21   out of    188   11.17%
+  #input                    7
+  #output                  13
+  #inout                    1
+
+LUT Statistics
+#Total_luts             15820
+  #lut4                 13944
+  #lut5                  1876
+  #lut6                     0
+  #lut5_mx41                0
+  #lut4_alu1b               0
+
+Utilization Statistics
+#mslice                   592   out of   4900   12.08%
+  #mreg                    55
+  #mle                   1184
+#lslice                   315   out of   4900    6.43%
+  #lreg                     0
+  #lle                    630
+#plb                        0   out of   2450    0.00%
+#lut                    17634   out of  19600   89.97%
+#reg                    13183   out of  19600   67.26%
+#bram                      50   out of     64   78.12%
+  #bram9k                  50
+  #fifo9k                   0
+#bram32k                    0   out of     16    0.00%
+#dsp                       13   out of     29   44.83%
+#pad                       25   out of    188   13.30%
+  #ireg                     1
+  #oreg                     8
+  #treg                     1
+#pll                        3   out of      4   75.00%
+#gclk                       1   out of     16    6.25%
+
+RUN-1002 : start command "write_verilog gate.netlist.v"
+HDL-1201 : write out verilog file gate.netlist.v
+RUN-1002 : start command "export_db gate.db"
+RUN-1001 : Exported flow parameters
+RUN-1001 : Exported /
+RUN-1001 : Exported libs
+RUN-1001 : Exported entities
+RUN-1001 : Exported ports
+RUN-1001 : Exported pins
+RUN-1001 : Exported instances
+RUN-1001 : Exported nets
+RUN-1001 : Exported buses
+RUN-1001 : Exported models
+RUN-1001 : Exported packer
+RUN-1001 : Exported congestions
+RUN-1001 : Exported violations
+RUN-1001 : Exported ATMR Setting
+RUN-1001 : Exported timing constraints
+RUN-1001 : Exported IO constraints
+RUN-1001 : Exported Inst constraints
+RUN-1001 : Exported ChipWatcher
+V3 TD SYNTHESIZED mode=base (not final routed signoff)

@@ -1,0 +1,32 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\v3_board_top",
+  "suite": "v3_board_top",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "6e2d4f22c793e77587244bc3af18f6a70e66efd89e2a7a196947bba9e6a4da1e",
+  "tests": [
+    {
+      "top": "tb_v3_board_top",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\v3_board_top\\tb_v3_board_top\\sim.log",
+        "sha256": "6e840e5d37aa2ee334e82c5f53b24218ef0b234a3bd535279b619e4fcd789e93",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 634,
+      "elapsed_s": 11.922,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\v3_board_top\\tb_v3_board_top\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\v3_board_top\\tb_v3_board_top\\sources.sha256.json"
+    }
+  ]
+}

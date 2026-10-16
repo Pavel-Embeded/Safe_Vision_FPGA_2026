@@ -1,0 +1,506 @@
+{
+  "created_at_utc": "2026-10-16T05:04:14.059485+00:00",
+  "complete": true,
+  "positive_native_tests": 100,
+  "unique_tops": [
+    "tb_a_basics",
+    "tb_a_graphics_frontend",
+    "tb_ab_storage_contract",
+    "tb_b_frame_memory",
+    "tb_bmp_frame_sink",
+    "tb_bmp_frame_write_bridge",
+    "tb_bmp_parser",
+    "tb_bmp_unpack",
+    "tb_c_audio",
+    "tb_c_emergency_fsm",
+    "tb_c_fault_manager",
+    "tb_c_input_sync",
+    "tb_c_playback_fsm",
+    "tb_c_priority_arbiter",
+    "tb_c_watchdog",
+    "tb_common_fifo",
+    "tb_crc",
+    "tb_fat32_boot_parser",
+    "tb_fat32_cluster_walker",
+    "tb_fat32_directory_scanner",
+    "tb_file_index",
+    "tb_file_streamer",
+    "tb_font8x16_rom",
+    "tb_frame_swap_ctrl",
+    "tb_frame_writer",
+    "tb_frame_writer_bounds",
+    "tb_framebuffer_loopback_core",
+    "tb_mbr_parser",
+    "tb_memory_arbiter",
+    "tb_osd_overlay",
+    "tb_pattern_generator",
+    "tb_sd_clock_params",
+    "tb_sd_initializer",
+    "tb_sd_sector_reader",
+    "tb_sdr_pat_gen",
+    "tb_sdram_app_adapter",
+    "tb_top_sdram_loopback",
+    "tb_top_stage5_sector_rd",
+    "tb_top_stage6_fat32_mount",
+    "tb_v3_audio_base50",
+    "tb_v3_audio_context",
+    "tb_v3_audio_context_loop",
+    "tb_v3_audio_hd50",
+    "tb_v3_audio_ingress",
+    "tb_v3_audio_packet",
+    "tb_v3_audio_ring",
+    "tb_v3_audio_sample_fifo",
+    "tb_v3_audio_system",
+    "tb_v3_audio_underflow",
+    "tb_v3_audio_underflow_serial",
+    "tb_v3_audio_volume",
+    "tb_v3_audio_wav",
+    "tb_v3_audio_wav_errors",
+    "tb_v3_aux_mux",
+    "tb_v3_bmp_bounds",
+    "tb_v3_board_clocks",
+    "tb_v3_board_top",
+    "tb_v3_checked_sector",
+    "tb_v3_cluster_shift",
+    "tb_v3_color",
+    "tb_v3_controls",
+    "tb_v3_controls_period",
+    "tb_v3_coords_fade",
+    "tb_v3_directory_compact",
+    "tb_v3_directory_sv_names",
+    "tb_v3_energy_acr",
+    "tb_v3_fat_geometry",
+    "tb_v3_final_crc",
+    "tb_v3_fps_boundary",
+    "tb_v3_math",
+    "tb_v3_parser_digit_seen",
+    "tb_v3_priority_base50",
+    "tb_v3_priority_difference",
+    "tb_v3_priority_hd50",
+    "tb_v3_priority_serial",
+    "tb_v3_priority_serial_gain",
+    "tb_v3_priority_serial_one",
+    "tb_v3_pv_base37",
+    "tb_v3_pv_base73",
+    "tb_v3_pv_hd37",
+    "tb_v3_pv_hd73",
+    "tb_v3_recovery_events",
+    "tb_v3_resident",
+    "tb_v3_row_integrity",
+    "tb_v3_row_integrity_full",
+    "tb_v3_shared_storage",
+    "tb_v3_spi_budget",
+    "tb_v3_status_layers",
+    "tb_v3_supervisor",
+    "tb_v3_supervisor_tick",
+    "tb_v3_uart",
+    "tb_v3_uart_link",
+    "tb_v3_video_final_base",
+    "tb_v3_video_final_hd",
+    "tb_v3_video_fps",
+    "tb_v3_video_midfade_base",
+    "tb_v3_video_midfade_hd",
+    "tb_v3_video_one_to_one",
+    "tb_v3_volume_serial",
+    "tb_wav_parser"
+  ],
+  "selected_runsets": [
+    {
+      "suite": "legacy_a",
+      "key": "system_legacy_a",
+      "native_tests": 5,
+      "tops": [
+        "tb_a_basics",
+        "tb_pattern_generator",
+        "tb_font8x16_rom",
+        "tb_osd_overlay",
+        "tb_a_graphics_frontend"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/system_legacy_a",
+      "result_sha256": "6d46f7cf21a222a0488739bdfdf87deab375c96a401a51cebf18bee28296ca50"
+    },
+    {
+      "suite": "legacy_b",
+      "key": "system_legacy_b",
+      "native_tests": 28,
+      "tops": [
+        "tb_ab_storage_contract",
+        "tb_b_frame_memory",
+        "tb_bmp_frame_sink",
+        "tb_bmp_frame_write_bridge",
+        "tb_bmp_parser",
+        "tb_bmp_unpack",
+        "tb_common_fifo",
+        "tb_crc",
+        "tb_fat32_boot_parser",
+        "tb_fat32_cluster_walker",
+        "tb_fat32_directory_scanner",
+        "tb_file_index",
+        "tb_file_streamer",
+        "tb_frame_swap_ctrl",
+        "tb_frame_writer_bounds",
+        "tb_frame_writer",
+        "tb_framebuffer_loopback_core",
+        "tb_mbr_parser",
+        "tb_memory_arbiter",
+        "tb_sd_clock_params",
+        "tb_sd_initializer",
+        "tb_sd_sector_reader",
+        "tb_sdr_pat_gen",
+        "tb_sdram_app_adapter",
+        "tb_top_sdram_loopback",
+        "tb_top_stage5_sector_rd",
+        "tb_top_stage6_fat32_mount",
+        "tb_wav_parser"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/system_legacy_b",
+      "result_sha256": "2142f4003c3d2ed1020cb6d4cebbd1943d8ec5df9599229506d7c59d32f91e3d"
+    },
+    {
+      "suite": "v3",
+      "key": "system_v3",
+      "native_tests": 13,
+      "tops": [
+        "tb_v3_math",
+        "tb_v3_recovery_events",
+        "tb_v3_energy_acr",
+        "tb_v3_coords_fade",
+        "tb_v3_uart",
+        "tb_v3_controls",
+        "tb_v3_color",
+        "tb_v3_row_integrity",
+        "tb_v3_uart_link",
+        "tb_v3_checked_sector",
+        "tb_v3_controls_period",
+        "tb_v3_parser_digit_seen",
+        "tb_v3_cluster_shift"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/system_v3",
+      "result_sha256": "3cdfdf953e86f2f04dc19d46a965a31403e8bcbcd036f0fa962cfbb929538a41"
+    },
+    {
+      "suite": "bmp_bounds",
+      "key": "system_bmp_bounds",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_bmp_bounds"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/system_bmp_bounds",
+      "result_sha256": "7174f464e2f0672a6a242f8950412e48cabd72abc31d6e5d4e97bda11dfe1013"
+    },
+    {
+      "suite": "row_integrity_full",
+      "key": "system_row_integrity_full",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_row_integrity_full"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/system_row_integrity_full",
+      "result_sha256": "6fb20b22eab43e158ac4cf70b3999f67b78bf93bca763d74a700751d971ea069"
+    },
+    {
+      "suite": "media",
+      "key": "system_media",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_resident"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/system_media",
+      "result_sha256": "63d8199659cbdbc9f383ee1ae8c53abd98e45294cd5a5d87b4b1f9c23737e71e"
+    },
+    {
+      "suite": "media_crc",
+      "key": "system_media_crc",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_final_crc"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/system_media_crc",
+      "result_sha256": "53dc3efd70725cb1e7f7e62419acf6e505799fb550fcc267050d0a7d75dde66d"
+    },
+    {
+      "suite": "v3_board_top",
+      "key": "contract_v3_board_top",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_board_top"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/contract_v3_board_top",
+      "result_sha256": "6e2d4f22c793e77587244bc3af18f6a70e66efd89e2a7a196947bba9e6a4da1e"
+    },
+    {
+      "suite": "video_v3_fps",
+      "key": "contract_video_v3_fps",
+      "native_tests": 2,
+      "tops": [
+        "tb_v3_video_fps",
+        "tb_v3_fps_boundary"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/contract_video_v3_fps",
+      "result_sha256": "853de9900fb167b9de189fdda30343e5b2d4ec3be86cdfdfd9af357271a0fe10"
+    },
+    {
+      "suite": "v3_board_clocks",
+      "key": "contract_v3_board_clocks",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_board_clocks"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/contract_v3_board_clocks",
+      "result_sha256": "c2d485862088df666ac5364091a58bfa9d613dd160bfe1a6481c46bc1160534e"
+    },
+    {
+      "suite": "audio_modes",
+      "key": "contract_audio_modes",
+      "native_tests": 2,
+      "tops": [
+        "tb_v3_audio_base50",
+        "tb_v3_audio_hd50"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/contract_audio_modes",
+      "result_sha256": "721f16def0281ce96d3ec710d36bf13aef5d2405eded0ff22256f1532071adf5"
+    },
+    {
+      "suite": "directory_compact",
+      "key": "contract_directory_compact",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_directory_compact"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/contract_directory_compact",
+      "result_sha256": "270aba903c2200f2792aa1cbe88f8eb945fe7a437a5d28502eb96332fa03b93f"
+    },
+    {
+      "suite": "directory_sv",
+      "key": "contract_directory_sv",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_directory_sv_names"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/contract_directory_sv",
+      "result_sha256": "414349d5df72e38ffc70dd461f06ee539bc4eaa396816b2324d9f8d95476e555"
+    },
+    {
+      "suite": "fat_geometry",
+      "key": "contract_fat_geometry",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_fat_geometry"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/contract_fat_geometry",
+      "result_sha256": "051d5d8af39e9e786f9252bad0fa6d25dda135fe444112a50a0b5f1c803495bc"
+    },
+    {
+      "suite": "c",
+      "key": "stable_c",
+      "native_tests": 8,
+      "tops": [
+        "tb_c_audio",
+        "tb_c_emergency_fsm",
+        "tb_c_fault_manager",
+        "tb_c_input_sync",
+        "tb_c_playback_fsm",
+        "tb_c_priority_arbiter",
+        "tb_c_watchdog",
+        "tb_v3_priority_difference"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/stable_c",
+      "result_sha256": "9641d79a01028bf3a50b2b130e84b6d849bf7e5fc1ad80305336a6c692d29ae8"
+    },
+    {
+      "suite": "priority_serial",
+      "key": "stable_priority_serial",
+      "native_tests": 3,
+      "tops": [
+        "tb_v3_priority_serial",
+        "tb_v3_priority_serial_gain",
+        "tb_v3_priority_serial_one"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/stable_priority_serial",
+      "result_sha256": "174310f201330ceadfe1ef0f02ac71d878fe585c342404e88a89afc359ca805d"
+    },
+    {
+      "suite": "volume_serial",
+      "key": "stable_volume_serial",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_volume_serial"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/stable_volume_serial",
+      "result_sha256": "2f6022960681a3782cf0b4280b226307c4cc5fdd1d8d921b70454be39a543c08"
+    },
+    {
+      "suite": "v3_board",
+      "key": "stable_v3_board",
+      "native_tests": 4,
+      "tops": [
+        "tb_v3_supervisor",
+        "tb_v3_supervisor_tick",
+        "tb_v3_aux_mux",
+        "tb_v3_spi_budget"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/stable_v3_board",
+      "result_sha256": "6c940c1113d971892df175db85245a9714075673ed0272c8386a0b9d05f72d6d"
+    },
+    {
+      "suite": "video_v3_final",
+      "key": "video_final_base",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_video_final_base"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/video_final_base",
+      "result_sha256": "91d9835b9d24f23ccaf7b11459a88c9bb89a47cff1505cfcdccf5ded0104b38c"
+    },
+    {
+      "suite": "video_v3_final",
+      "key": "video_final_hd",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_video_final_hd"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/video_final_hd",
+      "result_sha256": "ad2b407a862856da0c3583f66d7e51a84dea1566f2bd2377ee68a92b1bb95821"
+    },
+    {
+      "suite": "video_v3_midfade",
+      "key": "video_v3_midfade",
+      "native_tests": 2,
+      "tops": [
+        "tb_v3_video_midfade_base",
+        "tb_v3_video_midfade_hd"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/video_v3_midfade",
+      "result_sha256": "821f9edac34d6d3571ed1314eab5d95ccdce88cbc3499ed48c98f8ca42281640"
+    },
+    {
+      "suite": "video_v3_one_to_one",
+      "key": "video_v3_one_to_one",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_video_one_to_one"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/video_v3_one_to_one",
+      "result_sha256": "8bd5c2acab99288272a1fb7e1990b0c1c6d6cd45c7d72c70521ad617a1d91e98"
+    },
+    {
+      "suite": "audio_complete",
+      "key": "audio_complete",
+      "native_tests": 11,
+      "tops": [
+        "tb_v3_audio_ring",
+        "tb_v3_audio_wav",
+        "tb_v3_audio_wav_errors",
+        "tb_v3_audio_system",
+        "tb_v3_audio_underflow",
+        "tb_v3_audio_volume",
+        "tb_v3_audio_context",
+        "tb_v3_audio_context_loop",
+        "tb_v3_audio_packet",
+        "tb_v3_audio_ingress",
+        "tb_v3_audio_sample_fifo"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/audio_complete",
+      "result_sha256": "5aa6e5c2e942e8827f3d83fbc252cb499ee571f87b55a6ddf0e6158bdcea3b3d"
+    },
+    {
+      "suite": "audio_priority_phase",
+      "key": "audio_priority_phase",
+      "native_tests": 2,
+      "tops": [
+        "tb_v3_priority_base50",
+        "tb_v3_priority_hd50"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/audio_priority_phase",
+      "result_sha256": "0b44086286260c8176e822241e1a30c57870916ee1aed19f45912b3da176542f"
+    },
+    {
+      "suite": "audio_priority_volume",
+      "key": "audio_priority_volume",
+      "native_tests": 4,
+      "tops": [
+        "tb_v3_pv_base37",
+        "tb_v3_pv_hd37",
+        "tb_v3_pv_base73",
+        "tb_v3_pv_hd73"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/audio_priority_volume",
+      "result_sha256": "654b8eb22c2a224ae8d4916d74f6fe6c6d60cabf08aaff51b2645a590a08a5b7"
+    },
+    {
+      "suite": "audio_priority_underflow",
+      "key": "audio_priority_underflow",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_audio_underflow_serial"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/audio_priority_underflow",
+      "result_sha256": "68d3ae8e4f21e9bd8744f3ef4842206f3fd11a72320bbc563d0c0191057f92ea"
+    },
+    {
+      "suite": "layers",
+      "key": "layers",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_status_layers"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/layers",
+      "result_sha256": "5a74be90fc39a812ec5f7585dc7de076420ffe489ae941d561af6460fa06a10a"
+    },
+    {
+      "suite": "shared_storage",
+      "key": "shared_storage",
+      "native_tests": 1,
+      "tops": [
+        "tb_v3_shared_storage"
+      ],
+      "current_pass": true,
+      "evidence": "evidence/v3/current_100_20261016/shared_storage",
+      "result_sha256": "c6ccbc0640ec9392f6cbf982c232305e1fe1b9e7cee0d493c1f274504efc3c19"
+    }
+  ],
+  "strict_negative_controls": [
+    {
+      "kind": "functional",
+      "mutants": 7,
+      "normal_finish_and_detected": true,
+      "evidence": "evidence/v3/current_100_20261016/negative_functional"
+    },
+    {
+      "kind": "audio",
+      "mutants": 6,
+      "normal_finish_and_detected": true,
+      "evidence": "evidence/v3/current_100_20261016/negative_audio"
+    }
+  ],
+  "root_audio_dependency_refresh_complete": true,
+  "release_ready": false,
+  "scope": "Functional/native-simulation checkpoint only; no routed timing, bitstream or physical-board signoff"
+}

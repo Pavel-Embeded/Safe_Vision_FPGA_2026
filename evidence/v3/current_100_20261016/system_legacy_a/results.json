@@ -1,0 +1,61 @@
+{
+  "suite": "legacy_a",
+  "complete": true,
+  "process_exit": 0,
+  "source_unchanged": true,
+  "elapsed_s": 75.015,
+  "completion_marker": "PASS A stages 1-9 simulation suite",
+  "hardware_verified": false,
+  "raw_log_audit": [
+    {
+      "top": "tb_a_basics",
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\legacy_a\\native\\tb_a_basics\\xsim.log",
+      "sha256": "06f661e7ed13ae81e65f71feb21b5871220ed2e0b0a1c13319f295cbabd2bbdc",
+      "accepted": true,
+      "normal_finish": true,
+      "success_markers": 1,
+      "error_values": [],
+      "errors": []
+    },
+    {
+      "top": "tb_pattern_generator",
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\legacy_a\\native\\tb_pattern_generator\\xsim.log",
+      "sha256": "40b3753360eb9726aabb0ccc8e8055b68318cb027c71c71aa061cc80dee013f3",
+      "accepted": true,
+      "normal_finish": true,
+      "success_markers": 1,
+      "error_values": [],
+      "errors": []
+    },
+    {
+      "top": "tb_font8x16_rom",
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\legacy_a\\native\\tb_font8x16_rom\\xsim.log",
+      "sha256": "0b4ccfceea6ff349c6f2d0e86c0a178488be766b7bf60fe62fef75114fec43bb",
+      "accepted": true,
+      "normal_finish": true,
+      "success_markers": 1,
+      "error_values": [],
+      "errors": []
+    },
+    {
+      "top": "tb_osd_overlay",
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\legacy_a\\native\\tb_osd_overlay\\xsim.log",
+      "sha256": "a323ee4543ff989c45de36296f426e755179b22491ae542db64c15340a57a468",
+      "accepted": true,
+      "normal_finish": true,
+      "success_markers": 1,
+      "error_values": [],
+      "errors": []
+    },
+    {
+      "top": "tb_a_graphics_frontend",
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\legacy_a\\native\\tb_a_graphics_frontend\\xsim.log",
+      "sha256": "827d0c8d798a38216fd8d7fb76a85fdfcc2cbaf7c46073d00a3476f0cbbfc375",
+      "accepted": true,
+      "normal_finish": true,
+      "success_markers": 1,
+      "error_values": [],
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "suite": "audio_complete",
+  "results": [
+    {
+      "top": "tb_v3_audio_ring",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 540,
+      "elapsed_s": 6.766
+    },
+    {
+      "top": "tb_v3_audio_wav",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 9410,
+      "elapsed_s": 7.547
+    },
+    {
+      "top": "tb_v3_audio_wav_errors",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 300,
+      "elapsed_s": 7.062
+    },
+    {
+      "top": "tb_v3_audio_system",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2700,
+      "elapsed_s": 73.906
+    },
+    {
+      "top": "tb_v3_audio_underflow",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 1548,
+      "elapsed_s": 7.438
+    },
+    {
+      "top": "tb_v3_audio_volume",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 810,
+      "elapsed_s": 6.157
+    },
+    {
+      "top": "tb_v3_audio_context",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 9410,
+      "elapsed_s": 7.406
+    },
+    {
+      "top": "tb_v3_audio_context_loop",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 46682,
+      "elapsed_s": 10.313
+    },
+    {
+      "top": "tb_v3_audio_packet",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 404,
+      "elapsed_s": 6.422
+    },
+    {
+      "top": "tb_v3_audio_ingress",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 454,
+      "elapsed_s": 5.546
+    },
+    {
+      "top": "tb_v3_audio_sample_fifo",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 470,
+      "elapsed_s": 6.438
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

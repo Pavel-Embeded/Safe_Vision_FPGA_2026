@@ -1,0 +1,55 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\video_v3_fps",
+  "suite": "video_v3_fps",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "853de9900fb167b9de189fdda30343e5b2d4ec3be86cdfdfd9af357271a0fe10",
+  "tests": [
+    {
+      "top": "tb_v3_video_fps",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\video_v3_fps\\tb_v3_video_fps\\sim.log",
+        "sha256": "b2562a3c6f98ebafcbb2e69b11b9636ae93a3644759a741006cc9b685044b267",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 1,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 256,
+      "elapsed_s": 7.625,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\video_v3_fps\\tb_v3_video_fps\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\video_v3_fps\\tb_v3_video_fps\\sources.sha256.json"
+    },
+    {
+      "top": "tb_v3_fps_boundary",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\video_v3_fps\\tb_v3_fps_boundary\\sim.log",
+        "sha256": "b4322c37d609a3dcb1d5d62ac43654c926d0e91ad40d6166d04a7c6693f7acff",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 1,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 16396,
+      "elapsed_s": 7.672,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\video_v3_fps\\tb_v3_fps_boundary\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_regression\\contracts\\video_v3_fps\\tb_v3_fps_boundary\\sources.sha256.json"
+    }
+  ]
+}

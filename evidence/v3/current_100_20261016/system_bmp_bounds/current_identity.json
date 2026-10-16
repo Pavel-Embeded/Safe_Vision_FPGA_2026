@@ -1,0 +1,32 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\bmp_bounds",
+  "suite": "bmp_bounds",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "7174f464e2f0672a6a242f8950412e48cabd72abc31d6e5d4e97bda11dfe1013",
+  "tests": [
+    {
+      "top": "tb_v3_bmp_bounds",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\bmp_bounds\\tb_v3_bmp_bounds\\sim.log",
+        "sha256": "a5644a51dd8fbe0ba32920fd69d663f9b12a28f425ea4d16b2e2680e4a3f33b9",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 668,
+      "elapsed_s": 7.016,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\bmp_bounds\\tb_v3_bmp_bounds\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\post_fps_cluster_system\\bmp_bounds\\tb_v3_bmp_bounds\\sources.sha256.json"
+    }
+  ]
+}

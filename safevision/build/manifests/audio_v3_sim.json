@@ -38,5 +38,8 @@
   "assets": [
     "safevision/verification/fixtures/audio_disk.mem",
     "safevision/verification/fixtures/audio_pcm.mem"
+  ],
+  "generator_dependencies": [
+    "safevision/tools/gen_v3_audio_fixture.py"
   ]
 }

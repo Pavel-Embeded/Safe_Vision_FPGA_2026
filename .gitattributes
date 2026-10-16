@@ -13,3 +13,6 @@
 /safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll* -text
 /safevision/verification/experiments/** -text
 /evidence/v3/** -text
+# Generated memory images are exact replay inputs. Preserve bytes and keep
+# multi-million-line hex payloads out of source-review text diffs.
+/evidence/v3/current_100_20261016/**/*.mem binary

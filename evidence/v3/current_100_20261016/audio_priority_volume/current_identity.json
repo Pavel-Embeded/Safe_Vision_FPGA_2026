@@ -1,0 +1,101 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume",
+  "suite": "audio_priority_volume",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "654b8eb22c2a224ae8d4916d74f6fe6c6d60cabf08aaff51b2645a590a08a5b7",
+  "tests": [
+    {
+      "top": "tb_v3_pv_base37",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_base37\\sim.log",
+        "sha256": "d03a88248ec0f5bf8ce120ca4958bfcd904a46dfcfeb1466c9fc3ce5f7f02451",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 3,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 2,
+      "data_comparisons": 2908,
+      "elapsed_s": 78.954,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_base37\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_base37\\sources.sha256.json"
+    },
+    {
+      "top": "tb_v3_pv_hd37",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_hd37\\sim.log",
+        "sha256": "62ad19860d0680d23506c6f80cdcbc66889a5815db7fb75539b74b66e5654688",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 3,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 2,
+      "data_comparisons": 2908,
+      "elapsed_s": 90.359,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_hd37\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_hd37\\sources.sha256.json"
+    },
+    {
+      "top": "tb_v3_pv_base73",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_base73\\sim.log",
+        "sha256": "fad0b76cc612d38f3e8446d0da6567b654fb8e8fd0b77706fe8ea417419db14c",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 3,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 2,
+      "data_comparisons": 2908,
+      "elapsed_s": 78.109,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_base73\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_base73\\sources.sha256.json"
+    },
+    {
+      "top": "tb_v3_pv_hd73",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_hd73\\sim.log",
+        "sha256": "8ea86be18ab92101fd8926bcd1b3a9258bb751dbf1c234aac2eb993ae0afc3ca",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 3,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 2,
+      "data_comparisons": 2908,
+      "elapsed_s": 90.422,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_hd73\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_audio_complete\\audio_priority_volume\\tb_v3_pv_hd73\\sources.sha256.json"
+    }
+  ]
+}

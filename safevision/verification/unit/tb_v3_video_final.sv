@@ -260,8 +260,15 @@ module tb_v3_video_final_model #(parameter HD=0)();
   // CRC negative control: approved row signature is intentionally corrupted.
   safety=0;corrupt_crc=1;wait(tv);allow_audio=1;wait(fault);wait_frame();compare_frame(1,0,0,0);
   $display("[PASS] media-reset SAFE continuity and corrupt CRC detection");
-  $display("[TB] tb_v3_video_final_%s done frames=%0d comparisons=%0d errors=%0d",HD?"hd":"base",frames,comparisons,errors);
-  if(errors==0)$display("PASS tb_v3_video_final_%s",HD?"hd":"base");
+  // A packed-string ternary pads "hd" to the four-byte width of "base".
+  // Literal branch markers keep the strict runner's exact top-name contract.
+  if(HD)begin
+   $display("[TB] tb_v3_video_final_hd done frames=%0d comparisons=%0d errors=%0d",frames,comparisons,errors);
+   if(errors==0)$display("PASS tb_v3_video_final_hd");
+  end else begin
+   $display("[TB] tb_v3_video_final_base done frames=%0d comparisons=%0d errors=%0d",frames,comparisons,errors);
+   if(errors==0)$display("PASS tb_v3_video_final_base");
+  end
   $finish;
  end
  initial begin #2000000000;$display("[FAIL] video test timeout errors=1");$finish;end

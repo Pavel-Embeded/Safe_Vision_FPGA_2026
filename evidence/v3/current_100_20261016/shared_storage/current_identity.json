@@ -1,0 +1,32 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_storage_audio\\shared_storage",
+  "suite": "shared_storage",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "c6ccbc0640ec9392f6cbf982c232305e1fe1b9e7cee0d493c1f274504efc3c19",
+  "tests": [
+    {
+      "top": "tb_v3_shared_storage",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_storage_audio\\shared_storage\\tb_v3_shared_storage\\sim.log",
+        "sha256": "a3078dac295e9d095e0619793c0d9b3abb8298d369b26a41c4b616b4406ec086",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 15,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 14,
+      "data_comparisons": 614400,
+      "elapsed_s": 1660.703,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_storage_audio\\shared_storage\\tb_v3_shared_storage\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\fps_cluster_storage_audio\\shared_storage\\tb_v3_shared_storage\\sources.sha256.json"
+    }
+  ]
+}

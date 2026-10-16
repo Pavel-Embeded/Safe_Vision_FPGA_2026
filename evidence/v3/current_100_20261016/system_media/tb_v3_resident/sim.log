@@ -1,0 +1,120 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 16 11:46:06 2026
+# Process ID: 32392
+# Current directory: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/post_fps_cluster_system/media/tb_v3_resident
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_resident/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/post_fps_cluster_system/media/tb_v3_resident/sim.log
+# Journal file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/post_fps_cluster_system/media/tb_v3_resident\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_resident/xsim_script.tcl
+# xsim {tb_v3_resident} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[EVENT] t=338000 pl=1 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=4646513000 pl=2 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5064538000 pl=3 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5482563000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900738000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900863000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900888000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900963000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5901063000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=00/00 sk=00
+[EVENT] t=6310863000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=6310963000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=6311163000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=6320038000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6320113000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738313000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738413000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738438000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738513000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738613000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7148413000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7148513000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7148713000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7157613000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7157688000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7575863000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7575988000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7576013000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7576088000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7576188000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7985988000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7986088000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7986288000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7995163000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7995238000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413413000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413538000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413563000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413638000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413738000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8823538000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8823638000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8823838000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8832713000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8832813000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9250988000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9251113000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9251213000 pl=8 sink=0 count=0 mr=1 active=1 kick=1 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9251288000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[PROGRESS] state=8 caches=0 rejected=4
+[EVENT] t=803755288000 pl=8 sink=4 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=808710688000 pl=8 sink=2 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=808710713000 pl=8 sink=0 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=808710763000 pl=9 sink=0 count=1 mr=0 active=0 kick=0 fd=1 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=808710788000 pl=4 sink=0 count=1 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=809128963000 pl=5 sink=0 count=1 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=809129088000 pl=7 sink=0 count=1 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=809129113000 pl=6 sink=0 count=1 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=809129188000 pl=8 sink=0 count=1 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=809129288000 pl=8 sink=1 count=1 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[PROGRESS] state=8 caches=1 rejected=4
+[EVENT] t=1603633488000 pl=8 sink=4 count=1 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=1608588913000 pl=8 sink=2 count=1 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=1608588938000 pl=8 sink=0 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=1608589013000 pl=4 sink=0 count=2 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1609007213000 pl=5 sink=0 count=2 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1609007313000 pl=7 sink=0 count=2 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1609007338000 pl=6 sink=0 count=2 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1609007413000 pl=8 sink=0 count=2 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1609007513000 pl=8 sink=1 count=2 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[PROGRESS] state=8 caches=2 rejected=4
+[EVENT] t=2403511688000 pl=8 sink=4 count=2 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=2408466438000 pl=8 sink=2 count=2 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=2408466463000 pl=8 sink=0 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=2408466513000 pl=9 sink=0 count=3 mr=0 active=0 kick=0 fd=1 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=2408466538000 pl=4 sink=0 count=3 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=2408884713000 pl=5 sink=0 count=3 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=2408884838000 pl=7 sink=0 count=3 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=2408884863000 pl=6 sink=0 count=3 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=2408884938000 pl=8 sink=0 count=3 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=2408885038000 pl=8 sink=1 count=3 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[PROGRESS] state=8 caches=3 rejected=4
+[EVENT] t=3203389288000 pl=8 sink=4 count=3 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=3208344088000 pl=8 sink=2 count=3 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=3208344113000 pl=8 sink=0 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=3208344163000 pl=9 sink=0 count=4 mr=0 active=0 kick=0 fd=0 pending=1 done=1 fst=0 ec=03/37 sk=00
+[STATUS] state=7 stage=0 ec=00/00 sink=0/00 count=4 keys=0008000700060005 writes=614400
+[PASS]     four verified load completions, no partial cache publication
+[PASS]     four broken early candidates skipped and directory rescanned
+[PASS] le ID and precise signature error retained after successful load
+[PASS] hdog progress counts actual consumed directory/FAT/media payload
+[PASS]                   first four LEGAL numeric IDs selected in order
+[PASS]                             exactly four complete frames written
+[PASS]       all four producer row CRCs match delayed physical readback
+[EVENT] t=3208344188000 pl=7 sink=0 count=4 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[PASS]                  complete raster matches independent BMP decoder
+[PASS]                  complete raster matches independent BMP decoder
+[PASS]                  complete raster matches independent BMP decoder
+[PASS]                  complete raster matches independent BMP decoder
+[PASS]    resident playback never reloads SD despite next/auto requests
+PASS tb_v3_resident errors=0 comparisons=614400
+$finish called at time : 3208845775 ns : File "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_resident.sv" Line 127
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:16:54 . Memory (MB): peak = 219.711 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 16 12:03:03 2026...
