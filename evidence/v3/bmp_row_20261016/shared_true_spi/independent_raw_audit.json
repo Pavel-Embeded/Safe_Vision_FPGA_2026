@@ -1,0 +1,17 @@
+{
+  "accepted": true,
+  "results": [
+    {
+      "path": "work\\runs\\shared_storage_compact_freeze\\simulation\\tb_v3_shared_storage\\sim.log",
+      "sha256": "715e5a3bc4e78a7ae87c8453ed8759c731f8f67cd51da18f46f2f6340beb8df5",
+      "accepted": true,
+      "normal_finish": true,
+      "success_markers": 15,
+      "error_values": [
+        0
+      ],
+      "errors": []
+    }
+  ],
+  "scope": "raw simulation logs only; not STA/bitstream/hardware"
+}

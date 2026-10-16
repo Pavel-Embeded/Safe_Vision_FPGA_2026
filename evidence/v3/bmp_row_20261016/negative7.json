@@ -1,0 +1,83 @@
+{
+  "negative_controls": [
+    {
+      "mutation": "alpha_front",
+      "top": "tb_v3_math",
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        2722
+      ],
+      "original_sha256": "ece6996532081482a2cfdaa4dd14d766cc06db537513e80dc6ffd915ffe802e0",
+      "mutated_sha256": "2b13af37227a85e4617b1620c40ac59542d1425f32a5706c8df65d3ae2ec9b3a"
+    },
+    {
+      "mutation": "row_crc",
+      "top": "tb_v3_row_integrity",
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        37
+      ],
+      "original_sha256": "fba4458c20f5b738357ae66d372c65465482d68c81310188ae03aebedc5504a5",
+      "mutated_sha256": "38b24102d286809de2c84d8e6bd4e07658ea801a09b45af16a9cf292163f9b09"
+    },
+    {
+      "mutation": "raster_tag",
+      "top": "tb_v3_coords_fade",
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        691200
+      ],
+      "original_sha256": "82cea7dd703ccd05a35e85171a5195b98dcb5636943d4a05d83b15fcaaf6c611",
+      "mutated_sha256": "d6686eee25cfd614274ce8ed4b4ba12a733a7c3c99cb17b5d8ac849d8f1a61ae"
+    },
+    {
+      "mutation": "recovery_ack",
+      "top": "tb_v3_recovery_events",
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        1000
+      ],
+      "original_sha256": "1b2ea7871b758d9b6d1fde1dfafbc95da151c3d51748cb2b7d7398ec75e3a3ad",
+      "mutated_sha256": "eeb575105909038aa0e54bb5cee1028a791869c5c122a143db5a39544b67e225"
+    },
+    {
+      "mutation": "bmp_extent_carry",
+      "top": "tb_v3_bmp_bounds",
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        3
+      ],
+      "original_sha256": "428e8337ea656a9c847048f263c4981a2d73783d08b1c5495956ddf2bcc088e0",
+      "mutated_sha256": "f0d1861538b27efc5687de1188bdc3302537dd0b8095d9de3b837f82c7876892"
+    },
+    {
+      "mutation": "parser_digit_seen",
+      "top": "tb_v3_parser_digit_seen",
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        12
+      ],
+      "original_sha256": "9a537a45fc354c07ad154b56891f267280f1609aaabe7572c39dd2dc58843fe3",
+      "mutated_sha256": "e1255f03c6374df5bc5a8daf92afa0d7ac1b178ead23387a10352cbf3494257f"
+    },
+    {
+      "mutation": "priority_saturation",
+      "top": "tb_v3_priority_difference",
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        30425
+      ],
+      "original_sha256": "8f71762f08fed32641a2e5845ab679995eff46c54b3864a9fe8be5c057900764",
+      "mutated_sha256": "a080d6e95b6186551107d3eb54a6352e7c28ad39f98aef52d97ff18dc5d0bae8"
+    }
+  ],
+  "originals_preserved": true,
+  "complete": true
+}

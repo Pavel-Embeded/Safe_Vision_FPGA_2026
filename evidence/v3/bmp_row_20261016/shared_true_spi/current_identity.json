@@ -1,0 +1,32 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\shared_storage_compact_freeze\\simulation",
+  "suite": "shared_storage",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "774226caa8eb1fdd8c040c5910bb1520e5eab88a98d2dde040948bad81237100",
+  "tests": [
+    {
+      "top": "tb_v3_shared_storage",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\shared_storage_compact_freeze\\simulation\\tb_v3_shared_storage\\sim.log",
+        "sha256": "715e5a3bc4e78a7ae87c8453ed8759c731f8f67cd51da18f46f2f6340beb8df5",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 15,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 14,
+      "data_comparisons": 614400,
+      "elapsed_s": 1490.625,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\shared_storage_compact_freeze\\simulation\\tb_v3_shared_storage\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\shared_storage_compact_freeze\\simulation\\tb_v3_shared_storage\\sources.sha256.json"
+    }
+  ]
+}

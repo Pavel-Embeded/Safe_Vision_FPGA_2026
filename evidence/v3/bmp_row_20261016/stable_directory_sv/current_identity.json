@@ -1,0 +1,32 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\directory_sv",
+  "suite": "directory_sv",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "65a7824a6590a75cb8f92d3610994819df6bb2f4e1a375d803b104fb392c9d59",
+  "tests": [
+    {
+      "top": "tb_v3_directory_sv_names",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\directory_sv\\tb_v3_directory_sv_names\\sim.log",
+        "sha256": "fef855fab6af5c139149a9937228e3ee784392b28ca279d4b088b4b938d22e78",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 13890,
+      "elapsed_s": 6.922,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\directory_sv\\tb_v3_directory_sv_names\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\directory_sv\\tb_v3_directory_sv_names\\sources.sha256.json"
+    }
+  ]
+}

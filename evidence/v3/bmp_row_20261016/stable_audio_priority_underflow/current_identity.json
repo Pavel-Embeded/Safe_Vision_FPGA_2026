@@ -1,0 +1,32 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_priority_underflow",
+  "suite": "audio_priority_underflow",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "45fa5f19f78fb5fb52c68c9f4ef0e52293fc5adecc3a2590d20d9acb36681551",
+  "tests": [
+    {
+      "top": "tb_v3_audio_underflow_serial",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_priority_underflow\\tb_v3_audio_underflow_serial\\sim.log",
+        "sha256": "97d2e679c36a02d5fb2fdd55c7e2aeb29af09c76e3b06c837eed6f72f8e83000",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 1548,
+      "elapsed_s": 7.422,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_priority_underflow\\tb_v3_audio_underflow_serial\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_priority_underflow\\tb_v3_audio_underflow_serial\\sources.sha256.json"
+    }
+  ]
+}

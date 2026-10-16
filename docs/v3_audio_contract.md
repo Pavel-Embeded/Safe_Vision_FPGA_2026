@@ -119,3 +119,6 @@ ROOT独立审查、WP188文件oracle、旧5PCM回归68502、FS独立2163872项�
 组合测试 `audio_priority_volume_sim.json` 覆盖37%、73%两种一般路径，分别运行BASE和HD、MEM50MHz、AUDIO真实/256；四项候选测试各2908次严格输出PCM比较、13600次优先混音声道队列比较、13600次音量声道队列比较，HDMI6800对、141个实测CTS窗口，欠载/溢出零。除五个混音相位外，还在音量L乘法1/7、L除法8/37、R乘法38/44、R除法45/74边界提出真实恢复/报警/提交请求，阶段覆盖mask为ff，已捕获样本在媒体复位中保持。音量核只用global reset；单独74相位全局复位检查确认中止后不泄漏旧结果。
 
 上述四项首先是冻结候选证据；推广后正以生产无override重新运行完整11项、四种组合模式、共享tag FIFO、29404项独立数值及严格负控。新清单可直接运行 `python safevision/tools/run_v3_sim.py --suite audio_priority_volume --run-dir <新ASCII目录>`；严格音量负控为 `python safevision/tools/run_v3_volume_negative.py --run-dir <新ASCII目录>`。只有新运行正常结束、源码前后相等才列为当前生产通过。资源仍超过80%门槛，未生成最终签核位流，实体音频/HDMI及长稳边界不变。
+
+
+2026-10-16追加：生产BMP/行CRC候选经8777文件对照和四槽CRC对照推广后，shared_storage_compact_freeze真实SPI联合测试已正常结束：614400完整图字、1920行CRC、24000对PCM正确，errors=0；三阶段原生工具正常返回且前后源/七份资产指纹一致。独立原始日志审计通过。该测试仍不覆盖HDMI加密内部或实体板卡。最新音频11项、MEM50双模式、五相位提交/媒体复位/报警和37/73音量组合均用当前runner重新正常结束；正式视频/物理发布门槛单列。

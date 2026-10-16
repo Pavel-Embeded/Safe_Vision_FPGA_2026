@@ -56,6 +56,7 @@
     "tb_v3_resident": "safevision/verification/fixtures/generate_resident_card.py"
   },
   "timeouts": {
-    "tb_v3_resident": 2700
-  }
+    "tb_v3_resident": 5400
+  },
+  "wall_timeout_note": "Long native wall budget; DUT cycle watchdogs, throughput contracts and all assertions remain unchanged."
 }

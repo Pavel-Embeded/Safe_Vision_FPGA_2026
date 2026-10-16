@@ -75,28 +75,34 @@ module bmp_parser (
                      H_DONE = 2'd2;
 
     reg  [1:0]  mstate;
-    reg  [31:0] hcnt;          // 已消费字节数
+    reg  [5:0] hcnt;          // Header position only: read in H_HEAD, 0..53.
     reg  [31:0] skip_cnt;      // 头之后、像素之前还要丢掉的字节数
     reg         hdr_ok;
 
-    // ---- 头字段装配（小端）----
+    // ---- Header bytes: exact retained fields plus unpublished predicates ----
     reg  [31:0] bfsize_r;
     reg  [31:0] offbits_r;
-    reg  [31:0] dibsize_r;
-    reg  [31:0] width_r;
-    reg  [31:0] height_r;
-    reg  [15:0] planes_r;
-    reg  [15:0] bpp_r;
+    reg         dib_ge40_r;
+    reg  [15:0] width_lo_r;
+    reg         width_hi_zero_r;
+    reg  [15:0] height_lo_r;
+    reg         height_hi_match_r;
+    reg         height_sign_r;
+    reg         planes_one_r;
+    reg  [7:0]  bpp_lo_r;
+    reg         bpp_hi_zero_r;
     reg  [31:0] comp_r;
-    reg  [7:0]  sig0;
-    reg  [7:0]  sig1;
+    reg         sig_match_r;
 
     // ---- 校验用组合判定 ----
-    wire sig_ok    = (sig0 == 8'h42) && (sig1 == 8'h4D);            // 'B','M'
-    wire dib_ok    = (dibsize_r >= 32'd40);
-    wire size_ok   = (width_r == 32'd640) &&
-                     ((height_r == 32'd480) || (height_r == -32'sd480));
-    wire fmt_ok    = (planes_r == 16'd1) && (bpp_r == 16'd24) && (comp_r == 32'd0);
+    // Keep exact diagnostic low words and sign; compress only unpublished
+    // predicates. Header fields are complete before byte 53 publishes results.
+    wire sig_ok    = sig_match_r;
+    wire dib_ok    = dib_ge40_r;
+    wire size_ok   = (width_lo_r == 16'd640) && width_hi_zero_r &&
+                     ((height_lo_r == 16'd480) || (height_lo_r == 16'hfe20)) &&
+                     height_hi_match_r;
+    wire fmt_ok    = planes_one_r && (bpp_lo_r == 8'd24) && bpp_hi_zero_r && (comp_r == 32'd0);
     wire trunc_ok  = (offbits_r >= BMP_HDR_BYTES) &&
                      (bfsize_r <= file_size) &&
                      // Include the carry bit. A 32-bit sum can wrap a huge
@@ -114,19 +120,22 @@ module bmp_parser (
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             mstate      <= H_HEAD;
-            hcnt        <= 32'd0;
+            hcnt        <= 6'd0;
             skip_cnt    <= 32'd0;
             hdr_ok      <= 1'b0;
             bfsize_r    <= 32'h0;
             offbits_r   <= 32'h0;
-            dibsize_r   <= 32'h0;
-            width_r     <= 32'h0;
-            height_r    <= 32'h0;
-            planes_r    <= 16'h0;
-            bpp_r       <= 16'h0;
+            dib_ge40_r <= 1'b0;
+            width_lo_r <= 16'h0;
+            width_hi_zero_r <= 1'b0;
+            height_lo_r <= 16'h0;
+            height_hi_match_r <= 1'b0;
+            height_sign_r <= 1'b0;
+            planes_one_r <= 1'b0;
+            bpp_lo_r <= 8'h0;
+            bpp_hi_zero_r <= 1'b0;
             comp_r      <= 32'h0;
-            sig0        <= 8'h0;
-            sig1        <= 8'h0;
+            sig_match_r <= 1'b0;
             check_done  <= 1'b0;
             check_error <= 1'b0;
             err_code    <= `ERR_NONE;
@@ -153,20 +162,32 @@ module bmp_parser (
                 if (valid && ready) begin
                     // 小端装配：新字节进高端，老字节往低端退
                     case (hcnt)
-                        32'd0 : sig0 <= data;
-                        32'd1 : sig1 <= data;
-                        32'd2, 32'd3, 32'd4, 32'd5  : bfsize_r  <= {data, bfsize_r[31:8]};
-                        32'd10, 32'd11, 32'd12, 32'd13: offbits_r <= {data, offbits_r[31:8]};
-                        32'd14, 32'd15, 32'd16, 32'd17: dibsize_r <= {data, dibsize_r[31:8]};
-                        32'd18, 32'd19, 32'd20, 32'd21: width_r   <= {data, width_r[31:8]};
-                        32'd22, 32'd23, 32'd24, 32'd25: height_r  <= {data, height_r[31:8]};
-                        32'd26, 32'd27                : planes_r  <= {data, planes_r[15:8]};
-                        32'd28, 32'd29                : bpp_r     <= {data, bpp_r[15:8]};
-                        32'd30, 32'd31, 32'd32, 32'd33: comp_r    <= {data, comp_r[31:8]};
+                        6'd0 : sig_match_r <= (data == 8'h42);
+                        6'd1 : sig_match_r <= sig_match_r && (data == 8'h4d);
+                        6'd2, 6'd3, 6'd4, 6'd5  : bfsize_r  <= {data, bfsize_r[31:8]};
+                        6'd10, 6'd11, 6'd12, 6'd13: offbits_r <= {data, offbits_r[31:8]};
+                        6'd14: dib_ge40_r <= (data >= 8'd40);
+                        6'd15, 6'd16, 6'd17: dib_ge40_r <= dib_ge40_r || (data != 8'd0);
+                        6'd18: width_lo_r[7:0] <= data;
+                        6'd19: width_lo_r[15:8] <= data;
+                        6'd20: width_hi_zero_r <= (data == 8'd0);
+                        6'd21: width_hi_zero_r <= width_hi_zero_r && (data == 8'd0);
+                        6'd22: height_lo_r[7:0] <= data;
+                        6'd23: height_lo_r[15:8] <= data;
+                        6'd24: height_hi_match_r <= (data == ((height_lo_r == 16'd480) ? 8'h00 : 8'hff));
+                        6'd25: begin
+                            height_hi_match_r <= height_hi_match_r && (data == ((height_lo_r == 16'd480) ? 8'h00 : 8'hff));
+                            height_sign_r <= data[7];
+                        end
+                        6'd26: planes_one_r <= (data == 8'd1);
+                        6'd27: planes_one_r <= planes_one_r && (data == 8'd0);
+                        6'd28: bpp_lo_r <= data;
+                        6'd29: bpp_hi_zero_r <= (data == 8'd0);
+                        6'd30, 6'd31, 6'd32, 6'd33: comp_r <= {data, comp_r[31:8]};
                         default: ;
                     endcase
 
-                    hcnt <= hcnt + 32'd1;
+                    hcnt <= hcnt + 6'd1;
 
                     if (eof && (hcnt != (BMP_HDR_BYTES - 32'd1))) begin
                         // 头还没读完文件就结束了
@@ -183,10 +204,10 @@ module bmp_parser (
                         check_done  <= 1'b1;
                         file_size_o <= file_size;
                         pixel_off   <= offbits_r;
-                        width       <= width_r[15:0];
-                        height      <= height_r[15:0];
-                        top_down    <= height_r[31];
-                        bpp         <= bpp_r[7:0];
+                        width       <= width_lo_r;
+                        height      <= height_lo_r;
+                        top_down    <= height_sign_r;
+                        bpp         <= bpp_lo_r;
                         compression <= comp_r;
                         hdr_ok      <= check_ok;
                         check_error <= !check_ok;
@@ -217,7 +238,6 @@ module bmp_parser (
                 end
 
                 if (valid && ready) begin
-                    hcnt <= hcnt + 32'd1;
                     if (skip_cnt != 32'd0) begin
                         skip_cnt <= skip_cnt - 32'd1;      // 调色板 / 填充，丢掉
                     end else if (hdr_ok) begin
@@ -244,18 +264,21 @@ module bmp_parser (
                     out_eof   <= 1'b0;
                 end
                 if (!out_valid) begin
-                    hcnt      <= 32'd0;
+                    hcnt      <= 6'd0;
                     skip_cnt  <= 32'd0;
                     hdr_ok    <= 1'b0;
-                    sig0      <= 8'h0;
-                    sig1      <= 8'h0;
+                    sig_match_r <= 1'b0;
                     bfsize_r  <= 32'h0;
                     offbits_r <= 32'h0;
-                    dibsize_r <= 32'h0;
-                    width_r   <= 32'h0;
-                    height_r  <= 32'h0;
-                    planes_r  <= 16'h0;
-                    bpp_r     <= 16'h0;
+                    dib_ge40_r <= 1'b0;
+                    width_lo_r <= 16'h0;
+                    width_hi_zero_r <= 1'b0;
+                    height_lo_r <= 16'h0;
+                    height_hi_match_r <= 1'b0;
+                    height_sign_r <= 1'b0;
+                    planes_one_r <= 1'b0;
+                    bpp_lo_r <= 8'h0;
+                    bpp_hi_zero_r <= 1'b0;
                     comp_r    <= 32'h0;
                     mstate    <= H_HEAD;
                 end
