@@ -1,0 +1,202 @@
+{
+  "schema": 2,
+  "created_at_utc": "2026-10-16T11:47:37.702973+00:00",
+  "scope": "fresh-process STA only of frozen physical database; no placement or route",
+  "database_and_constraint_sha256_before": {
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\td\\base\\route.db": "ad9c872965940f91d71140785f8ad6cc996d32cab95d059c1538b2568016661a",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\source\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\project\\v3_board_verify\\v3_board.sdc": "4b3bee8eb37c706a98f0e019f2a57d4b7413dfecb30818482562021e0f1ff147",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\source\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\project\\v3_board_verify\\v3_cdc.sdc": "d8f452ab7b88e2f6ddd85c3e07f73929840a83c2799497ab2f6aeff844e6b432",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\source\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\project\\v3_board_verify\\v3_cdc_audit.tcl": "1276830c7b6877e878fae3732f7d170d75030100486c586b5c1cc5db6cb3fece"
+  },
+  "native_tcl_sha256": "b472182c696a64f269ffc5eb3f45f47d60a1e2b476d04cde2347126704f5784a",
+  "native_executable": "D:\\Anlogic\\TD_6.2.1_Engineer_6.2.168.116\\bin\\td_commands_prompt.exe",
+  "native_executable_sha256": "e2e04ada5e256dccd017240c0f4dcface7f96dca67cde0e56e606ac0e02f827a",
+  "caller_route_process_exit_code": 0,
+  "route_process_exit_supplied_by_caller": true,
+  "inprocess_reports": {
+    "route.timing": {
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\td\\base\\inprocess.route.timing",
+      "sha256": "58351db37fd61f3df50b494728fdbcae6948dc74ea0c234b93c2365a38af4fad"
+    },
+    "route.check": {
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\td\\base\\inprocess.route.check",
+      "sha256": "8e3930d6a58ff24efac78905936c7270f197a9a7bcf9f94df4fd846ef65cb0e6"
+    },
+    "route.exceptions": {
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\td\\base\\inprocess.route.exceptions",
+      "sha256": "753626da4dd925c1009dca2bb742bb7aa4414ac32b3cd6c8142546de0e2d35fb"
+    },
+    "route.clocks": {
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\td\\base\\inprocess.route.clocks",
+      "sha256": "be203116b00f981c2a5756a44c72319a9ff185c858ba27cd98c644dbba1da5ed"
+    },
+    "route.derived.sdc": {
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\td\\base\\inprocess.route.derived.sdc",
+      "sha256": "2c4f0503c00e7a31e21aa7c27b1bccd6b582e44050fb9ae06c4575b3bb64556d"
+    },
+    "route.status": {
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\td\\base\\inprocess.route.status",
+      "sha256": "490c59b27aacc2e5c02efd460a27116c1cd3ff9979d9affc2a4e022e4254f674"
+    },
+    "constraint.objects.tsv": {
+      "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\td\\base\\inprocess.constraint.objects.tsv",
+      "sha256": "6beb0ab3c473385238e3d2b72931282207c637101988569876717e8c6c5790a9"
+    }
+  },
+  "accepted": true,
+  "errors": [],
+  "sta_process_exit_code": 0,
+  "normal_completion": true,
+  "database_and_constraint_sha256_after": {
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\td\\base\\route.db": "ad9c872965940f91d71140785f8ad6cc996d32cab95d059c1538b2568016661a",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\source\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\project\\v3_board_verify\\v3_board.sdc": "4b3bee8eb37c706a98f0e019f2a57d4b7413dfecb30818482562021e0f1ff147",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\source\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\project\\v3_board_verify\\v3_cdc.sdc": "d8f452ab7b88e2f6ddd85c3e07f73929840a83c2799497ab2f6aeff844e6b432",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\release113_9d40698\\source\\safevision\\platform\\anlogic_eg4s20_hx4s20c\\project\\v3_board_verify\\v3_cdc_audit.tcl": "1276830c7b6877e878fae3732f7d170d75030100486c586b5c1cc5db6cb3fece"
+  },
+  "global_margins_before": {
+    "SWNS": 0.139,
+    "HWNS": 0.023,
+    "STNS": 0.0,
+    "HTNS": 0.0
+  },
+  "global_margins_after": {
+    "SWNS": 0.139,
+    "HWNS": 0.023,
+    "STNS": 0.0,
+    "HTNS": 0.0
+  },
+  "reported_path_count_before": 3026,
+  "reported_path_count_after": 3026,
+  "reported_path_signature_unchanged": true,
+  "added_endpoint_paths": [],
+  "removed_endpoint_paths": [],
+  "effective_reported_clocks_before": [
+    [
+      "board_clk",
+      0.0,
+      10.0,
+      20.0
+    ],
+    [
+      "sd_fast",
+      0.0,
+      40.0,
+      80.0
+    ],
+    [
+      "sd_ident",
+      0.0,
+      5000.0,
+      10000.0
+    ],
+    [
+      "sound_pll/pll_inst.clkc[1]",
+      0.0,
+      40.69,
+      81.38
+    ],
+    [
+      "system_pll/pll_inst.clkc[0]",
+      0.0,
+      5.0,
+      10.0
+    ],
+    [
+      "system_pll/pll_inst.clkc[1]",
+      0.0,
+      10.0,
+      20.0
+    ],
+    [
+      "system_pll/pll_inst.clkc[2]",
+      8.0,
+      18.0,
+      20.0
+    ],
+    [
+      "video_base$video_pll/pll_inst.clkc[1]",
+      0.0,
+      19.853,
+      39.706
+    ],
+    [
+      "video_base$video_pll/pll_inst.clkc[2]",
+      0.0,
+      3.97,
+      7.941
+    ]
+  ],
+  "effective_reported_clocks_after": [
+    [
+      "board_clk",
+      0.0,
+      10.0,
+      20.0
+    ],
+    [
+      "sd_fast",
+      0.0,
+      40.0,
+      80.0
+    ],
+    [
+      "sd_ident",
+      0.0,
+      5000.0,
+      10000.0
+    ],
+    [
+      "sound_pll/pll_inst.clkc[1]",
+      0.0,
+      40.69,
+      81.38
+    ],
+    [
+      "system_pll/pll_inst.clkc[0]",
+      0.0,
+      5.0,
+      10.0
+    ],
+    [
+      "system_pll/pll_inst.clkc[1]",
+      0.0,
+      10.0,
+      20.0
+    ],
+    [
+      "system_pll/pll_inst.clkc[2]",
+      8.0,
+      18.0,
+      20.0
+    ],
+    [
+      "video_base$video_pll/pll_inst.clkc[1]",
+      0.0,
+      19.853,
+      39.706
+    ],
+    [
+      "video_base$video_pll/pll_inst.clkc[2]",
+      0.0,
+      3.97,
+      7.941
+    ]
+  ],
+  "actual_exception_commands_and_counts_unchanged": true,
+  "post_clock_diagnostic": {
+    "same_detailed_paths_and_slacks": true,
+    "same_effective_reported_clocks": true,
+    "same_global_margins": true,
+    "same_exception_commands_and_counts": true,
+    "formal_health_file": "route.check",
+    "diagnostic_health_file": "after_clock_report.check",
+    "diagnostic_health_never_substitutes_for_gate": true
+  },
+  "native_exception_path_identity": {
+    "count_before": 170,
+    "count_after": 170,
+    "same_path_slack_corner_group_budget": true,
+    "same_effective_clocks": true,
+    "unchanged_after_clock_diagnostic": true
+  }
+}

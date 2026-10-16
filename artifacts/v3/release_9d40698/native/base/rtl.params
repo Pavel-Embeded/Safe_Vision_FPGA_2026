@@ -1,0 +1,15 @@
+Print Rtl Property
+-------------------------------------------------------------------
+        Parameters        |  Settings  |  Default Values  |  Note  
+-------------------------------------------------------------------
+       fix_undriven       |     0      |        0         |        
+  gated_clock_conversion  |    off     |       off        |        
+        infer_fsm         |    off     |       auto       |   *    
+        infer_gsr         |    off     |       off        |        
+        infer_rom         |     on     |        on        |        
+      keep_hierarchy      |    auto    |       auto       |        
+       merge_equal        |     on     |        on        |        
+     min_control_set      |     3      |        8         |   *    
+      min_ripple_len      |     16     |       auto       |   *    
+         seq_syn          |     on     |        on        |        
+-------------------------------------------------------------------

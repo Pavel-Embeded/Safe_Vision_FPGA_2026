@@ -1,0 +1,733 @@
+Table of Contents
+-----------------
+1. checking no clock(0) (HIGH)
+2. checking clock definition(2) (HIGH)
+3. checking dummy node(3) (HIGH)
+4. checking invalid constraint(0) (HIGH)
+5. checking pll/clock buffer clock constraints(0) (HIGH)
+6. checking combinational loops(0) (HIGH)
+7. checking soft fifo timing exception constraints(0) (HIGH)
+8. checking no path constraints(0) (MEDIUM)
+9. checking shadowed/ignored timing exception constraints(0) (MEDIUM)
+10. checking no input delay(6) (MEDIUM)
+11. checking no output delay(11) (MEDIUM)
+12. checking partial input delay(0) (MEDIUM)
+13. checking partial output delay(0) (MEDIUM)
+14. checking abnormal input delay(0) (MEDIUM)
+
+
+1. checking nets with no clock driven. (HIGH)
+---------------------------------------------
+2. checking clock definition problems. (HIGH)
+---------------------------------------------
+2.1 There are 0 leaf clock pins driven by multiple clocks. (HIGH)
+
+
+2.2 There are 0 clocks created on internal clock network. (HIGH)
+
+
+2.3 There are 0 unexpandable clock sets. (HIGH)
+
+
+2.4 There are 2 local clocks. (HIGH)
+
+	board_clk
+	system_pll/pll_inst.clkc[2]
+
+2.5 There are 2 generated clocks that are not connected to their master clocks. (HIGH)
+
+
+3. checking dummy nodes. (HIGH)
+---------------------------------------------
+There are 3 nodes are dangling. (HIGH)
+
+DummyNode in Model: EG_PHY_LSLICE
+	reset_media_mem/falling_release$released_reg_syn_126.b[0]
+	reset_media_mem/falling_release$released_reg_syn_126.c[1]
+	reset_media_mem/falling_release$released_reg_syn_126.c[0]
+	reset_media_mem/falling_release$released_reg_syn_126.d[0]
+	reset_media_mem/falling_release$released_reg_syn_126.a[1]
+	reset_media_mem/falling_release$released_reg_syn_126.b[1]
+	player/shared_service$service/fs/rst_n_syn_45.c[1]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_365.mi[0]
+	audio/ring/wp[0]_b7[13]_syn_79.mi[0]
+	player/shared_service$service/fs/rst_n_syn_45.d[1]
+	player/shared_service$service/fs/rst_n_syn_45.b[1]
+	reset_media_sys/release_pipe_reg[1]_syn_18.a[0]
+	reset_media_sys/release_pipe_reg[1]_syn_18.c[0]
+	audio/source/mux59_syn_878.a[1]
+	audio/source/mux59_syn_878.c[1]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.b[1]
+	audio/source/mux59_syn_878.b[1]
+	video/config_mailbox/dst_data_reg[52]_syn_4.d[1]
+	audio/source/wp/pcm_valid_reg_syn_287.d[1]
+	audio/source/wp/pcm_valid_reg_syn_287.c[1]
+	audio/source/wp/pcm_valid_reg_syn_287.b[1]
+	audio/source/wp/pcm_valid_reg_syn_287.a[1]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.d[1]
+	audio/source/mux59_syn_878.d[1]
+	video/config_mailbox/dst_data_reg[52]_syn_4.c[1]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_355.c[1]
+	audio/volume_scale/right_phase_reg_syn_8.mi[0]
+	audio/volume_scale/shift_value_b[7]_syn_5.mi[0]
+	ref_status_mailbox/payload_reg[178]_syn_4.a[0]
+	reset_pixel/release_pipe_reg[1]_syn_98.a[0]
+	ref_status_mailbox/payload_reg[179]_syn_5.d[1]
+	ref_status_mailbox/payload_reg[179]_syn_6.d[1]
+	ref_status_mailbox/payload_reg[178]_syn_4.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_98.d[0]
+	ref_status_mailbox/payload_reg[179]_syn_5.b[1]
+	ref_status_mailbox/payload_reg[179]_syn_6.b[1]
+	ref_status_mailbox/payload_reg[178]_syn_4.c[0]
+	reset_pixel/release_pipe_reg[1]_syn_98.c[0]
+	ref_status_mailbox/payload_reg[178]_syn_4.b[0]
+	reset_pixel/release_pipe_reg[1]_syn_98.b[0]
+	ref_status_mailbox/payload_reg[179]_syn_5.mi[1]
+	ref_status_mailbox/payload_reg[179]_syn_6.mi[1]
+	ref_status_mailbox/payload_reg[179]_syn_5.mi[0]
+	ref_status_mailbox/payload_reg[179]_syn_6.mi[0]
+	player/shared_service$service/ds/media_digits_reg[6]_syn_4.c[1]
+	player/cache_keys_reg[47]_syn_4.c[1]
+	player/ent_size_q_reg[12]_syn_4.c[0]
+	player/cache_keys_reg[47]_syn_4.d[1]
+	player/shared_service$service/ds/media_digits_reg[6]_syn_4.d[1]
+	player/ent_size_q_reg[12]_syn_4.d[0]
+	ref_status_mailbox/payload_reg[178]_syn_4.e[0]
+	reset_pixel/release_pipe_reg[1]_syn_98.e[0]
+	ref_status_mailbox/payload_reg[179]_syn_5.c[1]
+	ref_status_mailbox/payload_reg[179]_syn_6.c[1]
+	reset_media_sys/release_pipe_reg[1]_syn_18.b[0]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.c[1]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_355.d[1]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.a[1]
+	reset_media_sys/release_pipe_reg[1]_syn_18.d[0]
+	player/checked_reader$u_rd/raw/mstate_reg[1]_syn_6.mi[0]
+	player/shared_service$service/ds/mstate_reg[1]_syn_9.mi[0]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.mi[0]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.a[0]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.e[0]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.d[0]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.c[0]
+	player/shared_service$service/ds/mstate_reg[1]_syn_11.b[0]
+	audio/hdmi_samples/rd_data_reg[27]_syn_4.d[0]
+	hdmi_queue/dropped_frames_reg[16]_syn_4.d[0]
+	player/u_boot/fs16_h_reg[3]_syn_4.d[0]
+	player/u_boot/fs16_h_reg[3]_syn_4.c[0]
+	ref_status_mailbox/dst_data_reg[158]_syn_4.a[0]
+	ref_status_mailbox/dst_data_reg[158]_syn_4.e[0]
+	player/u_idx/mux42_syn_57.d[1]
+	ref_status_mailbox/dst_data_reg[158]_syn_4.c[0]
+	player/u_idx/mux42_syn_57.c[1]
+	ref_status_mailbox/dst_data_reg[158]_syn_4.b[0]
+	ref_status_mailbox/dst_data_reg[158]_syn_4.d[0]
+	ref_status_mailbox/payload_reg[115]_syn_4.b[0]
+	ref_status_mailbox/dst_data_reg[29]_syn_5.a[0]
+	ref_status_mailbox/dst_data_reg[29]_syn_6.a[0]
+	ref_status_mailbox/dst_data_reg[29]_syn_5.b[0]
+	ref_status_mailbox/dst_data_reg[29]_syn_6.b[0]
+	ref_status_mailbox/dst_data_reg[29]_syn_5.mi[1]
+	ref_status_mailbox/dst_data_reg[29]_syn_6.mi[1]
+	ref_status_mailbox/payload_reg[115]_syn_4.d[0]
+	ref_status_mailbox/settling_reg_syn_16.mi[0]
+	ref_status_mailbox/settling_reg_syn_14.mi[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_2d_reg[4]_syn_4.a[0]
+	sink/u_bridge/address/add1_syn_176.a[0]
+	sink/u_bridge/rst_n_syn_23.a[0]
+	reset_media_mem/falling_release$released_reg_syn_84.mi[0]
+	audio/source/mux59_syn_752.mi[0]
+	audio/source/mux59_syn_754.mi[0]
+	video/cache/tag_valid_reg[7]_syn_606.mi[0]
+	reset_media_mem/falling_release$released_reg_syn_88.mi[1]
+	reset_media_mem/falling_release$released_reg_syn_97.mi[1]
+	reset_media_mem/falling_release$released_reg_syn_81.mi[1]
+	reset_media_mem/falling_release$released_reg_syn_88.mi[0]
+	reset_media_mem/falling_release$released_reg_syn_97.mi[0]
+	row_guard/producer_row_b[9]_syn_46.mi[0]
+	row_guard/verify_crc_b1[2]_syn_9.mi[0]
+	reset_media_mem/falling_release$released_reg_syn_126.mi[1]
+	ref_status_mailbox/payload_reg[115]_syn_4.c[0]
+	audio/hdmi_samples/rd_data_reg[27]_syn_4.c[0]
+	hdmi_queue/dropped_frames_reg[16]_syn_4.c[0]
+	reset_media_ref/release_pipe_reg[1]_syn_82.mi[0]
+	reset_media_ref/release_pipe_reg[1]_syn_79.mi[0]
+	audio/source/wp/pcm_valid_reg_syn_287.mi[0]
+	audio/source/wp/state_b[1]_syn_183.mi[0]
+	reset_media_sys/release_pipe_reg[1]_syn_28.mi[0]
+	reset_media_sys/release_pipe_reg[1]_syn_23.mi[0]
+	row_guard/verify_crc_b1[2]_syn_9.d[0]
+	video/cache/reply_reg[13]_syn_4.d[0]
+	video/cache/requests/dst_data_reg[13]_syn_4.d[0]
+	video/coords/sx_reg[7]_syn_4.d[0]
+	player/shared_service$service/fs/cur_lba_b14[22]_syn_26.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_112.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_112.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_175.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_123.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_107.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_132.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_150.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_132.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_147.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_104.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_104.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_143.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_101.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_168.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_165.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_165.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_158.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_155.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_158.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_155.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_179.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_180.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_181.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_182.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_183.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_184.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_185.mi[1]
+	reset_sys/release_pipe_reg[1]_syn_121.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_98.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_135.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_104.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_168.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_132.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_138.mi[1]
+	reset_sys/release_pipe_reg[1]_syn_115.mi[1]
+	reset_sys/release_pipe_reg[1]_syn_115.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_101.mi[1]
+	reset_sys/release_pipe_reg[1]_syn_101.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_112.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_107.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_118.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_164.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_121.mi[1]
+	reset_sys/release_pipe_reg[1]_syn_164.mi[1]
+	reset_sys/release_pipe_reg[1]_syn_118.mi[1]
+	row_guard/mux42_syn_238.a[0]
+	row_guard/mux42_syn_240.a[0]
+	row_guard/mux42_syn_238.d[0]
+	row_guard/mux42_syn_240.d[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_1d_reg[15]_syn_4.a[1]
+	row_guard/mux42_syn_235.a[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_dm_3d_reg[1]_syn_4.a[0]
+	video/tags_reg[87]_syn_4.a[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_1d_reg[15]_syn_4.b[1]
+	row_guard/mux42_syn_235.b[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_dm_3d_reg[1]_syn_4.b[0]
+	video/tags_reg[87]_syn_4.b[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_1d_reg[15]_syn_4.c[1]
+	row_guard/mux42_syn_235.c[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_dm_3d_reg[1]_syn_4.c[0]
+	video/tags_reg[87]_syn_4.c[0]
+	row_guard/mux42_syn_238.e[0]
+	row_guard/mux42_syn_240.e[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_1d_reg[15]_syn_4.d[1]
+	row_guard/mux42_syn_235.d[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_dm_3d_reg[1]_syn_4.d[0]
+	video/tags_reg[87]_syn_4.d[0]
+	reset_media_mem/falling_release$released_reg_syn_126.d[1]
+	row_guard/mux42_syn_238.b[0]
+	row_guard/mux42_syn_240.b[0]
+	row_guard/mux42_syn_238.c[0]
+	row_guard/mux42_syn_240.c[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_2d_reg[4]_syn_4.d[0]
+	sink/u_bridge/address/add1_syn_176.d[0]
+	sink/u_bridge/rst_n_syn_23.d[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_2d_reg[4]_syn_4.c[0]
+	sink/u_bridge/address/add1_syn_176.c[0]
+	sink/u_bridge/rst_n_syn_23.c[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_2d_reg[4]_syn_4.b[0]
+	sink/u_bridge/address/add1_syn_176.b[0]
+	sink/u_bridge/rst_n_syn_23.b[0]
+	video/layer_osd/sg_reg[1]_syn_4.c[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_49.mi[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_49.mi[1]
+	row_guard/verify_crc_b1[29]_syn_25.mi[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_71.mi[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_52.mi[1]
+	video/layer_osd/sg_reg[1]_syn_4.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_184.d[1]
+	reset_pixel/release_pipe_reg[1]_syn_185.d[1]
+	reset_pixel/release_pipe_reg[1]_syn_184.c[1]
+	reset_pixel/release_pipe_reg[1]_syn_185.c[1]
+	reset_pixel/release_pipe_reg[1]_syn_184.a[0]
+	reset_pixel/release_pipe_reg[1]_syn_185.a[0]
+	reset_pixel/release_pipe_reg[1]_syn_184.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_185.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_184.c[0]
+	reset_pixel/release_pipe_reg[1]_syn_185.c[0]
+	reset_pixel/release_pipe_reg[1]_syn_184.b[0]
+	reset_pixel/release_pipe_reg[1]_syn_185.b[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_32.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_32.mi[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_22.mi[0]
+	ref_status_mailbox/dst_data_reg[29]_syn_6.c[0]
+	ref_status_mailbox/dst_data_reg[29]_syn_5.c[0]
+	ref_status_mailbox/dst_data_reg[29]_syn_5.d[0]
+	ref_status_mailbox/dst_data_reg[29]_syn_6.d[0]
+	uart/g_catalog$parser/command_id_reg[5]_syn_8.mi[1]
+	uart/g_catalog$parser/command_id_reg[4]_syn_14.mi[0]
+	uart/g_catalog$parser/command_id_reg[6]_syn_4.mi[0]
+	uart/g_catalog$parser/command_id_reg[1]_syn_32.mi[0]
+	uart/g_catalog$parser/command_id_reg[2]_syn_15.mi[1]
+	uart/g_catalog$parser/command_id_reg[2]_syn_12.mi[1]
+	uart/g_catalog$parser/command_id_reg[1]_syn_38.mi[1]
+	uart/g_catalog$parser/command_id_reg[1]_syn_35.mi[1]
+	uart/g_catalog$parser/command_id_reg[1]_syn_48.mi[0]
+	uart/g_catalog$parser/command_id_reg[1]_syn_41.mi[0]
+	uart/g_catalog$parser/command_id_reg[1]_syn_32.mi[1]
+	uart/g_catalog$parser/command_id_reg[1]_syn_38.mi[0]
+	uart/g_catalog$parser/command_id_reg[0]_syn_38.mi[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_54.mi[0]
+	uart/g_catalog$parser/command_id_reg[0]_syn_54.mi[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_35.mi[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_56.mi[0]
+	uart/g_catalog$parser/command_id_reg[0]_syn_35.mi[0]
+	row_guard/verify_crc_b1[2]_syn_9.c[0]
+	video/cache/reply_reg[13]_syn_4.c[0]
+	video/cache/requests/dst_data_reg[13]_syn_4.c[0]
+	video/coords/sx_reg[7]_syn_4.c[0]
+	video/cache/state_reg[2]_syn_9.mi[0]
+	video/cache/state_reg[2]_syn_9.mi[1]
+	video/cache/descriptor_reg[13]_syn_5.c[1]
+	video/cache/descriptor_reg[13]_syn_6.c[1]
+	video/cache/descriptor_reg[13]_syn_7.c[1]
+	video/cache/descriptor_reg[13]_syn_5.d[1]
+	video/cache/descriptor_reg[13]_syn_6.d[1]
+	video/cache/descriptor_reg[13]_syn_7.d[1]
+	video/cache/descriptor_reg[13]_syn_5.mi[1]
+	video/cache/descriptor_reg[13]_syn_6.mi[1]
+	video/cache/descriptor_reg[13]_syn_7.mi[1]
+	video/cache/descriptor_reg[13]_syn_5.mi[0]
+	video/cache/descriptor_reg[13]_syn_6.mi[0]
+	video/cache/descriptor_reg[13]_syn_7.mi[0]
+	video/tags_reg[274]_syn_4.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_179.b[1]
+	reset_pixel/release_pipe_reg[1]_syn_180.b[1]
+	reset_pixel/release_pipe_reg[1]_syn_181.b[1]
+	reset_pixel/release_pipe_reg[1]_syn_179.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_180.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_181.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_179.d[1]
+	reset_pixel/release_pipe_reg[1]_syn_180.d[1]
+	reset_pixel/release_pipe_reg[1]_syn_181.d[1]
+	reset_pixel/release_pipe_reg[1]_syn_179.c[1]
+	reset_pixel/release_pipe_reg[1]_syn_180.c[1]
+	reset_pixel/release_pipe_reg[1]_syn_181.c[1]
+	reset_pixel/release_pipe_reg[1]_syn_179.c[0]
+	reset_pixel/release_pipe_reg[1]_syn_180.c[0]
+	reset_pixel/release_pipe_reg[1]_syn_181.c[0]
+	player/u_bmp/mstate_reg[1]_syn_16.mi[0]
+	player/u_bmp/mstate_reg[1]_syn_18.mi[0]
+	video/cache/descriptor_reg[13]_syn_5.b[1]
+	video/cache/descriptor_reg[13]_syn_6.b[1]
+	video/cache/descriptor_reg[13]_syn_7.b[1]
+	video/cache/descriptor_reg[13]_syn_5.a[1]
+	video/cache/descriptor_reg[13]_syn_6.a[1]
+	video/cache/descriptor_reg[13]_syn_7.a[1]
+
+DummyNode in Model: EG_PHY_MSLICE
+	reset_sys/release_pipe_reg[1]_syn_172.c[0]
+	reset_sys/release_pipe_reg[1]_syn_173.c[0]
+	reset_sys/release_pipe_reg[1]_syn_172.d[0]
+	reset_sys/release_pipe_reg[1]_syn_173.d[0]
+	reset_sys/release_pipe_reg[1]_syn_174.d[0]
+	uart/g_catalog$parser/command_id_reg[0]_syn_57.c[0]
+	uart/g_catalog$parser/command_id_reg[0]_syn_57.a[0]
+	uart/g_catalog$parser/command_id_reg[0]_syn_57.b[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_2d_reg[30]_syn_4.c[0]
+	player/shared_service$service/fs/rst_n_syn_53.c[1]
+	audio/source/mux59_syn_814.mi[0]
+	audio/source/mux59_syn_816.mi[0]
+	audio/ring/mux70_syn_1011.mi[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_2d_reg[30]_syn_4.d[0]
+	player/shared_service$service/fs/rst_n_syn_53.d[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_2d_reg[30]_syn_4.b[0]
+	player/shared_service$service/fs/rst_n_syn_53.b[1]
+	player/shared_service$service/ds/media_digits_reg[11]_syn_4.a[0]
+	player/shared_service$service/ds/media_digits_reg[10]_syn_4.a[1]
+	player/shared_service$service/ds/media_digits_reg[10]_syn_4.a[0]
+	player/shared_service$service/ds/media_digits_reg[11]_syn_4.c[0]
+	player/cache_keys_reg[62]_syn_4.b[0]
+	audio/source/mux59_syn_790.b[1]
+	player/shared_service$service/fs/rst_n_syn_41.b[0]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_317.b[1]
+	player/shared_service$service/ds/media_digits_reg[10]_syn_4.c[1]
+	player/shared_service$service/ds/media_digits_reg[10]_syn_4.c[0]
+	audio/source/mux60_syn_3182.c[1]
+	audio/source/mux60_syn_3182.c[0]
+	sink/sl_sync_reg[1]_syn_4.b[0]
+	player/shared_service$service/fs/rst_n_syn_43.b[1]
+	player/shared_service$service/fs/rst_n_syn_43.b[0]
+	player/shared_service$service/fs/rst_n_syn_51.b[1]
+	player/shared_service$service/fs/rst_n_syn_49.b[1]
+	player/shared_service$service/fs/rst_n_syn_47.b[0]
+	player/shared_service$service/fs/rst_n_syn_47.b[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_3d_reg[30]_syn_4.d[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_3d_reg[30]_syn_4.d[0]
+	audio/source/wp/pcm_valid_reg_syn_300.d[1]
+	audio/source/wp/pcm_valid_reg_syn_338.d[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_3d_reg[30]_syn_4.c[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_3d_reg[30]_syn_4.c[0]
+	audio/source/wp/pcm_valid_reg_syn_300.c[1]
+	audio/source/wp/pcm_valid_reg_syn_338.c[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_3d_reg[30]_syn_4.b[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_3d_reg[30]_syn_4.b[0]
+	audio/source/wp/pcm_valid_reg_syn_300.b[1]
+	audio/source/wp/pcm_valid_reg_syn_338.b[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_3d_reg[30]_syn_4.a[1]
+	memory_ip/u2_ram/u2_wrrd/app_wr_din_3d_reg[30]_syn_4.a[0]
+	audio/source/wp/pcm_valid_reg_syn_300.a[1]
+	audio/source/wp/pcm_valid_reg_syn_338.a[1]
+	audio/source/mux60_syn_3182.d[0]
+	audio/source/mux60_syn_3182.d[1]
+	reset_media_mem/falling_release$released_reg_syn_102.c[1]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_313.c[0]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_313.c[1]
+	reset_sys/release_pipe_reg[1]_syn_174.b[0]
+	reset_sys/release_pipe_reg[1]_syn_174.c[0]
+	hdmi_queue/ramread0_syn_97.d[1]
+	hdmi_queue/ramread0_syn_97.d[0]
+	hdmi_queue/ramread0_syn_97.c[1]
+	hdmi_queue/ramread0_syn_97.c[0]
+	hdmi_queue/ramread0_syn_97.b[1]
+	hdmi_queue/ramread0_syn_97.b[0]
+	hdmi_queue/ramread0_syn_97.a[1]
+	hdmi_queue/ramread0_syn_97.a[0]
+	player/shared_service$service/ds/media_digits_reg[11]_syn_4.b[0]
+	player/shared_service$service/ds/media_digits_reg[10]_syn_4.b[1]
+	player/shared_service$service/ds/media_digits_reg[10]_syn_4.b[0]
+	player/shared_service$service/fs/rst_n_syn_43.c[0]
+	audio/source/mux59_syn_790.d[1]
+	player/shared_service$service/fs/rst_n_syn_41.d[0]
+	player/shared_service$service/fs/rst_n_syn_43.c[1]
+	reset_media_mem/falling_release$released_reg_syn_102.d[1]
+	player/shared_service$service/fs/rst_n_syn_47.c[1]
+	player/shared_service$service/fs/rst_n_syn_47.c[0]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_313.d[1]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_313.d[0]
+	player/shared_service$service/fs/rst_n_syn_49.c[1]
+	sink/sl_sync_reg[1]_syn_4.c[0]
+	player/shared_service$service/fs/rst_n_syn_51.c[1]
+	player/cache_keys_reg[62]_syn_4.d[0]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_317.d[1]
+	player/shared_service$service/ds/media_digits_reg[11]_syn_4.d[0]
+	player/cache_keys_reg[62]_syn_4.c[0]
+	audio/source/mux59_syn_790.c[1]
+	player/shared_service$service/fs/rst_n_syn_41.c[0]
+	player/shared_service$service/wk/hop_cnt_b[31]_syn_317.c[1]
+	player/shared_service$service/ds/media_digits_reg[10]_syn_4.d[1]
+	player/shared_service$service/ds/media_digits_reg[10]_syn_4.d[0]
+	player/shared_service$service/fs/rst_n_syn_43.a[1]
+	player/shared_service$service/fs/rst_n_syn_43.a[0]
+	sink/sl_sync_reg[1]_syn_4.a[0]
+	player/shared_service$service/fs/rst_n_syn_51.a[1]
+	player/shared_service$service/fs/rst_n_syn_47.a[1]
+	player/shared_service$service/fs/rst_n_syn_47.a[0]
+	player/shared_service$service/fs/rst_n_syn_49.a[1]
+	player/checked_reader$u_rd/raw/mstate_reg[2]_syn_9.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_gen/U_audio_sample_packet_2_channel/S_audio_left_data_1d_reg[3]_syn_4.d[0]
+	reset_sys/release_pipe_reg[1]_syn_123.d[0]
+	player/u_bmp/height_lo_r_reg[8]_syn_4.d[0]
+	video/config_mailbox/dst_data_reg[55]_syn_4.d[0]
+	player/shared_service$service/fs/rst_n_syn_49.d[1]
+	player/shared_service$service/fs/rst_n_syn_47.d[0]
+	player/shared_service$service/fs/rst_n_syn_43.d[0]
+	player/shared_service$service/fs/rst_n_syn_47.d[1]
+	player/shared_service$service/fs/rst_n_syn_51.d[1]
+	player/shared_service$service/fs/rst_n_syn_43.d[1]
+	sink/sl_sync_reg[1]_syn_4.d[0]
+	player/u_boot/nfat_reg[7]_syn_4.d[0]
+	player/u_boot/fs32_3_reg[5]_syn_4.d[0]
+	player/u_boot/nfat_reg[7]_syn_4.c[0]
+	player/u_boot/fs32_3_reg[5]_syn_4.c[0]
+	supervisor/stamps_reg[26]_syn_4.b[0]
+	supervisor/stamps_reg[26]_syn_4.d[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_4d_reg[4]_syn_4.a[0]
+	sink/u_bridge/writer/crc_bus_b[8]_syn_13.a[0]
+	sink/u_bridge/writer/lo_pix_reg[7]_syn_4.a[0]
+	video/cache/tag_valid_reg[7]_syn_608.mi[0]
+	video/cache/tag_valid_reg[7]_syn_610.mi[0]
+	reset_media_mem/falling_release$released_reg_syn_102.mi[1]
+	row_guard/fault_reg_syn_115.mi[0]
+	sink/u_bridge/writer/crc_bus_b[3]_syn_10.mi[0]
+	row_guard/source_crc_b[20]_syn_34.mi[0]
+	row_guard/add0_syn_65.mi[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_gen/U_audio_sample_packet_2_channel/S_audio_left_data_1d_reg[3]_syn_4.c[0]
+	supervisor/stamps_reg[26]_syn_4.c[0]
+	video/config_mailbox/dst_data_reg[55]_syn_4.c[0]
+	player/u_bmp/height_lo_r_reg[8]_syn_4.c[0]
+	reset_sys/release_pipe_reg[1]_syn_123.c[0]
+	reset_media_ref/release_pipe_reg[1]_syn_90.mi[1]
+	reset_media_ref/release_pipe_reg[1]_syn_90.mi[0]
+	player/shared_service$service/ds/cur_lba_b13[19]_syn_7.mi[0]
+	player/shared_service$service/ds/cur_lba_b13[25]_syn_7.mi[0]
+	player/shared_service$service/fs/cur_lba_b14[13]_syn_9.mi[0]
+	reset_media_ref/release_pipe_reg[1]_syn_115.mi[0]
+	reset_media_ref/release_pipe_reg[1]_syn_101.mi[0]
+	reset_media_ref/release_pipe_reg[1]_syn_94.mi[1]
+	reset_media_ref/release_pipe_reg[1]_syn_101.mi[1]
+	reset_media_ref/release_pipe_reg[1]_syn_94.mi[0]
+	audio/source/mux60_syn_3180.mi[0]
+	reset_media_ref/release_pipe_reg[1]_syn_113.mi[0]
+	audio/source/wp/riff_left_b[6]_syn_6.mi[0]
+	reset_media_ref/release_pipe_reg[1]_syn_109.mi[1]
+	reset_media_ref/release_pipe_reg[1]_syn_120.mi[1]
+	player/shared_service$service/fs/to_cnt_b[23]_syn_50.mi[0]
+	player/shared_service$service/fs/mstate_b[1]_syn_10.mi[0]
+	reset_media_ref/release_pipe_reg[1]_syn_97.mi[1]
+	video/cache/packed_data$store/packet_data_reg[2]_syn_4.d[0]
+	video/cache/requests/dst_data_reg[18]_syn_4.d[0]
+	video/cache/reply_reg[0]_syn_4.d[0]
+	video/cache/requests/dst_data_reg[14]_syn_4.d[0]
+	video/cache/requests/dst_data_reg[14]_syn_4.d[1]
+	video/osd_alphas_reg[12]_syn_4.d[0]
+	video/sb/a00_reg[2]_syn_4.d[1]
+	video/sa/a00_reg[13]_syn_4.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_188.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_140.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_115.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_115.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_135.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_135.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_120.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_138.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_127.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_162.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_138.mi[0]
+	reset_pixel/release_pipe_reg[1]_syn_186.mi[1]
+	reset_pixel/release_pipe_reg[1]_syn_187.mi[1]
+	fatal_uart/state_reg[0]_syn_11.mi[0]
+	reset_ref/release_pipe_reg[1]_syn_14.mi[1]
+	reset_sys/release_pipe_reg[1]_syn_159.mi[1]
+	reset_sys/release_pipe_reg[1]_syn_128.mi[1]
+	reset_sys/release_pipe_reg[1]_syn_149.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_146.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_143.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_154.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_141.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_172.mi[0]
+	reset_sys/release_pipe_reg[1]_syn_173.mi[0]
+	row_guard/signature_read_index[10]_syn_147.b[1]
+	row_guard/signature_read_index[10]_syn_146.b[1]
+	row_guard/signature_read_index[10]_syn_147.c[1]
+	row_guard/signature_read_index[10]_syn_146.c[1]
+	row_guard/signature_read_index[10]_syn_147.a[1]
+	row_guard/signature_read_index[10]_syn_146.a[1]
+	sink/u_bridge/writer/lo_pix_reg[7]_syn_4.d[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_4d_reg[4]_syn_4.d[0]
+	sink/u_bridge/writer/crc_bus_b[8]_syn_13.d[0]
+	sink/u_bridge/writer/lo_pix_reg[7]_syn_4.c[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_4d_reg[4]_syn_4.c[0]
+	sink/u_bridge/writer/crc_bus_b[8]_syn_13.c[0]
+	sink/u_bridge/writer/lo_pix_reg[7]_syn_4.b[0]
+	memory_ip/u2_ram/u2_wrrd/app_wr_addr_4d_reg[4]_syn_4.b[0]
+	sink/u_bridge/writer/crc_bus_b[8]_syn_13.b[0]
+	uart/g_catalog$parser/command_id_reg[0]_syn_57.b[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_57.d[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_57.c[1]
+	reset_sys/release_pipe_reg[1]_syn_172.d[1]
+	reset_sys/release_pipe_reg[1]_syn_173.d[1]
+	reset_sys/release_pipe_reg[1]_syn_172.c[1]
+	reset_sys/release_pipe_reg[1]_syn_173.c[1]
+	reset_sys/release_pipe_reg[1]_syn_172.b[1]
+	reset_sys/release_pipe_reg[1]_syn_173.b[1]
+	reset_sys/release_pipe_reg[1]_syn_172.a[1]
+	reset_sys/release_pipe_reg[1]_syn_173.a[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_video_axi_stream_receiver/u_w24_d1024_fifo/u_logic_ramfifo[9]__4_syn_4.c[0]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_69.mi[1]
+	transmitter/u0_reset_sync/O_sync_reset_reg_syn_55.mi[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_video_axi_stream_receiver/u_w24_d1024_fifo/u_logic_ramfifo[9]__4_syn_4.d[0]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_2d_reg_syn_29.mi[1]
+	transmitter/u_hdmi_tx_controller_wrapper/u_hdmi_island_data_assemble/S_island_packet_req_1d_reg_syn_12.mi[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_57.d[0]
+	uart/g_catalog$parser/command_id_reg[3]_syn_15.a[1]
+	uart/g_catalog$parser/command_id_reg[3]_syn_15.b[1]
+	uart/g_catalog$parser/command_id_reg[5]_syn_11.mi[1]
+	uart/g_catalog$parser/command_id_reg[3]_syn_12.mi[1]
+	uart/g_catalog$parser/command_id_reg[2]_syn_17.mi[0]
+	uart/g_catalog$parser/command_id_reg[3]_syn_15.mi[1]
+	uart/g_catalog$parser/command_id_reg[2]_syn_17.mi[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_43.mi[0]
+	uart/g_catalog$parser/command_id_reg[1]_syn_46.mi[1]
+	uart/g_catalog$parser/command_id_reg[1]_syn_43.mi[0]
+	uart/g_catalog$parser/command_id_reg[0]_syn_41.mi[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_43.mi[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_50.mi[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_41.mi[0]
+	uart/g_catalog$parser/command_id_reg[1]_syn_46.mi[0]
+	uart/g_catalog$parser/command_id_reg[0]_syn_46.mi[1]
+	uart/g_catalog$parser/command_id_reg[0]_syn_57.mi[1]
+	uart/g_catalog$parser/command_id_reg[3]_syn_15.c[1]
+	uart/g_catalog$parser/command_id_reg[3]_syn_15.d[1]
+	video/cache/packed_data$store/packet_data_reg[2]_syn_4.c[0]
+	video/cache/requests/dst_data_reg[18]_syn_4.c[0]
+	video/cache/reply_reg[0]_syn_4.c[0]
+	video/cache/requests/dst_data_reg[14]_syn_4.c[0]
+	video/cache/requests/dst_data_reg[14]_syn_4.c[1]
+	video/sa/a00_reg[13]_syn_4.c[0]
+	video/osd_alphas_reg[12]_syn_4.c[0]
+	video/sb/a00_reg[2]_syn_4.c[1]
+	row_guard/signature_read_index[10]_syn_147.d[1]
+	row_guard/signature_read_index[10]_syn_146.d[1]
+	reset_pixel/release_pipe_reg[1]_syn_186.b[1]
+	reset_pixel/release_pipe_reg[1]_syn_187.b[1]
+	reset_pixel/release_pipe_reg[1]_syn_188.b[1]
+	reset_pixel/release_pipe_reg[1]_syn_186.c[0]
+	reset_pixel/release_pipe_reg[1]_syn_187.c[0]
+	reset_pixel/release_pipe_reg[1]_syn_188.c[0]
+	reset_pixel/release_pipe_reg[1]_syn_186.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_187.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_188.d[0]
+	reset_pixel/release_pipe_reg[1]_syn_186.c[1]
+	reset_pixel/release_pipe_reg[1]_syn_187.c[1]
+	reset_pixel/release_pipe_reg[1]_syn_188.c[1]
+	reset_pixel/release_pipe_reg[1]_syn_186.a[0]
+	reset_pixel/release_pipe_reg[1]_syn_187.a[0]
+	reset_pixel/release_pipe_reg[1]_syn_188.a[0]
+	reset_pixel/release_pipe_reg[1]_syn_186.b[0]
+	reset_pixel/release_pipe_reg[1]_syn_187.b[0]
+	reset_pixel/release_pipe_reg[1]_syn_188.b[0]
+	reset_pixel/release_pipe_reg[1]_syn_186.d[1]
+	reset_pixel/release_pipe_reg[1]_syn_187.d[1]
+	reset_pixel/release_pipe_reg[1]_syn_188.d[1]
+
+DummyNode in Model: EG_PHY_PAD
+	memory_ip/sdram_syn_5.opad
+	memory_ip/sdram_syn_10.opad
+
+4. checking invalid constraints. (HIGH)
+---------------------------------------------
+There are 0 invalid constraints. (HIGH)
+
+
+5. checking PLL/buffer clocks. (HIGH)
+---------------------------------------------
+PLL/buffer inst: sound_pll/pll_inst
+{
+	There are 0 clock pins that have no clock constraints. (HIGH)
+
+
+	There are 0 clocks whose clock frequency do not match the PLL setting. (HIGH)
+
+
+}
+
+PLL/buffer inst: system_pll/pll_inst
+{
+	There are 0 clock pins that have no clock constraints. (HIGH)
+
+
+	There are 0 clocks whose clock frequency do not match the PLL setting. (HIGH)
+
+
+}
+
+PLL/buffer inst: video_base$video_pll/pll_inst
+{
+	There are 0 clock pins that have no clock constraints. (HIGH)
+
+
+	There are 0 clocks whose clock frequency do not match the PLL setting. (HIGH)
+
+
+}
+
+6. checking combinational loops. (HIGH)
+---------------------------------------------
+There are 0 combinational loops. (HIGH)
+
+
+7. checking soft fifo set_max_delay constraints. (HIGH)
+---------------------------------------------
+There are 0 max-delay datapath-only paths that are part of the provided async clock paths, whereas the timing between other registers is not relaxed or ignored. (HIGH)
+
+
+8. checking no path constraints. (MEDIUM)
+---------------------------------------------
+There are 0 constraints that have no timing paths. (MEDIUM)
+
+
+9. checking path exception constraints shadowed/ignored by other constraints. (MEDIUM)
+---------------------------------------------
+
+MCP/SMD Summary
+--------------------
+
+		Max Check
+		--------------------
+		     Total    Dominated     Shadowed      Ignored   Constraint
+		         4            4            0            0   set_multicycle_path -setup -from [get_clocks sd_fast] -to [get_pins {sd_miso_syn_*.ipad}] 2
+		         4            4            0            0   set_multicycle_path -setup -from [get_clocks sd_ident] -to [get_pins {sd_miso_syn_*.ipad}] 250
+		         2            2            0            0   set_multicycle_path -setup -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_fast] 2
+		         2            2            0            0   set_multicycle_path -setup -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_ident] 250
+		        12           12            0            0   set_max_delay -datapath_only -to [get_ports {uart_txd led* HDMI_DDC_SCL}] 5.000
+		       308          308            0            0   set_max_delay -datapath_only -from [get_regs {ref_status_mailbox/payload*}] -to [get_regs {ref_status_mailbox/dst_data*}] 8.000
+		        94           94            0            0   set_max_delay -datapath_only -from [get_regs {mem_status_mailbox/payload*}] -to [get_regs {mem_status_mailbox/dst_data*}] 8.000
+		        64           64            0            0   set_max_delay -datapath_only -from [get_regs {hdmi_status_mailbox/payload*}] -to [get_regs {hdmi_status_mailbox/dst_data*}] 8.000
+		       184          184            0            0   set_max_delay -datapath_only -from [get_regs {video/config_mailbox/payload*}] -to [get_regs {video/config_mailbox/dst_data*}] 8.000
+		        18           18            0            0   set_max_delay -datapath_only -from [get_regs {video/audio_ready_mailbox/payload*}] -to [get_regs {video/audio_ready_mailbox/dst_data*}] 8.000
+		       112          112            0            0   set_max_delay -datapath_only -from [get_regs {video/status_mailbox/payload*}] -to [get_regs {video/status_mailbox/dst_data*}] 8.000
+		        48           48            0            0   set_max_delay -datapath_only -from [get_regs {video/cache/requests/payload*}] -to [get_regs {video/cache/requests/dst_data*}] 8.000
+		        46           46            0            0   set_max_delay -datapath_only -from [get_regs {video/cache/responses/payload*}] -to [get_regs {video/cache/responses/dst_data*}] 8.000
+		       128          128            0            0   set_max_delay -datapath_only -from [get_regs {audio/ring_to_ref/payload*}] -to [get_regs {audio/ring_to_ref/dst_data*}] 8.000
+		        10           10            0            0   set_max_delay -datapath_only -from [get_regs {audio/index_to_sys/payload*}] -to [get_regs {audio/index_to_sys/dst_data*}] 8.000
+		         8            8            0            0   set_max_delay -datapath_only -from [get_regs {audio/index_to_mem/payload*}] -to [get_regs {audio/index_to_mem/dst_data*}] 8.000
+		        20           20            0            0   set_max_delay -datapath_only -from [get_regs {audio/commit_to_mem/payload*}] -to [get_regs {audio/commit_to_mem/dst_data*}] 8.000
+		         8            8            0            0   set_max_delay -datapath_only -from [get_regs {audio/ready_to_sys/payload*}] -to [get_regs {audio/ready_to_sys/dst_data*}] 8.000
+		        36           36            0            0   set_max_delay -datapath_only -from [get_regs {audio/control_to_audio/payload*}] -to [get_regs {audio/control_to_audio/dst_data*}] 8.000
+		       142          142            0            0   set_max_delay -datapath_only -from [get_regs {audio/status_to_sys/payload*}] -to [get_regs {audio/status_to_sys/dst_data*}] 8.000
+		        72           72            0            0   set_max_delay -datapath_only -from [get_regs {*wr_to_rd*primary_addr_gray_reg*}] -to [get_regs {*wr_to_rd*sync_r1*}] 8.000
+		        72           72            0            0   set_max_delay -datapath_only -from [get_regs {*rd_to_wr*primary_addr_gray_reg*}] -to [get_regs {*rd_to_wr*sync_r1*}] 8.000
+
+		Min Check
+		--------------------
+		     Total    Dominated     Shadowed      Ignored   Constraint
+		         4            4            0            0   set_multicycle_path -hold -end -from [get_clocks sd_fast] -to [get_pins {sd_miso_syn_*.ipad}] 1
+		         4            4            0            0   set_multicycle_path -hold -end -from [get_clocks sd_ident] -to [get_pins {sd_miso_syn_*.ipad}] 249
+		         2            2            0            0   set_multicycle_path -hold -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_fast] 3
+		         2            2            0            0   set_multicycle_path -hold -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_ident] 499
+
+10. checking no input delay (MEDIUM)
+--------------------------
+There are 6 input ports that with no input delay specified. (MEDIUM)
+
+	HDMI_DDC_SDA
+	btn_auto
+	btn_emergency
+	btn_next
+	rst_n
+	uart_rxd
+
+11. checking no output delay (MEDIUM)
+--------------------------
+There are 11 output ports that with no output delay specified. (MEDIUM)
+
+	HDMI_CLK_P
+	HDMI_D0_P
+	HDMI_D1_P
+	HDMI_D2_P
+	HDMI_DDC_SCL
+	HDMI_DDC_SDA
+	led[3]
+	led[2]
+	led[1]
+	led[0]
+	uart_txd
+
+12. checking partial input delay (MEDIUM)
+--------------------------
+There are 0 input ports with partial input delay specified. (MEDIUM)
+
+
+13. checking partial output delay (MEDIUM)
+--------------------------
+There are 0 output ports with partial output delay specified. (MEDIUM)
+
+
+14. checking abnormal set_input_delay constraints. (MEDIUM)
+---------------------------------------------
+There are 0 abnormal set_input_delay constraints. (MEDIUM)
+
+

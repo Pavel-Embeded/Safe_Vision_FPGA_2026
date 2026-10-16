@@ -25,3 +25,7 @@
 /evidence/v3/resource_109_20261016/**/*.mem binary
 /evidence/v3/resource_112_20261016/**/*.mem binary
 /evidence/v3/resource_113_20261016/**/*.mem binary
+/artifacts/v3/release_9d40698/** -text
+/artifacts/v3/release_9d40698/*.bit binary
+/artifacts/v3/release_9d40698/native/*/gate.netlist.v binary
+/artifacts/v3/SafeVision_V3_release_9d40698.zip binary

@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "status": "BOTH_DIAGNOSTIC_GATES_PASS_CLEAN_RELEASE_REBUILD_PENDING",
+  "status": "OFFLINE_ACCEPTANCE_COMPLETE_SYNC_PENDING_HARDWARE_PENDING",
   "release_ready": false,
   "hardware_verified": false,
   "source_baseline_commit": "282e470c7a2f57c62e4cd39c75ed41ee67b6178d",
@@ -18,14 +18,12 @@
   "resource_lut_hard_capacity": 19600,
   "resource_lut_target": 13720,
   "feature_reduction_permitted": false,
-  "candidate_resources_are_final": false,
-  "all_corner_routed_sta_passed": false,
-  "bitstreams_generated": false,
+  "candidate_resources_are_final": true,
+  "all_corner_routed_sta_passed": true,
+  "bitstreams_generated": true,
   "github_main_contains_current_implementation": false,
   "pending": [
-    "Clean committed-source two-mode production build and full gate",
-    "Two formally approved bitstreams and input/tool/constraint hashes",
-    "Original local root and GitHub main fast-forward and exact readback",
+    "Original local root and GitHub main synchronization/readback",
     "Physical board acceptance"
   ],
   "functional_acceptance_evidence": "evidence/v3/resource_113_20261016/acceptance.json",
@@ -34,7 +32,7 @@
   "resource_contract_parser_controls": 23,
   "rom_provenance_controls": 9,
   "presentation_cdc_native_scope_cases": 6,
-  "updated_at_utc": "2026-10-16T11:40:38.081248+00:00",
+  "updated_at_utc": "2026-10-16T11:58:24.442313+00:00",
   "configuration_report_parser_controls": 17,
   "portable_configuration_controls": 16,
   "previous_diagnostic_routed_modes": {
@@ -113,5 +111,157 @@
     "production_adopted": false,
     "reason": "Worse global HD routed timing and resource usage; original source and failed reports retained"
   },
-  "diagnostic_all_corner_routed_sta_passed": true
+  "diagnostic_all_corner_routed_sta_passed": true,
+  "source_commit": "9d40698de1d57fc46efb0b035ecf91cf58c3605b",
+  "source_unchanged_during_build": true,
+  "committed_source_reproduction_verified": true,
+  "offline_acceptance_passed": true,
+  "hardware_release_ready": false,
+  "formal_release_index": "artifacts/v3/release_9d40698/release.index.json",
+  "full_release_archive": "artifacts/v3/SafeVision_V3_release_9d40698.zip",
+  "full_release_archive_sha256": "5eea4eae1026b0f5db7efda2c035006600e6a51ce8d33ff9bc3709a4472b1249",
+  "final_modes": {
+    "base": {
+      "bitstream": "SafeVision_BASE_9d40698.bit",
+      "bit_sha256": "88dea9d16c0537801439a18e30b724473ef629b057f977088095c10e9c0f91f7",
+      "bytes": 642442,
+      "sta_minima": {
+        "setup": {
+          "reported_min_ns": 0.139,
+          "non_sdram_reported_min_ns": 0.139
+        },
+        "hold": {
+          "reported_min_ns": 0.024,
+          "non_sdram_reported_min_ns": 0.024
+        },
+        "recovery": {
+          "reported_min_ns": 0.737,
+          "non_sdram_reported_min_ns": 0.737
+        },
+        "removal": {
+          "reported_min_ns": 0.023,
+          "non_sdram_reported_min_ns": 0.023
+        }
+      },
+      "global_timing": {
+        "swns_ns": 0.139,
+        "stns_ns": 0.0,
+        "hwns_ns": 0.023,
+        "htns_ns": 0.0,
+        "period_wns_ns": 77.966
+      },
+      "resources": {
+        "lut": {
+          "used": 17093,
+          "available": 19600,
+          "percent": 87.20918367346938
+        },
+        "reg": {
+          "used": 13093,
+          "available": 19600,
+          "percent": 66.80102040816327
+        },
+        "bram": {
+          "used": 51,
+          "available": 64,
+          "percent": 79.6875
+        },
+        "bram32k": {
+          "used": 0,
+          "available": 16,
+          "percent": 0.0
+        },
+        "dsp": {
+          "used": 13,
+          "available": 29,
+          "percent": 44.827586206896555
+        },
+        "pll": {
+          "used": 3,
+          "available": 4,
+          "percent": 75.0
+        },
+        "ram": {
+          "used_9k_tiles": 51,
+          "available_9k_tiles": 64,
+          "note": "A RAM32K macro consumes four of the physical RAM9K tiles.",
+          "percent": 79.6875
+        }
+      },
+      "constraints_approved": true,
+      "source_binding_dependencies": 1055
+    },
+    "hd": {
+      "bitstream": "SafeVision_HD_9d40698.bit",
+      "bit_sha256": "6f9b9895c180f61eab40fa34b26d6285a3056690c46ade91e757d3abcf13c52e",
+      "bytes": 642442,
+      "sta_minima": {
+        "setup": {
+          "reported_min_ns": 0.12,
+          "non_sdram_reported_min_ns": 0.12
+        },
+        "hold": {
+          "reported_min_ns": 0.032,
+          "non_sdram_reported_min_ns": 0.032
+        },
+        "recovery": {
+          "reported_min_ns": 0.111,
+          "non_sdram_reported_min_ns": 0.111
+        },
+        "removal": {
+          "reported_min_ns": 0.03,
+          "non_sdram_reported_min_ns": 0.03
+        }
+      },
+      "global_timing": {
+        "swns_ns": 0.111,
+        "stns_ns": 0.0,
+        "hwns_ns": 0.03,
+        "htns_ns": 0.0,
+        "period_wns_ns": 77.966
+      },
+      "resources": {
+        "lut": {
+          "used": 17716,
+          "available": 19600,
+          "percent": 90.38775510204081
+        },
+        "reg": {
+          "used": 13328,
+          "available": 19600,
+          "percent": 68.0
+        },
+        "bram": {
+          "used": 51,
+          "available": 64,
+          "percent": 79.6875
+        },
+        "bram32k": {
+          "used": 0,
+          "available": 16,
+          "percent": 0.0
+        },
+        "dsp": {
+          "used": 16,
+          "available": 29,
+          "percent": 55.172413793103445
+        },
+        "pll": {
+          "used": 3,
+          "available": 4,
+          "percent": 75.0
+        },
+        "ram": {
+          "used_9k_tiles": 51,
+          "available_9k_tiles": 64,
+          "note": "A RAM32K macro consumes four of the physical RAM9K tiles.",
+          "percent": 79.6875
+        }
+      },
+      "constraints_approved": true,
+      "source_binding_dependencies": 1055
+    }
+  },
+  "source_and_proof_git_dependencies_per_mode": 1055,
+  "release_ready_definition": "Requires physical board acceptance; offline_acceptance_passed reports completed source/model/STA/bitstream gates independently"
 }
