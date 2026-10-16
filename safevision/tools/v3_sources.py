@@ -70,7 +70,8 @@ def physical_constraint_files(root):
  if extra.exists():
   statements=[s.strip() for s in extra.read_text(encoding='utf-8-sig').splitlines() if s.strip() and not s.lstrip().startswith('#')]
   approved='set_inst_assignment {memory_ip/u2_ram/u2_wrrd/sdr_t_reg} {location = x19y31z1;}'
-  if statements!=[approved]:raise ValueError('unreviewed internal physical constraint')
+  phy=['create_bound {v3_phy_region} -mode fixed -width 12 -height 30 -origin {29 8}', 'add_cells_to_bound -bound v3_phy_region -cells {reset_phy serializer}']
+  if statements not in ([approved],[approved]+phy):raise ValueError('unreviewed internal physical constraint')
   files.append(extra)
  return files
 

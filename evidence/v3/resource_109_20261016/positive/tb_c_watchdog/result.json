@@ -1,0 +1,9 @@
+{
+  "top": "tb_c_watchdog",
+  "suite": "c",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "6825853534ce8983671f77f256c9f669606058b0bae1c6d721fde37fb99f9737",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_106_20261016\\positive\\tb_c_watchdog"
+}

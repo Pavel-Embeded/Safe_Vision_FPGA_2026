@@ -12,6 +12,24 @@ module v3_user_controls #(parameter integer CLK_HZ=100000000,DEBOUNCE=2000000)(
  output reg bilinear,fit,fade_enabled,output reg [6:0] volume,
  output reg [1:0] period_select,output reg menu,
  output reg [2:0] field,output reg auto_tick);
+ localparam[95:0] NAME_BRIGHT="BRIGHT";
+ localparam[95:0] NAME_CONTRAST="CONTRAST";
+ localparam[95:0] NAME_ALPHA="ALPHA";
+ localparam[95:0] NAME_SCALER="SCALER";
+ localparam[95:0] NAME_SCALE="SCALE";
+ localparam[95:0] NAME_FADE="FADE";
+ localparam[95:0] NAME_VOL="VOL";
+ localparam[95:0] NAME_PERIOD="PERIOD";
+ localparam[95:0] NAME_AUTO="AUTO";
+ localparam[95:0] NAME_NEXT="NEXT";
+ localparam[95:0] NAME_RECOVER="RECOVER";
+ // Exact two's-complement tests for all 2^32 input bit patterns. Command
+ // decoding is independent of value validity, so one command's rejected
+ // value cannot build a priority path to another command's enable.
+ wire value_bright_ok=(~|command_value[31:7]) || (&command_value[31:7]);
+ wire value_byte_ok=~|command_value[31:8];
+ wire value_bit_ok=~|command_value[31:1];
+ wire value_volume_ok=(~|command_value[31:7]) && command_value[6:0]<=7'd100;
  wire [2:0] levels,press;
  key_debounce #(.KEYS(3),.DEB_N(DEBOUNCE),.RESET_LEVEL(0)) buttons(
  .clk(clk),.rst_n(rst_n),.key_async({!emergency_async,!auto_async,!next_async}),
@@ -94,19 +112,24 @@ module v3_user_controls #(parameter integer CLK_HZ=100000000,DEBOUNCE=2000000)(
      else if(command_target==67 && command_name=="AUTO")reply_value<=auto_enabled;
      else reply_code<=3;
     end
-    else if(command_target==65 && command_name=="BRIGHT" && command_value>=-128 && command_value<=127)brightness<=command_value;
-    else if(command_target==65 && command_name=="CONTRAST" && command_value>=0 && command_value<=255)contrast<=command_value;
-    else if(command_target==65 && command_name=="ALPHA" && command_value>=0 && command_value<=255)osd_alpha<=command_value;
-    else if(command_target==65 && command_name=="SCALER" && command_value>=0 && command_value<=1)bilinear<=command_value;
-    else if(command_target==65 && command_name=="SCALE" && command_value>=0 && command_value<=1)fit<=command_value;
-    else if(command_target==65 && command_name=="FADE" && command_value>=0 && command_value<=1)fade_enabled<=command_value;
-    else if(command_target==67 && command_name=="VOL" && command_value>=0 && command_value<=100)volume<=command_value;
-    else if(command_target==67 && command_name=="PERIOD")begin
-     case(command_value)2:period_select<=0;5:period_select<=1;10:period_select<=2;30:period_select<=3;default:reply_code<=3;endcase
-    end else if(command_target==67 && command_name=="AUTO" && command_value>=0 && command_value<=1)auto_enabled<=command_value;
-    else if(command_target==67 && command_name=="NEXT" && command_value==1)begin if(!transition_busy && cached && !safety)next_request<=1;else reply_code<=4;end
-    else if(command_target==67 && command_name=="RECOVER" && command_value==1)recover_request<=1;
-    else reply_code<=3;
+    else case(command_name)
+     NAME_BRIGHT:if(command_target==8'd65 && value_bright_ok)brightness<=command_value;else reply_code<=3;
+     NAME_CONTRAST:if(command_target==8'd65 && value_byte_ok)contrast<=command_value;else reply_code<=3;
+     NAME_ALPHA:if(command_target==8'd65 && value_byte_ok)osd_alpha<=command_value;else reply_code<=3;
+     NAME_SCALER:if(command_target==8'd65 && value_bit_ok)bilinear<=command_value;else reply_code<=3;
+     NAME_SCALE:if(command_target==8'd65 && value_bit_ok)fit<=command_value;else reply_code<=3;
+     NAME_FADE:if(command_target==8'd65 && value_bit_ok)fade_enabled<=command_value;else reply_code<=3;
+     NAME_VOL:if(command_target==8'd67 && value_volume_ok)volume<=command_value;else reply_code<=3;
+     NAME_PERIOD:if(command_target==8'd67)begin case(command_value)
+      2:period_select<=0;5:period_select<=1;10:period_select<=2;30:period_select<=3;default:reply_code<=3;
+     endcase end else reply_code<=3;
+     NAME_AUTO:if(command_target==8'd67 && value_bit_ok)auto_enabled<=command_value;else reply_code<=3;
+     NAME_NEXT:if(command_target==8'd67 && command_value==1)begin
+      if(!transition_busy && cached && !safety)next_request<=1;else reply_code<=4;
+     end else reply_code<=3;
+     NAME_RECOVER:if(command_target==8'd67 && command_value==1)recover_request<=1;else reply_code<=3;
+     default:reply_code<=3;
+    endcase
    end
   end
  end

@@ -1,0 +1,51 @@
+{
+  "mutation": "container_extension",
+  "top": "tb_v3_audio_negative_container",
+  "detected": true,
+  "normal_completion": true,
+  "native_stages_completed": true,
+  "tool_failure": false,
+  "required_marker": "[FAIL AUDIO_CONTAINER_END] case=1 ",
+  "error_counts": [
+    150
+  ],
+  "original_sha256": "262ca73e604bba7a1e7c835a214a6978c6bcc7ce71a1e37e531b70c4ac0f2ce9",
+  "mutated_sha256": "0f31c774f35d9b01afa7926b4240d2b5299b96c2aa275cf399fb6db6104537ac",
+  "source_before_sha256": {
+    "safevision/rtl/media/v3_wav_parser_compact_ctx.v": "0f31c774f35d9b01afa7926b4240d2b5299b96c2aa275cf399fb6db6104537ac",
+    "safevision/verification/unit/tb_v3_audio_negative_container.sv": "21ca20e81c62873f0391d0d90b0741d74532bbc55d0d1d81d7cc1f53c7dfb81b",
+    "safevision/rtl/include/crc32_word.vh": "17f9d826d1d26514a3bf1a8c6db95189ccd982c470112d1f5cdb8c9bcb89a36a",
+    "safevision/rtl/include/event_code_defs.vh": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2",
+    "safevision/rtl/include/fault_code_defs.vh": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e",
+    "safevision/rtl/include/pixel_format_defs.vh": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0",
+    "safevision/rtl/include/safevision_defs.vh": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5",
+    "safevision/rtl/include/video_mode_defs.vh": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997",
+    "safevision/verification/fixtures/generate_wav_container.py": "5405da0f26c5bcd80fa1aad9cb92d061586f1b413669c93879daad4395223b5c",
+    "generated:compact_disk.mem": "5e88081e74d97160ee8c37c849c4993e741cf566514ee52342edfefdb5cfba3b",
+    "generated:compact_pcm.mem": "9bdaf3ef46d7e0f222e0d0e06ed4e0002f87734861552f5832d3efee435afd8c",
+    "generated:compact_desc.mem": "5c335502a95155294fc0a96aa36755829b2bcd2cf95b55e8cabb4a26a5d0ffc1",
+    "generated:compact_fixture.json": "2758434a913e00b7f83eeeb2624f80aeaf2ea5946156678e6d36c9525ed37b19",
+    "safevision/tools/run_v3_shared_storage.py": "e95ee623abead4b48bd29e3f6b7116eda317241ec50ea88162f09c5f37261681",
+    "safevision/build/manifests/wav_container_negative_sim.json": "0980d3505124a196c85f3d667039a8a6a3cc14ffabffb80bfa49ef252052e717"
+  },
+  "source_after_sha256": {
+    "safevision/rtl/media/v3_wav_parser_compact_ctx.v": "0f31c774f35d9b01afa7926b4240d2b5299b96c2aa275cf399fb6db6104537ac",
+    "safevision/verification/unit/tb_v3_audio_negative_container.sv": "21ca20e81c62873f0391d0d90b0741d74532bbc55d0d1d81d7cc1f53c7dfb81b",
+    "safevision/rtl/include/crc32_word.vh": "17f9d826d1d26514a3bf1a8c6db95189ccd982c470112d1f5cdb8c9bcb89a36a",
+    "safevision/rtl/include/event_code_defs.vh": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2",
+    "safevision/rtl/include/fault_code_defs.vh": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e",
+    "safevision/rtl/include/pixel_format_defs.vh": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0",
+    "safevision/rtl/include/safevision_defs.vh": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5",
+    "safevision/rtl/include/video_mode_defs.vh": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997",
+    "safevision/verification/fixtures/generate_wav_container.py": "5405da0f26c5bcd80fa1aad9cb92d061586f1b413669c93879daad4395223b5c",
+    "generated:compact_disk.mem": "5e88081e74d97160ee8c37c849c4993e741cf566514ee52342edfefdb5cfba3b",
+    "generated:compact_pcm.mem": "9bdaf3ef46d7e0f222e0d0e06ed4e0002f87734861552f5832d3efee435afd8c",
+    "generated:compact_desc.mem": "5c335502a95155294fc0a96aa36755829b2bcd2cf95b55e8cabb4a26a5d0ffc1",
+    "generated:compact_fixture.json": "2758434a913e00b7f83eeeb2624f80aeaf2ea5946156678e6d36c9525ed37b19",
+    "safevision/tools/run_v3_shared_storage.py": "e95ee623abead4b48bd29e3f6b7116eda317241ec50ea88162f09c5f37261681",
+    "safevision/build/manifests/wav_container_negative_sim.json": "0980d3505124a196c85f3d667039a8a6a3cc14ffabffb80bfa49ef252052e717"
+  },
+  "runtime_static_assets_match": {},
+  "source_unchanged": true,
+  "mutant_file": "mutant.v"
+}

@@ -11,7 +11,7 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  input wire evt_valid,input wire[7:0] evt_code,input wire[3:0] evt_src,input wire[31:0] evt_ts,
  output wire evt_ready,
  output wire[31:0] parser_rejected,rx_framing,rx_overrun,
- output reg[31:0] reply_dropped);
+ output reg[31:0] reply_dropped,output wire[6:0] catalog_id);
  wire[7:0] byte_rx;wire byte_valid,parse_reply;wire[7:0] parse_code;
  uart_rx #(.CLK_HZ(CLK_HZ),.BAUD(BAUD)) rx(
  .clk(clk),.rst_n(rst_n),.rxd(rxd),.ready(1'b1),.data(byte_rx),.valid(byte_valid),
@@ -22,8 +22,9 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  v3_command_parser_catalog #(.TIMEOUT(CLK_HZ/10)) parser(
  .clk(clk),.rst_n(rst_n),.rx_valid(byte_valid),.rx_data(byte_rx),
  .command_valid(command_valid),.target(command_target),.name(command_name),.value(command_value),.query(command_query),
- .reply_valid(parse_reply),.reply_code(parse_code),.rejected(parser_rejected),.catalog_id());
+ .reply_valid(parse_reply),.reply_code(parse_code),.rejected(parser_rejected),.catalog_id(catalog_id));
  end else begin:g_generic
+ assign catalog_id=7'd0;
  v3_command_parser #(.TIMEOUT(CLK_HZ/10)) parser(
  .clk(clk),.rst_n(rst_n),.rx_valid(byte_valid),.rx_data(byte_rx),
  .command_valid(command_valid),.target(command_target),.name(command_name),.value(command_value),.query(command_query),

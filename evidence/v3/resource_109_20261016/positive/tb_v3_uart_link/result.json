@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_uart_link",
+  "suite": "uart_link",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "a8d3b1292dfaac88b7822a9db8b29be751497bd71fad8ce186c72f482e8172d6",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\publication_candidate\\sim\\uart_link\\tb_v3_uart_link"
+}

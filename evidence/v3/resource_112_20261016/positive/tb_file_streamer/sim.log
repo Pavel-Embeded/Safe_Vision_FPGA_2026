@@ -1,0 +1,91 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 16 15:46:46 2026
+# Process ID: 11688
+# Current directory: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/phase_safe_candidate/affected_regression/legacy_b/native
+# Command line: xsim.exe -log tb_file_streamer_sim.log -mode tcl -source {xsim.dir/tb_file_streamer_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/phase_safe_candidate/affected_regression/legacy_b/native/tb_file_streamer_sim.log
+# Journal file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/phase_safe_candidate/affected_regression/legacy_b/native\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_file_streamer_sim/xsim_script.tcl
+# xsim {tb_file_streamer_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== å‰ç½®ï¼šSD åˆå§‹åŒ– ====
+[PASS] P1 SDÿÿÿÿÿÿåÿÿÿˆÿÿÿŸ
+
+==== T31: å•ç°‡æ–‡ä»¶ 2048 B ====
+[PASS] T31.1 ÿÿÿèÿÿÿˆÿÿÿŸ
+[PASS] T31ÿÿÿèÿÿÿ®ÿÿÿ†
+[PASS] T31ÿÿÿæÿÿÿ”ÿÿÿ¯
+[PASS] T31ÿÿÿæÿÿÿ¥½ 20ÿÿÿäÿÿÿ­ÿÿÿ‚
+[PASS] .5 2048 ÿÿÿèÿÿÿ€ÿÿÿªÿÿÿåÿÿÿ…ÿÿÿ¹
+[PASS] T31.6 sofÿÿÿªÿÿÿçÿ° 1ÿÿÿ¡
+[PASS] T31.7 eofÿÿÿªÿÿÿçÿ° 1ÿÿÿ¡
+[PASS]  eofÿÿÿÿÿ¬ 2048ÿÿÿªÿÿÿèÿÿÿÿÿÿ
+[PASS] T31.9 bytes_rd = 2048
+[PASS] 1.10ÿÿÿ•ÿÿÿæÿÿÿ»ÿÿÿÿÿÿèÿÿÿ·ÿÿÿ‡
+
+==== T32: è·¨ç°‡æ–‡ä»¶ 4096 B ====
+[PASS] T32ÿÿÿèÿÿÿ®ÿÿÿ†
+[PASS] T32ÿÿÿæÿÿÿ”ÿÿÿ¯
+[PASS] T32ÿÿÿæÿÿÿ¥½ 40ÿÿÿäÿÿÿ­ÿÿÿ‚
+[PASS] 32.4ÿÿÿ¨ÿÿÿåÿÿÿ†ÿÿÿ¹ÿÿÿéÿÿÿ¸ÿÿÿ¹
+[PASS] T32.5 sofÿÿÿªÿÿÿçÿ° 1ÿÿÿ¡
+[PASS] T32.6 eofÿÿÿªÿÿÿçÿ° 1ÿÿÿ¡
+[PASS] T32.7 bytes_rd = 4096
+[PASS] T32ÿÿÿæÿÿÿ¥ÿÿÿ³ÿÿ† ÿÿÿ¬ÿÿÿ‡
+
+==== T33: åªå– 3000 Bï¼ˆç°‡é‡Œè¿˜æœ‰è´§ä¹Ÿä¸è®¸å¤šå‘ï¼‰====
+[PASS] T33ÿÿÿèÿÿÿ®ÿÿÿ†
+[PASS] T33ÿÿÿæÿÿÿ”ÿÿÿ¯
+[PASS] ÿÿÿ¸ÿÿÿ—ÿÿÿäÿÿÿ¤ÿÿÿÿÿÿäÿÿÿ¸ÿÿÿ‘
+[PASS] 33.4ÿÿÿ 300ÿÿÿ­ÿÿÿ‚ÿÿÿåÿÿÿ…ÿÿÿ¹
+[PASS] 3.5 eof ÿÿÿåÿÿÿ¬¬ 30ÿÿÿäÿÿÿ­ÿÿÿ‚
+[PASS] T33.6 bytes_rd = 3000
+
+==== T34: æ–‡ä»¶æ¯”ç°‡é“¾é•¿ ====
+[PASS] T34ÿÿÿåÿÿÿ”ÿÿÿŸÿÿÿåÿÿÿ»ÿÿÿŸ
+[PASS] T34.2 erroÿÿÿ‹ÿÿÿ˜
+[PASS] T34ÿÿÿäÿÿÿ  = 0x03
+[PASS] ÿÿÿ  = 0x36ÿÿÿ‡ÿÿÿéÿÿÿºÿÿÿÿÿ³)
+[PASS] ÿÿÿ»ÿÿÿŠÿÿÿäÿÿÿšÿÿÿ§ÿÿÿåÿÿÿ®ÿÿÿ†
+
+==== T35: ç°‡é“¾æˆç¯ ====
+[PASS] T35ÿÿÿåÿÿÿ· total_clus = 4
+[PASS] T35.2 erroÿÿÿ‹ÿÿÿ˜
+[PASS] ÿÿÿ»ÿÿÿ†ÿÿ = 0xÿÿÿçÿÿÿ“ÿÿÿÿÿ¯)
+[PASS] T35ÿÿÿäÿÿÿ  = 0x03
+
+==== T36: ç°‡å·è¶Šç•Œ ====
+[PASS] T36.1 erroÿÿÿ‹ÿÿÿ˜
+[PASS] ÿÿÿ»ÿÿÿ†ÿÿ = 0xÿÿÿçÿÿÿÿÿÿŠÿÿŒ)
+
+==== T37: ä¸‹æ¸¸åå‹ ====
+[PASS] T37ÿÿÿåÿÿÿÿÿÿŸÿÿ´ valiÿÿÿ¿ÿÿÿ
+[PASS] 37.2ÿÿÿ‹ÿÿÿæÿÿÿ”ÿÿÿ±ÿÿÿçÿÿÿ€ÿÿÿ¾
+[PASS] T37.3ÿÿÿÿÿÿæÿÿÿ—´ soÿÿÿ¿ÿÿÿ
+[PASS] T37.4ÿÿÿ¾ÿÿÿåÿÿÿ¯ÿÿÿŒ
+[PASS] T37ÿÿÿåÿÿÿÿÿÿÿÿÿäÿÿÿ­ÿÿÿ‚
+[PASS] T37ÿÿÿåÿÿÿÿÿÿÿÿÿéÿÿÿ­ÿÿÿ‚
+[PASS] T37.7 bytes_rdÿÿÿÿÿÿæÿÿÿ¸ÿÿÿ´
+
+==== T38: file_size = 0 ====
+[PASS] T38ÿÿÿçÿÿÿ–ÿÿÿ¶ÿÿÿèÿÿÿ”ÿÿÿ¥
+[PASS] T38.2 ÿÿÿçÿÿÿ”ÿÿÿ¯
+[PASS] T38ÿÿÿäÿÿÿ¸ÿÿÿ—ÿÿÿéÿÿÿ¸ÿÿÿ‘
+[PASS] T38.ÿÿÿ¸ÿÿÿ‘ sof
+[PASS] T38.ÿÿÿ¸ÿÿÿ‘ eof
+[PASS] T38.6 bytes_rd = 0
+
+============================================
+ å…¨éƒ¨é€šè¿‡ (PASS)
+============================================
+
+$finish called at time : 15638235 ns : File "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/phase_safe_candidate/source/safevision/verification/unit/tb_file_streamer.sv" Line 475
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 16 15:46:53 2026...

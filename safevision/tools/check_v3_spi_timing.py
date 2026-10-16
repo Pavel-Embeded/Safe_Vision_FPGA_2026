@@ -44,7 +44,9 @@ def check(text):
      # the actual captured logical net on the final register timing row; require
      # that first RX bit rather than trusting an arbitrary packed slice name.
      rx_alias=bool(re.search(r'\bnet:\s+(?:(?:player/)?u_spi|spi)/rx_sr\[0\](?:[,\s]|$)',body))
-     named_rx=bool(re.fullmatch(r'(?:(?:(?:player/)?u_spi|spi)/rx_sr_reg\[0\][^ ]*|sd_miso_syn_\d+\.ipad)',end_name))
+     # An IO-register endpoint can carry the PAD name. That proves location,
+     # not which logical register occupies it; its RX alias is mandatory.
+     named_rx=bool(re.fullmatch(r'(?:(?:player/)?u_spi|spi)/rx_sr_reg\[0\][^ ]*',end_name))
      if begin_name!='sd_miso' or not (rx_alias or named_rx):
       errors.append(f'{clock} input: wrong physical input/capture path')
      if not re.search(r'pin:\s+sd_miso_syn_\d+\.ipad(?:\s|$)',body):

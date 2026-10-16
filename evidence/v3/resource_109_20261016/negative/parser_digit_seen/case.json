@@ -1,0 +1,12 @@
+{
+  "mutation": "parser_digit_seen",
+  "top": "tb_v3_parser_digit_seen",
+  "detected": true,
+  "normal_completion": true,
+  "error_counts": [
+    12
+  ],
+  "original_sha256": "9a537a45fc354c07ad154b56891f267280f1609aaabe7572c39dd2dc58843fe3",
+  "mutated_sha256": "e1255f03c6374df5bc5a8daf92afa0d7ac1b178ead23387a10352cbf3494257f",
+  "mutant_file": "mutant.v"
+}

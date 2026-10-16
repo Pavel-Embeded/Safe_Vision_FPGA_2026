@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_uart",
+  "suite": "v3",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "d27a1698cfb4b6823fd25e52dd29b70a740e8d362c23d9acad3a35bd72cbfaf4",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_remaining\\tb_v3_uart\\tb_v3_uart"
+}

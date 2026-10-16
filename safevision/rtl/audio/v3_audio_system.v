@@ -51,12 +51,15 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  .dst_data(ref_levels),.dst_valid(ref_levels_valid),.dst_ready(1'b1));
 
  wire[8:0] global_ingress_pairs;wire global_sector_room;
+ wire[10:0] global_ingress_words;wire global_ingress_partial;
  v3_pcm_ingress_shared_fifo ingress_shared(.rst(media_reset_any),.wr_clk(ref_clk),.rd_clk(mem_clk),
  .wr_data(source_data),.wr_valid(source_valid),.wr_ready(source_ready),.wr_pairs(global_ingress_pairs),
- .sector_room(global_sector_room),.wr_words(),.rd_data(ingress_data),.rd_valid(ingress_valid),.rd_ready(ingress_ready));
+ .sector_room(global_sector_room),.wr_words(global_ingress_words),.wr_partial(global_ingress_partial),.rd_data(ingress_data),.rd_valid(ingress_valid),.rd_ready(ingress_ready));
  genvar g;generate for(g=0;g<4;g=g+1)begin:ingress_status
   assign ingress_wlevel[g]=global_ingress_pairs;
-  assign fill[g]=(ref_level_cache[g*16+:16]+global_ingress_pairs<PREFETCH+128);
+  v3_audio_prefill_compare #(.LIMIT(PREFETCH+128)) prefill_compare(
+   .ring_level(ref_level_cache[g*16+:16]),.fifo_words(global_ingress_words[9:0]),
+   .partial(global_ingress_partial),.fill(fill[g]));
   assign room[g]=global_sector_room;
  end endgenerate
 

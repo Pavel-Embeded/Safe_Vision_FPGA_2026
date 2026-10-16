@@ -39,6 +39,10 @@ module v3_supervisor #(
  // {0,a}>={0,b}+33'd8. Keep the carry; b near0xffffffff must
  // never wrap the threshold into a false alarm. Snapshot timing is unchanged.
  reg[32:0] video_limit,audio_limit;
+ // Force the documented carry chain on these measured constant-add paths;
+ // the low three constant bits can otherwise shorten below min_ripple_len.
+ (* use_ripple=1 *) wire[32:0] next_video_limit={1'b0,video_underflows}+33'd8;
+ (* use_ripple=1 *) wire[32:0] next_audio_limit={1'b0,audio_underflows}+33'd8;
  reg[31:0] last_hd,ms_now;
  // Predict exactly the next counter state; no event receives an extra cycle.
  wire watch_tick;
@@ -147,7 +151,7 @@ module v3_supervisor #(
    if(!media_active || progress_heartbeat || media_reset)progress_timer<=0;
    else if(watch_tick && progress_timer<PROGRESS_LIMIT)progress_timer<=progress_timer+1'b1;
    if(window_done || media_reset)begin
-    window_timer<=0;video_limit<={1'b0,video_underflows}+33'd8;audio_limit<={1'b0,audio_underflows}+33'd8;last_hd<=hdmi_drops;
+    window_timer<=0;video_limit<=next_video_limit;audio_limit<=next_audio_limit;last_hd<=hdmi_drops;
    end else if(watch_tick)window_timer<=window_timer+1'b1;
   end
  end

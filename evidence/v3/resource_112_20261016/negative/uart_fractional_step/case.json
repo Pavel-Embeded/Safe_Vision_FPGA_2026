@@ -1,0 +1,13 @@
+{
+  "mutation": "uart_fractional_step",
+  "top": "tb_v3_uart_rx_equivalence",
+  "process_exit_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    450000
+  ],
+  "original_sha256": "d8553d0e614f007c726bb2f434ac5519d315372865c67d418b3facbfd3c71ae5",
+  "mutated_sha256": "32bbbcd88f09b464cd3e332a6be1a89fe074a75d331d4c981dc7b9c70abb3ed9",
+  "detected": true,
+  "mutant_file": "mutant.v"
+}

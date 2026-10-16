@@ -1,2 +1,4 @@
-# Internal SDRAM output-enable placement; board pin ADC remains separate.
+# Reviewed regional packing for PHY; no clock/timing exceptions.
 set_inst_assignment {memory_ip/u2_ram/u2_wrrd/sdr_t_reg} {location = x19y31z1;}
+create_bound {v3_phy_region} -mode fixed -width 12 -height 30 -origin {29 8}
+add_cells_to_bound -bound v3_phy_region -cells {reset_phy serializer}

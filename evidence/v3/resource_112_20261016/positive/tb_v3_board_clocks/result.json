@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_board_clocks",
+  "suite": "v3_board_clocks",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "72ef40705d6719fc4c07ce2604d2ff0a2de10bc48abe1a626be24fc3eb673eb3",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_candidate\\sim_r3\\v3_board_clocks\\tb_v3_board_clocks"
+}

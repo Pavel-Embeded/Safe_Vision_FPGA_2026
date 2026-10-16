@@ -1,0 +1,12 @@
+{
+  "mutation": "row_crc",
+  "top": "tb_v3_row_integrity",
+  "detected": true,
+  "normal_completion": true,
+  "error_counts": [
+    37
+  ],
+  "original_sha256": "fba4458c20f5b738357ae66d372c65465482d68c81310188ae03aebedc5504a5",
+  "mutated_sha256": "38b24102d286809de2c84d8e6bd4e07658ea801a09b45af16a9cf292163f9b09",
+  "mutant_file": "mutant.v"
+}

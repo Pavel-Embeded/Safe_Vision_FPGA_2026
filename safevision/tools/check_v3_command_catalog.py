@@ -9,8 +9,18 @@ def check(root):
  for rel,var in [(TOP,'cmd_name'),('safevision/rtl/control/v3_user_controls.v','command_name')]:
   text=(root/rel).read_text(encoding='utf-8')
   names.update(re.findall(r'\b'+var+r'\s*==\s*"([A-Z]+)"',text))
+  cases=re.findall(r'localparam\[95:0\] NAME_([A-Z]+)="([A-Z]+)";',text)
+  if cases:
+   if len(cases)!=11 or any(key!=value or text.count('NAME_'+key+':')!=1 for key,value in cases):raise ValueError('incomplete/mismatched control command cases')
+   names.update(value for key,value in cases)
+ top_text=(root/TOP).read_text(encoding='utf-8')
+ bindings={name:int(value) for name,value in re.findall(r"localparam\[6:0\] B_QUERY_([A-Z]+)=7'd(\d+);",top_text)}
+ if bindings:
+  if len(bindings)!=24 or any(top_text.count('B_QUERY_'+name+':')!=1 for name in bindings):raise ValueError('incomplete/duplicate board query consumer')
+  names.update(bindings)
  if len(names)!=35:raise ValueError('board command vocabulary changed; review finite catalog and tests')
  ordered=sorted(names);expected=bytearray(1024)
+ if bindings and any(value!=ordered.index(name)+1 for name,value in bindings.items()):raise ValueError('board numeric query ID differs from exact name catalog')
  for index,name in enumerate(ordered):
   if not 1<=len(name)<=12:raise ValueError('invalid command length')
   data=name.encode('ascii')

@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_supervisor_comparator",
+  "suite": "supervisor_comparator",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "61682d35c482738ba83ce41424898ee52dc82a387f527bec377a55e440c43632",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\catalog_carry_remaining\\tb_v3_supervisor_comparator\\tb_v3_supervisor_comparator"
+}

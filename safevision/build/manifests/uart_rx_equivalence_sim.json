@@ -1,0 +1,10 @@
+{
+  "defines": [],
+  "sources": [
+    "safevision/rtl/common/uart_rx.v",
+    "safevision/verification/models/uart_rx_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_uart_rx_equivalence"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_audio_underflow_serial",
+  "suite": "audio_priority_underflow",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "47a273263d8c1ea167497c094dc8c2588eb1897e3946d2c08af6f2b9ab4085ed",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\prefill_remaining\\tb_v3_audio_underflow_serial\\tb_v3_audio_underflow_serial"
+}

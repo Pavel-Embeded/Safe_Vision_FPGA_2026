@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_priority_serial",
+  "suite": "priority_serial",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "cf3d2f6b581635f0d9a66423c11e03d62ad4368711a877ecf374171120527a13",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_109_20261016\\positive\\tb_v3_priority_serial"
+}

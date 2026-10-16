@@ -1,0 +1,9 @@
+{
+  "top": "tb_pattern_generator",
+  "suite": "legacy_a",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": true,
+  "original_runner_result_sha256": "62c2c08763c14145f9135d891f5b6b665c9df11e579f58b5763862e97f1e397d",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_109_20261016\\positive\\tb_pattern_generator"
+}

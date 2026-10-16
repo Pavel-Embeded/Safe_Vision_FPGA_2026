@@ -8,7 +8,7 @@
 module v3_pcm_ingress_shared_fifo(
  input wire rst,wr_clk,rd_clk,input wire[127:0] wr_data,input wire[3:0] wr_valid,
  output wire[3:0] wr_ready,output wire[8:0] wr_pairs,output wire sector_room,
- output wire[10:0] wr_words,
+ output wire[10:0] wr_words,output wire wr_partial,
  output wire[127:0] rd_data,output wire[3:0] rd_valid,input wire[3:0] rd_ready);
  wire wr_rst_n,rd_rst_n;
  v3_audio_reset_release wr_reset(.clk(wr_clk),.assert_reset(rst),.rst_n(wr_rst_n));
@@ -32,6 +32,7 @@ module v3_pcm_ingress_shared_fifo(
  assign wr_ready=(wr_rst_n&&write_part==2&&fifo_wr_ready)?wr_valid:4'd0;
  assign wr_pairs=(rounded_words/3)+(write_part!=0);
  assign wr_words={1'b0,words};
+ assign wr_partial=(write_part!=0);
  assign sector_room=wr_rst_n&&write_part==0&&words<=11'd632;
  assign rd_data={4{low_words}};
  assign rd_valid=(rd_rst_n&&read_part==2&&fifo_rd_valid)?(4'b1<<fifo_data[1:0]):4'd0;

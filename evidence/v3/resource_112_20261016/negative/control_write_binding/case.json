@@ -1,0 +1,13 @@
+{
+  "mutation": "control_write_binding",
+  "top": "tb_v3_control_decode_equivalence",
+  "process_exit_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    215232
+  ],
+  "original_sha256": "a21551792aef14a1bcb264d69ead35bc624adcc73394bbce0a67984ec109a8df",
+  "mutated_sha256": "f574d21195875d7c889daa26b341a0e1e1d66e554f36f52ebc5cdadc46574ccd",
+  "detected": true,
+  "mutant_file": "mutant.v"
+}

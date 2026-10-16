@@ -84,6 +84,7 @@ rtl/audio/audio_energy.v
 rtl/audio/hdmi_acr.v
 rtl/audio/v3_pcm_ring.v
 rtl/audio/v3_audio_system.v
+rtl/audio/v3_audio_prefill_compare.v
 rtl/audio/v3_audio_volume.v
 rtl/audio/v3_pcm_packet_fifo.v
 rtl/audio/v3_pcm_ingress_fifo.v
@@ -95,3 +96,6 @@ rtl/media/v3_wav_parser_compact_ctx.v
 rtl/storage/v3_file_streamer_compact_ctx.v
 
 rtl/video/scaler/v3_scaler_bilinear_thirds.v
+
+platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v
+platform/anlogic_eg4s20_hx4s20c/rtl/hdmi/v3_hdmi_phy_wrapper.v

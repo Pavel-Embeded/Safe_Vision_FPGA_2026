@@ -1,0 +1,9 @@
+{
+  "top": "tb_c_input_sync",
+  "suite": "c",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "b395a11ec4d4e4996d0554965b3dba5432e382bc11d3950f0c4951ef48e7eb7b",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_109_20261016\\positive\\tb_c_input_sync"
+}

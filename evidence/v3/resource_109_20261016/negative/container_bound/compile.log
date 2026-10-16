@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/prefill_remaining/negative_audio/container_bound/v3_wav_parser_compact_ctx.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_wav_parser_compact_ctx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/prefill_phy_r2/source/safevision/verification/unit/tb_v3_audio_negative_container.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_audio_negative_container

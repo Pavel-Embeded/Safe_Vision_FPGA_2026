@@ -251,42 +251,70 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  error_report events(.clk(sys_clk),.rst_n(sys_rst_n),.err_push(err_push),.err_code(err_code),.err_src(err_src),.err_ts(err_ts),
  .evt_type(evt_src),.evt_value(evt_value),.evt_valid(evt_valid),.evt_full(evt_full),.evt_ready(evt_ready),.evt_ts(evt_ts),.drop_cnt(evt_drops));
  wire[31:0] uart_rejected,uart_framing,uart_overrun,uart_reply_dropped;
+ wire[6:0] cmd_catalog_id;
+ localparam[6:0] B_QUERY_STATUS=7'd27;
+ localparam[6:0] B_QUERY_SLOT=7'd26;
+ localparam[6:0] B_QUERY_CACHE=7'd6;
+ localparam[6:0] B_QUERY_GEN=7'd11;
+ localparam[6:0] B_QUERY_UNDERFLOW=7'd32;
+ localparam[6:0] B_QUERY_VUNDERFLOW=7'd34;
+ localparam[6:0] B_QUERY_FAULT=7'd10;
+ localparam[6:0] B_QUERY_PRESENTATION=7'd19;
+ localparam[6:0] B_QUERY_INTEGRITY=7'd14;
+ localparam[6:0] B_QUERY_LEVEL=7'd15;
+ localparam[6:0] B_QUERY_RECOVERY=7'd21;
+ localparam[6:0] B_QUERY_RETRIES=7'd23;
+ localparam[6:0] B_QUERY_REJECTED=7'd22;
+ localparam[6:0] B_QUERY_IDLOW=7'd13;
+ localparam[6:0] B_QUERY_IDHIGH=7'd12;
+ localparam[6:0] B_QUERY_BADERROR=7'd3;
+ localparam[6:0] B_QUERY_BADID=7'd4;
+ localparam[6:0] B_QUERY_WAVFALLBACK=7'd35;
+ localparam[6:0] B_QUERY_OVERFLOW=7'd17;
+ localparam[6:0] B_QUERY_EVENTDROP=7'd8;
+ localparam[6:0] B_QUERY_UARTREJECT=7'd31;
+ localparam[6:0] B_QUERY_UARTFRAME=7'd29;
+ localparam[6:0] B_QUERY_UARTOVERRUN=7'd30;
+ localparam[6:0] B_QUERY_UARTDROP=7'd28;
  reg b_reply;reg[7:0] b_reply_code;reg signed[31:0] b_reply_value;
  always @(posedge sys_clk or negedge sys_rst_n)begin
  if(!sys_rst_n)begin b_reply<=0;b_reply_code<=0;b_reply_value<=0;end
  else begin b_reply<=0;
  if(cmd_valid && cmd_target==66)begin b_reply<=1;b_reply_code<=0;b_reply_value<=0;
  if(!cmd_query)b_reply_code<=3;
- else if(cmd_name=="STATUS")b_reply_value<=ref_status_sys[15:12];
- else if(cmd_name=="SLOT")b_reply_value<=active_slot;
- else if(cmd_name=="CACHE")b_reply_value<=cache_sys;
- else if(cmd_name=="GEN")b_reply_value<=generation;
- else if(cmd_name=="UNDERFLOW")b_reply_value<=audio_underflows;
- else if(cmd_name=="VUNDERFLOW")b_reply_value<=video_underflows;
- else if(cmd_name=="FAULT")b_reply_value<=fault_code;
- else if(cmd_name=="PRESENTATION")b_reply_value<=presentation_fault;
- else if(cmd_name=="INTEGRITY")b_reply_value<=mem_status_sys[11] || video_fault;
- else if(cmd_name=="LEVEL")b_reply_value<=fault_level;
- else if(cmd_name=="RECOVERY")b_reply_value<=recovery_state;
- else if(cmd_name=="RETRIES")b_reply_value<=recovery_attempts;
- else if(cmd_name=="REJECTED")b_reply_value<=ref_status_sys[95:80];
- else if(cmd_name=="IDLOW")b_reply_value<=ref_status_sys[159:128];
- else if(cmd_name=="IDHIGH")b_reply_value<=ref_status_sys[191:160];
- else if(cmd_name=="BADERROR")b_reply_value<=ref_status_sys[127:112];
- else if(cmd_name=="BADID")b_reply_value<=ref_status_sys[111:96];
- else if(cmd_name=="WAVFALLBACK")b_reply_value<=audio_fallback;
- else if(cmd_name=="OVERFLOW")b_reply_value<=audio_overflows;
- else if(cmd_name=="EVENTDROP")b_reply_value<=evt_drops;
- else if(cmd_name=="UARTREJECT")b_reply_value<=uart_rejected;
- else if(cmd_name=="UARTFRAME")b_reply_value<=uart_framing;
- else if(cmd_name=="UARTOVERRUN")b_reply_value<=uart_overrun;
- else if(cmd_name=="UARTDROP")b_reply_value<=uart_reply_dropped;
- else b_reply_code<=3;
+ else case(cmd_catalog_id)
+  B_QUERY_STATUS:b_reply_value<=ref_status_sys[15:12];
+  B_QUERY_SLOT:b_reply_value<=active_slot;
+  B_QUERY_CACHE:b_reply_value<=cache_sys;
+  B_QUERY_GEN:b_reply_value<=generation;
+  B_QUERY_UNDERFLOW:b_reply_value<=audio_underflows;
+  B_QUERY_VUNDERFLOW:b_reply_value<=video_underflows;
+  B_QUERY_FAULT:b_reply_value<=fault_code;
+  B_QUERY_PRESENTATION:b_reply_value<=presentation_fault;
+  B_QUERY_INTEGRITY:b_reply_value<=mem_status_sys[11] || video_fault;
+  B_QUERY_LEVEL:b_reply_value<=fault_level;
+  B_QUERY_RECOVERY:b_reply_value<=recovery_state;
+  B_QUERY_RETRIES:b_reply_value<=recovery_attempts;
+  B_QUERY_REJECTED:b_reply_value<=ref_status_sys[95:80];
+  B_QUERY_IDLOW:b_reply_value<=ref_status_sys[159:128];
+  B_QUERY_IDHIGH:b_reply_value<=ref_status_sys[191:160];
+  B_QUERY_BADERROR:b_reply_value<=ref_status_sys[127:112];
+  B_QUERY_BADID:b_reply_value<=ref_status_sys[111:96];
+  B_QUERY_WAVFALLBACK:b_reply_value<=audio_fallback;
+  B_QUERY_OVERFLOW:b_reply_value<=audio_overflows;
+  B_QUERY_EVENTDROP:b_reply_value<=evt_drops;
+  B_QUERY_UARTREJECT:b_reply_value<=uart_rejected;
+  B_QUERY_UARTFRAME:b_reply_value<=uart_framing;
+  B_QUERY_UARTOVERRUN:b_reply_value<=uart_overrun;
+  B_QUERY_UARTDROP:b_reply_value<=uart_reply_dropped;
+  default:b_reply_code<=3;
+ endcase
  end end end
  wire normal_uart_txd,fatal_uart_txd;
 
  v3_uart_link #(.BOARD_CATALOG(1)) uart(.clk(sys_clk),.rst_n(sys_rst_n),.rxd(uart_rxd),.txd(normal_uart_txd),
  .command_valid(cmd_valid),.command_target(cmd_target),.command_name(cmd_name),.command_value(cmd_value),.command_query(cmd_query),
+ .catalog_id(cmd_catalog_id),
  .reply_valid(controls_reply || b_reply),.reply_code(b_reply?b_reply_code:controls_reply_code),.reply_value(b_reply?b_reply_value:controls_reply_value),
  .evt_valid(evt_valid),.evt_code(evt_value[7:0]),.evt_src(evt_src),.evt_ts(evt_ts),.evt_ready(evt_ready),
  .parser_rejected(uart_rejected),.rx_framing(uart_framing),.rx_overrun(uart_overrun),.reply_dropped(uart_reply_dropped));
@@ -348,8 +376,9 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  .src_data(dropped_frames),.src_valid(1'b1),.src_ready(),.dst_clk(sys_clk),.dst_rst_n(sys_rst_n),
  .dst_data(hdmi_drops_sys),.dst_valid(),.dst_ready(1'b1));
  wire tx_reset=!pixel_rst_n || resync;
- wire phy_rst_n;
- reset_sync reset_phy(.clk(serial_clk),.async_rst_n(!tx_reset),.rst_n(phy_rst_n));
+ wire phy_rst_n;wire[3:0] phy_lane_rst_n;
+ assign phy_rst_n=&phy_lane_rst_n;
+ (* keep_hierarchy="true" *) v3_phy_reset_fanout reset_phy(.clk(serial_clk),.async_rst_n(!tx_reset),.lane_rst_n(phy_lane_rst_n));
  reg[16:0] edid_count;reg edid_trig;
  always @(posedge pixel_clk or negedge pixel_rst_n)if(!pixel_rst_n)begin edid_count<=0;edid_trig<=0;end
  else begin edid_trig<=0;if(tx_reset)edid_count<=0;else if(edid_count<100000)begin edid_count<=edid_count+1'b1;if(edid_count==99999)edid_trig<=1;end end
@@ -362,7 +391,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  .I_audio_valid(pcm_valid),.I_audio_left_data(pcm_left),.I_audio_right_data(pcm_right),
  .I_acr_valid(acr_valid),.I_acr_cts(acr_cts),.I_acr_n(acr_n),.O_video_locked(hdmi_locked),
  .O_ddc_scl(HDMI_DDC_SCL),.IO_ddc_sda(HDMI_DDC_SDA),.O_ch0_tmds_data(ch0),.O_ch1_tmds_data(ch1),.O_ch2_tmds_data(ch2),.O_clk_tmds_data(chclk));
- hdmi_phy_wrapper #(.DEVICE("EG")) serializer(.I_pixel_clk(pixel_clk),.I_serial_clk(serial_clk),.I_rst(!phy_rst_n),
+ (* keep_hierarchy="true" *) v3_hdmi_phy_wrapper #(.DEVICE("EG")) serializer(.I_pixel_clk(pixel_clk),.I_serial_clk(serial_clk),.I_rst(~phy_lane_rst_n),
  .I_tmds_channel_0(ch0),.I_tmds_channel_1(ch1),.I_tmds_channel_2(ch2),.I_tmds_channel_clk(chclk),
  .O_tmds_ch0_p(HDMI_D0_P),.O_tmds_ch1_p(HDMI_D1_P),.O_tmds_ch2_p(HDMI_D2_P),.O_tmds_clk_p(HDMI_CLK_P));
 endmodule

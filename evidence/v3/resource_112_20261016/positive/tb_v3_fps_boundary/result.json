@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_fps_boundary",
+  "suite": "video_v3_fps",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "f5d149d898723b55bf5c6cf110dc25a016c1a28d35e5f8574a6e7d372c2f8329",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_109_20261016\\positive\\tb_v3_fps_boundary"
+}

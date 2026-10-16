@@ -28,6 +28,7 @@ def sources(root,folder,negative=None):
  return len(before)
 
 def audit(root,manifest):
+ if not __debug__:raise RuntimeError('native acceptance audit requires Python assertions enabled')
  j=read(manifest);assert j['schema']==1 and j['complete']
  prior=read(root/'evidence/v3/current_100_20261016/selected_acceptance.json')
  required=set(prior['unique_tops'])|{'tb_v3_command_catalog','tb_v3_uart_link_catalog'}
@@ -38,6 +39,15 @@ def audit(root,manifest):
  if 'RELEASE_FALLING' in reset:required.add('tb_v3_reset_release_phase')
  if 'reg[32:0] video_limit,audio_limit' in supervisor:required.add('tb_v3_supervisor_threshold')
  if 'begin:compare_byte' in supervisor:required.add('tb_v3_supervisor_comparator')
+ audio=(root/'safevision/rtl/audio/v3_audio_system.v').read_text(encoding='utf-8')
+ if 'v3_audio_prefill_compare #' in audio:required.add('tb_v3_audio_prefill_compare')
+ top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text(encoding='utf-8')
+ if 'v3_phy_reset_fanout reset_phy(' in top:required.update({'tb_v3_phy_reset_fanout','tb_v3_phy_lane_equivalence'})
+ if 'B_QUERY_UARTDROP' in top:required.add('tb_v3_board_query_catalog')
+ receiver=(root/'safevision/rtl/common/uart_rx.v').read_text(encoding='utf-8')
+ controls=(root/'safevision/rtl/control/v3_user_controls.v').read_text(encoding='utf-8')
+ if 'BOUNDED_ACC' in receiver:required.add('tb_v3_uart_rx_equivalence')
+ if 'NAME_BRIGHT:' in controls:required.add('tb_v3_control_decode_equivalence')
  seen=set();rows=[]
  for row in j['positive_tests']:
   assert row['top'] not in seen;seen.add(row['top'])
@@ -65,10 +75,15 @@ def audit(root,manifest):
   assert {'positive_phase_release','drop threshold carry33_to32','retimed_rounding','message_snapshot_bit'}.issubset(mutants),'new datapath/phase changes need their strict negative controls'
  if 'begin:compare_byte' in supervisor:
   assert {'lookahead_high_byte','tick_predict_off_by_one'}.issubset(mutants),'lookahead logic needs comparator and tick semantic mutants'
+ if 'v3_audio_prefill_compare #' in audio:assert {'prefill_partial_weight','prefill_boundary'}.issubset(mutants),'prefill predicate needs semantic mutants'
+ if 'v3_phy_reset_fanout reset_phy(' in top:assert {'phy_release_early','phy_lane_payload'}.issubset(mutants),'lane replication needs reset and serial-data mutants'
+ if 'B_QUERY_UARTDROP' in top:assert 'board_query_binding' in mutants,'numeric board queries need binding corruption detection'
+ if 'BOUNDED_ACC' in receiver:assert 'uart_fractional_step' in mutants,'bounded UART accumulator needs tick corruption detection'
+ if 'NAME_BRIGHT:' in controls:assert {'control_signed_range','control_write_binding'}.issubset(mutants),'control decoding needs signed-boundary and write-binding mutants'
  return {'accepted':True,'positive_unique_native_tests':len(required),'strict_normal_ending_mutants':len(mutants),'tests':rows,'source_bytes_and_inputs_verified':True,'routed_sta_passed':False,'bitstreams_verified':False,'hardware_verified':False,'release_ready':False}
 
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--manifest',type=Path,default=Path('evidence/v3/resource_106_20261016/acceptance.json'));ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--manifest',type=Path,default=Path('evidence/v3/resource_112_20261016/acceptance.json'));ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
  try:r=audit(a.repo.resolve(),within(a.repo,a.manifest));code=0
  except Exception as ex:r={'accepted':False,'error':str(ex),'release_ready':False};code=1
  a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(r,indent=2),encoding='utf-8')

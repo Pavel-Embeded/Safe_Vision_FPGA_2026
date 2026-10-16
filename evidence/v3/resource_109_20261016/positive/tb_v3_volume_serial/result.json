@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_volume_serial",
+  "suite": "volume_serial",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "707460490e9f688479c53ebaa3afa8e08fc9ecc64dc866167c1212affa413362",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_106_20261016\\positive\\tb_v3_volume_serial"
+}

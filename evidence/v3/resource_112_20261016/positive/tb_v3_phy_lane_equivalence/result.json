@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_phy_lane_equivalence",
+  "suite": "phy_lane_equivalence",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "09ad4232ec3e6a35f9384ab16214c297e8134fa04899c760c821c1fed00fe41a",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\phy_lane_candidate\\sim\\phy_lane_equivalence\\tb_v3_phy_lane_equivalence"
+}

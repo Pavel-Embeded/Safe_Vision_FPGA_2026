@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_audio_prefill_compare",
+  "suite": "audio_prefill_compare",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "5e4518d9f75ce8be9d131ba4f489093aba1657f69b17e9abe883f19ebbe0056d",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\prefill_phy_candidate\\sim\\audio_prefill_compare\\tb_v3_audio_prefill_compare"
+}

@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_recovery_events",
+  "suite": "v3",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "8e430e3e205639a4c52d52c32299f95f04d0c0667fe6ff9d781885af209cd88e",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_remaining\\tb_v3_recovery_events\\tb_v3_recovery_events"
+}

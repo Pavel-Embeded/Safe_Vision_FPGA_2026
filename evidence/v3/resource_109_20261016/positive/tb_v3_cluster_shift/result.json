@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_cluster_shift",
+  "suite": "v3",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "fcfce70e41e22d860792ebf35fb883031eb0e0d125fa45db80e0dbf44df7eb7a",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\publication_remaining\\tb_v3_cluster_shift\\tb_v3_cluster_shift"
+}

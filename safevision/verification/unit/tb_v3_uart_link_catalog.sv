@@ -1,13 +1,13 @@
 `timescale 1ns/1ps
 module tb_v3_uart_link_catalog;
  reg clk=0;always #5 clk=~clk;reg rst=0,rxd=1;
- wire txd,cmd,q;wire[7:0] target;wire[95:0] name;wire signed[31:0] value;
+ wire[6:0] catalog_id;wire txd,cmd,q;wire[7:0] target;wire[95:0] name;wire signed[31:0] value;
  reg reply=0;reg[7:0] code=0;reg signed[31:0] answer=0;
  reg evt=0;reg[7:0] evtcode=0;reg[3:0] evtsrc=0;reg[31:0] evtts=0;wire evtready;
  wire[31:0] rejected,framing,overrun,dropped;
  v3_uart_link #(.BOARD_CATALOG(1),.CLK_HZ(160000),.BAUD(5000)) dut(
  .clk(clk),.rst_n(rst),.rxd(rxd),.txd(txd),.command_valid(cmd),.command_target(target),
- .command_name(name),.command_value(value),.command_query(q),
+ .command_name(name),.command_value(value),.command_query(q),.catalog_id(catalog_id),
  .reply_valid(reply),.reply_code(code),.reply_value(answer),
  .evt_valid(evt),.evt_code(evtcode),.evt_src(evtsrc),.evt_ts(evtts),.evt_ready(evtready),
  .parser_rejected(rejected),.rx_framing(framing),.rx_overrun(overrun),.reply_dropped(dropped));
@@ -24,7 +24,7 @@ module tb_v3_uart_link_catalog;
  task expect_reply;input integer kind,src,status;input[31:0] val;begin
  want_kind[enqueued]=kind;want_src[enqueued]=src;want_code[enqueued]=status;want_value[enqueued]=val;enqueued=enqueued+1;end endtask
  always @(posedge clk)begin #1;
-  if(cmd)begin commands=commands+1;ck(target==65 && name=="BRIGHT" && value==-128 && !q,"command delivered atomically");end
+  if(cmd)begin commands=commands+1;ck(target==65 && name=="BRIGHT" && value==-128 && !q && catalog_id==5,"command delivered atomically");end
   if(decoded_valid)case(rxstate)
    0:begin ck(decoded==36,"response starts with dollar");body="";rxsum=0;rxstate=1;end
    1:if(decoded==42)rxstate=2;else begin body={body,decoded};rxsum=rxsum^decoded;end

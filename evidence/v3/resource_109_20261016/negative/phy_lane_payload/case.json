@@ -1,0 +1,13 @@
+{
+  "mutation": "phy_lane_payload",
+  "top": "tb_v3_phy_lane_equivalence",
+  "process_exit_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    49678
+  ],
+  "original_sha256": "7007a7ecf7c5550681d589fdc6a2354a4254f122c44b84ef7efb4a7acb6b0f12",
+  "mutated_sha256": "d46b3383f3a646235b3ecb6c91d85f8d95388b861f2c16e3116101c8ed8dc976",
+  "detected": true,
+  "mutant_file": "mutant.v"
+}

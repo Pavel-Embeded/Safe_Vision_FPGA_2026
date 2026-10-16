@@ -1,0 +1,14 @@
+{
+  "process_exit_code": 1,
+  "mutation": "message_snapshot_bit",
+  "top": "tb_v3_uart_link_catalog",
+  "normal_completion": true,
+  "error_counts": [
+    108
+  ],
+  "original_sha256": "b87e9a7003602954536c0304767330126d61f57597d67f73d8587f6c4dd0c056",
+  "mutated_sha256": "42946ef7ad22f805fb56b271ddaa1fed2de09f995809941c511624b04bc03d53",
+  "source_unchanged": true,
+  "detected": true,
+  "mutant_file": "mutant.v"
+}

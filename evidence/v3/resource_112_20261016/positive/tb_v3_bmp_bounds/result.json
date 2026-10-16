@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_bmp_bounds",
+  "suite": "bmp_bounds",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "96656bbbe9009be54491f72d23246271e4f14ec7367288b212789c3a791a92ae",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_109_20261016\\positive\\tb_v3_bmp_bounds"
+}

@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_uart_rx_equivalence",
+  "suite": "uart_rx_equivalence",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "ce427928aea186964862cd361a3d75aa8398fb7167b841e65636f53c765fc591",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\catalog_carry_candidate\\sim\\uart_rx_equivalence\\tb_v3_uart_rx_equivalence"
+}

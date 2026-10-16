@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_fat_geometry",
+  "suite": "fat_geometry",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "dd1cbc15eea02e61ee04278fae44f4ec89165dcbe0f5b41c1b07f7b5684c4916",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_106_20261016\\positive\\tb_v3_fat_geometry"
+}

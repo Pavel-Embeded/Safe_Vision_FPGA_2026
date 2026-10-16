@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_audio_sample_fifo",
+  "suite": "audio_complete",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "5306b817a3cb6f0f8d237842064b884f616299c4be0feae5c632189f51308739",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\prefill_remaining\\tb_v3_audio_sample_fifo\\tb_v3_audio_sample_fifo"
+}

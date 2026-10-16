@@ -682,7 +682,7 @@
                     <Attr Name="CompileOrder" Val="84" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/audio/v3_audio_volume.v">
+            <File Path="../../../../../rtl/audio/v3_audio_prefill_compare.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -690,7 +690,7 @@
                     <Attr Name="CompileOrder" Val="85" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/audio/v3_pcm_packet_fifo.v">
+            <File Path="../../../../../rtl/audio/v3_audio_volume.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -698,7 +698,7 @@
                     <Attr Name="CompileOrder" Val="86" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/audio/v3_pcm_ingress_fifo.v">
+            <File Path="../../../../../rtl/audio/v3_pcm_packet_fifo.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -706,7 +706,7 @@
                     <Attr Name="CompileOrder" Val="87" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/audio/v3_pcm_sample_fifo.v">
+            <File Path="../../../../../rtl/audio/v3_pcm_ingress_fifo.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -714,7 +714,7 @@
                     <Attr Name="CompileOrder" Val="88" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/video/v3_constant224_blend.v">
+            <File Path="../../../../../rtl/audio/v3_pcm_sample_fifo.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -722,7 +722,7 @@
                     <Attr Name="CompileOrder" Val="89" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/storage/v3_shared_fs_service.v">
+            <File Path="../../../../../rtl/video/v3_constant224_blend.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -730,7 +730,7 @@
                     <Attr Name="CompileOrder" Val="90" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/audio/v3_pcm_ingress_shared_fifo.v">
+            <File Path="../../../../../rtl/storage/v3_shared_fs_service.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -738,7 +738,7 @@
                     <Attr Name="CompileOrder" Val="91" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/media/v3_wav_parser_compact_ctx.v">
+            <File Path="../../../../../rtl/audio/v3_pcm_ingress_shared_fifo.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -746,7 +746,7 @@
                     <Attr Name="CompileOrder" Val="92" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/storage/v3_file_streamer_compact_ctx.v">
+            <File Path="../../../../../rtl/media/v3_wav_parser_compact_ctx.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
@@ -754,12 +754,36 @@
                     <Attr Name="CompileOrder" Val="93" />
                 </FileInfo>
             </File>
-            <File Path="../../../../../rtl/video/scaler/v3_scaler_bilinear_thirds.v">
+            <File Path="../../../../../rtl/storage/v3_file_streamer_compact_ctx.v">
                 <FileInfo>
                     <Attr Name="UsedInSyn" Val="true" />
                     <Attr Name="UsedInP&amp;R" Val="true" />
                     <Attr Name="BelongTo" Val="design_1" />
                     <Attr Name="CompileOrder" Val="94" />
+                </FileInfo>
+            </File>
+            <File Path="../../../../../rtl/video/scaler/v3_scaler_bilinear_thirds.v">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true" />
+                    <Attr Name="UsedInP&amp;R" Val="true" />
+                    <Attr Name="BelongTo" Val="design_1" />
+                    <Attr Name="CompileOrder" Val="95" />
+                </FileInfo>
+            </File>
+            <File Path="../../../rtl/clock/v3_phy_reset_fanout.v">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true" />
+                    <Attr Name="UsedInP&amp;R" Val="true" />
+                    <Attr Name="BelongTo" Val="design_1" />
+                    <Attr Name="CompileOrder" Val="96" />
+                </FileInfo>
+            </File>
+            <File Path="../../../rtl/hdmi/v3_hdmi_phy_wrapper.v">
+                <FileInfo>
+                    <Attr Name="UsedInSyn" Val="true" />
+                    <Attr Name="UsedInP&amp;R" Val="true" />
+                    <Attr Name="BelongTo" Val="design_1" />
+                    <Attr Name="CompileOrder" Val="97" />
                 </FileInfo>
             </File>
         </Verilog>
