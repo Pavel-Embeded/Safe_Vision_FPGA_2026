@@ -20,6 +20,11 @@ def check(root):
   names.update(bindings)
  if len(names)!=35:raise ValueError('board command vocabulary changed; review finite catalog and tests')
  ordered=sorted(names);expected=bytearray(1024)
+ controls=(root/'safevision/rtl/control/v3_user_controls.v').read_text(encoding='utf-8')
+ control_ids={name:int(value) for name,value in re.findall(r"localparam\[6:0\] CTRL_ID_([A-Z]+)=7'd(\d+);",controls)}
+ if control_ids:
+  if len(control_ids)!=11 or any(value!=ordered.index(name)+1 or controls.count('CTRL_ID_'+name+':decode_catalog=OP_'+name+';')!=1 for name,value in control_ids.items()):raise ValueError('control catalog ID differs from exact name catalog')
+  if 'v3_user_controls #(.BOARD_CATALOG(1)) controls(' not in top_text or '.catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66)' not in top_text:raise ValueError('board controls must consume the exact parser catalog ID')
  if bindings and any(value!=ordered.index(name)+1 for name,value in bindings.items()):raise ValueError('board numeric query ID differs from exact name catalog')
  for index,name in enumerate(ordered):
   if not 1<=len(name)<=12:raise ValueError('invalid command length')

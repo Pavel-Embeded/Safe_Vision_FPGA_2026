@@ -3,7 +3,7 @@ import hashlib,json
 from pathlib import Path
 from audit_v3_resource_checkpoint import audit,within
 
-DEFAULT_MANIFEST=Path('evidence/v3/resource_112_20261016/acceptance.json')
+DEFAULT_MANIFEST=Path('evidence/v3/resource_113_20261016/acceptance.json')
 
 def acceptance(root,manifest=DEFAULT_MANIFEST):
  if not __debug__:raise RuntimeError('functional release audit requires Python assertions enabled')

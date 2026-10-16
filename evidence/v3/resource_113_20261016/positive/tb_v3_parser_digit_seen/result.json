@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_parser_digit_seen",
+  "suite": "v3",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "2a5cfc18c1bfc28b328dea4fcd6f792a318e5ff28c29360bfb65e21e1845f7d5",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\sim\\v3\\tb_v3_parser_digit_seen"
+}

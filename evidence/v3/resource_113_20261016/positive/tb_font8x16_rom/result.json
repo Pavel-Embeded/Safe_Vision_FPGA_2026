@@ -1,0 +1,9 @@
+{
+  "top": "tb_font8x16_rom",
+  "suite": "legacy_a",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": true,
+  "original_runner_result_sha256": "84a6cb450862787c38ffa8b2571298ce4c1a85e4ec827e2c239da1210eb50de2",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_112_20261016\\positive\\tb_font8x16_rom"
+}

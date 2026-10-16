@@ -178,10 +178,11 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire[7:0] controls_reply_code;wire signed[31:0] controls_reply_value;
  wire signed[8:0] brightness;wire[7:0] contrast,osd_alpha;wire bilinear,fit,fade_enable;
  wire[6:0] volume;wire[1:0] period_select;wire menu;wire[2:0] field;wire auto_tick;
+ wire[6:0] cmd_catalog_id;
  wire cmd_valid,cmd_query;wire[7:0] cmd_target;wire[95:0] cmd_name;wire signed[31:0] cmd_value;
  wire transition_busy,frame_commit;wire[1:0] active_slot;wire[7:0] generation;
- v3_user_controls controls(.clk(sys_clk),.rst_n(sys_rst_n),.next_async(btn_next),.auto_async(btn_auto),.emergency_async(btn_emergency),
- .command_valid(cmd_valid && cmd_target!=66),.command_target(cmd_target),.command_name(cmd_name),.command_value(cmd_value),.command_query(cmd_query),
+ v3_user_controls #(.BOARD_CATALOG(1)) controls(.clk(sys_clk),.rst_n(sys_rst_n),.next_async(btn_next),.auto_async(btn_auto),.emergency_async(btn_emergency),
+ .catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66),.command_target(cmd_target),.command_name(cmd_name),.command_value(cmd_value),.command_query(cmd_query),
  .cached(cached),.transition_busy(transition_busy || recovery_busy || safe_active || !cached),.frame_commit(frame_commit),.next_request(next_request),.auto_enabled(auto_enabled),
  .safety(manual_safe),.recover_request(recover_request),.reply_valid(controls_reply),.reply_code(controls_reply_code),.reply_value(controls_reply_value),
  .brightness(brightness),.contrast(contrast),.osd_alpha(osd_alpha),.bilinear(bilinear),.fit(fit),.fade_enabled(fade_enable),.volume(volume),
@@ -251,7 +252,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  error_report events(.clk(sys_clk),.rst_n(sys_rst_n),.err_push(err_push),.err_code(err_code),.err_src(err_src),.err_ts(err_ts),
  .evt_type(evt_src),.evt_value(evt_value),.evt_valid(evt_valid),.evt_full(evt_full),.evt_ready(evt_ready),.evt_ts(evt_ts),.drop_cnt(evt_drops));
  wire[31:0] uart_rejected,uart_framing,uart_overrun,uart_reply_dropped;
- wire[6:0] cmd_catalog_id;
+
  localparam[6:0] B_QUERY_STATUS=7'd27;
  localparam[6:0] B_QUERY_SLOT=7'd26;
  localparam[6:0] B_QUERY_CACHE=7'd6;

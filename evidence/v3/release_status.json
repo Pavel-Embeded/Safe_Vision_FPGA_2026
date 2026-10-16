@@ -1,9 +1,9 @@
 {
   "schema": 2,
-  "status": "FUNCTIONAL_112_PASS_ROUTED_CLOSURE_IN_PROGRESS",
+  "status": "FUNCTIONAL_113_PASS_HD_SETUP_MINUS_0_147_NS",
   "release_ready": false,
   "hardware_verified": false,
-  "source_baseline_commit": "f702ee7548c81416dc833cd0728c43f8dd84440a",
+  "source_baseline_commit": "282e470c7a2f57c62e4cd39c75ed41ee67b6178d",
   "historical_functional_acceptance": {
     "source_commit": "6ee2ebed0bb7177783223f53550ea46cbdb192e4",
     "positive_unique_tops": 100,
@@ -11,7 +11,7 @@
     "evidence": "evidence/v3/current_100_20261016/selected_acceptance.json",
     "is_current_source_acceptance": false
   },
-  "current_source_positive_unique_tops": 112,
+  "current_source_positive_unique_tops": 113,
   "post_promotion_current_test_inventory_pending": false,
   "functional_regression_job": "current112 selected exact-source native evidence",
   "resource_policy": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/resource_policy.json",
@@ -29,13 +29,13 @@
     "Original project root and GitHub main synchronization",
     "Physical board display/audio/card compatibility and long-run tests"
   ],
-  "functional_acceptance_evidence": "evidence/v3/resource_112_20261016/acceptance.json",
+  "functional_acceptance_evidence": "evidence/v3/resource_113_20261016/acceptance.json",
   "portable_functional_auditor": "safevision/tools/audit_v3_resource_checkpoint.py",
-  "strict_normal_ending_mutants": 27,
-  "resource_contract_parser_controls": 20,
+  "strict_normal_ending_mutants": 28,
+  "resource_contract_parser_controls": 23,
   "rom_provenance_controls": 9,
   "presentation_cdc_native_scope_cases": 6,
-  "updated_at_utc": "2026-10-16T11:01:11.823911+00:00",
+  "updated_at_utc": "2026-10-16T11:39:37.419069+00:00",
   "configuration_report_parser_controls": 17,
   "portable_configuration_controls": 16,
   "previous_diagnostic_routed_modes": {
@@ -62,35 +62,55 @@
       "is_final_committed_source_build": false
     }
   },
-  "functional_release_entry_controls": 13,
+  "functional_release_entry_controls": 15,
   "functional_proof_dependencies_bound_to_git": "computed and verified by release builder for selected current manifest",
   "diagnostic_routed_modes": {
-    "source": "catalog_carry_candidate, preceding control-range flattening",
     "base": {
-      "setup_wns_ns": 0.192,
-      "hold_wns_ns": 0.027,
+      "setup_wns_ns": 0.139,
+      "hold_wns_ns": 0.024,
+      "recovery_wns_ns": 0.737,
+      "removal_wns_ns": 0.023,
+      "lut": 17093,
+      "reg": 13093,
+      "ram9k": 51,
       "complete_gate_passed": true,
-      "is_final_committed_source_build": false
+      "pending_complete_gate": false
     },
     "hd": {
-      "setup_wns_ns": -0.644,
-      "hold_wns_ns": 0.023,
-      "complete_gate_passed": false,
-      "is_final_committed_source_build": false
+      "setup_wns_ns": -0.147,
+      "hold_wns_ns": 0.032,
+      "recovery_wns_ns": 0.111,
+      "removal_wns_ns": 0.03,
+      "lut": 17716,
+      "reg": 13330,
+      "ram9k": 51,
+      "complete_gate_passed": false
     }
   },
   "strict_spi_io_parser_controls": 38,
   "current_diagnostic_base": {
-    "setup_wns_ns": 0.14,
+    "setup_wns_ns": 0.139,
     "hold_wns_ns": 0.024,
-    "recovery_wns_ns": 3.298,
-    "removal_wns_ns": 0.022,
-    "global_max_wns_ns": 0.14,
-    "global_min_wns_ns": 0.022,
-    "lut": 17034,
-    "dff": 13095,
+    "recovery_wns_ns": 0.737,
+    "removal_wns_ns": 0.023,
+    "lut": 17093,
+    "reg": 13093,
     "ram9k": 51,
     "complete_gate_passed": true,
-    "committed_source_release_build": false
+    "pending_complete_gate": false
+  },
+  "active_physical_studies": [
+    "same RTL, HD post_place_opt ultra",
+    "same RTL, HD pr_strategy2"
+  ],
+  "rejected_parallel_opcode_experiment": {
+    "source": "work/runs/parallel_opcode_candidate/source",
+    "functional_positive_unique_tops": 115,
+    "strict_normal_ending_mutants": 31,
+    "uart_joint_frames": 425,
+    "uart_joint_comparisons": 5820416,
+    "hd_setup_wns_ns": -2.139,
+    "production_adopted": false,
+    "reason": "Worse global HD routed timing and resource usage; original source and failed reports retained"
   }
 }

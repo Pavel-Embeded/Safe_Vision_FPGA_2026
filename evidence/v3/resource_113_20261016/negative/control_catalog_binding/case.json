@@ -1,0 +1,13 @@
+{
+  "mutation": "control_catalog_binding",
+  "top": "tb_v3_control_catalog_equivalence",
+  "process_exit_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    226638
+  ],
+  "original_sha256": "c6aa78a1f440c3899982e12251c848346db914c75ad6336f4a8cd5d7a835dff1",
+  "mutated_sha256": "18fff54234357bee7463bc946c81018a487957c45c8133b0995855a7c4e78cb0",
+  "detected": true,
+  "mutant_file": "mutant.v"
+}

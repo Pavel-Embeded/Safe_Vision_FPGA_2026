@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/phy_lane_candidate/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v" into library work
+INFO: [VRFC 10-311] analyzing module reset_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/phy_lane_candidate/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_phy_reset_fanout
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/phy_lane_candidate/source/safevision/verification/unit/tb_v3_phy_reset_fanout.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_phy_reset_fanout

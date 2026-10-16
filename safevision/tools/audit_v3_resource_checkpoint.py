@@ -48,6 +48,7 @@ def audit(root,manifest):
  controls=(root/'safevision/rtl/control/v3_user_controls.v').read_text(encoding='utf-8')
  if 'BOUNDED_ACC' in receiver:required.add('tb_v3_uart_rx_equivalence')
  if 'NAME_BRIGHT:' in controls:required.add('tb_v3_control_decode_equivalence')
+ if 'decode_catalog(catalog_id)' in controls:required.add('tb_v3_control_catalog_equivalence')
  seen=set();rows=[]
  for row in j['positive_tests']:
   assert row['top'] not in seen;seen.add(row['top'])
@@ -80,10 +81,11 @@ def audit(root,manifest):
  if 'B_QUERY_UARTDROP' in top:assert 'board_query_binding' in mutants,'numeric board queries need binding corruption detection'
  if 'BOUNDED_ACC' in receiver:assert 'uart_fractional_step' in mutants,'bounded UART accumulator needs tick corruption detection'
  if 'NAME_BRIGHT:' in controls:assert {'control_signed_range','control_write_binding'}.issubset(mutants),'control decoding needs signed-boundary and write-binding mutants'
+ if 'decode_catalog(catalog_id)' in controls:assert 'control_catalog_binding' in mutants,'board controls need an independently detected catalog-ID binding mutant'
  return {'accepted':True,'positive_unique_native_tests':len(required),'strict_normal_ending_mutants':len(mutants),'tests':rows,'source_bytes_and_inputs_verified':True,'routed_sta_passed':False,'bitstreams_verified':False,'hardware_verified':False,'release_ready':False}
 
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--manifest',type=Path,default=Path('evidence/v3/resource_112_20261016/acceptance.json'));ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
+ ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--manifest',type=Path,default=Path('evidence/v3/resource_113_20261016/acceptance.json'));ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
  try:r=audit(a.repo.resolve(),within(a.repo,a.manifest));code=0
  except Exception as ex:r={'accepted':False,'error':str(ex),'release_ready':False};code=1
  a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(r,indent=2),encoding='utf-8')

@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_supervisor_threshold",
+  "suite": "supervisor_threshold",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "49aef8b03299d705053b9b94888f8b41fe6be70c151c6a45c1594cd20e27c1de",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\catalog_carry_candidate\\sim\\supervisor_threshold\\tb_v3_supervisor_threshold"
+}

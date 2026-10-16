@@ -1,0 +1,13 @@
+{
+  "mutation": "drop threshold carry33_to32",
+  "top": "tb_v3_supervisor_threshold",
+  "process_exit_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    121
+  ],
+  "original_sha256": "6177a0b0bfe89b2cde2a8531d1c5233843d1bd99b5098853253b8e45eddcf767",
+  "mutated_sha256": "2329fa9262f54e9f428f528f0775b8ac4bafd4c4a6ae30dc10017ca7893e3cb2",
+  "detected": true,
+  "mutant_file": "mutant.v"
+}

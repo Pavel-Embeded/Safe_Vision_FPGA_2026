@@ -1,0 +1,165 @@
+{
+  "complete": true,
+  "cases": [
+    {
+      "case": "native SPI exact clocks/MCP/falling-edge capture paths",
+      "pass": true
+    },
+    {
+      "case": "ordinary CS has positive setup/hold in both SD modes",
+      "pass": true
+    },
+    {
+      "case": "all native MCP/SMD paths zero failures",
+      "pass": true
+    },
+    {
+      "case": "pre-clock-report master and definition health exact zero",
+      "pass": true
+    },
+    {
+      "case": "post-clock diagnostic is rejected as formal health",
+      "pass": true
+    },
+    {
+      "case": "missing master detail",
+      "pass": true
+    },
+    {
+      "case": "missing clock-definition count",
+      "pass": true
+    },
+    {
+      "case": "nonzero master connectivity",
+      "pass": true
+    },
+    {
+      "case": "mutation applied wrong capture logical alias",
+      "pass": true
+    },
+    {
+      "case": "wrong capture logical alias",
+      "pass": true
+    },
+    {
+      "case": "mutation applied wrong physical MISO pad",
+      "pass": true
+    },
+    {
+      "case": "wrong physical MISO pad",
+      "pass": true
+    },
+    {
+      "case": "mutation applied missing falling launch witness",
+      "pass": true
+    },
+    {
+      "case": "missing falling launch witness",
+      "pass": true
+    },
+    {
+      "case": "mutation applied wrong edge budget",
+      "pass": true
+    },
+    {
+      "case": "wrong edge budget",
+      "pass": true
+    },
+    {
+      "case": "mutation applied CS included in MOSI MCP",
+      "pass": true
+    },
+    {
+      "case": "CS included in MOSI MCP",
+      "pass": true
+    },
+    {
+      "case": "mutation applied truncated detailed paths",
+      "pass": true
+    },
+    {
+      "case": "truncated detailed paths",
+      "pass": true
+    },
+    {
+      "case": "mutation applied unrouted",
+      "pass": true
+    },
+    {
+      "case": "unrouted",
+      "pass": true
+    },
+    {
+      "case": "CS wrong launch edge",
+      "pass": true
+    },
+    {
+      "case": "CS ordinary budget corrupted",
+      "pass": true
+    },
+    {
+      "case": "native asynchronous LED SMD path exists",
+      "pass": true
+    },
+    {
+      "case": "ordinary SMD negative path caught",
+      "pass": true
+    },
+    {
+      "case": "truncated exception path caught",
+      "pass": true
+    },
+    {
+      "case": "local slack mutation changes signature despite unchanged globals",
+      "pass": true
+    },
+    {
+      "case": "all six actual 5ns asynchronous UART LED DDC paths bound",
+      "pass": true
+    },
+    {
+      "case": "missing one bounded output caught",
+      "pass": true
+    },
+    {
+      "case": "incorrect asynchronous output budget caught",
+      "pass": true
+    },
+    {
+      "case": "negative asynchronous output caught",
+      "pass": true
+    },
+    {
+      "case": "native absent DDC DI is exactly proved",
+      "pass": true
+    },
+    {
+      "case": "live DDC receiver",
+      "pass": true
+    },
+    {
+      "case": "SDA nonzero data",
+      "pass": true
+    },
+    {
+      "case": "SDA enable lost PIX clock",
+      "pass": true
+    },
+    {
+      "case": "missing open-drain mode",
+      "pass": true
+    },
+    {
+      "case": "duplicate physical SDA pad caught",
+      "pass": true
+    }
+  ],
+  "inputs": {
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\td\\base\\route.timing": "2dbb9d4971623d6837ee4b1cc17f8e2c3ed4ab1180955c57574d66f22fec7b98",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\td\\base\\route.exceptions": "c69f542765c705935c5b039abca05a262e576c632e2b693409286f75eb844067",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\td\\base\\route.check": "8e3930d6a58ff24efac78905936c7270f197a9a7bcf9f94df4fd846ef65cb0e6",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\td\\base\\after_clock_report.check": "138633bd2a6c5bfed649f56ab5fb5d550ed00578c10355f136e9771dfb5e3498",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\td\\base\\gate.netlist.v": "98bd905f9662f46cbb4af8c9087b69bbd8b61b26a505b784bb32b94906c7440f"
+  },
+  "scope": "checker fault injection and native diagnostic witnesses only; no full-board/hardware signoff"
+}

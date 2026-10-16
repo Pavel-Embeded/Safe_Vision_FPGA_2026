@@ -1,6 +1,6 @@
 // Normal buttons are decoded on release, so a chord cannot leak a next/auto.
 // Emergency is never gated by menu or UART. Configuration has one driver.
-module v3_user_controls #(parameter integer CLK_HZ=100000000,DEBOUNCE=2000000)(
+module v3_user_controls #(parameter integer CLK_HZ=100000000,DEBOUNCE=2000000,BOARD_CATALOG=0)(
  input wire clk,rst_n,next_async,auto_async,emergency_async,
  input wire command_valid,input wire [7:0] command_target,
  input wire [95:0] command_name,input wire signed [31:0] command_value,input wire command_query,
@@ -11,7 +11,7 @@ module v3_user_controls #(parameter integer CLK_HZ=100000000,DEBOUNCE=2000000)(
  output reg signed [8:0] brightness,output reg [7:0] contrast,osd_alpha,
  output reg bilinear,fit,fade_enabled,output reg [6:0] volume,
  output reg [1:0] period_select,output reg menu,
- output reg [2:0] field,output reg auto_tick);
+ output reg [2:0] field,output reg auto_tick,input wire[6:0] catalog_id);
  localparam[95:0] NAME_BRIGHT="BRIGHT";
  localparam[95:0] NAME_CONTRAST="CONTRAST";
  localparam[95:0] NAME_ALPHA="ALPHA";
@@ -23,6 +23,57 @@ module v3_user_controls #(parameter integer CLK_HZ=100000000,DEBOUNCE=2000000)(
  localparam[95:0] NAME_AUTO="AUTO";
  localparam[95:0] NAME_NEXT="NEXT";
  localparam[95:0] NAME_RECOVER="RECOVER";
+ localparam[3:0] OP_BRIGHT=4'd0;
+ localparam[6:0] CTRL_ID_BRIGHT=7'd5;
+ localparam[3:0] OP_CONTRAST=4'd1;
+ localparam[6:0] CTRL_ID_CONTRAST=7'd7;
+ localparam[3:0] OP_ALPHA=4'd2;
+ localparam[6:0] CTRL_ID_ALPHA=7'd1;
+ localparam[3:0] OP_SCALER=4'd3;
+ localparam[6:0] CTRL_ID_SCALER=7'd25;
+ localparam[3:0] OP_SCALE=4'd4;
+ localparam[6:0] CTRL_ID_SCALE=7'd24;
+ localparam[3:0] OP_FADE=4'd5;
+ localparam[6:0] CTRL_ID_FADE=7'd9;
+ localparam[3:0] OP_VOL=4'd6;
+ localparam[6:0] CTRL_ID_VOL=7'd33;
+ localparam[3:0] OP_PERIOD=4'd7;
+ localparam[6:0] CTRL_ID_PERIOD=7'd18;
+ localparam[3:0] OP_AUTO=4'd8;
+ localparam[6:0] CTRL_ID_AUTO=7'd2;
+ localparam[3:0] OP_NEXT=4'd9;
+ localparam[6:0] CTRL_ID_NEXT=7'd16;
+ localparam[3:0] OP_RECOVER=4'd10;
+ localparam[6:0] CTRL_ID_RECOVER=7'd20;
+ function[3:0] decode_name;input[95:0] name;begin decode_name=4'd15;case(name)
+ NAME_BRIGHT:decode_name=OP_BRIGHT;
+ NAME_CONTRAST:decode_name=OP_CONTRAST;
+ NAME_ALPHA:decode_name=OP_ALPHA;
+ NAME_SCALER:decode_name=OP_SCALER;
+ NAME_SCALE:decode_name=OP_SCALE;
+ NAME_FADE:decode_name=OP_FADE;
+ NAME_VOL:decode_name=OP_VOL;
+ NAME_PERIOD:decode_name=OP_PERIOD;
+ NAME_AUTO:decode_name=OP_AUTO;
+ NAME_NEXT:decode_name=OP_NEXT;
+ NAME_RECOVER:decode_name=OP_RECOVER;
+ default:;endcase end endfunction
+ function[3:0] decode_catalog;input[6:0] id;begin decode_catalog=4'd15;case(id)
+ CTRL_ID_BRIGHT:decode_catalog=OP_BRIGHT;
+ CTRL_ID_CONTRAST:decode_catalog=OP_CONTRAST;
+ CTRL_ID_ALPHA:decode_catalog=OP_ALPHA;
+ CTRL_ID_SCALER:decode_catalog=OP_SCALER;
+ CTRL_ID_SCALE:decode_catalog=OP_SCALE;
+ CTRL_ID_FADE:decode_catalog=OP_FADE;
+ CTRL_ID_VOL:decode_catalog=OP_VOL;
+ CTRL_ID_PERIOD:decode_catalog=OP_PERIOD;
+ CTRL_ID_AUTO:decode_catalog=OP_AUTO;
+ CTRL_ID_NEXT:decode_catalog=OP_NEXT;
+ CTRL_ID_RECOVER:decode_catalog=OP_RECOVER;
+ default:;endcase end endfunction
+ // The board catalog guarantees name/ID identity on command_valid.
+ // Generic callers retain the complete original ASCII-name interface.
+ wire[3:0] opcode=BOARD_CATALOG?decode_catalog(catalog_id):decode_name(command_name);
  // Exact two's-complement tests for all 2^32 input bit patterns. Command
  // decoding is independent of value validity, so one command's rejected
  // value cannot build a priority path to another command's enable.
@@ -101,33 +152,33 @@ module v3_user_controls #(parameter integer CLK_HZ=100000000,DEBOUNCE=2000000)(
    if(command_valid)begin
     reply_valid<=1;reply_code<=0;reply_value<=0;
     if(command_query)begin
-     if(command_target==65 && command_name=="BRIGHT")reply_value<=brightness;
-     else if(command_target==65 && command_name=="CONTRAST")reply_value<=contrast;
-     else if(command_target==65 && command_name=="ALPHA")reply_value<=osd_alpha;
-     else if(command_target==65 && command_name=="SCALER")reply_value<=bilinear;
-     else if(command_target==65 && command_name=="SCALE")reply_value<=fit;
-     else if(command_target==65 && command_name=="FADE")reply_value<=fade_enabled;
-     else if(command_target==67 && command_name=="VOL")reply_value<=volume;
-     else if(command_target==67 && command_name=="PERIOD")reply_value<=interval;
-     else if(command_target==67 && command_name=="AUTO")reply_value<=auto_enabled;
+     if(command_target==65 && opcode==OP_BRIGHT)reply_value<=brightness;
+     else if(command_target==65 && opcode==OP_CONTRAST)reply_value<=contrast;
+     else if(command_target==65 && opcode==OP_ALPHA)reply_value<=osd_alpha;
+     else if(command_target==65 && opcode==OP_SCALER)reply_value<=bilinear;
+     else if(command_target==65 && opcode==OP_SCALE)reply_value<=fit;
+     else if(command_target==65 && opcode==OP_FADE)reply_value<=fade_enabled;
+     else if(command_target==67 && opcode==OP_VOL)reply_value<=volume;
+     else if(command_target==67 && opcode==OP_PERIOD)reply_value<=interval;
+     else if(command_target==67 && opcode==OP_AUTO)reply_value<=auto_enabled;
      else reply_code<=3;
     end
-    else case(command_name)
-     NAME_BRIGHT:if(command_target==8'd65 && value_bright_ok)brightness<=command_value;else reply_code<=3;
-     NAME_CONTRAST:if(command_target==8'd65 && value_byte_ok)contrast<=command_value;else reply_code<=3;
-     NAME_ALPHA:if(command_target==8'd65 && value_byte_ok)osd_alpha<=command_value;else reply_code<=3;
-     NAME_SCALER:if(command_target==8'd65 && value_bit_ok)bilinear<=command_value;else reply_code<=3;
-     NAME_SCALE:if(command_target==8'd65 && value_bit_ok)fit<=command_value;else reply_code<=3;
-     NAME_FADE:if(command_target==8'd65 && value_bit_ok)fade_enabled<=command_value;else reply_code<=3;
-     NAME_VOL:if(command_target==8'd67 && value_volume_ok)volume<=command_value;else reply_code<=3;
-     NAME_PERIOD:if(command_target==8'd67)begin case(command_value)
+    else case(opcode)
+     OP_BRIGHT:if(command_target==8'd65 && value_bright_ok)brightness<=command_value;else reply_code<=3;
+     OP_CONTRAST:if(command_target==8'd65 && value_byte_ok)contrast<=command_value;else reply_code<=3;
+     OP_ALPHA:if(command_target==8'd65 && value_byte_ok)osd_alpha<=command_value;else reply_code<=3;
+     OP_SCALER:if(command_target==8'd65 && value_bit_ok)bilinear<=command_value;else reply_code<=3;
+     OP_SCALE:if(command_target==8'd65 && value_bit_ok)fit<=command_value;else reply_code<=3;
+     OP_FADE:if(command_target==8'd65 && value_bit_ok)fade_enabled<=command_value;else reply_code<=3;
+     OP_VOL:if(command_target==8'd67 && value_volume_ok)volume<=command_value;else reply_code<=3;
+     OP_PERIOD:if(command_target==8'd67)begin case(command_value)
       2:period_select<=0;5:period_select<=1;10:period_select<=2;30:period_select<=3;default:reply_code<=3;
      endcase end else reply_code<=3;
-     NAME_AUTO:if(command_target==8'd67 && value_bit_ok)auto_enabled<=command_value;else reply_code<=3;
-     NAME_NEXT:if(command_target==8'd67 && command_value==1)begin
+     OP_AUTO:if(command_target==8'd67 && value_bit_ok)auto_enabled<=command_value;else reply_code<=3;
+     OP_NEXT:if(command_target==8'd67 && command_value==1)begin
       if(!transition_busy && cached && !safety)next_request<=1;else reply_code<=4;
      end else reply_code<=3;
-     NAME_RECOVER:if(command_target==8'd67 && command_value==1)recover_request<=1;else reply_code<=3;
+     OP_RECOVER:if(command_target==8'd67 && command_value==1)recover_request<=1;else reply_code<=3;
      default:reply_code<=3;
     endcase
    end

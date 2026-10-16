@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_phy_reset_fanout",
+  "suite": "phy_reset_fanout",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "1d062ba004a41dec999cbc93bf2e2324652180dc7df25f4409e6647bb0863ec1",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\phy_lane_candidate\\sim\\phy_reset_fanout\\tb_v3_phy_reset_fanout"
+}

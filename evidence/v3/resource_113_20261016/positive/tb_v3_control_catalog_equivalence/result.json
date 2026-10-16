@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_control_catalog_equivalence",
+  "suite": "control_catalog_equivalence",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "09502b5833bf86d88186f4055508d5fbc1c8b9679b6138bafd198f71fe9f1cc7",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\sim\\control_catalog_equivalence\\tb_v3_control_catalog_equivalence"
+}

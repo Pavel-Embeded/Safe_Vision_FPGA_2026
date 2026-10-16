@@ -1,0 +1,9 @@
+{
+  "top": "tb_frame_writer",
+  "suite": "legacy_b",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": true,
+  "original_runner_result_sha256": "20f594c51f4e6ff0af53c4fc8ee61438a800589a1921b9c39085baa1678c7501",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\phase_safe_candidate\\affected_regression\\legacy_b"
+}

@@ -1,0 +1,9 @@
+{
+  "top": "tb_v3_pv_hd37",
+  "suite": "audio_priority_volume",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": false,
+  "original_runner_result_sha256": "5bd215ffc6cd1b35dcbe8235e64e8b29d13e6f49d52b01a69c171601e60a60e4",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\prefill_remaining\\tb_v3_pv_hd37\\tb_v3_pv_hd37"
+}

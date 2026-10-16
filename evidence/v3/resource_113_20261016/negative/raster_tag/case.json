@@ -1,0 +1,12 @@
+{
+  "mutation": "raster_tag",
+  "top": "tb_v3_coords_fade",
+  "detected": true,
+  "normal_completion": true,
+  "error_counts": [
+    691200
+  ],
+  "original_sha256": "82cea7dd703ccd05a35e85171a5195b98dcb5636943d4a05d83b15fcaaf6c611",
+  "mutated_sha256": "d6686eee25cfd614274ce8ed4b4ba12a733a7c3c99cb17b5d8ac849d8f1a61ae",
+  "mutant_file": "mutant.v"
+}
