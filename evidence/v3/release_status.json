@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "status": "OFFLINE_ACCEPTANCE_COMPLETE_SYNC_PENDING_HARDWARE_PENDING",
+  "status": "OFFLINE_COMPLETE_LOCAL_MAIN_SYNCHRONIZED_HARDWARE_PENDING",
   "release_ready": false,
   "hardware_verified": false,
   "source_baseline_commit": "282e470c7a2f57c62e4cd39c75ed41ee67b6178d",
@@ -21,9 +21,8 @@
   "candidate_resources_are_final": true,
   "all_corner_routed_sta_passed": true,
   "bitstreams_generated": true,
-  "github_main_contains_current_implementation": false,
+  "github_main_contains_current_implementation": true,
   "pending": [
-    "Original local root and GitHub main synchronization/readback",
     "Physical board acceptance"
   ],
   "functional_acceptance_evidence": "evidence/v3/resource_113_20261016/acceptance.json",
@@ -32,7 +31,7 @@
   "resource_contract_parser_controls": 23,
   "rom_provenance_controls": 9,
   "presentation_cdc_native_scope_cases": 6,
-  "updated_at_utc": "2026-10-16T11:58:24.442313+00:00",
+  "updated_at_utc": "2026-10-16T12:11:46.290081+00:00",
   "configuration_report_parser_controls": 17,
   "portable_configuration_controls": 16,
   "previous_diagnostic_routed_modes": {
@@ -263,5 +262,10 @@
     }
   },
   "source_and_proof_git_dependencies_per_mode": 1055,
-  "release_ready_definition": "Requires physical board acceptance; offline_acceptance_passed reports completed source/model/STA/bitstream gates independently"
+  "release_ready_definition": "Requires physical board acceptance; offline_acceptance_passed reports completed source/model/STA/bitstream gates independently",
+  "local_original_project_contains_current_implementation": true,
+  "synchronized_artifact_commit_verified": "34d149a30495f1777f58bb4133a31e45a783142d",
+  "source_and_artifact_bytes_verified": true,
+  "sync_evidence": "evidence/v3/sync_34d149a.json",
+  "checkout_policy": "Explicit LF default and286 tested CRLF input exceptions; compiled/source/proof bytes unchanged"
 }

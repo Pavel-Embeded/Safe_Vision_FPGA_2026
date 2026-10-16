@@ -1,6 +1,8 @@
-> **V3 实施（2026-10-15）**：新增 `safevision_v3_top`，完整模块契约、修正报告和验收入口见 [V3 交付索引](docs/v3/README.md)。最终发布状态以 `evidence/v3/release_status.json` 为准；下文板级结论属于原来的 `safevision_top` 和对应历史位流。
+> **V3 当前离线交付（2026-10-16）**：BASE 640×480与HD 1280×720完整功能均已完成清洁构建、全角时序与位流生成，源码提交为9d40698。见[验收报告](docs/v3/release_9d40698.md)、[两份位流](artifacts/v3/release_9d40698/README.md)、[完整交付包](artifacts/v3/SafeVision_V3_release_9d40698.zip)。113项原生正向及28项语义负控通过；实体板卡验收待验。
+>
+> **V3 GUI入口**：[BASE工程](safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base/safevision_v3_base.al)与[HD工程](safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/hd/safevision_v3_hd.al)。下文保留队友原来的safevision_top基线与历史位流说明，不是V3发布状态。新版本没有继承旧位流的实体板测结论。
 
-> **当前状态（2026-10-11 仓库收敛后）**：`main` 只保留最新一版代码，**默认构建就是板级
+> **历史基线状态（2026-10-11 仓库收敛后）**：`main` 只保留最新一版代码，**默认构建就是板级
 > 验证过的配置**（40 MHz 存储时钟 + 验证过的 +10 ns 相位 + 细化版 dm 释放）。
 > 构建与复现方式、产物指纹、已知问题见 [构建与复现](docs/B链-构建与复现.md)；
 > 本次删除了什么、为什么、怎么找回，见 [仓库收敛说明](docs/仓库收敛说明_20261011.md)。
@@ -9,7 +11,7 @@
 # SafeVision FPGA 2026
 
 2026-10-09 板级白屏修复入口：[修复与验证报告](docs/verification/AB_WHITE_SCREEN_REPAIR_20261009.md)。
-真实图片显示工程为 `safevision/platform/anlogic_eg4s20_hx4s20c/project/safevision.al`
+历史图片显示工程为 `safevision/platform/anlogic_eg4s20_hx4s20c/project/safevision.al`
 （顶层 `safevision_top`，HDMI B）；准备与构建命令见该目录 README。
 下文部分初期状态说明保留历史背景，当前 A/B 能力与验收状态以本轮报告为准。
 
@@ -17,7 +19,7 @@
 > 《HDMI 多媒体播放与应急视听疏散终端》—— 平台：康芯 HX4S20C / 安路 EG4S20BG256
 
 面向康芯 HX4S20C / 安路 EG4S20BG256 的三人 FPGA 工程。本仓库采用
-**可移植业务 RTL + 板级适配 + 分层验证 + 可追溯证据** 的组织方式。当前已有
+**可移植业务 RTL + 板级适配 + 分层验证 + 可追溯证据** 的组织方式。初期阶段已有
 **B 链（数据存储链 / 数据搬运）的 RTL 与单元仿真**；A/C 链、板级工程和整机联调仍需开发。
 
 > ★ **任何目录或文件名的存在都不代表功能已经实现。** 本仓库里大量目录只是"落点"
