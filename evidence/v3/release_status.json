@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "status": "FUNCTIONAL_113_PASS_HD_SETUP_MINUS_0_147_NS",
+  "status": "BOTH_DIAGNOSTIC_GATES_PASS_CLEAN_RELEASE_REBUILD_PENDING",
   "release_ready": false,
   "hardware_verified": false,
   "source_baseline_commit": "282e470c7a2f57c62e4cd39c75ed41ee67b6178d",
@@ -23,11 +23,10 @@
   "bitstreams_generated": false,
   "github_main_contains_current_implementation": false,
   "pending": [
-    "Fresh production BASE/HD native synthesis and physical routing",
-    "All-corner timing and effective constraint checks",
-    "Committed-source two-mode bitstreams and reproducibility",
-    "Original project root and GitHub main synchronization",
-    "Physical board display/audio/card compatibility and long-run tests"
+    "Clean committed-source two-mode production build and full gate",
+    "Two formally approved bitstreams and input/tool/constraint hashes",
+    "Original local root and GitHub main fast-forward and exact readback",
+    "Physical board acceptance"
   ],
   "functional_acceptance_evidence": "evidence/v3/resource_113_20261016/acceptance.json",
   "portable_functional_auditor": "safevision/tools/audit_v3_resource_checkpoint.py",
@@ -35,7 +34,7 @@
   "resource_contract_parser_controls": 23,
   "rom_provenance_controls": 9,
   "presentation_cdc_native_scope_cases": 6,
-  "updated_at_utc": "2026-10-16T11:39:37.419069+00:00",
+  "updated_at_utc": "2026-10-16T11:40:38.081248+00:00",
   "configuration_report_parser_controls": 17,
   "portable_configuration_controls": 16,
   "previous_diagnostic_routed_modes": {
@@ -77,14 +76,15 @@
       "pending_complete_gate": false
     },
     "hd": {
-      "setup_wns_ns": -0.147,
+      "setup_wns_ns": 0.12,
       "hold_wns_ns": 0.032,
       "recovery_wns_ns": 0.111,
       "removal_wns_ns": 0.03,
       "lut": 17716,
-      "reg": 13330,
+      "reg": 13328,
       "ram9k": 51,
-      "complete_gate_passed": false
+      "complete_gate_passed": true,
+      "post_place_opt": "ultra"
     }
   },
   "strict_spi_io_parser_controls": 38,
@@ -112,5 +112,6 @@
     "hd_setup_wns_ns": -2.139,
     "production_adopted": false,
     "reason": "Worse global HD routed timing and resource usage; original source and failed reports retained"
-  }
+  },
+  "diagnostic_all_corner_routed_sta_passed": true
 }

@@ -859,7 +859,7 @@
             <Strategy Name="Default_PhysicalDesign_Strategy">
                 <PlaceProperty>
                     <effort>high</effort>
-                    <post_place_opt>high</post_place_opt>
+                    <post_place_opt>ultra</post_place_opt>
                 </PlaceProperty>
                 <RouteProperty>
                     <effort>routability</effort>

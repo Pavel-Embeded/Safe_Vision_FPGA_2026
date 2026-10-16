@@ -1,0 +1,14 @@
+{
+  "route.db": {
+    "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\td\\base\\route.db",
+    "sha256": "0db5ea77d16d35b4729d971da3839beeef53b089e1b6dd5d8988b01b28c6d855"
+  },
+  "gate.netlist.v": {
+    "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\td\\base\\gate.netlist.v",
+    "sha256": "98bd905f9662f46cbb4af8c9087b69bbd8b61b26a505b784bb32b94906c7440f"
+  },
+  "route.clocks": {
+    "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\td\\base\\route.clocks",
+    "sha256": "ffd3881c1d1271f9e82d6b627bd0a753994c6a0a972a24fae2c40f46b3aea377"
+  }
+}
