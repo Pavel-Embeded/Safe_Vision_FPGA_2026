@@ -1,0 +1,2 @@
+PASS: exact payload, source/proof bytes,113 positives,28 semantic mutants, both native corners, resources,3072 ROM bytes and both bitstreams
+Physical hardware acceptance remains pending.

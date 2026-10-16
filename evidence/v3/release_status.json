@@ -31,7 +31,7 @@
   "resource_contract_parser_controls": 23,
   "rom_provenance_controls": 9,
   "presentation_cdc_native_scope_cases": 6,
-  "updated_at_utc": "2026-10-16T12:11:46.290081+00:00",
+  "updated_at_utc": "2026-10-16T12:15:59.042929+00:00",
   "configuration_report_parser_controls": 17,
   "portable_configuration_controls": 16,
   "previous_diagnostic_routed_modes": {
@@ -267,5 +267,9 @@
   "synchronized_artifact_commit_verified": "34d149a30495f1777f58bb4133a31e45a783142d",
   "source_and_artifact_bytes_verified": true,
   "sync_evidence": "evidence/v3/sync_34d149a.json",
-  "checkout_policy": "Explicit LF default and286 tested CRLF input exceptions; compiled/source/proof bytes unchanged"
+  "checkout_policy": "Explicit LF default and286 tested CRLF input exceptions; compiled/source/proof bytes unchanged",
+  "fresh_git_checkout_verified": true,
+  "fresh_checkout_proof_inputs_exact": 1055,
+  "fresh_checkout_source_binding_verified": true,
+  "fresh_checkout_evidence": "evidence/v3/fresh_git_checkout_verification.json"
 }

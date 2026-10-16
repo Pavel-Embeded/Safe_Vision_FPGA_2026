@@ -1,0 +1,18 @@
+{
+  "commit": "5e6c6bfaa3113868315f266dcf1d9b9af270ebd9",
+  "source_commit": "9d40698de1d57fc46efb0b035ecf91cf58c3605b",
+  "fresh_clone": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\checkout_policy_fixed",
+  "core_autocrlf": true,
+  "source_and_proof_dependencies_exact": 1055,
+  "source_commit_binding": {
+    "verified": true,
+    "commit": "9d40698de1d57fc46efb0b035ecf91cf58c3605b",
+    "source_repository": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\checkout_policy_fixed",
+    "dependencies_compared": 1055,
+    "errors": []
+  },
+  "payload_verifier_passed": true,
+  "working_tree_clean": true,
+  "hardware_verified": false,
+  "verified_at_utc": "2026-10-16T12:14:33.097476+00:00"
+}
