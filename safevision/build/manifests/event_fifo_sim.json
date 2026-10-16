@@ -1,0 +1,4 @@
+{
+ "sources":["safevision/rtl/common/sync_fifo.v","safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v","safevision/rtl/common/v3_event_fifo.v"],
+ "tops":["tb_v3_event_fifo"]
+}

@@ -99,7 +99,9 @@ module bmp_parser (
     wire fmt_ok    = (planes_r == 16'd1) && (bpp_r == 16'd24) && (comp_r == 32'd0);
     wire trunc_ok  = (offbits_r >= BMP_HDR_BYTES) &&
                      (bfsize_r <= file_size) &&
-                     ((offbits_r + BMP_PIX_BYTES) <= file_size);
+                     // Include the carry bit. A 32-bit sum can wrap a huge
+                     // bfOffBits into a small apparently valid file extent.
+                     (({1'b0,offbits_r} + {1'b0,BMP_PIX_BYTES}) <= {1'b0,file_size});
 
     wire        check_ok = sig_ok && dib_ok && size_ok && fmt_ok && trunc_ok;
 

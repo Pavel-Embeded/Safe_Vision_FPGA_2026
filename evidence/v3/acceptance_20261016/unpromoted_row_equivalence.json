@@ -1,0 +1,29 @@
+{
+  "complete": true,
+  "results": [
+    {
+      "suite": "row_integrity",
+      "native_runner_exit": 0,
+      "normal_finish": true,
+      "public_field_comparisons": 167692,
+      "zlib_checks": 54,
+      "accepted": true
+    },
+    {
+      "suite": "row_integrity_full",
+      "native_runner_exit": 0,
+      "normal_finish": true,
+      "public_field_comparisons": 24172498,
+      "zlib_checks": 1942,
+      "accepted": true
+    },
+    {
+      "suite": "deliberate_row_direction_mutant",
+      "native_runner_exit": 1,
+      "normal_finish": true,
+      "detected_errors": 4384,
+      "accepted_as_functional": false
+    }
+  ],
+  "production_modified": false
+}

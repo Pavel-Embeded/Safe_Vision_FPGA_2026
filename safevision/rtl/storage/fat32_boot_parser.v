@@ -258,9 +258,9 @@ module fat32_boot_parser (
                     num_fats       <= nfat;
                     fat_start_lba  <= {16'd0, w_rsvd};
                     root_clus      <= w_rc;
-                    data_start_lba <= {16'd0, w_rsvd} + (nfat * w_fs32);
-                    root_dir_lba   <= {16'd0, w_rsvd} + (nfat * w_fs32)
-                                      + ((w_rc - 32'd2) * spc);
+                    data_start_lba <= {16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32);
+                    root_dir_lba   <= {16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32)
+                                      + ((w_rc - 32'd2) << w_log2_spc);
                     total_sec      <= w_ts32;
                     // ★ 这里绝对不能用 `/ spc`。
                     //   Verilog 的除法运算符会被综合器实现成【组合除法阵列】：
@@ -271,7 +271,7 @@ module fat32_boot_parser (
                     //   改用移位：本分支已由 spc_ok 保证 spc 是 2 的幂（1..128），
                     //   所以 `X / spc` 与 `X >> log2(spc)` 对无符号数是【逐值等价】的。
                     //   ⇒ 行为与原来完全一致（既有 TB 断言逐字不变），只是不再有除法器。
-                    total_clus     <= (w_ts32 - ({16'd0, w_rsvd} + (nfat * w_fs32))) >> w_log2_spc;
+                    total_clus     <= (w_ts32 - ({16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32))) >> w_log2_spc;
                     mstate         <= M_DONE;
                 end
             end

@@ -1,0 +1,78 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial",
+  "suite": "priority_serial",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "174310f201330ceadfe1ef0f02ac71d878fe585c342404e88a89afc359ca805d",
+  "tests": [
+    {
+      "top": "tb_v3_priority_serial",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial\\tb_v3_priority_serial\\sim.log",
+        "sha256": "0d4d21f2a65622dae2b02bb91fff488ee8b0d1931b2d5befdf06ebe19fb1723b",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 1835053,
+      "elapsed_s": 8.297,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial\\tb_v3_priority_serial\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial\\tb_v3_priority_serial\\sources.sha256.json"
+    },
+    {
+      "top": "tb_v3_priority_serial_gain",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial\\tb_v3_priority_serial_gain\\sim.log",
+        "sha256": "803736a2a8953090b2c44698b9234acd56768346424bc48a026124e12f60a004",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 28718,
+      "elapsed_s": 6.204,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial\\tb_v3_priority_serial_gain\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial\\tb_v3_priority_serial_gain\\sources.sha256.json"
+    },
+    {
+      "top": "tb_v3_priority_serial_one",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial\\tb_v3_priority_serial_one\\sim.log",
+        "sha256": "1b4d888baaae2587fa23b28bdc56c5c9ad01f420fb354422dbc1d3730abe6264",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 28717,
+      "elapsed_s": 6.11,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial\\tb_v3_priority_serial_one\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\priority_serial\\tb_v3_priority_serial_one\\sources.sha256.json"
+    }
+  ]
+}

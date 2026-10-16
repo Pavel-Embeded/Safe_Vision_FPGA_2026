@@ -1,0 +1,6 @@
+{
+ "sources":["safevision/rtl/video/v3_status_layers.v"],
+ "tops":["tb_v3_video_decimal"],
+ "timeouts":{"tb_v3_video_decimal":300},
+ "assets":["safevision/assets/fonts/font8x16.mem","safevision/assets/fonts/font8x16_compact.mem","safevision/assets/fonts/v3_status_text.mem"]
+}

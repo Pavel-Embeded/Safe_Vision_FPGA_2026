@@ -1,0 +1,4 @@
+{
+ "sources":["safevision/rtl/control/v3_command_parser.v","safevision/verification/models/v3_command_parser_reference.sv"],
+ "tops":["tb_v3_parser_compact"]
+}

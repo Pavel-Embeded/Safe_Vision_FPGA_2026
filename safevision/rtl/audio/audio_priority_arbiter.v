@@ -9,8 +9,8 @@
 //   gain = 256 -> 全报警音（抢占完成）
 //   alarm_req 拉高：每个样本节拍 gain 上台阶 -> 平滑抬起报警音；
 //   alarm_req 撤除：每个样本节拍 gain 下台阶 -> 平滑恢复 WAV。
-//   斜坡步长 STEP = FULL_SCALE / RAMP_N；RAMP_N=240、FULL_SCALE=256 -> STEP=1，
-//   完成一次 256 级斜坡需 256 个 48 kHz 样本 = 5.33 ms（设计目标 5 ms，待实测）。
+//   分数余数累加每拍分配 1 或 2 级，RAMP_N=240 时恰好 240 样本到端点。
+//   48 kHz 下斜坡为 5 ms。
 //
 // 定点混合（避免削顶与截断误差）：
 //   out = (wav x (256-gain) + tone x gain) >> 8
@@ -41,12 +41,12 @@ module audio_priority_arbiter #(
     output reg  [8:0]  gain                 // 观测：0=全 WAV，256=全报警音
 );
 
-    localparam integer STEP_CALC = (RAMP_N >= 1) ? (FULL_SCALE / RAMP_N) : 1;
-    localparam [8:0]   STEP      = (STEP_CALC < 1) ? 9'd1 : STEP_CALC[8:0];
-
     // 下一个 gain（按节拍台阶）
-    wire [8:0] gain_up = (gain + STEP > 9'd256) ? 9'd256 : (gain + STEP);
-    wire [8:0] gain_dn = (gain > STEP)          ? (gain - STEP) : 9'd0;
+    reg [31:0] ramp_error;
+    wire [32:0] ramp_sum={1'b0,ramp_error}+FULL_SCALE;
+    wire [8:0] ramp_step=ramp_sum/RAMP_N;
+    wire [8:0] gain_up = ({1'b0,gain} + {1'b0,ramp_step} > 10'd256) ? 9'd256 : (gain + ramp_step);
+    wire [8:0] gain_dn = (gain > ramp_step) ? (gain - ramp_step) : 9'd0;
     wire [8:0] n_gain  = alarm_req ? gain_up : gain_dn;
     wire [8:0] w_coef  = 9'd256 - n_gain;       // WAV 权重
 
@@ -60,12 +60,12 @@ module audio_priority_arbiter #(
 
     always @(posedge audio_clk or negedge rst_n) begin
         if (!rst_n) begin
-            gain        <= 9'd0;
+            gain        <= 9'd0; ramp_error<=0;
             audio_l     <= 24'sd0;
             audio_r     <= 24'sd0;
             audio_valid <= 1'b0;
         end else if (sample_valid) begin
-            gain        <= n_gain;
+            gain        <= n_gain; ramp_error<=ramp_sum%RAMP_N;
             audio_l     <= mix_l[31:8];     // 算术意义上等价 >>8
             audio_r     <= mix_r[31:8];
             audio_valid <= 1'b1;
@@ -75,8 +75,8 @@ module audio_priority_arbiter #(
     end
 
     // synthesis translate_off
-    initial if (FULL_SCALE < 1 || FULL_SCALE > 256)
-        $fatal(1, "audio_priority_arbiter invalid FULL_SCALE (must be 1..256)");
+    initial if (FULL_SCALE != 256 || RAMP_N<1)
+        $fatal(1, "audio_priority_arbiter invalid FULL_SCALE (must be 256, RAMP_N >= 1)");
     // synthesis translate_on
 
 endmodule

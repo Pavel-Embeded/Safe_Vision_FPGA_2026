@@ -1,0 +1,6 @@
+{
+  "sources": ["safevision/rtl/video/scaler/scaler_coords.v", "safevision/verification/unit/tb_v3_video_fraction_domain.sv"],
+  "tops": ["tb_v3_video_fraction_domain"],
+  "test_sources": {"tb_v3_video_fraction_domain": []},
+  "timeouts": {"tb_v3_video_fraction_domain": 600}
+}

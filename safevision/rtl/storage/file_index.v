@@ -30,7 +30,7 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module file_index (
+module file_index #(parameter integer CURSOR_MODE=0,CANDIDATE_SLOTS=4) (
     input  wire        clk,
     input  wire        rst_n,
 
@@ -53,6 +53,11 @@ module file_index (
     output reg  [7:0]  err_code,       // 对外主码
     output reg  [7:0]  err_detail,     // 内部细分码
 
+    // Optional monotonic cursor. Resident loading scans bounded batches,
+    // then continues ABOVE every processed candidate, including invalid BMPs.
+    // No finite reject CAM can silently discard a later legal file.
+    input wire [15:0] cursor_key,
+    output wire [15:0] sel_key,
     // ---- 图片查表口（单口读，见 §7 决策 D-1）----
     input  wire [1:0]  sel_slot,
     output wire [31:0] sel_first_clus,
@@ -69,8 +74,18 @@ module file_index (
     output reg  [15:0] wav_seen        // 目录里一共看到几个编号合法的 WAV
 );
 
+    // With a monotonic cursor the resident loader may retain one minimum
+    // candidate, consume/reject it, then rescan above that key. The resulting
+    // four legal resident images stay identical to the four-candidate mode.
+    // The default preserves the original four-slot batching and lookup ports.
+    // synthesis translate_off
+    initial if(CANDIDATE_SLOTS<1 || CANDIDATE_SLOTS>4)
+        $fatal(1,"invalid candidate capacity");
+    // synthesis translate_on
     localparam integer NSLOT = 4;      // 图片槽数（手册：前四幅）
     localparam integer NWAV  = 8;      // WAV 候选表（够 4 幅图配对了）
+    // idx_commit freezes BOTH table and counters, until the next idx_clear.
+    reg collecting;
 
     // ------------------------------------------------------------------------
     // 1. 8.3 名解析（纯组合）
@@ -121,8 +136,8 @@ module file_index (
     wire [15:0] ent_key = { nk0, nk1, nk2, nk3 };
     wire num_ok = (ent_key != 16'd0);
 
-    wire is_bmp_c = ent_valid && name_ok && num_ok && ext_bmp;
-    wire is_wav_c = ent_valid && name_ok && num_ok && ext_wav;
+    wire is_bmp_c = collecting && !idx_clear && ent_valid && name_ok && num_ok && ext_bmp && (!CURSOR_MODE || ent_key>cursor_key);
+    wire is_wav_c = collecting && !idx_clear && ent_valid && name_ok && num_ok && ext_wav && (!CURSOR_MODE || ent_key>cursor_key);
 
     // ★★ 译码打一拍（流水第 1 段 → 第 2 段）：
     //   把「88 位名比较 + 数字归一化」与「4 槽插入排序 + 表移位」切开。
@@ -190,13 +205,13 @@ module file_index (
     // 插入位置：1 + 最后一个"已存在且数字更小"的槽号
     always @(*) begin
         ins_pos = 0;
-        for (i = 0; i < NSLOT; i = i + 1)
+        for (i = 0; i < CANDIDATE_SLOTS; i = i + 1)
             if (s_val[i] && (s_key[i] < key_d)) ins_pos = i + 1;
         is_dup = 1'b0;
-        for (i = 0; i < NSLOT; i = i + 1)
+        for (i = 0; i < CANDIDATE_SLOTS; i = i + 1)
             if (s_val[i] && (s_key[i] == key_d)) is_dup = 1'b1;
         // ins_pos == NSLOT 说明新编号比榜上最大的还大 -> 落榜
-        ins_keep = (ins_pos < NSLOT) && !is_dup;
+        ins_keep = (ins_pos < CANDIDATE_SLOTS) && !is_dup;
     end
 
     // ------------------------------------------------------------------------
@@ -232,11 +247,13 @@ module file_index (
             bcnt_wav     <= 16'd0;
             bmp_seen     <= 16'd0;
             wav_seen     <= 16'd0;
+            collecting   <= 1'b1;
         end else begin
             idx_done <= 1'b0;          // 单拍脉冲
 
             // ---- 清表：准备新一轮扫描 --------------------------------------
             if (idx_clear) begin
+                collecting<=1'b1;
                 for (i = 0; i < NSLOT; i = i + 1) begin
                     s_key[i]  <= 16'd0;
                     s_clus[i] <= 32'd0;
@@ -264,11 +281,11 @@ module file_index (
             end
 
             // ---- 收目录项 --------------------------------------------------
-            if (is_bmp) begin
+            if (is_bmp && collecting && !idx_clear) begin
                 bcnt_bmp <= bcnt_bmp + 16'd1;
                 bmp_seen <= bcnt_bmp + 16'd1;
                 if (ins_keep) begin
-                    for (j = NSLOT - 1; j > 0; j = j - 1) begin
+                    for (j = CANDIDATE_SLOTS - 1; j > 0; j = j - 1) begin
                         if (j > ins_pos) begin
                             s_key[j]  <= s_key[j-1];
                             s_clus[j] <= s_clus[j-1];
@@ -281,7 +298,7 @@ module file_index (
                     s_size[ins_pos] <= size_d;
                     s_val [ins_pos] <= 1'b1;
                 end
-            end else if (is_wav) begin
+            end else if (is_wav && collecting && !idx_clear) begin
                 bcnt_wav <= bcnt_wav + 16'd1;
                 wav_seen <= bcnt_wav + 16'd1;
                 // WAV 表同样插入排序，只留数字最小的 NWAV 个
@@ -316,6 +333,7 @@ module file_index (
 
             // ---- 提交：冻结索引表 + 配对 WAV ---------------------------------
             if (cmit_d) begin
+                collecting<=1'b0;
                 file_valid <= {s_val[3], s_val[2], s_val[1], s_val[0]};
                 file_cnt   <= {2'b00, s_val[3]} + {2'b00, s_val[2]} +
                               {2'b00, s_val[1]} + {2'b00, s_val[0]};
@@ -352,6 +370,7 @@ module file_index (
     // ------------------------------------------------------------------------
     // 4. 查表口（组合读）
     // ------------------------------------------------------------------------
+    assign sel_key = s_key[sel_slot];
     assign sel_first_clus     = s_clus[sel_slot];
     assign sel_size           = s_size[sel_slot];
     assign sel_valid          = s_val[sel_slot];

@@ -96,6 +96,8 @@ module tb_c_fault_manager;
               @(posedge clk); #1; wdt_timeout = 0; wdt_reason = 8'h00; end
     endtask
 
+    integer trial;
+    reg[31:0] first_ts;
     initial begin
         rst_n = 1'b0;
         err_push = 0; err_code = 8'h00; err_level = 3'd0;
@@ -113,8 +115,8 @@ module tb_c_fault_manager;
 
         // F3 首因粘滞
         push_err(8'h07, LV_DEGRADED);
-        check(fault_code === 8'h03 && fault_level === LV_WARNING,
-              "F3 首因粘滞：后续故障不覆盖首因（码/等级保持）");
+        check(fault_code === 8'h03 && fault_level === LV_DEGRADED,
+              "F3 首因粘滞：后续故障不覆盖首因码，严重等级升级");
 
         // F4 media_fatal -> fatal 锁存 + 等级升级
         pulse_mfatal();
@@ -153,6 +155,26 @@ module tb_c_fault_manager;
               && fault_code === 8'h00,
               "F10 干净态 media_fatal -> 等级 FATAL 且 fatal=1");
 
+        // 1000 independent injections, with different event/clear offsets.
+        // A harmless first cause must never mask later SAFE/FATAL severity.
+        for(trial=0;trial<1000;trial=trial+1)begin
+            do_reset();ncyc(trial%7+1);push_err(8'h03,LV_WARNING);first_ts=fault_ts;
+            ncyc(trial%5+1);push_err(8'h09,LV_SAFE);
+            check(fault_code===8'h03 && fault_level===LV_SAFE && fault_ts===first_ts,
+                  "F11 WARNING then SAFE preserves first code/time and escalates");
+            @(negedge clk);recover_ack=1;err_push=1;err_code=8'h0f;err_level=LV_FATAL;
+            @(posedge clk);#1;
+            check(fatal && fault_valid && fault_level===LV_FATAL && fault_code===8'h03 && !media_rst_req,
+                  "F12 simultaneous new fatal and clear keeps fatal");
+            recover_ack=0;err_push=0;pulse_ra();
+            check(fatal && fault_valid,"F13 FATAL ignores subsequent recovery acknowledgement");
+            do_reset();push_err(8'h03,LV_WARNING);first_ts=fault_ts;pulse_wdt(8'h02);
+            check(fault_code===8'h03 && fault_level===LV_SAFE && fault_ts===first_ts,
+                  "F14 watchdog escalation cannot be hidden by warning");
+            @(negedge clk);wdt_timeout=1;recover_ack=1;@(posedge clk);#1;
+            check(!fault_valid && media_rst_req,"F15 paired watchdog clear has no old-sticky-value deadlock");
+            wdt_timeout=0;recover_ack=0;ncyc(1);
+        end
         check(errors == 0, "suite 无错误");
         $display("[TB] tb_c_fault_manager done, errors=%0d", errors);
         $finish;

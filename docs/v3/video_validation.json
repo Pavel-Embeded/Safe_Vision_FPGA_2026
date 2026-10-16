@@ -1,0 +1,255 @@
+{
+  "status": "PASS_VIDEO_MODEL_VALIDATION",
+  "production_profile": {
+    "MEM_HZ": 50000000,
+    "WRITE_SYS_HZ": 100000000,
+    "related_phase_degrees": 0,
+    "PACKED_CACHE": 1,
+    "RAW_TO_OUTPUT_PIXEL_CLOCKS": 21,
+    "LAYER_PIXEL_CLOCKS": 4
+  },
+  "tests": [
+    {
+      "run": "v3_video_constant224_final_base",
+      "top": "tb_v3_video_final_base",
+      "status": "PASS",
+      "source_overrides": [
+        "safevision/rtl/video/v3_video_display_core.v"
+      ],
+      "checks": 8,
+      "data_comparisons": 2150400,
+      "elapsed_s": 743.218,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_constant224_final_hd",
+      "top": "tb_v3_video_final_hd_fast",
+      "status": "PASS",
+      "source_overrides": [
+        "safevision/rtl/video/v3_video_display_core.v"
+      ],
+      "checks": 8,
+      "data_comparisons": 6451200,
+      "elapsed_s": 659.719,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_constant224_one_to_one",
+      "top": "tb_v3_video_one_to_one",
+      "status": "PASS",
+      "source_overrides": [
+        "safevision/rtl/video/v3_video_display_core.v"
+      ],
+      "checks": 3,
+      "data_comparisons": 1843200,
+      "elapsed_s": 181.641,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_packed_store_first",
+      "top": "tb_v3_video_packed_aligned",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 79360,
+      "elapsed_s": 7.0,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_packed_store_first",
+      "top": "tb_v3_video_packed_offset",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 79360,
+      "elapsed_s": 7.422,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_generic_random_final",
+      "top": "tb_v3_video_cache",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 3,
+      "data_comparisons": 15360,
+      "elapsed_s": 6.875,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_decimal_exhaustive",
+      "top": "tb_v3_video_decimal",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 786432,
+      "elapsed_s": 15.813,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_layers_iterative_bcd",
+      "top": "tb_v3_status_layers",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2635,
+      "elapsed_s": 6.594,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_fps_measured",
+      "top": "tb_v3_video_fps",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 256,
+      "elapsed_s": 7.329,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_constant224_exhaustive",
+      "top": "tb_v3_video_constant224",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2097168,
+      "elapsed_s": 8.125,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_color_exhaustive",
+      "top": "tb_v3_video_color",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 8388611,
+      "elapsed_s": 27.61,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_packed_pressure50_rawrstfinal",
+      "top": "tb_v3_video_shared_packed_50",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 5529600,
+      "elapsed_s": 18.047,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_midfade_final",
+      "top": "tb_v3_video_midfade_base",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 307200,
+      "elapsed_s": 138.703,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_midfade_final",
+      "top": "tb_v3_video_midfade_hd",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 921600,
+      "elapsed_s": 327.0,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_fraction_domain",
+      "top": "tb_v3_video_fraction_domain",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2895004,
+      "elapsed_s": 12.406,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_dynamic_text_production",
+      "top": "tb_v3_video_dynamic_text_base",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 282112,
+      "elapsed_s": 11.156,
+      "source_identity_verified": true
+    },
+    {
+      "run": "v3_video_dynamic_text_production",
+      "top": "tb_v3_video_dynamic_text_hd",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 282112,
+      "elapsed_s": 10.719,
+      "source_identity_verified": true
+    }
+  ],
+  "negative_controls": [
+    {
+      "run": "v3_video_generic_random_negative_crc",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "normal_finish": true,
+      "assertion_errors": 1
+    },
+    {
+      "run": "v3_video_packed_negative_raster",
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "normal_finish": true,
+      "assertion_errors": 1
+    }
+  ],
+  "verified_source_sha256": {
+    "safevision/rtl/video/video_timing/video_timing.v": "d462a1afdbef6c48bad3bddeae76539ff3f8d3f2e6fa87ecf0b0adc356d5063e",
+    "safevision/rtl/video/video_cdc/video_cdc_mailbox.v": "bfca54eafc13ae9054d766ece19453305c1ee9c5ab8343a0155ceec340e63993",
+    "safevision/rtl/video/scaler/scaler_coords.v": "82cea7dd703ccd05a35e85171a5195b98dcb5636943d4a05d83b15fcaaf6c611",
+    "safevision/rtl/video/scaler/scaler_bilinear.v": "21be56446c8c1c7497ed604add36ba284fa529d4323837738e7d8b164e2d4a01",
+    "safevision/rtl/video/video_compositor/alpha_blend.v": "ece6996532081482a2cfdaa4dd14d766cc06db537513e80dc6ffd915ffe802e0",
+    "safevision/rtl/video/video_compositor/color_adjust.v": "63e1e3eccb28d01bb01bf3fe878d1d5270b1fd289c64735b76eb164204d9eb39",
+    "safevision/rtl/video/graphics_rom/font8x16_rom.v": "a1a1499b310eb51b279fd460533a968280ddb52641ca674f63e7e336eecec358",
+    "safevision/rtl/video/osd_overlay/osd_text_layer.v": "10199662fbaadbbdcfa551d9927a37c801134646e98ca05c13605cca221a3bec",
+    "safevision/rtl/video/v3_status_layers.v": "12349653f98ec50e3bf64350ac8de4bade64ec4b66e7a05099ff77205ded9ede",
+    "safevision/rtl/video/v3_presentation_ctrl.v": "48bd94123ae555853da9c49c23d374ed0c3c63e4348004976832ed4b6256afe0",
+    "safevision/rtl/video/v3_packed_row_store.v": "91f289aa4f35be2ab2e1f113d081c569512e7b3bcc0f947922c1ca7b9b490b87",
+    "safevision/rtl/video/v3_line_cache.v": "ecf3021391a3aeffa0eefcf2732316e8165a5c8251d2453dbde8a03a54321039",
+    "safevision/rtl/video/v3_constant224_blend.v": "2f18077fb5cc2680ed127036b4fc6047ac7aad87b03da650216900dfca9e4f97",
+    "safevision/rtl/video/v3_video_display_core.v": "50a011c94e00b8fd78389fbfe6124be62fdf4d9b0eebfa63bdbcd5be96b2ff5c",
+    "safevision/rtl/include/crc32_word.vh": "17f9d826d1d26514a3bf1a8c6db95189ccd982c470112d1f5cdb8c9bcb89a36a",
+    "safevision/rtl/include/event_code_defs.vh": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2",
+    "safevision/rtl/include/fault_code_defs.vh": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e",
+    "safevision/rtl/include/pixel_format_defs.vh": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0",
+    "safevision/rtl/include/safevision_defs.vh": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5",
+    "safevision/rtl/include/video_mode_defs.vh": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997",
+    "safevision/assets/fonts/font8x16.mem": "e3a0d1e5271bf030ec21374ad8fc5581f28a6814c8ab09b66231e9d07cd0a7af",
+    "safevision/assets/fonts/font8x16_compact.mem": "b19b25c57dda9426aa918e7e808c5ac3155f3d0c3e2825515998c15a8a1dece4",
+    "safevision/assets/fonts/v3_status_text.mem": "58f10dffb2d59faddae40b874dc74354eadbbf2c3a8422fccc5144840b8c84f5",
+    "safevision/rtl/audio/v3_pcm_ring.v": "1bf284059ab9eea4a838caa00c5c1a6abd9133f62341ec1ea961a85370795f2d",
+    "safevision/rtl/common/sv_async_fifo.v": "a86a3923c2736608f634441404e91f9c82df3e48de3532500ce0761a3babe684",
+    "safevision/rtl/memory/v3_aux_mux.v": "d1845487cb8d5fb021dd748077529f87201d9f4ab09d30434b0f3c4ff982de5a",
+    "safevision/rtl/memory/memory_arbiter.v": "7245a974a0a3a5cda385621eea33e54e43e66160003debbee1a4110445be1638",
+    "safevision/rtl/memory/mem_ctrl.v": "c11419377ad988a0841642060ccb3b266316a1f2c63c7d145e38d3526c307b37",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v": "715cf67dcf788d2d8cece432851efc9450c33bd4259379b9c145a33524acd6e6",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v": "d5e032216b6c7020e3687757e668f04010a85e6901837d5f853f6d8ce2138f3f",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v": "806bd4a792da09052cdd9f5351ab54204e67cdf68ee0c6e6fb1249afb8435c3a"
+  },
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false,
+  "whole_board_sta_verified": false,
+  "resource_note": "cache 10 RAM9K and graphics 2 RAM9K confirmed by native synthesis; whole-board LUT optimization and timing closure remain separate acceptance gates",
+  "constant224_native_delta": {
+    "lut": -310,
+    "reg": -97,
+    "bram": 0,
+    "dsp": 0,
+    "same_directory_control": "v3_constant224_hd_area",
+    "scope": "two fixed0/224 palette layers; configurable OSD alpha remains0..255"
+  },
+  "evidence_notes": {
+    "midfade": "FADE_FRAMES=2 test variant holds alpha127 for an entire simultaneous two-image bilinear frame, all overlay layers enabled; default32 frame trajectory and final commit are covered separately by final suites",
+    "rejected_midfade_run": "v3_video_midfade_hd was rejected for a whitespace-mismatched TB completion marker despite normal finish; never counted as PASS. Fixed TB literal marker and both modes rerun in v3_video_midfade_final.",
+    "fifo_refresh": "shared MEM50 pressure rerun after common/sv_async_fifo.v rawreset cleanup; older pressure record replaced rather than relabeled."
+  }
+}

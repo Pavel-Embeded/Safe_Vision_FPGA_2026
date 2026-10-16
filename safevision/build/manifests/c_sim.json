@@ -1,0 +1,31 @@
+{
+  "sources": [
+    "safevision/rtl/common/sync_fifo.v",
+    "safevision/rtl/common/error_report.v",
+    "safevision/rtl/control/control_event_queue.v",
+    "safevision/rtl/control/input_sync.v",
+    "safevision/rtl/control/key_debounce.v",
+    "safevision/rtl/control/media_recovery_ctrl.v",
+    "safevision/rtl/control/playback_fsm.v",
+    "safevision/rtl/control/priority_arbiter.v",
+    "safevision/rtl/safety/emergency_fsm.v",
+    "safevision/rtl/safety/fault_manager.v",
+    "safevision/rtl/safety/watchdog.v",
+    "safevision/rtl/audio/alarm_tone_gen.v",
+    "safevision/rtl/audio/audio_energy.v",
+    "safevision/rtl/audio/audio_priority_arbiter.v",
+    "safevision/rtl/audio/audio_scheduler.v",
+    "safevision/rtl/audio/hdmi_acr.v",
+    "safevision/verification/models/audio_priority_arbiter_reference.sv"
+  ],
+  "tops": [
+    "tb_c_audio",
+    "tb_c_emergency_fsm",
+    "tb_c_fault_manager",
+    "tb_c_input_sync",
+    "tb_c_playback_fsm",
+    "tb_c_priority_arbiter",
+    "tb_c_watchdog",
+    "tb_v3_priority_difference"
+  ]
+}

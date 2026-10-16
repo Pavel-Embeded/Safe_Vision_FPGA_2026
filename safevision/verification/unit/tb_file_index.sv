@@ -301,6 +301,13 @@ module tb_file_index;
         chk_slot(2'd2, 32'd900, 32'd921600, 1'b1, "T69.4 槽2 = SV0101（键 0x0101，≠0x0001）");
         check(bmp_seen === 16'd3, "T69.5 bmp_seen 计 3");
 
+        // A late/spurious directory valid must not alter a published index.
+        push_ent("SV0002  BMP", 32'd333, 32'd921600);
+        push_ent("SV0100  WAV", 32'd444, 32'd96000);
+        repeat(5)@(posedge clk);
+        check(file_cnt===4'd3 && bmp_seen===16'd3 && wav_seen===16'd0,
+              "T70.1 committed index and counters remain frozen");
+        chk_slot(2'd1,32'd700,32'd921600,1'b1,"T70.2 late smaller ID cannot reorder published slots");
         // ====================================================================
         $display("\n============================================");
         if (errors == 0) $display(" 全部通过 (PASS)");

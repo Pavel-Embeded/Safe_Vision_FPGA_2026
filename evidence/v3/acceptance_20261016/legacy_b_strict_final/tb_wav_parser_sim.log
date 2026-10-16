@@ -1,0 +1,70 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Thu Oct 15 23:52:09 2026
+# Process ID: 45748
+# Current directory: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/legacy_b_strict_final/native
+# Command line: xsim.exe -log tb_wav_parser_sim.log -mode tcl -source {xsim.dir/tb_wav_parser_sim/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/legacy_b_strict_final/native/tb_wav_parser_sim.log
+# Journal file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/legacy_b_strict_final/native\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_wav_parser_sim/xsim_script.tcl
+# xsim {tb_wav_parser_sim} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== T10: åˆæ³• WAVï¼ˆå«æœªçŸ¥å—è·³è¿‡ï¼‰====
+[PASS] T10.1 header_done 1ÿÿÿ¡
+[PASS] T10ÿÿÿæÿÿÿŠÿÿÿ™
+[PASS] T10.3 fmt_code = 1 (PCM)
+[PASS] T10ÿÿÿåÿÿÿÿÿÿ° = 2
+[PASS] T10ÿÿÿéÿÿÿ ÿÿÿ‡ = 48000
+[PASS] T10.6ÿÿÿÿÿ± = 16
+[PASS] T10.7 data_size = 16
+[PASS] ÿÿÿˆÿÿÿçÿÿÿ— 8+5+1 ÿÿÿèÿÿÿ¿ÿÿÿ‰
+[PASS] T10.8 samples_rd = 4
+[PASS] T10.ÿÿÿ¾ÿÿÿºÿÿÿåÿÿÿ ÿÿÿ¬
+[PASS] T10.10 pcm_end 1ÿÿÿ¡
+[PASS] T10.11 track_iÿÿÿ€ÿÿÿ 
+
+==== T11: å·¦å³å£°é“æ‰“åŒ…é¡ºåº ====
+[PASS] T11ÿÿÿæÿÿÿœ¬0 l=0100 r=0200
+[PASS] 11.2 sample = {r,l} = 0x02000100
+[PASS] T11ÿÿÿæÿÿÿœ¬1 l=FFF0 r=7FFF
+[PASS] sample = {r,ÿÿÿ¼ÿÿÿ¦ÿÿÿåÿÿÿ«ÿÿÿ‰
+
+==== T12: é PCM ====
+[PASS] T12.ÿÿÿŠÿÿÿ™
+[PASS] ÿÿÿçÿÿÿˆÿÿÿ = 0ÿÿÿïÿÿÿ PCÿÿÿ‰
+[PASS] 2.3 ÿÿÿçÿ = 0x07(WAÿÿÿ¸ÿÿÿ¯ÿÿ)
+[PASS] T12ÿÿÿäÿÿÿ¸ÿÿÿ·ÿÿÿéÿÿÿ¸ÿÿÿº
+[PASS] T12ÿÿÿèÿÿÿ±ÿÿÿÿÿÿæÿÿÿ¤ÿÿÿ³
+
+==== T13: å•å£°é“ ====
+[PASS] T13.ÿÿÿŠÿÿÿ™
+[PASS] ÿÿÿ†ÿÿ = 0xÿÿÿ¼ÿÿÿÿÿÿäÿÿÿ£ÿÿÿ‰
+[PASS] T13.3ÿÿÿ ÿÿÿæÿÿÿ¾ÿÿÿº
+
+==== T14: é‡‡æ ·ç‡ 44100 ====
+[PASS] T14.ÿÿÿŠÿÿÿ™
+[PASS] ÿÿ = 0xÿÿÿ¼ÿÿÿ‡ÿÿÿçÿÿÿ 48ÿÿÿ‰
+[PASS] T14.3 ÿÿÿèÿÿÿ‡ÿÿÿ·ÿÿÿäÿÿÿ—ÿÿÿ—
+
+==== T15: 8 bit ====
+[PASS] T15.ÿÿÿŠÿÿÿ™
+[PASS] ÿÿÿåÿÿÿ  = 0x74ÿÿÿéÿ 16 biÿÿÿ‰
+
+==== T16: é RIFF ====
+[PASS] T16.ÿÿÿŠÿÿÿ™
+[PASS] ÿÿÿçÿ = 0x7ÿÿÿˆÿÿ RIFF/WAVÿÿÿ‰
+
+============================================
+ å…¨éƒ¨é€šè¿‡ (PASS)
+============================================
+
+PASS tb_wav_parser errors=0 comparisons=31
+$finish called at time : 5275 ns : File "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_wav_parser.sv" Line 348
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 15 23:52:15 2026...

@@ -131,11 +131,21 @@ module wav_parser (
     // fmt 块最后一个字节（idx=15）时 f_bits 尚未落寄存器，用含本字节的装配值
     wire [15:0] bits_v = (fmt_idx == 5'd15) ? f_bits_nxt : f_bits;
 
+    // RIFF signature storage is dead after W_HDR; bit0 then carries data_seen.
+    // Keeping that flag in existing state preserves the public 445-bit context.
+    wire [32:0] riff_decl_end={1'b0,riff_sz}+33'd8;
+    wire [32:0] next_byte_pos={1'b0,byte_cnt}+33'd1;
+    wire [33:0] chunk_extent={2'd0,byte_cnt}+34'd1+{2'd0,csz_nxt}+csz_nxt[0];
+    wire fmt_valid_now=f_code==1&&f_ch==2&&f_rate==48000&&bits_v==16;
+    wire terminal_chunk=(state==W_DATA&&dleft==1&&phase==3)||
+     (riff_r[0]&&((state==W_SKIP&&((skip_cnt==1&&!pad_pend)||(skip_cnt==0&&pad_pend)))||
+      (state==W_CHUNK&&chunk_idx==7&&csz_nxt==0&&cid!=ID_FMT&&cid!=ID_DATA)||
+      (state==W_FMT&&fmt_idx==15&&fmt_size==16&&fmt_valid_now)));
     wire        byte_taken = din_valid && din_ready;
 
     assign din_ready = (state == W_DATA) ? !pcm_valid
                      : ((state == W_HDR) || (state == W_CHUNK) ||
-                        (state == W_FMT) || (state == W_SKIP));
+                        (state == W_FMT) || (state == W_SKIP) || (state == W_END));
 
     // ------------------------------------------------------------------------
     // 主状态机
@@ -249,7 +259,8 @@ module wav_parser (
 
                     if (hdr_idx == 4'd11) begin
                         // riff_r 在 idx=3 已齐；wave 要用含本字节的装配值
-                        if ((riff_r == ID_RIFF) && (wave_nxt == ID_WAVE)) begin
+                        if ((riff_r == ID_RIFF) && (wave_nxt == ID_WAVE) && riff_sz>=4 && !riff_decl_end[32] && ((file_size==0)||(riff_decl_end<={1'b0,file_size}))) begin
+                            riff_r <= 0;
                             state     <= W_CHUNK;
                             chunk_idx <= 3'd0;
                         end else begin
@@ -276,7 +287,9 @@ module wav_parser (
 
                     if (chunk_idx == 3'd7) begin
                         // cid 在 idx=3 已齐；块大小用含本字节的 csz_nxt
-                        if (cid == ID_FMT) begin
+                        if (chunk_extent>{1'b0,riff_decl_end} || ((file_size!=0)&&(chunk_extent>{2'd0,file_size}))) begin
+                            wav_error<=1;err_code<=`ERR_WAV;err_detail<=`DET_WAV_RIFF;fallback_req<=1;state<=W_ERR;
+                        end else if (cid == ID_FMT) begin
                             if (csz_nxt < 32'd16) begin
                                 // fmt 块至少要 16 Byte（PCM 格式字段）
                                 wav_error    <= 1'b1;
@@ -294,7 +307,9 @@ module wav_parser (
                                 f_bits   <= 16'd0;
                             end
                         end else if (cid == ID_DATA) begin
-                            if (!fmt_seen) begin
+                            if (csz_nxt==0||csz_nxt[1:0]!=0) begin
+                                wav_error<=1;err_code<=`ERR_WAV;err_detail<=`DET_WAV_FMT;fallback_req<=1;state<=W_ERR;
+                            end else if (!fmt_seen) begin
                                 // data 在 fmt 之前 -> 容器结构错误
                                 wav_error    <= 1'b1;
                                 err_code     <= `ERR_WAV;
@@ -302,7 +317,7 @@ module wav_parser (
                                 fallback_req <= 1'b1;
                                 state        <= W_ERR;
                             end else if ((file_size != 32'd0) &&
-                                         ((byte_cnt + 32'd1 + csz_nxt) > file_size)) begin
+                                         (chunk_extent > {2'd0,file_size})) begin
                                 // data 越界（声明长度装不下 PCM）
                                 wav_error    <= 1'b1;
                                 err_code     <= `ERR_WAV;
@@ -310,6 +325,7 @@ module wav_parser (
                                 fallback_req <= 1'b1;
                                 state        <= W_ERR;
                             end else begin
+                                riff_r[0] <= 1;
                                 data_size   <= csz_nxt;
                                 // PCM 起始 = 本块头之后，即已消费字节数
                                 data_offset <= byte_cnt + 32'd1;
@@ -346,7 +362,7 @@ module wav_parser (
                         default: ;
                     endcase
 
-                    if ((fmt_idx + 5'd1) == fmt_size[4:0]) begin
+                    if (fmt_idx == 5'd15) begin
                         // 本字节是 fmt 块的最后一个：字段已全部装配
                         header_done   <= 1'b1;
                         fmt_code      <= f_code;
@@ -380,8 +396,9 @@ module wav_parser (
                             state        <= W_ERR;
                         end else begin
                             fmt_seen  <= 1'b1;
-                            state     <= W_CHUNK;
-                            chunk_idx <= 3'd0;
+                            if(fmt_size>16)begin
+                                skip_cnt<=fmt_size-32'd16;pad_pend<=fmt_size[0];state<=W_SKIP;
+                            end else begin state<=W_CHUNK;chunk_idx<=0;end
                         end
                     end else begin
                         fmt_idx <= fmt_idx + 5'd1;
@@ -427,7 +444,7 @@ module wav_parser (
                     endcase
 
                     if (dleft == 32'd1) begin
-                        state <= W_END;
+                        state <= W_CHUNK;chunk_idx<=0;
                     end
                 end
             end
@@ -445,8 +462,13 @@ module wav_parser (
             // ---- eof 边界检查：流提前结束（非 data 末字节）即容器不完整 ----------
             // ★ 放在 case 之后，最后一处赋值生效。din_ready 在 W_IDLE/W_END/W_ERR
             //   恒为 0，所以这里只可能命中 HDR/CHUNK/FMT/SKIP/DATA。
-            if (byte_taken && din_eof &&
-                !((state == W_DATA) && (dleft == 32'd1))) begin
+            if(byte_taken&&state!=W_HDR&&state!=W_END&&next_byte_pos==riff_decl_end)begin
+                if(terminal_chunk)state<=W_END;
+                else begin wav_error<=1;pcm_valid<=0;err_code<=`ERR_WAV;err_detail<=`DET_WAV_RIFF;fallback_req<=1;state<=W_ERR;end
+            end
+            if (byte_taken && din_eof && state!=W_END &&
+                !(terminal_chunk && next_byte_pos==riff_decl_end)) begin
+                pcm_valid<=0;
                 wav_error    <= 1'b1;
                 err_code     <= `ERR_WAV;
                 err_detail   <= `DET_WAV_RIFF;

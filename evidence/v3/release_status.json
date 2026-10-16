@@ -1,0 +1,134 @@
+{
+  "created_at_utc": "2026-10-16T01:31:10.089812+00:00",
+  "status": "PENDING_RESOURCE_AND_FINAL_SIGNOFF",
+  "release_ready": false,
+  "positive_current_native_tests": 68,
+  "current_suites": [
+    {
+      "suite": "audio_complete",
+      "native_tests": 11,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/audio_current_acceptance",
+      "result_sha256": "805fac1870d5197bc353a14b2a20db973288b9b03612b803d2e4baf76bcd7cd1"
+    },
+    {
+      "suite": "legacy_b",
+      "native_tests": 28,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/legacy_b_strict_final",
+      "result_sha256": "3e0193af9a481e2f9747bfc1e6ace928cbcab88c9cd3a1cbb451d290e55112a7"
+    },
+    {
+      "suite": "audio_modes",
+      "native_tests": 2,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/audio_modes",
+      "result_sha256": "b91ce2f20017cd45652b28408cc81a43c9fec8d3477b3a9b6340242c37d451e6"
+    },
+    {
+      "suite": "audio_priority_phase",
+      "native_tests": 2,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/audio_priority_phase",
+      "result_sha256": "15c106ad7f17e8980b30c7fa963c673a74454c22f7b8f9a8fa114de972f51ac5"
+    },
+    {
+      "suite": "audio_priority_underflow",
+      "native_tests": 1,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/audio_priority_underflow",
+      "result_sha256": "45fa5f19f78fb5fb52c68c9f4ef0e52293fc5adecc3a2590d20d9acb36681551"
+    },
+    {
+      "suite": "audio_priority_volume",
+      "native_tests": 4,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/audio_priority_volume",
+      "result_sha256": "b10926edd96fcd74382441680bfa143e58957eb1831b061bbea8423ecec63612"
+    },
+    {
+      "suite": "c",
+      "native_tests": 8,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/c",
+      "result_sha256": "9641d79a01028bf3a50b2b130e84b6d849bf7e5fc1ad80305336a6c692d29ae8"
+    },
+    {
+      "suite": "directory_compact",
+      "native_tests": 1,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/directory_compact",
+      "result_sha256": "c6e297dab0090d7d4f1a2900a7d61017a316eafbf0251f555342934b913f3ce2"
+    },
+    {
+      "suite": "directory_sv",
+      "native_tests": 1,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/directory_sv",
+      "result_sha256": "65a7824a6590a75cb8f92d3610994819df6bb2f4e1a375d803b104fb392c9d59"
+    },
+    {
+      "suite": "fat_geometry",
+      "native_tests": 1,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/fat_geometry",
+      "result_sha256": "64e239bf9b4f9cebcbe97676acdf06a112d83adefeb136ee6a531fa0e3a9926f"
+    },
+    {
+      "suite": "layers",
+      "native_tests": 1,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/layers",
+      "result_sha256": "2be938db1f90353b1d8b2a99806a7c624e3b9a849ba3ec990a0f5956bcb5411b"
+    },
+    {
+      "suite": "priority_serial",
+      "native_tests": 3,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/priority_serial",
+      "result_sha256": "174310f201330ceadfe1ef0f02ac71d878fe585c342404e88a89afc359ca805d"
+    },
+    {
+      "suite": "v3_board",
+      "native_tests": 4,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/v3_board",
+      "result_sha256": "6c940c1113d971892df175db85245a9714075673ed0272c8386a0b9d05f72d6d"
+    },
+    {
+      "suite": "volume_serial",
+      "native_tests": 1,
+      "all_current_pass": true,
+      "evidence": "evidence/v3/acceptance_20261016/volume_serial",
+      "result_sha256": "2f6022960681a3782cf0b4280b226307c4cc5fdd1d8d921b70454be39a543c08"
+    }
+  ],
+  "runner_sentinels": {
+    "positive": 3,
+    "deliberate_failures_rejected": 3,
+    "all_native_normal_finish": true
+  },
+  "production_resources": {
+    "base_lut": 18005,
+    "hd_lut": 18627,
+    "hard_cap_lut": 15680,
+    "passed": false,
+    "source": "work/runs/v3_resource_closure_study/current"
+  },
+  "isolated_candidate_studies_are_not_production": true,
+  "pending": [
+    "Resource closure with all features retained",
+    "Shared true-SPI long regression normal completion",
+    "Final selected-source video/media/top/negative regressions",
+    "Fresh BASE and HD routed all-corner STA and constraint health",
+    "Committed-source reproducible BASE and HD bitstreams",
+    "Final original checkout and GitHub main synchronization"
+  ],
+  "github_main_last_verified": "98fb43beaa12bf903186ec73f6dc64e00d9259c7",
+  "original_project_existing_config_preserved_sha256": "183accc362ae8db3ffac3279579c14f3046907197fa65ec0c431ccb355088901",
+  "hardware_verified": false,
+  "source_baseline_commit": "98fb43beaa12bf903186ec73f6dc64e00d9259c7",
+  "implementation_checkpoint_branch": "codex/safevision-v3-20261016",
+  "github_main_contains_current_implementation": false,
+  "checkpoint_branch_upload_status": "See outputs/github_checkpoint_sync.json for the actual push and readback receipt; this file does not assert an upload outcome."
+}

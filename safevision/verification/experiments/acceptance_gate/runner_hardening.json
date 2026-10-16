@@ -1,0 +1,23 @@
+{
+  "changes": [
+    {
+      "path": "safevision\\tools\\run_v3_sim.py",
+      "before_sha256": "6aa809aedfe78c73c573ba24f7ab1d8eea3b5900fdd8da99573d6ffcd63069ef",
+      "after_sha256": "3effe62a0f063b7e03d9af851cfa1ac99032da91093dc76587f2591bd62cef86",
+      "change": "Accept/reject diagnostic regex only; compiler/simulator commands and DUT sources are unchanged."
+    },
+    {
+      "path": "safevision\\tools\\run_v3_audio_sim.py",
+      "before_sha256": "9c22116552f48bd845863faf05cb3f0be5ab8bdde9db701607eb24b04441206c",
+      "after_sha256": "8945793a27e6cd37062d37ee60fe0beb30e321b957bb5054ff18a1ce31aba6e8",
+      "change": "Accept/reject diagnostic regex only; compiler/simulator commands and DUT sources are unchanged."
+    },
+    {
+      "path": "safevision\\tools\\run_v3_shared_storage.py",
+      "before_sha256": "b8e18e77c7d26962ae10c062b0fbe6636c595775691d7a4c36b676c85e98b5e4",
+      "after_sha256": "e95ee623abead4b48bd29e3f6b7116eda317241ec50ea88162f09c5f37261681",
+      "change": "Accept/reject diagnostic regex only; compiler/simulator commands and DUT sources are unchanged."
+    }
+  ],
+  "past_results_not_rewritten": true
+}

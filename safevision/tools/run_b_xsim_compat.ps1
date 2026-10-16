@@ -51,8 +51,8 @@ try {
         if($LASTEXITCODE -ne 0){throw "$top elaboration failed"}
         & (Join-Path $xsimBin 'xsim.bat') "${top}_sim" -runall --log "${top}_sim.log"
         if($LASTEXITCODE -ne 0){throw "$top simulation failed"}
-        $log=Get-Content -LiteralPath "${top}_sim.log" -Raw
-        if($log -notmatch '\[PASS\]' -or $log -notmatch '\$finish called' -or $log -match '(?im)^\s*(\[FAIL\]|FAIL\b|FATAL\b|ERROR:|\[RESULT\].*FAILED)'){
+        $log=[IO.File]::ReadAllText((Join-Path $runDir "${top}_sim.log"),[Text.Encoding]::UTF8)
+        if($log -notmatch '\[PASS\]' -or $log -notmatch '\$finish called' -or $log -match '(?im)(\[FAIL\]|\[SKIP\]|^\s*(FAIL\b|FATAL\b|Fatal:|ERROR:|\[RESULT\].*FAILED))'){
             $failures+=$top
             Write-Host "FAILED EXISTING $top"
             continue

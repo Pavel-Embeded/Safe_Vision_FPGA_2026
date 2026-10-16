@@ -1,0 +1,17 @@
+{
+  "defines": [
+    "SIM_FAST_TO"
+  ],
+  "sources": [
+    "safevision/rtl/storage/v3_spi_cs_guard.v",
+    "safevision/rtl/storage/spi_master.v",
+    "safevision/rtl/storage/sd_initializer.v",
+    "safevision/rtl/storage/sd_sector_reader.v",
+    "safevision/rtl/storage/sd_checked_sector_reader.v",
+    "safevision/rtl/common/crc16_ccitt.v",
+    "safevision/verification/models/sd_spi_card_model.sv"
+  ],
+  "tops": [
+    "tb_v3_spi_cs_guard"
+  ]
+}

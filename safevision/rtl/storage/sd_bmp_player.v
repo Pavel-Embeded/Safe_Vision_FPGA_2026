@@ -49,6 +49,9 @@
 module sd_bmp_player #(
     // ★ 本模块的时钟就是**板载 50 MHz**（方案 A）；名字不再叫 CLK_HZ_MEM
     parameter integer CLK_HZ      = 50_000_000,
+    parameter integer SHARED_SERVICE = 0,
+    parameter integer GUARDED_CS = 0,
+    parameter integer RESIDENT_CACHE = 0,
     // SPI 分频（见文件头推导；按 50 MHz 取默认）
     // ★★ 2026-10-06 板级实测后：初始化时钟由 396.8 kHz **降到 100 kHz**。
     //   背景：真卡初始化约 1/10 成功、`ED=11`（CMD0 的 R1 ≠ 0x01）；加内部上拉后
@@ -71,6 +74,7 @@ module sd_bmp_player #(
 )(
     input  wire        clk,          // 板载 50 MHz（R7）
     input  wire        rst_n,
+    input  wire        cs_guard_rst_n, // global REF reset; guard survives media abort
 
     // ---- 控制 ----
     input  wire        run,          // 电平：允许开跑（板级顶层给；上升沿触发一次完整流程）
@@ -118,7 +122,23 @@ module sd_bmp_player #(
     output reg  [31:0] cur_bytes_rd,
     output reg  [18:0] cur_px_written,
     output reg         last_frame_ok_o,   // 采样到的 mem 侧上一帧是否成功
-    output reg  [15:0] frame_cnt
+    output reg  [15:0] frame_cnt,
+    output reg [3:0] cache_valid,
+    output reg [2:0] cache_count,
+    output reg [63:0] cache_keys,
+    output reg [15:0] rejected_files,
+    // Resident images own SD during preload. After four approvals the WAV
+    // source in THIS reference-clock domain owns this shared sector reader.
+    // Addresses are volume-relative; this module adds vol_base exactly once.
+    input wire[444:0] external_core_cmd,output wire[836:0] external_core_rsp,output wire external_service_ready,
+    input wire ext_rd_en,input wire[31:0] ext_rd_addr,input wire[15:0] ext_rd_len,
+    output wire ext_rd_ready,output wire[7:0] ext_data,output wire ext_data_valid,
+    input wire ext_data_ready,output wire ext_data_last,ext_rd_done,ext_timeout,ext_crc_error,
+    output wire[7:0] ext_err_code,ext_err_detail,
+    output wire[7:0] fs_sec_per_clus,
+    output wire[31:0] fs_fat_start_lba,fs_data_start_lba,fs_root_dir_lba,fs_root_clus,fs_total_clus,
+    output reg[31:0] progress_count,
+    output reg[15:0] last_reject_error,last_reject_key
 );
 
     // ========================================================================
@@ -135,6 +155,8 @@ module sd_bmp_player #(
                      S_STREAM = 4'd8,
                      S_SWAP   = 4'd9,
                      S_ERROR  = 4'd10,
+                     S_REJECT = 4'd12, // drain one in-flight sector, forbid new requests
+                     S_CLEAN = 4'd13,  // reset only the file pipeline after bus quiescence
                      S_INITR  = 4'd11;     // ★ SD 初始化失败后**重试**：停一拍再回 S_INIT
 
     // 本模块细分码（对外主码沿用项目错误码表；阶段与超时单列）
@@ -254,9 +276,16 @@ module sd_bmp_player #(
     wire [7:0]  rd_txd;
     wire [15:0] rd_div;
     wire        spi_busy, spi_rxv, spi_tx_ready;
+    wire        spi_engine_ready, spi_cs_ready;
+    assign spi_tx_ready=spi_engine_ready && spi_cs_ready;
     wire [7:0]  spi_rxd;
 
     // ---- 控制侧寄存器（必须声明在**例化之前**：file_index 要用 pick_slot）----
+    reg [15:0] cursor_key;
+    wire [15:0] selected_key;
+    // The file pipeline is reset only while the card/reader are already idle.
+    // SPI initialization, mounted geometry and accepted caches survive.
+    wire file_rst_n = rst_n && !(RESIDENT_CACHE && state_o==S_CLEAN);
     reg  [1:0]  out_slot;       // 本帧目标槽（0/1 交替）
     reg  [1:0]  pick_slot;      // 给 file_index 的查找槽（= 目标文件号）
     reg  [31:0] pick_to;        // S_PICK 等 sel_* 落定
@@ -269,27 +298,44 @@ module sd_bmp_player #(
     // ========================================================================
     wire scan_wk = (state_o == S_SCAN)   && dn_wk_busy;
     wire strm_wk = (state_o == S_STREAM) && fst_wk_busy;
+    wire ext_owner=RESIDENT_CACHE && state_o==S_READY && cache_count==4;
+    assign ext_rd_ready=ext_owner && rd_ready;
+    assign ext_data=rd_data;
+    assign ext_data_valid=ext_owner && rd_data_valid;
+    assign ext_data_last=ext_owner && rd_data_last;
+    assign ext_rd_done=ext_owner && rd_done;
+    assign ext_timeout=ext_owner && rd_to;
+    assign ext_crc_error=ext_owner && rd_crc;
+    assign ext_err_code=rd_ec,ext_err_detail=rd_ed;
+    assign fs_sec_per_clus=bp_spc,fs_fat_start_lba=bp_fat_lba,fs_data_start_lba=bp_data_lba;
+    assign fs_root_dir_lba=bp_root_lba,fs_root_clus=bp_root_clus,fs_total_clus=bp_tot_clus;
 
     wire        bus_rd_en   = (state_o == S_MBR)  ? mp_rd_en :
                               (state_o == S_BOOT) ? bp_rd_en :
                               (state_o == S_SCAN) ? (scan_wk ? wd_rd_en : dn_rd_en) :
                               (state_o == S_STREAM) ? (strm_wk ? wf_rd_en : fst_rd_en) :
-                              1'b0;
+                              ext_owner ? ext_rd_en : 1'b0;
     wire [31:0] bus_rd_addr = (state_o == S_MBR)  ? mp_rd_addr :
                               (state_o == S_BOOT) ? bp_rd_addr :
                               (state_o == S_SCAN) ? (scan_wk ? wd_rd_addr : dn_rd_addr) :
                               (state_o == S_STREAM) ? (strm_wk ? wf_rd_addr : fst_rd_addr) :
-                              32'd0;
+                              ext_owner ? ext_rd_addr : 32'd0;
     wire [15:0] bus_rd_len  = (state_o == S_MBR)  ? mp_rd_len :
                               (state_o == S_BOOT) ? bp_rd_len :
                               (state_o == S_SCAN) ? (scan_wk ? wd_rd_len : dn_rd_len) :
                               (state_o == S_STREAM) ? (strm_wk ? wf_rd_len : fst_rd_len) :
-                              16'd0;
+                              ext_owner ? ext_rd_len : 16'd0;
     wire        bus_data_ready = (state_o == S_MBR)  ? mp_data_ready :
                                  (state_o == S_BOOT) ? bp_data_ready :
                                  (state_o == S_SCAN) ? (scan_wk ? wd_data_ready : dn_data_ready) :
                                  (state_o == S_STREAM) ? (strm_wk ? wf_data_ready : fst_data_ready) :
-                                 1'b1;
+                                 ext_owner ? ext_data_ready : 1'b1;
+    // Real card payload consumption (directory/FAT/media alike), not a local
+    // free-running heartbeat. Transfer the whole counter through a mailbox.
+    always @(posedge clk or negedge rst_n)begin
+        if(!rst_n)progress_count<=0;
+        else if(rd_data_valid && bus_data_ready)progress_count<=progress_count+1'b1;
+    end
 
     // ★★ 卷基址只加一次（interface_spec §3.2.1）：mbr_parser 读卡 0 号扇区时
     //    自身相对地址 = 0，且那时 mp_vol_base 仍为 0 ⇒ 恰好落在卡的 0 号扇区。
@@ -336,33 +382,162 @@ module sd_bmp_player #(
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
 
-    fat32_directory_scanner u_scan (
-        .clk(clk), .rst_n(rst_n), .scan_en(scan_en),
-        .scan_done(scan_done), .dir_bad(dir_bad), .err_code(dn_ec), .err_detail(dn_ed),
+    
+    // Ownership changes invalidate every persistent done/status bit before use.
+    reg service_owner_q,service_gap;
+    always @(posedge clk or negedge rst_n)
+      if(!rst_n)begin service_owner_q<=0;service_gap<=0;end
+      else begin service_owner_q<=ext_owner;service_gap<=(service_owner_q==ext_owner);end
+    wire service_ready_int=service_gap&&(service_owner_q==ext_owner)&&rst_n;
+    wire[444:0] local_core_cmd,selected_core_cmd;
+    wire[836:0] physical_core_rsp;
+    assign external_service_ready=SHARED_SERVICE&&ext_owner&&service_ready_int;
+    assign external_core_rsp=external_service_ready?physical_core_rsp:837'd0;
+    assign selected_core_cmd=ext_owner?external_core_cmd:local_core_cmd;
+assign local_core_cmd={file_rst_n,scan_en,ent_ready,1'b0,1'b1,fst_start,sel_first_clus,sel_size,bp_ready,265'd0,1'b0,32'd0,state_o==S_STREAM?fst_wk_rst:dn_wk_rst,state_o==S_STREAM?fst_wk_start:dn_wk_start,state_o==S_STREAM?fst_wk_cur:dn_wk_cur,({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_ready}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_data_valid}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_data_last}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_done}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_to}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_crc}}),rd_data,rd_ec,rd_ed};
+wire svc_d_scan_done;
+wire svc_d_dir_bad;
+wire [7:0] svc_d_err_code;
+wire [7:0] svc_d_err_detail;
+wire [3:0] svc_d_dbg_state;
+wire [87:0] svc_d_ent_name;
+wire [7:0] svc_d_ent_attr;
+wire [31:0] svc_d_ent_first_clus;
+wire [31:0] svc_d_ent_size;
+wire [15:0] svc_d_ent_index;
+wire svc_d_ent_valid;
+wire [31:0] svc_d_sd_rd_addr;
+wire [15:0] svc_d_sd_rd_len;
+wire svc_d_sd_rd_en;
+wire svc_d_sd_data_ready;
+wire [31:0] svc_d_wk_cur_clus;
+wire svc_d_wk_start;
+wire svc_d_wk_rst_walk;
+wire svc_f_busy;
+wire svc_f_done;
+wire svc_f_error;
+wire [7:0] svc_f_err_code;
+wire [7:0] svc_f_err_detail;
+wire [31:0] svc_f_bytes_rd;
+wire [3:0] svc_f_dbg_state;
+wire [7:0] svc_f_data;
+wire svc_f_valid;
+wire svc_f_sof;
+wire svc_f_eof;
+wire svc_f_idle_between_sectors;
+wire [264:0] svc_f_context_out;
+wire [31:0] svc_f_sd_rd_addr;
+wire [15:0] svc_f_sd_rd_len;
+wire svc_f_sd_rd_en;
+wire svc_f_sd_data_ready;
+wire [31:0] svc_f_wk_cur_clus;
+wire svc_f_wk_start;
+wire svc_f_wk_rst_walk;
+wire svc_w_busy;
+wire svc_w_done;
+wire [31:0] svc_w_next_clus;
+wire svc_w_eoc;
+wire svc_w_error;
+wire [7:0] svc_w_err_code;
+wire [7:0] svc_w_err_detail;
+wire [31:0] svc_w_hop_cnt;
+wire [3:0] svc_w_dbg_state;
+wire [31:0] svc_w_sd_rd_addr;
+wire [15:0] svc_w_sd_rd_len;
+wire svc_w_sd_rd_en;
+wire svc_w_sd_data_ready;
+assign {svc_d_scan_done,svc_d_dir_bad,svc_d_err_code,svc_d_err_detail,svc_d_dbg_state,svc_d_ent_name,svc_d_ent_attr,svc_d_ent_first_clus,svc_d_ent_size,svc_d_ent_index,svc_d_ent_valid,svc_d_sd_rd_addr,svc_d_sd_rd_len,svc_d_sd_rd_en,svc_d_sd_data_ready,svc_d_wk_cur_clus,svc_d_wk_start,svc_d_wk_rst_walk,svc_f_busy,svc_f_done,svc_f_error,svc_f_err_code,svc_f_err_detail,svc_f_bytes_rd,svc_f_dbg_state,svc_f_data,svc_f_valid,svc_f_sof,svc_f_eof,svc_f_idle_between_sectors,svc_f_context_out,svc_f_sd_rd_addr,svc_f_sd_rd_len,svc_f_sd_rd_en,svc_f_sd_data_ready,svc_f_wk_cur_clus,svc_f_wk_start,svc_f_wk_rst_walk,svc_w_busy,svc_w_done,svc_w_next_clus,svc_w_eoc,svc_w_error,svc_w_err_code,svc_w_err_detail,svc_w_hop_cnt,svc_w_dbg_state,svc_w_sd_rd_addr,svc_w_sd_rd_len,svc_w_sd_rd_en,svc_w_sd_data_ready}=physical_core_rsp;
+generate if(SHARED_SERVICE)begin:shared_service
+      v3_shared_fs_service service(.clk(clk),.rst_n(service_ready_int),.sec_per_clus(bp_spc),
+       .fat_start_lba(bp_fat_lba),.data_start_lba(bp_data_lba),.root_dir_lba(bp_root_lba),
+       .root_clus(bp_root_clus),.total_clus(bp_tot_clus),.core_cmd(selected_core_cmd),.core_rsp(physical_core_rsp));
+    end else begin:no_shared_service
+      assign physical_core_rsp=837'd0;
+    end endgenerate
+
+wire legacy_u_scan_scan_done;
+assign scan_done=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_scan_done:1'd0):legacy_u_scan_scan_done;
+wire legacy_u_scan_dir_bad;
+assign dir_bad=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_dir_bad:1'd0):legacy_u_scan_dir_bad;
+wire [7:0] legacy_u_scan_err_code;
+assign dn_ec=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_err_code:8'd0):legacy_u_scan_err_code;
+wire [7:0] legacy_u_scan_err_detail;
+assign dn_ed=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_err_detail:8'd0):legacy_u_scan_err_detail;
+wire [87:0] legacy_u_scan_ent_name;
+assign ent_name=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_ent_name:88'd0):legacy_u_scan_ent_name;
+wire [7:0] legacy_u_scan_ent_attr;
+assign ent_attr=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_ent_attr:8'd0):legacy_u_scan_ent_attr;
+wire [31:0] legacy_u_scan_ent_first_clus;
+assign ent_first_clus=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_ent_first_clus:32'd0):legacy_u_scan_ent_first_clus;
+wire [31:0] legacy_u_scan_ent_size;
+assign ent_size=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_ent_size:32'd0):legacy_u_scan_ent_size;
+wire [15:0] legacy_u_scan_ent_index;
+assign ent_index=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_ent_index:16'd0):legacy_u_scan_ent_index;
+wire legacy_u_scan_ent_valid;
+assign ent_valid=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_ent_valid:1'd0):legacy_u_scan_ent_valid;
+wire [31:0] legacy_u_scan_sd_rd_addr;
+assign dn_rd_addr=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_sd_rd_addr:32'd0):legacy_u_scan_sd_rd_addr;
+wire [15:0] legacy_u_scan_sd_rd_len;
+assign dn_rd_len=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_sd_rd_len:16'd0):legacy_u_scan_sd_rd_len;
+wire legacy_u_scan_sd_rd_en;
+assign dn_rd_en=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_sd_rd_en:1'd0):legacy_u_scan_sd_rd_en;
+wire legacy_u_scan_sd_data_ready;
+assign dn_data_ready=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_sd_data_ready:1'd0):legacy_u_scan_sd_data_ready;
+wire [31:0] legacy_u_scan_wk_cur_clus;
+assign dn_wk_cur=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_wk_cur_clus:32'd0):legacy_u_scan_wk_cur_clus;
+wire legacy_u_scan_wk_start;
+assign dn_wk_start=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_wk_start:1'd0):legacy_u_scan_wk_start;
+wire legacy_u_scan_wk_rst_walk;
+assign dn_wk_rst=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_wk_rst_walk:1'd0):legacy_u_scan_wk_rst_walk;
+fat32_directory_scanner u_scan (
+        .clk(clk), .rst_n(SHARED_SERVICE?1'b0:rst_n), .scan_en(scan_en),
+        .scan_done(legacy_u_scan_scan_done), .dir_bad(legacy_u_scan_dir_bad), .err_code(legacy_u_scan_err_code), .err_detail(legacy_u_scan_err_detail),
         .dbg_state(),
         .sec_per_clus(bp_spc), .root_clus(bp_root_clus),
         .root_dir_lba(bp_root_lba), .data_start_lba(bp_data_lba),
-        .ent_name(ent_name), .ent_attr(ent_attr), .ent_first_clus(ent_first_clus),
-        .ent_size(ent_size), .ent_index(ent_index), .ent_valid(ent_valid), .ent_ready(ent_ready),
-        .sd_rd_addr(dn_rd_addr), .sd_rd_len(dn_rd_len), .sd_rd_en(dn_rd_en),
+        .ent_name(legacy_u_scan_ent_name), .ent_attr(legacy_u_scan_ent_attr), .ent_first_clus(legacy_u_scan_ent_first_clus),
+        .ent_size(legacy_u_scan_ent_size), .ent_index(legacy_u_scan_ent_index), .ent_valid(legacy_u_scan_ent_valid), .ent_ready(ent_ready),
+        .sd_rd_addr(legacy_u_scan_sd_rd_addr), .sd_rd_len(legacy_u_scan_sd_rd_len), .sd_rd_en(legacy_u_scan_sd_rd_en),
         .sd_rd_ready(rd_ready), .sd_data(rd_data), .sd_data_valid(rd_data_valid),
-        .sd_data_ready(dn_data_ready), .sd_data_last(rd_data_last),
+        .sd_data_ready(legacy_u_scan_sd_data_ready), .sd_data_last(rd_data_last),
         .sd_rd_done(rd_done), .sd_timeout_err(rd_to), .sd_crc16_err(rd_crc),
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed),
-        .wk_cur_clus(dn_wk_cur), .wk_start(dn_wk_start), .wk_rst_walk(dn_wk_rst),
+        .wk_cur_clus(legacy_u_scan_wk_cur_clus), .wk_start(legacy_u_scan_wk_start), .wk_rst_walk(legacy_u_scan_wk_rst_walk),
         .wk_busy(dn_wk_busy), .wk_done(dn_wk_done), .wk_next_clus(dn_wk_next),
         .wk_eoc(dn_wk_eoc), .wk_error(dn_wk_err), .wk_err_code(dn_wk_ec), .wk_err_detail(dn_wk_ed)
     );
 
-    fat32_cluster_walker u_wk_dir (
-        .clk(clk), .rst_n(rst_n), .rst_walk(dn_wk_rst), .start(dn_wk_start),
-        .cur_clus(dn_wk_cur), .busy(dn_wk_busy), .done(dn_wk_done), .next_clus(dn_wk_next),
-        .eoc(dn_wk_eoc), .error(dn_wk_err), .err_code(dn_wk_ec), .err_detail(dn_wk_ed),
+    wire legacy_u_wk_dir_busy;
+assign dn_wk_busy=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_busy:1'd0):legacy_u_wk_dir_busy;
+wire legacy_u_wk_dir_done;
+assign dn_wk_done=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_done:1'd0):legacy_u_wk_dir_done;
+wire [31:0] legacy_u_wk_dir_next_clus;
+assign dn_wk_next=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_next_clus:32'd0):legacy_u_wk_dir_next_clus;
+wire legacy_u_wk_dir_eoc;
+assign dn_wk_eoc=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_eoc:1'd0):legacy_u_wk_dir_eoc;
+wire legacy_u_wk_dir_error;
+assign dn_wk_err=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_error:1'd0):legacy_u_wk_dir_error;
+wire [7:0] legacy_u_wk_dir_err_code;
+assign dn_wk_ec=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_err_code:8'd0):legacy_u_wk_dir_err_code;
+wire [7:0] legacy_u_wk_dir_err_detail;
+assign dn_wk_ed=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_err_detail:8'd0):legacy_u_wk_dir_err_detail;
+wire [31:0] legacy_u_wk_dir_sd_rd_addr;
+assign wd_rd_addr=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_sd_rd_addr:32'd0):legacy_u_wk_dir_sd_rd_addr;
+wire [15:0] legacy_u_wk_dir_sd_rd_len;
+assign wd_rd_len=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_sd_rd_len:16'd0):legacy_u_wk_dir_sd_rd_len;
+wire legacy_u_wk_dir_sd_rd_en;
+assign wd_rd_en=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_sd_rd_en:1'd0):legacy_u_wk_dir_sd_rd_en;
+wire legacy_u_wk_dir_sd_data_ready;
+assign wd_data_ready=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_sd_data_ready:1'd0):legacy_u_wk_dir_sd_data_ready;
+fat32_cluster_walker u_wk_dir (
+        .clk(clk), .rst_n(SHARED_SERVICE?1'b0:rst_n), .rst_walk(dn_wk_rst), .start(dn_wk_start),
+        .cur_clus(dn_wk_cur), .busy(legacy_u_wk_dir_busy), .done(legacy_u_wk_dir_done), .next_clus(legacy_u_wk_dir_next_clus),
+        .eoc(legacy_u_wk_dir_eoc), .error(legacy_u_wk_dir_error), .err_code(legacy_u_wk_dir_err_code), .err_detail(legacy_u_wk_dir_err_detail),
         .hop_cnt(), .dbg_state(),
         .fat_start_lba(bp_fat_lba), .total_clus(bp_tot_clus),
-        .sd_rd_addr(wd_rd_addr), .sd_rd_len(wd_rd_len), .sd_rd_en(wd_rd_en),
+        .sd_rd_addr(legacy_u_wk_dir_sd_rd_addr), .sd_rd_len(legacy_u_wk_dir_sd_rd_len), .sd_rd_en(legacy_u_wk_dir_sd_rd_en),
         .sd_rd_ready(rd_ready), .sd_data(rd_data), .sd_data_valid(rd_data_valid),
-        .sd_data_ready(wd_data_ready), .sd_data_last(rd_data_last),
+        .sd_data_ready(legacy_u_wk_dir_sd_data_ready), .sd_data_last(rd_data_last),
         .sd_rd_done(rd_done), .sd_timeout_err(rd_to), .sd_crc16_err(rd_crc),
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
@@ -394,11 +569,12 @@ module sd_bmp_player #(
         end
     end
 
-    file_index u_idx (
+    file_index #(.CURSOR_MODE(RESIDENT_CACHE),.CANDIDATE_SLOTS(RESIDENT_CACHE?1:4)) u_idx (
         .clk(clk), .rst_n(rst_n),
         .ent_name(ent_name_q), .ent_attr(ent_attr_q), .ent_first_clus(ent_first_clus_q),
         .ent_size(ent_size_q), .ent_index(ent_index_q),
         .ent_valid(ent_valid_q), .ent_ready(ent_ready),
+        .cursor_key(cursor_key), .sel_key(selected_key),
         .idx_clear(idx_clear), .idx_commit(idx_commit), .idx_done(idx_done),
         .file_cnt(file_cnt), .file_valid(file_valid), .insufficient(insufficient),
         .err_code(idx_ec), .err_detail(idx_ed),
@@ -409,42 +585,98 @@ module sd_bmp_player #(
         .bmp_seen(bmp_seen), .wav_seen(wav_seen)
     );
 
-    file_streamer u_fst (
-        .clk(clk), .rst_n(rst_n),
+    wire legacy_u_fst_busy;
+assign fst_busy=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_busy:1'd0):legacy_u_fst_busy;
+wire legacy_u_fst_done;
+assign fst_done=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_done:1'd0):legacy_u_fst_done;
+wire legacy_u_fst_error;
+assign fst_error=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_error:1'd0):legacy_u_fst_error;
+wire [7:0] legacy_u_fst_err_code;
+assign fst_ec=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_err_code:8'd0):legacy_u_fst_err_code;
+wire [7:0] legacy_u_fst_err_detail;
+assign fst_ed=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_err_detail:8'd0):legacy_u_fst_err_detail;
+wire [31:0] legacy_u_fst_bytes_rd;
+assign fst_bytes=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_bytes_rd:32'd0):legacy_u_fst_bytes_rd;
+wire [7:0] legacy_u_fst_data;
+assign fst_data=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_data:8'd0):legacy_u_fst_data;
+wire legacy_u_fst_valid;
+assign fst_valid=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_valid:1'd0):legacy_u_fst_valid;
+wire legacy_u_fst_sof;
+assign fst_sof=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_sof:1'd0):legacy_u_fst_sof;
+wire legacy_u_fst_eof;
+assign fst_eof=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_eof:1'd0):legacy_u_fst_eof;
+wire [31:0] legacy_u_fst_sd_rd_addr;
+assign fst_rd_addr=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_sd_rd_addr:32'd0):legacy_u_fst_sd_rd_addr;
+wire [15:0] legacy_u_fst_sd_rd_len;
+assign fst_rd_len=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_sd_rd_len:16'd0):legacy_u_fst_sd_rd_len;
+wire legacy_u_fst_sd_rd_en;
+assign fst_rd_en=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_sd_rd_en:1'd0):legacy_u_fst_sd_rd_en;
+wire legacy_u_fst_sd_data_ready;
+assign fst_data_ready=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_sd_data_ready:1'd0):legacy_u_fst_sd_data_ready;
+wire [31:0] legacy_u_fst_wk_cur_clus;
+assign fst_wk_cur=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_wk_cur_clus:32'd0):legacy_u_fst_wk_cur_clus;
+wire legacy_u_fst_wk_start;
+assign fst_wk_start=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_wk_start:1'd0):legacy_u_fst_wk_start;
+wire legacy_u_fst_wk_rst_walk;
+assign fst_wk_rst=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_wk_rst_walk:1'd0):legacy_u_fst_wk_rst_walk;
+file_streamer u_fst (
+        .clk(clk), .rst_n(SHARED_SERVICE?1'b0:file_rst_n),
         .start(fst_start), .first_clus(sel_first_clus), .file_size(sel_size),
-        .busy(fst_busy), .done(fst_done), .error(fst_error),
-        .err_code(fst_ec), .err_detail(fst_ed),
-        .bytes_rd(fst_bytes), .dbg_state(),
-        .data(fst_data), .valid(fst_valid), .ready(bp_ready), .sof(fst_sof), .eof(fst_eof),
+        .busy(legacy_u_fst_busy), .done(legacy_u_fst_done), .error(legacy_u_fst_error),
+        .err_code(legacy_u_fst_err_code), .err_detail(legacy_u_fst_err_detail),
+        .bytes_rd(legacy_u_fst_bytes_rd), .dbg_state(),
+        .data(legacy_u_fst_data), .valid(legacy_u_fst_valid), .ready(bp_ready), .sof(legacy_u_fst_sof), .eof(legacy_u_fst_eof),
         .sec_per_clus(bp_spc), .fat_start_lba(bp_fat_lba),
         .data_start_lba(bp_data_lba), .total_clus(bp_tot_clus),
-        .wk_cur_clus(fst_wk_cur), .wk_start(fst_wk_start), .wk_rst_walk(fst_wk_rst),
+        .wk_cur_clus(legacy_u_fst_wk_cur_clus), .wk_start(legacy_u_fst_wk_start), .wk_rst_walk(legacy_u_fst_wk_rst_walk),
         .wk_busy(fst_wk_busy), .wk_done(fst_wk_done), .wk_next_clus(fst_wk_next),
         .wk_eoc(fst_wk_eoc), .wk_error(fst_wk_err),
         .wk_err_code(fst_wk_ec), .wk_err_detail(fst_wk_ed),
-        .sd_rd_addr(fst_rd_addr), .sd_rd_len(fst_rd_len), .sd_rd_en(fst_rd_en),
+        .sd_rd_addr(legacy_u_fst_sd_rd_addr), .sd_rd_len(legacy_u_fst_sd_rd_len), .sd_rd_en(legacy_u_fst_sd_rd_en),
         .sd_rd_ready(rd_ready), .sd_data(rd_data), .sd_data_valid(rd_data_valid),
-        .sd_data_ready(fst_data_ready), .sd_data_last(rd_data_last),
+        .sd_data_ready(legacy_u_fst_sd_data_ready), .sd_data_last(rd_data_last),
         .sd_rd_done(rd_done), .sd_timeout_err(rd_to), .sd_crc16_err(rd_crc),
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
 
-    fat32_cluster_walker u_wk_fst (
-        .clk(clk), .rst_n(rst_n), .rst_walk(fst_wk_rst), .start(fst_wk_start),
-        .cur_clus(fst_wk_cur), .busy(fst_wk_busy), .done(fst_wk_done), .next_clus(fst_wk_next),
-        .eoc(fst_wk_eoc), .error(fst_wk_err), .err_code(fst_wk_ec), .err_detail(fst_wk_ed),
+    wire legacy_u_wk_fst_busy;
+assign fst_wk_busy=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_busy:1'd0):legacy_u_wk_fst_busy;
+wire legacy_u_wk_fst_done;
+assign fst_wk_done=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_done:1'd0):legacy_u_wk_fst_done;
+wire [31:0] legacy_u_wk_fst_next_clus;
+assign fst_wk_next=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_next_clus:32'd0):legacy_u_wk_fst_next_clus;
+wire legacy_u_wk_fst_eoc;
+assign fst_wk_eoc=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_eoc:1'd0):legacy_u_wk_fst_eoc;
+wire legacy_u_wk_fst_error;
+assign fst_wk_err=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_error:1'd0):legacy_u_wk_fst_error;
+wire [7:0] legacy_u_wk_fst_err_code;
+assign fst_wk_ec=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_err_code:8'd0):legacy_u_wk_fst_err_code;
+wire [7:0] legacy_u_wk_fst_err_detail;
+assign fst_wk_ed=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_err_detail:8'd0):legacy_u_wk_fst_err_detail;
+wire [31:0] legacy_u_wk_fst_sd_rd_addr;
+assign wf_rd_addr=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_sd_rd_addr:32'd0):legacy_u_wk_fst_sd_rd_addr;
+wire [15:0] legacy_u_wk_fst_sd_rd_len;
+assign wf_rd_len=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_sd_rd_len:16'd0):legacy_u_wk_fst_sd_rd_len;
+wire legacy_u_wk_fst_sd_rd_en;
+assign wf_rd_en=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_sd_rd_en:1'd0):legacy_u_wk_fst_sd_rd_en;
+wire legacy_u_wk_fst_sd_data_ready;
+assign wf_data_ready=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_w_sd_data_ready:1'd0):legacy_u_wk_fst_sd_data_ready;
+fat32_cluster_walker u_wk_fst (
+        .clk(clk), .rst_n(SHARED_SERVICE?1'b0:file_rst_n), .rst_walk(fst_wk_rst), .start(fst_wk_start),
+        .cur_clus(fst_wk_cur), .busy(legacy_u_wk_fst_busy), .done(legacy_u_wk_fst_done), .next_clus(legacy_u_wk_fst_next_clus),
+        .eoc(legacy_u_wk_fst_eoc), .error(legacy_u_wk_fst_error), .err_code(legacy_u_wk_fst_err_code), .err_detail(legacy_u_wk_fst_err_detail),
         .hop_cnt(), .dbg_state(),
         .fat_start_lba(bp_fat_lba), .total_clus(bp_tot_clus),
-        .sd_rd_addr(wf_rd_addr), .sd_rd_len(wf_rd_len), .sd_rd_en(wf_rd_en),
+        .sd_rd_addr(legacy_u_wk_fst_sd_rd_addr), .sd_rd_len(legacy_u_wk_fst_sd_rd_len), .sd_rd_en(legacy_u_wk_fst_sd_rd_en),
         .sd_rd_ready(rd_ready), .sd_data(rd_data), .sd_data_valid(rd_data_valid),
-        .sd_data_ready(wf_data_ready), .sd_data_last(rd_data_last),
+        .sd_data_ready(legacy_u_wk_fst_sd_data_ready), .sd_data_last(rd_data_last),
         .sd_rd_done(rd_done), .sd_timeout_err(rd_to), .sd_crc16_err(rd_crc),
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
 
     // ---- 媒体链：字节流 → 像素 → 行序重映射 → 逐 word 写请求 ----
     bmp_parser u_bmp (
-        .clk(clk), .rst_n(rst_n),
+        .clk(clk), .rst_n(file_rst_n),
         .data(fst_data), .valid(fst_valid), .ready(bp_ready), .eof(fst_eof),
         .file_size(sel_size),
         .check_done(bmp_check_done), .check_error(bmp_check_error),
@@ -460,6 +692,8 @@ module sd_bmp_player #(
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             lo_px <= 16'd0; have_lo <= 1'b0; hold_word <= 32'd0; hold_valid <= 1'b0;
+        end else if (RESIDENT_CACHE && state_o==S_CLEAN) begin
+            lo_px<=0;have_lo<=0;hold_word<=0;hold_valid<=0;
         end else begin
             if (hold_valid && px_word_ready) hold_valid <= 1'b0;   // 先出队
             if (bpu_valid && bpu_ready) begin
@@ -478,10 +712,15 @@ module sd_bmp_player #(
     assign bpu_ready = !hold_valid || px_word_ready;
 
     bmp_unpack u_unpack (
-        .clk(clk), .rst_n(rst_n),
+        .clk(clk), .rst_n(file_rst_n),
         .din(bpo_data), .din_valid(bpo_valid), .din_ready(bpo_ready),
         .din_sof(bpo_sof), .din_eof(bpo_eof),
-        .width(bmp_width), .height(bmp_height), .top_down(bmp_top_down),
+        // bmp_parser rejects every wrong width/height before bpo_valid rises.
+        // Expose the validated V3 geometry to synthesis so its generic unpack
+        // multipliers disappear; the legacy path keeps the original inputs.
+        .width(RESIDENT_CACHE ? 16'd640 : bmp_width),
+        .height(RESIDENT_CACHE ? (bmp_top_down ? -16'sd480 : 16'd480) : bmp_height),
+        .top_down(bmp_top_down),
         .pixel_off(bmp_pixel_off),
         .pixel(bpu_pixel), .pixel_valid(bpu_valid), .pixel_ready(bpu_ready),
         .x(bpu_x), .y(bpu_y), .img_sof(bpu_sof), .img_eof(bpu_eof),
@@ -491,10 +730,11 @@ module sd_bmp_player #(
 
     assign slot_o = out_slot;      // 帧内稳定，随 frame_active 打包给 mem 侧
 
-    sd_sector_reader #(
+    generate if(RESIDENT_CACHE)begin:checked_reader
+    sd_checked_sector_reader #(
         .CLK_DIV_FAST(CLK_DIV_FAST)
     ) u_rd (
-        .clk(clk), .rst_n(rst_n), .sdhc(sdhc),
+        .clk(clk), .rst_n(file_rst_n), .sdhc(sdhc),
         .rd_en(bus_rd_en), .rd_addr(rd_addr_to_reader), .rd_len(bus_rd_len),
         .rd_ready(rd_ready),
         .data(rd_data), .data_valid(rd_data_valid), .data_ready(bus_data_ready),
@@ -506,6 +746,24 @@ module sd_bmp_player #(
         .spi_tx_ready(spi_tx_ready), .spi_rx_data(spi_rxd), .spi_rx_valid(spi_rxv)
     );
 
+    end else begin:legacy_reader
+    sd_sector_reader #(
+        .CLK_DIV_FAST(CLK_DIV_FAST)
+    ) u_rd (
+        .clk(clk), .rst_n(file_rst_n), .sdhc(sdhc),
+        .rd_en(bus_rd_en), .rd_addr(rd_addr_to_reader), .rd_len(bus_rd_len),
+        .rd_ready(rd_ready),
+        .data(rd_data), .data_valid(rd_data_valid), .data_ready(bus_data_ready),
+        .data_last(rd_data_last),
+        .rd_done(rd_done), .busy(), .timeout_err(rd_to), .crc16_err(rd_crc),
+        .err_code(rd_ec), .err_detail(rd_ed), .crc_rx(), .dbg_state(),
+        .spi_cs_n(rd_cs_n), .spi_clk_div(rd_div),
+        .spi_tx_valid(rd_txv), .spi_tx_data(rd_txd),
+        .spi_tx_ready(spi_tx_ready), .spi_rx_data(spi_rxd), .spi_rx_valid(spi_rxv)
+    );
+
+    end endgenerate
+
     // ★ SD 总线归属用**自己的** sd_ready，不用 init_done：init_done 是电平，
     //   在 S_ERROR → restart 重跑时它可能还高高挂着，那样会把 SPI 错划给 reader
     //   而让重新初始化永远跑不完 ✗。
@@ -513,13 +771,19 @@ module sd_bmp_player #(
     wire        spi_txv  = spi_use_reader ? rd_txv  : init_txv;
     wire [7:0]  spi_txd  = spi_use_reader ? rd_txd  : init_txd;
     wire [15:0] spi_div  = spi_use_reader ? rd_div  : init_div;
-    assign sd_ncs = init_cs_n & rd_cs_n;
+    wire raw_cs_n=init_cs_n & rd_cs_n;
+    generate if(GUARDED_CS)begin:guarded_cs
+      v3_spi_cs_guard guard(.ref_clk(clk),.ref_rst_n(cs_guard_rst_n),
+        .raw_cs_n(raw_cs_n),.raw_sclk(sd_dclk),.cs_n(sd_ncs),.cs_ready(spi_cs_ready));
+    end else begin:direct_cs
+      assign sd_ncs=raw_cs_n;assign spi_cs_ready=1'b1;
+    end endgenerate
 
     spi_master #(
         .CLK_FREQ(CLK_HZ)
     ) u_spi (
-        .clk(clk), .rst_n(rst_n), .clk_div(spi_div), .cs_n(sd_ncs),
-        .tx_valid(spi_txv), .tx_data(spi_txd), .tx_ready(spi_tx_ready),
+        .clk(clk), .rst_n(rst_n), .clk_div(spi_div), .cs_n(raw_cs_n),
+        .tx_valid(spi_txv && spi_cs_ready), .tx_data(spi_txd), .tx_ready(spi_engine_ready),
         .rx_data(spi_rxd), .rx_valid(spi_rxv), .busy(spi_busy),
         .sclk(sd_dclk), .mosi(sd_mosi), .miso(sd_miso)
     );
@@ -535,6 +799,17 @@ module sd_bmp_player #(
     reg [3:0]  init_try;        // ★ SD 初始化已重试次数（init_done 清零）
     reg [2:0]  init_arm;        // ★ 每次发 start 后的"沉降窗"：等 initializer 清掉上一次的 init_error
     reg        fd_d, fd_pending;// frame_done（toggle）边沿检测
+    reg fst_done_d,file_done_seen;
+    // Landing may precede the last CMD17 padding and CRC. Keep ownership
+    // until BOTH completions arrive; never start an already busy streamer.
+    always @(posedge clk or negedge rst_n)begin
+        if(!rst_n)begin fst_done_d<=0;file_done_seen<=0;end
+        else begin
+            fst_done_d<=fst_done;
+            if(state_o!=S_STREAM || !stream_kicked)file_done_seen<=0;
+            else if(fst_done && !fst_done_d)file_done_seen<=1;
+        end
+    end
 
     wire state_new = (state_o != state_d);
 
@@ -569,7 +844,7 @@ module sd_bmp_player #(
         if (!rst_n) begin fd_d <= 1'b0; fd_pending <= 1'b0; end
         else begin
             fd_d <= fd_sync[1];
-            if (state_o == S_STREAM) begin
+            if (state_o == S_STREAM && stream_kicked) begin
                 if (fd_sync[1] != fd_d) fd_pending <= 1'b1;
             end else begin
                 fd_pending <= 1'b0;          // 不在收帧状态 ⇒ 丢弃过期的完成事件
@@ -606,7 +881,9 @@ module sd_bmp_player #(
             cur_px_written <= 19'd0;
             last_frame_ok_o <= 1'b0;
             frame_cnt      <= 16'd0;
-            out_slot       <= 2'd1;     // 先写 1 号槽（与 core 初始 active_next 错开）
+            cursor_key<=0;cache_valid<=0;cache_count<=0;cache_keys<=0;rejected_files<=0;
+            last_reject_error<=0;last_reject_key<=0;
+            out_slot       <= RESIDENT_CACHE ? 2'd0 : 2'd1;     // 先写 1 号槽（与 core 初始 active_next 错开）
             frame_active   <= 1'b0;
             top_down_o     <= 1'b0;
             // ★ fd_d / fd_pending 的复位在**上面那个边沿检测块**里做，这里绝不能再写：
@@ -745,6 +1022,7 @@ module sd_bmp_player #(
                     case (scan_sub)
                         2'd0: begin idx_clear <= 1'b1; scan_sub <= 2'd1; end
                         2'd1: begin scan_en   <= 1'b1; scan_sub <= 2'd2; end
+                        2'd2: begin scan_sub<=2'd3; end // let scanner consume start and clear stale done
                         default: begin
                             if (scan_done) begin
                                 if (dir_bad) begin
@@ -776,7 +1054,7 @@ module sd_bmp_player #(
                             err_code   <= MY_NO_FILE;
                             state_o    <= S_ERROR;
                         end else begin
-                            card_usable <= 1'b1;
+                            card_usable <= !RESIDENT_CACHE;
                             cur_file    <= 2'd0;
                             pick_slot   <= 2'd0;
                             state_o     <= S_READY;
@@ -812,7 +1090,9 @@ module sd_bmp_player #(
                 // 等“开播 / 下一幅”：首幅自动播；之后看 btn_auto 或 btn_next
                 S_READY: begin
                     to_cnt <= 32'd0;
-                    if (frame_cnt == 16'd0) begin
+                    if (RESIDENT_CACHE) begin
+                        if(cache_count<4) begin pick_to<=0;state_o<=S_PICK;end
+                    end else if (frame_cnt == 16'd0) begin
                         // 首幅：播 0 号
                         cur_file  <= 2'd0;
                         pick_slot <= 2'd0;
@@ -832,7 +1112,7 @@ module sd_bmp_player #(
                     to_cnt <= to_cnt + 32'd1;
                     // ★ 等 mem 侧空闲（官方 FIFO 已排空）才开帧：
                     //   避免上一帧残留像素被当成本帧的开头（那会让本帧 CRC 必错）
-                    if (!stream_kicked && mem_ready_s) begin
+                    if (!stream_kicked && mem_ready_s && !fst_busy && rd_ready) begin
                         fst_start     <= 1'b1;              // ★ 单拍
                         frame_active  <= 1'b1;
                         stream_kicked <= 1'b1;
@@ -846,13 +1126,18 @@ module sd_bmp_player #(
                     cur_file_size <= sel_size;
 
                     // 本帧像素产完（bmp_unpack.done）后，等 mem 侧"写完 + 换帧走完"
-                    if (stream_kicked && fd_pending) begin
+                    if (stream_kicked && fd_pending && file_done_seen && !fst_error && rd_ready && !spi_busy && !rd_crc && !rd_to) begin
                         frame_active  <= 1'b0;
                         last_frame_ok_o <= lok_sync[1];    // 采样 mem 侧电平（已两级同步）
                         stream_kicked <= 1'b0;
                         to_cnt        <= 32'd0;
                         if (lok_sync[1]) begin
                             frame_cnt <= frame_cnt + 16'd1;
+                            if(RESIDENT_CACHE) begin
+                                cache_valid[out_slot]<=1;cache_count<=cache_count+1'b1;
+                                cache_keys[out_slot*16+:16]<=selected_key;
+                                if(cache_count==3)card_usable<=1;
+                            end
                             state_o <= S_SWAP;
                         end else begin
                             // A failed sink completion must not transfer slot
@@ -862,13 +1147,14 @@ module sd_bmp_player #(
                             err_detail <= 8'h01;
                             state_o <= S_ERROR;
                         end
-                    end else if (fst_error || bpu_error || bmp_check_error) begin
+                    end else if (fst_error || bpu_error || bmp_check_error || (stream_kicked && (rd_crc || rd_to))) begin
                         stream_kicked <= 1'b0;
                         frame_active  <= 1'b0;
                         fail_stage    <= ST_STREAM;
-                        err_code      <= fst_error ? fst_ec : (bpu_error ? bpu_ec : bmp_ec);
-                        err_detail    <= fst_error ? fst_ed : (bpu_error ? bpu_ed : bmp_ed);
-                        state_o       <= S_ERROR;
+                        err_code      <= (rd_crc || rd_to) ? rd_ec : fst_error ? fst_ec : (bpu_error ? bpu_ec : bmp_ec);
+                        err_detail    <= (rd_crc || rd_to) ? rd_ed : fst_error ? fst_ed : (bpu_error ? bpu_ed : bmp_ed);
+                        state_o       <= RESIDENT_CACHE ? S_REJECT : S_ERROR;
+                        if(RESIDENT_CACHE)to_cnt<=0;
                     end else if (to_cnt >= STREAM_TO_N) begin
                         stream_kicked <= 1'b0;
                         frame_active  <= 1'b0;
@@ -881,12 +1167,37 @@ module sd_bmp_player #(
                 // ------------------------------------------------------------
                 // 换帧已在 mem 侧完成（含 core 的 swap）⇒ 换另一槽、准备下一幅
                 S_SWAP: begin
-                    out_slot <= out_slot ^ 2'b01;    // ★ 1<->0 交替（~1 会得 2'd2）
-                    to_cnt   <= 32'd0;
-                    state_o  <= S_READY;
+                    to_cnt <= 0;
+                    if(RESIDENT_CACHE) begin
+                        // Every accepted image owns a DIFFERENT resident slot.
+                        // Candidate cursor advances on both pass and rejection.
+                        out_slot<=cache_count[1:0];cursor_key<=selected_key;
+                        if(cache_count==4) begin state_o<=S_READY;fail_stage<=0;err_code<=0;err_detail<=0;end
+                        else if(cur_file==last_slot) begin
+                            cur_file<=0;pick_slot<=0;scan_sub<=0;state_o<=S_SCAN;
+                        end else begin cur_file<=cur_file+1'b1;pick_slot<=cur_file+1'b1;state_o<=S_READY;end
+                    end else begin out_slot<=out_slot^2'b01;state_o<=S_READY;end
                 end
 
                 // ------------------------------------------------------------
+                S_REJECT: begin
+                    // state-based bus mux supplies data_ready=1, rd_en=0 here.
+                    // Finish the active CMD17 before resetting its consumers.
+                    frame_active<=0;to_cnt<=to_cnt+1'b1;
+                    if(rd_ready && !spi_busy)begin state_o<=S_CLEAN;to_cnt<=0;end
+                    else if(to_cnt>=STREAM_TO_N)begin err_code<=MY_TO_STREAM;state_o<=S_ERROR;end
+                end
+                S_CLEAN: begin
+                    to_cnt<=to_cnt+1'b1;
+                    if(to_cnt==3)begin
+                        rejected_files<=rejected_files+1'b1;cursor_key<=selected_key;
+                        last_reject_error<={err_code,err_detail};last_reject_key<=selected_key;
+                        to_cnt<=0;stream_kicked<=0;
+                        if(cur_file==last_slot)begin
+                            cur_file<=0;pick_slot<=0;scan_sub<=0;state_o<=S_SCAN;
+                        end else begin cur_file<=cur_file+1'b1;pick_slot<=cur_file+1'b1;state_o<=S_READY;end
+                    end
+                end
                 S_ERROR: begin
                     sd_ready    <= 1'b0;
                     card_usable <= 1'b0;
@@ -898,6 +1209,9 @@ module sd_bmp_player #(
                         err_code   <= 8'h00;
                         err_detail <= 8'h00;
                         frame_cnt  <= 16'd0;
+                        cursor_key<=0;cache_valid<=0;cache_count<=0;cache_keys<=0;rejected_files<=0;
+                        last_reject_error<=0;last_reject_key<=0;
+                        out_slot<=RESIDENT_CACHE?0:1;
                         cur_file   <= 2'd0;
                         pick_slot  <= 2'd0;
                         state_o    <= S_INIT;

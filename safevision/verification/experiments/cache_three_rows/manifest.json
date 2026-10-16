@@ -1,0 +1,28 @@
+{
+  "sources": [
+    "safevision/rtl/video/video_cdc/video_cdc_mailbox.v",
+    "safevision/verification/experiments/cache_three_rows/v3_line_cache_three_rows.v",
+    "safevision/rtl/audio/v3_pcm_ring.v",
+    "safevision/rtl/common/sv_async_fifo.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v",
+    "safevision/rtl/memory/v3_aux_mux.v",
+    "safevision/rtl/memory/memory_arbiter.v",
+    "safevision/rtl/memory/mem_ctrl.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v",
+    "safevision/verification/models/v3_pressure_app_model.sv"
+  ],
+  "tops": [
+    "tb_v3_shared_memory_50"
+  ],
+  "test_sources": {
+    "tb_v3_shared_memory_50": "safevision/verification/experiments/cache_three_rows/tb_v3_video_shared_3row.sv"
+  },
+  "timeouts": {
+    "tb_v3_shared_memory_40": 600,
+    "tb_v3_shared_memory_50": 600
+  },
+  "assets": [],
+  "expected_result": "EXPECTED_FAIL_ROW_DEADLINE",
+  "production_applicable": false
+}

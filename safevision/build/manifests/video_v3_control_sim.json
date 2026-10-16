@@ -1,0 +1,6 @@
+{
+ "sources":["safevision/rtl/video/v3_presentation_ctrl.v"],
+ "tops":["tb_v3_video_control"],
+ "timeouts":{"tb_v3_video_control":180},
+ "assets":[]
+}

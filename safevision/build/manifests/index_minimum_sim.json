@@ -1,0 +1,4 @@
+{
+ "sources":["safevision/rtl/storage/file_index.v"],
+ "tops":["tb_v3_index_minimum"]
+}

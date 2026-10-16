@@ -1,0 +1,46 @@
+{
+  "sources": [
+    "safevision/rtl/common/sync_fifo.v",
+    "safevision/rtl/common/error_report.v",
+    "safevision/rtl/control/media_recovery_ctrl.v",
+    "safevision/rtl/video/video_compositor/alpha_blend.v",
+    "safevision/rtl/video/video_compositor/color_adjust.v",
+    "safevision/rtl/video/video_compositor/fade_ctrl.v",
+    "safevision/rtl/video/scaler/scaler_coords.v",
+    "safevision/rtl/video/scaler/scaler_bilinear.v",
+    "safevision/rtl/audio/audio_energy.v",
+    "safevision/rtl/audio/hdmi_acr.v",
+    "safevision/rtl/common/uart_rx.v",
+    "safevision/rtl/control/v3_command_parser.v",
+    "safevision/rtl/control/input_sync.v",
+    "safevision/rtl/control/key_debounce.v",
+    "safevision/rtl/control/v3_user_controls.v",
+    "safevision/rtl/memory/v3_row_integrity.v",
+    "safevision/rtl/common/uart_tx.v",
+    "safevision/rtl/control/v3_uart_link.v",
+    "safevision/rtl/common/crc16_ccitt.v",
+    "safevision/rtl/storage/spi_master.v",
+    "safevision/rtl/storage/sd_sector_reader.v",
+    "safevision/rtl/storage/sd_checked_sector_reader.v",
+    "safevision/verification/models/sd_spi_card_model.sv"
+  ],
+  "tops": [
+    "tb_v3_math",
+    "tb_v3_recovery_events",
+    "tb_v3_energy_acr",
+    "tb_v3_coords_fade",
+    "tb_v3_uart",
+    "tb_v3_controls",
+    "tb_v3_color",
+    "tb_v3_row_integrity",
+    "tb_v3_uart_link",
+    "tb_v3_checked_sector",
+    "tb_v3_controls_period",
+    "tb_v3_parser_digit_seen"
+  ],
+  "assets": [
+    "safevision/verification/fixtures/alpha_golden.mem",
+    "safevision/verification/fixtures/scaler_golden.mem",
+    "safevision/verification/fixtures/row_crc_golden.mem"
+  ]
+}

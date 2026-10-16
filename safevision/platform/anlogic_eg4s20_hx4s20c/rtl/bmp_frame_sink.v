@@ -38,7 +38,7 @@ module bmp_frame_sink #(
     //   每帧只写进去约 2/3 就被判超时。TB 里没暴露是因为 tb_sd_bmp_player 把
     //   SPI 分频调到最快档（236 ms < 400 ms）—— 仿真跑得快反而掩盖了真问题。
     parameter [31:0]  WRITE_TO_N  = 32'd50_000_000  // 400 ms：**无进展**才算超时
-    ,parameter integer REQUIRE_WRITE_DRAIN = 0, REQUIRE_READBACK = 0
+    ,parameter integer REQUIRE_WRITE_DRAIN = 0, REQUIRE_READBACK = 0, RESIDENT_LOAD = 0
 )(
     input  wire        clk,            // mem_clk 125 MHz（读侧 / 帧控制器）
     input  wire        rst_n,          // mem 域低有效
@@ -152,7 +152,7 @@ module bmp_frame_sink #(
 
     reg  [1:0]  slot_lat;        // 开帧时锁存的槽（帧内不变）
     assign source_begin=br_start;assign source_slot=slot_lat;assign source_top_down=td_sync[1];
-    wire [31:0] slot_base = (slot_lat == 2'd0) ? `SV_IMG0_BASE : `SV_IMG1_BASE;
+    wire [31:0] slot_base = `SV_SLOT_BASE(slot_lat);
     wire        br_din_ready;
 
     // ========================================================================
@@ -191,7 +191,7 @@ module bmp_frame_sink #(
     bmp_frame_write_bridge #(
         .GAP_TIMEOUT(GAP_TIMEOUT)
     ) u_bridge (
-        .clk(clk), .rst_n(rst_n), .start(br_start), .top_down(td_sync[1]),
+        .clk(clk), .rst_n(rst_n && !(RESIDENT_LOAD && state_o==S_ERROR)), .start(br_start), .top_down(td_sync[1]),
         .slot_sel(slot_lat), .slot_base(slot_base),
         .din(sk_data), .din_valid(br_din_valid), .din_ready(br_din_ready),
         .wr_req(wr_req), .start_ready(br_start_ready),
@@ -282,14 +282,16 @@ module bmp_frame_sink #(
                         if (!REQUIRE_WRITE_DRAIN && !REQUIRE_READBACK) swap_toggle <= ~swap_toggle;
                         to_cnt         <= 32'd0;
                         state_o        <= (REQUIRE_WRITE_DRAIN || REQUIRE_READBACK) ? S_FLUSH : S_SWAP;
-                    end else if (br_err) begin
+                    end else if ((RESIDENT_LOAD && !fa_sync[2]) || br_err) begin
                         last_frame_ok<= 1'b0;
                         err_code   <= br_ec;
                         err_detail <= br_ed;
+                        empty_settle<=0;
                         state_o    <= S_ERROR;
                     end else if (to_cnt >= WRITE_TO_N) begin
                         last_frame_ok<= 1'b0;
                         err_code   <= MY_TO_FRAME;
+                        empty_settle<=0;
                         state_o    <= S_ERROR;
                     end
                 end
@@ -322,7 +324,12 @@ module bmp_frame_sink #(
                     to_cnt <= to_cnt + 32'd1;
                     if (swap_busy) swap_seen <= 1'b1;
 
-                    if (to_cnt >= SWAP_TO_N) begin
+                    if(RESIDENT_LOAD)begin
+                        // Load acknowledgement follows write drain/readback,
+                        // independently of a later frame-boundary presentation.
+                        if(last_frame_ok)frame_cnt<=frame_cnt+1'b1;
+                        frame_done<=~frame_done;to_cnt<=0;empty_settle<=0;state_o<=S_DRAIN;
+                    end else if (to_cnt >= SWAP_TO_N) begin
                         // 兜底：无论 busy 起没起、落没落，都不卡死；翻 frame_done 让 SD 侧推进
                         swap_seen    <= 1'b0;
                         last_frame_ok<= 1'b0;
@@ -358,6 +365,7 @@ module bmp_frame_sink #(
                     //     改为粘滞到"下一帧成功"（见 S_WRITE 的 br_done 分支）
                     if (empty_settle == 3'd7) begin
                         frame_done <= ~frame_done;
+                        empty_settle<=0;
                         state_o    <= S_DRAIN;
                     end
                 end

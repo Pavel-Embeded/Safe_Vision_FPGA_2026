@@ -1,0 +1,15 @@
+{
+  "sources": [
+    "safevision/rtl/audio/v3_pcm_packet_fifo.v",
+    "safevision/rtl/audio/v3_audio_system.v",
+    "safevision/rtl/audio/v3_audio_priority_serial.v",
+    "safevision/rtl/common/sv_async_fifo.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v",
+    "safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v"
+  ],
+  "tops": [
+    "tb_v3_audio_packet"
+  ],
+  "assets": []
+}

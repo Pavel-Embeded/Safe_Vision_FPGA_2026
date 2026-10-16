@@ -354,7 +354,8 @@ module sd_spi_card_model #(
     // ------------------------------------------------------------------------
     // SCLK 边沿驱动（行为模型，blocking 赋值）
     // ------------------------------------------------------------------------
-    always @(sclk) begin
+    // CS deassertion terminates a physical transaction even without another SCLK.
+    always @(sclk or posedge cs_n) begin
         if (cs_n) begin
             // ---- CS 高：复位所有状态，等下一次片选 ----
             bitc      = 4'd0;

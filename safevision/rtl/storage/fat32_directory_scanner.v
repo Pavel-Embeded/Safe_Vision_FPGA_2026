@@ -45,7 +45,7 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module fat32_directory_scanner (
+module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
     input  wire        clk,
     input  wire        rst_n,
 
@@ -66,7 +66,7 @@ module fat32_directory_scanner (
     //     由它在顶层与 file_streamer 共用（见 interface_spec §3.2）
 
     // ---- 候选目录项输出 ----
-    output reg  [87:0] ent_name,       // 11 Byte 8.3 名，如 "SV0001  BMP"（前 8 是主名，后 3 是扩展名）
+    output wire [87:0] ent_name,       // 11 Byte 8.3 名，如 "SV0001  BMP"（前 8 是主名，后 3 是扩展名）
     output reg  [7:0]  ent_attr,       // 属性字节
     output reg  [31:0] ent_first_clus, // 首簇号（高 16 + 低 16 拼起来）
     output reg  [31:0] ent_size,       // 文件字节数
@@ -104,6 +104,17 @@ module fat32_directory_scanner (
     input  wire [7:0]  wk_err_detail
 );
 
+    // Mounted FAT32 contract: sectors/cluster is a power of two in 1..128.
+    function [31:0] cluster_sectors;
+      input [31:0] delta;input [7:0] spc;
+      begin case(spc)
+       1:cluster_sectors=delta;2:cluster_sectors=delta<<1;4:cluster_sectors=delta<<2;
+       8:cluster_sectors=delta<<3;16:cluster_sectors=delta<<4;32:cluster_sectors=delta<<5;
+       64:cluster_sectors=delta<<6;128:cluster_sectors=delta<<7;
+       default:cluster_sectors=0; // rejected at mount; never an accepted geometry
+      endcase end
+    endfunction
+
     // ------------------------------------------------------------------------
     // 状态
     // ------------------------------------------------------------------------
@@ -121,12 +132,24 @@ module fat32_directory_scanner (
     reg  [8:0]  bcnt;           // 扇区内字节偏移 0..511
     reg  [31:0] to_cnt;         // 单次读事务的兜底超时
 
+    // The outputs themselves are the entry assembly registers. They are
+    // meaningful only with ent_valid. wait_ent prevents every next byte until
+    // valid/ready consumption, so a stalled published entry stays immutable.
+    // This avoids duplicating 160 bits of raw and published fields.
     // ---- 单条目录项的装配寄存器 ----
-    reg  [87:0] name_raw;       // 11 Byte 名，收完后 byte0 在 [87:80]
-    reg  [7:0]  attr_raw;
-    reg  [15:0] fc_h;           // FstClusHI
-    reg  [15:0] fc_l;           // FstClusLO
-    reg  [31:0] size_raw;
+    reg [87:0] full_name;
+    reg [15:0] media_digits;
+    reg media_name_ok,media_bmp,media_wav;
+    wire [87:0] media_name={16'h5356,
+      4'h3,media_digits[15:12],4'h3,media_digits[11:8],
+      4'h3,media_digits[7:4],4'h3,media_digits[3:0],16'h2020,
+      (media_bmp?24'h424d50:24'h574156)};
+    assign ent_name=SV_MEDIA_ONLY?media_name:full_name;
+    wire [87:0] name_raw=ent_name;       // 11 Byte 名，收完后 byte0 在 [87:80]
+    wire [7:0] attr_raw=ent_attr;
+    wire [15:0] fc_h=ent_first_clus[31:16];           // FstClusHI
+    wire [15:0] fc_l=ent_first_clus[15:0];           // FstClusLO
+    wire [31:0] size_raw=ent_size;
     reg         skip_entry;     // 本条是 0xE5 删除项，跳过判定
     reg         stop_pending;   // 见到 0x00：本扇区读完就收工
     reg         wait_ent;       // 已抛出一条目录项，正等 ent_ready
@@ -157,16 +180,16 @@ module fat32_directory_scanner (
             sec_in_clus  <= 8'd0;
             bcnt         <= 9'd0;
             to_cnt       <= 32'd0;
-            name_raw     <= 88'h0;
-            attr_raw     <= 8'h0;
-            fc_h         <= 16'h0;
-            fc_l         <= 16'h0;
-            size_raw     <= 32'h0;
+
+
+
+
+
             skip_entry   <= 1'b0;
             stop_pending <= 1'b0;
             wait_ent     <= 1'b0;
             slot_cnt     <= 16'd0;
-            ent_name       <= 88'h0;
+            full_name<=0;media_digits<=0;media_name_ok<=0;media_bmp<=0;media_wav<=0;
             ent_attr       <= 8'h0;
             ent_first_clus <= 32'h0;
             ent_size       <= 32'h0;
@@ -202,11 +225,11 @@ module fat32_directory_scanner (
                     sec_in_clus  <= 8'd0;
                     bcnt         <= 9'd0;
                     to_cnt       <= 32'd0;
-                    name_raw     <= 88'h0;
-                    attr_raw     <= 8'h0;
-                    fc_h         <= 16'h0;
-                    fc_l         <= 16'h0;
-                    size_raw     <= 32'h0;
+
+
+
+
+
                     skip_entry   <= 1'b0;
                     stop_pending <= 1'b0;
                     wait_ent     <= 1'b0;
@@ -250,6 +273,19 @@ module fat32_directory_scanner (
                     err_detail <= sd_err_detail;
                     mstate     <= D_ERR;
                 end else if (sd_data_valid && sd_data_ready) begin
+                    if(SV_MEDIA_ONLY)case(ent_off)
+                      0:begin media_name_ok<=sd_data==8'h53;media_bmp<=0;media_wav<=0;end
+                      1:if(sd_data!=8'h56)media_name_ok<=0;
+                      2,3,4,5:begin
+                        media_digits<={media_digits[11:0],sd_data[3:0]};
+                        if(sd_data<8'h30||sd_data>8'h39)media_name_ok<=0;
+                      end
+                      6,7:if(sd_data!=8'h20)media_name_ok<=0;
+                      8:begin media_bmp<=sd_data==8'h42;media_wav<=sd_data==8'h57;end
+                      9:begin media_bmp<=media_bmp&&(sd_data==8'h4d);media_wav<=media_wav&&(sd_data==8'h41);end
+                      10:begin media_bmp<=media_bmp&&(sd_data==8'h50);media_wav<=media_wav&&(sd_data==8'h56);end
+                      default:;
+                    endcase
                     case (ent_off)
                     // 首字节：判断 0x00 结束 / 0xE5 删除
                     5'd0: begin
@@ -258,32 +294,32 @@ module fat32_directory_scanner (
                             stop_pending <= 1'b1;
                             skip_entry   <= 1'b1;
                         end
-                        name_raw <= {name_raw[79:0], sd_data};
+                        if(!SV_MEDIA_ONLY)full_name <= {full_name[79:0], sd_data};
                     end
                     // 主名 8 + 扩展名 3，一路左移，收完 byte0 落在 [87:80]
                     5'd1, 5'd2, 5'd3, 5'd4, 5'd5, 5'd6, 5'd7, 5'd8, 5'd9, 5'd10:
-                        name_raw <= {name_raw[79:0], sd_data};
-                    5'd11: attr_raw <= sd_data;
+                        if(!SV_MEDIA_ONLY)full_name <= {full_name[79:0], sd_data};
+                    5'd11: ent_attr <= sd_data;
                     // ★★ 首簇号两个 16 位字段是【小端】（FAT32 全表小端，与 BPB 一致）：
-                    //   0x14 = FstClusHI 低字节 -> fc_h[7:0]，0x15 高字节 -> fc_h[15:8]
-                    //   0x1A = FstClusLO 低字节 -> fc_l[7:0]，0x1B 高字节 -> fc_l[15:8]
+                    //   0x14 = FstClusHI 低字节 -> ent_first_clus[23:16]，0x15 高字节 -> ent_first_clus[31:24]
+                    //   0x1A = FstClusLO 低字节 -> ent_first_clus[7:0]，0x1B 高字节 -> ent_first_clus[15:8]
                     //   ⚠ 2026-10-06 修复（缺陷 24）：这里原来写成**大端**（低偏移进高半），
                     //     真卡（Windows 小端）上首簇全部字节交换 ⇒ 文件数据地址全错
                     //     （板上实测：SV0001 真簇 232 被读成 0xE800 ⇒ 读回垃圾 ⇒ EC=03）。
                     //     当时所有仿真都过，是因为 `sd_spi_card_model.mk_dir_entry`
                     //     用了同一个错误字节序，两边错得一样（同 `\r\n` 转义那次）——
                     //     模型已同步改成小端，此后 TB 才真正能守住这个字段。
-                    5'd20: fc_h[7:0]  <= sd_data;
-                    5'd21: fc_h[15:8] <= sd_data;
-                    5'd26: fc_l[7:0]  <= sd_data;
-                    5'd27: fc_l[15:8] <= sd_data;
-                    5'd28: size_raw[7:0]   <= sd_data;
-                    5'd29: size_raw[15:8]  <= sd_data;
-                    5'd30: size_raw[23:16] <= sd_data;
+                    5'd20: ent_first_clus[23:16]  <= sd_data;
+                    5'd21: ent_first_clus[31:24] <= sd_data;
+                    5'd26: ent_first_clus[7:0]  <= sd_data;
+                    5'd27: ent_first_clus[15:8] <= sd_data;
+                    5'd28: ent_size[7:0]   <= sd_data;
+                    5'd29: ent_size[15:8]  <= sd_data;
+                    5'd30: ent_size[23:16] <= sd_data;
                     // 末字节：本条装配完成，做跳过判定
                     5'd31: begin
-                        size_raw[31:24] <= sd_data;
-                        if (!stop_pending && !skip_entry) begin
+                        ent_size[31:24] <= sd_data;
+                        if (!stop_pending && !skip_entry && (!SV_MEDIA_ONLY || (media_name_ok&&(media_bmp||media_wav)))) begin
                             if (attr_raw == 8'h0F) begin
                                 // 长文件名碎片：跳过
                             end else if (attr_raw[3]) begin
@@ -291,10 +327,8 @@ module fat32_directory_scanner (
                             end else if (attr_raw[4]) begin
                                 // 子目录：跳过（首版不做子目录）
                             end else begin
-                                ent_name       <= name_raw;
-                                ent_attr       <= attr_raw;
-                                ent_first_clus <= {fc_h, fc_l};
-                                ent_size       <= {sd_data, size_raw[23:0]};
+
+                                ent_size       <= {sd_data, ent_size[23:0]};
                                 ent_index      <= slot_cnt;
                                 ent_valid      <= 1'b1;
                                 wait_ent       <= 1'b1;
@@ -337,7 +371,7 @@ module fat32_directory_scanner (
                         cur_clus    <= wk_next_clus;
                         wk_cur_clus <= wk_next_clus;
                         cur_lba     <= data_start_lba +
-                                       ((wk_next_clus - 32'd2) * sec_per_clus);
+                                       cluster_sectors(wk_next_clus-32'd2,sec_per_clus);
                         sec_in_clus <= 8'd0;
                         to_cnt      <= 32'd0;
                         mstate      <= D_SEC_REQ;

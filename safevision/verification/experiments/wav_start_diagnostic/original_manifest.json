@@ -1,0 +1,8 @@
+{
+  "sources": [
+    "safevision/rtl/media/wav_parser.v"
+  ],
+  "tops": [
+    "tb_wav_parser_diagnostic"
+  ]
+}

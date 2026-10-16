@@ -69,6 +69,29 @@ module tb_top_stage5_sector_rd;
         .o_cmd_valid  (o_cmd_valid)
     );
 
+    // Observe decoded wire transactions independently of the card model's
+    // per-CS counters: CS high deliberately clears o_acmd41_cnt.
+    integer observed_commands=0,observed_acmd41=0,sequence_errors=0;
+    reg[2:0] command_phase=0;
+    reg[31:0] observed_read_arg=0;
+    always @(posedge o_cmd_valid or negedge rst_n)begin
+        if(!rst_n)begin observed_commands=0;observed_acmd41=0;sequence_errors=0;command_phase=0;observed_read_arg=0;end
+        else begin
+            observed_commands=observed_commands+1;
+            if(o_cmd==6'd41)observed_acmd41=observed_acmd41+1;
+            if(o_cmd==6'd17)observed_read_arg=o_arg;
+            case(command_phase)
+             0:if(o_cmd==0)command_phase=1;else sequence_errors=sequence_errors+1;
+             1:if(o_cmd==8)command_phase=2;else if(o_cmd!=0)sequence_errors=sequence_errors+1;
+             2:if(o_cmd==55)command_phase=3;else sequence_errors=sequence_errors+1;
+             3:if(o_cmd==41)command_phase=4;else sequence_errors=sequence_errors+1;
+             4:if(o_cmd==55)command_phase=3;else if(o_cmd==58)command_phase=5;else sequence_errors=sequence_errors+1;
+             5:if(o_cmd==17)command_phase=6;else sequence_errors=sequence_errors+1;
+             default:sequence_errors=sequence_errors+1;
+            endcase
+        end
+    end
+
     // ------------------------------------------------------------------------
     // DUT：板级 bring-up 顶层
     // ------------------------------------------------------------------------
@@ -161,15 +184,14 @@ module tb_top_stage5_sector_rd;
             $display("[FAIL] T3 逐字节比对不符 %0d 个", mismatch);
 
         // ---- T1: 初始化 + 读取的完整命令序列 ----
-        if (o_cmd_cnt >= 8'd6 && o_acmd41_cnt >= 8'd1)
-            $display("[PASS] T1 卡模型收到完整命令序列 cmd_cnt=%0d acmd41_cnt=%0d",
-                     o_cmd_cnt, o_acmd41_cnt);
+        if (observed_commands>=6 && observed_acmd41>=1 && command_phase==6 && sequence_errors==0)
+            $display("[PASS] T1 ordered command history 0/8/(55,41)+/58/17 count=%0d acmd41=%0d",observed_commands,observed_acmd41);
         else
-            $display("[FAIL] T1 命令序列不完整 cmd_cnt=%0d acmd41_cnt=%0d",
-                     o_cmd_cnt, o_acmd41_cnt);
+            $display("[FAIL] T1 command history count=%0d acmd41=%0d phase=%0d order_errors=%0d",observed_commands,observed_acmd41,command_phase,sequence_errors);
+        $display("[TB] per-CS diagnostic model_acmd41=%0d cumulative_observed=%0d",o_acmd41_cnt,observed_acmd41);
 
         // ---- T2: CMD17 参数 ----
-        if (o_cmd === 6'd17 && o_arg === LBA)
+        if (o_cmd === 6'd17 && o_arg === LBA && observed_read_arg === LBA)
             $display("[PASS] T2 CMD17 参数 = %0d", o_arg);
         else
             $display("[FAIL] T2 CMD17 参数错误 cmd=%0d arg=%0d", o_cmd, o_arg);

@@ -89,6 +89,17 @@ module file_streamer (
     input  wire [7:0]  sd_err_detail
 );
 
+    // Mounted FAT32 contract: sectors/cluster is a power of two in 1..128.
+    function [31:0] cluster_sectors;
+      input [31:0] delta;input [7:0] spc;
+      begin case(spc)
+       1:cluster_sectors=delta;2:cluster_sectors=delta<<1;4:cluster_sectors=delta<<2;
+       8:cluster_sectors=delta<<3;16:cluster_sectors=delta<<4;32:cluster_sectors=delta<<5;
+       64:cluster_sectors=delta<<6;128:cluster_sectors=delta<<7;
+       default:cluster_sectors=0; // rejected at mount; never an accepted geometry
+      endcase end
+    endfunction
+
     // ------------------------------------------------------------------------
     // 状态
     // ------------------------------------------------------------------------
@@ -176,7 +187,7 @@ module file_streamer (
                     bytes_rd     <= 32'd0;
                     fsize        <= file_size;
                     cur_clus     <= first_clus;
-                    cur_lba      <= data_start_lba + ((first_clus - 32'd2) * sec_per_clus);
+                    cur_lba      <= data_start_lba + cluster_sectors(first_clus-32'd2,sec_per_clus);
                     sec_in_clus  <= 8'd0;
                     bcnt         <= 9'd0;
                     stop_pending <= 1'b0;
@@ -272,7 +283,7 @@ module file_streamer (
                         cur_clus    <= wk_next_clus;
                         wk_cur_clus <= wk_next_clus;
                         cur_lba     <= data_start_lba +
-                                       ((wk_next_clus - 32'd2) * sec_per_clus);
+                                       cluster_sectors(wk_next_clus-32'd2,sec_per_clus);
                         sec_in_clus <= 8'd0;
                         to_cnt      <= 32'd0;
                         mstate      <= F_SEC_REQ;

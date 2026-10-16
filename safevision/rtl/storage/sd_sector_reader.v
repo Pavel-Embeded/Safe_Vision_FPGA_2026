@@ -342,7 +342,11 @@ module sd_sector_reader #(
                 if (bdone) begin
                     crc_rx <= crc_rx_next;
                     if (bcnt == 6'd1) begin
-                        if (crc_rx_next != crc_acc) crc16_err <= 1'b1;
+                        if (crc_rx_next != crc_acc) begin
+                            crc16_err <= 1'b1;
+                            err_code <= `ERR_SD_IO;
+                            err_detail <= `DET_SD_DATA_CRC;
+                        end
                         mstate <= S_DONE;
                     end else begin
                         bcnt   <= bcnt + 6'd1;

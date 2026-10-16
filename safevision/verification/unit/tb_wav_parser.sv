@@ -26,6 +26,7 @@ module tb_wav_parser;
     always #5 clk = ~clk;
 
     integer errors;
+    integer checks;
     integer wc;
     integer i;
 
@@ -33,6 +34,7 @@ module tb_wav_parser;
         input         cond;
         input [255:0] name;
         begin
+            checks=checks+1;
             if (cond) begin
                 $display("[PASS] %0s", name);
             end else begin
@@ -222,18 +224,13 @@ module tb_wav_parser;
         begin
             wav_clear_mon;
             wav_file_size = w_len;
-            // (1) 冲掉上一次残留字节
-            w_flush = 1'b1;
-            @(posedge clk);
-            w_flush = 1'b0;
-            // (2) 先武装源（此时 DUT 尚未 start，不会消费），保证从流第一个字节开始
-            w_go = 1'b1;
-            @(posedge clk);
-            w_go = 1'b0;
-            // (3) 再拉 start（start 是全局的，W_END / W_ERR 都能重启）
-            wav_start = 1'b1;
-            @(posedge clk);
-            wav_start = 1'b0;
+            // The previous successful parser drains physical trailing bytes in
+            // W_END. Flush first, start the NEW parser epoch with valid=0,
+            // then arm its byte source. All control changes are on falling edges.
+            @(negedge clk);w_flush=1;w_go=0;wav_start=0;
+            @(negedge clk);w_flush=0;wav_start=1;
+            @(negedge clk);wav_start=0;w_go=1;
+            @(negedge clk);w_go=0;
             wc = 0;
             while ((w_error === 1'b0) && (w_n < 4) && (wc < maxc)) begin
                 @(posedge clk);
@@ -248,6 +245,7 @@ module tb_wav_parser;
     // ========================================================================
     initial begin
         errors       = 0;
+        checks       = 0;
         w_go         = 1'b0;
         w_flush      = 1'b0;
         w_len        = 0;
@@ -346,6 +344,7 @@ module tb_wav_parser;
         if (errors == 0) $display(" 全部通过 (PASS)");
         else             $display(" 失败项：%0d (FAIL)", errors);
         $display("============================================\n");
+        $display("PASS tb_wav_parser errors=%0d comparisons=%0d",errors,checks);
         $finish;
     end
 

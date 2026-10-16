@@ -1,0 +1,6 @@
+{
+ "sources":["safevision/rtl/common/uart_rx.v","safevision/rtl/common/uart_tx.v",
+ "safevision/rtl/control/v3_command_parser.v","safevision/rtl/control/v3_uart_link.v",
+ "safevision/rtl/common/sync_fifo.v"],
+ "tops":["tb_v3_uart_link"],"assets":[]
+}

@@ -1,0 +1,5 @@
+{
+ "sources":["safevision/rtl/memory/v3_row_integrity.v"],
+ "tops":["tb_v3_row_integrity"],
+ "assets":["safevision/verification/fixtures/row_crc_golden.mem"]
+}

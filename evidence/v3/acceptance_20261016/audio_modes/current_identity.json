@@ -1,0 +1,55 @@
+{
+  "run": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_modes",
+  "suite": "audio_modes",
+  "complete": true,
+  "all_current_pass": true,
+  "result_sha256": "b91ce2f20017cd45652b28408cc81a43c9fec8d3477b3a9b6340242c37d451e6",
+  "tests": [
+    {
+      "top": "tb_v3_audio_base50",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_modes\\tb_v3_audio_base50\\sim.log",
+        "sha256": "391cff0176c20447bea2d586dab24e91f5876e5b6c6ec82ee318b5ac758cad0b",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 2700,
+      "elapsed_s": 56.031,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_modes\\tb_v3_audio_base50\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_modes\\tb_v3_audio_base50\\sources.sha256.json"
+    },
+    {
+      "top": "tb_v3_audio_hd50",
+      "state": "CURRENT_PASS",
+      "changed_sources": [],
+      "raw_log_audit": {
+        "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_modes\\tb_v3_audio_hd50\\sim.log",
+        "sha256": "ce5a205fd4cb3b9106d3c811437538886a9396f48b49ab4b5a41cef163c62793",
+        "accepted": true,
+        "normal_finish": true,
+        "success_markers": 2,
+        "error_values": [
+          0
+        ],
+        "errors": []
+      },
+      "external_snapshot_sources": [],
+      "recorded_status": "PASS",
+      "checks": 1,
+      "data_comparisons": 2700,
+      "elapsed_s": 64.688,
+      "raw_log": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_modes\\tb_v3_audio_hd50\\sim.log",
+      "source_manifest": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\stable_domains_current_acceptance\\audio_modes\\tb_v3_audio_hd50\\sources.sha256.json"
+    }
+  ]
+}

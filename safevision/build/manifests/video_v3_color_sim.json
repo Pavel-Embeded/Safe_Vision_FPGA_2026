@@ -1,0 +1,6 @@
+{
+ "sources":["safevision/rtl/video/video_compositor/color_adjust.v"],
+ "tops":["tb_v3_video_color"],
+ "timeouts":{"tb_v3_video_color":600},
+ "assets":[]
+}

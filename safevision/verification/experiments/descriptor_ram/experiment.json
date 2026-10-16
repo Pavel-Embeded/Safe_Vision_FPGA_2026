@@ -1,0 +1,12 @@
+{
+  "production_regression": false,
+  "reason": "Private descriptor-RAM structural test requires the archived candidate, not production v3_wav_source.",
+  "top": "tb_v3_audio_descriptor_reset",
+  "native_driver": "run_v3_sim.py with an explicit isolated experiment manifest",
+  "files": {
+    "original_manifest.json": "7a8ee3ef5fafc0966220e84cbcca04c50e29f939a37ed65d05c3f91567da69ad",
+    "tb_v3_audio_descriptor_reset.sv": "ae38cd8f21bbf1c6633e745a463333a480a2101a2cdbb10e54c56e47bf805909",
+    "v3_wav_source.candidate.v": "0219b80a687dab8750f5580905d93e3608d57394372a1e461e2186d8e307dc97",
+    "v3_wav_source.control.v": "57403267763b5f4a0751a4492841b51803af75c962fb2f53b51775472839e27f"
+  }
+}

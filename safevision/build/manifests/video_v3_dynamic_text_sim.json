@@ -1,0 +1,7 @@
+{
+  "sources": ["safevision/rtl/video/v3_status_layers.v", "safevision/verification/unit/tb_v3_video_dynamic_text.sv"],
+  "tops": ["tb_v3_video_dynamic_text_base", "tb_v3_video_dynamic_text_hd"],
+  "test_sources": {"tb_v3_video_dynamic_text_base": [], "tb_v3_video_dynamic_text_hd": []},
+  "timeouts": {"tb_v3_video_dynamic_text_base": 900, "tb_v3_video_dynamic_text_hd": 900},
+  "assets": ["safevision/assets/fonts/font8x16.mem", "safevision/assets/fonts/font8x16_compact.mem", "safevision/assets/fonts/v3_status_text.mem"]
+}

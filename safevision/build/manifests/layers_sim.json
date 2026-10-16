@@ -1,0 +1,15 @@
+{
+  "sources": [
+    "safevision/rtl/video/graphics_rom/font8x16_rom.v",
+    "safevision/rtl/video/osd_overlay/osd_text_layer.v",
+    "safevision/rtl/video/v3_status_layers.v"
+  ],
+  "tops": [
+    "tb_v3_status_layers"
+  ],
+  "assets": [
+    "safevision/assets/fonts/font8x16.mem",
+    "safevision/assets/fonts/font8x16_compact.mem",
+    "safevision/assets/fonts/v3_status_text.mem"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "sources": [
+    "safevision/rtl/audio/alarm_tone_gen.v"
+  ],
+  "tops": [
+    "tb_v3_tone_rom"
+  ],
+  "generators": {
+    "tb_v3_tone_rom": "safevision/verification/fixtures/generate_tone_oracle.py"
+  },
+  "generated_assets": [
+    "tone_oracle.mem",
+    "tone_oracle.json"
+  ]
+}

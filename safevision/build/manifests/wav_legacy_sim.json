@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "safevision/rtl/media/wav_parser.v",
+    "safevision/rtl/media/v3_wav_parser_ctx.v"
+  ],
+  "tops": [
+    "tb_v3_wav_legacy_ctx",
+    "tb_v3_wav_legacy_plain"
+  ],
+  "generators": {
+    "tb_v3_wav_legacy_ctx": "safevision/verification/fixtures/generate_wav_container.py",
+    "tb_v3_wav_legacy_plain": "safevision/verification/fixtures/generate_wav_container.py"
+  },
+  "generated_assets": [
+    "compact_disk.mem",
+    "compact_pcm.mem",
+    "compact_desc.mem",
+    "compact_fixture.json"
+  ]
+}

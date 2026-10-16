@@ -2,8 +2,8 @@
 // fault_manager.v — 故障首因粘滞 / 等级判定 / 媒体复位隔离（手册 8.7 表 8-4）
 // ----------------------------------------------------------------------------
 // 职责：
-//   1) **首因粘滞**：第一条真故障的原因（对外主码 + 等级 + 时刻）锁存后保持不变，
-//      清除前绝不被后续故障覆盖（"每次真故障把首因保留"）。
+//   1) **首因粘滞**：第一条真故障的主码和时刻锁存后保持不变；当前等级
+//      可随后续更严重故障升级。早先 WARNING 绝不能屏蔽后来的 SAFE/FATAL。
 //   2) **等级判定**：表 8-4 的五级 INFO / WARNING / DEGRADED / SAFE / FATAL。
 //   3) **媒体复位隔离**：media_rst_req 只请求复位"媒体链"，绝不允许并进
 //      视频时序 / 安全画面 / HDMI PHY 的复位（TC-C-SAFE：媒体复位不影响安全画面）。
@@ -38,7 +38,7 @@ module fault_manager #(
 
     // ---- 输出 ----
     output reg  [7:0]  fault_code,      // 首因对外主码
-    output reg  [2:0]  fault_level,     // 首因等级
+    output reg  [2:0]  fault_level,     // 当前最高等级；主码和时刻仍保留首因
     output reg         fault_valid,     // 首因已锁存
     output reg         fatal,           // FATAL 锁存（只由全局复位清除）
     output reg  [31:0] fault_ts,        // 首因时刻（ms）
@@ -55,7 +55,9 @@ module fault_manager #(
 
     reg [31:0] ms_cnt;
     reg [31:0] ts_now;
-    wire can_clear = recover_ack & ~fatal & ~media_fatal;
+    // The watchdog timeout is sticky and clears on THIS same recover_ack edge.
+    // Requiring its old value to be zero would deadlock the paired clear.
+    wire can_clear = recover_ack & ~fatal & ~media_fatal & ~err_push;
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin ms_cnt <= 32'd0; ts_now <= 32'd0; end
@@ -70,6 +72,7 @@ module fault_manager #(
         end else begin
             media_rst_req <= 1'b0;
             if (media_fatal) fatal <= 1'b1;   // FATAL 只由全局复位清除
+            if (err_push && err_level==LV_FATAL) fatal <= 1'b1;
 
             if (can_clear) begin
                 // 恢复条件成对：清首因锁存 + 请求只复位媒体链
@@ -89,6 +92,10 @@ module fault_manager #(
                 end
             end else if (media_fatal) begin
                 fault_level <= LV_FATAL;      // 已锁存原因升级为 FATAL，码不覆盖
+            end else if (wdt_timeout && fault_level<LV_SAFE) begin
+                fault_level<=LV_SAFE;
+            end else if (err_push && err_level>fault_level) begin
+                fault_level<=err_level;
             end
         end
     end

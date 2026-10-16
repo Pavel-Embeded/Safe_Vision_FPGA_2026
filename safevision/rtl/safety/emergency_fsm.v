@@ -158,7 +158,7 @@ module emergency_fsm (
                 end
 
                 S_FAIL_SAFE: begin
-                    if (recover_ack && media_selftest_ok) begin
+                    if (recover_ack && media_selftest_ok && !fatal) begin
                         reason_latch <= `ERR_NONE;            // 清 fault_reason 锁存
                         evt_fire     <= 1'b0;
                         dir_hold     <= 2'd0;
