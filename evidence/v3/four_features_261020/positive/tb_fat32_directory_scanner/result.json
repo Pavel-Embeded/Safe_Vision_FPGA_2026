@@ -1,0 +1,11 @@
+{
+  "top": "tb_fat32_directory_scanner",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 57,
+  "elapsed_s": 15.016,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_fat32_directory_scanner\\sim\\tb_fat32_directory_scanner"
+}

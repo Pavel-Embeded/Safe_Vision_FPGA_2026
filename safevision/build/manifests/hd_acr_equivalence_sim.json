@@ -1,0 +1,10 @@
+{
+  "sources": [
+    "safevision/rtl/hd/hdmi_acr.v",
+    "safevision/verification/models/hd_acr_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_hd_acr_equivalence"
+  ],
+  "defines": []
+}

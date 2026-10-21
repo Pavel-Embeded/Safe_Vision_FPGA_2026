@@ -130,7 +130,10 @@ module v3_file_streamer_compact_ctx (
     reg  [31:0] cnt;            // 已发出字节数
     reg  [31:0] fsize;          // 本文件目标字节数
     reg         stop_pending;   // 字节数够了：本扇区收完就收工
-    reg  [31:0] to_cnt;
+    // Every counting state exits or clears at SD_TO_DATA. The last
+    // scheduled increment can reach SD_TO_DATA+1, which this width retains.
+    localparam integer TO_W=$clog2(`SD_TO_DATA+32'd2);
+    reg [TO_W-1:0] to_cnt;
 
     assign idle_between_sectors = (mstate == F_SEC_REQ) && !valid;
     assign sd_data_ready = (mstate == F_SEC_RECV) && !valid;   // 手里端着字节就不再向上游要
@@ -144,6 +147,14 @@ module v3_file_streamer_compact_ctx (
     // rotating persistent state. The caller must gate SD during SAVE/LOAD.
     assign context_out={wk_cur_clus,cur_lba,sec_in_clus,cnt,fsize};
     assign bytes_rd=cnt;
+    // Exact modular FAT32 LBA: (cluster-2)*SPC+base = cluster*SPC+
+    // (base-2*SPC). Move the subtract away from the selected cluster path.
+    // Invalid SPC still maps to base because cluster_sectors returns zero.
+    wire [31:0] cluster_argument=(mstate==F_IDLE)?first_clus:wk_next_clus;
+    wire cluster_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0);
+    (* use_ripple=1 *) wire [31:0] cluster_lba_bias=data_start_lba-(cluster_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
+    wire[31:0] cluster_offset=cluster_sectors(cluster_argument,sec_per_clus);
+    (* use_ripple=1 *) wire[31:0] next_cluster_lba=cluster_lba_bias+cluster_offset;
     wire [31:0] next_count=cnt+32'd1;
     wire last_file_byte=next_count==fsize;
     always @(posedge clk or negedge rst_n) begin
@@ -213,7 +224,7 @@ module v3_file_streamer_compact_ctx (
 
                     fsize        <= file_size;
 
-                    cur_lba      <= data_start_lba + cluster_sectors(first_clus-32'd2,sec_per_clus);
+                    cur_lba      <= next_cluster_lba;
                     sec_in_clus  <= 8'd0;
                     bcnt         <= 9'd0;
                     stop_pending <= 1'b0;
@@ -308,8 +319,7 @@ module v3_file_streamer_compact_ctx (
                     end else begin
 
                         wk_cur_clus <= wk_next_clus;
-                        cur_lba     <= data_start_lba +
-                                       cluster_sectors(wk_next_clus-32'd2,sec_per_clus);
+                        cur_lba     <= next_cluster_lba;
                         sec_in_clus <= 8'd0;
                         to_cnt      <= 32'd0;
                         mstate      <= F_SEC_REQ;

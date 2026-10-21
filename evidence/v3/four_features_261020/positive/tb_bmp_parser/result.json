@@ -1,0 +1,11 @@
+{
+  "top": "tb_bmp_parser",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 41,
+  "elapsed_s": 8.0,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_bmp_parser\\sim\\tb_bmp_parser"
+}

@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "safevision/rtl/common/sync_fifo.v",
+    "safevision/rtl/common/uart_rx.v",
+    "safevision/rtl/common/uart_tx.v",
+    "safevision/rtl/control/v3_command_parser.v",
+    "safevision/rtl/hd/v3_command_parser_catalog.v",
+    "safevision/rtl/hd/v3_uart_link.v",
+    "safevision/verification/models/v3_uart_formatter_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_hd_uart_formatter_equivalence"
+  ],
+  "test_sources": {
+    "tb_v3_hd_uart_formatter_equivalence": [
+      "safevision/verification/unit/tb_v3_hd_uart_formatter_equivalence.sv"
+    ]
+  },
+  "timeouts": {
+    "tb_v3_hd_uart_formatter_equivalence": 1800
+  }
+}

@@ -1,4 +1,4 @@
-"""Compare all 3072 graphics/command ROM bytes with mapped initialization bits."""
+"""Check every graphics/catalog ROM data bit, including ninth-bit descriptors."""
 import argparse,hashlib,json,re,sys
 from pathlib import Path
 def check_roms(text,root):
@@ -6,16 +6,32 @@ def check_roms(text,root):
  for m in re.finditer(r'EG_PHY_BRAM\s*#\((.*?)\)\s+(\\[^\s]+|[\w$]+)\s*\(',text,re.S):
   if not any(prefix in m[2] for prefix in ('video/graphics/','uart/g_catalog/parser/','uart/g_catalog$parser/')):continue
   blocks={int(k,16):int(v,16).to_bytes(32,'little') for k,v in re.findall(r'\.INIT_([0-9A-Fa-f]{2})\(256\s*\x27h([0-9A-Fa-f]{64})\)',m[1])}
-  if set(blocks)==set(range(32)):mapped.append((m[2],b''.join(blocks[i] for i in range(32))))
+  parity={int(k,16):int(v,16).to_bytes(32,'little') for k,v in re.findall(r'\.INITP_([0-9A-Fa-f]{2})\(256\s*\x27h([0-9A-Fa-f]{64})\)',m[1])}
+  widths=re.findall(r'\.DATA_WIDTH_[AB]\("([0-9]+)"\)',m[1])
+  if set(blocks)==set(range(32))and set(parity)==set(range(4)):
+   mapped.append((m[2],b''.join(blocks[i] for i in range(32)),b''.join(parity[i]for i in range(4)),widths))
  result=[]
- for rel in ('fonts/font8x16_compact.mem','fonts/v3_status_text.mem','control/v3_command_catalog.mem'):
+ top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text(encoding='utf-8')
+ selected=re.findall(r'\.STATUS_TEXT_FILE\("\.\./\.\./assets/fonts/([a-zA-Z0-9_]+\.mem)"\)',top)
+ if selected not in ([],['v3_handbook_status_text.mem']):raise ValueError('unreviewed/ambiguous production status ROM selection')
+ status='fonts/'+(selected[0] if selected else 'v3_status_text.mem')
+ layer=(root/'safevision/rtl/video/v3_status_layers.v').read_text(encoding='utf-8-sig')
+ descriptor='DESCRIPTOR_TEXT=USER_FEATURES&&HANDBOOK_PROFILE'in layer
+ if descriptor:
+  if '.USER_FEATURES(1)'not in top or '.HANDBOOK_PROFILE(1)'not in top:raise ValueError('descriptor ROM requires explicit production USER_FEATURES and HANDBOOK_PROFILE')
+  status='fonts/v3_four_features_text.mem'
+ for rel in ('fonts/font8x16_compact.mem',status,'control/v3_command_catalog.mem'):
   path=root/'safevision/assets'/rel;name=path.name
   tokens=path.read_text(encoding='utf-8-sig').split()
-  expected=bytes(int(token,16) for token in tokens)
+  values=[int(token,16) for token in tokens]
+  is_descriptor=descriptor and rel==status
+  if any(v<0 or v>511 if is_descriptor else v<0 or v>255 for v in values):raise ValueError('ROM word exceeds reviewed width: '+name)
+  expected=bytes(v&255 for v in values)
   if len(expected)!=1024:raise ValueError('ROM length is not 1024 bytes: '+name)
-  matches=[n for n,data in mapped if data==expected]
+  expected_parity=sum(((v>>8)&1)<<i for i,v in enumerate(values)).to_bytes(128,'little')
+  matches=[n for n,data,parity,widths in mapped if data==expected and parity==expected_parity and (not is_descriptor or widths==['9','9'])]
   if len(matches)!=1:raise ValueError('mapped ROM content missing/corrupt/duplicated: '+name)
-  result.append({'asset':name,'mapped_instance':matches[0],'bytes_compared':1024,'payload_sha256':hashlib.sha256(expected).hexdigest()})
+  result.append({'asset':name,'mapped_instance':matches[0],'bytes_compared':1024,'parity_bits_compared':1024,'logical_bits':9216 if is_descriptor else 8192,'payload_sha256':hashlib.sha256(expected+expected_parity).hexdigest()})
  return result
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--netlist',type=Path,required=True);ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()

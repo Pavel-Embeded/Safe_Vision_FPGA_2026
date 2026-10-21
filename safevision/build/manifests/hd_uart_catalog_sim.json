@@ -1,0 +1,47 @@
+{
+  "sources": [
+    "safevision/rtl/common/sync_fifo.v",
+    "safevision/rtl/common/error_report.v",
+    "safevision/rtl/hd/media_recovery_ctrl.v",
+    "safevision/rtl/hd/alpha_blend.v",
+    "safevision/rtl/video/video_compositor/color_adjust.v",
+    "safevision/rtl/video/video_compositor/fade_ctrl.v",
+    "safevision/rtl/video/scaler/scaler_coords.v",
+    "safevision/rtl/video/scaler/scaler_bilinear.v",
+    "safevision/rtl/audio/audio_energy.v",
+    "safevision/rtl/hd/hdmi_acr.v",
+    "safevision/rtl/common/uart_rx.v",
+    "safevision/rtl/control/v3_command_parser.v",
+    "safevision/rtl/control/input_sync.v",
+    "safevision/rtl/control/key_debounce.v",
+    "safevision/rtl/control/v3_user_controls.v",
+    "safevision/rtl/hd/v3_row_integrity.v",
+    "safevision/rtl/common/uart_tx.v",
+    "safevision/rtl/hd/v3_uart_link.v",
+    "safevision/rtl/common/crc16_ccitt.v",
+    "safevision/rtl/storage/spi_master.v",
+    "safevision/rtl/storage/sd_sector_reader.v",
+    "safevision/rtl/storage/sd_checked_sector_reader.v",
+    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/rtl/storage/fat32_directory_scanner.v",
+    "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
+    "safevision/rtl/hd/v3_command_parser_catalog.v"
+  ],
+  "tops": [
+    "tb_v3_hd_uart_link_catalog"
+  ],
+  "assets": [
+    "safevision/verification/fixtures/alpha_golden.mem",
+    "safevision/verification/fixtures/scaler_golden.mem",
+    "safevision/verification/fixtures/row_crc_golden.mem",
+    "safevision/assets/control/v3_command_catalog.mem"
+  ],
+  "test_sources": {
+    "tb_v3_hd_uart_link_catalog": [
+      "safevision/verification/unit/tb_v3_hd_uart_link_catalog.sv"
+    ]
+  },
+  "timeouts": {
+    "tb_v3_hd_uart_link_catalog": 1800
+  }
+}

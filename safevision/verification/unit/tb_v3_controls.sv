@@ -1,13 +1,13 @@
 `timescale 1ns/1ps
 module tb_v3_controls;
- reg clk=0;always #5 clk=~clk;reg rst=0,n=1,a=1,e=1,cv=0,cq=0,busy=0,cached=1,commit=0;
+ reg clk=0;always #5 clk=~clk;reg rst=0,n=1,a=1,e=1,cv=0,cq=0,busy=0,cached=1,commit=0,system_safe=0;
  reg[7:0] target=65;reg[95:0] name=0;reg signed[31:0] value=0;
  wire next,auto_on,safe,recover,reply,bi,fit,fade,menu,tick;wire[7:0] code,contrast,alpha;
  wire signed[8:0] brightness;wire signed[31:0] result;wire[6:0] volume;wire[1:0] period;wire[2:0] field;
- v3_user_controls #(.CLK_HZ(100),.DEBOUNCE(3)) dut(
+ v3_user_controls #(.CLK_HZ(100),.DEBOUNCE(3),.SYSTEM_SAFE_ENABLE(1)) dut(
  .clk(clk),.rst_n(rst),.next_async(n),.auto_async(a),.emergency_async(e),
  .command_valid(cv),.command_target(target),.command_name(name),.command_value(value),.command_query(cq),
- .cached(cached),.transition_busy(busy),.frame_commit(commit),.next_request(next),.auto_enabled(auto_on),
+ .cached(cached),.system_safe(system_safe),.transition_busy(busy),.frame_commit(commit),.next_request(next),.auto_enabled(auto_on),
  .safety(safe),.recover_request(recover),.reply_valid(reply),.reply_code(code),.reply_value(result),
  .brightness(brightness),.contrast(contrast),.osd_alpha(alpha),.bilinear(bi),.fit(fit),.fade_enabled(fade),
  .volume(volume),.period_select(period),.menu(menu),.field(field),.auto_tick(tick));
@@ -47,6 +47,11 @@ module tb_v3_controls;
  waitn(220);ck(ticks==1,"emergency suspends auto countdown");
  e=1;waitn(12);command(67,"AUTO",0,0);cached=0;
  n=0;waitn(12);n=1;waitn(12);ck(recoveries==1,"next requests recovery when media not ready");
+ cached=1;system_safe=1;busy=1;
+ n=0;waitn(12);n=1;waitn(12);
+ ck(recoveries==2 && nexts==1,"KEY2 requests recovery for a latched system fault even with all caches valid");
+ system_safe=0;busy=0;n=0;waitn(12);n=1;waitn(12);
+ ck(recoveries==2 && nexts==2,"healthy KEY2 remains next, with no accidental recovery");
  $display("PASS tb_v3_controls errors=%0d",errors);$finish;
  end
  initial begin #100000;$display("[FAIL] global timeout");$finish;end

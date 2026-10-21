@@ -1,0 +1,11 @@
+{
+  "top": "tb_frame_writer",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 28,
+  "elapsed_s": 10.968,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_frame_writer\\sim\\tb_frame_writer"
+}

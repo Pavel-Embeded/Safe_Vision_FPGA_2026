@@ -1,0 +1,57 @@
+{
+  "sources": [
+    "safevision/rtl/common/crc16_ccitt.v",
+    "safevision/rtl/storage/spi_master.v",
+    "safevision/rtl/storage/sd_initializer.v",
+    "safevision/rtl/storage/sd_sector_reader.v",
+    "safevision/rtl/storage/sd_checked_sector_reader.v",
+    "safevision/rtl/storage/v3_spi_cs_guard.v",
+    "safevision/rtl/storage/mbr_parser.v",
+    "safevision/rtl/storage/fat32_boot_parser.v",
+    "safevision/rtl/storage/fat32_directory_scanner.v",
+    "safevision/rtl/storage/fat32_cluster_walker.v",
+    "safevision/rtl/storage/file_streamer.v",
+    "safevision/rtl/storage/file_index.v",
+    "safevision/rtl/media/bmp_parser.v",
+    "safevision/rtl/media/bmp_unpack.v",
+    "safevision/rtl/memory/frame_address_gen.v",
+    "safevision/rtl/memory/frame_writer.v",
+    "safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+    "safevision/rtl/storage/sd_bmp_player.v",
+    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/rtl/memory/v3_row_integrity.v",
+    "safevision/rtl/storage/v3_wav_source.v",
+    "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
+    "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+    "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+    "safevision/rtl/storage/v3_shared_fs_service.v",
+    "safevision/rtl/media/v3_bmp_normalizer.v"
+  ],
+  "tops": [
+    "tb_v3_shared_storage_spi25"
+  ],
+  "generators": {
+    "tb_v3_shared_storage_spi25": "safevision/verification/fixtures/generate_shared_storage.py"
+  },
+  "timeouts": {
+    "tb_v3_shared_storage_spi25": 10800
+  },
+  "generator_dependencies": [
+    "safevision/verification/fixtures/generate_resident_card.py"
+  ],
+  "generated_assets": [
+    "resident_card.mem",
+    "expected0.mem",
+    "expected1.mem",
+    "expected2.mem",
+    "expected3.mem",
+    "lifecycle_pcm.mem",
+    "lifecycle_fixture.json"
+  ],
+  "source_scope": "Explicit active shared-storage hierarchy, including legacy instances still elaborated under shared-service defaults. No audio renderer/priority/volume, scheduler, HDMI packet FIFO, video renderer, SDRAM-controller or board-top verification is claimed by this test.",
+  "wall_timeout_note": "Allow native XSim wall time for 185000000 unchanged testbench cycles and all original data checks. Wall timeout is not a functional acceptance condition."
+}

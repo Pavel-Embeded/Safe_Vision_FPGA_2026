@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_waveform193",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 208915,
+  "elapsed_s": 9.828,
+  "suite": "waveform193",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq200\\p\\tb_v3_waveform193\\sim\\tb_v3_waveform193"
+}

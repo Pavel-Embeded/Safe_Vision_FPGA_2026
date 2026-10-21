@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_resident",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 12,
+  "data_comparisons": 614400,
+  "elapsed_s": 1162.046,
+  "suite": "media",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_resident\\sim\\tb_v3_resident"
+}

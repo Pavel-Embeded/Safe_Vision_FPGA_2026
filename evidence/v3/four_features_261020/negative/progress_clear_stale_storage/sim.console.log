@@ -1,0 +1,40 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_hd_progress_clear/xsim_script.tcl
+# xsim {tb_v3_hd_progress_clear} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] published progress L=1 D=2 got=1 want=0
+[FAIL] published progress L=2 D=2 got=1 want=0
+[FAIL] published progress L=2 D=2 got=2 want=1
+[FAIL] published progress L=2 D=2 got=2 want=1
+[FAIL] published progress L=1 D=2 got=1 want=0
+[FAIL] published progress L=2 D=2 got=2 want=0
+[FAIL] published progress L=2 D=2 got=2 want=1
+[FAIL] published progress L=3 D=10 got=3 want=0
+[FAIL] published progress L=3 D=10 got=3 want=1
+[FAIL] published progress L=3 D=10 got=3 want=1
+[FAIL] published progress L=3 D=10 got=3 want=1
+[FAIL] published progress L=3 D=10 got=3 want=1
+[FAIL] published progress L=255 D=2 got=1 want=0
+[FAIL] published progress L=255 D=2 got=2 want=1
+[FAIL] published progress L=255 D=2 got=2 want=1
+[FAIL] published progress L=255 D=2 got=3 want=2
+[FAIL] published progress L=255 D=2 got=3 want=2
+[FAIL] published progress L=1 D=2 got=1 want=0
+[FAIL] published progress L=1 D=2 got=1 want=0
+[FAIL] published progress L=1 D=2 got=1 want=0
+[FAIL] published progress L=500 D=10 got=25 want=0
+[FAIL] published progress L=500 D=10 got=26 want=1
+[FAIL] published progress L=500 D=10 got=26 want=1
+[FAIL] published progress L=500 D=10 got=26 want=1
+[FAIL] published progress L=500 D=10 got=26 want=1
+[TB] tb_v3_hd_progress_clear done errors=29239 comparisons=175343
+$finish called at time : 250422 ns : File "D:/Codex/svq237/source/safevision/verification/unit/tb_v3_hd_progress_clear.sv" Line 35
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 12:33:15 2026...

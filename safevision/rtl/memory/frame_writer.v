@@ -58,7 +58,8 @@ module frame_writer #(
     parameter integer SAMPLE_STRIDE  = 1024,            // 每 1024 word 取一个抽样点
     parameter [31:0] GAP_TIMEOUT     = 32'd512,         // clocks; override for SD streaming latency
     parameter [31:0] SLOT_SPAN       = `SV_IMG_ALIGN_BYTES,     // 单槽预留（§5 地址表）
-    parameter [31:0] MEM_VISIBLE     = `SV_MEM_VISIBLE_BYTES    // SDRAM 对外可见容量 4 MiB（§3.4）
+    parameter [31:0] MEM_VISIBLE     = `SV_MEM_VISIBLE_BYTES,    // SDRAM 对外可见容量 4 MiB（§3.4）
+    parameter integer EXACT_SAMPLE_COMPARE=0
 )(
     input  wire        clk,             // mem_clk
     input  wire        rst_n,
@@ -115,13 +116,14 @@ module frame_writer #(
     reg [9:0]  y_cnt;         // 当前 word 对应像素对的 y
     reg [31:0] src_idx;       // 已打包 word 数（源侧）
     reg [31:0] bus_idx;       // 已写出 word 数（总线侧）
+    (* preserve="true",keep="true" *)reg sample_mismatch;
     reg [15:0] crc_src;       // 源侧抽样 CRC
     reg [15:0] crc_bus;       // 总线侧抽样 CRC
     reg        wr_pending;    // 有一个 word 待写出
     reg [31:0] wr_addr_r;
-    reg [31:0] wr_data_r;
+    (* preserve="true",keep="true" *)reg [31:0] wr_data_r;
     reg        crc_src_pend;  // CRC 源侧提交事件（迟一拍结算，见下方时序说明）
-    reg [31:0] crc_pair_q;    // 与事件对齐锁存的像素对载荷
+    (* preserve="true",keep="true" *)reg [31:0] crc_pair_q;    // 与事件对齐锁存的像素对载荷
     localparam integer GAP_W = (GAP_TIMEOUT < 2) ? 1 : $clog2({1'b0,GAP_TIMEOUT}+33'd1);
     reg [GAP_W-1:0] gap_cnt;  // minimal width, including SD latency >65535 clocks
 
@@ -186,10 +188,21 @@ module frame_writer #(
     //   → crc_src.d）深度不变，且输入从输入脚/lo_pix 换成寄存器只会更短。
     //   语义不变：配对完成间隔 ≥2 拍（have_lo 翻转），迟一拍不丢提交；帧满
     //   结算最早在提交后第 2 个边沿读 crc_src（wr_pending 先占用 1 拍），余 1 拍。
+    // Legacy clients retain their exact CRC16-source behavior. Resident
+    // loading compares the two independently captured sampled WORDS instead:
+    // equality is stronger than equality of16-bit CRCs and cannot collide.
+    // The bus CRC16 output remains unchanged for clients which observe it;
+    // unused CRC logic can be pruned in the production sink.
+    generate if(!EXACT_SAMPLE_COMPARE)begin:legacy_source_crc
     crc16_ccitt u_crc_src_0 (.crc_in(crc_src),    .data(crc_pair_q[31:24]), .crc_out(crc_src_w1));
     crc16_ccitt u_crc_src_1 (.crc_in(crc_src_w1), .data(crc_pair_q[23:16]), .crc_out(crc_src_w2));
     crc16_ccitt u_crc_src_2 (.crc_in(crc_src_w2), .data(crc_pair_q[15:8]),  .crc_out(crc_src_w3));
     crc16_ccitt u_crc_src_3 (.crc_in(crc_src_w3), .data(crc_pair_q[7:0]),   .crc_out(crc_src_next));
+    end else begin:exact_source_sample
+      assign crc_src_next=16'd0;
+    end endgenerate
+    wire sample_check_ok=EXACT_SAMPLE_COMPARE?!sample_mismatch:(crc_src==crc_bus);
+
 
     // ------------------------------------------------------------------------
     // 主状态机
@@ -205,7 +218,7 @@ module frame_writer #(
             y_cnt      <= 10'd0;
             src_idx    <= 32'd0;
             bus_idx    <= 32'd0;
-            crc_src    <= 16'd0;
+            crc_src    <= 16'd0;sample_mismatch<=0;
             crc_bus    <= 16'd0;
             wr_pending <= 1'b0;
             wr_addr_r  <= 32'd0;
@@ -228,7 +241,7 @@ module frame_writer #(
 
             // ---- CRC 源侧：迟一拍提交（时序切分，见 crc_src_next 处说明）----
             // 先消费后登记（源序）：即便消费与新登记同拍，后者也不会被吞掉。
-            if (crc_src_pend) begin
+            if (!EXACT_SAMPLE_COMPARE && crc_src_pend) begin
                 crc_src      <= crc_src_next;
                 crc_src_pend <= 1'b0;
             end
@@ -255,7 +268,7 @@ module frame_writer #(
                             y_cnt      <= 10'd0;
                             src_idx    <= 32'd0;
                             bus_idx    <= 32'd0;
-                            crc_src    <= 16'd0;
+                            crc_src    <= 16'd0;sample_mismatch<=0;
                             crc_bus    <= 16'd0;
                             wr_pending <= 1'b0;
                             gap_cnt    <= 16'd0;
@@ -276,8 +289,10 @@ module frame_writer #(
                     //     清零/记账放在状态机逻辑的最前面，对所有分支生效
                     if (wr_accept) begin
                         wr_pending <= 1'b0;
-                        if ((bus_idx % SAMPLE_STRIDE) == 0)
+                        if ((bus_idx % SAMPLE_STRIDE) == 0)begin
                             crc_bus <= crc_bus_next;
+                            if(EXACT_SAMPLE_COMPARE && wr_data_r!==crc_pair_q)sample_mismatch<=1;
+                        end
                         bus_idx <= bus_idx + 32'd1;
                     end
 
@@ -309,7 +324,7 @@ module frame_writer #(
                                 // ★ 抽样命中：不再就地算 crc_src，改为登记
                                 //   "事件 + 载荷"、下一拍由块首的消费逻辑结算
                                 //   （时序理由与等价性见 crc_src_next 处说明）
-                                if ((src_idx % SAMPLE_STRIDE) == 0) begin
+                                if (((EXACT_SAMPLE_COMPARE?bus_idx:src_idx) % SAMPLE_STRIDE) == 0) begin
                                     crc_src_pend <= 1'b1;
                                     crc_pair_q   <= px_pair;
                                 end
@@ -337,8 +352,8 @@ module frame_writer #(
                         end else begin
                             // 正好 307200 像素且全部写出：结算抽样 CRC
                             crc_value <= crc_bus;
-                            crc_ok    <= (crc_src == crc_bus);
-                            if (crc_src == crc_bus) begin
+                            crc_ok    <= sample_check_ok;
+                            if (sample_check_ok) begin
                                 // ★ 只有"整帧写完 + CRC 通过"两件事都成立才置位
                                 slot_valid[slot_sel_q] <= 1'b1;
                                 wr_done   <= 1'b1;

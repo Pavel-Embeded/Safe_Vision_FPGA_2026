@@ -1,0 +1,32 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 17:55:11 2026
+# Process ID: 43536
+# Current directory: D:/Codex/svq416/p/tb_memory_arbiter/sim/tb_memory_arbiter
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_memory_arbiter/xsim_script.tcl}
+# Log file: D:/Codex/svq416/p/tb_memory_arbiter/sim/tb_memory_arbiter/sim.log
+# Journal file: D:/Codex/svq416/p/tb_memory_arbiter/sim/tb_memory_arbiter\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_memory_arbiter/xsim_script.tcl
+# xsim {tb_memory_arbiter} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+==== й¶ж®µ Aпјљд»ІиЈЃе™Ё ====
+  rd_words=2035  wr_bursts=34  sd_bursts=10  consec max: rd=4 wr=1 sd=1
+[PASS] яяязяяя®яяяђяя€>=10 яяязяяяЏяяя‰
+[PASS] яяяжяяя»яяя›яяяпя€>=1000 worяяя‰
+[PASS] granяяяїяяя­яяяеяяя•яяяЌяяяия‡ N
+[PASS] granяяяїяяя­яяяеяяя•яяяЌяяяия‡ N
+[PASS] granяяяїяяя­яяяеяяя•яяяЌяяяия‡ N
+[PASS] ARB: rd_starve_cnt == 0
+[PASS] ve_cnt =яяяпяяяёяяя™яяяйяяя­яяя‰
+========================================
+  PASS = 7   FAIL = 0
+========================================
+[RESULT] ALL PASS
+$finish called at time : 30135 ns : File "D:/Codex/svq416/source/safevision/verification/unit/tb_memory_arbiter.sv" Line 196
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:55:15 2026...

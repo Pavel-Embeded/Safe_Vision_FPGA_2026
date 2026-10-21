@@ -7,7 +7,7 @@
 // commit_valid is retained until commit_ready. slot/generation change atomically.
 // Only matching-generation samples can reach the output; mismatches drain at
 // AUDIO clock speed. A missing/invalid WAV selects the same ROM as a quiet fallback.
-module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_SERVICE=0)(
+module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_SERVICE=0,MEDIA_RESET_INCLUDES_GLOBAL=0,HANDBOOK_PROFILE=0)(
  input wire ref_clk,mem_clk,audio_clk,pixel_clk,sys_clk,rst_n,media_reset,
  input wire external_service_ready,output wire[444:0] core_cmd,input wire[836:0] core_rsp,
  input wire mounted,cache_ready,input wire [63:0] cache_keys,input wire [7:0] sec_per_clus,
@@ -34,7 +34,9 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  v3_audio_reset_release ga(.clk(audio_clk),.assert_reset(!rst_n),.rst_n(audio_global_rst_n));
  v3_audio_reset_release gp(.clk(pixel_clk),.assert_reset(!rst_n),.rst_n(pixel_global_rst_n));
  v3_audio_reset_release gs(.clk(sys_clk),.assert_reset(!rst_n),.rst_n(sys_global_rst_n));
- wire media_reset_any=!rst_n||media_reset;wire sys_media_rst_n;
+ // Board mode receives the single canonical raw media epoch, including global reset.
+ // Local two-stage releases and all data-path reset timing remain in place.
+ (* keep="true" *) wire media_reset_any=MEDIA_RESET_INCLUDES_GLOBAL?media_reset:(!rst_n||media_reset);wire sys_media_rst_n;
  v3_audio_reset_release sm(.clk(sys_clk),.assert_reset(media_reset_any),.rst_n(sys_media_rst_n));
  (* async_reg="true" *) reg [1:0] rr,mr,ar;
  always @(posedge ref_clk or posedge media_reset_any)if(media_reset_any)rr<=0;else rr<={rr[0],1'b1};
@@ -159,8 +161,8 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  assign pcm_valid=pixel_valid;assign left=pcm_pixel[23:0];assign right=pcm_pixel[47:24];
  hdmi_acr acr(.pixel_clk(pixel_clk),.rst_n(pixel_global_rst_n),.sample_valid(pixel_valid),.valid(acr_valid),.cts(CTS),.n(N));
  wire [6:0] energy_audio;wire energy_update;
- audio_energy meter(.clk(audio_clk),.rst_n(audio_global_rst_n),.sample_valid(scaled_valid),
- .pcm_l(pcm_scaled[23:8]),.pcm_r(pcm_scaled[47:32]),.energy(energy_audio),.update(energy_update));
+ audio_energy #(.HANDBOOK_PROFILE(HANDBOOK_PROFILE)) meter(.clk(audio_clk),.rst_n(audio_global_rst_n),.sample_valid(HANDBOOK_PROFILE?mix_valid:scaled_valid),
+ .pcm_l(HANDBOOK_PROFILE?mix_l[23:8]:pcm_scaled[23:8]),.pcm_r(HANDBOOK_PROFILE?mix_r[23:8]:pcm_scaled[47:32]),.energy(energy_audio),.update(energy_update));
  wire [70:0] status_sys;wire status_valid;
  video_cdc_mailbox #(.WIDTH(71)) status_to_sys(.src_clk(audio_clk),.src_rst_n(audio_global_rst_n),
  .src_data({energy_audio,underflow_audio,pixel_overflows}),.src_valid(1'b1),

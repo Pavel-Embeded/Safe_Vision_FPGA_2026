@@ -1,0 +1,23 @@
+{
+  "mutation": "controls_button_offset_corrupt",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "handbook",
+  "top": "tb_v3_handbook_controls",
+  "patch": [
+    {
+      "before": "button_bright_up=$signed({1'b0,brightness_pct,1'b0})-9'sd90;",
+      "after": "button_bright_up=$signed({1'b0,brightness_pct,1'b0})-9'sd88;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\controls_button_offset_corrupt",
+  "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "mutated_sha256": "66107be0c4bf0229d3bfb4140d06e9dcc54486adeb47a759f53f501113733e71",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\controls_button_offset_corrupt\\sim\\tb_v3_handbook_controls"
+}

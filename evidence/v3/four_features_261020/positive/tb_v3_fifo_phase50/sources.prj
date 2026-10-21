@@ -1,0 +1,6 @@
+"D:/Codex/svq53/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/memory/sv_async_fifo_hd_phase.v"
+"D:/Codex/svq53/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v"
+"D:/Codex/svq53/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v"
+"D:/Codex/svq53/source/safevision/verification/models/v3_fifo_phase49_reference.sv"
+"D:/Codex/svq53/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo_phase/sv_fifo_phase_ip.v"
+"D:/Codex/svq53/source/safevision/verification/unit/tb_v3_fifo_phase50.sv"

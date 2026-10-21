@@ -1,0 +1,11 @@
+{
+  "defines": [],
+  "sources": [
+    "safevision/rtl/storage/fat32_cluster_walker.v",
+    "safevision/verification/models/v3_fat32_walker_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_walker_assemble_equivalence"
+  ],
+  "assets": []
+}

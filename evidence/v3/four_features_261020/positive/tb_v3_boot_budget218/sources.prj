@@ -1,0 +1,5 @@
+"D:/Codex/svq343/source/safevision/rtl/control/v3_supervisor.v"
+"D:/Codex/svq343/source/safevision/verification/models/v3_supervisor_reference.sv"
+"D:/Codex/svq343/source/safevision/rtl/control/media_recovery_ctrl.v"
+"D:/Codex/svq343/source/safevision/rtl/safety/fault_manager.v"
+"D:/Codex/svq343/source/safevision/verification/unit/tb_v3_boot_budget218.sv"

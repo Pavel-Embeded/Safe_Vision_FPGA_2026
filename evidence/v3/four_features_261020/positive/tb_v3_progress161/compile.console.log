@@ -1,0 +1,7 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svprogress161/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_related_status_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svprogress161/source/safevision/verification/models/v3_progress_fragments161.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_progress_original161
+INFO: [VRFC 10-311] analyzing module v3_progress_reduced161
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svprogress161/source/safevision/verification/unit/tb_v3_progress161.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_progress161

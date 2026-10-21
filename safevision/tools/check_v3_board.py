@@ -68,7 +68,7 @@ def exception_timing(text):
   if float(wns)<0 or float(tns)<0 or int(count):errors.append('negative/violating native exception '+kind+' summary')
  return {'accepted':not errors,'errors':errors,'path_count':len(paths),'paths':paths}
 
-def exception_paths(text,sdc_sources):
+def exception_paths(text,sdc_sources,mid_ref=False):
  """A row-count threshold can hide missing constraints; match each command."""
  from collections import Counter
  rows=[];errors=[]
@@ -77,7 +77,7 @@ def exception_paths(text,sdc_sources):
  # A documented TD PI/PO summary-counter defect has a narrow workaround:
  # complete routed native endpoint/clock/edge-budget witnesses for all eight
  # exact SPI commands. Empty or general zero-hit constraints never qualify.
- spi=spi_edge_witness(text) if any('-to [get_clocks sd_ident] 499' in command for command in expected) else None
+ spi=spi_edge_witness(text,mid_ref=mid_ref) if any('-to [get_clocks sd_ident] 499' in command for command in expected) else None
  if spi and not spi['accepted']:errors.extend('SPI edge witness: '+error for error in spi['errors'])
  witnessed=set(spi['commands']) if spi and spi['accepted'] else set()
  for m in re.finditer(r'^\s*(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(set_(?:max_delay|multicycle_path).*?)\s*$',text,re.M):
@@ -104,7 +104,11 @@ def clock_definition_health(health):
  return errors
 
 def check(folder,repo):
- errors=[];files=['route.timing','route.check','route.area','route.exceptions','constraint.objects.tsv','route.derived.sdc','route.db','gate.netlist.v','route.clocks','final_sta.tcl','final_sta.manifest.json','after_clock_report.check','after_clock_report.timing','after_clock_report.exceptions','inprocess.route.timing','inprocess.route.check','inprocess.route.exceptions']
+ errors=[];files=['route.timing','route.check','route.area','route.exceptions','constraint.objects.tsv','route.derived.sdc','route.db','route.netlist.v','gate.hidden.params','gate.netlist.v','route.clocks','route.hidden.params','final_sta.tcl','final_sta.manifest.json','after_clock_report.check','after_clock_report.timing','after_clock_report.exceptions','inprocess.route.timing','inprocess.route.check','inprocess.route.exceptions']
+ from v3_sources import build_parameters
+ mode=folder.name if folder.name in ('base','hd') else None
+ if any((stage,key)==('place','seed') for stage,key,value in build_parameters(repo,mode)):
+  files.extend(('place.all.params','place.seed.params'))
  for name in files:
   if not (folder/name).is_file() or not (folder/name).stat().st_size:errors.append('missing/nonempty report: '+name)
  result={'status':'FAIL','gate_accepted':False,'timing_passed':False,'errors':errors}
@@ -120,12 +124,18 @@ def check(folder,repo):
  # V3 formal health is captured before the diagnostic clock-tree expansion.
  errors.extend(clock_definition_health(health))
  try:
+  from v3_source_profiles import native_acknowledgement
+  result['native_ordered_source_profile']=native_acknowledgement(repo,folder,folder.name)
   from check_v3_board_reference import check as check_reference
   result['board_reference']=check_reference(repo,area)
+  from check_v3_clock_contract import check as check_clock_contract
+  result['configured_clock_contract']=check_clock_contract(repo)
   from v3_sources import native_parameters
   result['native_parameters']=native_parameters(repo,folder)
   files+=['rtl.params','gate.params','place.params','route.params']
   result['mapped_roms']=check_roms(read_report(folder/'gate.netlist.v'),repo)
+  from check_v3_sample_netlist import check as check_samples
+  result['exact_sample_physical_storage']=check_samples(read_report(folder/'route.netlist.v'))
   from v3_resource_policy import load
   result['resource_policy']=load(repo)
   rg=resource_gate(area,result['resource_policy']);errors.extend(rg.pop('errors'));result.update({k:v for k,v in rg.items() if k!='accepted'})
@@ -156,7 +166,7 @@ def check(folder,repo):
   result['constraint_objects']=objects
   sdc_sources=[(repo/FLOW/name).read_text(encoding='utf-8-sig') for name in ('v3_board.sdc','v3_cdc.sdc')]
   result['native_exception_timing']=exception_timing(exc)
-  rows,path_errors=exception_paths(exc,sdc_sources);errors.extend(path_errors)
+  rows,path_errors=exception_paths(exc,sdc_sources,mid_ref=(budget['sd'].get('miso_sample_edge')=='falling_ref'));errors.extend(path_errors)
   result['actual_exception_paths']=rows
  except (ValueError,KeyError,OSError) as ex:errors.append(str(ex))
  result['reports']=[{'path':str((folder/n).resolve()),'sha256':hashlib.sha256((folder/n).read_bytes()).hexdigest()} for n in files]

@@ -1,0 +1,7 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/handbook_26101801/function_01/negative/parser_timeout_early/mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_command_parser_catalog
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/v3_command_parser_reference.sv" into library work
+INFO: [VRFC 10-311] analyzing module v3_command_parser_reference
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_command_catalog.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_command_catalog
+INFO: [VRFC 10-311] analyzing module parser_timeout_contract

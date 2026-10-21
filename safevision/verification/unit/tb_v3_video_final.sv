@@ -238,6 +238,11 @@ module tb_v3_video_final_model #(parameter HD=0)();
   end
  endtask
  integer wait_count;
+ // Progress is informational; acceptance still requires the existing complete
+ // frame comparisons, zero errors and the normal $finish marker.
+ always begin #50000000;
+  $display("INFO full-video HD=%0d t=%t generation=%0d target=%0d busy=%b",HD,$time,gen,target_gen,busy);
+ end
  initial begin
   cfg[86:79]=128;cfg[78:71]=160;cfg[69]=1;cfg[68]=1;cfg[67:61]=80;
   #100;rst=1;update_cfg();

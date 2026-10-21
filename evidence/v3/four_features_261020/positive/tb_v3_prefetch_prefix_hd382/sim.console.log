@@ -1,0 +1,16 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_prefetch_prefix_hd382/xsim_script.tcl
+# xsim {tb_v3_prefetch_prefix_hd382} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] all32-bit prefix classes, every increment, carry threshold witnesses and100k random addresses; exact modular wrap and capacity test
+[TB] tb_v3_prefetch_prefix_hd382 done errors=0 comparisons=765600
+$finish called at time : 765600 ns : File "D:/Codex/svq416/source/safevision/verification/unit/tb_v3_prefetch_prefix_hd382.sv" Line 23
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:58:26 2026...

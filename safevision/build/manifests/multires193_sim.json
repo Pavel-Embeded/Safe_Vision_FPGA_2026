@@ -1,0 +1,9 @@
+{
+  "sources": [
+    "safevision/rtl/media/bmp_parser.v",
+    "safevision/rtl/media/v3_bmp_normalizer.v"
+  ],
+  "tops": [
+    "tb_v3_multires193"
+  ]
+}

@@ -1,0 +1,5 @@
+"D:/Codex/svq237/source/safevision/rtl/video/graphics_rom/font8x16_rom.v"
+"D:/Codex/svq237/source/safevision/rtl/video/osd_overlay/osd_text_layer.v"
+"D:/Codex/svq237/source/safevision/rtl/video/v3_status_layers.v"
+"D:/Codex/svq237/source/safevision/rtl/video/v3_pcm_waveform.v"
+"D:/Codex/svq237/source/safevision/verification/unit/tb_v3_status_layers.sv"

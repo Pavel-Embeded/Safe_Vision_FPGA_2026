@@ -24,7 +24,11 @@
 `include "safevision_defs.vh"
 
 module spi_master #(
-    parameter integer CLK_FREQ = 100_000_000
+    parameter integer CLK_FREQ = 100_000_000,
+    // Opt-in board profile: allow divider zero; sample MISO on falling REF
+    // 10ns after forwarded SCLK rises, 30ns after its previous falling edge.
+    // Default keeps the historical clamped divider and rising-REF sampling.
+    parameter integer MID_REF_SAMPLE = 0
 )(
     input  wire        clk,
     input  wire        rst_n,           // 同步复位，低有效
@@ -72,6 +76,21 @@ module spi_master #(
     assign busy     = (state == S_XFER);
     assign tx_ready = (state == S_IDLE);
 
+    wire sample_now = (state == S_XFER) && (div_cnt == div_r) && !sclk_r;
+    reg sample_pending;
+    always @(posedge clk or negedge rst_n)
+        if (!rst_n) sample_pending <= 1'b0;
+        else sample_pending <= sample_now;
+    generate if (MID_REF_SAMPLE) begin: delayed_miso
+        always @(negedge clk or negedge rst_n)
+            if (!rst_n) rx_sr <= 8'h00;
+            else if (sample_pending) rx_sr <= {rx_sr[6:0], miso};
+    end else begin: legacy_miso
+        always @(posedge clk or negedge rst_n)
+            if (!rst_n) rx_sr <= 8'h00;
+            else if (sample_now) rx_sr <= {rx_sr[6:0], miso};
+    end endgenerate
+
     // ------------------------------------------------------------------------
     // 主状态机
     // ------------------------------------------------------------------------
@@ -83,7 +102,7 @@ module spi_master #(
             div_cnt  <= 8'd0;
             half_cnt <= 4'd0;
             tx_sr    <= 8'hFF;            // 空闲时 MOSI 保持高（SD 要求空闲为 1）
-            rx_sr    <= 8'h00;
+
             rx_data  <= 8'h00;
             rx_valid <= 1'b0;
         end else begin
@@ -98,7 +117,7 @@ module spi_master #(
                     half_cnt <= 4'd0;
                     if (tx_valid) begin
                         tx_sr <= tx_data;         // LOAD
-                        div_r <= (clk_div[7:0] == 8'd0) ? 8'd1 : clk_div[7:0];
+                        div_r <= (!MID_REF_SAMPLE && clk_div[7:0] == 8'd0) ? 8'd1 : clk_div[7:0];
                         state <= S_XFER;
                     end
                 end
@@ -109,7 +128,7 @@ module spi_master #(
                         if (!sclk_r) begin
                             // ---- SCLK 上升沿：采样 MISO ----
                             sclk_r <= 1'b1;
-                            rx_sr  <= {rx_sr[6:0], miso};
+
                         end else begin
                             // ---- SCLK 下降沿：移出下一位 ----
                             sclk_r <= 1'b0;

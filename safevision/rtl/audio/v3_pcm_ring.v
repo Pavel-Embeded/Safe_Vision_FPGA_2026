@@ -15,7 +15,10 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800)(
  input wire ack,busy,input wire [31:0] rdata,input wire rvalid,
  output reg [31:0] overflow_count);
  localparam integer CAP=1<<PTR_W;
- reg [PTR_W-1:0] wp[0:3],rp[0:3];reg [PTR_W:0] count[0:3];
+ // The extra pointer bit distinguishes full from empty after an address wrap.
+ // Occupancy is their modular difference; no independent occupancy state can
+ // diverge from the actual accepted write/read events.
+ reg [PTR_W:0] wp[0:3],rp[0:3];wire [PTR_W:0] count[0:3];
  reg [1:0] active,owner,rr;reg [7:0] generation;reg enabled;
  reg [1:0] state;reg reading,seen_data;reg [1:0] pick;reg any_write;
  integer i,j,k;
@@ -23,6 +26,19 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800)(
  genvar g;generate for(g=0;g<4;g=g+1)begin:status
   assign prefetched[g]=count[g]>=PREFETCH;
   assign levels[g*16+:16]={{(15-PTR_W){1'b0}},count[g]};
+ end endgenerate
+ wire take_read=((state==1)&&ack&&reading&&rvalid)||
+                 ((state==2)&&reading&&rvalid&&!seen_data);
+ wire finish_write=(state==2)&&!busy&&!reading;
+ generate for(genvar slot_index=0;slot_index<4;slot_index=slot_index+1)begin:parallel_pointers
+  (* use_ripple=1 *) wire[PTR_W:0] occupancy=wp[slot_index]-rp[slot_index];
+  assign count[slot_index]=occupancy;
+  always @(posedge clk or negedge rst_n)
+   if(!rst_n)begin wp[slot_index]<=0;rp[slot_index]<=0;end
+   else if(owner==slot_index)begin
+    if(take_read)rp[slot_index]<=rp[slot_index]+1'b1;
+    else if(finish_write)wp[slot_index]<=wp[slot_index]+1'b1;
+   end
  end endgenerate
  always @*begin
   any_write=0;pick=0;in_ready=0;
@@ -36,7 +52,7 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800)(
   if(!rst_n)begin
    req<=0;wr<=0;addr<=0;wdata<=0;out_data<=0;out_valid<=0;state<=0;
    active<=0;owner<=0;rr<=0;generation<=0;enabled<=0;reading<=0;seen_data<=0;overflow_count<=0;
-   for(k=0;k<4;k=k+1)begin wp[k]<=0;rp[k]<=0;count[k]<=0;end
+
   end else begin
    if(out_valid&&out_ready)out_valid<=0;
    case(state)
@@ -47,24 +63,24 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800)(
      // accepts its final word last), so ready must not gate valid production.
      else if(!busy&&enabled&&!fallback[active]&&count[active]!=0&&!out_valid&&output_level<10'd240)begin
       owner<=active;reading<=1;seen_data<=0;req<=1;wr<=0;
-      addr<=32'h00280000+({30'd0,active}<<16)+({{(30-PTR_W){1'b0}},rp[active]}<<2);state<=1;
+      addr<=32'h00280000+({30'd0,active}<<16)+({{(30-PTR_W){1'b0}},rp[active][PTR_W-1:0]}<<2);state<=1;
      end else if(!busy&&any_write)begin
       owner<=pick;reading<=0;seen_data<=0;req<=1;wr<=1;
-      addr<=32'h00280000+({30'd0,pick}<<16)+({{(30-PTR_W){1'b0}},wp[pick]}<<2);
+      addr<=32'h00280000+({30'd0,pick}<<16)+({{(30-PTR_W){1'b0}},wp[pick][PTR_W-1:0]}<<2);
       wdata<=in_data[pick*32+:32];state<=1;
      end
     end
     1:if(ack)begin req<=0;state<=2;
       if(reading&&rvalid)begin out_data<={generation,rdata};out_valid<=1;seen_data<=1;
-       rp[owner]<=rp[owner]+1'b1;count[owner]<=count[owner]-1'b1;end
+       end
     end
     2:begin
      if(reading&&rvalid&&!seen_data)begin
       out_data<={generation,rdata};out_valid<=1;seen_data<=1;
-      rp[owner]<=rp[owner]+1'b1;count[owner]<=count[owner]-1'b1;
+
      end
      if(!busy&&(!reading||seen_data))begin
-      if(!reading)begin wp[owner]<=wp[owner]+1'b1;count[owner]<=count[owner]+1'b1;rr<=owner+1'b1;end
+      if(!reading)rr<=owner+1'b1;
       state<=0;
      end
     end

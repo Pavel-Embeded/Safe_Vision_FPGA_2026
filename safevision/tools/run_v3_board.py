@@ -27,8 +27,10 @@ def source_commit_binding(root,source_repo,ref,paths):
   hashed=git('hash-object','--stdin','--path='+name,input=(root/name).read_bytes())
   if hashed.returncode or hashed.stdout.decode('ascii').strip()!=blobs[name]:errors.append('build bytes differ from source commit: '+name)
  return {'verified':not errors,'commit':commit,'source_repository':str(source_repo),'dependencies_compared':len(paths),'errors':errors}
-def invoke(exe,tcl,log,env):
- with log.open('w',encoding='utf-8') as f:p=subprocess.run([str(exe),tcl.as_posix()],env=env,stdout=f,stderr=subprocess.STDOUT,timeout=3600)
+def invoke(exe,tcl,log,env,cwd=None):
+ # Dense EG4S20 routing can require more than one hour. Extending the wall
+ # budget never changes native completion, source, resource or STA gates.
+ with log.open('w',encoding='utf-8') as f:p=subprocess.run([str(exe),tcl.as_posix()],cwd=cwd if cwd is not None else log.parent,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=10800)
  text=log.read_text(encoding='utf-8',errors='replace')
  if p.returncode or re.search(r'V3 TD FAILED|\bERROR:|HDL-\d+ ERROR|multiple drivers?|HDL-5105 CRITICAL-WARNING',text,re.I):raise RuntimeError('TD failed: '+str(log))
  return p.returncode,text
@@ -70,7 +72,7 @@ def main():
    'source_unchanged':False,'bit_generated':False,'hardware_verified':False,'created_at_utc':datetime.now(timezone.utc).isoformat()}
   manifest=folder/'build.manifest.json';save(manifest,record)
   try:
-   route_exit,text=invoke(exe,root/FLOW/(mode+'.tcl'),out/(mode+'.console.log'),env)
+   route_exit,text=invoke(exe,root/FLOW/(mode+'.tcl'),out/(mode+'.console.log'),env,cwd=folder)
    marker='V3 TD SYNTHESIZED' if a.synth_only else 'V3 TD ROUTED'
    if marker not in text:raise RuntimeError('missing normal TD completion marker')
    version=re.search(r'Tang Dynasty,\s*(V[0-9.]+)',text)

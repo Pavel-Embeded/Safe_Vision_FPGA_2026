@@ -1,0 +1,112 @@
+[
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_ring.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_ring.sv",
+    "original_sha256": "49f9d4693f976d700385e55d4deec2ce71660fbf93b44f33ac4c3d0402d0a3bc",
+    "derived_sha256": "5389084eab9ff95389448cf18e157eefb412936d13f35a6b71e70b5a1db90a51",
+    "namespace_only": [
+      "tb_v3_audio_ring",
+      "tb_v3_hd_audio_ring"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_wav.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_wav.sv",
+    "original_sha256": "6ea6f93be8bb2fdc78866c9b5bb18cbf57dc19882442cebfd9cdf9dbbd233c54",
+    "derived_sha256": "6160d185ad8b8f04d846e23932152be0e74700e8941b394f5a0e316417702610",
+    "namespace_only": [
+      "tb_v3_audio_wav",
+      "tb_v3_hd_audio_wav"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_wav_errors.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_wav_errors.sv",
+    "original_sha256": "ad2bd3164a5c65b9531a091b9d024e4b62ff0e21be20d3ec8d2ee74abf646a0c",
+    "derived_sha256": "572e296988dd6a6153893bdc0b319db998a372d3e2446b7bb6681425e994d1e5",
+    "namespace_only": [
+      "tb_v3_audio_wav_errors",
+      "tb_v3_hd_audio_wav_errors"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_system.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_system.sv",
+    "original_sha256": "b905b35ccd0c36e4e430a3f36b4f1b65296a41c157b3ab412e496cfaffc7313c",
+    "derived_sha256": "374289a408720c6d717a32fa4e790db6eb42acdbac268bf780f152eec7ea43f2",
+    "namespace_only": [
+      "tb_v3_audio_system",
+      "tb_v3_hd_audio_system"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_underflow.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_underflow.sv",
+    "original_sha256": "423c1f05e0e7737a53b3307603aaefddc0f0d44ed5044451cc75556bae3136b3",
+    "derived_sha256": "63c9016e2f7e308379e2aec73f7b3a7994a1f9dbda152fe48694b85d4b74e1fc",
+    "namespace_only": [
+      "tb_v3_audio_underflow",
+      "tb_v3_hd_audio_underflow"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_volume.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_volume.sv",
+    "original_sha256": "59ee68f80eedcf6216bc57d1174e39860aaef38fdf8a04382c993437bfb206bc",
+    "derived_sha256": "07c97def48e14c16ea954c1d12ab7c038417c85a7142fe7c906259745020f1af",
+    "namespace_only": [
+      "tb_v3_audio_volume",
+      "tb_v3_hd_audio_volume"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_context.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_context.sv",
+    "original_sha256": "0bd9ba0a345be51148f9be0e8bc739170674522562060c272f40a633a7dd00e4",
+    "derived_sha256": "bcc0e03017af803fe64dc9f765f2899a352f388fee3ea05058669864516e9c2b",
+    "namespace_only": [
+      "tb_v3_audio_context",
+      "tb_v3_hd_audio_context"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_context_loop.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_context_loop.sv",
+    "original_sha256": "bb081868ff5c7a454f4c2f9ee58187ef9ed84ea346aaa68296ba8c4850bf624a",
+    "derived_sha256": "da9c013ef8ad69df83653785b557a0973e4018acccdbd287d9e028200e243528",
+    "namespace_only": [
+      "tb_v3_audio_context_loop",
+      "tb_v3_hd_audio_context_loop"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_packet.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_packet.sv",
+    "original_sha256": "79c3242aed7838d80368e8b1b16fc8601d4b2915f21ae7c88feee477bc027304",
+    "derived_sha256": "015fc20655c51ae012b76e789eb91ecaf481208415a79ed5e542f5d29ce882be",
+    "namespace_only": [
+      "tb_v3_audio_packet",
+      "tb_v3_hd_audio_packet"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_ingress.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_ingress.sv",
+    "original_sha256": "940a1d718de84a49379a09119547ebe68fbb27f7038c86bb008432aa0f16d293",
+    "derived_sha256": "282745ef0446cbb540feab0dcd8b0ddc0aa8e75b1d506f203f9a7f484b71d78c",
+    "namespace_only": [
+      "tb_v3_audio_ingress",
+      "tb_v3_hd_audio_ingress"
+    ]
+  },
+  {
+    "original": "safevision/verification/unit/tb_v3_audio_sample_fifo.sv",
+    "derived": "safevision/verification/unit/tb_v3_hd_audio_sample_fifo.sv",
+    "original_sha256": "25b98417cf282f98a22d0039f426f31a4ccd1d36fe12ba3f2413228fdf9264c2",
+    "derived_sha256": "67fead22591374dc0d71feb880eda25bd44a115245d994534f7cfb79bbd14574",
+    "namespace_only": [
+      "tb_v3_audio_sample_fifo",
+      "tb_v3_hd_audio_sample_fifo"
+    ]
+  }
+]

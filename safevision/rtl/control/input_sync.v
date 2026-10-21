@@ -17,11 +17,13 @@
 // ============================================================================
 
 module input_sync #(
+    parameter integer USE_TICK=0,
     parameter integer DEB_N       = 2000000,  // 20 ms @100 MHz -> 2_000_000 拍
     parameter         RESET_LEVEL = 1'b0      // 输入空闲电平
 )(
     input  wire clk,
     input  wire rst_n,
+    input  wire tick,
     input  wire async_in,
     input  wire evt_clear,     // FSM 取走 pending 事件后拉高
     output reg  press,         // 上升沿，正好一拍
@@ -58,8 +60,10 @@ module input_sync #(
             level_d <= level;
             press   <= level & ~level_d;      // 恰好一拍
             if (sync_sync != level) begin     // 输入变化：等稳定窗口走完
+                if(!USE_TICK||tick)begin
                 if (db_cnt == DEB_N-1) begin level <= sync_sync; db_cnt <= 0; end
                 else db_cnt <= db_cnt + 1'b1;
+                end
             end else db_cnt <= 0;             // 回到稳定值即重新计时
         end
     end

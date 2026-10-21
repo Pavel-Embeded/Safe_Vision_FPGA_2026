@@ -1,0 +1,8 @@
+{
+  "name": "wrong_active_level",
+  "positive": false,
+  "accepted": true,
+  "rejected": true,
+  "issue": "physical KEY1..4 function contract differs from manual2410 p19",
+  "result": null
+}

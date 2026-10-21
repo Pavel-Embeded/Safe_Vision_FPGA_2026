@@ -1,0 +1,18 @@
+{
+  "sources": [
+    "safevision/rtl/video/v3_frame_safe_select.v",
+    "safevision/verification/unit/tb_v3_frame_safe.sv"
+  ],
+  "tops": [
+    "tb_v3_frame_safe_base",
+    "tb_v3_frame_safe_hd"
+  ],
+  "test_sources": {
+    "tb_v3_frame_safe_base": [],
+    "tb_v3_frame_safe_hd": []
+  },
+  "timeouts": {
+    "tb_v3_frame_safe_base": 1800,
+    "tb_v3_frame_safe_hd": 1800
+  }
+}

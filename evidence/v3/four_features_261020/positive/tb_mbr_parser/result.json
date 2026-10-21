@@ -1,0 +1,11 @@
+{
+  "top": "tb_mbr_parser",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 7,
+  "elapsed_s": 8.297,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_mbr_parser\\sim\\tb_mbr_parser"
+}

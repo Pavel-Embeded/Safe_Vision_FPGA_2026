@@ -1,0 +1,10 @@
+{
+  "sources": [
+    "safevision/rtl/hd/v3_line_cache.v",
+    "safevision/rtl/video/video_cdc/video_cdc_mailbox.v"
+  ],
+  "tops": [
+    "tb_v3_hd_crc_preimage"
+  ],
+  "defines": []
+}

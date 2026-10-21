@@ -3,3 +3,6 @@ assets/fonts/font8x16.mem
 assets/fonts/font8x16_compact.mem
 assets/fonts/v3_status_text.mem
 assets/control/v3_command_catalog.mem
+assets/fonts/v3_handbook_status_text.mem
+
+assets/fonts/v3_four_features_text.mem

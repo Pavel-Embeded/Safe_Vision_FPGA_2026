@@ -1,0 +1,86 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 17:54:04 2026
+# Process ID: 39112
+# Current directory: D:/Codex/svq416/p/tb_bmp_unpack/sim/tb_bmp_unpack
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_bmp_unpack/xsim_script.tcl}
+# Log file: D:/Codex/svq416/p/tb_bmp_unpack/sim/tb_bmp_unpack/sim.log
+# Journal file: D:/Codex/svq416/p/tb_bmp_unpack/sim/tb_bmp_unpack\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_bmp_unpack/xsim_script.tcl
+# xsim {tb_bmp_unpack} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== T1: BGR->RGB565 çº¯è‰² ====
+[PASS] ÿÿÿ¼ÿÿÿ«ÿÿÿåÿÿÿŠÿÿÿªÿÿÿåÿÿÿ´ÿÿÿ‰
+[PASS]  FF -> Fÿÿÿïÿÿÿœÿÿÿ¢ÿÿÿéÿÿÿ€ÿÿÿ‰
+[PASS] T1ÿÿÿçÿ¿: 00 FF 00 -> 07E0
+[PASS] T1ÿÿÿèÿ: FF 00 00 -> 001F
+[PASS] T1.5 x = 0,1,2
+[PASS] T1.6ÿÿÿåÿ¨ 0
+[PASS] T1.7 img_sof/img_eÿÿÿåÿ„ 1ÿÿÿ¡
+[PASS] T1.8 done 1ÿÿÿ¡
+[PASS] T1ÿÿÿæÿÿÿŠÿÿÿ™
+[PASS] 10 ROUNDING=ÿÿÿºÿÿÿ²ÿÿÿæÿÿÿ¸ÿÿÿ´
+
+==== T2: è¡Œå¡«å…… + è·¨è¡Œ x/y ====
+[PASS] 1 px_cntÿÿÿïÿˆ10ÿÿÿªÿÿÿåÿÿÿ´ÿÿÿ‰
+[PASS] T2.2ÿÿÿ¬ÿÿÿèÿÿÿƒÿÿÿ ÿÿ¼ 0..4
+[PASS] ÿÿÿåÿ¼ 5ÿÿÿïÿÿÿ¡ÿÿÿ…ÿÿÿèÿÿÿ¿ÿÿÿ‰
+[PASS] T2.4 xÿÿÿÿÿŒ 0..4
+[PASS] T2.5 y 0,0,..,1
+[PASS] T2ÿÿÿæÿÿÿŠÿÿÿ™
+
+==== T3: top_down=1 y é€’å¢ž ====
+[PASS] T3.1 px_cnt=6
+[PASS] T3.2 y = 0,0,1,1,2,2
+[PASS] T3.3 ÿÿÿ¯ÿÿÿŒ 0,1
+
+==== T4: top_down=0 y é€’å‡ ====
+[PASS] T4.1 px_cnt=6
+[PASS]  = 2,2,1,1,0ÿÿÿ¼ÿÿÿ¦ÿÿÿåÿÿÿ‚ÿÿÿ‰
+[PASS] T4.3 x ÿÿÿåÿÿÿˆÿÿÿ³
+
+==== T5: è¾“å‡ºååŽ‹ ====
+[PASS] ÿÿÿŽÿÿÿŽÿÿÿäÿÿÿƒÿÿÿ ÿÿÿäÿÿÿ¸ÿÿÿ‘
+[PASS] T5.ÿÿÿƒÿÿÿ ÿÿÿåÿÿÿœÿÿÿ±
+[PASS] T5.3 ÿÿÿåÿÿÿ²ÿÿÿ¼ÿÿÿèÿÿÿŠÿÿÿ™
+
+==== T6: åƒç´ æ•°ä¸è¶³ ====
+[PASS] T6ÿÿÿåÿÿÿ‡ÿÿÿ†ÿÿÿäÿÿÿƒÿÿÿ 
+[PASS] T6.ÿÿÿŠÿÿÿ™
+[PASS] ÿÿÿ = 0ÿÿÿïÿÿÿƒÿÿÿ ÿÿÿäÿÿÿ¶ÿÿÿ‰
+[PASS] T6ÿÿÿäÿÿÿ  = 0x03
+[PASS] T6.5 doÿÿÿäÿÿÿ»ÿÿÿº
+
+==== T7: åƒç´ æ•°è¶…é™ ====
+[PASS] T7.ÿÿÿŠÿÿÿ™
+[PASS] ÿÿÿ = 0ÿÿÿïÿÿÿƒÿÿÿ ÿÿÿèÿÿÿ™ÿÿÿ‰
+[PASS] T7.3 ÿÿÿèÿÿÿ‡ÿÿÿÿÿÿäÿÿÿƒÿÿÿ 
+
+==== T8: 640x480 å…¨å°ºå¯¸è®¡æ•° ====
+[PASS] T8ÿÿÿåÿÿÿ´ÿÿÿ»ÿÿ° = 307200
+[PASS] T8.2 img_sÿÿÿåÿª 1ÿÿÿ¡
+[PASS] T8.3 img_eÿÿÿåÿª 1ÿÿÿ¡
+[PASS] T8.4 done 1ÿÿÿ¡
+[PASS] T8.ÿÿÿ—ÿÿÿ™
+[PASS] 8.6 ÿÿÿåÿÿÿ¸ÿÿÿªÿÿÿçÿ  (639,479)
+[PASS] 8.7 ÿÿÿåÿÿÿ´  = ÿÿÿˆÿÿ¨ ÿÿÿµÿÿÿ‰
+[PASS] T8.8 ROUNDING=1 ÿÿÿæÿÿÿ¸ÿÿÿ´
+
+==== T9: ROUNDING æˆªæ–­ vs èˆå…¥ ====
+[PASS] T9.1ÿÿÿ¤ÿÿÿäÿÿÿŒÿÿÿ„ÿÿº ÿÿÿƒÿÿÿ 
+[PASS] T9.2 ROUNDING=0 ÿÿÿæÿ­ -> 0x0821
+[PASS] T9.3 ROUNDING=1 ÿÿÿåÿ¥ -> 0x1042
+
+============================================
+ å…¨éƒ¨é€šè¿‡ (PASS)
+============================================
+
+$finish called at time : 12293975 ns : File "D:/Codex/svq416/source/safevision/verification/unit/tb_bmp_unpack.sv" Line 419
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:54:09 2026...

@@ -1,0 +1,10 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "python_required": "3.11+",
+  "pypdf": "6.10.0",
+  "git": "git version 2.53.0.windows.2",
+  "os": "Windows-11-10.0.26200-SP0",
+  "native_qualification_tool": "TD V6.2.168116",
+  "simulation_tool": "XSim 2018.3",
+  "workflow_scope": "immutable evidence replay, no native rebuild or hardware operation"
+}

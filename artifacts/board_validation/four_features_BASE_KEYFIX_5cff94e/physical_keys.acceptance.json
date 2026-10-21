@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "firmware_id": "26102004",
+  "bit_sha256": "394a0f8151142886c3c950e3ea7220727258eb97dc8f8c7f73c954e8ef04f42d",
+  "approval_source_commit": "5cff94eb70e800337e4617dbfa44349066f3d504",
+  "physical_observation_source": "direct human user reply to the exact corrected-bit four-step procedure",
+  "verbatim_user_reply": "四步全部正常",
+  "physical_KEY2_KEY3_chord_opens_menu": true,
+  "physical_brightness_value_and_picture_change": true,
+  "physical_contrast_value_and_picture_change": true,
+  "physical_KEY3_long_hold_exits_menu": true,
+  "physical_key_acceptance": true,
+  "serial_gesture_trajectory_complete": false,
+  "serial_gesture_capture_outcome": "INCOMPLETE: COM6 closed before gesture transitions were captured; never counted as a passed test",
+  "post_operation_serial_completed": true,
+  "post_operation_states": [
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    },
+    {
+      "FIELD": 4,
+      "BRTPC": 80,
+      "AUTO": 1,
+      "MENU": 0,
+      "CONTRAST": 128
+    }
+  ],
+  "post_operation_valid_acks": 61,
+  "post_operation_media_health_passed": true,
+  "HD_qualified": false,
+  "physical_variable_size_media_verified": false,
+  "full_project_hardware_acceptance": false,
+  "flash_written": false,
+  "github_uploaded": false,
+  "payload_sha256": {
+    "gesture_capture_incomplete/rx.bin": "d96adfd3ccb955e1d3a570df06a613525d87a8f37c144d3a17f517b07de8ad5b",
+    "gesture_capture_incomplete/trace.jsonl": "80a2bb3c2155afec1e1b25275575c4f33bba0d3814b2c283f8a208a84c339d4f",
+    "post_keys_readiness/ready.json": "6b330df77621fe1c138d275461f4766abd5e108daa4b9cedfedf5ef09a1574ec",
+    "post_keys_readiness/rx.bin": "4c0b39db27f74c9112ae00f4b85f972df294440129fc503979a966c4bbd19c4c",
+    "post_keys_readiness/trace.jsonl": "b4c4e7f61ec6a8b498ae8dbb8abc45009c888e110b245d8ec989055277f41247",
+    "post_keys_configuration_readback/rx.bin": "eedb7393a7f27701355facd86b38d6d7ef2688901538703720db915cf652d06b",
+    "post_keys_configuration_readback/trace.jsonl": "05499f3a83b8940e81b6cc2cce447de6de5f1131783f630eea35bb395f97007c"
+  }
+}

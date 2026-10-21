@@ -1,0 +1,1225 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "rtl_sha256": "62a8fc172b26b2cb7441989a39ebc0853d646c03c270ed3ee041d5a655be216c",
+  "proof_script_sha256": "411b04b0580bc0c6f1ddd8d1fbd481281dadbfd85edcc5d23b8bf30e55bbc41a",
+  "proof_type": "All200 legal restoring-division transition states plus induction over30 input bits; not an838860801-value execution sweep.",
+  "state_cases": 200,
+  "dividend_bits": 30,
+  "divisor": 100,
+  "initial_remainder": 0,
+  "remainder_max": 99,
+  "max_legal_absolute_pcm24": 8388608,
+  "max_gain": 100,
+  "max_legal_product": 838860800,
+  "max_30bit_quotient": 10737418,
+  "retained_quotient_bits": 24,
+  "left_publication_active_edge": 37,
+  "right_publication_active_edge": 74,
+  "real_hdl_transition_comparisons": 64000,
+  "native_producer": "D:\\Codex\\svq390\\p\\tb_v3_volume_serial_step349\\sim\\tb_v3_volume_serial_step349",
+  "native_log_sha256": "5a1ad8e7ff36094c81d052e3795edbc40249ad9947a8a065a22007a9df6dce97",
+  "scope": "Exact unsigned division and required bit widths for all legal products. Signed conversion, bypass and public timing additionally require the frozen all-gain public-interface XSim miter. No STA, encrypted-IP or hardware claim.",
+  "transition_table": [
+    {
+      "remainder": 0,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 0
+    },
+    {
+      "remainder": 0,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 1
+    },
+    {
+      "remainder": 1,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 2
+    },
+    {
+      "remainder": 1,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 3
+    },
+    {
+      "remainder": 2,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 4
+    },
+    {
+      "remainder": 2,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 5
+    },
+    {
+      "remainder": 3,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 6
+    },
+    {
+      "remainder": 3,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 7
+    },
+    {
+      "remainder": 4,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 8
+    },
+    {
+      "remainder": 4,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 9
+    },
+    {
+      "remainder": 5,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 10
+    },
+    {
+      "remainder": 5,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 11
+    },
+    {
+      "remainder": 6,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 12
+    },
+    {
+      "remainder": 6,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 13
+    },
+    {
+      "remainder": 7,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 14
+    },
+    {
+      "remainder": 7,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 15
+    },
+    {
+      "remainder": 8,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 16
+    },
+    {
+      "remainder": 8,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 17
+    },
+    {
+      "remainder": 9,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 18
+    },
+    {
+      "remainder": 9,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 19
+    },
+    {
+      "remainder": 10,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 20
+    },
+    {
+      "remainder": 10,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 21
+    },
+    {
+      "remainder": 11,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 22
+    },
+    {
+      "remainder": 11,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 23
+    },
+    {
+      "remainder": 12,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 24
+    },
+    {
+      "remainder": 12,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 25
+    },
+    {
+      "remainder": 13,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 26
+    },
+    {
+      "remainder": 13,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 27
+    },
+    {
+      "remainder": 14,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 28
+    },
+    {
+      "remainder": 14,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 29
+    },
+    {
+      "remainder": 15,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 30
+    },
+    {
+      "remainder": 15,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 31
+    },
+    {
+      "remainder": 16,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 32
+    },
+    {
+      "remainder": 16,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 33
+    },
+    {
+      "remainder": 17,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 34
+    },
+    {
+      "remainder": 17,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 35
+    },
+    {
+      "remainder": 18,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 36
+    },
+    {
+      "remainder": 18,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 37
+    },
+    {
+      "remainder": 19,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 38
+    },
+    {
+      "remainder": 19,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 39
+    },
+    {
+      "remainder": 20,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 40
+    },
+    {
+      "remainder": 20,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 41
+    },
+    {
+      "remainder": 21,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 42
+    },
+    {
+      "remainder": 21,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 43
+    },
+    {
+      "remainder": 22,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 44
+    },
+    {
+      "remainder": 22,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 45
+    },
+    {
+      "remainder": 23,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 46
+    },
+    {
+      "remainder": 23,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 47
+    },
+    {
+      "remainder": 24,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 48
+    },
+    {
+      "remainder": 24,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 49
+    },
+    {
+      "remainder": 25,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 50
+    },
+    {
+      "remainder": 25,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 51
+    },
+    {
+      "remainder": 26,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 52
+    },
+    {
+      "remainder": 26,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 53
+    },
+    {
+      "remainder": 27,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 54
+    },
+    {
+      "remainder": 27,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 55
+    },
+    {
+      "remainder": 28,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 56
+    },
+    {
+      "remainder": 28,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 57
+    },
+    {
+      "remainder": 29,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 58
+    },
+    {
+      "remainder": 29,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 59
+    },
+    {
+      "remainder": 30,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 60
+    },
+    {
+      "remainder": 30,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 61
+    },
+    {
+      "remainder": 31,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 62
+    },
+    {
+      "remainder": 31,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 63
+    },
+    {
+      "remainder": 32,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 64
+    },
+    {
+      "remainder": 32,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 65
+    },
+    {
+      "remainder": 33,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 66
+    },
+    {
+      "remainder": 33,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 67
+    },
+    {
+      "remainder": 34,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 68
+    },
+    {
+      "remainder": 34,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 69
+    },
+    {
+      "remainder": 35,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 70
+    },
+    {
+      "remainder": 35,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 71
+    },
+    {
+      "remainder": 36,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 72
+    },
+    {
+      "remainder": 36,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 73
+    },
+    {
+      "remainder": 37,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 74
+    },
+    {
+      "remainder": 37,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 75
+    },
+    {
+      "remainder": 38,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 76
+    },
+    {
+      "remainder": 38,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 77
+    },
+    {
+      "remainder": 39,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 78
+    },
+    {
+      "remainder": 39,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 79
+    },
+    {
+      "remainder": 40,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 80
+    },
+    {
+      "remainder": 40,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 81
+    },
+    {
+      "remainder": 41,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 82
+    },
+    {
+      "remainder": 41,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 83
+    },
+    {
+      "remainder": 42,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 84
+    },
+    {
+      "remainder": 42,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 85
+    },
+    {
+      "remainder": 43,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 86
+    },
+    {
+      "remainder": 43,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 87
+    },
+    {
+      "remainder": 44,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 88
+    },
+    {
+      "remainder": 44,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 89
+    },
+    {
+      "remainder": 45,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 90
+    },
+    {
+      "remainder": 45,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 91
+    },
+    {
+      "remainder": 46,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 92
+    },
+    {
+      "remainder": 46,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 93
+    },
+    {
+      "remainder": 47,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 94
+    },
+    {
+      "remainder": 47,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 95
+    },
+    {
+      "remainder": 48,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 96
+    },
+    {
+      "remainder": 48,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 97
+    },
+    {
+      "remainder": 49,
+      "input_bit": 0,
+      "quotient_bit": 0,
+      "next_remainder": 98
+    },
+    {
+      "remainder": 49,
+      "input_bit": 1,
+      "quotient_bit": 0,
+      "next_remainder": 99
+    },
+    {
+      "remainder": 50,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 0
+    },
+    {
+      "remainder": 50,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 1
+    },
+    {
+      "remainder": 51,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 2
+    },
+    {
+      "remainder": 51,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 3
+    },
+    {
+      "remainder": 52,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 4
+    },
+    {
+      "remainder": 52,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 5
+    },
+    {
+      "remainder": 53,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 6
+    },
+    {
+      "remainder": 53,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 7
+    },
+    {
+      "remainder": 54,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 8
+    },
+    {
+      "remainder": 54,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 9
+    },
+    {
+      "remainder": 55,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 10
+    },
+    {
+      "remainder": 55,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 11
+    },
+    {
+      "remainder": 56,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 12
+    },
+    {
+      "remainder": 56,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 13
+    },
+    {
+      "remainder": 57,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 14
+    },
+    {
+      "remainder": 57,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 15
+    },
+    {
+      "remainder": 58,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 16
+    },
+    {
+      "remainder": 58,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 17
+    },
+    {
+      "remainder": 59,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 18
+    },
+    {
+      "remainder": 59,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 19
+    },
+    {
+      "remainder": 60,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 20
+    },
+    {
+      "remainder": 60,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 21
+    },
+    {
+      "remainder": 61,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 22
+    },
+    {
+      "remainder": 61,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 23
+    },
+    {
+      "remainder": 62,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 24
+    },
+    {
+      "remainder": 62,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 25
+    },
+    {
+      "remainder": 63,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 26
+    },
+    {
+      "remainder": 63,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 27
+    },
+    {
+      "remainder": 64,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 28
+    },
+    {
+      "remainder": 64,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 29
+    },
+    {
+      "remainder": 65,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 30
+    },
+    {
+      "remainder": 65,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 31
+    },
+    {
+      "remainder": 66,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 32
+    },
+    {
+      "remainder": 66,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 33
+    },
+    {
+      "remainder": 67,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 34
+    },
+    {
+      "remainder": 67,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 35
+    },
+    {
+      "remainder": 68,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 36
+    },
+    {
+      "remainder": 68,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 37
+    },
+    {
+      "remainder": 69,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 38
+    },
+    {
+      "remainder": 69,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 39
+    },
+    {
+      "remainder": 70,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 40
+    },
+    {
+      "remainder": 70,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 41
+    },
+    {
+      "remainder": 71,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 42
+    },
+    {
+      "remainder": 71,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 43
+    },
+    {
+      "remainder": 72,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 44
+    },
+    {
+      "remainder": 72,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 45
+    },
+    {
+      "remainder": 73,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 46
+    },
+    {
+      "remainder": 73,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 47
+    },
+    {
+      "remainder": 74,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 48
+    },
+    {
+      "remainder": 74,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 49
+    },
+    {
+      "remainder": 75,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 50
+    },
+    {
+      "remainder": 75,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 51
+    },
+    {
+      "remainder": 76,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 52
+    },
+    {
+      "remainder": 76,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 53
+    },
+    {
+      "remainder": 77,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 54
+    },
+    {
+      "remainder": 77,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 55
+    },
+    {
+      "remainder": 78,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 56
+    },
+    {
+      "remainder": 78,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 57
+    },
+    {
+      "remainder": 79,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 58
+    },
+    {
+      "remainder": 79,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 59
+    },
+    {
+      "remainder": 80,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 60
+    },
+    {
+      "remainder": 80,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 61
+    },
+    {
+      "remainder": 81,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 62
+    },
+    {
+      "remainder": 81,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 63
+    },
+    {
+      "remainder": 82,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 64
+    },
+    {
+      "remainder": 82,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 65
+    },
+    {
+      "remainder": 83,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 66
+    },
+    {
+      "remainder": 83,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 67
+    },
+    {
+      "remainder": 84,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 68
+    },
+    {
+      "remainder": 84,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 69
+    },
+    {
+      "remainder": 85,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 70
+    },
+    {
+      "remainder": 85,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 71
+    },
+    {
+      "remainder": 86,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 72
+    },
+    {
+      "remainder": 86,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 73
+    },
+    {
+      "remainder": 87,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 74
+    },
+    {
+      "remainder": 87,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 75
+    },
+    {
+      "remainder": 88,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 76
+    },
+    {
+      "remainder": 88,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 77
+    },
+    {
+      "remainder": 89,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 78
+    },
+    {
+      "remainder": 89,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 79
+    },
+    {
+      "remainder": 90,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 80
+    },
+    {
+      "remainder": 90,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 81
+    },
+    {
+      "remainder": 91,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 82
+    },
+    {
+      "remainder": 91,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 83
+    },
+    {
+      "remainder": 92,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 84
+    },
+    {
+      "remainder": 92,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 85
+    },
+    {
+      "remainder": 93,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 86
+    },
+    {
+      "remainder": 93,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 87
+    },
+    {
+      "remainder": 94,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 88
+    },
+    {
+      "remainder": 94,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 89
+    },
+    {
+      "remainder": 95,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 90
+    },
+    {
+      "remainder": 95,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 91
+    },
+    {
+      "remainder": 96,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 92
+    },
+    {
+      "remainder": 96,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 93
+    },
+    {
+      "remainder": 97,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 94
+    },
+    {
+      "remainder": 97,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 95
+    },
+    {
+      "remainder": 98,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 96
+    },
+    {
+      "remainder": 98,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 97
+    },
+    {
+      "remainder": 99,
+      "input_bit": 0,
+      "quotient_bit": 1,
+      "next_remainder": 98
+    },
+    {
+      "remainder": 99,
+      "input_bit": 1,
+      "quotient_bit": 1,
+      "next_remainder": 99
+    }
+  ]
+}

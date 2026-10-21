@@ -1,0 +1,18 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_diag_board/xsim_script.tcl
+# xsim {tb_v3_diag_board} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] board selector returns the intended complete32-bit register selector=00000000 actual=26102005 t=             1520000
+[FAIL] board selector returns the intended complete32-bit register selector=00000001 actual=a1b2c3d5 t=             1630000
+[FAIL] board selector returns the intended complete32-bit register selector=00000000 actual=26102005 t=             4850000
+[TB] tb_v3_diag_board done errors=3 comparisons=78
+$finish called at time : 6460 ns : File "D:/Codex/svfeatures413/source/safevision/verification/unit/tb_v3_diag_board.sv" Line 84
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:46:31 2026...

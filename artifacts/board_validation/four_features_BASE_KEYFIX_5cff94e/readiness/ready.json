@@ -1,0 +1,11 @@
+{
+  "cache": 15,
+  "status": 7,
+  "ready_ms": 563,
+  "firmware_id": 638590980,
+  "accepted": true,
+  "auto": 1,
+  "read_only": true,
+  "flash_written": false,
+  "period": 5
+}

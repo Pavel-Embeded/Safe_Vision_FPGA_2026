@@ -85,20 +85,44 @@ module v3_cluster_walker_ctx (
     reg  [8:0]  bcnt;          // 扇区内字节偏移
     reg  [8:0]  fat_off;       // 目标入口在扇区内的偏移
     reg  [31:0] fat_val;       // 4 Byte 入口，byte0 落在 [7:0]
-    reg  [31:0] to_cnt;        // 兜底超时
+    // Every counting state exits or clears at SD_TO_DATA. The last
+    // scheduled increment can reach SD_TO_DATA+1, which this width retains.
+    localparam integer TO_W=$clog2(`SD_TO_DATA+32'd2);
+    reg [TO_W-1:0] to_cnt;        // 兜底超时
 
     // 入口地址
     wire [31:0] fat_byte_off = {cur_clus[29:0], 2'b00};   // clus*4
     wire [31:0] fat_lba      = fat_start_lba + (fat_byte_off >> 9);
 
     // 本拍正在装配的入口（把还没写入 fat_val 的当前字节也算进来）
-    wire        fat_in_win = (bcnt >= fat_off) && (bcnt <= (fat_off + 9'd3));
-    wire [31:0] fat_now    = fat_in_win ? {sd_data, fat_val[31:8]} : fat_val;
+    wire        fat_in_win = (bcnt[8:2] == fat_off[8:2]);
+    wire [31:0] fat_now    = (&fat_off[8:2]) ? {sd_data, fat_val[31:8]} : fat_val;
     wire [27:0] nxt_clus   = fat_now[27:0];               // 高 4 位保留位掩掉
     wire        nxt_eoc    = (nxt_clus >= 28'h0FFF_FFF8);
-    wire        nxt_oob    = (nxt_clus < 28'd2) ||
-                             ({4'b0, nxt_clus} > (total_clus + 32'd1));
-    wire        nxt_loop   = ((hop_cnt + 32'd1) > total_clus);
+    wire[31:0] nxt_full={4'b0,nxt_clus};
+    (* use_ripple=1 *) wire[31:0] nxt_limit=total_clus+32'd1;
+    (* keep="true" *) wire[3:0] nxt_gt,nxt_eq;
+    genvar nxt_byte;
+    generate for(nxt_byte=0;nxt_byte<4;nxt_byte=nxt_byte+1)begin:nxt_parallel_compare
+        assign nxt_gt[nxt_byte]=nxt_full[nxt_byte*8+:8]>nxt_limit[nxt_byte*8+:8];
+        assign nxt_eq[nxt_byte]=nxt_full[nxt_byte*8+:8]==nxt_limit[nxt_byte*8+:8];
+    end endgenerate
+    wire nxt_above=nxt_gt[3] | (nxt_eq[3]&nxt_gt[2]) | (nxt_eq[3]&nxt_eq[2]&nxt_gt[1]) | (nxt_eq[3]&nxt_eq[2]&nxt_eq[1]&nxt_gt[0]);
+    wire nxt_oob=(nxt_clus<28'd2) || nxt_above;
+    function unsigned_ge32;
+        input [31:0] a,b;
+        reg [3:0] gt,eq;integer q;
+        begin
+            for(q=0;q<4;q=q+1)begin
+                gt[q]=(a[q*8+:8]>b[q*8+:8]);
+                eq[q]=(a[q*8+:8]==b[q*8+:8]);
+            end
+            unsigned_ge32=gt[3]||(eq[3]&&(gt[2]||(eq[2]&&(gt[1]||(eq[1]&&(gt[0]||eq[0]))))));
+        end
+    endfunction
+    // Exact 32-bit modulo identity: (H+1)>T iff H!=0xffffffff && H>=T.
+    // Keep the overflow guard; dropping it changes a legal context boundary.
+    wire        nxt_loop   = (!(&hop_cnt)) && unsigned_ge32(hop_cnt,total_clus);
 
     assign sd_data_ready = (mstate == W_RECV);
     assign sd_rd_len     = 16'd1;

@@ -32,7 +32,9 @@ module uart_tx #(
                      U_STOP  = 2'd3;
 
     reg  [1:0]  state;
-    reg  [15:0] div_cnt;
+    // Exact original divider range; retain16-bit behavior for unsupported DIV.
+    localparam integer COUNTER_W=(DIV>=1&&DIV<=65536)?((DIV>1)?$clog2(DIV):1):16;
+    reg [COUNTER_W-1:0] div_cnt;
     reg  [2:0]  bit_idx;
     reg  [7:0]  shifter;
 

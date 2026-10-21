@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_boot_budget218",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 120109,
+  "elapsed_s": 10.266,
+  "suite": "boot_budget_base218",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq343\\p\\tb_v3_boot_budget218\\sim\\tb_v3_boot_budget218"
+}

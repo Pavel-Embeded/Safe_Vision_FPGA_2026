@@ -1,0 +1,28 @@
+{
+  "defines": [],
+  "sources": [
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v",
+    "safevision/verification/models/sdram_adapter_base_reference385.sv"
+  ],
+  "tops": [
+    "tb_v3_prefix_miter_read_alignment_385",
+    "tb_v3_prefix_miter_read_alignment_short_385",
+    "tb_v3_prefix_miter_read_alignment_long_385",
+    "tb_v3_prefix_miter_read_alignment_basic_385"
+  ],
+  "assets": [],
+  "test_sources": {
+    "tb_v3_prefix_miter_read_alignment_385": [
+      "safevision/verification/unit/tb_v3_prefix_miter_read_alignment_385.sv"
+    ],
+    "tb_v3_prefix_miter_read_alignment_short_385": [
+      "safevision/verification/unit/tb_v3_prefix_miter_read_alignment_short_385.sv"
+    ],
+    "tb_v3_prefix_miter_read_alignment_long_385": [
+      "safevision/verification/unit/tb_v3_prefix_miter_read_alignment_long_385.sv"
+    ],
+    "tb_v3_prefix_miter_read_alignment_basic_385": [
+      "safevision/verification/unit/tb_v3_prefix_miter_read_alignment_basic_385.sv"
+    ]
+  }
+}

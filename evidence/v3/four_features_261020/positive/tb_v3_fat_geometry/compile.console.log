@@ -1,0 +1,10 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq268/source/safevision/rtl/storage/fat32_boot_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_boot_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq268/source/safevision/rtl/storage/file_streamer.v" into library work
+INFO: [VRFC 10-311] analyzing module file_streamer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq268/source/safevision/rtl/storage/v3_file_streamer.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_file_streamer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq268/source/safevision/rtl/storage/fat32_directory_scanner.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_directory_scanner
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq268/source/safevision/verification/unit/tb_v3_fat_geometry.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_fat_geometry

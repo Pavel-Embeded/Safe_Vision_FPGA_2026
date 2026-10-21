@@ -37,7 +37,8 @@ def main():
   ck('reject command ROM corruption',rejects(lambda:catalog_check(root)));rom.write_bytes(orig)
   controls=root/'safevision/rtl/control/v3_user_controls.v';original_controls=controls.read_bytes();top=root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v';original_top=top.read_bytes()
   controls.write_bytes(original_controls.replace(b"CTRL_ID_BRIGHT=7'd5;",b"CTRL_ID_BRIGHT=7'd127;"));ck('reject incorrect control catalog ID',rejects(lambda:catalog_check(root)));controls.write_bytes(original_controls)
-  top.write_bytes(original_top.replace(b'v3_user_controls #(.BOARD_CATALOG(1)) controls(',b'v3_user_controls #(.BOARD_CATALOG(0)) controls('));ck('reject lost board control catalog mode',rejects(lambda:catalog_check(root)));top.write_bytes(original_top)
+  assert original_top.count(b'v3_user_controls #(.BOARD_CATALOG(1),')==1
+  top.write_bytes(original_top.replace(b'v3_user_controls #(.BOARD_CATALOG(1),',b'v3_user_controls #(.BOARD_CATALOG(0),'));ck('reject lost board control catalog mode',rejects(lambda:catalog_check(root)));top.write_bytes(original_top)
   top.write_bytes(original_top.replace(b'.catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66)',b".catalog_id(7'd0),.command_valid(cmd_valid && cmd_target!=66)"));ck('reject lost board control ID connection',rejects(lambda:catalog_check(root)));top.write_bytes(original_top)
   controls.write_text(controls.read_text(encoding='utf-8')+'\n// command_name=="NEWCOMMAND"\n',encoding='utf-8')
   ck('detect future command absent from finite catalog',rejects(lambda:catalog_check(root)))

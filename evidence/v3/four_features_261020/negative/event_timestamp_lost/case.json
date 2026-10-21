@@ -1,0 +1,23 @@
+{
+  "mutation": "event_timestamp_lost",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+  "suite": "diag_board",
+  "top": "tb_v3_diag_board",
+  "patch": [
+    {
+      "before": ".err_ts(event_payload[43:12])",
+      "after": ".err_ts(32'd0)"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\event_timestamp_lost",
+  "original_sha256": "b3b8011e9d0e58b893bf1685eecc222f4aada50b4721414c2211ee975f8111e9",
+  "mutated_sha256": "5bec771f1b132804e315a6925c6483ff0b7a799e695208daa6d27a1e5aed9fd4",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    8
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\event_timestamp_lost\\sim\\tb_v3_diag_board"
+}

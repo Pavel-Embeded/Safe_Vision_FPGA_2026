@@ -16,9 +16,10 @@
 // ============================================================================
 
 module key_debounce (
-    clk, rst_n, key_async, evt_clear,
+    clk, rst_n, key_async, evt_clear, tick,
     key_level, press_vec, press_any, evt_key, evt_pending
 );
+    parameter integer USE_TICK=0;
     parameter integer KEYS        = 4;
     parameter integer DEB_N       = 2000000;  // 20 ms @100 MHz
     parameter         RESET_LEVEL = 1'b0;
@@ -33,6 +34,7 @@ module key_debounce (
     endfunction
     localparam integer KW = clog2(KEYS);
 
+    input wire tick;
     input  wire            clk;
     input  wire            rst_n;
     input  wire [KEYS-1:0] key_async;
@@ -47,10 +49,10 @@ module key_debounce (
     generate
         for (g = 0; g < KEYS; g = g + 1) begin : g_key
             input_sync #(
-                .DEB_N       (DEB_N),
+                .USE_TICK(USE_TICK),.DEB_N       (DEB_N),
                 .RESET_LEVEL (RESET_LEVEL)
             ) u_ch (
-                .clk         (clk),
+                .tick(tick),.clk         (clk),
                 .rst_n       (rst_n),
                 .async_in    (key_async[g]),
                 .evt_clear   (evt_clear),

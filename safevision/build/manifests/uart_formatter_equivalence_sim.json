@@ -1,0 +1,14 @@
+{
+  "sources": [
+    "safevision/rtl/common/sync_fifo.v",
+    "safevision/rtl/common/uart_rx.v",
+    "safevision/rtl/common/uart_tx.v",
+    "safevision/rtl/control/v3_command_parser.v",
+    "safevision/rtl/control/v3_command_parser_catalog.v",
+    "safevision/rtl/control/v3_uart_link.v",
+    "safevision/verification/models/v3_uart_formatter_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_uart_formatter_equivalence"
+  ]
+}

@@ -118,6 +118,12 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
       end
     endfunction
 
+    // Move subtraction away from the selected next-cluster path; no extra edge.
+    wire cluster_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0);
+    wire[31:0] directory_lba_bias=data_start_lba-(cluster_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
+    wire[31:0] directory_cluster_offset=cluster_sectors(wk_next_clus,sec_per_clus);
+    (* use_ripple=1 *) wire[31:0] directory_next_lba=directory_lba_bias+directory_cluster_offset;
+
     // ------------------------------------------------------------------------
     // 状态
     // ------------------------------------------------------------------------
@@ -133,7 +139,10 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
     reg  [31:0] cur_lba;        // 正在遍历的扇区号
     reg  [7:0]  sec_in_clus;    // 本簇已经读了几个扇区
     reg  [8:0]  bcnt;           // 扇区内字节偏移 0..511
-    reg  [31:0] to_cnt;         // 单次读事务的兜底超时
+    // Every counting state exits or clears at SD_TO_DATA. The last
+    // scheduled increment can reach SD_TO_DATA+1, which this width retains.
+    localparam integer TO_W=$clog2(`SD_TO_DATA+32'd2);
+    reg [TO_W-1:0] to_cnt;         // 单次读事务的兜底超时
 
     // The outputs themselves are the entry assembly registers. They are
     // meaningful only with ent_valid. wait_ent prevents every next byte until
@@ -373,8 +382,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
                     end else begin
                         cur_clus    <= wk_next_clus;
                         wk_cur_clus <= wk_next_clus;
-                        cur_lba     <= data_start_lba +
-                                       cluster_sectors(wk_next_clus-32'd2,sec_per_clus);
+                        cur_lba     <= directory_next_lba;
                         sec_in_clus <= 8'd0;
                         to_cnt      <= 32'd0;
                         mstate      <= D_SEC_REQ;

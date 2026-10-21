@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_frame_safe_integration",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 60632,
+  "elapsed_s": 13.391,
+  "suite": "frame_safe_integration",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_frame_safe_integration\\sim\\tb_v3_frame_safe_integration"
+}

@@ -3,9 +3,10 @@ import json
 from v3_sources import FLOW
 CAPACITY={'lut':19600,'reg':19600,'bram':64,'bram32k':16,'dsp':29,'pll':4}
 TARGETS={'lut':70,'reg':65,'ram':75}
-CAPS={'lut':100,'reg':80,'ram':85}
+CAPS={'lut':100,'reg':80,'ram':100}
 
 def validate(policy):
+ if policy.get('ram_authorization',{}).get('date')!='2026-10-20' or policy.get('ram_authorization',{}).get('instruction')!='允许使用到芯片实际容量，继续尽量优化':raise ValueError('missing explicit RAM capacity authorization')
  if policy.get('schema')!=1 or policy.get('device')!='EG4S20BG256':raise ValueError('wrong resource-policy schema/device')
  if policy.get('physical_capacity')!=CAPACITY:raise ValueError('resource policy cannot enlarge/change physical device')
  if policy.get('hard_caps_percent')!=CAPS or policy.get('targets_percent')!=TARGETS:raise ValueError('unapproved resource limit/target')

@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_supervisor_comparator",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 724608,
+  "elapsed_s": 9.437,
+  "suite": "supervisor_comparator",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq343\\p\\tb_v3_supervisor_comparator\\sim\\tb_v3_supervisor_comparator"
+}

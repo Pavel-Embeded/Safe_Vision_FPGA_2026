@@ -1,0 +1,227 @@
+{
+  "schema": 1,
+  "device": "EG4S20BG256",
+  "board": "HX4S20C / HDL manual2410 and contest202606 package",
+  "source_root_at_review": "D:\\嵌赛FPGA文件\\HX4S20_Contest_202606.zip\\HX4S20_Contest_202606\\HX4S20_Contest_202606",
+  "source_documents": [
+    {
+      "relative_path": "6_EG4S20数据手册/DSP用户指南.pdf",
+      "sha256": "d12d7eaac41bb465931eb436489fb6977ec2caa7a4db211959b675537834dd08",
+      "bytes": 1409778
+    },
+    {
+      "relative_path": "6_EG4S20数据手册/EG4S20数据手册.pdf",
+      "sha256": "a4434879f6671e9a1bab9b110dd4b1088a593f36ffca3b66eba1b8a168a49a2a",
+      "bytes": 747469
+    },
+    {
+      "relative_path": "6_EG4S20数据手册/IO用户指南.pdf",
+      "sha256": "7b00370fe895a8fe67a273de0f7947fd4d4c1634150bbec83f4b84eed95e516d",
+      "bytes": 3787646
+    },
+    {
+      "relative_path": "6_EG4S20数据手册/PLL用户指南.pdf",
+      "sha256": "986a81cb332dac6d6bb178f31d7f75cb27517a0e382cec3980473794bd7cb4e1",
+      "bytes": 1452725
+    },
+    {
+      "relative_path": "9_康芯开发板使用手册及实验平台/HX4S20开发板手册-HDL版2410.pdf",
+      "sha256": "e6d066fdc433259697bcf5dfe9eb791cf8a87d289c75e69fa40172d716afccfe",
+      "bytes": 2423520
+    },
+    {
+      "relative_path": "3_原理图/开发板原理图/2_FPGA.pdf",
+      "sha256": "c3ed8fcd4680d2c3a49101329a480be94b7980af1d262ba3bbf317df144a4017",
+      "bytes": 362446
+    },
+    {
+      "relative_path": "3_原理图/开发板原理图/3_Power_and_Config.pdf",
+      "sha256": "5af05600ce30bd0a716f145b2abba753aae384f1857b5e99294dfb0afdb3bc57",
+      "bytes": 335539
+    },
+    {
+      "relative_path": "3_原理图/开发板原理图/4_GPIO.pdf",
+      "sha256": "ea0914ba2f5e77f3bde2fed9a5da18ffd6c65ca905d93607ad767a1eb1a644a8",
+      "bytes": 605581
+    },
+    {
+      "relative_path": "3_原理图/开发板原理图/6_EX_DEVICE.pdf",
+      "sha256": "1d4848bf65715f1b71bec93e211fe189ea1ddb1073da8109fa85480d65eb0f97",
+      "bytes": 211045
+    },
+    {
+      "relative_path": "3_原理图/开发板原理图/7_HDMI.pdf",
+      "sha256": "02dcd9367fd28d0d251d0333d44466ac54a3baae1edd63ad2c4e6737241feef6",
+      "bytes": 369890
+    }
+  ],
+  "ports": {
+    "clk": {
+      "LOCATION": "R7",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "NONE"
+    },
+    "rst_n": {
+      "LOCATION": "A2",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "PULLUP"
+    },
+    "btn_next": {
+      "LOCATION": "B2",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "PULLUP"
+    },
+    "btn_auto": {
+      "LOCATION": "B1",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "PULLUP"
+    },
+    "btn_emergency": {
+      "LOCATION": "C1",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "PULLUP"
+    },
+    "led[0]": {
+      "LOCATION": "A4",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "NONE",
+      "DRIVESTRENGTH": "8"
+    },
+    "led[1]": {
+      "LOCATION": "A3",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "NONE",
+      "DRIVESTRENGTH": "8"
+    },
+    "led[2]": {
+      "LOCATION": "C10",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "NONE",
+      "DRIVESTRENGTH": "8"
+    },
+    "led[3]": {
+      "LOCATION": "B12",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "NONE",
+      "DRIVESTRENGTH": "8"
+    },
+    "uart_txd": {
+      "LOCATION": "D12",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "NONE",
+      "DRIVESTRENGTH": "8"
+    },
+    "uart_rxd": {
+      "LOCATION": "F12",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "PULLUP"
+    },
+    "sd_dclk": {
+      "LOCATION": "A14",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "NONE",
+      "DRIVESTRENGTH": "8"
+    },
+    "sd_mosi": {
+      "LOCATION": "A13",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "NONE",
+      "DRIVESTRENGTH": "8"
+    },
+    "sd_miso": {
+      "LOCATION": "B14",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "PULLUP"
+    },
+    "sd_ncs": {
+      "LOCATION": "A12",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "NONE",
+      "DRIVESTRENGTH": "8"
+    },
+    "HDMI_D0_P": {
+      "LOCATION": "G5",
+      "IOSTANDARD": "LVDS33",
+      "PULLTYPE": "NONE"
+    },
+    "HDMI_D1_P": {
+      "LOCATION": "F1",
+      "IOSTANDARD": "LVDS33",
+      "PULLTYPE": "NONE"
+    },
+    "HDMI_D2_P": {
+      "LOCATION": "E1",
+      "IOSTANDARD": "LVDS33",
+      "PULLTYPE": "NONE"
+    },
+    "HDMI_CLK_P": {
+      "LOCATION": "C3",
+      "IOSTANDARD": "LVDS33",
+      "PULLTYPE": "NONE"
+    },
+    "HDMI_DDC_SCL": {
+      "LOCATION": "P2",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "PULLUP",
+      "DRIVESTRENGTH": "8"
+    },
+    "HDMI_DDC_SDA": {
+      "LOCATION": "R2",
+      "IOSTANDARD": "LVCMOS33",
+      "PULLTYPE": "PULLUP",
+      "DRIVESTRENGTH": "8"
+    }
+  },
+  "differential_pairs": [
+    {
+      "positive_port": "HDMI_D0_P",
+      "negative_ball": "G6"
+    },
+    {
+      "positive_port": "HDMI_D1_P",
+      "negative_ball": "F2"
+    },
+    {
+      "positive_port": "HDMI_D2_P",
+      "negative_ball": "D1"
+    },
+    {
+      "positive_port": "HDMI_CLK_P",
+      "negative_ball": "C2"
+    }
+  ],
+  "clock_hz": 50000000,
+  "bank_vcco_volts": [
+    3.3,
+    3.3,
+    3.3,
+    3.3
+  ],
+  "button_active_level": 0,
+  "led_active_level": 1,
+  "sdram": {
+    "kind": "package-internal EG_PHY_SDRAM_2M_32",
+    "bytes": 8388608,
+    "user_bga_pin_assignments_required": false
+  },
+  "hdmi": {
+    "connector": "HDMI B / HDMI2 / J6",
+    "hpd_ball": "J6",
+    "cec_ball": "K5",
+    "hpd_cec_used_by_current_top": false,
+    "physical_compatibility_verified": false
+  },
+  "configuration": {
+    "program_b_ball": "T2",
+    "mspi_default": true,
+    "flash_schematic_part": "W25Q16",
+    "flash_capacity_bits": 16777216,
+    "mode_straps": {
+      "M0_T11": 1,
+      "M1_N11": 0,
+      "source": "3_Power_and_Config.pdf page1 R101 to3V3 and R102 toGND"
+    }
+  },
+  "review_note": "Independent transcription from board manual and schematic images; not generated from ADC. Compile/route gates compare this contract. External SI, board assembly and monitor/card compatibility require hardware.",
+  "key_correction_note": "2026-10-20: previous reference had KEY3/KEY4 roles exchanged. Rechecked original manual2410 printed p19 table and schematic. Fixed the ADC and the reference together; checker additionally anchors physical key names to independent fixed balls."
+}

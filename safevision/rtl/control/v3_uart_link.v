@@ -39,8 +39,13 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  .clk(clk),.rst_n(rst_n),.wr_en(push),.din(reply_valid?{1'b0,8'd0,reply_code,reply_value}:
     parse_reply?{1'b0,8'd0,parse_code,32'd0}:{1'b1,4'd0,evt_src,evt_code,evt_ts}),
  .full(full),.almost_full(),.rd_en(pop),.dout(head),.empty(empty),.almost_empty(),.data_count());
+ // Carry-out gives exact unsigned saturation without a second32-bit
+ // subtract/compare network. Every0/1/2-drop case and public edge is unchanged.
+ wire[32:0] drop_sum={1'b0,reply_dropped}+{31'd0,lost};
+ wire[31:0] dropped_next=drop_sum[32]?32'hffffffff:drop_sum[31:0];
  reg sending;reg[4:0] position;reg[48:0] payload;reg[7:0] checksum;
  wire tx_ready;reg[7:0] byte_tx;
+ reg format_hex;reg[3:0] format_nibble;reg[7:0] format_literal;
  // Board timing boundary: BRAM payload -> byte formatter -> register;
  // registered byte -> checksum and serializer. UART busy time hides refill.
  // Two SYS edges are added before each new response; line baud, byte order,
@@ -51,16 +56,18 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  wire[7:0] send_data=TX_PIPELINE?byte_stage:byte_tx;
  wire byte_fire=send_valid && tx_ready;
  generate if(TX_PIPELINE)begin:g_tx_pipeline
-  (* preserve="true" *) reg[7:0] data_q;reg fresh_q;
-  // Four high padding bits are constant in both ACK and event records.
-  // Keep45 meaningful bits between the BRAM output and byte formatting.
-  (* preserve="true" *) reg[44:0] message_q;
-  assign packet={message_q[44],4'd0,message_q[43:0]};
-  assign byte_stage=data_q;assign byte_fresh=fresh_q;
+  (* preserve="true" *) reg[7:0] data_q;reg[1:0] fresh_q;
+  reg select_hex_q;reg[3:0] nibble_q;reg[7:0] literal_q;
+  // The registered FIFO payload remains stable while sending. Its duplicate
+  //45-bit message register was redundant; nibble/literal capture and byte
+  //conversion remain distinct stages. First-byte bypass retains the start edge.
+  assign packet=payload;
+  assign byte_stage=data_q;assign byte_fresh=(position==0)?fresh_q[0]:fresh_q[1];
   always @(posedge clk or negedge rst_n)begin
-   if(!rst_n)begin data_q<=0;fresh_q<=0;message_q<=0;end
-   else begin data_q<=byte_tx;message_q<={payload[48],payload[43:0]};
-    if(!sending || byte_fire)fresh_q<=0;else fresh_q<=1;
+   if(!rst_n)begin data_q<=0;fresh_q<=0;select_hex_q<=0;nibble_q<=0;literal_q<=0;end
+   else begin data_q<=position==0?8'd36:select_hex_q?hex(nibble_q):literal_q;
+    select_hex_q<=format_hex;nibble_q<=format_nibble;literal_q<=format_literal;
+    if(!sending || byte_fire)fresh_q<=0;else fresh_q<={fresh_q[0],1'b1};
    end
   end
  end else begin:g_tx_direct
@@ -71,32 +78,34 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  assign pop=!sending && !empty;
  function[7:0] hex;input[3:0] nibble;begin hex=nibble<10?48+nibble:55+nibble;end endfunction
  always @*begin
+  format_hex=0;format_nibble=0;format_literal=8'h3f;
   if(packet[48])case(position)
    // $C:EVT=SS,CC,TTTTTTTT*HH CR LF
-   0:byte_tx=36;1:byte_tx=67;2:byte_tx=58;3:byte_tx=69;4:byte_tx=86;5:byte_tx=84;6:byte_tx=61;
-   7:byte_tx=hex(packet[47:44]);8:byte_tx=hex(packet[43:40]);9:byte_tx=44;
-   10:byte_tx=hex(packet[39:36]);11:byte_tx=hex(packet[35:32]);12:byte_tx=44;
-   21:byte_tx=42;22:byte_tx=hex(checksum[7:4]);23:byte_tx=hex(checksum[3:0]);24:byte_tx=13;25:byte_tx=10;
-   13:byte_tx=hex(packet[31:28]);14:byte_tx=hex(packet[27:24]);
-   15:byte_tx=hex(packet[23:20]);16:byte_tx=hex(packet[19:16]);
-   17:byte_tx=hex(packet[15:12]);18:byte_tx=hex(packet[11:8]);
-   19:byte_tx=hex(packet[7:4]);20:byte_tx=hex(packet[3:0]);
-   default:byte_tx=8'h3f;
+   0:format_literal=36;1:format_literal=67;2:format_literal=58;3:format_literal=69;4:format_literal=86;5:format_literal=84;6:format_literal=61;
+   7:begin format_hex=1;format_nibble=packet[47:44];end 8:begin format_hex=1;format_nibble=packet[43:40];end 9:format_literal=44;
+   10:begin format_hex=1;format_nibble=packet[39:36];end 11:begin format_hex=1;format_nibble=packet[35:32];end 12:format_literal=44;
+   21:format_literal=42;22:begin format_hex=1;format_nibble=checksum[7:4];end 23:begin format_hex=1;format_nibble=checksum[3:0];end 24:format_literal=13;25:format_literal=10;
+   13:begin format_hex=1;format_nibble=packet[31:28];end 14:begin format_hex=1;format_nibble=packet[27:24];end
+   15:begin format_hex=1;format_nibble=packet[23:20];end 16:begin format_hex=1;format_nibble=packet[19:16];end
+   17:begin format_hex=1;format_nibble=packet[15:12];end 18:begin format_hex=1;format_nibble=packet[11:8];end
+   19:begin format_hex=1;format_nibble=packet[7:4];end 20:begin format_hex=1;format_nibble=packet[3:0];end
+   default:format_literal=8'h3f;
   endcase else case(position)
-   0:byte_tx=36;1:byte_tx=67;2:byte_tx=58;3:byte_tx=65;4:byte_tx=67;5:byte_tx=75;6:byte_tx=61;
-   7:byte_tx=hex(packet[39:36]);8:byte_tx=hex(packet[35:32]);9:byte_tx=44;
-   18:byte_tx=42;19:byte_tx=hex(checksum[7:4]);20:byte_tx=hex(checksum[3:0]);21:byte_tx=13;22:byte_tx=10;
-   10:byte_tx=hex(packet[31:28]);11:byte_tx=hex(packet[27:24]);
-   12:byte_tx=hex(packet[23:20]);13:byte_tx=hex(packet[19:16]);
-   14:byte_tx=hex(packet[15:12]);15:byte_tx=hex(packet[11:8]);
-   16:byte_tx=hex(packet[7:4]);17:byte_tx=hex(packet[3:0]);
-   default:byte_tx=8'h3f;
+   0:format_literal=36;1:format_literal=67;2:format_literal=58;3:format_literal=65;4:format_literal=67;5:format_literal=75;6:format_literal=61;
+   7:begin format_hex=1;format_nibble=packet[39:36];end 8:begin format_hex=1;format_nibble=packet[35:32];end 9:format_literal=44;
+   18:format_literal=42;19:begin format_hex=1;format_nibble=checksum[7:4];end 20:begin format_hex=1;format_nibble=checksum[3:0];end 21:format_literal=13;22:format_literal=10;
+   10:begin format_hex=1;format_nibble=packet[31:28];end 11:begin format_hex=1;format_nibble=packet[27:24];end
+   12:begin format_hex=1;format_nibble=packet[23:20];end 13:begin format_hex=1;format_nibble=packet[19:16];end
+   14:begin format_hex=1;format_nibble=packet[15:12];end 15:begin format_hex=1;format_nibble=packet[11:8];end
+   16:begin format_hex=1;format_nibble=packet[7:4];end 17:begin format_hex=1;format_nibble=packet[3:0];end
+   default:format_literal=8'h3f;
   endcase
+  byte_tx=format_hex?hex(format_nibble):format_literal;
  end
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin sending<=0;position<=0;payload<=0;checksum<=0;reply_dropped<=0;end
   else begin
-   if(lost!=0)reply_dropped<=(reply_dropped>32'hffffffff-lost)?32'hffffffff:reply_dropped+lost;
+   if(lost!=0)reply_dropped<=dropped_next;
    if(pop)begin payload<=head;sending<=1;position<=0;checksum<=0;end
    else if(byte_fire)begin
     if(position>=1 && position<=(packet[48]?20:17))checksum<=checksum^send_data;

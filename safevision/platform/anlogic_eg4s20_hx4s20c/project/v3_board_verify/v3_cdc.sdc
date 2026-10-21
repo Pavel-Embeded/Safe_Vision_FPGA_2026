@@ -2,15 +2,17 @@
 # The separate v3_cdc_audit.tcl checks mapped object presence in normal Tcl.
 # MEM50 -> SYS100 packed packet payload/control retain real setup/hold.
 set_false_path -to [get_regs {*req_meta *ack_meta frame_heartbeat_sync/meta pll_loss_sync/meta locks_meta* video/media_m1 video/media_p1 video/safe_p1 video/fault_s1 video/fault_p1 video/present_s1 video/cache/pixel_fault_meta video/cache/*store/done_meta video/cache/*store/fault_meta}]
-set_false_path -through [get_nets {control_common_rst_n media_common_rst_n tx_reset}] -to [get_pins {*.sr */*.sr}]
-# ref_status_mailbox: payload held from request through returned ACK; 8ns bounds physical flight.
-set_max_delay -datapath_only -from [get_regs {ref_status_mailbox/payload*}] -to [get_regs {ref_status_mailbox/dst_data*}] 8.000
-# mem_status_mailbox: payload held from request through returned ACK; 8ns bounds physical flight.
-set_max_delay -datapath_only -from [get_regs {mem_status_mailbox/payload*}] -to [get_regs {mem_status_mailbox/dst_data*}] 8.000
+set_false_path -through [get_nets {control_common_rst_n config_common_rst_n media_common_rst_n tx_reset}] -to [get_pins {*.sr */*.sr}]
+# uptime_to_pixel: payload held from request through returned ACK; 8ns bounds physical flight.
+set_max_delay -datapath_only -from [get_regs {uptime_to_pixel/payload*}] -to [get_regs {uptime_to_pixel/dst_data*}] 8.000
 # hdmi_status_mailbox: payload held from request through returned ACK; 8ns bounds physical flight.
 set_max_delay -datapath_only -from [get_regs {hdmi_status_mailbox/payload*}] -to [get_regs {hdmi_status_mailbox/dst_data*}] 8.000
 # video/config_mailbox: payload held from request through returned ACK; 8ns bounds physical flight.
 set_max_delay -datapath_only -from [get_regs {video/config_mailbox/payload*}] -to [get_regs {video/config_mailbox/dst_data*}] 8.000
+# diagnostics/requests: payload held from request through returned ACK; 8ns bounds physical flight.
+set_max_delay -datapath_only -from [get_regs {diagnostics/requests/payload*}] -to [get_regs {diagnostics/requests/dst_data*}] 8.000
+# diagnostics/responses: payload held from request through returned ACK; 8ns bounds physical flight.
+set_max_delay -datapath_only -from [get_regs {diagnostics/responses/payload*}] -to [get_regs {diagnostics/responses/dst_data*}] 8.000
 # video/audio_ready_mailbox: payload held from request through returned ACK; 8ns bounds physical flight.
 set_max_delay -datapath_only -from [get_regs {video/audio_ready_mailbox/payload*}] -to [get_regs {video/audio_ready_mailbox/dst_data*}] 8.000
 # video/status_mailbox: payload held from request through returned ACK; 8ns bounds physical flight.

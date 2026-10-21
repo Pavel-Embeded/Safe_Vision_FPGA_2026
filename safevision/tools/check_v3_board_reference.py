@@ -17,6 +17,17 @@ def adc_pins(text):
 def check(root,area=None):
  ref=json.loads((root/FLOW/'board_reference.json').read_text(encoding='utf-8'))
  pins=ref['ports'];actual=adc_pins((root/FLOW/'v3_board.adc').read_text(encoding='utf-8-sig'))
+ # Independent physical labels from HX4S20 manual2410 printed p19.
+ # Checking ADC against a copied reference alone missed a shared KEY3/4 swap.
+ # Keep the physical labels anchored even if both editable tables agree.
+ key_contract=(('KEY1','A2','rst_n'),('KEY2','B2','btn_next'),
+               ('KEY3','B1','btn_auto'),('KEY4','C1','btn_emergency'))
+ expected=[dict(button=label,ball=ball,logical_port=port,active_level=0)for label,ball,port in key_contract]
+ if ref.get('key_function_contract')!=expected:raise ValueError('physical KEY1..4 function contract differs from manual2410 p19')
+ for label,ball,port in key_contract:
+  if pins.get(port,{}).get('LOCATION')!=ball:raise ValueError(label+' reference ball differs from manual2410 p19: '+port)
+  if actual.get(port,{}).get('LOCATION')!=ball:raise ValueError(label+' ADC ball differs from manual2410 p19: '+port)
+  if actual[port].get('PULLTYPE')!='PULLUP':raise ValueError(label+' must retain its active-low pull-up')
  if set(actual)!=set(pins):raise ValueError('ADC port inventory differs from reviewed board contract')
  locations=[]
  for name,row in pins.items():
@@ -28,7 +39,7 @@ def check(root,area=None):
  if len(set(locations))!=21 or len(negatives)!=4 or set(locations)&negatives:raise ValueError('duplicate/reserved differential pad conflict')
  sdc=(root/FLOW/'v3_board.sdc').read_text(encoding='utf-8-sig')
  if not re.search(r'^create_clock\s+-name\s+board_clk\s+-period\s+20(?:\.0+)?\s+-waveform\s+\{0 10\}\s+\[get_ports\s+\{clk\}\]\s*$',sdc,re.M):raise ValueError('board oscillator constraint differs from 50MHz R7')
- result={'accepted':True,'logical_ports':21,'physical_pads':25,'adc_checked':True,'physical_pad_table_checked':False,'hardware_verified':False}
+ result={'accepted':True,'logical_ports':21,'physical_pads':25,'adc_checked':True,'physical_pad_table_checked':False,'hardware_verified':False,'physical_key_contract':expected,'key_contract_source':'HX4S20 manual2410 printed p19; KEY3=B1 and KEY4=C1'}
  if area is not None:
   if 'Device: EG4S20BG256' not in area:raise ValueError('wrong routed device')
   # Internal SDRAM Sxx pads are package-internal and are not user BGA balls.

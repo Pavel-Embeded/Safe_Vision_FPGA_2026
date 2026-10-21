@@ -10,7 +10,16 @@ module uart_rx #(parameter integer CLK_HZ=100000000,BAUD=115200)(
  reg [ACC_W-1:0] acc;
  (* use_ripple=1 *) wire [ACC_W:0] next_acc={1'b0,acc}+BAUD*16;
  // No added cycle: a+rate>=clock iff a>=clock-rate for all legal values.
- wire tick=BOUNDED_ACC?(acc>=CLK_HZ-BAUD*16):(next_acc>=CLK_HZ);
+ wire tick;
+ generate if(BOUNDED_ACC)begin:bounded_tick_prediction
+  reg tick_q;
+  always @(posedge clk or negedge rst_n)
+   if(!rst_n)tick_q<=0;
+   else tick_q<=!tick_q && (acc>=CLK_HZ-BAUD*32);
+  assign tick=tick_q;
+ end else begin:original_unbounded_tick
+  assign tick=next_acc>=CLK_HZ;
+ end endgenerate
  reg [1:0] state;reg [3:0] phase;reg [2:0] bitno;
  reg [7:0] shift;reg [1:0] votes;
  always @(posedge clk or negedge rst_n)begin

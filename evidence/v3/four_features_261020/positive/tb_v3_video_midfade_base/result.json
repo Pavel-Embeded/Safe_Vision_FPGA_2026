@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_video_midfade_base",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 2,
+  "data_comparisons": 307200,
+  "elapsed_s": 187.766,
+  "suite": "video_v3_midfade",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_video_midfade_base\\sim\\tb_v3_video_midfade_base"
+}

@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_hud_rgb_hd192",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 2757,
+  "elapsed_s": 14.031,
+  "suite": "hud_rgb_hd192",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192"
+}

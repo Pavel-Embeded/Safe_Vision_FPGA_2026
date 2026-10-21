@@ -1,0 +1,11 @@
+{
+  "top": "tb_v3_hd_read64_basic",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 20,
+  "elapsed_s": 8.156,
+  "suite": "hd_read64",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_hd_read64_basic\\sim\\tb_v3_hd_read64_basic"
+}

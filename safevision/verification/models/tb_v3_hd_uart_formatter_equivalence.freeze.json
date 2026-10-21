@@ -1,0 +1,13 @@
+{
+  "original_path": "safevision/verification/unit/tb_v3_uart_formatter_equivalence.sv",
+  "copy_path": "safevision/verification/unit/tb_v3_hd_uart_formatter_equivalence.sv",
+  "original_source_commit": "e0467f9b2454783bd3275b0b3311f258e94c2a7e",
+  "original_sha256": "9df9aa167af6b07f883012562facd86535402aafabb13b2a9f1a1d1bb3f11cb3",
+  "reference_sha256": "d20413612aa033f80fac4b466c7cd67f196a8631f4053c2719772bfdfaffc35b",
+  "namespace_only": [
+    [
+      "tb_v3_uart_formatter_equivalence",
+      "tb_v3_hd_uart_formatter_equivalence"
+    ]
+  ]
+}

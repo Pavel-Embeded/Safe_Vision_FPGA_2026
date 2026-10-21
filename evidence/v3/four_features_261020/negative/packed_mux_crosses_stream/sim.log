@@ -1,0 +1,35 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 14:50:03 2026
+# Process ID: 40056
+# Current directory: D:/Codex/svnegative318/n/packed_mux_crosses_stream/sim/tb_v3_paired_rows_base288
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_paired_rows_base288/xsim_script.tcl}
+# Log file: D:/Codex/svnegative318/n/packed_mux_crosses_stream/sim/tb_v3_paired_rows_base288/sim.log
+# Journal file: D:/Codex/svnegative318/n/packed_mux_crosses_stream/sim/tb_v3_paired_rows_base288\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_paired_rows_base288/xsim_script.tcl
+# xsim {tb_v3_paired_rows_base288} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] mux public edge phase=0 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=5 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=0 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=5 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=0 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=5 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=0 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=5 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=0 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=5 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=0 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=5 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=0 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[FAIL] mux public edge phase=5 mode=0 sx=0 sy=0 got=0c104c10430413041c104c104f145f145 want=00000000030413041c104c104f145f145
+[TB] tb_v3_paired_rows_base288 done errors=8462362 comparisons=8462384
+$finish called at time : 59289420 ns : File "D:/Codex/svfeatures312/source/safevision/verification/unit/tb_v3_paired_rows_qualified288.sv" Line 4
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:40 . Memory (MB): peak = 217.941 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 14:50:47 2026...

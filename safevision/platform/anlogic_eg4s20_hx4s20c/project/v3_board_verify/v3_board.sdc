@@ -3,11 +3,11 @@
 create_clock -name board_clk -period 20.000 -waveform {0 10} [get_ports {clk}]
 derive_clocks
 
-# SPI mode 0, CLK_DIV_FAST=1 and CLK_DIV_INIT=249 in safevision_v3_top.
+# SPI mode 0, CLK_DIV_FAST=0, MID_REF_SAMPLE=1 and CLK_DIV_INIT=249 in safevision_v3_top.
 # The generated clocks model the enabled parts of bursts; clock stops between
 # bytes do not create a faster electrical edge. Both legal operating modes are
 # represented, rather than applying the 14ns transfer limit during startup.
-create_generated_clock -name sd_fast -source [get_ports {clk}] -master_clock [get_clocks {board_clk}] -divide_by 4 [get_ports {sd_dclk}]
+create_generated_clock -name sd_fast -source [get_ports {clk}] -master_clock [get_clocks {board_clk}] -divide_by 2 [get_ports {sd_dclk}]
 create_generated_clock -name sd_ident -source [get_ports {clk}] -master_clock [get_clocks {board_clk}] -divide_by 500 -add [get_ports {sd_dclk}]
 
 # UD INFO SDC-09UG V1.2, printed p31 section 6.4.1:
@@ -33,27 +33,31 @@ set_output_delay -clock [get_clocks sd_ident] -max 7.000 -add_delay [get_ports {
 set_output_delay -clock [get_clocks sd_ident] -min -7.000 -add_delay [get_ports {sd_mosi sd_ncs}]
 
 # These are literal SPI receive enables, not timing optimization waivers:
-# fast: fall -> TWO board edges -> next enabled rise;
-# identification: fall -> 250 board edges -> next enabled rise.
+# fast: falling SCLK -> next rising REF (20ns) -> falling REF sample (+10ns);
+# identification: falling SCLK -> 250 rising REF edges (5000ns) -> falling REF sample (+10ns).
 # MISO's first sample can be packed into the input PAD; the remaining seven
 # rx_sr shift registers are not PI capture endpoints. Bind the actual input.
+# Literal enabled falling-REF RX budgets: fast setup30ns/hold10ns;
+# identification setup5010ns/hold10ns. Hold budget is launch minus capture;
+# the checked capture edge is 10ns before the next SCLK fall. The
+# identification hold check is more conservative than its 4990ns quiet gap.
 # tb_v3_spi_budget verifies the
 # edge spacing, MOSI setup/hold, and the two legal card response-delay limits.
 set_multicycle_path -setup -from [get_clocks sd_fast] -to [get_pins {sd_miso_syn_*.ipad}] 2
 set_multicycle_path -hold -end -from [get_clocks sd_fast] -to [get_pins {sd_miso_syn_*.ipad}] 1
-set_multicycle_path -setup -from [get_clocks sd_ident] -to [get_pins {sd_miso_syn_*.ipad}] 250
-set_multicycle_path -hold -end -from [get_clocks sd_ident] -to [get_pins {sd_miso_syn_*.ipad}] 249
+set_multicycle_path -setup -from [get_clocks sd_ident] -to [get_pins {sd_miso_syn_*.ipad}] 251
+set_multicycle_path -hold -end -from [get_clocks sd_ident] -to [get_pins {sd_miso_syn_*.ipad}] 250
 
 # MOSI changes at SCLK falling. CS is separately registered on falling REF,
 # with a complete quiet interval and TX ready/valid guard; it retains ordinary
 # setup/hold IO timing and receives no SPI enable MCP. The
 # enabled launch lies half a serial period before the capturing rising edge,
 # and the next allowed change is half a period after it. With REF20ns this is
-# setup-start N=2/250, hold-start 2*N-1=3/499. The actual 7ns card/trace limits
+# setup-start N=1/250, hold-start 2*N-1=1/499. The actual 7ns card/trace limits
 # above remain unchanged. Exact detailed native setup/hold edge witnesses for
 # both SD modes and both output ports are mandatory, including negative tests.
-set_multicycle_path -setup -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_fast] 2
-set_multicycle_path -hold -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_fast] 3
+set_multicycle_path -setup -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_fast] 1
+set_multicycle_path -hold -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_fast] 1
 set_multicycle_path -setup -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_ident] 250
 set_multicycle_path -hold -start -from [get_clocks board_clk] -through [get_ports {sd_mosi}] -to [get_clocks sd_ident] 499
 

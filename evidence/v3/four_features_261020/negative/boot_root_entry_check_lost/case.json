@@ -1,0 +1,23 @@
+{
+  "mutation": "boot_root_entry_check_lost",
+  "target": "safevision/rtl/storage/fat32_boot_parser.v",
+  "suite": "fat32_boot_parser_predicates288",
+  "top": "tb_v3_fat32_boot_parser_predicates288",
+  "patch": [
+    {
+      "before": "if(bcnt==18)hdr_roote_matches<=hdr_roote_matches&&(sd_data==8'd0);",
+      "after": "if(bcnt==18)hdr_roote_matches<=1'b1;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative430\\n\\boot_root_entry_check_lost",
+  "original_sha256": "2987ee8158dccf3b9194e63fa118609f88d6a08e467c8b2c1a04e1f54d69d274",
+  "mutated_sha256": "93c0a2ec70f656c8226225312086f3d006dd2941e49117b1381814e2c6f5b9cd",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    738386
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative430\\n\\boot_root_entry_check_lost\\sim\\tb_v3_fat32_boot_parser_predicates288"
+}

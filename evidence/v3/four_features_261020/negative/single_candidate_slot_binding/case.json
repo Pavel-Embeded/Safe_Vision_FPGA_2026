@@ -1,0 +1,23 @@
+{
+  "mutation": "single_candidate_slot_binding",
+  "target": "safevision/rtl/storage/sd_bmp_player.v",
+  "suite": "media_crc",
+  "top": "tb_v3_final_crc",
+  "patch": [
+    {
+      "before": ".sel_slot(RESIDENT_CACHE?2'd0:pick_slot)",
+      "after": ".sel_slot(RESIDENT_CACHE?2'd1:pick_slot)"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\single_candidate_slot_binding",
+  "original_sha256": "20e4e3faf16520b929f40971fe13d9913e1557e938c52de6d50a92f33579b114",
+  "mutated_sha256": "fdf35c66b8a797ba211c8b2e3381301bc1c7ecf335ddf5ebc368fd7265872829",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\single_candidate_slot_binding\\sim\\tb_v3_final_crc"
+}

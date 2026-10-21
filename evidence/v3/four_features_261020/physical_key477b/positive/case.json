@@ -1,0 +1,42 @@
+{
+  "name": "positive",
+  "positive": true,
+  "accepted": true,
+  "rejected": false,
+  "issue": null,
+  "result": {
+    "accepted": true,
+    "logical_ports": 21,
+    "physical_pads": 25,
+    "adc_checked": true,
+    "physical_pad_table_checked": false,
+    "hardware_verified": false,
+    "physical_key_contract": [
+      {
+        "button": "KEY1",
+        "ball": "A2",
+        "logical_port": "rst_n",
+        "active_level": 0
+      },
+      {
+        "button": "KEY2",
+        "ball": "B2",
+        "logical_port": "btn_next",
+        "active_level": 0
+      },
+      {
+        "button": "KEY3",
+        "ball": "B1",
+        "logical_port": "btn_auto",
+        "active_level": 0
+      },
+      {
+        "button": "KEY4",
+        "ball": "C1",
+        "logical_port": "btn_emergency",
+        "active_level": 0
+      }
+    ],
+    "key_contract_source": "HX4S20 manual2410 printed p19; KEY3=B1 and KEY4=C1"
+  }
+}

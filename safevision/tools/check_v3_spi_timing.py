@@ -8,7 +8,7 @@ with complete routed endpoint/edge witnesses; all ordinary paths stay strict.
 import json,re,sys
 from pathlib import Path
 PATTERN=re.compile(r'^Slack\s*:\s*([-+.0-9]+)ns\s*\nBegin Point\s*:\s*(.*?)\nEnd Point\s*:\s*(.*?)\nCheck Type\s*:\s*(setup|hold)\s*\nProcess\s*:\s*(slow|fast)\s*\nBudget\s*:\s*([-+.0-9]+)ns(?:[ \t]*\{([^\n]*)\})?',re.M)
-def check(text):
+def check(text,mid_ref=False):
  errors=[];witness=[]
  if not re.search(r'^Confidence\s*:\s*Routed\s*$',text,re.M):errors.append('not routed')
  if not re.search(r'^Check Corner\s*:\s*Both \(Slow and Fast\)\s*$',text,re.M):errors.append('missing corners')
@@ -16,11 +16,12 @@ def check(text):
  # command lines and whitespace, never another path/group/report section.
  raw=list(re.finditer(r'^Path Group\s*:\s*\n((?:set_multicycle_path[^\n]*\n){2})\s*\nType\s*:\s*MCP\s*$',text,re.M))
  all_groups=list(re.finditer(r'^Path Group\s*:',text,re.M));commands=[]
- for clock,budget,setup,hold in [('sd_fast',40.0,2,3),('sd_ident',5000.0,250,499)]:
+ profiles=[('sd_fast',30.0,2,1,1,20.0),('sd_ident',5010.0,251,250,499,5000.0)] if mid_ref else [('sd_fast',40.0,2,2,3,40.0),('sd_ident',5000.0,250,250,499,5000.0)]
+ for clock,budget,input_setup,setup,hold,output_budget in profiles:
   for direction in ('input','output'):
    if direction=='input':
-    wanted=[f'set_multicycle_path -setup -from [get_clocks {clock}] -to [get_pins {{sd_miso_syn_*.ipad}}] {setup}',
-            f'set_multicycle_path -hold -end -from [get_clocks {clock}] -to [get_pins {{sd_miso_syn_*.ipad}}] {setup-1}']
+    wanted=[f'set_multicycle_path -setup -from [get_clocks {clock}] -to [get_pins {{sd_miso_syn_*.ipad}}] {input_setup}',
+            f'set_multicycle_path -hold -end -from [get_clocks {clock}] -to [get_pins {{sd_miso_syn_*.ipad}}] {input_setup-1}']
    else:
     wanted=[f'set_multicycle_path -setup -start -from [get_clocks board_clk] -through [get_ports {{sd_mosi}}] -to [get_clocks {clock}] {setup}',
             f'set_multicycle_path -hold -start -from [get_clocks board_clk] -through [get_ports {{sd_mosi}}] -to [get_clocks {clock}] {hold}']
@@ -36,9 +37,11 @@ def check(text):
     target_clock='board_clk' if direction=='input' else clock
     if f'clock {source_clock} ' not in begin or f'clock {target_clock} ' not in finish:
      errors.append(f'{clock} {direction}: wrong launch/capture clock')
-    if abs(float(actual)-(budget if kind=='setup' or direction=='output' else 0.0))>0.001:
+    expected_budget=output_budget if direction=='output' else (budget if kind=='setup' else (10.0 if mid_ref else 0.0))
+    if abs(float(actual)-expected_budget)>0.001:
      errors.append(f'{clock} {direction}: unexpected {kind} budget {actual}')
     if direction=='input':
+     if mid_ref and 'falling edge triggered by clock board_clk ' not in finish:errors.append(f'{clock} input: capture is not falling REF')
      next_path=PATTERN.search(section,p.end());body=section[p.end():next_path.start() if next_path else len(section)]
      # A slice can contain unrelated physical register names. Native TD prints
      # the actual captured logical net on the final register timing row; require
@@ -81,8 +84,9 @@ def check_cs(text):
  return {'accepted':not errors,'errors':errors,'paths':paths}
 def main():
  import argparse
- parser=argparse.ArgumentParser();parser.add_argument('--exceptions',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
- result=check(a.exceptions.read_text(encoding='utf-8-sig'));a.output.write_text(json.dumps(result,indent=2),encoding='utf-8')
+ parser=argparse.ArgumentParser();parser.add_argument('--exceptions',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);parser.add_argument('--mid-ref',action='store_true');a=parser.parse_args()
+ from check_board_timing import read_report
+ result=check(read_report(a.exceptions),mid_ref=a.mid_ref);a.output.write_text(json.dumps(result,indent=2),encoding='utf-8')
  print('SPI detailed witnesses '+('PASS' if result['accepted'] else 'FAIL'))
  return 0 if result['accepted'] else 1
 if __name__=='__main__':sys.exit(main())

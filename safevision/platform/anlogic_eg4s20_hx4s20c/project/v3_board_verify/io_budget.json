@@ -5,7 +5,7 @@
   "sd": {
     "primary_source": "https://www.udinfo-tech.com/assets/Uploads/Datasheet/SD/Mirco-SD/SD-card/DS_SDC-09UG_V1.2.pdf",
     "source_section": "6.4.1, printed page 31, default speed; card family supports SPI",
-    "fast_clock_hz": 12500000,
+    "fast_clock_hz": 25000000,
     "identification_clock_hz": 100000,
     "fast_card_tco_ns": [
       0,
@@ -24,11 +24,16 @@
     "miso_min_ns": 0,
     "mosi_cs_output_max_ns": 7,
     "mosi_cs_output_min_ns": -7,
-    "receive_enable_board_cycles_fast": 2,
-    "receive_enable_board_cycles_identification": 250,
+    "receive_enable_board_cycles_fast": 1.5,
+    "receive_enable_board_cycles_identification": 250.5,
     "limitation": "The installed card part, PCB flight time and load are not measured. Timing arithmetic is a design envelope, not proof for every card.",
     "cs_timing": "ordinary 10ns falling-REF PAD launch budget, unchanged external setup/hold 7ns; no MOSI MCP applies",
-    "extra_conservative_input_edge": "physical falling-SCLK launch constraints retained; same delay bounds also applied on rising launch solely as additional checks"
+    "extra_conservative_input_edge": "physical falling-SCLK launch constraints retained; same delay bounds also applied on rising launch solely as additional checks",
+    "miso_sample_edge": "falling_ref",
+    "fast_receive_setup_budget_ns": 30,
+    "identification_receive_setup_budget_ns": 5010,
+    "receive_hold_budget_ns": 10,
+    "receive_hold_capture_offset_ns": -10
   },
   "asynchronous_input_ports": [
     "rst_n",

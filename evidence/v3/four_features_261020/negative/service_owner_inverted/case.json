@@ -1,0 +1,23 @@
+{
+  "mutation": "service_owner_inverted",
+  "target": "safevision/rtl/storage/sd_bmp_player.v",
+  "suite": "service_owner_equivalence",
+  "top": "tb_v3_service_owner_equivalence",
+  "patch": [
+    {
+      "before": "assign selected_core_cmd=service_owner_q?external_core_cmd:local_core_cmd;",
+      "after": "assign selected_core_cmd=!service_owner_q?external_core_cmd:local_core_cmd;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative318\\n\\service_owner_inverted\\sim\\tb_v3_service_owner_equivalence",
+  "original_sha256": "20e4e3faf16520b929f40971fe13d9913e1557e938c52de6d50a92f33579b114",
+  "mutated_sha256": "9b8c99d647be063e018f501107f2a5dd7160b6cb8e77d585dfa6515d98537a46",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    471401
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative318\\n\\service_owner_inverted\\sim\\tb_v3_service_owner_equivalence"
+}

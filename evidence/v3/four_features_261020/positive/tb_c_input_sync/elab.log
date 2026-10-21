@@ -1,0 +1,15 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_c_input_sync -s tb_c_input_sync --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'tick' remains unconnected for this instance [D:/Codex/svq416/source/safevision/verification/unit/tb_c_input_sync.sv:26]
+WARNING: [VRFC 10-3645] port 'tick' remains unconnected for this instance [D:/Codex/svq416/source/safevision/verification/unit/tb_c_input_sync.sv:37]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.input_sync(DEB_N=8)
+Compiling module work.key_debounce(DEB_N=8)
+Compiling module work.tb_c_input_sync
+Built simulation snapshot tb_c_input_sync

@@ -1,0 +1,11 @@
+{
+  "top": "tb_framebuffer_loopback_core",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 11,
+  "elapsed_s": 12.047,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_framebuffer_loopback_core\\sim\\tb_framebuffer_loopback_core"
+}

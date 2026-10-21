@@ -1,0 +1,23 @@
+{
+  "mutation": "hd_priority_first_grant_missing",
+  "target": "safevision/rtl/hd/v3_supervisor.v",
+  "suite": "hd_priority_groups",
+  "top": "tb_v3_hd_priority_groups",
+  "patch": [
+    {
+      "before": "assign priority_next[0]=pending_next[0];",
+      "after": "assign priority_next[0]=1'b0;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative240\\n\\hd_priority_first_grant_missing\\sim\\tb_v3_hd_priority_groups",
+  "original_sha256": "6f2123d8e10c87bab52db9b920a6ad8a6d812897caabbec6ad6349e89beb0d0b",
+  "mutated_sha256": "b9398c5c79ca5f657c58d4e10a5cf1264b3f818e92ab39c0d62d5a7f60ecbd62",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    3072
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative240\\n\\hd_priority_first_grant_missing\\sim\\tb_v3_hd_priority_groups"
+}

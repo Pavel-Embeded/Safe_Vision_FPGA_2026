@@ -20,6 +20,7 @@
     "safevision/rtl/video/osd_overlay/osd_text_layer.v",
     "safevision/rtl/video/v3_status_layers.v",
     "safevision/rtl/video/v3_line_cache.v",
+    "safevision/rtl/video/v3_hd_coord_arith.v",
     "safevision/rtl/video/v3_video_display_core.v",
     "safevision/rtl/video/v3_presentation_ctrl.v",
     "safevision/rtl/video/hdmi_output/hdmi_video_bridge.v",
@@ -91,7 +92,17 @@
     "safevision/rtl/audio/v3_audio_prefill_compare.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/hdmi/v3_hdmi_phy_wrapper.v",
-    "safevision/verification/models/v3_board_query_reference.sv"
+    "safevision/verification/models/v3_board_query_reference.sv",
+    "safevision/rtl/control/v3_diag_query.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_mem_activity_tag.v",
+    "safevision/rtl/memory/v3_memory_path_observer.v",
+    "safevision/rtl/control/v3_response_timer.v",
+    "safevision/rtl/control/v3_pixel_response_tracker.v",
+    "safevision/rtl/video/v3_frame_safe_select.v",
+    "safevision/rtl/video/v3_pcm_waveform.v",
+    "safevision/rtl/video/v3_boot_uptime.v",
+    "safevision/rtl/media/v3_bmp_normalizer.v"
   ],
   "tops": [
     "tb_v3_board_query_catalog"
@@ -100,6 +111,8 @@
     "safevision/assets/fonts/font8x16.mem",
     "safevision/assets/fonts/font8x16_compact.mem",
     "safevision/assets/fonts/v3_status_text.mem",
-    "safevision/assets/control/v3_command_catalog.mem"
+    "safevision/assets/control/v3_command_catalog.mem",
+    "safevision/assets/fonts/v3_handbook_status_text.mem",
+    "safevision/assets/fonts/v3_four_features_text.mem"
   ]
 }

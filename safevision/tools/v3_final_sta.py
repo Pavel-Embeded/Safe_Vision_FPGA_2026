@@ -45,12 +45,12 @@ def reassess(exe,folder,sdc_paths,audit_path=None,env=None,route_process_exit_co
  commands+=[' read_sdc {'+Path(p).as_posix()+'}' for p in sdc_paths];commands+=[' update_timing -mode final']
  if audit_path:commands+=[' source {'+Path(audit_path).as_posix()+'}']
  commands+=[' report_timing_summary -ep_num 200 -path_num 3 -file route.timing',' report_timing_status -file route.status',
- ' report_timing_exception -file route.exceptions',' check_timing -verbose -file route.check',' export_sdc -file route.derived.sdc',
+ ' report_timing_exception -ep_num 200 -path_num 8 -file route.exceptions',' check_timing -verbose -file route.check',' export_sdc -file route.derived.sdc',
  # All formal reports above use the exact same pre-clock-summary clock graph.
  ' report_clock_summary -levels 20 -expand_buckets -debug -file route.clocks',
  ' check_timing -verbose -file after_clock_report.check',
  ' report_timing_summary -ep_num 200 -path_num 3 -file after_clock_report.timing',
- ' report_timing_exception -file after_clock_report.exceptions',
+ ' report_timing_exception -ep_num 200 -path_num 8 -file after_clock_report.exceptions',
  '} err]} {puts stderr "V3 FINAL STA FAILED: $err";exit 1}','puts "V3 FINAL STA COMPLETE"','exit 0']
  tcl=folder/'final_sta.tcl';tcl.write_text('\n'.join(commands)+'\n',encoding='ascii')
  record={'schema':2,'created_at_utc':datetime.now(timezone.utc).isoformat(),'scope':'fresh-process STA only of frozen physical database; no placement or route',

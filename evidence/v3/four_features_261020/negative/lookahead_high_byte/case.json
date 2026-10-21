@@ -1,0 +1,24 @@
+{
+  "mutation": "lookahead_high_byte",
+  "target": "safevision/rtl/control/v3_supervisor.v",
+  "suite": "supervisor_threshold",
+  "top": "tb_v3_supervisor_threshold",
+  "patch": [
+    {
+      "before": "  begin ge_groups=g[3] | (e[3]&g[2]) | (e[3]&e[2]&g[1]) | (e[3]&e[2]&e[1]&(g[0]|e[0]));end\n",
+      "after": "  begin ge_groups=1'b0 | (e[3]&g[2]) | (e[3]&e[2]&g[1]) | (e[3]&e[2]&e[1]&(g[0]|e[0]));end\n"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "producer_folder": "D:\\Codex\\svnegative345\\n\\lookahead_high_byte\\sim\\tb_v3_supervisor_threshold",
+  "original_sha256": "e75044d394109e0da50508cb29519edcbe066f2ad02d5bb3a9a53c5f9480a4b6",
+  "mutated_sha256": "ac3af7fbf8967456a931129f82783c2f0637c5a0e5c4944ce817036b54b55cd3",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    95923
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative345\\n\\lookahead_high_byte\\sim\\tb_v3_supervisor_threshold"
+}

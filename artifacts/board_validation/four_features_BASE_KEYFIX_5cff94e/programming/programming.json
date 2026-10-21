@@ -1,0 +1,15 @@
+{
+  "flash_written": false,
+  "mode": "base",
+  "ended_at_utc": "2026-10-20T12:26:27.2897004Z",
+  "hardware_function_verified": false,
+  "approval_source_commit": "5cff94eb70e800337e4617dbfa44349066f3d504",
+  "bitstream": "D:\\Safe_Vision_FPGA_2026\\artifacts\\v3\\four_features_BASE_KEYFIX_5cff94e\\SafeVision_BASE_5cff94e.bit",
+  "process_exit": 0,
+  "program_sram_command_succeeded": true,
+  "console_sha256": "c58d6c4e00c1e2b1532651f462b4927e9976799016136624b59431985229838a",
+  "github_uploaded": false,
+  "expected_firmware_id": "26102004",
+  "started_at_utc": "2026-10-20T12:26:20.4331845Z",
+  "bit_sha256": "394a0f8151142886c3c950e3ea7220727258eb97dc8f8c7f73c954e8ef04f42d"
+}

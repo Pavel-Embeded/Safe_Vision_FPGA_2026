@@ -2,7 +2,7 @@
 module tb_v3_coords_fade;
  reg clk=0;always #5 clk=~clk;reg rst=0,de=0;reg[11:0] x=0,y=0;
  wire v;wire[9:0] sx,sy;wire[7:0] fx,fy;
- scaler_coords #(.HD(1)) co(clk,rst,de,x,y,1'b1,v,sx,sy,fx,fy);
+ scaler_coords #(.HD(1)) co(clk,rst,de,x,y,1'b1,2'd0,v,sx,sy,fx,fy);
  reg fs=0,request=0,safety=0;reg[1:0] target=0;reg[3:0] valid_slots=15;
  wire[1:0] cur,nxt;wire[7:0] alpha,gen;wire busy,commit,ready;
  fade_ctrl #(.FRAMES(32)) fc(clk,rst,fs,request,safety,target,valid_slots,cur,nxt,alpha,gen,busy,commit,ready);

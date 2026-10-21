@@ -30,7 +30,12 @@ module v3_pcm_ingress_shared_fifo(
  wire fifo_wr_valid=wr_rst_n&&(|wr_valid);
  wire fifo_rd_ready=rd_rst_n&&((read_part!=2)||rd_ready[fifo_data[1:0]]);
  assign wr_ready=(wr_rst_n&&write_part==2&&fifo_wr_ready)?wr_valid:4'd0;
- assign wr_pairs=(rounded_words/3)+(write_part!=0);
+ // For every possible10-bit FIFO level w, floor((w+2)/3) equals
+ // floor((683*w+1366)/2048). All1024 levels and4 partial-word states are
+ // exhaustively checked at the public output. DSP mapping is requested;
+ // TD may fold the constants into logic. No register/handshake cycle is added.
+ (* dsp_style="yes" *) wire[20:0] pair_credit_product=words*10'd683+21'd1366;
+ assign wr_pairs=pair_credit_product[19:11]+(write_part!=0);
  assign wr_words={1'b0,words};
  assign wr_partial=(write_part!=0);
  assign sector_room=wr_rst_n&&write_part==0&&words<=11'd632;

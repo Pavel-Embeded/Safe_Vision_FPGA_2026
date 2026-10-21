@@ -30,7 +30,7 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module bmp_parser (
+module bmp_parser #(parameter integer VARIABLE_SIZE=0) (
     input  wire        clk,
     input  wire        rst_n,
 
@@ -99,15 +99,26 @@ module bmp_parser (
     // predicates. Header fields are complete before byte 53 publishes results.
     wire sig_ok    = sig_match_r;
     wire dib_ok    = dib_ge40_r;
-    wire size_ok   = (width_lo_r == 16'd640) && width_hi_zero_r &&
+    wire legacy_size_ok = (width_lo_r == 16'd640) && width_hi_zero_r &&
                      ((height_lo_r == 16'd480) || (height_lo_r == 16'hfe20)) &&
                      height_hi_match_r;
+    wire[15:0] height_abs=height_sign_r?(~height_lo_r+16'd1):height_lo_r;
+    wire size_ok=VARIABLE_SIZE?(width_lo_r!=0&&width_lo_r<=1920&&width_hi_zero_r&&height_abs!=0&&height_abs<=1080&&height_hi_match_r):legacy_size_ok;
+    wire[12:0] dynamic_w3=({2'd0,width_lo_r[10:0]}<<1)+{2'd0,width_lo_r[10:0]};
+    wire[12:0] dynamic_stride=((dynamic_w3+13'd3)>>2)<<2;
+    wire[24:0] dynamic_bytes=dynamic_stride*height_abs[10:0];
+    wire[31:0] required_bytes=VARIABLE_SIZE?{7'd0,dynamic_bytes}:BMP_PIX_BYTES;
+    // bfSize is consumed when the header publishes its check. Reuse its
+    // private storage for the pixel countdown in the following transfer
+    // epoch; all public diagnostic fields retain their original registers.
+    wire[31:0] pixels_remaining=bfsize_r;
     wire fmt_ok    = planes_one_r && (bpp_lo_r == 8'd24) && bpp_hi_zero_r && (comp_r == 32'd0);
     wire trunc_ok  = (offbits_r >= BMP_HDR_BYTES) &&
                      (bfsize_r <= file_size) &&
                      // Include the carry bit. A 32-bit sum can wrap a huge
                      // bfOffBits into a small apparently valid file extent.
-                     (({1'b0,offbits_r} + {1'b0,BMP_PIX_BYTES}) <= {1'b0,file_size});
+                     (({1'b0,offbits_r} + {1'b0,required_bytes}) <= {1'b0,file_size}) &&
+                     (!VARIABLE_SIZE || ({1'b0,offbits_r}+{1'b0,required_bytes}<={1'b0,bfsize_r}));
 
     wire        check_ok = sig_ok && dib_ok && size_ok && fmt_ok && trunc_ok;
 
@@ -122,6 +133,7 @@ module bmp_parser (
             mstate      <= H_HEAD;
             hcnt        <= 6'd0;
             skip_cnt    <= 32'd0;
+            
             hdr_ok      <= 1'b0;
             bfsize_r    <= 32'h0;
             offbits_r   <= 32'h0;
@@ -174,9 +186,9 @@ module bmp_parser (
                         6'd21: width_hi_zero_r <= width_hi_zero_r && (data == 8'd0);
                         6'd22: height_lo_r[7:0] <= data;
                         6'd23: height_lo_r[15:8] <= data;
-                        6'd24: height_hi_match_r <= (data == ((height_lo_r == 16'd480) ? 8'h00 : 8'hff));
+                        6'd24: height_hi_match_r <= (data == ((VARIABLE_SIZE ? !height_lo_r[15] : height_lo_r == 16'd480) ? 8'h00 : 8'hff));
                         6'd25: begin
-                            height_hi_match_r <= height_hi_match_r && (data == ((height_lo_r == 16'd480) ? 8'h00 : 8'hff));
+                            height_hi_match_r <= height_hi_match_r && (data == ((VARIABLE_SIZE ? !height_lo_r[15] : height_lo_r == 16'd480) ? 8'h00 : 8'hff));
                             height_sign_r <= data[7];
                         end
                         6'd26: planes_one_r <= (data == 8'd1);
@@ -210,6 +222,7 @@ module bmp_parser (
                         bpp         <= bpp_lo_r;
                         compression <= comp_r;
                         hdr_ok      <= check_ok;
+                        if(VARIABLE_SIZE)bfsize_r<=required_bytes;
                         check_error <= !check_ok;
                         if (!check_ok) begin
                             err_code <= `ERR_MEDIA_INVALID;
@@ -240,14 +253,15 @@ module bmp_parser (
                 if (valid && ready) begin
                     if (skip_cnt != 32'd0) begin
                         skip_cnt <= skip_cnt - 32'd1;      // 调色板 / 填充，丢掉
-                    end else if (hdr_ok) begin
+                    end else if (hdr_ok && (!VARIABLE_SIZE || pixels_remaining!=0)) begin
                         out_data  <= data;
                         out_valid <= 1'b1;
                         out_sof   <= 1'b1;                 // 像素数据第一个字节
-                        out_eof   <= eof;
+                        out_eof   <= VARIABLE_SIZE?(pixels_remaining==1||eof):eof;
+                        if(VARIABLE_SIZE)bfsize_r<=pixels_remaining-1'b1;
                     end
                     if (eof) begin
-                        out_eof <= 1'b1;
+                        if(!VARIABLE_SIZE||pixels_remaining!=0)out_eof <= 1'b1;
                         mstate  <= H_DONE;
                     end
                 end

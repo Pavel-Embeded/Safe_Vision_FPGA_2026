@@ -83,3 +83,21 @@ __pycache__/
 /safevision/platform/anlogic_eg4s20_hx4s20c/project/vendor_hdmi_manifest.json
 /safevision/platform/anlogic_eg4s20_hx4s20c/project/gui_*.manifest.json
 /safevision/platform/anlogic_eg4s20_hx4s20c/project/font8x16.mem
+
+# Curated BASE delivery only; no runtime scratch or failed HD builds.
+!/artifacts/
+!/SAFEVISION_CURRENT.md
+/artifacts/*
+!/artifacts/releases/
+!/artifacts/board_validation/
+!/artifacts/test_media/
+/artifacts/releases/*
+!/artifacts/releases/BASE_26102004_5cff94e/
+/artifacts/board_validation/*
+!/artifacts/board_validation/four_features_BASE_KEYFIX_5cff94e/
+/artifacts/test_media/*
+!/artifacts/test_media/four_features_261020/
+!artifacts/releases/BASE_26102004_5cff94e/*.bit
+!artifacts/releases/BASE_26102004_5cff94e/native/**/*.log
+!artifacts/board_validation/four_features_BASE_KEYFIX_5cff94e/**/*.log
+!/evidence/v3/**/*.log

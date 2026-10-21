@@ -1,0 +1,23 @@
+{
+  "mutation": "thumbnail_row_alias",
+  "target": "safevision/rtl/video/v3_packed_row_store.v",
+  "suite": "handbook",
+  "top": "tb_v3_handbook_packed",
+  "patch": [
+    {
+      "before": ":scale_select==2?source_row[2:1]:source_row[3:2];",
+      "after": ":scale_select==2?source_row[2:1]:source_row[1:0];"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\thumbnail_row_alias",
+  "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+  "mutated_sha256": "8ab9a7de14315bbba0e16260e826124d1df6a11b1e7d256ccba21f1850ec74db",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    28800
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\thumbnail_row_alias\\sim\\tb_v3_handbook_packed"
+}

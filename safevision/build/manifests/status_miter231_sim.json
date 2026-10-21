@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "safevision/rtl/video/v3_pcm_waveform.v",
+    "safevision/rtl/video/v3_status_layers.v",
+    "safevision/verification/models/v3_status_layers226_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_status_miter231"
+  ],
+  "assets": [
+    "safevision/assets/fonts/font8x16.mem",
+    "safevision/assets/fonts/font8x16_compact.mem",
+    "safevision/assets/fonts/v3_handbook_status_text.mem",
+    "safevision/assets/fonts/v3_four_features_text.mem"
+  ]
+}

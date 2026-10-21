@@ -1,0 +1,23 @@
+{
+  "mutation": "hd_guard_matrix_corrupt",
+  "target": "safevision/rtl/hd/v3_row_integrity.v",
+  "suite": "hd_guard_480_320",
+  "top": "tb_v3_hd_guard_480_320",
+  "patch": [
+    {
+      "before": " assign next_source_crc[0]=^{crc_delta[3],crc_delta[16],p4,p14,p23,p24};",
+      "after": " assign next_source_crc[0]=(^{crc_delta[3],crc_delta[16],p4,p14,p23,p24})^1'b1;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_guard_matrix_corrupt\\sim\\tb_v3_hd_guard_480_320",
+  "original_sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368",
+  "mutated_sha256": "289de2c32a2b3d9a24fc8abbe8baf8625728e83b32d317b4ad806b2b89360253",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1583114
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative318\\n\\hd_guard_matrix_corrupt\\sim\\tb_v3_hd_guard_480_320"
+}

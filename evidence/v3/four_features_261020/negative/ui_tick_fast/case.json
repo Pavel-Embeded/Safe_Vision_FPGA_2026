@@ -1,0 +1,23 @@
+{
+  "mutation": "ui_tick_fast",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "ui_boundary409",
+  "top": "tb_v3_ui_boundary409",
+  "patch": [
+    {
+      "before": "ui_phase==UI_DIV-1",
+      "after": "ui_phase==UI_DIV-2"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\ui_tick_fast",
+  "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "mutated_sha256": "f43258894a21b0039ccc2309bed3e78e8f9f8919fcca7dfaa1855cc3a678a239",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    11
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\ui_tick_fast\\sim\\tb_v3_ui_boundary409"
+}

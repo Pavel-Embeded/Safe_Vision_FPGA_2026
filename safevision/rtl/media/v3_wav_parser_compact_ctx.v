@@ -21,6 +21,27 @@ wire[1:0] phase=index[1:0]; // Named observation point used by split-sample TB.
 wire[31:0] assembled={din,word[31:8]};
 wire[32:0] riff_end={1'b0,assembled}+33'd8;
 wire[33:0] padded_end={2'd0,assembled}+34'd1+assembled[0];
+// a+1+a[0] > r iff r==0 || a>(r-1) || (a[0] && a==(r-1)).
+// Reuse the existing remaining-byte decrement, instead of adding padding to
+// the newly assembled header word before a wide comparison. No state/latency
+// or111-bit context change; the widened legacy expressions remain debug views.
+(* use_ripple=1 *) wire[31:0] riff_after_byte=riff_left-32'd1;
+(* use_ripple=1 *) wire[31:0] file_payload_limit=file_size-32'd8;
+(* keep="true" *) wire[3:0] chunk_gt,chunk_eq,file_gt,file_eq;
+genvar bound_byte;
+generate for(bound_byte=0;bound_byte<4;bound_byte=bound_byte+1)begin:bound_compare
+ assign chunk_gt[bound_byte]=assembled[8*bound_byte+:8]>riff_after_byte[8*bound_byte+:8];
+ assign chunk_eq[bound_byte]=assembled[8*bound_byte+:8]==riff_after_byte[8*bound_byte+:8];
+ assign file_gt[bound_byte]=assembled[8*bound_byte+:8]>file_payload_limit[8*bound_byte+:8];
+ assign file_eq[bound_byte]=assembled[8*bound_byte+:8]==file_payload_limit[8*bound_byte+:8];
+end endgenerate
+function greater_bytes;input[3:0] g,e;
+ begin greater_bytes=g[3]|(e[3]&g[2])|(e[3]&e[2]&g[1])|(e[3]&e[2]&e[1]&g[0]);end
+endfunction
+wire padded_overrun=(riff_left==0)||greater_bytes(chunk_gt,chunk_eq)||(assembled[0]&&(&chunk_eq));
+wire riff_oversize=(file_size<8)||greater_bytes(file_gt,file_eq);
+wire riff_overflow=&assembled[31:3];
+
 assign sample=word;
 assign din_ready=!pcm_valid&&(state==W_HDR||state==W_CHUNK||state==W_FMT||state==W_SKIP||
  state==W_PAD||state==W_END||state==W_DATA);
@@ -43,7 +64,7 @@ always@(posedge clk or negedge rst_n)begin
     word<=assembled;
     if(index==3&&assembled!=32'h46464952)reject_now=1;
     if(index==7)begin
-     if(assembled<4||riff_end[32]||(file_size!=0&&riff_end>file_size))reject_now=1;
+     if(assembled<4||riff_overflow||(file_size!=0&&riff_oversize))reject_now=1;
      riff_left<=assembled-4;
     end
     if(index==11)begin
@@ -53,7 +74,7 @@ always@(posedge clk or negedge rst_n)begin
     if(din_eof)reject_now=1;
    end else if(state!=W_END)begin
     if(riff_left==0)reject_now=1;
-    riff_left<=riff_left-1'b1;
+    riff_left<=riff_after_byte;
     case(state)
      W_CHUNK:begin
       word<=assembled;
@@ -63,7 +84,7 @@ always@(posedge clk or negedge rst_n)begin
        else kind<=K_OTHER;
       end
       if(index==7)begin
-       if(padded_end>{2'd0,riff_left})reject_now=1;
+       if(padded_overrun)reject_now=1;
        left<=assembled;pad<=assembled[0];index<=0;
        if(kind==K_FMT)begin
         if(assembled<16)reject_now=1;

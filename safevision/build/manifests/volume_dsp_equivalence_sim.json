@@ -1,0 +1,10 @@
+{
+  "sources": [
+    "safevision/rtl/audio/v3_audio_volume.v",
+    "safevision/verification/models/v3_audio_volume_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_volume_dsp_equivalence",
+    "tb_v3_volume_serial"
+  ]
+}

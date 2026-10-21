@@ -1,0 +1,16 @@
+{
+  "baseline_source": "D:\\Codex\\svfeatures255\\source",
+  "changes": [
+    {
+      "file": "fat32_boot_parser.v",
+      "original_sha256": "cf42e7f28a7069558a9b87609cf5a1879e4b4fe2c4bd05aa3b911572686fef69",
+      "modified_sha256": "5d2e4c4eb78d3fa5c98317a5d819e01874021645929aa3eac342016f7cc9e31e"
+    },
+    {
+      "file": "mbr_parser.v",
+      "original_sha256": "90b0e34e4563635ef143841aeaf2acfd07d342595bf44860ddc2d2ca2ba3f195",
+      "modified_sha256": "336734ef1f65c2b50323160ce28bc87908f62f9eaccd00bb2c410350fd6aa6a7"
+    }
+  ],
+  "public_interface_unchanged": true
+}

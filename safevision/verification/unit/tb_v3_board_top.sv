@@ -10,6 +10,8 @@ module tb_v3_board_top;
  .btn_next(1'b1),.btn_auto(1'b1),.btn_emergency(1'b1),.uart_rxd(1'b1),.uart_txd(txd),.led(led),
  .sd_ncs(),.sd_dclk(),.sd_mosi(),.sd_miso(1'b1),.HDMI_D0_P(),.HDMI_D1_P(),.HDMI_D2_P(),.HDMI_CLK_P(),.HDMI_DDC_SCL(scl),.HDMI_DDC_SDA(sda));
  // Same ROM data, simulation cwd path only; no functional parameter changes.
+ // Same measured MEM50/+8ns data-before-valid relation as real board.
+ defparam dut.memory_ip.OUTPUT_VALID_DELAY=1;
  defparam dut.uart.g_catalog.parser.CATALOG_FILE="v3_command_catalog.mem";
  defparam dut.video.FONT_FILE="font8x16.mem";
  defparam dut.video.COMPACT_FONT_FILE="font8x16_compact.mem";

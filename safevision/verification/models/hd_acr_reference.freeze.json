@@ -1,0 +1,13 @@
+{
+  "original_path": "safevision/rtl/audio/hdmi_acr.v",
+  "original_source_commit": "0b2de548c8c94e9e4b85573653bdd28c74736a39",
+  "original_sha256": "326f5e912ad655ef874879408a01b0e0c5989d27a3f258754f747e1f11165e49",
+  "reference_sha256": "d8018b8407b3ecd07108ef8a37e56bf99944b751ed0a3558a13197ce141a4b86",
+  "namespace_only": [
+    [
+      "module hdmi_acr(",
+      "module hd_acr_reference("
+    ]
+  ],
+  "newline_normalized_to_LF": true
+}

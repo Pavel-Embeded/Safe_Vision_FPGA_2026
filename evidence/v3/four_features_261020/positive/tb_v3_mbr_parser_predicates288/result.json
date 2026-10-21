@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_mbr_parser_predicates288",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 7388549,
+  "elapsed_s": 16.547,
+  "suite": "mbr_parser_predicates288",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svfeatures285\\tests\\mbr_parser_predicates288\\tb_v3_mbr_parser_predicates288"
+}

@@ -72,12 +72,12 @@
       "PULLTYPE": "PULLUP"
     },
     "btn_auto": {
-      "LOCATION": "C1",
+      "LOCATION": "B1",
       "IOSTANDARD": "LVCMOS33",
       "PULLTYPE": "PULLUP"
     },
     "btn_emergency": {
-      "LOCATION": "B1",
+      "LOCATION": "C1",
       "IOSTANDARD": "LVCMOS33",
       "PULLTYPE": "PULLUP"
     },
@@ -222,5 +222,32 @@
       "source": "3_Power_and_Config.pdf page1 R101 to3V3 and R102 toGND"
     }
   },
-  "review_note": "Independent transcription from board manual and schematic images; not generated from ADC. Compile/route gates compare this contract. External SI, board assembly and monitor/card compatibility require hardware."
+  "review_note": "Independent transcription from board manual and schematic images; not generated from ADC. Compile/route gates compare this contract. External SI, board assembly and monitor/card compatibility require hardware.",
+  "key_function_contract": [
+    {
+      "button": "KEY1",
+      "ball": "A2",
+      "logical_port": "rst_n",
+      "active_level": 0
+    },
+    {
+      "button": "KEY2",
+      "ball": "B2",
+      "logical_port": "btn_next",
+      "active_level": 0
+    },
+    {
+      "button": "KEY3",
+      "ball": "B1",
+      "logical_port": "btn_auto",
+      "active_level": 0
+    },
+    {
+      "button": "KEY4",
+      "ball": "C1",
+      "logical_port": "btn_emergency",
+      "active_level": 0
+    }
+  ],
+  "key_correction_note": "2026-10-20: previous reference had KEY3/KEY4 roles exchanged. Rechecked original manual2410 printed p19 table and schematic. Fixed the ADC and the reference together; checker additionally anchors physical key names to independent fixed balls."
 }

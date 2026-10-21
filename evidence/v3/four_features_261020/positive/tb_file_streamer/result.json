@@ -1,0 +1,11 @@
+{
+  "top": "tb_file_streamer",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 49,
+  "elapsed_s": 10.922,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_file_streamer\\sim\\tb_file_streamer"
+}

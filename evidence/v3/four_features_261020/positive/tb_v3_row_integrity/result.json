@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_row_integrity",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 53,
+  "data_comparisons": 32,
+  "elapsed_s": 7.922,
+  "suite": "v3",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_row_integrity\\sim\\tb_v3_row_integrity"
+}

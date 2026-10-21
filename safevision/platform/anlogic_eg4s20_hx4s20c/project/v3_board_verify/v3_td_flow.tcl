@@ -21,7 +21,11 @@ set hd [expr {$board_mode eq "hd"}]
 set video_pll [expr {$hd ? "sv_video_hd_pll.v" : "sv_video_vga_pll.v"}]
 set mode_define [expr {$hd ? "hd_mode.v" : "base_mode.v"}]
 set paths {}
-set source_file [open [file join $here v3_board_sources.list] r]
+set source_manifest [file join $here v3_board_sources.list]
+if {$board_mode eq "hd" && [file isfile [file join $here v3_board_sources_hd.list]]} {
+ set source_manifest [file join $here v3_board_sources_hd.list]
+}
+set source_file [open $source_manifest r]
 set source_lines [split [read $source_file] "\n"]
 close $source_file
 foreach line $source_lines {
@@ -38,9 +42,13 @@ if {[catch {
  if {[file isfile $mode_parameters]} {source $mode_parameters}
  report_param -detail -stage rtl -file rtl.params
  report_param -detail -stage gate -file gate.params
+ set gate_hidden [open gate.hidden.params w]
+ foreach key {bdd_opt lut4_map} {puts $gate_hidden "gate $key [get_param gate $key]"}
+ close $gate_hidden
  read_hdl -file [join $paths " "] -include_dir [file join $root safevision rtl include] -top safevision_v3_top
  read_adc [file join $here v3_board.adc]
- set physical_adc [file join $here v3_physical.adc]
+ set physical_adc [file join $here v3_physical_${board_mode}.adc]
+ if {![file isfile $physical_adc]} {set physical_adc [file join $here v3_physical.adc]}
  if {[file isfile $physical_adc]} {read_adc $physical_adc}
  optimize_rtl
  report_area -file rtl.area
@@ -63,6 +71,12 @@ if {[catch {
  source [file join $here v3_cdc_audit.tcl]
  report_timing_summary -ep_num 30 -file gate.timing
  report_param -detail -stage place -file place.params
+ report_param -all -stage place -file place.all.params
+ # TD omits default seed0 even with -all. Query the actual registered value;
+ # absence from a table is never interpreted as successful acknowledgement.
+ set seed_file [open place.seed.params w]
+ puts $seed_file "place seed [get_param place seed]"
+ close $seed_file
  report_param -detail -stage route -file route.params
  place
  # Placement estimates are diagnostics; final acceptance uses fresh routed STA.
@@ -70,6 +84,10 @@ if {[catch {
  report_timing_exception -file place.exceptions
  report_area -io_info -file place.area
  export_db place.db
+ # Read the actual route-only option after placement, before routing.
+ set route_hidden [open route.hidden.params w]
+ puts $route_hidden "route post_route_opt [get_param route post_route_opt]"
+ close $route_hidden
  route
  # TD skips its automatic hold repair above 90% slice utilization. Invoke the
  # documented repair explicitly; final fresh all-corner STA remains mandatory.
@@ -77,11 +95,12 @@ if {[catch {
  update_timing -mode final
  report_timing_summary -ep_num 200 -path_num 3 -file route.timing
  report_timing_status -file route.status
- report_timing_exception -file route.exceptions
+ report_timing_exception -ep_num 200 -path_num 8 -file route.exceptions
  check_design
  check_timing -verbose -file route.check
  report_area -io_info -file route.area
  export_sdc -file route.derived.sdc
+ write_verilog route.netlist.v
  export_db route.db
  # This TD release mutates clock objects while expanding clock diagnostics.
  # Preserve the routed database and all formal reports before that diagnostic.

@@ -124,8 +124,10 @@ module v3_audio_priority_volume_scenario #(
    end else if(volume_queued!=0&&volume_cycle>=volume_due)$fatal(1,"volume missing exact74-clock output");
   end
  end
- wire[6:0] volume_phase_index=d.volume_scale.busy?
-  (d.volume_scale.right_phase?7'd38:7'd1)+(d.volume_scale.state==2?7'd7:7'd0)+d.volume_scale.count:7'd0;
+ // Observe age from the public captured-input/output contract. The test must
+ // keep the same eight injection edges after an implementation change, without
+ // depending on removed multiply/divide private state. Phase1 is capture edge.
+ wire[6:0] volume_phase_index=volume_queued?(volume_cycle+75-volume_due):0;
  reg[7:0] volume_phase_seen=0;integer volume_injection,volume_target;
  task commit;
   begin @(negedge sc);tv=1;wait(mready&&mg==gen);@(negedge sc);cv=1;wait(cr);@(negedge sc);cv=0;tv=0;end

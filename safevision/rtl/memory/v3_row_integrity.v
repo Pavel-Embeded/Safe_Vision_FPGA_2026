@@ -14,25 +14,48 @@ module v3_row_integrity #(
  output reg rd_req,output reg[31:0] rd_addr,output wire[15:0] rd_len,
  input wire rd_ack,rd_busy,rd_valid,input wire[31:0] rd_data,
  input wire[31:0] lookup_addr,output wire[31:0] lookup_crc,output reg lookup_valid,
- output reg[31:0] bad_addr,bad_expected,bad_actual,source_words,
+ output reg[31:0] bad_addr,bad_expected,bad_actual,output wire[31:0] source_words,
  output reg[15:0] checked_rows);
  `include "crc32_word.vh"
  localparam IDLE=0,RETIRE=1,REQUEST=2,COLLECT=3,CHECK=4,DONE=5;
  reg[31:0] signatures[0:4*ROWS-1];
  reg[2:0] state;reg[1:0] slot_q;reg building,complete,dir;
- reg[31:0] source_crc,verify_crc,base,expected_addr,timer;
+ // Counts stop at frame/burst/deadline bounds; retain32-bit public ports.
+ localparam integer FRAME_WORDS=ROWS*ROW_WORDS;
+ localparam integer SOURCE_W=$clog2(FRAME_WORDS+1),ADDR_W=$clog2(`SV_IMG3_BASE+FRAME_WORDS*4+4);
+ localparam integer TIMER_W=$clog2(TIMEOUT)+1;
+ localparam integer COL_W=$clog2(ROW_WORDS),ROW_W=(ROWS<2)?1:$clog2(ROWS+1);
+ localparam integer OFFSET_W=$clog2(ROW_WORDS+1),BURST_W=$clog2(BURST+1);
+ reg[31:0] source_crc,verify_crc,base;
+ reg[ADDR_W-1:0] expected_addr;
+ reg[TIMER_W-1:0] timer;
+ reg[SOURCE_W-1:0] source_count;
+ assign source_words=source_count;
  wire[31:0] expected_crc;
- reg[9:0] column,verify_row,row_offset,producer_row;reg[15:0] burst_count;
+ reg[COL_W-1:0] column;reg[ROW_W-1:0] verify_row,producer_row;
+ reg[OFFSET_W-1:0] row_offset;reg[BURST_W-1:0] burst_count;
  function[1:0] addr_slot;input[31:0] addr;begin
- addr_slot=addr>=`SV_IMG3_BASE?3:addr>=`SV_IMG2_BASE?2:addr>=`SV_IMG1_BASE?1:0;end endfunction
+ // The reviewed slot bases are0,5,10,15 times2^17. Classification
+ // therefore depends only on the upper15 bits; low17 bits cannot affect
+ // ANY32-bit input result. Factor the high-prefix OR instead of mapping
+ // three independent32-bit carry comparisons. Keep the generic-map fallback.
+ if(`SV_IMG0_BASE==32'h00000000&&`SV_IMG1_BASE==32'h000a0000&&
+    `SV_IMG2_BASE==32'h00140000&&`SV_IMG3_BASE==32'h001e0000)
+  addr_slot=(|addr[31:21]) ? 2'd3 : addr[20:17]>=4'd15 ? 2'd3 :
+   addr[20:17]>=4'd10 ? 2'd2 : addr[20:17]>=4'd5 ? 2'd1 : 2'd0;
+ else addr_slot=addr>=`SV_IMG3_BASE?3:addr>=`SV_IMG2_BASE?2:addr>=`SV_IMG1_BASE?1:0;
+ end endfunction
  wire[1:0] source_slot=addr_slot(write_addr),query_slot=addr_slot(lookup_addr);
  wire[31:0] query_offset=lookup_addr-`SV_SLOT_BASE(query_slot);
  wire[31:0] wanted=(source_words==0)?base+(top_down?0:(ROWS-1)*ROW_WORDS*4):expected_addr;
  wire source_beat=building && accepted && !fault && write_addr==wanted && source_slot==slot_q;
  wire signature_write=source_beat && column==ROW_WORDS-1;
- wire[31:0] next_source_crc=crc32_word(source_crc,write_data);
  wire capture=rd_valid && (state==COLLECT || (state==REQUEST && rd_ack));
- wire[31:0] next_verify_crc=crc32_word(verify_crc,rd_data);
+ // Mutually exclusive build/readback phases share the linear CRC network.
+ // CRC_word first XORs state with data; factor selection before that network.
+ wire[31:0] crc_delta=capture?(verify_crc^rd_data):(source_crc^write_data);
+ wire[31:0] next_source_crc=crc32_word(32'd0,crc_delta);
+ wire[31:0] next_verify_crc=next_source_crc;
  // Divide only the bounded row offset. Factoring out the constant power
  // of two avoids several synthesized 32-bit /1280 and %1280 dividers.
  // Out-of-range queries are still rejected using the FULL 32-bit offset.
@@ -48,14 +71,22 @@ module v3_row_integrity #(
  wire[9:0] source_row=(source_words==0)?(top_down?0:ROWS-1):producer_row;
  wire[9:0] query_row=query_high/ODD;
  wire query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_high%ODD==0;
- wire[10:0] source_index=source_slot*ROWS+source_row;
+ // The write-enable includes source_slot==slot_q, so selecting slot_q
+ // here is exactly equal on EVERY memory-write edge, including invalid
+ // source-address cases (which never assert signature_write).
+ wire[10:0] source_index=slot_q*ROWS+source_row;
  wire[10:0] query_index=query_ok?(query_slot*ROWS+query_row):0;
  assign rd_len=BURST;
  // The same read port serves mutually exclusive preload verification and
  // display lookup. A second independent read inferred a 2048x32 distributed
  // RAM replica in TD, costing about 10k LUTs; it was never needed concurrently.
  wire verifying=state!=IDLE && state!=DONE;
- wire[10:0] signature_read_index=verifying?(slot_q*ROWS+verify_row):query_index;
+ // One shared address arithmetic path for the single physical read port.
+ // Invalid queries retain the old exact address0, including lookup_crc when
+ // lookup_valid is low. Truncation to11 bits remains at the same boundary.
+ wire[1:0] signature_read_slot=verifying?slot_q:query_ok?query_slot:2'd0;
+ wire[9:0] signature_read_row=verifying?verify_row:query_ok?query_row:10'd0;
+ wire[10:0] signature_read_index=signature_read_slot*ROWS+signature_read_row;
  reg[31:0] signature_read;
  assign expected_crc=signature_read;assign lookup_crc=signature_read;
  // No bulk reset: validity suppresses stale RAM after every reset epoch.
@@ -66,24 +97,29 @@ module v3_row_integrity #(
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin state<=IDLE;slot_q<=0;building<=0;complete<=0;dir<=0;
    source_crc<=32'hffffffff;verify_crc<=32'hffffffff;base<=0;expected_addr<=0;
-   timer<=0;column<=0;verify_row<=0;row_offset<=0;producer_row<=0;burst_count<=0;source_words<=0;
+   timer<=0;column<=0;verify_row<=0;row_offset<=0;producer_row<=0;burst_count<=0;source_count<=0;
    verify_done<=0;verify_pass<=0;fault<=0;approved<=0;rd_req<=0;rd_addr<=0;
    lookup_valid<=0;bad_addr<=0;bad_expected<=0;bad_actual<=0;checked_rows<=0;end
   else begin
    lookup_valid<=!verifying && query_ok && approved[query_slot];
    if(frame_begin && !fault)begin
     slot_q<=frame_slot;base<=`SV_SLOT_BASE(frame_slot);building<=1;complete<=0;
-    approved[frame_slot]<=0;source_words<=0;column<=0;source_crc<=32'hffffffff;producer_row<=top_down?0:ROWS-1;
+    approved[frame_slot]<=0;source_count<=0;column<=0;source_crc<=32'hffffffff;producer_row<=top_down?0:ROWS-1;
     expected_addr<=`SV_SLOT_BASE(frame_slot)+(top_down?0:(ROWS-1)*ROW_WORDS*4);
     dir<=top_down;verify_done<=0;verify_pass<=0;checked_rows<=0;state<=IDLE;rd_req<=0;
    end else if(building && accepted && !fault)begin
     if(!source_beat)begin fault<=1;building<=0;bad_addr<=write_addr;bad_expected<=wanted;bad_actual<=write_addr;end
     else begin
      if(source_words==0)begin dir<=top_down;producer_row<=top_down?0:ROWS-1;end
-     source_words<=source_words+1'b1;
+     source_count<=source_words+1'b1;
      if(column==ROW_WORDS-1)begin
-      column<=0;source_crc<=32'hffffffff;producer_row<=dir?source_row+1'b1:source_row-1'b1;
-      expected_addr<=dir?wanted+4:wanted-(ROW_WORDS*8)+4;
+      column<=0;source_crc<=32'hffffffff;
+      // No live source transaction follows the final word. Avoid computing an
+      // unused below-base pointer after the bottom-up last row.
+      if(source_words!=FRAME_WORDS-1)begin
+       producer_row<=dir?source_row+1'b1:source_row-1'b1;
+       expected_addr<=dir?wanted+4:wanted-(ROW_WORDS*8)+4;
+      end
      end else begin column<=column+1'b1;source_crc<=next_source_crc;expected_addr<=wanted+4;end
      if(source_words==ROWS*ROW_WORDS-1)begin complete<=1;building<=0;end
     end
@@ -125,6 +161,10 @@ module v3_row_integrity #(
   end
  end
  // synthesis translate_off
+ always @(posedge clk)if(rst_n)begin
+  if(source_beat && capture)$fatal(1,"guard phase contract violated");
+  if(source_words>FRAME_WORDS)$fatal(1,"source counter exceeded frame bound");
+ end
  initial if(ROW_WORDS%BURST || ROW_WORDS<64 || BURST!=64 || ROWS<1 || ROWS>480 || TIMEOUT<2)
  $fatal(1,"unsupported row signature geometry");
  // synthesis translate_on

@@ -1,0 +1,17 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_hd_uart_pipeline/xsim_script.tcl
+# xsim {tb_v3_hd_uart_pipeline} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] exact TXD on every SYS edge,ACK/EVT/CRC,128entry overflow policy,duplex RX and3 reset epochs;two-stage formatter preserves original line timing
+[TB] tb_v3_hd_uart_pipeline done comparisons=3738716 errors=0 edges=61122
+$finish called at time : 37387131 ns : File "D:/Codex/svq390/source/safevision/verification/unit/tb_v3_hd_uart_pipeline.sv" Line 47
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 219.477 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:08:15 2026...

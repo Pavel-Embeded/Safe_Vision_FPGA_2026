@@ -1,0 +1,15 @@
+{
+  "safevision/rtl/control/v3_supervisor.v": "b74992c193a39b7476e3d21096df58bfd83d1d4290c444af32b05a4f239c8a63",
+  "safevision/verification/models/v3_supervisor_reference.sv": "d882fa5a68e7b9223cd557b15187ac4f4f4acf3e6a5c4e5eed00619d3f18b0a5",
+  "safevision/rtl/control/media_recovery_ctrl.v": "4837cc97477b37059dd274ead65ec1e84462b09c255b515302c4003bb7a76ed9",
+  "safevision/rtl/safety/fault_manager.v": "48ca28dbb0c1b5148200e01910bb8385aa6a342b4a10df58ffe39f441dfc2f21",
+  "safevision/verification/unit/tb_v3_boot_budget218.sv": "78c313be385ce0b14a7193fd48255574f351d6cb4d7cd90bc9782e718f05b61a",
+  "safevision/rtl/include/crc32_word.vh": "17f9d826d1d26514a3bf1a8c6db95189ccd982c470112d1f5cdb8c9bcb89a36a",
+  "safevision/rtl/include/event_code_defs.vh": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2",
+  "safevision/rtl/include/fault_code_defs.vh": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e",
+  "safevision/rtl/include/pixel_format_defs.vh": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0",
+  "safevision/rtl/include/safevision_defs.vh": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5",
+  "safevision/rtl/include/video_mode_defs.vh": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997",
+  "safevision/tools/run_v3_sim.py": "3effe62a0f063b7e03d9af851cfa1ac99032da91093dc76587f2591bd62cef86",
+  "safevision/build/manifests/boot_budget_base218_sim.json": "7c4b52d0c4e2111c8bfe4b57c60d2146c92506cf852bd251c12af43ca0018f33"
+}

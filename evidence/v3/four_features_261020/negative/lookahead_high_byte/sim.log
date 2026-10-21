@@ -1,0 +1,39 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 15:19:23 2026
+# Process ID: 34820
+# Current directory: D:/Codex/svnegative345/n/lookahead_high_byte/sim/tb_v3_supervisor_threshold
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_supervisor_threshold/xsim_script.tcl}
+# Log file: D:/Codex/svnegative345/n/lookahead_high_byte/sim/tb_v3_supervisor_threshold/sim.log
+# Journal file: D:/Codex/svnegative345/n/lookahead_high_byte/sim/tb_v3_supervisor_threshold\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_supervisor_threshold/xsim_script.tcl
+# xsim {tb_v3_supervisor_threshold} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=998
+[FAIL] event masks and arbitration unchanged cycle=998
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=999
+[FAIL] event masks and arbitration unchanged cycle=999
+[FAIL] every occupied timestamp slot unchanged cycle=999
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1000
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1001
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1002
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1003
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1004
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1005
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1006
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1007
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1008
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1009
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1010
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1011
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1012
+[FAIL] all101 public bits cycle-exact, including original timestamps cycle=1013
+[TB] tb_v3_supervisor_threshold done errors=95923 comparisons=345455 windows=64
+$finish called at time : 655405001 ps : File "D:/Codex/svfeatures339/source/safevision/verification/unit/tb_v3_supervisor_threshold.sv" Line 52
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 15:19:29 2026...

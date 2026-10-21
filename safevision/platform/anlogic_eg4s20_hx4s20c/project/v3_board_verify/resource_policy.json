@@ -1,9 +1,24 @@
 {
   "schema": 1,
   "device": "EG4S20BG256",
-  "physical_capacity": {"lut": 19600, "reg": 19600, "bram": 64, "bram32k": 16, "dsp": 29, "pll": 4},
-  "targets_percent": {"lut": 70, "reg": 65, "ram": 75},
-  "hard_caps_percent": {"lut": 100, "reg": 80, "ram": 85},
+  "physical_capacity": {
+    "lut": 19600,
+    "reg": 19600,
+    "bram": 64,
+    "bram32k": 16,
+    "dsp": 29,
+    "pll": 4
+  },
+  "targets_percent": {
+    "lut": 70,
+    "reg": 65,
+    "ram": 75
+  },
+  "hard_caps_percent": {
+    "lut": 100,
+    "reg": 80,
+    "ram": 100
+  },
   "authorization": {
     "date": "2026-10-16",
     "source": "Direct user answer in this task; supersedes prior LUT 80 percent gate only",
@@ -13,5 +28,10 @@
   "requires_all_corner_setup_hold_recovery_removal": true,
   "feature_reduction_permitted": false,
   "ram32k_cost_in_9k_tiles": 4,
-  "note": "Area acceptance alone never authorizes bitgen. Native packing limits and strict routed STA remain mandatory. Historical 80 percent results retain their original policy."
+  "note": "Physical capacities and RAM32K cost remain unchanged. User permits RAM up to actual capacity; final placement/routing and all-corner timing are mandatory. Historical runs retain their original policy.",
+  "ram_authorization": {
+    "date": "2026-10-20",
+    "source": "Direct user answer to the RAM85% question in this task",
+    "instruction": "允许使用到芯片实际容量，继续尽量优化"
+  }
 }

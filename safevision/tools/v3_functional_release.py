@@ -12,6 +12,15 @@ def acceptance(root,manifest=DEFAULT_MANIFEST):
  if not result['accepted']:raise ValueError('functional acceptance rejected')
  index=json.loads(manifest.read_text(encoding='utf-8'))
  files={manifest,root/'evidence/v3/current_100_20261016/selected_acceptance.json'}
+ if (root/'safevision/rtl/hd/sdram_app_adapter.v').exists():files.add(root/'safevision/verification/models/hd_read64_stimulus.freeze.json')
+ if 'dsp_style="yes"' in (root/'safevision/rtl/audio/v3_audio_volume.v').read_text(encoding='utf-8'):
+  files.update({root/'evidence/v3/handbook_26101801/volume_math/exhaustive.json',root/'safevision/tools/check_v3_volume_reciprocal.py',root/'safevision/verification/models/v3_audio_volume_reference.freeze.json'})
+ for model in ('v3_file_streamer_compact_reference','v3_controls_pipeline_reference','v3_uart_formatter_reference','v3_uart_tx_reference','v3_audio_root_reference','v3_recovery_reset_reference','v3_wav_reset_reference','v3_player_owner_reference','v3_pcm_ring_reference','v3_cluster_walker_reference','v3_wav_bounds_reference','hd_acr_reference','v3_led_publication_reference'):
+  files.add(root/('safevision/verification/models/'+model+'.freeze.json'))
+ if (root/'safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board_sources_hd.list').exists():
+  files.update(root/name for name in ['safevision/verification/models/v3_hd_alpha_reference.freeze.json', 'safevision/verification/models/v3_hd_guard_reference.freeze.json', 'safevision/verification/models/v3_hd_status_reference.freeze.json', 'safevision/verification/models/v3_hd_recovery_reference.freeze.json', 'safevision/verification/models/v3_hd_supervisor_reference.freeze.json', 'safevision/verification/models/tb_v3_hd_uart_formatter_equivalence.freeze.json', 'safevision/verification/models/tb_v3_hd_uart_link.freeze.json', 'safevision/verification/models/tb_v3_hd_uart_link_catalog.freeze.json', 'safevision/verification/models/tb_v3_hd_packed_rows.freeze.json', 'safevision/verification/models/tb_v3_hd_handbook_board.freeze.json', 'safevision/verification/models/tb_v3_hd_video_final.freeze.json', 'safevision/verification/models/tb_v3_hd_handbook_video.freeze.json'])
+ if (root/'safevision/rtl/hd/alpha_blend.v').exists():
+  files.update({root/'safevision/tools/check_v3_hd_alpha_math.py',root/'evidence/v3/handbook_26101901/alpha_math/exhaustive.json'})
  for row in index['positive_tests']+index['negative_controls']:
   folder=within(root,row['evidence'])
   # Curated case folders contain only provenance, raw logs, exact mutant bytes

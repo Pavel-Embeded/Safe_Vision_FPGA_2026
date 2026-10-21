@@ -8,12 +8,14 @@ module sv_system_pll(input wire refclk,reset,output wire extlock,
  reg sys=0,mem=0;always #5 sys=~sys;always #4 mem=~mem;
  assign clk0_out=sys;assign clk1_out=mem;assign clk2_out=~mem;assign extlock=1;
 endmodule
-module sdram #(parameter integer RD_LAT=4)(
+module sdram #(parameter integer RD_LAT=4,OUTPUT_VALID_DELAY=0)(
  input wire Clk,Clk_sft,Rst,output wire Sdr_init_done,Sdr_init_ref_vld,Sdr_busy,
  input wire App_wr_en,input wire [20:0] App_wr_addr,input wire [3:0] App_wr_dm,
  input wire [31:0] App_wr_din,input wire App_rd_en,input wire [20:0] App_rd_addr,
  output reg Sdr_rd_en=0,output reg [31:0] Sdr_rd_dout=0);
  reg [31:0] mem[0:2097151];
+ // Optional observed26101701 data-before-valid contract; not vendor AC.
+ reg base_read_enable=0;
  integer init_count=0,cycle=0,last_cmd=-1000,n=0,read_n=0;
  integer write_bursts=0,read_bursts=0,stored_words=0,protocol_errors=0;
  reg last_w=0,last_r=0;reg [20:0] previous_r;
@@ -39,11 +41,12 @@ module sdram #(parameter integer RD_LAT=4)(
  always @(posedge Clk)begin
    cycle=cycle+1;
    if(Rst)begin
-     init_count=0;rv=0;Sdr_rd_en<=0;last_w=0;last_r=0;n=0;read_n=0;last_cmd=-1000;
+     init_count=0;rv=0;Sdr_rd_en<=0;base_read_enable<=0;last_w=0;last_r=0;n=0;read_n=0;last_cmd=-1000;
      for(i=0;i<9;i=i+1)dqm_pipe[i]=15;
    end else begin
      if(init_count<100)init_count=init_count+1;
-     Sdr_rd_en<=rv[RD_LAT-1];
+     base_read_enable<=rv[RD_LAT-1];
+     Sdr_rd_en<=OUTPUT_VALID_DELAY ? base_read_enable : rv[RD_LAT-1];
      if(rv[RD_LAT-1])Sdr_rd_dout<=read_with_dqm(mem[ra[RD_LAT-1]],dqm_pipe[8]);
      for(i=8;i>0;i=i-1)dqm_pipe[i]=dqm_pipe[i-1];
      dqm_pipe[0]=App_wr_dm;

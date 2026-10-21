@@ -1,0 +1,16 @@
+{
+  "defines": [],
+  "sources": [
+    "safevision/rtl/audio/v3_pcm_ring.v",
+    "safevision/verification/models/v3_pcm_ring_reference.sv",
+    "safevision/verification/models/v3_pcm_ring_cycle_miter.sv"
+  ],
+  "tops": [
+    "tb_v3_pcm_ring_equivalence",
+    "tb_v3_pcm_ring_fullwidth_equivalence"
+  ],
+  "timeouts": {
+    "tb_v3_pcm_ring_equivalence": 600,
+    "tb_v3_pcm_ring_fullwidth_equivalence": 600
+  }
+}

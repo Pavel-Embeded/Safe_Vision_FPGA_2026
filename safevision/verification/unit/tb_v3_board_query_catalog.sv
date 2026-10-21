@@ -3,6 +3,7 @@ module tb_v3_board_query_catalog;
  reg clk=0;always #10 clk=~clk;reg rst_n=0;
  wire txd,cs,sclk,mosi,d0,d1,d2,dc,scl;tri sda;wire[3:0] led;
  safevision_v3_top #(.HD(0)) dut(.clk(clk),.rst_n(rst_n),.btn_next(1'b1),.btn_auto(1'b1),.btn_emergency(1'b1),.uart_rxd(1'b1),.uart_txd(txd),.led(led),.sd_ncs(cs),.sd_dclk(sclk),.sd_mosi(mosi),.sd_miso(1'b1),.HDMI_D0_P(d0),.HDMI_D1_P(d1),.HDMI_D2_P(d2),.HDMI_CLK_P(dc),.HDMI_DDC_SCL(scl),.HDMI_DDC_SDA(sda));
+ defparam dut.memory_ip.OUTPUT_VALID_DELAY=1;
  reg cmd_valid=0,cmd_query=1;reg[7:0] cmd_target=66;reg[95:0] cmd_name=0;reg[6:0] cmd_id=0;
  reg[191:0] ref_status_sys=0;
  reg[1:0] active_slot=0;

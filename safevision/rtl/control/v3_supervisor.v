@@ -3,9 +3,9 @@
 // synchronized event pulses. Idle media/memory engines do not arm watchdogs.
 // The fixed raster heartbeat remains required while a static image is shown.
 module v3_supervisor #(
- parameter integer CLK_HZ=100000000,BOOT_CYCLES=2000000000,
+ parameter integer CLK_HZ=100000000,BOOT_CYCLES=2000000000,BOOT_MS_OVERRIDE=0,
  parameter integer FRAME_CYCLES=10000000,MEM_CYCLES=20000000,
- parameter integer PROGRESS_CYCLES=50000000,RECOVER_CYCLES=2000000000
+ parameter integer PROGRESS_CYCLES=50000000,RECOVER_CYCLES=2000000000,WINDOW_PIPELINE=0
 )(input wire clk,rst_n,manual_safe,recover_request,cache_ready,media_failed,
  input wire[7:0] media_code,input wire integrity_fault,bus_fault,fatal,
  input wire frame_heartbeat,mem_heartbeat,progress_heartbeat,
@@ -23,7 +23,9 @@ module v3_supervisor #(
  // tick before the exact cycle interval. At CLK_HZ=1000 the unit is one clock.
  // Non-integral-kHz test clocks retain exact cycle counting (TICK_DIV=1).
  localparam integer TICK_DIV=(CLK_HZ>=1000 && CLK_HZ%1000==0)?CLK_HZ/1000:1;
- localparam integer BOOT_LIMIT=(BOOT_CYCLES+TICK_DIV-1)/TICK_DIV;
+ // Optional board load budget expressed in1ms ticks, avoiding32-bit
+ // overflow from a60-second cycle constant. Legacy exact-cycle mode stays.
+ localparam integer BOOT_LIMIT=BOOT_MS_OVERRIDE>0?BOOT_MS_OVERRIDE:(BOOT_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer FRAME_LIMIT=(FRAME_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer MEM_LIMIT=(MEM_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer PROGRESS_LIMIT=(PROGRESS_CYCLES+TICK_DIV-1)/TICK_DIV;
@@ -90,6 +92,12 @@ module v3_supervisor #(
  .busy(recovery_busy),.media_reset(media_reset),.rescan_start(rescan_unused),
  .recovered(recovered),.safe_latched(recover_safe),.attempts(recovery_attempts),.state(recovery_state));
  assign window_done=watch_tick && window_last;
+ (* keep="true" *) wire[10:0] priority_selection;
+ genvar priority_i;
+ generate for(priority_i=0;priority_i<11;priority_i=priority_i+1)begin:parallel_priority
+  if(priority_i==0)assign priority_selection[priority_i]=pending[priority_i];
+  else assign priority_selection[priority_i]=pending[priority_i] && !(|pending[priority_i-1:0]);
+ end endgenerate
  always @*begin
   new_events=0;
   if(media_failed && !failed_old && !recovery_busy)new_events[0]=1;
@@ -103,39 +111,81 @@ module v3_supervisor #(
   if((hdmi_drops!=last_hd && !hd_fault_old) || (watch_tick && !initialized && !cache_ready && !recovery_busy && boot_timer==BOOT_LIMIT-1) || (fatal && !fatal_latched))new_events[8]=1;
   if(rejected_files>rejected_old && !media_reset)new_events[9]=1;
   if((|(audio_fallback & ~fallback_old)) && !media_reset)new_events[10]=1;
-  selection=0;err_code=0;err_src=0;err_level=3;err_ts=0;
-  if(pending[0])begin selection[0]=1;err_code=media_first;err_src=2;err_level=cache_ready?2:3;err_ts=stamps[0];end
-  else if(pending[1])begin selection[1]=1;err_code=`ERR_MEDIA_INVALID;err_src=3;err_ts=stamps[1];end
-  else if(pending[2])begin selection[2]=1;err_code=`ERR_SD_IO;err_src=3;err_ts=stamps[2];end
-  else if(pending[3])begin selection[3]=1;err_code=`ERR_MEDIA_INVALID;err_src=1;err_ts=stamps[3];end
-  else if(pending[4])begin selection[4]=1;err_code=`ERR_WAV;err_src=4;err_ts=stamps[4];end
-  else if(pending[5])begin selection[5]=1;err_code=`ERR_MEDIA_INVALID;err_src=5;err_ts=stamps[5];end
-  else if(pending[6])begin selection[6]=1;err_code=`ERR_SD_IO;err_src=5;err_ts=stamps[6];end
-  else if(pending[7])begin selection[7]=1;err_code=`ERR_MEDIA_INVALID;err_src=5;err_ts=stamps[7];end
-  else if(pending[8])begin selection[8]=1;err_code=`ERR_MEDIA_INVALID;err_src=6;err_level=fatal_latched?4:3;err_ts=stamps[8];end
-  else if(pending[9])begin selection[9]=1;err_code=`ERR_MEDIA_INVALID;err_src=2;err_level=1;err_ts=stamps[9];end
-  else if(pending[10])begin selection[10]=1;err_code=`ERR_WAV;err_src=4;err_level=0;err_ts=stamps[10];end
+  selection=priority_selection;
+  err_code=
+   ({8{priority_selection[0]}} & media_first) |
+   ({8{priority_selection[1]}} & `ERR_MEDIA_INVALID) |
+   ({8{priority_selection[2]}} & `ERR_SD_IO) |
+   ({8{priority_selection[3]}} & `ERR_MEDIA_INVALID) |
+   ({8{priority_selection[4]}} & `ERR_WAV) |
+   ({8{priority_selection[5]}} & `ERR_MEDIA_INVALID) |
+   ({8{priority_selection[6]}} & `ERR_SD_IO) |
+   ({8{priority_selection[7]}} & `ERR_MEDIA_INVALID) |
+   ({8{priority_selection[8]}} & `ERR_MEDIA_INVALID) |
+   ({8{priority_selection[9]}} & `ERR_MEDIA_INVALID) |
+   ({8{priority_selection[10]}} & `ERR_WAV);
+  err_src=
+   ({4{priority_selection[0]}} & 4'd2) |
+   ({4{priority_selection[1]}} & 4'd3) |
+   ({4{priority_selection[2]}} & 4'd3) |
+   ({4{priority_selection[3]}} & 4'd1) |
+   ({4{priority_selection[4]}} & 4'd4) |
+   ({4{priority_selection[5]}} & 4'd5) |
+   ({4{priority_selection[6]}} & 4'd5) |
+   ({4{priority_selection[7]}} & 4'd5) |
+   ({4{priority_selection[8]}} & 4'd6) |
+   ({4{priority_selection[9]}} & 4'd2) |
+   ({4{priority_selection[10]}} & 4'd4);
+  err_ts=
+   ({32{priority_selection[0]}} & stamps[0]) |
+   ({32{priority_selection[1]}} & stamps[1]) |
+   ({32{priority_selection[2]}} & stamps[2]) |
+   ({32{priority_selection[3]}} & stamps[3]) |
+   ({32{priority_selection[4]}} & stamps[4]) |
+   ({32{priority_selection[5]}} & stamps[5]) |
+   ({32{priority_selection[6]}} & stamps[6]) |
+   ({32{priority_selection[7]}} & stamps[7]) |
+   ({32{priority_selection[8]}} & stamps[8]) |
+   ({32{priority_selection[9]}} & stamps[9]) |
+   ({32{priority_selection[10]}} & stamps[10]);
+  err_level[2]=priority_selection[8] && fatal_latched;
+  err_level[1]=!((priority_selection[8] && fatal_latched) || priority_selection[9] || priority_selection[10]);
+  err_level[0]=!((priority_selection[0] && cache_ready) || (priority_selection[8] && fatal_latched) || priority_selection[10]);
  end
  assign err_push=|pending;
- assign safe_active=manual_safe || !cache_ready || recovery_busy || recover_safe || fatal_latched || (fault_valid && fault_level>=3);
+ // Keep the late recovery/FATAL inputs on the final OR stage.
+ // Same busy predicate for ALL8 state encodings, including invalid6/7.
+ // Keep its three state bits plus two latches in one5-input recovery cone.
+ localparam[2:0] RECOVERY_IDLE=3'd0,RECOVERY_LOCKED=3'd5;
+ (* keep="true" *) wire safe_recovery=(recovery_state!=RECOVERY_IDLE && recovery_state!=RECOVERY_LOCKED) || recover_safe || fatal_latched;
+ (* keep="true" *) wire safe_ordinary=manual_safe || !cache_ready || (fault_valid && fault_level>=3);
+ assign safe_active=safe_recovery || safe_ordinary;
  fault_manager #(.CLK_HZ(CLK_HZ)) faults(.clk(clk),.rst_n(rst_n),
  .err_push(err_push),.err_code(err_code),.err_level(err_level),.wdt_timeout(1'b0),
  .wdt_reason(8'd0),.media_fatal(fatal),.recover_ack(recovered),
  .fault_code(fault_code),.fault_level(fault_level),.fault_valid(fault_valid),
  .fatal(fatal_latched),.fault_ts(fault_ts),.media_rst_req(reset_unused));
+ // Timestamp storage is private until pending becomes1. An empty slot
+ // is overwritten on every active edge, including the event capture edge.
+ // Resetting pending and the public error registers is sufficient; retain
+ // full32-bit timestamps and exact arbitration without a352-bit reset fanout.
+ integer stamp_i;
+ always @(posedge clk)if(rst_n)
+  for(stamp_i=0;stamp_i<11;stamp_i=stamp_i+1)
+   if(!pending[stamp_i])stamps[stamp_i]<=ms_now;
  integer i;
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin boot_timer<=0;frame_timer<=0;mem_timer<=0;progress_timer<=0;
    window_timer<=0;video_limit<=33'd8;audio_limit<=33'd8;last_hd<=0;ms_timer<=0;ms_now<=0;
    initialized<=0;pending<=0;media_first<=0;fault_i_old<=0;fault_b_old<=0;
-   failed_old<=0;hd_fault_old<=0;rejected_old<=0;fallback_old<=0;for(i=0;i<11;i=i+1)stamps[i]<=0;
+   failed_old<=0;hd_fault_old<=0;rejected_old<=0;fallback_old<=0;
   end else begin
    pending<=(pending & ~selection) | new_events;
    // An unoccupied slot has no observable timestamp. Track the current time
    // until its first event captures pending=1, then hold through arbitration.
    // Thus the timestamp on every valid event is exactly the original ms_now,
    // including simultaneous clear/retrigger; wide CE no longer decodes events.
-   for(i=0;i<11;i=i+1)if(!pending[i])stamps[i]<=ms_now;
+
    if(!pending[0])media_first<=media_code;
    fault_i_old<=integrity_fault;fault_b_old<=bus_fault;failed_old<=media_failed;
    hd_fault_old<=hdmi_drops!=last_hd;
@@ -158,5 +208,8 @@ module v3_supervisor #(
  // synthesis translate_off
  initial if(CLK_HZ<1000 || FRAME_CYCLES<2 || MEM_CYCLES<2 || PROGRESS_CYCLES<2)
   $fatal(1,"invalid supervisor clock or watchdog limits");
+ // synthesis translate_on
+ // synthesis translate_off
+ initial if(BOOT_MS_OVERRIDE>0&&(CLK_HZ<1000||CLK_HZ%1000!=0))$fatal(1,"BOOT_MS_OVERRIDE requires exact1ms tick");
  // synthesis translate_on
 endmodule

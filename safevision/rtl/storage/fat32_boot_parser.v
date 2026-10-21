@@ -16,11 +16,9 @@
 // ★ 不做的：中文名 / LFN / 子目录 / exFAT / NTFS（手册 7.6 明确首版不做）
 // ============================================================================
 `include "safevision_defs.vh"
-
 module fat32_boot_parser (
     input  wire        clk,
     input  wire        rst_n,
-
     // ---- 控制 ----
     input  wire        start,           // 单拍脉冲，触发一次挂载
     output reg         mount_done,
@@ -28,7 +26,6 @@ module fat32_boot_parser (
     output reg  [7:0]  err_code,        // 对外主码
     output reg  [7:0]  err_detail,      // 内部细分码（见 interface_spec §6.2）
     output reg  [3:0]  dbg_state,
-
     // ---- 解析结果 ----
     output reg  [15:0] bytes_per_sec,   // 必须 512
     output reg  [7:0]  sec_per_clus,    // 每簇扇区数
@@ -39,7 +36,6 @@ module fat32_boot_parser (
     output reg  [31:0] data_start_lba,  // 数据区起始扇区
     output reg  [31:0] total_sec,       // 总扇区数
     output reg  [31:0] total_clus,      // 总簇数（供簇链判越界与判环）
-
     // ---- 到 sd_sector_reader 的读请求 ----
     output reg  [31:0] sd_rd_addr,
     output reg  [15:0] sd_rd_len,
@@ -55,7 +51,6 @@ module fat32_boot_parser (
     input  wire [7:0]  sd_err_code,
     input  wire [7:0]  sd_err_detail
 );
-
     // ------------------------------------------------------------------------
     // 状态
     // ------------------------------------------------------------------------
@@ -65,36 +60,78 @@ module fat32_boot_parser (
                      M_EVAL = 4'd3,   // 校验 + 计算派生地址
                      M_DONE = 4'd4,
                      M_ERR  = 4'd5;
-
     reg  [3:0]  mstate;
     reg  [9:0]  bcnt;               // 扇区内字节偏移 0..511
-    reg  [31:0] to_cnt;             // 整次挂载的兜底超时
-
+    // Every counting state exits or clears at SD_TO_DATA. The last
+    // scheduled increment can reach SD_TO_DATA+1, which this width retains.
+    localparam integer TO_W=$clog2(`SD_TO_DATA+32'd2);
+    reg [TO_W-1:0] to_cnt;             // 整次挂载的兜底超时
     // ---- BPB 原始字段（按偏移抽取）----
-    reg  [7:0]  bps_l,  bps_h;      // 0x0B BytsPerSec      (2)
-    reg  [7:0]  spc;                // 0x0D SecPerClus      (1)
-    reg  [7:0]  rsvd_l, rsvd_h;     // 0x0E RsvdSecCnt      (2)
-    reg  [7:0]  nfat;               // 0x10 NumFATs         (1)
-    reg  [7:0]  roote_l, roote_h;   // 0x11 RootEntCnt      (2)
-    reg  [7:0]  ts16_l, ts16_h;     // 0x13 TotSec16        (2)
-    reg  [7:0]  media;              // 0x15 Media           (1)
-    reg  [7:0]  fs16_l, fs16_h;     // 0x16 FATSz16         (2)
-    reg  [7:0]  ts32_0, ts32_1, ts32_2, ts32_3;   // 0x20 TotSec32 (4)
-    reg  [7:0]  fs32_0, fs32_1, fs32_2, fs32_3;   // 0x24 FATSz32  (4)
-    reg  [7:0]  rc_0,   rc_1,   rc_2,   rc_3;     // 0x2C RootClus (4)
-    reg  [7:0]  sig_l,  sig_h;      // 0x1FE 签名 0x55 0xAA
+    // Private header assembly has no reset dependency. Each contiguous
+    // field is completely overwritten before M_EVAL; partial/timeout reads
+    // never publish it. Shift whole fields under one enable to reduce physical
+    // control-set fragmentation. Public results and all error edges retain reset.
+    reg hdr_bps_matches;
+    reg [15:0] hdr_rsvd;
+    wire [7:0] rsvd_l=hdr_rsvd[0+:8];
+    wire [7:0] rsvd_h=hdr_rsvd[8+:8];
+    reg hdr_roote_matches;
+    reg hdr_ts16_matches;
+    reg hdr_fs16_matches;
+    reg [31:0] hdr_ts32;
+    wire [7:0] ts32_0=hdr_ts32[0+:8];
+    wire [7:0] ts32_1=hdr_ts32[8+:8];
+    wire [7:0] ts32_2=hdr_ts32[16+:8];
+    wire [7:0] ts32_3=hdr_ts32[24+:8];
+    reg [31:0] hdr_fs32;
+    wire [7:0] fs32_0=hdr_fs32[0+:8];
+    wire [7:0] fs32_1=hdr_fs32[8+:8];
+    wire [7:0] fs32_2=hdr_fs32[16+:8];
+    wire [7:0] fs32_3=hdr_fs32[24+:8];
+    reg [31:0] hdr_root;
+    wire [7:0] rc_0=hdr_root[0+:8];
+    wire [7:0] rc_1=hdr_root[8+:8];
+    wire [7:0] rc_2=hdr_root[16+:8];
+    wire [7:0] rc_3=hdr_root[24+:8];
+    reg hdr_sig_matches;
+    reg[2:0] spc_log;reg spc_legal;
+    wire[7:0] spc=spc_legal?(8'd1<<spc_log):8'd0;
+    reg[1:0] nfat_class;
+    wire[7:0] nfat={6'd0,nfat_class};
+    reg[7:0] media;
+    always @(posedge clk)begin
+      if(rst_n && mstate==M_RECV && to_cnt!=`SD_TO_DATA && sd_data_valid)begin
+        if(bcnt==11)hdr_bps_matches<=(sd_data==8'd0);
+        if(bcnt==12)hdr_bps_matches<=hdr_bps_matches&&(sd_data==8'd2);
+        if(bcnt>=14 && bcnt<=15)hdr_rsvd <= {sd_data,hdr_rsvd[15:8]};
+        if(bcnt==17)hdr_roote_matches<=(sd_data==8'd0);
+        if(bcnt==18)hdr_roote_matches<=hdr_roote_matches&&(sd_data==8'd0);
+        if(bcnt==19)hdr_ts16_matches<=(sd_data==8'd0);
+        if(bcnt==20)hdr_ts16_matches<=hdr_ts16_matches&&(sd_data==8'd0);
+        if(bcnt==22)hdr_fs16_matches<=(sd_data==8'd0);
+        if(bcnt==23)hdr_fs16_matches<=hdr_fs16_matches&&(sd_data==8'd0);
+        if(bcnt>=32 && bcnt<=35)hdr_ts32 <= {sd_data,hdr_ts32[31:8]};
+        if(bcnt>=36 && bcnt<=39)hdr_fs32 <= {sd_data,hdr_fs32[31:8]};
+        if(bcnt>=44 && bcnt<=47)hdr_root <= {sd_data,hdr_root[31:8]};
+        if(bcnt==510)hdr_sig_matches<=(sd_data==8'd85);
+        if(bcnt==511)hdr_sig_matches<=hdr_sig_matches&&(sd_data==8'd170);
+        if(bcnt==13)begin spc_legal<=sd_data!=0&&(sd_data&(sd_data-8'd1))==0;
+          spc_log<=sd_data[7]?7:sd_data[6]?6:sd_data[5]?5:sd_data[4]?4:sd_data[3]?3:sd_data[2]?2:sd_data[1]?1:0;end
+        if(bcnt==16)nfat_class<=sd_data==8'd1 ? 2'd1 : sd_data==8'd2 ? 2'd2 : 2'd0;
+        if(bcnt==21)media<=sd_data;
+      end
+    end
 
     // ---- 拼装后的值 ----
-    wire [15:0] w_bps   = {bps_h,  bps_l};
+    wire [15:0] w_bps   = hdr_bps_matches ? 16'd512 : 16'd0;
     wire [15:0] w_rsvd  = {rsvd_h, rsvd_l};
-    wire [15:0] w_roote = {roote_h, roote_l};
-    wire [15:0] w_ts16  = {ts16_h, ts16_l};
-    wire [15:0] w_fs16  = {fs16_h, fs16_l};
+    wire [15:0] w_roote = hdr_roote_matches ? 16'd0 : 16'd1;
+    wire [15:0] w_ts16  = hdr_ts16_matches ? 16'd0 : 16'd1;
+    wire [15:0] w_fs16  = hdr_fs16_matches ? 16'd0 : 16'd1;
     wire [31:0] w_ts32  = {ts32_3, ts32_2, ts32_1, ts32_0};
     wire [31:0] w_fs32  = {fs32_3, fs32_2, fs32_1, fs32_0};
     wire [31:0] w_rc    = {rc_3,   rc_2,   rc_1,   rc_0};
-    wire        w_sig_ok = (sig_l == 8'h55) && (sig_h == 8'hAA);
-
+    wire        w_sig_ok = hdr_sig_matches;
     // ---- FAT32 判别位（手册 7.6：挂载检查 BPB 字段、每簇扇区数、FAT 数量、根目录起始簇）----
     wire is_fat32_fields = (w_roote == 16'h0000) &&
                            (w_fs16  == 16'h0000) &&
@@ -112,10 +149,16 @@ module fat32_boot_parser (
                             (spc[2]) ? 3'd2 :
                             (spc[1]) ? 3'd1 : 3'd0;
     wire nfat_ok = (nfat == 8'd1) || (nfat == 8'd2);
-
+    // BPB fields stop changing after byte47; only these five predicates
+    // need staging before evaluation following byte511. Keep address math
+    // directly from the settled fields, without192 unnecessary data registers.
+    reg [4:0] bpb_checks_q;
+    always @(posedge clk or negedge rst_n) begin
+        if(!rst_n)bpb_checks_q<=0;
+        else bpb_checks_q<={w_rc>=32'd2,nfat_ok,spc_ok,is_fat32_fields,w_bps==16'd512};
+    end
     // 只收不含 dout 的字节，永远 ready（本模块不反压）
     assign sd_data_ready = (mstate == M_RECV);
-
     // ------------------------------------------------------------------------
     // 主状态机
     // ------------------------------------------------------------------------
@@ -141,18 +184,9 @@ module fat32_boot_parser (
             sd_rd_len     <= 16'd1;
             sd_rd_en      <= 1'b0;
             dbg_state     <= M_IDLE;
-            bps_l <= 8'h0; bps_h <= 8'h0; spc <= 8'h0;
-            rsvd_l <= 8'h0; rsvd_h <= 8'h0; nfat <= 8'h0;
-            roote_l <= 8'h0; roote_h <= 8'h0; ts16_l <= 8'h0; ts16_h <= 8'h0;
-            media <= 8'h0; fs16_l <= 8'h0; fs16_h <= 8'h0;
-            ts32_0 <= 8'h0; ts32_1 <= 8'h0; ts32_2 <= 8'h0; ts32_3 <= 8'h0;
-            fs32_0 <= 8'h0; fs32_1 <= 8'h0; fs32_2 <= 8'h0; fs32_3 <= 8'h0;
-            rc_0 <= 8'h0; rc_1 <= 8'h0; rc_2 <= 8'h0; rc_3 <= 8'h0;
-            sig_l <= 8'h0; sig_h <= 8'h0;
         end else begin
             dbg_state <= mstate;
             sd_rd_en  <= 1'b0;              // 单拍脉冲
-
             case (mstate)
             // ------------------------------------------------------------------
             M_IDLE: begin
@@ -189,36 +223,7 @@ module fat32_boot_parser (
                     mstate     <= M_ERR;
                 end else if (sd_data_valid) begin
                     // 小端：先收到的字节是低位
-                    case (bcnt)
-                        10'd11 : bps_l   <= sd_data;
-                        10'd12 : bps_h   <= sd_data;
-                        10'd13 : spc     <= sd_data;
-                        10'd14 : rsvd_l  <= sd_data;
-                        10'd15 : rsvd_h  <= sd_data;
-                        10'd16 : nfat    <= sd_data;
-                        10'd17 : roote_l <= sd_data;
-                        10'd18 : roote_h <= sd_data;
-                        10'd19 : ts16_l  <= sd_data;
-                        10'd20 : ts16_h  <= sd_data;
-                        10'd21 : media   <= sd_data;
-                        10'd22 : fs16_l  <= sd_data;
-                        10'd23 : fs16_h  <= sd_data;
-                        10'd32 : ts32_0  <= sd_data;
-                        10'd33 : ts32_1  <= sd_data;
-                        10'd34 : ts32_2  <= sd_data;
-                        10'd35 : ts32_3  <= sd_data;
-                        10'd36 : fs32_0  <= sd_data;
-                        10'd37 : fs32_1  <= sd_data;
-                        10'd38 : fs32_2  <= sd_data;
-                        10'd39 : fs32_3  <= sd_data;
-                        10'd44 : rc_0    <= sd_data;
-                        10'd45 : rc_1    <= sd_data;
-                        10'd46 : rc_2    <= sd_data;
-                        10'd47 : rc_3    <= sd_data;
-                        10'd510: sig_l   <= sd_data;
-                        10'd511: sig_h   <= sd_data;
-                        default: ;
-                    endcase
+
                     bcnt <= bcnt + 10'd1;
                     // 收满 512 字节即评估（不依赖 rd_done，rd_data_last 可作为交叉检查）
                     if (bcnt == 10'd511) mstate <= M_EVAL;
@@ -235,19 +240,19 @@ module fat32_boot_parser (
                     err_code   <= `ERR_MEDIA_INVALID;
                     err_detail <= `DET_FAT_BPB;          // 签名不是 0x55AA
                     mstate     <= M_ERR;
-                end else if (w_bps != 16'd512) begin
+                end else if (!bpb_checks_q[0]) begin
                     err_code   <= `ERR_MEDIA_INVALID;
                     err_detail <= `DET_FAT_BPB;          // 每扇区不是 512 字节
                     mstate     <= M_ERR;
-                end else if (!is_fat32_fields) begin
+                end else if (!bpb_checks_q[1]) begin
                     err_code   <= `ERR_MEDIA_INVALID;
                     err_detail <= `DET_FAT_NOT32;        // 不是 FAT32
                     mstate     <= M_ERR;
-                end else if (!spc_ok || !nfat_ok) begin
+                end else if (!bpb_checks_q[2] || !bpb_checks_q[3]) begin
                     err_code   <= `ERR_MEDIA_INVALID;
                     err_detail <= `DET_FAT_BPB;          // 每簇扇区数 / FAT 数量非法
                     mstate     <= M_ERR;
-                end else if (w_rc < 32'd2) begin
+                end else if (!bpb_checks_q[4]) begin
                     err_code   <= `ERR_MEDIA_INVALID;
                     err_detail <= `DET_FAT_BPB;          // 根目录簇号非法
                     mstate     <= M_ERR;
@@ -302,5 +307,4 @@ module fat32_boot_parser (
             endcase
         end
     end
-
 endmodule

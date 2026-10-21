@@ -6,8 +6,10 @@ module v3_presentation_ctrl #(
 )(input wire clk,rst_n,frame_start,media_reset,safety,request,fade_enable,
  input wire[3:0] valid_slots,input wire audio_ready,input wire[7:0] audio_generation,
  output reg[1:0] current,target,output reg[7:0] generation,target_generation,alpha,
- output reg busy,initialized,direct_target,commit_toggle,next_done_toggle,presentation_fault);
+ output reg busy,initialized,direct_target,commit_toggle,next_done_toggle,presentation_fault,
+ output wire target_is_next);
  reg pending,target_from_next;reg[7:0] allocated_generation;
+ assign target_is_next=target_from_next;
  reg[$clog2(FADE_FRAMES+1)-1:0] step;
  reg[$clog2(TRANSITION_TIMEOUT_FRAMES+1)-1:0] wait_frames;
  function[1:0] successor;

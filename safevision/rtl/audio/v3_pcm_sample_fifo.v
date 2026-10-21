@@ -9,10 +9,12 @@ module v3_pcm_sample_fifo(input wire rst,wr_clk,rd_clk,input wire[39:0] wr_data,
  v3_audio_reset_release rd_reset(.clk(rd_clk),.assert_reset(rst),.rst_n(rd_rst_n));
  reg[1:0] write_part;wire holding=write_part!=0;
  wire fifo_ready,fifo_valid;wire[9:0] words;wire[15:0] fifo_data;
- wire[10:0] rounded_words={1'b0,words}+11'd2;
+ // Exact ceil(words/3) for every10-bit FIFO level; no credit latency.
+ wire[20:0] pair_credit_product=words*10'd683+21'd1366;
+ wire[8:0] pair_credit=pair_credit_product[19:11];
  wire fifo_write=wr_rst_n&&wr_valid&&(write_part!=0||words<=10'd1020);
  wire[15:0] word_data=write_part==0?wr_data[15:0]:(write_part==1?wr_data[31:16]:{8'd0,wr_data[39:32]});
- assign wr_pairs=(rounded_words/3)+(write_part!=0);
+ assign wr_pairs=pair_credit+(write_part!=0);
  assign wr_ready=wr_rst_n&&write_part==2&&fifo_ready;
  reg[1:0] read_part;reg[31:0] low_words;
  sv_async_fifo #(.WIDTH(16),.AW(10)) q(.rst(rst),.wr_clk(wr_clk),.rd_clk(rd_clk),

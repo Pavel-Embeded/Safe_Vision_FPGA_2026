@@ -9,7 +9,7 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  input wire [31:0] fat_start_lba,data_start_lba,root_dir_lba,root_clus,total_clus,
  input wire [3:0] slot_fill,sector_room,
  output wire [127:0] pcm_data,output wire [3:0] pcm_valid,input wire [3:0] pcm_ready,
- output reg index_done,output reg [3:0] fallback,output reg [3:0] found,
+ output reg index_done,output wire [3:0] fallback,output reg [3:0] found,
  output wire rd_en,output wire [31:0] rd_addr,output wire [15:0] rd_len,
  input wire rd_ready,input wire [7:0] data,input wire data_valid,
  output wire data_ready,input wire data_last,rd_done,timeout_err,crc16_err,
@@ -31,11 +31,19 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  name[71:64]>=8'h30&&name[71:64]<=8'h39&&name[63:56]>=8'h30&&name[63:56]<=8'h39&&
  name[55:48]>=8'h30&&name[55:48]<=8'h39&&name[47:40]>=8'h30&&name[47:40]<=8'h39;
  wire [15:0] key={name[67:64],name[59:56],name[51:48],name[43:40]};
- wire kernel_rst_n=rst_n&&state!=Q_RESET;
+ reg [5:0] context_index;
+ // Q_RESET is entered only from the completed four-word descriptor.
+ // Preserve its next-state predicate in one FF; no binary-state decode
+ // drives an asynchronous kernel reset. Global assertion remains immediate.
+ (* preserve="true",keep="true" *) reg kernel_release_q;
+ always@(posedge clk or negedge rst_n)
+  if(!rst_n)kernel_release_q<=1;
+  else kernel_release_q<=!(state==Q_DESC2&&context_index==3);
+ wire kernel_rst_n=rst_n&&kernel_release_q;
  wire start=state==Q_START,load_context=(state==Q_LOAD2||state==Q_SAVE);
  wire [FS_BITS-1:0] fs_context;wire [WP_BITS-1:0] wp_context;
  reg [CTX_PAD-CTX_BITS-1:0] context_padding;
- reg [5:0] context_index;wire [15:0] context_q;
+wire [15:0] context_q;
  wire [7:0] context_address=active*CTX_WORDS+context_index;
  wire entry_ready=state==Q_SCAN&&descriptor_pending==0&&!index_done;
  wire descriptor_write=state==Q_SCAN&&descriptor_pending!=0;
@@ -75,19 +83,31 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  .clkb(clk),.rstb(!rst_n),.ceb(1'b0),.oceb(1'b0),.web(1'b0),.dib(16'd0),.addrb(8'd0),.dob());
  assign pcm_data={128'd0}|({96'd0,sample}<<(active*32));
  assign pcm_valid=(state==Q_RUN)?(sample_valid?(4'b1<<active):4'b0):4'b0;
- reg [1:0] chosen;reg eligible;integer i,j,k;
- always @*begin eligible=0;chosen=0;
-  for(i=0;i<4;i=i+1)begin j=rr+i;if(j>=4)j=j-4;
-   if(!eligible&&found[j]&&!fallback[j]&&slot_fill[j]&&sector_room[j])begin eligible=1;chosen=j;end
-  end
- end
+ // Eligibility is independent of round-robin choice. Four parallel
+ // winners avoid a serial dynamic-index priority path into state enables.
+ wire[3:0] requests=found&~fallback&slot_fill&sector_room;
+ (* keep="true" *) wire eligible=|requests;
+ wire p0=rr==0,p1=rr==1,p2=rr==2,p3=rr==3;
+ (* keep="true" *) wire[3:0] winner;
+ assign winner[0]=requests[0]&&(p0||(p1&&!(|requests[3:1]))||(p2&&!(|requests[3:2]))||(p3&&!requests[3]));
+ assign winner[1]=requests[1]&&(p1||(p2&&!requests[2]&&!requests[3]&&!requests[0])||(p3&&!requests[3]&&!requests[0])||(p0&&!requests[0]));
+ assign winner[2]=requests[2]&&(p2||(p3&&!requests[3]&&!requests[0]&&!requests[1])||(p0&&!requests[0]&&!requests[1])||(p1&&!requests[1]));
+ assign winner[3]=requests[3]&&(p3||(p0&&!requests[0]&&!requests[1]&&!requests[2])||(p1&&!requests[1]&&!requests[2])||(p2&&!requests[2]));
+ wire[1:0] chosen={winner[2]|winner[3],winner[1]|winner[3]};
+ // Clocked public fallback is unchanged on every REF edge. The late
+ // directory-commit predicate only captures one flag; mask capture is separate.
+ // Consumers sample this REF-domain output or its registered CDC payload.
+ reg[3:0] fallback_storage,fallback_initial_mask;reg fallback_initial_pending;
+ assign fallback=fallback_initial_pending?fallback_initial_mask:fallback_storage;
+ integer i,j,k;
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
    state<=Q_SCAN;kernel_progress<=0;active<=0;rr<=0;saved<=0;context_padding<=0;context_index<=0;
-   scan_start<=0;scan_seen<=0;index_done<=0;fallback<=0;found<=0;
+   scan_start<=0;scan_seen<=0;index_done<=0;fallback_storage<=0;fallback_initial_mask<=0;fallback_initial_pending<=0;found<=0;
    track_descriptor<=0;descriptor_pending<=0;
   end else begin
-   scan_start<=0;
+   scan_start<=0;fallback_storage<=fallback;fallback_initial_pending<=0;
+   fallback_initial_mask<=(dir_bad||scan_code!=0)?4'hf:~found;
    if(!scan_seen&&mounted&&cache_ready&&(!EXTERNAL_SERVICE||external_service_ready))begin scan_seen<=1;scan_start<=1;end
    if(descriptor_capture)begin
     found<=found|descriptor_matches;descriptor_pending<=descriptor_matches;
@@ -101,7 +121,7 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
       else context_index<=context_index+1'b1;
      end
      if(scan_seen&&scan_done&&descriptor_pending==0&&!descriptor_capture)begin
-      index_done<=1;fallback<=(dir_bad||scan_code!=0)?4'hf:~found;state<=Q_CHOOSE;
+      index_done<=1;fallback_initial_pending<=1;state<=Q_CHOOSE;
      end
     end
     Q_CHOOSE:if(eligible)begin kernel_progress<=0;active<=chosen;rr<=chosen+1'b1;context_index<=0;
@@ -117,7 +137,7 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
     Q_START:state<=Q_RUN;
     Q_RUN:begin
      if(fvalid&&(parser_ready||waverr))kernel_progress<=1;
-     if(waverr||ferr)fallback[active]<=1;
+     if(waverr||ferr)fallback_storage[active]<=1;
      // Never freeze an unconsumed byte or sample; never abandon a live sector.
      if((fdone&&!fbusy&&!sample_valid)||((waverr||ferr)&&pauseable&&!fvalid&&!sample_valid))begin
       saved[active]<=0;state<=Q_CHOOSE;

@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_hd_hex_payload74",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 786480,
+  "elapsed_s": 34.781,
+  "suite": "hd_hex_payload74",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq237\\p\\tb_v3_hd_hex_payload74\\sim\\tb_v3_hd_hex_payload74"
+}

@@ -51,6 +51,7 @@ module sd_bmp_player #(
     parameter integer CLK_HZ      = 50_000_000,
     parameter integer SHARED_SERVICE = 0,
     parameter integer GUARDED_CS = 0,
+    parameter integer MID_REF_SAMPLE = 0,
     parameter integer RESIDENT_CACHE = 0,
     // SPI 分频（见文件头推导；按 50 MHz 取默认）
     // ★★ 2026-10-06 板级实测后：初始化时钟由 396.8 kHz **降到 100 kHz**。
@@ -64,7 +65,7 @@ module sd_bmp_player #(
     // 各阶段超时（各自独立计数器；按 50 MHz 折算的墙钟时间）
     parameter [31:0]  INIT_TO_N    = 32'd100_000_000,  // 2s @50MHz: includes the card's <=1s ACMD41 window
     parameter [31:0]  MOUNT_TO_N   = 32'd5_000_000,    // 100ms：等 MBR/BPB/目录/索引
-    parameter [31:0]  STREAM_TO_N  = 32'd150_000_000,  // 3s：等一整幅读完
+    parameter [31:0]  STREAM_TO_N  = 32'd150_000_000,  // 3s no-progress in resident mode; legacy whole-file deadline
     parameter [31:0]  SWAP_TO_N    = 32'd5_000_000,    // 100ms：等换帧
     parameter [31:0]  PILOT_TO_N   = 32'd2_500_000,    // 50ms：等索引查找结果落定
     // ★ 2026-10-06 新增：SD 初始化失败后**自动重试**（真卡在复位后偶发不应答时非常有效）。
@@ -382,7 +383,7 @@ module sd_bmp_player #(
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
 
-    
+
     // Ownership changes invalidate every persistent done/status bit before use.
     reg service_owner_q,service_gap;
     always @(posedge clk or negedge rst_n)
@@ -393,7 +394,11 @@ module sd_bmp_player #(
     wire[836:0] physical_core_rsp;
     assign external_service_ready=SHARED_SERVICE&&ext_owner&&service_ready_int;
     assign external_core_rsp=external_service_ready?physical_core_rsp:837'd0;
-    assign selected_core_cmd=ext_owner?external_core_cmd:local_core_cmd;
+    // service_ready_int implies service_owner_q==ext_owner. During the
+    // two-edge ownership gap the entire kernel is held in reset, so selecting
+    // the registered owner preserves every observable transaction and removes
+    // binary-state decode from the445-bit mux before the LBA DSP/add path.
+    assign selected_core_cmd=service_owner_q?external_core_cmd:local_core_cmd;
 assign local_core_cmd={file_rst_n,scan_en,ent_ready,1'b0,1'b1,fst_start,sel_first_clus,sel_size,bp_ready,265'd0,1'b0,32'd0,state_o==S_STREAM?fst_wk_rst:dn_wk_rst,state_o==S_STREAM?fst_wk_start:dn_wk_start,state_o==S_STREAM?fst_wk_cur:dn_wk_cur,({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_ready}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_data_valid}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_data_last}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_done}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_to}}),({((state_o==S_SCAN&&scan_wk)||(state_o==S_STREAM&&strm_wk)),(state_o==S_STREAM&&!strm_wk),(state_o==S_SCAN&&!scan_wk)}&{3{rd_crc}}),rd_data,rd_ec,rd_ed};
 wire svc_d_scan_done;
 wire svc_d_dir_bad;
@@ -578,7 +583,7 @@ fat32_cluster_walker u_wk_dir (
         .idx_clear(idx_clear), .idx_commit(idx_commit), .idx_done(idx_done),
         .file_cnt(file_cnt), .file_valid(file_valid), .insufficient(insufficient),
         .err_code(idx_ec), .err_detail(idx_ed),
-        .sel_slot(pick_slot), .sel_first_clus(sel_first_clus), .sel_size(sel_size),
+        .sel_slot(RESIDENT_CACHE?2'd0:pick_slot), .sel_first_clus(sel_first_clus), .sel_size(sel_size),
         .sel_valid(sel_valid),
         .sel_wav_first_clus(sel_wav_clus), .sel_wav_size(sel_wav_size),
         .sel_wav_valid(sel_wav_valid),
@@ -675,7 +680,7 @@ fat32_cluster_walker u_wk_fst (
     );
 
     // ---- 媒体链：字节流 → 像素 → 行序重映射 → 逐 word 写请求 ----
-    bmp_parser u_bmp (
+    bmp_parser #(.VARIABLE_SIZE(RESIDENT_CACHE)) u_bmp (
         .clk(clk), .rst_n(file_rst_n),
         .data(fst_data), .valid(fst_valid), .ready(bp_ready), .eof(fst_eof),
         .file_size(sel_size),
@@ -711,6 +716,13 @@ fat32_cluster_walker u_wk_fst (
     // 保持位空着才收新像素（同一拍出队+装新字不冲突：后者覆盖前者 ✓）
     assign bpu_ready = !hold_valid || px_word_ready;
 
+    generate if(RESIDENT_CACHE)begin:normalized_bmp
+    v3_bmp_normalizer u_unpack (
+        .clk(clk),.rst_n(file_rst_n),.din(bpo_data),.din_valid(bpo_valid),.din_ready(bpo_ready),.din_sof(bpo_sof),.din_eof(bpo_eof),
+        .width(bmp_width),.height(bmp_height),.top_down(bmp_top_down),
+        .pixel(bpu_pixel),.pixel_valid(bpu_valid),.pixel_ready(bpu_ready),.x(bpu_x),.y(bpu_y),.img_sof(bpu_sof),.img_eof(bpu_eof),
+        .done(bpu_done),.error(bpu_error),.err_code(bpu_ec),.err_detail(bpu_ed),.dbg_state());
+    end else begin:legacy_bmp
     bmp_unpack u_unpack (
         .clk(clk), .rst_n(file_rst_n),
         .din(bpo_data), .din_valid(bpo_valid), .din_ready(bpo_ready),
@@ -727,6 +739,7 @@ fat32_cluster_walker u_wk_fst (
         .done(bpu_done), .error(bpu_error), .err_code(bpu_ec), .err_detail(bpu_ed),
         .dbg_state()
     );
+    end endgenerate
 
     assign slot_o = out_slot;      // 帧内稳定，随 frame_active 打包给 mem 侧
 
@@ -780,7 +793,7 @@ fat32_cluster_walker u_wk_fst (
     end endgenerate
 
     spi_master #(
-        .CLK_FREQ(CLK_HZ)
+        .CLK_FREQ(CLK_HZ),.MID_REF_SAMPLE(MID_REF_SAMPLE)
     ) u_spi (
         .clk(clk), .rst_n(rst_n), .clk_div(spi_div), .cs_n(raw_cs_n),
         .tx_valid(spi_txv && spi_cs_ready), .tx_data(spi_txd), .tx_ready(spi_engine_ready),
@@ -799,7 +812,11 @@ fat32_cluster_walker u_wk_fst (
     reg [3:0]  init_try;        // ★ SD 初始化已重试次数（init_done 清零）
     reg [2:0]  init_arm;        // ★ 每次发 start 后的"沉降窗"：等 initializer 清掉上一次的 init_error
     reg        fd_d, fd_pending;// frame_done（toggle）边沿检测
-    reg fst_done_d,file_done_seen;
+    reg fst_done_d,file_done_seen;reg unpack_done_seen;
+    always@(posedge clk or negedge rst_n)
+      if(!rst_n)unpack_done_seen<=0;
+      else if(state_o!=S_STREAM||!stream_kicked)unpack_done_seen<=0;
+      else if(bpu_done&&!bpu_error)unpack_done_seen<=1;
     // Landing may precede the last CMD17 padding and CRC. Keep ownership
     // until BOTH completions arrive; never start an already busy streamer.
     always @(posedge clk or negedge rst_n)begin
@@ -1109,7 +1126,12 @@ fat32_cluster_walker u_wk_fst (
 
                 // ------------------------------------------------------------
                 S_STREAM: begin
-                    to_cnt <= to_cnt + 32'd1;
+                    // Variable BMPs can exceed a fixed3-second transfer time.
+                    // Keep a bounded NO-PROGRESS timeout for resident loads;
+                    // both actual input consumption and accepted normalized
+                    // pixels count. Legacy player timing remains unchanged.
+                    if(RESIDENT_CACHE&&((fst_valid&&bp_ready)||(bpu_valid&&bpu_ready)))to_cnt<=0;
+                    else to_cnt <= to_cnt + 32'd1;
                     // ★ 等 mem 侧空闲（官方 FIFO 已排空）才开帧：
                     //   避免上一帧残留像素被当成本帧的开头（那会让本帧 CRC 必错）
                     if (!stream_kicked && mem_ready_s && !fst_busy && rd_ready) begin
@@ -1126,7 +1148,7 @@ fat32_cluster_walker u_wk_fst (
                     cur_file_size <= sel_size;
 
                     // 本帧像素产完（bmp_unpack.done）后，等 mem 侧"写完 + 换帧走完"
-                    if (stream_kicked && fd_pending && file_done_seen && !fst_error && rd_ready && !spi_busy && !rd_crc && !rd_to) begin
+                    if (stream_kicked && fd_pending && file_done_seen && (!RESIDENT_CACHE||unpack_done_seen) && !bpu_error && !bmp_check_error && !fst_error && rd_ready && !spi_busy && !rd_crc && !rd_to) begin
                         frame_active  <= 1'b0;
                         last_frame_ok_o <= lok_sync[1];    // 采样 mem 侧电平（已两级同步）
                         stream_kicked <= 1'b0;

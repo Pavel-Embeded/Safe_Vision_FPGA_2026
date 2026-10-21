@@ -6,10 +6,19 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
  output reg command_valid,output wire [7:0] target,
  output wire [95:0] name,output wire signed [31:0] value,output wire query,
  output reg reply_valid,output reg [7:0] reply_code,
- output reg [31:0] rejected,output wire [6:0] catalog_id);
+ output wire [31:0] rejected,output wire [6:0] catalog_id);
+ // Cycle-exact saturating event counter. The decoded rejection only drives
+ // one pending flop, not32 counter enables. Publish min(base+pending,MAX)
+ // and feed that same value back into base every cycle. Thus the public
+ // count increments on the ORIGINAL reject edge, including consecutive
+ // errors, and remains saturated; no extra query latency is introduced.
+ (* preserve="true" *) reg[31:0] rejected_base;
+ (* preserve="true" *) reg rejected_pending;
+ wire[32:0] rejected_sum={1'b0,rejected_base}+{32'd0,rejected_pending};
+ assign rejected=rejected_sum[32]?32'hffffffff:rejected_sum[31:0];
  reg [2:0] state;reg [7:0] checksum,received;
  localparam integer TIMER_W=TIMEOUT>1?$clog2(TIMEOUT):1;
- reg [TIMER_W-1:0] timer;reg [23:0] number;
+ reg [TIMER_W-1:0] timer;reg timer_expired;reg [23:0] number;
  reg [5:0] length;// Only presence of a digit is required. A modulo-16 digit counter would
  // reject legal leading-zero values and permit a minus after 16 digits.
  reg [3:0] names;reg digit_seen;reg negative,argument;
@@ -29,9 +38,9 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
  assign value=value_reg;
  // Payload names are exact for the finite board command catalog. Unknown
  // names become zero, which is unequal to every consumer command literal.
- // No hashes are used. Minimum name-byte spacing is 72 SYS edges;
+ // No hashes are used. Minimum name-byte spacing is 84 SYS edges;
  // UART RX guarantees at least304 at its supported minimum clock/baud ratio.
- localparam integer CATALOG_N=35,CATALOG_AW=6;
+ localparam integer CATALOG_N=41,CATALOG_AW=6;
  reg[CATALOG_N-1:0] possible;
  reg[1:0] scan_state;reg[CATALOG_AW-1:0] scan_index;
  reg[3:0] held_position;reg[7:0] held_character;
@@ -95,6 +104,12 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
   7'd33:catalog_name=96'h000000000000000000564f4c;
   7'd34:catalog_name=96'h000056554e444552464c4f57;
   7'd35:catalog_name=96'h0057415646414c4c4241434b;
+  7'd36:catalog_name=96'h000000000000000044494147;
+  7'd37:catalog_name=96'h000000000000004252545043;
+  7'd38:catalog_name=96'h000000000000004649454c44;
+  7'd39:catalog_name=96'h00000000004c4154454e4359;
+  7'd40:catalog_name=96'h00000000000000004d454e55;
+  7'd41:catalog_name=96'h000000005343414c4553454c;
   default:;endcase end
  // The previous number must be <1,000,000 before another digit is accepted;
  // hence the largest legal result is 9,999,999 and fits exactly in 24 bits.
@@ -105,16 +120,21 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
  task reject;
  input[7:0] code;begin
  state<=0;reply_valid<=1;reply_code<=code;
- if(rejected!=32'hffffffff)rejected<=rejected+1'b1;
+ rejected_pending<=1;
  end endtask
  always @(posedge clk or negedge rst_n)begin
-  if(!rst_n)begin state<=0;checksum<=0;received<=0;timer<=0;number<=0;
+  if(!rst_n)begin state<=0;checksum<=0;received<=0;timer<=0;timer_expired<=(TIMEOUT<=1);number<=0;
    length<=0;names<=0;digit_seen<=0;negative<=0;argument<=0;dest<=0;ask<=0;
    command_valid<=0;
-   reply_valid<=0;reply_code<=0;rejected<=0;end
+   reply_valid<=0;reply_code<=0;rejected_base<=0;rejected_pending<=0;end
   else begin
-   command_valid<=0;reply_valid<=0;
-   if(state!=0)begin if(timer>=TIMEOUT-1 && !rx_valid)reject(8'h06);else timer<=timer+1'b1;end
+   command_valid<=0;reply_valid<=0;rejected_base<=rejected;rejected_pending<=0;
+   // Reset/restart wins on the original receive edge. For T>1, timer
+   // reachesT-1 exactly one cycle after this registered equality becomes1.
+   if(rx_valid||state==0)timer_expired<=(TIMEOUT<=1);
+   else if(TIMEOUT<=1)timer_expired<=1;
+   else timer_expired<=timer==TIMEOUT-2;
+   if(state!=0)begin if(timer_expired && !rx_valid)reject(8'h06);else timer<=timer+1'b1;end
    if(rx_valid)begin
     timer<=0;
     if(rx_data==36)begin state<=1;checksum<=0;received<=0;length<=0;names<=0;

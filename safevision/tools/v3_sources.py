@@ -15,7 +15,8 @@ def assets(root):
  return result
 def sources(root,mode):
  if mode not in ('base','hd'):raise ValueError(mode)
- text=(root/FLOW/'v3_board_sources.list').read_text(encoding='utf-8-sig')
+ from v3_source_profiles import source_list
+ text=source_list(root,FLOW,mode).read_text(encoding='utf-8-sig')
  result=[]
  for line in text.splitlines():
   line=line.strip()
@@ -26,21 +27,41 @@ def sources(root,mode):
   if path in result:raise ValueError('duplicate HDL source: '+str(path))
   result.append(path)
  return result
+def native_rom_sidecars(root,write=False):
+ # TD may resolve parameter default paths relative to HDL before applying
+ # the Tcl working directory. Keep a checked generated copy beside each
+ # BASE/HD declaration; fonts/ remains the single editable source of truth.
+ canonical=root/'safevision/assets/fonts/v3_four_features_text.mem'
+ raw=canonical.read_bytes();result=[]
+ for mode in ('video','hd'):
+  relative=Path('safevision/rtl')/mode/'v3_four_features_text.mem'
+  target=root/relative
+  if write:target.write_bytes(raw)
+  if not target.is_file()or target.read_bytes()!=raw:raise ValueError('native ROM sidecar missing/stale: '+relative.as_posix())
+  result.append(relative)
+ return result
+
 def scope(root):
  files=set(sources(root,'base')+sources(root,'hd')+assets(root))
+ files.update(native_rom_sidecars(root))
  for rel in ('safevision/rtl/include','safevision/assets/fonts',str(FLOW)):
   files.update(p.relative_to(root) for p in (root/rel).rglob('*') if p.is_file() and p.suffix in ('.vh','.mem','.sdc','.tcl','.adc','.json','.list','.v','.al'))
- files.update(Path('safevision/tools')/n for n in ('v3_sources.py','v3_final_sta.py','check_board_timing.py','check_v3_board.py','check_v3_rom_netlist.py','check_v3_spi_timing.py','check_v3_io_scope.py','run_v3_board.ps1','run_v3_board.py','configure_v3_pll.py','run_v3_pll.py','gen_v3_cdc.py'))
+ files.update(Path('safevision/tools')/n for n in ('v3_source_profiles.py','v3_sources.py','v3_final_sta.py','check_board_timing.py','check_v3_board.py','check_v3_rom_netlist.py','check_v3_spi_timing.py','check_v3_io_scope.py','run_v3_board.ps1','run_v3_board.py','configure_v3_pll.py','run_v3_pll.py','gen_v3_cdc.py'))
  files.update(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll')/n for n in ('sv_v3_memory_pll.ipc','sv_v3_memory_pll.provenance.json'))
  files.update(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor')/n for n in ('source.sha256.json','NOTICE.md'))
  files.update(Path('safevision/tools')/n for n in ('v3_resource_policy.py','check_v3_board_reference.py','check_v3_command_catalog.py'))
  files.update(Path('safevision/tools')/n for n in ('v3_functional_release.py','audit_v3_resource_checkpoint.py','audit_v3_raw_logs.py'))
+ files.add(Path('safevision/tools/check_v3_volume_reciprocal.py'))
+ files.add(Path('safevision/tools/check_v3_clock_contract.py'))
+ files.add(Path('safevision/tools/check_v3_sample_netlist.py'))
  return sorted(files,key=lambda p:p.as_posix())
 def snapshot(root):
  from v3_resource_policy import load
  from check_v3_board_reference import check as check_board_reference
  from check_v3_command_catalog import check as check_catalog
  load(root);check_board_reference(root);check_catalog(root)
+ from check_v3_clock_contract import check as check_clocks
+ check_clocks(root)
  physical_constraint_files(root)
  for mode in ('base','hd'):build_parameters(root,mode)
  # TD read_sdc is deferred and has a restricted parser. User Tcl wrappers can
@@ -64,15 +85,24 @@ def snapshot(root):
   if not p.is_relative_to(vendor.resolve()):raise ValueError('vendor manifest escaped dependency directory')
   if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=entry['sha256']:raise ValueError('vendor dependency changed or missing: '+str(p))
  return {p.as_posix():hashlib.sha256((root/p).read_bytes()).hexdigest() for p in scope(root)}
-def physical_constraint_files(root):
- """Keep pin assignments separate from the reviewed internal OE placement."""
- files=[root/FLOW/'v3_board.adc'];extra=root/FLOW/'v3_physical.adc'
- if extra.exists():
+def physical_constraint_files(root,mode=None):
+ """Resolve mode-specific internal placement; board pins always remain shared."""
+ if mode not in (None,'base','hd'):raise ValueError('unknown physical mode')
+ common=root/FLOW/'v3_physical.adc'
+ extras=[common]+[root/FLOW/('v3_physical_'+m+'.adc')for m in ('base','hd')]
+ # Validate even inactive mode files before a source snapshot or GUI export.
+ for extra in extras:
+  if not extra.exists():continue
   statements=[s.strip() for s in extra.read_text(encoding='utf-8-sig').splitlines() if s.strip() and not s.lstrip().startswith('#')]
   approved='set_inst_assignment {memory_ip/u2_ram/u2_wrrd/sdr_t_reg} {location = x19y31z1;}'
   phy=['create_bound {v3_phy_region} -mode fixed -width 12 -height 30 -origin {29 8}', 'add_cells_to_bound -bound v3_phy_region -cells {reset_phy serializer}']
   if statements not in ([approved],[approved]+phy):raise ValueError('unreviewed internal physical constraint')
-  files.append(extra)
+ files=[root/FLOW/'v3_board.adc']
+ if mode is None:files.extend(p for p in extras if p.exists())
+ else:
+  extra=root/FLOW/('v3_physical_'+mode+'.adc')
+  if not extra.exists():extra=common
+  if extra.exists():files.append(extra)
  return files
 
 def build_parameters(root,mode=None):
@@ -84,11 +114,14 @@ def build_parameters(root,mode=None):
   ('rtl','min_ripple_len'):{'8','16','32','64'},('rtl','infer_fsm'):{'on','off'},
   ('gate','map_mode'):{'auto','area_prior','logic_level_prior','balance_explore'},
   ('gate','pack_effort'):{'low','medium','high'},
+  ('gate','bdd_opt'):{'on','off'},('gate','lut4_map'):{'on','off'},
   ('place','effort'):{'low','medium','high'},
+  ('place','seed'):{'0','1','7','13','31'},
   ('place','post_place_opt'):{'auto','medium','high','ultra'},
   ('place','hfn_opt_effort'):{'low','medium','high'},
   ('place','pr_strategy'):{str(n) for n in range(1,18)},
-  ('route','effort'):{'normal','routability'},('route','timing'):{'on'},('route','fix_hold'):{'on'}}
+  ('route','effort'):{'normal','routability'},('route','timing'):{'on','greedy','off'},('route','fix_hold'):{'on'},
+  ('route','post_route_opt'):{'auto','medium','high','ultra'}}
  values={}
  paths=[root/FLOW/'v3_build_parameters.tcl']
  if mode and (root/FLOW/('v3_build_parameters_'+mode+'.tcl')).exists():paths.append(root/FLOW/('v3_build_parameters_'+mode+'.tcl'))
@@ -111,13 +144,25 @@ def native_parameters(root,folder,stages=('rtl','gate','place','route')):
  result=[]
  for stage,name,value in build_parameters(root,folder.name if folder.name in ('base','hd') else None):
   if stage not in stages:continue
-  path=folder/(stage+'.params');text=path.read_text(encoding='utf-8',errors='replace')
-  hits=re.findall(r'^\s*'+re.escape(name)+r'\s*\|\s*(\w+)\s*\|',text,re.M)
+  report_name='place.seed.params' if (stage,name)==('place','seed') else stage+'.params'
+  path=folder/report_name;text=path.read_text(encoding='utf-8',errors='replace')
+  if stage=='route'and name=='post_route_opt':
+   path=folder/'route.hidden.params';text=path.read_text(encoding='utf-8');report_name=path.name
+   hits=re.findall(r'^route post_route_opt (auto|medium|high|ultra)$',text,re.M)
+  elif stage=='gate'and name in ('bdd_opt','lut4_map'):
+   path=folder/'gate.hidden.params';text=path.read_text(encoding='utf-8')
+   report_name=path.name;hits=re.findall(r'^gate '+re.escape(name)+r' (on|off)$',text,re.M)
+  elif (stage,name)==('place','seed'):
+   # Exact one-value direct native query; missing/duplicated/malformed data fail.
+   direct=re.fullmatch(r'place seed ([0-9]+)\r?\n',text)
+   hits=[direct[1]] if direct else []
+  else:hits=re.findall(r'^\s*'+re.escape(name)+r'\s*\|\s*(\w+)\s*\|',text,re.M)
   if hits!=[value]:raise ValueError('native parameter acknowledgement mismatch: '+stage+'/'+name)
-  result.append({'stage':stage,'parameter':name,'actual':hits[0],'report_sha256':hashlib.sha256(path.read_bytes()).hexdigest()})
+  result.append({'stage':stage,'parameter':name,'actual':hits[0],'report_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'native_report':report_name})
  return result
 def gui_project(root,mode):
  """Generate portable .al from the same ordered HDL manifest as CLI."""
+ native_rom_sidecars(root,write=True)
  project_dir=root/FLOW/mode
  project_dir.mkdir(parents=True,exist_ok=True)
  p=ET.Element('Project',Version='3',Minor='2',Path='.')
@@ -131,7 +176,7 @@ def gui_project(root,mode):
   for name,value in (('UsedInSyn','true'),('UsedInP&R','true'),('BelongTo',belong),('CompileOrder',str(order))):ET.SubElement(info,'Attr',Name=name,Val=value)
  for i,path in enumerate(sources(root,mode),1):item(vs,root/path,i,'design_1')
  ad=ET.SubElement(fs,'ADC_FILE')
- physical=physical_constraint_files(root)
+ physical=physical_constraint_files(root,mode)
  for i,path in enumerate(physical,1):item(ad,path,i,'constraint_1')
  sd=ET.SubElement(fs,'SDC_FILE')
  for i,name in enumerate(('v3_board.sdc','v3_cdc.sdc'),len(physical)+1):item(sd,root/FLOW/name,i,'constraint_1')
@@ -154,6 +199,8 @@ def gui_project(root,mode):
  ET.SubElement(p,'Project_Settings')
  ET.indent(p,space='    ');out=project_dir/('safevision_v3_'+mode+'.al')
  ET.ElementTree(p).write(out,encoding='utf-8',xml_declaration=True)
+ # Pin generated project bytes across Windows/native rebuild and Git checkout.
+ out.write_bytes(out.read_bytes().replace(b'\r\n',b'\n'))
  for rel in assets(root):shutil.copyfile(root/rel,project_dir/rel.name)
  # Also place the documented default relative font location used by the GUI
  # when TD switches to a synthesis/physical run folder.
@@ -178,7 +225,7 @@ def check_gui(root,mode):
   attrs={n.attrib['Name']:n.attrib['Val'] for n in node.findall('./FileInfo/Attr')}
   group=attrs['BelongTo'];order=int(attrs['CompileOrder']);compile_orders.setdefault(group,[]).append(order)
  if any(len(orders)!=len(set(orders)) for orders in compile_orders.values()):raise ValueError('duplicate GUI compile order within file set')
- for section,paths in (('ADC_FILE',physical_constraint_files(root)),('SDC_FILE',[root/FLOW/n for n in ('v3_board.sdc','v3_cdc.sdc')])):
+ for section,paths in (('ADC_FILE',physical_constraint_files(root,mode)),('SDC_FILE',[root/FLOW/n for n in ('v3_board.sdc','v3_cdc.sdc')])):
   actual_constraints=[(path.parent/n.attrib['Path']).resolve() for n in tree.findall('./Source_Files/'+section+'/File')]
   expected_constraints=[p.resolve() for p in paths]
   if actual_constraints!=expected_constraints:raise ValueError('GUI/CLI constraints differ: '+mode+'/'+section)

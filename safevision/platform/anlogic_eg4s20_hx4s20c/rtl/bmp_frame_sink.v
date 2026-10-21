@@ -189,7 +189,7 @@ module bmp_frame_sink #(
 
     // 桥：行序用**实时**同步值（见下），像素从 skid 取
     bmp_frame_write_bridge #(
-        .GAP_TIMEOUT(GAP_TIMEOUT)
+        .GAP_TIMEOUT(GAP_TIMEOUT),.EXACT_SAMPLE_COMPARE(RESIDENT_LOAD)
     ) u_bridge (
         .clk(clk), .rst_n(rst_n && !(RESIDENT_LOAD && state_o==S_ERROR)), .start(br_start), .top_down(td_sync[1]),
         .slot_sel(slot_lat), .slot_base(slot_base),

@@ -13,6 +13,7 @@ platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v
 platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v
 platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v
 platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v
+platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo_phase/sv_fifo_phase_ip.v
 platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v
 platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v
 platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v
@@ -31,6 +32,7 @@ rtl/video/osd_overlay/osd_text_layer.v
 rtl/video/v3_status_layers.v
 rtl/video/v3_line_cache.v
 rtl/video/v3_packed_row_store.v
+rtl/video/v3_hd_coord_arith.v
 rtl/video/v3_video_display_core.v
 rtl/video/v3_presentation_ctrl.v
 rtl/video/hdmi_output/hdmi_video_bridge.v
@@ -73,7 +75,10 @@ rtl/control/key_debounce.v
 rtl/control/v3_command_parser.v
 rtl/control/v3_command_parser_catalog.v
 rtl/control/v3_user_controls.v
+rtl/control/v3_response_timer.v
+rtl/control/v3_pixel_response_tracker.v
 rtl/control/v3_uart_link.v
+rtl/control/v3_diag_query.v
 rtl/control/media_recovery_ctrl.v
 rtl/control/v3_supervisor.v
 rtl/safety/fault_manager.v
@@ -99,3 +104,10 @@ rtl/video/scaler/v3_scaler_bilinear_thirds.v
 
 platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v
 platform/anlogic_eg4s20_hx4s20c/rtl/hdmi/v3_hdmi_phy_wrapper.v
+platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v
+platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_mem_activity_tag.v
+rtl/memory/v3_memory_path_observer.v
+rtl/video/v3_frame_safe_select.v
+rtl/video/v3_pcm_waveform.v
+rtl/video/v3_boot_uptime.v
+rtl/media/v3_bmp_normalizer.v

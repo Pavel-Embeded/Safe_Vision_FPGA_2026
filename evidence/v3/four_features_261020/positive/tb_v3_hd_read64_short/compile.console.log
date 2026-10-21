@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq416/source/safevision/rtl/hd/sdram_app_adapter.v" into library work
+INFO: [VRFC 10-311] analyzing module sdram_app_adapter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq416/source/safevision/verification/unit/tb_v3_hd_read64_short.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_hd_read64_short

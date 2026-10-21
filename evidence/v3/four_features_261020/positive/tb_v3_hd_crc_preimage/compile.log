@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq268/source/safevision/rtl/hd/v3_line_cache.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_line_cache
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq268/source/safevision/rtl/video/video_cdc/video_cdc_mailbox.v" into library work
+INFO: [VRFC 10-311] analyzing module video_cdc_mailbox
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq268/source/safevision/verification/unit/tb_v3_hd_crc_preimage.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_hd_crc_preimage

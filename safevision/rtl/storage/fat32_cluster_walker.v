@@ -90,14 +90,31 @@ module fat32_cluster_walker (
     wire [31:0] fat_byte_off = {cur_clus[29:0], 2'b00};   // clus*4
     wire [31:0] fat_lba      = fat_start_lba + (fat_byte_off >> 9);
 
-    // 本拍正在装配的入口（把还没写入 fat_val 的当前字节也算进来）
-    wire        fat_in_win = (bcnt >= fat_off) && (bcnt <= (fat_off + 9'd3));
-    wire [31:0] fat_now    = fat_in_win ? {sd_data, fat_val[31:8]} : fat_val;
+    // fat_off always has low2bits00 (reset or cur_clus*4). Prefix equality
+    // selects precisely its four-byte window; no range add/compare is needed.
+    wire        fat_in_win = (bcnt[8:2] == fat_off[8:2]);
+    // nxt_* is consumed only on accepted sector byte511. The current
+    // byte belongs to the entry exactly when its aligned offset is508.
+    // Keep byte-counter/window decoding OUT of the32-bit classifier mux.
+    wire [31:0] fat_now    = (&fat_off[8:2]) ? {sd_data, fat_val[31:8]} : fat_val;
     wire [27:0] nxt_clus   = fat_now[27:0];               // 高 4 位保留位掩掉
     wire        nxt_eoc    = (nxt_clus >= 28'h0FFF_FFF8);
     wire        nxt_oob    = (nxt_clus < 28'd2) ||
                              ({4'b0, nxt_clus} > (total_clus + 32'd1));
-    wire        nxt_loop   = ((hop_cnt + 32'd1) > total_clus);
+    function unsigned_ge32;
+        input [31:0] a,b;
+        reg [3:0] gt,eq;integer q;
+        begin
+            for(q=0;q<4;q=q+1)begin
+                gt[q]=(a[q*8+:8]>b[q*8+:8]);
+                eq[q]=(a[q*8+:8]==b[q*8+:8]);
+            end
+            unsigned_ge32=gt[3]||(eq[3]&&(gt[2]||(eq[2]&&(gt[1]||(eq[1]&&(gt[0]||eq[0]))))));
+        end
+    endfunction
+    // Exact 32-bit modulo identity: (H+1)>T iff H!=0xffffffff && H>=T.
+    // Keep the overflow guard; dropping it changes a legal context boundary.
+    wire        nxt_loop   = (!(&hop_cnt)) && unsigned_ge32(hop_cnt,total_clus);
 
     assign sd_data_ready = (mstate == W_RECV);
     assign sd_rd_len     = 16'd1;
