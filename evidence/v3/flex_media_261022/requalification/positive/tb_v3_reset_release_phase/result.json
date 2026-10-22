@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_reset_release_phase",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 700,
+  "elapsed_s": 7.531,
+  "suite": "reset_release_phase",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_reset_release_phase\\sim\\tb_v3_reset_release_phase"
+}

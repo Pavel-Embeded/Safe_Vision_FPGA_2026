@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_bram_adapter_aligned",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_bram_adapter_aligned\\result.json",
+  "original_metadata_sha256": "5c9e8749014bc2837f573b5e68ed07706110315b8201317d43f658f74e268860",
+  "original_log_sha256": "ed16407e1edd4b006bd2aa98a5718fb19858ae89f73e00abd58241044a2261b9",
+  "matrix_definition": {
+    "top": "tb_bram_adapter_aligned",
+    "suite": "bram_adapter_aligned",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

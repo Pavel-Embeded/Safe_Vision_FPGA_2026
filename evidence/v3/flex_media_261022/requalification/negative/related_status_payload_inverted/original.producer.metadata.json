@@ -1,0 +1,27 @@
+{
+  "name": "related_status_payload_inverted",
+  "mutation": "related_status_payload_inverted",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v",
+  "before": "data<=source_data;",
+  "after": "data<=~source_data;",
+  "suite": "related_status_capture",
+  "top": "tb_v3_related_status_capture",
+  "original_sha256": "91cf68fd9834bc2e8020c55db82881e216d331b989a5623101da64030e0fcf30",
+  "mutated_sha256": "7e403bab470c73f3e5e2469e6feee977500aada2d8b1a228e6262a953de40c79",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "detected": true,
+  "normal_completion": true,
+  "error_counts": [
+    4232
+  ],
+  "previous_evidence": "evidence/v3/board_repair_113_33_20261017/negative/related_status_payload_inverted",
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\related_status_payload_inverted",
+  "patch": [
+    {
+      "before": "data<=source_data;",
+      "after": "data<=~source_data;"
+    }
+  ],
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\related_status_payload_inverted"
+}

@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "control_signed_range",
+  "top": "tb_v3_control_decode_equivalence",
+  "suite": "control_decode_equivalence",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "control_signed_range",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "control_decode_equivalence",
+    "top": "tb_v3_control_decode_equivalence",
+    "patch": [
+      {
+        "before": " wire value_bright_ok=(~|command_value[31:7]) || (&command_value[31:7]);\n",
+        "after": " wire value_bright_ok=(~|command_value[31:8]) || (&command_value[31:8]);\n"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "control_signed_range",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "control_decode_equivalence",
+    "top": "tb_v3_control_decode_equivalence",
+    "patch": [
+      {
+        "before": " wire value_bright_ok=(~|command_value[31:7]) || (&command_value[31:7]);\n",
+        "after": " wire value_bright_ok=(~|command_value[31:8]) || (&command_value[31:8]);\n"
+      }
+    ],
+    "required_marker": "[FAIL]"
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_signed_range",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\control_signed_range",
+  "checked": {
+    "metadata": {
+      "mutation": "control_signed_range",
+      "target": "safevision/rtl/control/v3_user_controls.v",
+      "suite": "control_decode_equivalence",
+      "top": "tb_v3_control_decode_equivalence",
+      "patch": [
+        {
+          "before": " wire value_bright_ok=(~|command_value[31:7]) || (&command_value[31:7]);\n",
+          "after": " wire value_bright_ok=(~|command_value[31:8]) || (&command_value[31:8]);\n"
+        }
+      ],
+      "required_marker": "[FAIL]",
+      "producer_folder": "D:\\Codex\\svnegative417\\n\\control_signed_range",
+      "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+      "mutated_sha256": "3d00b093c46faf8268f7d341784cfb106713d4488d00ec9e80de2dddcf742f33",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        105316
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative417\\n\\control_signed_range\\sim\\tb_v3_control_decode_equivalence"
+    },
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_control_decode_equivalence",
+      "suite": "control_decode_equivalence",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/control_decode_equivalence_sim.json",
+      "current_manifest_sha256": "d20e0519c02302d8bd304eb2c3d11803b4713307caa3ab6690a5cd5e27d9066d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      105316
+    ],
+    "log_sha256": "ec5d114e04bad36f9f3f05fd9bd19f7d896dae9ed2ad87333dc3038e0dd40a19",
+    "metadata_sha256": "f2163f410903bb6ca484bc80e3c403b78a383e3ae1dc5243bdf5d64a10cbb47a",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_signed_range\\case.json",
+      "sha256": "f2163f410903bb6ca484bc80e3c403b78a383e3ae1dc5243bdf5d64a10cbb47a"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_signed_range\\sim.log",
+      "sha256": "ec5d114e04bad36f9f3f05fd9bd19f7d896dae9ed2ad87333dc3038e0dd40a19"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_signed_range\\sources.sha256.json",
+      "sha256": "c3d5d884bc4e0feda8bbaeb7a5082513338561e3327ab1c13590c1cb647e1755"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_signed_range\\original.producer.metadata.json",
+      "sha256": "f2163f410903bb6ca484bc80e3c403b78a383e3ae1dc5243bdf5d64a10cbb47a"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_signed_range\\producer.provenance.json",
+      "sha256": "33ce1e1cc960499137974c0950b88afa45013459a92d62897e2d5feb2b176684"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_signed_range\\sources.prj",
+      "sha256": "840531796abcd7b0e4b7a1f07edbbf8e8b5a7c268ff7f690d74bd065ad59df1c"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_signed_range\\mutant.v",
+      "sha256": "3d00b093c46faf8268f7d341784cfb106713d4488d00ec9e80de2dddcf742f33"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

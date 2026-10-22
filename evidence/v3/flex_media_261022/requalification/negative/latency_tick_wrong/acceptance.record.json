@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "latency_tick_wrong",
+  "top": "tb_v3_response_timer",
+  "suite": "handbook",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "latency_tick_wrong",
+    "target": "safevision/rtl/control/v3_response_timer.v",
+    "suite": "handbook",
+    "top": "tb_v3_response_timer",
+    "patch": [
+      {
+        "before": "localparam integer TICKS=CLK_HZ/1000>0?CLK_HZ/1000:1;",
+        "after": "localparam integer TICKS=CLK_HZ/2000>0?CLK_HZ/2000:1;"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "latency_tick_wrong",
+    "target": "safevision/rtl/control/v3_response_timer.v",
+    "suite": "handbook",
+    "top": "tb_v3_response_timer",
+    "patch": [
+      {
+        "before": "localparam integer TICKS=CLK_HZ/1000>0?CLK_HZ/1000:1;",
+        "after": "localparam integer TICKS=CLK_HZ/2000>0?CLK_HZ/2000:1;"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\latency_tick_wrong",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\latency_tick_wrong",
+  "checked": {
+    "metadata": {
+      "mutation": "latency_tick_wrong",
+      "target": "safevision/rtl/control/v3_response_timer.v",
+      "suite": "handbook",
+      "top": "tb_v3_response_timer",
+      "patch": [
+        {
+          "before": "localparam integer TICKS=CLK_HZ/1000>0?CLK_HZ/1000:1;",
+          "after": "localparam integer TICKS=CLK_HZ/2000>0?CLK_HZ/2000:1;"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative417\\n\\latency_tick_wrong",
+      "original_sha256": "4d06c58da050262af0eb45771191a7ca5834eaefa33acf55dd6cc0101f99bc5e",
+      "mutated_sha256": "3bf9c976d4e9a6be7fb325c82ded4f7142752a0e82d1595319eeea5cd7417dc5",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        37
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative417\\n\\latency_tick_wrong\\sim\\tb_v3_response_timer"
+    },
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_response_timer",
+      "suite": "handbook",
+      "ordered_analyzed_HDL": 7,
+      "manifest": "safevision/build/manifests/handbook_sim.json",
+      "current_manifest_sha256": "25ec72e6010492c51f0537f48ce3c6f4911b7f382c681df9c4fc5302d966aa68",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      37
+    ],
+    "log_sha256": "6bc3042381c07c8a8779e6b4be56a899223334145b5b5cd434abfd18935a6a08",
+    "metadata_sha256": "ef53b7a850c1549ca99cb56e2739e62bdf36e889978bc8286ca388e38910478c",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\latency_tick_wrong\\case.json",
+      "sha256": "ef53b7a850c1549ca99cb56e2739e62bdf36e889978bc8286ca388e38910478c"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\latency_tick_wrong\\sim.log",
+      "sha256": "6bc3042381c07c8a8779e6b4be56a899223334145b5b5cd434abfd18935a6a08"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\latency_tick_wrong\\sources.sha256.json",
+      "sha256": "c1b5822a24faa0f204d6b359718344a5556f1105045054dc52680cfafdf74c26"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\latency_tick_wrong\\original.producer.metadata.json",
+      "sha256": "ef53b7a850c1549ca99cb56e2739e62bdf36e889978bc8286ca388e38910478c"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\latency_tick_wrong\\producer.provenance.json",
+      "sha256": "bdce46c9241c018bcbbedd728b30c6cbc9b32031e6152d9ef6be66d74500233a"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\latency_tick_wrong\\sources.prj",
+      "sha256": "befb4ba7a81c596d0909c406bc7095b3e4870b18b3a5cc7ebbe5362679a6a577"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\latency_tick_wrong\\mutant.v",
+      "sha256": "3bf9c976d4e9a6be7fb325c82ded4f7142752a0e82d1595319eeea5cd7417dc5"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

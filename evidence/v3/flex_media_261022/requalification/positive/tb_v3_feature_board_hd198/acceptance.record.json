@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_feature_board_hd198",
+  "top": "tb_v3_feature_board_hd198",
+  "suite": "feature_board_hd198",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_feature_board_hd198",
+    "suite": "feature_board_hd198",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_feature_board_hd198",
+    "suite": "feature_board_hd198",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_feature_board_hd198",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_feature_board_hd198\\sim\\tb_v3_feature_board_hd198",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_feature_board_hd198",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 142854,
+      "elapsed_s": 450.344,
+      "suite": "feature_board_hd198",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_feature_board_hd198\\sim\\tb_v3_feature_board_hd198"
+    },
+    "input_count": 121,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_feature_board_hd198",
+      "suite": "feature_board_hd198",
+      "ordered_analyzed_HDL": 106,
+      "manifest": "safevision/build/manifests/feature_board_hd198_sim.json",
+      "current_manifest_sha256": "e909d9a94161e65c71616972449fa08b1005c5c43e180ec2dbe392e358aa8669",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "beaf82df2c7796a40bdda22d2246ab1985e2e1db756aa628738e7b323ac61eb6",
+    "metadata_sha256": "946fbfdf471a6e37aae6d1c0bd289c3a2415edc940aaac90a9feb639579c4b40",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_feature_board_hd198\\result.json",
+      "sha256": "946fbfdf471a6e37aae6d1c0bd289c3a2415edc940aaac90a9feb639579c4b40"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_feature_board_hd198\\sim.log",
+      "sha256": "beaf82df2c7796a40bdda22d2246ab1985e2e1db756aa628738e7b323ac61eb6"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_feature_board_hd198\\sources.sha256.json",
+      "sha256": "65c076b76c01faf1b1e0b705ccee07b257f96e607f1ff82651beec7cb9e9dfb8"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_feature_board_hd198\\original.producer.metadata.json",
+      "sha256": "946fbfdf471a6e37aae6d1c0bd289c3a2415edc940aaac90a9feb639579c4b40"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_feature_board_hd198\\producer.provenance.json",
+      "sha256": "39efdf279fcb9ef1ee5df1181e3a2833d335d93e5fb522bcc2afff732633935f"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_feature_board_hd198\\sources.prj",
+      "sha256": "7f2807861445bbec1e9af06aa7d02ce29cba10f8bde83d802d02b4b424540a1c"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

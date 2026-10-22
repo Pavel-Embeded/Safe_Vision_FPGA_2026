@@ -1,0 +1,24 @@
+{
+  "mutation": "directory_cluster_offset_one_early",
+  "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+  "suite": "directory_lba70",
+  "top": "tb_v3_directory_lba70",
+  "patch": [
+    {
+      "before": "cluster_sectors(wk_next_clus,sec_per_clus)",
+      "after": "cluster_sectors(wk_next_clus-1,sec_per_clus)"
+    }
+  ],
+  "original_sha256": "5de38d33c99bc4fd7c0dbc1e58901a66e6c8f84d5d889fada3a2aa4a2b3fdf69",
+  "mutated_sha256": "d9e88f6e611f755cb89a3436d1cdf19cef9259a3903da90db28f6d0bb2dc41fe",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2105344
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\directory_cluster_offset_one_early\\sim\\tb_v3_directory_lba70",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\directory_cluster_offset_one_early\\sim\\tb_v3_directory_lba70"
+}

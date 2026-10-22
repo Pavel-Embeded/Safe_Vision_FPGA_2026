@@ -1,0 +1,82 @@
+[
+  {
+    "mode": "base",
+    "source": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_feature_board_base198\\spectrum_panel_rgb888.mem",
+    "sha256": "35fd4be6927d5c5b2cc3fec62e733b76dfe192ffd331de428eda51b328bb4d69",
+    "pixels": 35712,
+    "colored_spectrum_pixels": 4890,
+    "nonblack_pixels": 6794,
+    "unique_colors": 7,
+    "top_colors": [
+      [
+        "000000",
+        28918
+      ],
+      [
+        "00a2de",
+        3012
+      ],
+      [
+        "6b6d6b",
+        1616
+      ],
+      [
+        "00df00",
+        1332
+      ],
+      [
+        "dedf00",
+        504
+      ],
+      [
+        "dedfde",
+        288
+      ],
+      [
+        "de0000",
+        42
+      ]
+    ],
+    "png": "D:\\Codex\\svflex537\\original618\\panel_preview\\spectrum_base.png"
+  },
+  {
+    "mode": "hd",
+    "source": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_feature_board_hd198\\spectrum_panel_rgb888.mem",
+    "sha256": "64ef946e68e0340fc3f4be1a308e9d6afb35a24ebe1edaa71038fb0054b60f33",
+    "pixels": 35712,
+    "colored_spectrum_pixels": 4752,
+    "nonblack_pixels": 6668,
+    "unique_colors": 7,
+    "top_colors": [
+      [
+        "000000",
+        29044
+      ],
+      [
+        "00a2de",
+        3060
+      ],
+      [
+        "6b6d6b",
+        1628
+      ],
+      [
+        "00df00",
+        1140
+      ],
+      [
+        "dedf00",
+        510
+      ],
+      [
+        "dedfde",
+        288
+      ],
+      [
+        "de0000",
+        42
+      ]
+    ],
+    "png": "D:\\Codex\\svflex537\\original618\\panel_preview\\spectrum_hd.png"
+  }
+]

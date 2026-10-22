@@ -1,0 +1,16 @@
+{
+  "suite": "ingress_credit",
+  "results": [
+    {
+      "top": "tb_v3_ingress_credit",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 6144,
+      "elapsed_s": 9.422
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

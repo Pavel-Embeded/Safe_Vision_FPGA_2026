@@ -1,0 +1,16 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_control_longpress55/xsim_script.tcl
+# xsim {tb_v3_control_longpress55} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] full frozen control contract,8chords/next long-holds/menu exits,emergency,warm reset,free playback timer;each public edge exact
+[TB] tb_v3_control_longpress55 done errors=0 comparisons=5104
+$finish called at time : 51150 ns : File "D:/Codex/svfeatures396/source/safevision/verification/unit/tb_v3_control_longpress55.sv" Line 63
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:19:03 2026...

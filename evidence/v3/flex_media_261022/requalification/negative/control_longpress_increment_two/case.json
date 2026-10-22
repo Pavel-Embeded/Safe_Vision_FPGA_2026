@@ -1,0 +1,23 @@
+{
+  "mutation": "control_longpress_increment_two",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "control_longpress55",
+  "top": "tb_v3_control_longpress55",
+  "patch": [
+    {
+      "before": "next_n_hold=n_hold+1'b1",
+      "after": "next_n_hold=n_hold+2'd2"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\control_longpress_increment_two",
+  "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "mutated_sha256": "1efa22bbb254154c6838d2bbb2015e824c36aaaf0344e36c06e7b6ccc7f76cc4",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    400
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\control_longpress_increment_two\\sim\\tb_v3_control_longpress55"
+}

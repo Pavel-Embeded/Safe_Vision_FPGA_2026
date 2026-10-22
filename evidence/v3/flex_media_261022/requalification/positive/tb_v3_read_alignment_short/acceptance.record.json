@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_read_alignment_short",
+  "top": "tb_v3_read_alignment_short",
+  "suite": "read_alignment",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_read_alignment_short",
+    "suite": "read_alignment",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_read_alignment_short",
+    "suite": "read_alignment",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_read_alignment_short",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_read_alignment_short",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_read_alignment_short",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 23,
+      "elapsed_s": 7.672,
+      "suite": "read_alignment",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_read_alignment_short\\sim\\tb_v3_read_alignment_short"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_read_alignment_short",
+      "suite": "read_alignment",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/read_alignment_sim.json",
+      "current_manifest_sha256": "878bf89b52475b60723a61d09c1cfc7b04972220f37610eed1c8faec56c2277d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0
+    ],
+    "log_sha256": "ef2647e4939900a0f655bbae95c9e265afc4c96debbc16d7e48f8fbc999e726e",
+    "metadata_sha256": "ca0643b62904c67095dc5464a376465509c7409ef84d4b2dd21ec8b763075ff4",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_read_alignment_short\\result.json",
+      "sha256": "ca0643b62904c67095dc5464a376465509c7409ef84d4b2dd21ec8b763075ff4"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_read_alignment_short\\sim.log",
+      "sha256": "ef2647e4939900a0f655bbae95c9e265afc4c96debbc16d7e48f8fbc999e726e"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_read_alignment_short\\sources.sha256.json",
+      "sha256": "eeff8676294a096cad3f0bbfa75e793c10912258c497ab7a7afed04038a085c3"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_read_alignment_short\\original.producer.metadata.json",
+      "sha256": "ca0643b62904c67095dc5464a376465509c7409ef84d4b2dd21ec8b763075ff4"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_read_alignment_short\\producer.provenance.json",
+      "sha256": "697e334893abd0ebd42d942860543bbd66283703b7be7759135b356afc7a2e10"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_read_alignment_short\\sources.prj",
+      "sha256": "3a43a6d01197da1b5345e55aed1a9a5d0bfcea453e66614cf8d057edb93c890b"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

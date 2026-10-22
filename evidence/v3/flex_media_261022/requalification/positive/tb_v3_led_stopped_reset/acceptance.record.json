@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_led_stopped_reset",
+  "top": "tb_v3_led_stopped_reset",
+  "suite": "led_publication",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_led_stopped_reset",
+    "suite": "led_publication",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_led_stopped_reset",
+    "suite": "led_publication",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_led_stopped_reset",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_led_stopped_reset",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_led_stopped_reset",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 215,
+      "elapsed_s": 7.015,
+      "suite": "led_publication",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_led_stopped_reset\\sim\\tb_v3_led_stopped_reset"
+    },
+    "input_count": 14,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_led_stopped_reset",
+      "suite": "led_publication",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/led_publication_sim.json",
+      "current_manifest_sha256": "e956995cbb14ee2ca268e8a632fe8abf7333ea43d91a671aece5c32cfe3e6c96",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "9a8a258626de6cd0092fb7f6990c14c1d94cf269d7f68f4b4d86d1e11b272c8f",
+    "metadata_sha256": "562b31c1b0e6ce0c245bdb85cfbb05683f2768b35e3798350b85a56ea9f2f228",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_led_stopped_reset\\result.json",
+      "sha256": "562b31c1b0e6ce0c245bdb85cfbb05683f2768b35e3798350b85a56ea9f2f228"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_led_stopped_reset\\sim.log",
+      "sha256": "9a8a258626de6cd0092fb7f6990c14c1d94cf269d7f68f4b4d86d1e11b272c8f"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_led_stopped_reset\\sources.sha256.json",
+      "sha256": "18ec9e5fb2ae086a77db7f99e548ea1101fa80b918c076dc930883ff64d3cf11"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_led_stopped_reset\\original.producer.metadata.json",
+      "sha256": "562b31c1b0e6ce0c245bdb85cfbb05683f2768b35e3798350b85a56ea9f2f228"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_led_stopped_reset\\producer.provenance.json",
+      "sha256": "03aab9dd7a64fdf4358ae0b67822c48eb6a395deb1debdd7b26dd6cfc069aee4"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_led_stopped_reset\\sources.prj",
+      "sha256": "a7007b2cf6ecf12470b979be42b7ffdb255eedb54269d3d4006631a167a3d026"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

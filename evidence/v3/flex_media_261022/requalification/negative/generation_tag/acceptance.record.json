@@ -1,0 +1,129 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "generation_tag",
+  "top": "tb_v3_audio_negative_generation",
+  "suite": "audio_negative",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "generation_tag",
+    "target": "safevision/rtl/audio/v3_pcm_ring.v",
+    "suite": "audio_negative",
+    "top": "tb_v3_audio_negative_generation",
+    "patch": [
+      {
+        "before": "      if(reading&&rvalid)begin out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+        "after": "      if(reading&&rvalid)begin out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+      },
+      {
+        "before": "      out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+        "after": "      out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "generation_tag",
+    "target": "safevision/rtl/audio/v3_pcm_ring.v",
+    "suite": "audio_negative",
+    "top": "tb_v3_audio_negative_generation",
+    "patch": [
+      {
+        "before": "      if(reading&&rvalid)begin out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+        "after": "      if(reading&&rvalid)begin out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+      },
+      {
+        "before": "      out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+        "after": "      out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+      }
+    ],
+    "required_marker": "[FAIL AUDIO_GENERATION]"
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\generation_tag",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\generation_tag\\sim\\tb_v3_audio_negative_generation",
+  "checked": {
+    "metadata": {
+      "mutation": "generation_tag",
+      "target": "safevision/rtl/audio/v3_pcm_ring.v",
+      "suite": "audio_negative",
+      "top": "tb_v3_audio_negative_generation",
+      "patch": [
+        {
+          "before": "      if(reading&&rvalid)begin out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+          "after": "      if(reading&&rvalid)begin out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+        },
+        {
+          "before": "      out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+          "after": "      out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+        }
+      ],
+      "required_marker": "[FAIL AUDIO_GENERATION]",
+      "original_sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8",
+      "mutated_sha256": "d87ff16953cdd783ddbd3cb32c1d9c62da1fb1083342e7cf28b292be919c93ae",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        540
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\generation_tag\\sim\\tb_v3_audio_negative_generation",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\generation_tag\\sim\\tb_v3_audio_negative_generation"
+    },
+    "input_count": 40,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_audio_negative_generation",
+      "suite": "audio_negative",
+      "ordered_analyzed_HDL": 28,
+      "manifest": "safevision/build/manifests/audio_negative_sim.json",
+      "current_manifest_sha256": "f38cf2e03d2a863c9b23e3e9b2025c637733c55d961b86535a88eb12d271e440",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      540
+    ],
+    "log_sha256": "f75068c193cdbe9146cab148a180afbadc5fdb921842fa6d61e6213b23c3f594",
+    "metadata_sha256": "7499c8030405cf2bda1996bc806580ef7b755bd5b57e918b9b42d1abadcaf3f6",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\generation_tag\\case.json",
+      "sha256": "7499c8030405cf2bda1996bc806580ef7b755bd5b57e918b9b42d1abadcaf3f6"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\generation_tag\\sim.log",
+      "sha256": "f75068c193cdbe9146cab148a180afbadc5fdb921842fa6d61e6213b23c3f594"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\generation_tag\\sources.sha256.json",
+      "sha256": "cb2c4df536729ff025a8a1cbef56acac39434ce83526adbfbb830187d4ce3ac5"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\generation_tag\\original.producer.metadata.json",
+      "sha256": "7499c8030405cf2bda1996bc806580ef7b755bd5b57e918b9b42d1abadcaf3f6"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\generation_tag\\producer.provenance.json",
+      "sha256": "5e95aad225bc879dd783567ba425af3264032708380c9d1541cf85ebb05af29a"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\generation_tag\\sources.prj",
+      "sha256": "7ade4addf626d46fa016ffb8bee4588dc630b87f39235e42b4f62ede25db72a4"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\generation_tag\\mutant.v",
+      "sha256": "d87ff16953cdd783ddbd3cb32c1d9c62da1fb1083342e7cf28b292be919c93ae"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "walker_upper_bound_offbyone",
+  "top": "tb_v3_walker_loop_equivalence",
+  "suite": "walker_loop_equivalence",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "walker_upper_bound_offbyone",
+    "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+    "suite": "walker_loop_equivalence",
+    "top": "tb_v3_walker_loop_equivalence",
+    "patch": [
+      {
+        "before": "nxt_limit=total_clus+32'd1;",
+        "after": "nxt_limit=total_clus+32'd2;"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "walker_upper_bound_offbyone",
+    "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+    "suite": "walker_loop_equivalence",
+    "top": "tb_v3_walker_loop_equivalence",
+    "patch": [
+      {
+        "before": "nxt_limit=total_clus+32'd1;",
+        "after": "nxt_limit=total_clus+32'd2;"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\walker_upper_bound_offbyone",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\walker_upper_bound_offbyone\\sim\\tb_v3_walker_loop_equivalence",
+  "checked": {
+    "metadata": {
+      "mutation": "walker_upper_bound_offbyone",
+      "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+      "suite": "walker_loop_equivalence",
+      "top": "tb_v3_walker_loop_equivalence",
+      "patch": [
+        {
+          "before": "nxt_limit=total_clus+32'd1;",
+          "after": "nxt_limit=total_clus+32'd2;"
+        }
+      ],
+      "original_sha256": "023d744b37004f6673e85cd750202e408c5567f04be5b7d186ad5c473f7049e2",
+      "mutated_sha256": "95c1851b31d988bcdc64f3a8907dda8134ba3ad9cd3933d7a5f1c5556a6826b6",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        12416
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\walker_upper_bound_offbyone\\sim\\tb_v3_walker_loop_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\walker_upper_bound_offbyone\\sim\\tb_v3_walker_loop_equivalence"
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_walker_loop_equivalence",
+      "suite": "walker_loop_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/walker_loop_equivalence_sim.json",
+      "current_manifest_sha256": "ead9c16d665ff8ad1e8721891048d7522e7a81e1dbe00170d3291d6abaa9c1c7",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      12416
+    ],
+    "log_sha256": "1220e55eee9a6c979f8c5fe9e66e73b269bac97c9379037b62ee33bd24e8c711",
+    "metadata_sha256": "a14251771ea3bf5d6ddf5e82cd091ba92ed92cf2fc5ad6ee17bb24ab104251ff",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\walker_upper_bound_offbyone\\case.json",
+      "sha256": "a14251771ea3bf5d6ddf5e82cd091ba92ed92cf2fc5ad6ee17bb24ab104251ff"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\walker_upper_bound_offbyone\\sim.log",
+      "sha256": "1220e55eee9a6c979f8c5fe9e66e73b269bac97c9379037b62ee33bd24e8c711"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\walker_upper_bound_offbyone\\sources.sha256.json",
+      "sha256": "28d704a64d5ac867c47aa816b664eaf1722193cf547041b996bb987ae78af0ab"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\walker_upper_bound_offbyone\\original.producer.metadata.json",
+      "sha256": "a14251771ea3bf5d6ddf5e82cd091ba92ed92cf2fc5ad6ee17bb24ab104251ff"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\walker_upper_bound_offbyone\\producer.provenance.json",
+      "sha256": "f7e30ce744240a1d498e5e09f63036224930381a0e8a45e3230b8c85d5b20704"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\walker_upper_bound_offbyone\\sources.prj",
+      "sha256": "765320da18e04ec6f46b31f38af5289bfd1047ee342d9a38688c14b6fcf016b9"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\walker_upper_bound_offbyone\\mutant.v",
+      "sha256": "95c1851b31d988bcdc64f3a8907dda8134ba3ad9cd3933d7a5f1c5556a6826b6"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

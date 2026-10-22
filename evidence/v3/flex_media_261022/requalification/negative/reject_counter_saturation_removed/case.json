@@ -1,0 +1,25 @@
+{
+  "mutation": "reject_counter_saturation_removed",
+  "target": "safevision/rtl/control/v3_command_parser_catalog.v",
+  "suite": "rejected_counter_boundary",
+  "top": "tb_v3_rejected_counter_boundary",
+  "patch": [
+    {
+      "before": "assign rejected=rejected_sum[32]?32'hffffffff:rejected_sum[31:0];",
+      "after": "assign rejected=rejected_sum[31:0];"
+    }
+  ],
+  "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\handbook_26101801\\function_01\\negative\\reject_counter_saturation_removed",
+  "original_sha256": "9e95426b4a63e9ae649e88e9adf35f646d389f44d3493add364f40dab9c82f86",
+  "mutated_sha256": "b1baa8c0ff98e979112a146120360cb0a893223e1b42616ed9a2a2febd828407",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "detected": true,
+  "normal_completion": true,
+  "error_counts": [
+    49
+  ],
+  "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/reject_counter_saturation_removed",
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\reject_counter_saturation_removed",
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\reject_counter_saturation_removed"
+}

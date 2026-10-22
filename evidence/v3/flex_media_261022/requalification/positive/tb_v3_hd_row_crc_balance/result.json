@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_hd_row_crc_balance",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 1000068,
+  "elapsed_s": 18.109,
+  "suite": "hd_row_crc",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq268\\p\\tb_v3_hd_row_crc_balance\\sim\\tb_v3_hd_row_crc_balance"
+}

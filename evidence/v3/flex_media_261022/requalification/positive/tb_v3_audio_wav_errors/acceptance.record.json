@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_audio_wav_errors",
+  "top": "tb_v3_audio_wav_errors",
+  "suite": "audio_complete",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_audio_wav_errors",
+    "suite": "audio_complete",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_audio_wav_errors",
+    "suite": "audio_complete",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_wav_errors",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_audio_wav_errors\\sim\\tb_v3_audio_wav_errors",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_audio_wav_errors",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 300,
+      "elapsed_s": 8.156,
+      "suite": "audio_complete",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_audio_wav_errors\\sim\\tb_v3_audio_wav_errors"
+    },
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_audio_wav_errors",
+      "suite": "audio_complete",
+      "ordered_analyzed_HDL": 29,
+      "manifest": "safevision/build/manifests/audio_complete_sim.json",
+      "current_manifest_sha256": "638e175768c16eaf39da482e3c314033db2a022a5885e58ea57aab3dfc4edb9f",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "d81d98d9ca19906d84e1081221df6ac526eb3ccf0ab18626bd8018ea44a9aa5e",
+    "metadata_sha256": "a499d203690253963c0bd60e6dcde0d8c48d728549f5a099a6fd8615502b8382",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_wav_errors\\result.json",
+      "sha256": "a499d203690253963c0bd60e6dcde0d8c48d728549f5a099a6fd8615502b8382"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_wav_errors\\sim.log",
+      "sha256": "d81d98d9ca19906d84e1081221df6ac526eb3ccf0ab18626bd8018ea44a9aa5e"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_wav_errors\\sources.sha256.json",
+      "sha256": "303b09964955624c76a398dc783f8072d170d5e51a8152d0b1f6daf6f0711ff3"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_wav_errors\\original.producer.metadata.json",
+      "sha256": "a499d203690253963c0bd60e6dcde0d8c48d728549f5a099a6fd8615502b8382"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_wav_errors\\producer.provenance.json",
+      "sha256": "c9585f2cbb7d01b59d5d540606d246b0d26cdedef5908888a5ba4df63ecd8d78"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_wav_errors\\sources.prj",
+      "sha256": "1654caed537fe60d351c7be05cf3c5ccb8c9c8085bcd459414e48b148b2677b4"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

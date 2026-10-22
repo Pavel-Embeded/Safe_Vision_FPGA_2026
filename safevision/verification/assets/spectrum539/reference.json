@@ -1,0 +1,27 @@
+{
+  "numpy": "2.3.5",
+  "algorithm": "Independent numpy.fft.fft of mean-removed, quantized periodic Hann input; forward normalization1/N; no RTL FFT copied",
+  "points": 512,
+  "sample_rate": 48000,
+  "cases": [
+    "silence",
+    "dc",
+    "bin1",
+    "bin2",
+    "bin3",
+    "bin5",
+    "bin11",
+    "bin23",
+    "bin47",
+    "bin93",
+    "bin167",
+    "bin223",
+    "two_tone",
+    "dc_plus_tone",
+    "quiet",
+    "volume20",
+    "noise",
+    "impulse"
+  ],
+  "component_tolerance": 12
+}

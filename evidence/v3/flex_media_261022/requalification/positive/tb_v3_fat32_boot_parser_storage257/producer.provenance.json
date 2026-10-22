@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fat32_boot_parser_storage257\\sim\\tb_v3_fat32_boot_parser_storage257",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fat32_boot_parser_storage257\\sim\\tb_v3_fat32_boot_parser_storage257\\result.json",
+  "original_metadata_sha256": "7798fa8428a68a9913925ecbb9613bf71d467446c687be7b62d63344a6e4721d",
+  "original_log_sha256": "a5c64d0582310122030b211d943b0573ac37905bf12697b01856543539d8b33d",
+  "matrix_definition": {
+    "top": "tb_v3_fat32_boot_parser_storage257",
+    "suite": "fat32_boot_parser_storage257",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

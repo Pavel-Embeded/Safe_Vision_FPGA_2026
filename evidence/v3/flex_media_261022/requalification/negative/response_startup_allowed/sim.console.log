@@ -1,0 +1,20 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_pixel_response_tracker/xsim_script.tcl
+# xsim {tb_v3_pixel_response_tracker} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] only the intended request target can respond
+[FAIL] exactly one matching response toggle
+[FAIL] exactly one matching response toggle
+[FAIL] exactly one matching response toggle
+[FAIL] only the intended request target can respond
+[TB] tb_v3_pixel_response_tracker done errors=5 comparisons=10304 events=687
+$finish called at time : 51550 ns : File "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_pixel_response_tracker.sv" Line 44
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 18 08:11:55 2026...

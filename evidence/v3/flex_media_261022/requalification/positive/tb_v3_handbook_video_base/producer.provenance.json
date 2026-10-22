@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "603_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original603\\positive\\tb_v3_handbook_video_base\\sim\\tb_v3_handbook_video_base",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original603\\positive\\tb_v3_handbook_video_base\\sim\\tb_v3_handbook_video_base\\result.json",
+  "original_metadata_sha256": "c14677aaf2fee4137ea4a0f275d2821ff94a7f4088bea8e85acf1856af53b5bc",
+  "original_log_sha256": "9ee25e1eff19ddd64030fff051f757b0f3d430486316401a0a4669f00208b6ab",
+  "matrix_definition": {
+    "top": "tb_v3_handbook_video_base",
+    "suite": "handbook_video",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

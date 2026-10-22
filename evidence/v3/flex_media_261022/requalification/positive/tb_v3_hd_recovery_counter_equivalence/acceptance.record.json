@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_hd_recovery_counter_equivalence",
+  "top": "tb_v3_hd_recovery_counter_equivalence",
+  "suite": "hd_recovery_counter",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "abi592_counter",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_hd_recovery_counter_equivalence",
+    "suite": "hd_recovery_counter",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_hd_recovery_counter_equivalence",
+    "suite": "hd_recovery_counter",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_recovery_counter_equivalence",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\progress561_abi592\\legacy_hd\\tb_v3_hd_recovery_counter_equivalence",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_recovery_counter_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 1907934,
+      "elapsed_s": 14.687,
+      "suite": "hd_recovery_counter",
+      "legacy": false,
+      "accepted_native_runner": true
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_recovery_counter_equivalence",
+      "suite": "hd_recovery_counter",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_recovery_counter_sim.json",
+      "current_manifest_sha256": "b972f7a49e209a22af7e1c98e37e3ceaf74c320e662079f00e74200efd23a9e8",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "aa876b9d194729e095a141a072652ad60bfa246859c1cf300b7566a83ad1549c",
+    "metadata_sha256": "f816af21989fdce48870cd3a634ad398a1f249fd44b773a8529ba5278e394cdb",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_recovery_counter_equivalence\\result.json",
+      "sha256": "f816af21989fdce48870cd3a634ad398a1f249fd44b773a8529ba5278e394cdb"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_recovery_counter_equivalence\\sim.log",
+      "sha256": "aa876b9d194729e095a141a072652ad60bfa246859c1cf300b7566a83ad1549c"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_recovery_counter_equivalence\\sources.sha256.json",
+      "sha256": "f20a0bcc372d503e37a98f07173e49b2e79404ed360665f123e4aa50c285866d"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_recovery_counter_equivalence\\original.producer.metadata.json",
+      "sha256": "071876677bb0e6af586bdea45cc0cb210b2df097092dc35e042db7ef19f1a696"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_recovery_counter_equivalence\\producer.provenance.json",
+      "sha256": "31066b8785c657db83c49f725460abd50afc1b347812eaf85d4acfd5a3ecf453"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_recovery_counter_equivalence\\sources.prj",
+      "sha256": "3351fef9a75a5ccbe780dfb3ea01ccae76863b271bd383564aadb17b89c6dba1"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

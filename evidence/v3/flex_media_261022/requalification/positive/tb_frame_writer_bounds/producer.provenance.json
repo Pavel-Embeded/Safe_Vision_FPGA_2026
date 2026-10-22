@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_frame_writer_bounds\\sim\\tb_frame_writer_bounds",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\positive\\tb_frame_writer_bounds\\sim\\tb_frame_writer_bounds\\result.json",
+  "original_metadata_sha256": "441127aaa00a754493b85767b0e35afc10302f070633ee4a063aef6ef07e444d",
+  "original_log_sha256": "47dc8a2863d5859b3242362a0355a244276d60cac74dec5eda2aadcc97e0861f",
+  "matrix_definition": {
+    "top": "tb_frame_writer_bounds",
+    "suite": "legacy_b_fourbeat",
+    "legacy": true
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

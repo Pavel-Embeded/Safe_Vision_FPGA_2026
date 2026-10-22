@@ -1,0 +1,23 @@
+{
+  "mutation": "prefetch_high_carry_wrong",
+  "target": "safevision/rtl/hd/sdram_app_adapter.v",
+  "suite": "prefetch_prefix_hd382",
+  "top": "tb_v3_prefetch_prefix_hd382",
+  "patch": [
+    {
+      "before": "prefetch_sum[21]?rfbase_high_ones:rfbase_high_zero",
+      "after": "prefetch_sum[21]?rfbase_high_zero:rfbase_high_ones"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\prefetch_high_carry_wrong",
+  "original_sha256": "5a14d685f24dd91b37a6ca39716cd808b9d92420655bb8cb010c558b462e8f10",
+  "mutated_sha256": "71fb35b208726d33196aa7e452afcf11dbb68fe96567e35209596c45e00df179",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    735
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\prefetch_high_carry_wrong\\sim\\tb_v3_prefetch_prefix_hd382"
+}

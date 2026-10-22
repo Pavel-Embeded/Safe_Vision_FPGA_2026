@@ -30,7 +30,9 @@
     "safevision/rtl/storage/v3_cluster_walker_ctx.v",
     "safevision/rtl/storage/v3_shared_fs_service.v",
     "safevision/verification/models/v3_player_owner_reference.sv",
-    "safevision/rtl/media/v3_bmp_normalizer.v"
+    "safevision/rtl/media/v3_bmp_normalizer.v",
+    "safevision/rtl/storage/v3_fat_name_store.v",
+    "safevision/rtl/storage/v3_flexible_media_index.v"
   ],
   "tops": [
     "tb_v3_service_owner_equivalence"

@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203\\case.json",
+  "original_metadata_sha256": "81e0c21a158fd3efd10d4dc6288d1b692d14790a96d31b63cde67255a5e5d411",
+  "original_log_sha256": "a87e1c3b8f16f2bff4af345c37a5f02a620fa094e244b769103e0908150b1b9b",
+  "matrix_definition": {
+    "mutation": "normalizer_red_blue_swapped",
+    "target": "safevision/rtl/media/v3_bmp_normalizer.v",
+    "suite": "normalizer_miter203",
+    "top": "tb_v3_normalizer_miter203",
+    "patch": [
+      {
+        "before": "captured<={din[7:3],green[7:2],blue[7:3]};",
+        "after": "captured<={blue[7:3],green[7:2],din[7:3]};"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

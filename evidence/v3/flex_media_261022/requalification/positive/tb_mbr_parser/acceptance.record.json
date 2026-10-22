@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_mbr_parser",
+  "top": "tb_mbr_parser",
+  "suite": "legacy_b_fourbeat",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_mbr_parser",
+    "suite": "legacy_b_fourbeat",
+    "legacy": true
+  },
+  "effective_definition": {
+    "top": "tb_mbr_parser",
+    "suite": "legacy_b_fourbeat",
+    "legacy": true
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_mbr_parser",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_mbr_parser\\sim\\tb_mbr_parser",
+  "checked": {
+    "metadata": {
+      "top": "tb_mbr_parser",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 7,
+      "elapsed_s": 8.859,
+      "suite": "legacy_b_fourbeat",
+      "legacy": true,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_mbr_parser\\sim\\tb_mbr_parser"
+    },
+    "input_count": 83,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_mbr_parser",
+      "suite": "legacy_b_fourbeat",
+      "ordered_analyzed_HDL": 75,
+      "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+      "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "df5fa5c59f83e4f8571f72f21da5ad58bd951e7932dfb910e7f3c079cf085e66",
+    "metadata_sha256": "cfa60b2e36ebcdc2140a0e1ac649f9986af071af728651e122be2cd69bf90671",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_mbr_parser\\result.json",
+      "sha256": "cfa60b2e36ebcdc2140a0e1ac649f9986af071af728651e122be2cd69bf90671"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_mbr_parser\\sim.log",
+      "sha256": "df5fa5c59f83e4f8571f72f21da5ad58bd951e7932dfb910e7f3c079cf085e66"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_mbr_parser\\sources.sha256.json",
+      "sha256": "c4eebbdb3dd1cb877d4105b142a021f1a018a263d497652c958ec102128aa3d6"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_mbr_parser\\original.producer.metadata.json",
+      "sha256": "cfa60b2e36ebcdc2140a0e1ac649f9986af071af728651e122be2cd69bf90671"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_mbr_parser\\producer.provenance.json",
+      "sha256": "2ba96451a5d809b0bc04c857c5b5fc50519cff7f971a60e90d4b68d5004675d8"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_mbr_parser\\sources.prj",
+      "sha256": "080ea66044d9a85cd693945d6bd9327ede4d6aacd24f27c23752559bb297b97a"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

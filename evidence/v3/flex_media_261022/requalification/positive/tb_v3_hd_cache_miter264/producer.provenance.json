@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_hd_cache_miter264",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_hd_cache_miter264\\result.json",
+  "original_metadata_sha256": "f50b84f35f4ca528fa05165c2a4523dfc6f21056f1d5a2420cc2562757bb564c",
+  "original_log_sha256": "469eed703634cab12353c62962ab24ad955b3e6afbf2614e9bfbeb3dfec2cd75",
+  "matrix_definition": {
+    "top": "tb_v3_hd_cache_miter264",
+    "suite": "hd_cache_miter264",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

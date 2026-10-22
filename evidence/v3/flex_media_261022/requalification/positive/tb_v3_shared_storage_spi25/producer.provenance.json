@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "610_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original610\\positive\\tb_v3_shared_storage_spi25\\sim\\tb_v3_shared_storage_spi25",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original610\\positive\\tb_v3_shared_storage_spi25\\sim\\tb_v3_shared_storage_spi25\\result.json",
+  "original_metadata_sha256": "f47f7685e31b50c34ed962174e1d8d9f7e860f5435cd162c7f31a70d7b1c12df",
+  "original_log_sha256": "e008d39f12b7205e30238072494b8307f08ff2b8aebeaf03fe069c3c11e3f98d",
+  "matrix_definition": {
+    "top": "tb_v3_shared_storage_spi25",
+    "suite": "shared_storage_spi25",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

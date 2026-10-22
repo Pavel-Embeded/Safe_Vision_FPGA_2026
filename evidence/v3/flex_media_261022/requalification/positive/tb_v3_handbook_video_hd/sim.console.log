@@ -1,0 +1,48 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_handbook_video_hd/xsim_script.tcl
+# xsim {tb_v3_handbook_video_hd} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+INFO full-video HD=1 t=         50000000000 generation=1 target=1 busy=0
+[PASS] full raster HD=1 mode=0 slot=0 bilinear=0 pixels=921600 words=152960
+INFO full-video HD=1 t=        100000000000 generation=1 target=1 busy=0
+[PASS] full raster HD=1 mode=0 slot=0 bilinear=1 pixels=921600 words=152960
+INFO full-video HD=1 t=        150000000000 generation=1 target=1 busy=0
+[PASS] full raster HD=1 mode=0 slot=0 bilinear=0 pixels=921600 words=152960
+[PASS] full raster HD=1 mode=0 slot=0 bilinear=1 pixels=921600 words=152960
+INFO full-video HD=1 t=        200000000000 generation=1 target=1 busy=0
+[PASS] full raster HD=1 mode=0 slot=0 bilinear=0 pixels=921600 words=76480
+INFO full-video HD=1 t=        250000000000 generation=1 target=1 busy=0
+[PASS] full raster HD=1 mode=0 slot=0 bilinear=1 pixels=921600 words=76480
+[PASS] full raster HD=1 mode=0 slot=0 bilinear=0 pixels=921600 words=38080
+INFO full-video HD=1 t=        300000000000 generation=1 target=1 busy=0
+[PASS] full raster HD=1 mode=0 slot=0 bilinear=1 pixels=921600 words=38080
+INFO full-video HD=1 t=        350000000000 generation=1 target=1 busy=1
+INFO full-video HD=1 t=        400000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        450000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        500000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        550000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        600000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        650000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        700000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        750000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        800000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        850000000000 generation=1 target=2 busy=1
+INFO full-video HD=1 t=        900000000000 generation=2 target=2 busy=0
+[PASS] full raster HD=1 mode=0 slot=1 bilinear=1 pixels=921600 words=152960
+[PASS] full raster HD=1 mode=1 slot=0 bilinear=0 pixels=921600 words=152960
+INFO full-video HD=1 t=        950000000000 generation=2 target=2 busy=0
+[PASS] full raster HD=1 mode=1 slot=0 bilinear=0 pixels=921600 words=0
+[PASS] full raster HD=1 mode=1 slot=0 bilinear=0 pixels=921600 words=0
+[PASS] all geometries, exact pixels, color bounds, real HUD, frame atomicity, first response and CRC/SAFE continuity
+[TB] tb_v3_handbook_video_hd done frames=12 comparisons=11059200 errors=0
+$finish called at time : 999327727944 ps : File "D:/Codex/svflex537/candidate609/safevision/verification/unit/tb_v3_handbook_video.sv" Line 314
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:33:32 . Memory (MB): peak = 219.453 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 16:55:18 2026...

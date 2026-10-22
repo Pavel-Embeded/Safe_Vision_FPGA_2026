@@ -35,16 +35,29 @@ def audit(root,manifest,repository,inspect_incomplete=False):
  expected_positive=290 if alias_extension else 288
  expected_negative=205 if alias_extension else 202
  expected_records=291 if alias_extension else 289
+ expected_physical=198
+ flexible_extension=index.get('flexible_media_extension_schema')==1
+ if flexible_extension:
+  assert alias_extension,'FLEX retains the original alias qualification'
+  from audit_v3_flexible_media537 import requirements as flexible_requirements
+  extension=flexible_requirements(root,index,matrix)
+  expected_positive=extension['expected_positive'];expected_negative=extension['expected_negative']
+  expected_records=extension['expected_records'];expected_physical=extension['expected_physical']
  assert len(matrix['positive'])==expected_positive and len(matrix['negative'])==expected_negative and matrix['positive_records_including_aliases']==expected_records
  assert len({r['top']for r in matrix['positive']})==expected_positive and len({r['mutation']for r in matrix['negative']})==expected_negative
  if alias_extension:
   assert {'tb_v3_directory_alias510','tb_v3_actual_directory510'}<=set(r['top']for r in matrix['positive'])
   assert {'media_alias_reject_three_digits','media_alias_retain_previous_high_nibble','media_alias_wrong_digit_order'}<=set(r['mutation']for r in matrix['negative'])
- hardware=snapshot(root);assert hardware==matrix['physical_source_sha256']and len(hardware)==198
+ hardware=snapshot(root);assert hardware==matrix['physical_source_sha256']and len(hardware)==expected_physical
  # Native identity hashes preserve actual bytes; Git additionally applies its
  # recorded text filters. Use the same explicit blob binding as the native
  # driver instead of mistaking a declared CRLF checkout for a source change.
  binding=source_commit_binding(root,repository,matrix['source_build_commit'],hardware);assert binding['verified'],binding['errors']
+ legacy_ports=None
+ if flexible_extension:
+  from check_v3_legacy_ports537 import check as ordered_port_check
+  legacy_ports=ordered_port_check(root,repository)
+  assert legacy_ports['accepted']
  committed=git_bytes(repository,matrix['source_build_commit'],matrix['frozen_reference_sha256'])
  protected={matrix_path.relative_to(root).as_posix():sha(matrix_path),within(root,manifest).relative_to(root).as_posix():sha(within(root,manifest))}
  for n,h in matrix['frozen_reference_sha256'].items():
@@ -81,10 +94,11 @@ def audit(root,manifest,repository,inspect_incomplete=False):
   row=actual[name];folder=within(root,row['evidence']);case=read(folder/'case.json');assert all(case[k]==wanted[k]for k in ('mutation','target','suite','top','patch'))
   exits=[case[k]for k in ('process_exit','return_code')if k in case]
   assert case['detected']and case['normal_completion']and exits and all(code==1 for code in exits),(name,'missing or inconsistent captured runner exit')
-  original=within(root,case['target']).read_bytes();assert hashlib.sha256(original).hexdigest()==case['original_sha256'];mutated=original.decode('utf-8-sig')
+  original=within(root,case['target']).read_bytes();assert hashlib.sha256(original).hexdigest()==case['original_sha256'];mutated=within(root,case['target']).read_text(encoding='utf-8-sig')
   for patch in case['patch']:
    assert mutated.count(patch['before'])==patch.get('occurrences',1),(name,'semantic patch occurrence mismatch');mutated=mutated.replace(patch['before'],patch['after'])
-  assert mutated.encode()==within(folder,case['mutant_file']).read_bytes(),(name,'mutant differs from declared semantic patch')
+  assert mutated==within(folder,case['mutant_file']).read_text(encoding='utf-8-sig'),(name,'mutant differs from declared semantic patch')
+  assert sha(within(folder,case['mutant_file']))==case['mutated_sha256'],(name,'compiled mutant bytes changed')
   count=sources(root,folder,case);g=graph(root,folder,dict(top=case['top'],suite=case['suite']),case)
   log=(folder/'sim.log').read_text(errors='replace');values=[int(n)for n in re.findall(r'errors\s*=\s*(\d+)',log)]
   assert '$finish called'in log and '[FAIL'in log and re.search(r'PASS\s+'+re.escape(case['top'])+r'\b|\[TB\]\s*'+re.escape(case['top'])+r'\s+done',log)
@@ -173,9 +187,21 @@ def audit(root,manifest,repository,inspect_incomplete=False):
   audit_media_alias(root)
   for p in(root/'evidence/v3/multires_alias_261022').rglob('*'):
    if p.is_file():protected[p.relative_to(root).as_posix()]=sha(p)
+ if flexible_extension:
+  from audit_v3_flexible_media537 import audit as flexible_audit
+  flexible=flexible_audit(root,index,matrix)
+  assert flexible['accepted']and not flexible['release_ready']
+  protected.update(flexible['proof_sha256'])
+ from audit_v3_compact_ingress616 import audit as compact_ingress_audit
+ compact_ingress=compact_ingress_audit(root,index,repository)
+ assert compact_ingress['accepted']and not compact_ingress['release_ready']
+ protected.update(compact_ingress['proof_sha256'])
  for p in(root/'safevision/tools').rglob('*.py'):protected[p.relative_to(root).as_posix()]=sha(p)
  gui=[check_gui(root,m)for m in ('base','hd')]
- result=dict(accepted=bool(index['complete']and not missing_positive),profile=index['profile'],source_build_commit=matrix['source_build_commit'],required_positive_records_including_aliases=expected_records,positive_unique_tops=len(records),missing_positive=missing_positive,strict_normal_ending_mutants=expected_negative,physical_inputs=198,positive=records,negative=faults,source_sha256=hardware,proof_sha256=protected,gui_cli=gui,current_serial_division_proof=True,routed_sta_passed=False,bitstreams_verified=False,hardware_verified=False,release_ready=False)
+ result=dict(accepted=bool(index['complete']and not missing_positive),profile=index['profile'],source_build_commit=matrix['source_build_commit'],required_positive_records_including_aliases=expected_records,positive_unique_tops=len(records),missing_positive=missing_positive,strict_normal_ending_mutants=expected_negative,physical_inputs=expected_physical,positive=records,negative=faults,source_sha256=hardware,proof_sha256=protected,gui_cli=gui,current_serial_division_proof=True,routed_sta_passed=False,bitstreams_verified=False,hardware_verified=False,release_ready=False)
+ if flexible_extension:result['flexible_media_auxiliary']={k:v for k,v in flexible.items()if k!='proof_sha256'}
+ result['compact_ingress_auxiliary']={k:v for k,v in compact_ingress.items()if k!='proof_sha256'}
+ if legacy_ports is not None:result['legacy_ordered_ports']=legacy_ports
  return result
 
 def main():

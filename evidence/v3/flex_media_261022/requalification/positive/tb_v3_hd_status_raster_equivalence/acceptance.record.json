@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_hd_status_raster_equivalence",
+  "top": "tb_v3_hd_status_raster_equivalence",
+  "suite": "hd_status_raster",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_hd_status_raster_equivalence",
+    "suite": "hd_status_raster",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_hd_status_raster_equivalence",
+    "suite": "hd_status_raster",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_status_raster_equivalence",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_status_raster_equivalence\\sim\\tb_v3_hd_status_raster_equivalence",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_status_raster_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 10069904,
+      "elapsed_s": 331.625,
+      "suite": "hd_status_raster",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_status_raster_equivalence\\sim\\tb_v3_hd_status_raster_equivalence"
+    },
+    "input_count": 19,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_status_raster_equivalence",
+      "suite": "hd_status_raster",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/hd_status_raster_sim.json",
+      "current_manifest_sha256": "431661bff4a80753dc70214ca3c16ca356aa11bfcf654473aad7a4507255b8c4",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "5bf67ff383ed8d5a8a12d119efabc78597700b6e7c85ae3f9163da3f1335979f",
+    "metadata_sha256": "f4912b844ed0fd507225ccededf8141cebc450bc1581a7da36c89b0e191d7a67",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_status_raster_equivalence\\result.json",
+      "sha256": "f4912b844ed0fd507225ccededf8141cebc450bc1581a7da36c89b0e191d7a67"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_status_raster_equivalence\\sim.log",
+      "sha256": "5bf67ff383ed8d5a8a12d119efabc78597700b6e7c85ae3f9163da3f1335979f"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_status_raster_equivalence\\sources.sha256.json",
+      "sha256": "a83d54de266012a5b38c31b3d7e4cb115d6f6af1f9a80682e1d19abd84516769"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_status_raster_equivalence\\original.producer.metadata.json",
+      "sha256": "f4912b844ed0fd507225ccededf8141cebc450bc1581a7da36c89b0e191d7a67"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_status_raster_equivalence\\producer.provenance.json",
+      "sha256": "c80a988f006333f147d32b52b06ab3ddbcbcc5617556d273d778b40ac50ceb68"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_status_raster_equivalence\\sources.prj",
+      "sha256": "ff60177a12f8071c0194278995f7e79b2b641034740bcbfad92e4c7cca452108"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

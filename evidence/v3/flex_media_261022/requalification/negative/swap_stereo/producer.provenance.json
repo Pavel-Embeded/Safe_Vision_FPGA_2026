@@ -1,0 +1,26 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\swap_stereo\\sim\\tb_v3_audio_negative_stereo",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\swap_stereo\\sim\\tb_v3_audio_negative_stereo\\case.json",
+  "original_metadata_sha256": "e8c0c02e230a632473bbaf1f1c4b8dda19b93f535f86facd908a735f2a8b52ca",
+  "original_log_sha256": "44c00c34aca2c3ec88f47ab9274b02c0c6d732863253fd45371021bc46b4863b",
+  "matrix_definition": {
+    "mutation": "swap_stereo",
+    "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+    "suite": "audio_negative",
+    "top": "tb_v3_audio_negative_stereo",
+    "patch": [
+      {
+        "before": "assign sample=word;\n",
+        "after": "assign sample={word[15:0],word[31:16]};\n"
+      }
+    ],
+    "required_marker": "[FAIL AUDIO_STEREO]"
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

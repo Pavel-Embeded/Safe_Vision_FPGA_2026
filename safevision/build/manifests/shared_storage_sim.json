@@ -29,7 +29,9 @@
     "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
     "safevision/rtl/storage/v3_cluster_walker_ctx.v",
     "safevision/rtl/storage/v3_shared_fs_service.v",
-    "safevision/rtl/media/v3_bmp_normalizer.v"
+    "safevision/rtl/media/v3_bmp_normalizer.v",
+    "safevision/rtl/storage/v3_fat_name_store.v",
+    "safevision/rtl/storage/v3_flexible_media_index.v"
   ],
   "tops": [
     "tb_v3_shared_storage"

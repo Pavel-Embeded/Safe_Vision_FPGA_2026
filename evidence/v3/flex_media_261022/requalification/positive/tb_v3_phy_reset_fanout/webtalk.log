@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Webtalk v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Mon Oct 19 23:53:25 2026
+# Process ID: 18680
+# Current directory: D:/Codex/svq74/p/tb_v3_phy_reset_fanout/sim/tb_v3_phy_reset_fanout
+# Command line: wbtcv.exe -mode batch -source D:/Codex/svq74/p/tb_v3_phy_reset_fanout/sim/tb_v3_phy_reset_fanout/xsim.dir/tb_v3_phy_reset_fanout/webtalk/xsim_webtalk.tcl -notrace
+# Log file: D:/Codex/svq74/p/tb_v3_phy_reset_fanout/sim/tb_v3_phy_reset_fanout/webtalk.log
+# Journal file: D:/Codex/svq74/p/tb_v3_phy_reset_fanout/sim/tb_v3_phy_reset_fanout\webtalk.jou
+#-----------------------------------------------------------
+source D:/Codex/svq74/p/tb_v3_phy_reset_fanout/sim/tb_v3_phy_reset_fanout/xsim.dir/tb_v3_phy_reset_fanout/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Mon Oct 19 23:53:27 2026...

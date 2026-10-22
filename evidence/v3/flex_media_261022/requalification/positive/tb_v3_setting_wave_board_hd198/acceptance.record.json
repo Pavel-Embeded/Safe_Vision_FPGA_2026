@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_setting_wave_board_hd198",
+  "top": "tb_v3_setting_wave_board_hd198",
+  "suite": "setting_wave_board_hd198",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_setting_wave_board_hd198",
+    "suite": "setting_wave_board_hd198",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_setting_wave_board_hd198",
+    "suite": "setting_wave_board_hd198",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_setting_wave_board_hd198",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_setting_wave_board_hd198\\sim\\tb_v3_setting_wave_board_hd198",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_setting_wave_board_hd198",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 23,
+      "elapsed_s": 663.734,
+      "suite": "setting_wave_board_hd198",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_setting_wave_board_hd198\\sim\\tb_v3_setting_wave_board_hd198"
+    },
+    "input_count": 121,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_setting_wave_board_hd198",
+      "suite": "setting_wave_board_hd198",
+      "ordered_analyzed_HDL": 106,
+      "manifest": "safevision/build/manifests/setting_wave_board_hd198_sim.json",
+      "current_manifest_sha256": "121b4a6259ade9d270318757a4968cb735d6b57f8ca2497b37c2b620acf2b288",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "dc8d0d8bccf03a5b4bfc20db075364c36e7be7ab3edabdc506054958e6befa03",
+    "metadata_sha256": "5beb80d2a1f3a8eaa9086ccf24b96d97d309288bffbf84bd32347a8f1c1f708c",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_setting_wave_board_hd198\\result.json",
+      "sha256": "5beb80d2a1f3a8eaa9086ccf24b96d97d309288bffbf84bd32347a8f1c1f708c"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_setting_wave_board_hd198\\sim.log",
+      "sha256": "dc8d0d8bccf03a5b4bfc20db075364c36e7be7ab3edabdc506054958e6befa03"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_setting_wave_board_hd198\\sources.sha256.json",
+      "sha256": "411f184fe8f93658ca3aaa1ad4e3d042fe74fae3547ca36d24caa5098274da11"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_setting_wave_board_hd198\\original.producer.metadata.json",
+      "sha256": "5beb80d2a1f3a8eaa9086ccf24b96d97d309288bffbf84bd32347a8f1c1f708c"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_setting_wave_board_hd198\\producer.provenance.json",
+      "sha256": "6d4feb4bae145c55c2fec158fc3d483298986075766347e0478cbb5eb244596a"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_setting_wave_board_hd198\\sources.prj",
+      "sha256": "80b14ba7cb1aab8ad525c794ea7449508a4bdd9530a2948f2bbd15c4109c49cf"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

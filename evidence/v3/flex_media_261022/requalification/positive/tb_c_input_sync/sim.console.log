@@ -1,0 +1,32 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_c_input_sync/xsim_script.tcl
+# xsim {tb_c_input_sync} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] ÿÿšlevel=0 press=0 evt_pending=0
+[PASS] ÿÿÿŠÿÿÿæÿ¿ -> press ÿÿÿåÿÿÿ¸ÿÿÿ
+[PASS] I2b ÿÿÿæÿÿÿ level ÿÿÿåÿÿÿ¸ÿÿÿ˜
+[PASS] ÿÿÿ‡ÿÿÿ¨ÿÿÿåÿÿÿ¼ˆ=1 ÿÿÿèÿÿÿ†ÿÿÿ‰
+[PASS] ÿÿÿ”ÿÿÿ‹ÿÿÿïÿÿÿÿÿÿÿÿÿäÿÿÿ»ÿÿÿ‰
+[PASS] ÿÿÿ”Ÿ prÿÿÿïÿÿÿ¿ÿÿÿ»ÿÿÿèÿÿÿ²ÿÿÿ‰
+[PASS] I7b ÿÿÿæÿÿÿ level ÿÿÿåÿÿÿ¸ÿÿÿ
+[PASS] ÿÿÿ¼ÿÿÿ€ÿÿÿæÿÿÿ”ÿÿÿ€ÿÿÿäÿÿÿ»ÿÿÿ‰
+[PASS] I5 presÿÿÿ evt_pendinÿÿÿ”ÿÿÿ˜
+[PASS] ÿÿÿ¿ÿÿÿÿÿÿéÿÿÿªÿÿÿ‰ÿÿÿäÿÿÿ¤ÿÿÿ‰
+[PASS] I5c evt_cleaÿÿÿ¸ÿÿÿ¤ pending
+[PASS] 8 key0 -> press_any ÿÿÿåÿÿÿ¸ÿÿÿ
+[PASS] _keyÿÿÿåÿÿÿ”ÿÿÿ˜ (evt_pending=1)
+[PASS] I8c kclÿÿÿ¸ÿÿÿ¤ÿÿÿäÿÿÿ”ÿÿÿ˜
+[PASS] ÿÿÿæÿÿÿÿÿÿ® -> press_anÿÿÿÿÿÿ
+[PASS] EY0)ÿÿÿ˜ÿÿÿïÿÿÿ›ÿÿÿšÿÿÿåÿÿÿÿÿÿ‰
+[PASS] suiÿÿÿæÿÿÿ”ÿÿÿ¯
+[TB] tb_c_input_sync done, errors=0
+$finish called at time : 5026 ns : File "D:/Codex/svflex537/source/safevision/verification/unit/tb_c_input_sync.sv" Line 159
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 15:28:36 2026...

@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_priority_difference",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_priority_difference\\result.json",
+  "original_metadata_sha256": "04c11bf0b4bc35b19e330daaaaad51bd83bbae377c570820647349bfe7750ba5",
+  "original_log_sha256": "46b0a7eff3888d8d913025cc0eda20160704bdb2a0030fe7994ac32092d3f0d8",
+  "matrix_definition": {
+    "top": "tb_v3_priority_difference",
+    "suite": "c",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

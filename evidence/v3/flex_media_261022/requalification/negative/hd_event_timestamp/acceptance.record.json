@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "hd_event_timestamp",
+  "top": "tb_v3_hd_supervisor_alert_equivalence",
+  "suite": "hd_supervisor_alert",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "hd_event_timestamp",
+    "target": "safevision/rtl/hd/v3_supervisor.v",
+    "suite": "hd_supervisor_alert",
+    "top": "tb_v3_hd_supervisor_alert_equivalence",
+    "patch": [
+      {
+        "before": "stamps[stamp_i]<=(WINDOW_PIPELINE&&(stamp_i==3||stamp_i==4))?window_ms_q:ms_now;",
+        "after": "stamps[stamp_i]<=0;"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "hd_event_timestamp",
+    "target": "safevision/rtl/hd/v3_supervisor.v",
+    "suite": "hd_supervisor_alert",
+    "top": "tb_v3_hd_supervisor_alert_equivalence",
+    "patch": [
+      {
+        "before": "stamps[stamp_i]<=(WINDOW_PIPELINE&&(stamp_i==3||stamp_i==4))?window_ms_q:ms_now;",
+        "after": "stamps[stamp_i]<=0;"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_event_timestamp",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_event_timestamp\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_event_timestamp",
+      "target": "safevision/rtl/hd/v3_supervisor.v",
+      "suite": "hd_supervisor_alert",
+      "top": "tb_v3_hd_supervisor_alert_equivalence",
+      "patch": [
+        {
+          "before": "stamps[stamp_i]<=(WINDOW_PIPELINE&&(stamp_i==3||stamp_i==4))?window_ms_q:ms_now;",
+          "after": "stamps[stamp_i]<=0;"
+        }
+      ],
+      "original_sha256": "2e7e07748fe4856576e9690cf237f6a34f4a18800ba1cc498891dec53698c0bd",
+      "mutated_sha256": "2fdd14337e68fb7da6d8403a93f667c4dd10452404fc3fdbfa85f9b80c1201dc",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        188297
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_event_timestamp\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\hd_event_timestamp\\sim\\tb_v3_hd_supervisor_alert_equivalence"
+    },
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_supervisor_alert_equivalence",
+      "suite": "hd_supervisor_alert",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/hd_supervisor_alert_sim.json",
+      "current_manifest_sha256": "522a928de1ee9c7e732ebc8e8e1310687fa9cb0787e5b8a180eb77ce2c0b04dc",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      188297
+    ],
+    "log_sha256": "9d8174d14377c06ee6f3c9928ba9a329f17247d0213bc452170b53c2f081285e",
+    "metadata_sha256": "30e8c0a6c1a31f6c835af754b9e0e5b91706183231ae79afba32f65056adcba7",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_event_timestamp\\case.json",
+      "sha256": "30e8c0a6c1a31f6c835af754b9e0e5b91706183231ae79afba32f65056adcba7"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_event_timestamp\\sim.log",
+      "sha256": "9d8174d14377c06ee6f3c9928ba9a329f17247d0213bc452170b53c2f081285e"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_event_timestamp\\sources.sha256.json",
+      "sha256": "6cbec4380a96acc2274beeb89d009dff07b6233d9338214dac356e44f2c570cd"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_event_timestamp\\original.producer.metadata.json",
+      "sha256": "30e8c0a6c1a31f6c835af754b9e0e5b91706183231ae79afba32f65056adcba7"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_event_timestamp\\producer.provenance.json",
+      "sha256": "677dee9ba1ca0214b946ce64b170b05c66c227819fccf1d41cb83ed5c2321ec8"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_event_timestamp\\sources.prj",
+      "sha256": "f77567c94d73897e31ca375b0485921e7c8d88209183a2ded529591646924d6b"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_event_timestamp\\mutant.v",
+      "sha256": "2fdd14337e68fb7da6d8403a93f667c4dd10452404fc3fdbfa85f9b80c1201dc"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

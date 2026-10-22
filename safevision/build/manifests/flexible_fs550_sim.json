@@ -1,0 +1,60 @@
+{
+  "sources": [
+    "safevision/rtl/common/crc16_ccitt.v",
+    "safevision/rtl/storage/spi_master.v",
+    "safevision/rtl/storage/sd_initializer.v",
+    "safevision/rtl/storage/sd_sector_reader.v",
+    "safevision/rtl/storage/sd_checked_sector_reader.v",
+    "safevision/rtl/storage/v3_spi_cs_guard.v",
+    "safevision/rtl/storage/mbr_parser.v",
+    "safevision/rtl/storage/fat32_boot_parser.v",
+    "safevision/rtl/storage/fat32_directory_scanner.v",
+    "safevision/rtl/storage/fat32_cluster_walker.v",
+    "safevision/rtl/storage/file_streamer.v",
+    "safevision/rtl/storage/file_index.v",
+    "safevision/rtl/media/bmp_parser.v",
+    "safevision/rtl/media/bmp_unpack.v",
+    "safevision/rtl/memory/frame_address_gen.v",
+    "safevision/rtl/memory/frame_writer.v",
+    "safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+    "safevision/rtl/storage/sd_bmp_player.v",
+    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/rtl/memory/v3_row_integrity.v",
+    "safevision/rtl/storage/v3_wav_source.v",
+    "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
+    "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+    "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+    "safevision/rtl/storage/v3_shared_fs_service.v",
+    "safevision/rtl/media/v3_bmp_normalizer.v",
+    "safevision/rtl/storage/v3_fat_name_store.v",
+    "safevision/rtl/storage/v3_flexible_media_index.v"
+  ],
+  "tops": [
+    "tb_v3_flexible_fs550"
+  ],
+  "generators": {
+    "tb_v3_flexible_fs550": "safevision/verification/fixtures/generate_flexible_fs550.py"
+  },
+  "timeouts": {
+    "tb_v3_flexible_fs550": 3600
+  },
+  "generator_dependencies": [],
+  "generated_assets": [
+    "resident_card.mem",
+    "expected0.mem",
+    "expected1.mem",
+    "expected2.mem",
+    "expected3.mem",
+    "lifecycle_pcm.mem",
+    "flexible_metadata.mem",
+    "flexible_fs550.reference.json"
+  ],
+  "source_scope": "Production FLEX_FILES=1 shared SPI, FAT32, complete LFN Unicode sort, rejected first candidate, four full aspect-fit frames and preindexed actual WAV PCM loop",
+  "wall_timeout_note": "Allow native XSim wall time for 185000000 unchanged testbench cycles and all original data checks. Wall timeout is not a functional acceptance condition.",
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py"
+}

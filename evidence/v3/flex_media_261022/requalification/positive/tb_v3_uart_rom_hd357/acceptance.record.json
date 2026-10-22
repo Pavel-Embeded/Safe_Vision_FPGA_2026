@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_uart_rom_hd357",
+  "top": "tb_v3_uart_rom_hd357",
+  "suite": "uart_rom_hd357",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_uart_rom_hd357",
+    "suite": "uart_rom_hd357",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_uart_rom_hd357",
+    "suite": "uart_rom_hd357",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_uart_rom_hd357",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_uart_rom_hd357\\sim\\tb_v3_uart_rom_hd357",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_uart_rom_hd357",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 108,
+      "elapsed_s": 8.875,
+      "suite": "uart_rom_hd357",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_uart_rom_hd357\\sim\\tb_v3_uart_rom_hd357"
+    },
+    "input_count": 42,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_uart_rom_hd357",
+      "suite": "uart_rom_hd357",
+      "ordered_analyzed_HDL": 30,
+      "manifest": "safevision/build/manifests/uart_rom_hd357_sim.json",
+      "current_manifest_sha256": "b5aa1c093bf86dbdbe83e93decbc532eed1bcfeb6aaaefefc92bfd491724faa9",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "a6d3fcf46cf239352bcb73a70eb560eadbd921428782712e68402a9e5b23af25",
+    "metadata_sha256": "23ab746b34f93393b3422527e1f6ff27902609d76f99da333b5f17525cb06dc4",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_uart_rom_hd357\\result.json",
+      "sha256": "23ab746b34f93393b3422527e1f6ff27902609d76f99da333b5f17525cb06dc4"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_uart_rom_hd357\\sim.log",
+      "sha256": "a6d3fcf46cf239352bcb73a70eb560eadbd921428782712e68402a9e5b23af25"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_uart_rom_hd357\\sources.sha256.json",
+      "sha256": "2e0863b2f660f615fa4946b3f768bffda216694e25ac6b5e7bacf2f28ee65bd4"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_uart_rom_hd357\\original.producer.metadata.json",
+      "sha256": "23ab746b34f93393b3422527e1f6ff27902609d76f99da333b5f17525cb06dc4"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_uart_rom_hd357\\producer.provenance.json",
+      "sha256": "831bda73dd27751074dcba20ffcf745928d5034f285fff602e98b5104420a5ba"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_uart_rom_hd357\\sources.prj",
+      "sha256": "1d3dbf22e3774067f3dff72a05e8bb58aa6a17c6f57a4f3c53be4fe67774dda7"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

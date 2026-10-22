@@ -1,0 +1,24 @@
+{
+  "mutation": "bmp_width_guard_bypassed",
+  "target": "safevision/rtl/media/bmp_parser.v",
+  "suite": "bmp_header199",
+  "top": "tb_v3_bmp_header199",
+  "patch": [
+    {
+      "before": "width_lo_r<=(FLEX_PIXELS?16384:1920)",
+      "after": "1'b1"
+    }
+  ],
+  "original_sha256": "dc697612fb353985941294c7e7bcc0ad1aaf8d0a6068290ab1003441c51381da",
+  "mutated_sha256": "a56f19108e6cbf685b8967cec5939e60ed5fc990a0a785e33a1156df41f0c072",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\bmp_width_guard_bypassed\\sim\\tb_v3_bmp_header199",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\bmp_width_guard_bypassed\\sim\\tb_v3_bmp_header199"
+}

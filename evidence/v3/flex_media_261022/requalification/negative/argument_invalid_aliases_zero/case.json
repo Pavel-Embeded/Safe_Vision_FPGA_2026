@@ -1,0 +1,23 @@
+{
+  "mutation": "argument_invalid_aliases_zero",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "control_argument296",
+  "top": "tb_v3_control_argument296",
+  "patch": [
+    {
+      "before": "command_value[8:0]:9'h100;",
+      "after": "command_value[8:0]:9'h000;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\argument_invalid_aliases_zero",
+  "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "mutated_sha256": "2dd7974c0d96e9e34150a0a81e867afd7be6f92efeef695774ff31a0392cfbca",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    124064
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\argument_invalid_aliases_zero\\sim\\tb_v3_control_argument296"
+}

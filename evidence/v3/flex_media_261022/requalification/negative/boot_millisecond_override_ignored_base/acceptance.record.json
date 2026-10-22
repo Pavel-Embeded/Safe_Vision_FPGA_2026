@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "boot_millisecond_override_ignored_base",
+  "top": "tb_v3_boot_budget218",
+  "suite": "boot_budget_base218",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "boot_millisecond_override_ignored_base",
+    "target": "safevision/rtl/control/v3_supervisor.v",
+    "suite": "boot_budget_base218",
+    "top": "tb_v3_boot_budget218",
+    "patch": [
+      {
+        "before": "BOOT_MS_OVERRIDE>0?BOOT_MS_OVERRIDE:",
+        "after": "1>2?BOOT_MS_OVERRIDE:"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "boot_millisecond_override_ignored_base",
+    "target": "safevision/rtl/control/v3_supervisor.v",
+    "suite": "boot_budget_base218",
+    "top": "tb_v3_boot_budget218",
+    "patch": [
+      {
+        "before": "BOOT_MS_OVERRIDE>0?BOOT_MS_OVERRIDE:",
+        "after": "1>2?BOOT_MS_OVERRIDE:"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\boot_millisecond_override_ignored_base",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\negative\\boot_millisecond_override_ignored_base",
+  "checked": {
+    "metadata": {
+      "mutation": "boot_millisecond_override_ignored_base",
+      "target": "safevision/rtl/control/v3_supervisor.v",
+      "suite": "boot_budget_base218",
+      "top": "tb_v3_boot_budget218",
+      "patch": [
+        {
+          "before": "BOOT_MS_OVERRIDE>0?BOOT_MS_OVERRIDE:",
+          "after": "1>2?BOOT_MS_OVERRIDE:"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\boot_millisecond_override_ignored_base\\sim\\tb_v3_boot_budget218",
+      "original_sha256": "09023498ac634ad775e0a8e911efffd7f4a113f6a470a59145ccee00c47c1eb8",
+      "mutated_sha256": "2687422b771d4faa64665d137fa16f882debfae7850e382d0e246e3d7ad18152",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        119987
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\boot_millisecond_override_ignored_base\\sim\\tb_v3_boot_budget218",
+      "return_code": 1
+    },
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_boot_budget218",
+      "suite": "boot_budget_base218",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/boot_budget_base218_sim.json",
+      "current_manifest_sha256": "7c4b52d0c4e2111c8bfe4b57c60d2146c92506cf852bd251c12af43ca0018f33",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      119987
+    ],
+    "log_sha256": "0604e6d3c5ce7cc82bb1d100adfa4d29491cd8595a39946f135147f9f3759284",
+    "metadata_sha256": "9a0c915179350cbe07c0197c124cfb18935a3b6bbda801929751fd29d3396c66",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\boot_millisecond_override_ignored_base\\case.json",
+      "sha256": "9a0c915179350cbe07c0197c124cfb18935a3b6bbda801929751fd29d3396c66"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\boot_millisecond_override_ignored_base\\sim.log",
+      "sha256": "0604e6d3c5ce7cc82bb1d100adfa4d29491cd8595a39946f135147f9f3759284"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\boot_millisecond_override_ignored_base\\sources.sha256.json",
+      "sha256": "66682fcdd62001b017e23fb8f76b102b841fec0af4f573c8a50d0e0dc18777b2"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\boot_millisecond_override_ignored_base\\original.producer.metadata.json",
+      "sha256": "9a0c915179350cbe07c0197c124cfb18935a3b6bbda801929751fd29d3396c66"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\boot_millisecond_override_ignored_base\\producer.provenance.json",
+      "sha256": "b471d3dea78565a64be01e040cd75a6d0e769b8394b101dabb52bd253a1a0cc6"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\boot_millisecond_override_ignored_base\\sources.prj",
+      "sha256": "869001161e356d74dd9f2bbdb41514bb9db61033f94c8c6d10c86083b8645626"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\boot_millisecond_override_ignored_base\\mutant.v",
+      "sha256": "2687422b771d4faa64665d137fa16f882debfae7850e382d0e246e3d7ad18152"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

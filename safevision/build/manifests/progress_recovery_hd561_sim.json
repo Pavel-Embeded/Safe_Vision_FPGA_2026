@@ -1,0 +1,26 @@
+{
+  "sources": [
+    "safevision/rtl/hd/v3_supervisor.v",
+    "safevision/rtl/hd/media_recovery_ctrl.v",
+    "safevision/rtl/safety/fault_manager.v",
+    "safevision/verification/models/v3_supervisor_reference.sv",
+    "safevision/verification/models/v3_hd_supervisor_reference.sv",
+    "safevision/verification/models/v3_recovery_reset_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_progress_recovery_hd561"
+  ],
+  "test_sources": {
+    "tb_v3_progress_recovery_hd561": [
+      "safevision/verification/unit/tb_v3_progress_watchdog561.sv"
+    ]
+  },
+  "timeouts": {
+    "tb_v3_progress_recovery_hd561": 120
+  },
+  "coverage": "Progress-only boot/recovery inactivity,1000/4000Hz tick boundaries,exact deadlines,failed/fatal priority,three attempts and frozen default0 reference",
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "generator_dependencies": [],
+  "generated_assets": []
+}

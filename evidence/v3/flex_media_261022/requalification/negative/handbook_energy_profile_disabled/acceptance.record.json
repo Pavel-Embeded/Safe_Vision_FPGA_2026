@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "handbook_energy_profile_disabled",
+  "top": "tb_v3_handbook_board",
+  "suite": "handbook_board",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "handbook_energy_profile_disabled",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+    "suite": "handbook_board",
+    "top": "tb_v3_handbook_board",
+    "patch": [
+      {
+        "before": ".HANDBOOK_PROFILE(1)) audio(",
+        "after": ".HANDBOOK_PROFILE(0)) audio("
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "handbook_energy_profile_disabled",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+    "suite": "handbook_board",
+    "top": "tb_v3_handbook_board",
+    "patch": [
+      {
+        "before": ".HANDBOOK_PROFILE(1)) audio(",
+        "after": ".HANDBOOK_PROFILE(0)) audio("
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\handbook_energy_profile_disabled",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\handbook_energy_profile_disabled\\sim\\tb_v3_handbook_board",
+  "checked": {
+    "metadata": {
+      "mutation": "handbook_energy_profile_disabled",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "handbook_board",
+      "top": "tb_v3_handbook_board",
+      "patch": [
+        {
+          "before": ".HANDBOOK_PROFILE(1)) audio(",
+          "after": ".HANDBOOK_PROFILE(0)) audio("
+        }
+      ],
+      "original_sha256": "624cb7e28b9039d87deab6fb5a19ea8912f27f9a45850c590abf4e89a0123447",
+      "mutated_sha256": "0c9a8fe82ecabe250fe396ea2dc10dd298107789e8982ec3655bcd991452dd1e",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\handbook_energy_profile_disabled\\sim\\tb_v3_handbook_board",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\handbook_energy_profile_disabled\\sim\\tb_v3_handbook_board"
+    },
+    "input_count": 120,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_board",
+      "suite": "handbook_board",
+      "ordered_analyzed_HDL": 105,
+      "manifest": "safevision/build/manifests/handbook_board_sim.json",
+      "current_manifest_sha256": "031ec3fecd51dc649eeafd7178e283c3f5fb4647ec7866072e63e9794398b738",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1
+    ],
+    "log_sha256": "9b6c0ef3b1e1090cb138b9ce9e91becbd9db1b41ce55df7d6f69ad6f8bf8d2cb",
+    "metadata_sha256": "00ceb2787a975540e38cab1589724ddb3708a229ec329367ee3dad4905048338",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\handbook_energy_profile_disabled\\case.json",
+      "sha256": "00ceb2787a975540e38cab1589724ddb3708a229ec329367ee3dad4905048338"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\handbook_energy_profile_disabled\\sim.log",
+      "sha256": "9b6c0ef3b1e1090cb138b9ce9e91becbd9db1b41ce55df7d6f69ad6f8bf8d2cb"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\handbook_energy_profile_disabled\\sources.sha256.json",
+      "sha256": "3751147e746670fb5c326b603ac6dc84d962e1d3c001c12b26381b71034aeec8"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\handbook_energy_profile_disabled\\original.producer.metadata.json",
+      "sha256": "00ceb2787a975540e38cab1589724ddb3708a229ec329367ee3dad4905048338"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\handbook_energy_profile_disabled\\producer.provenance.json",
+      "sha256": "46d94a5112ed9aabef92f4d0dd99dc9bf336327dedcf2e55bc9774b2aaa26ba2"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\handbook_energy_profile_disabled\\sources.prj",
+      "sha256": "d1d3d0243141538b9ab08acaf9fd90c460dc4e6046fff81b50a8228d36ea1683"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\handbook_energy_profile_disabled\\mutant.v",
+      "sha256": "0c9a8fe82ecabe250fe396ea2dc10dd298107789e8982ec3655bcd991452dd1e"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

@@ -1,0 +1,19 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_audio_negative_container/xsim_script.tcl
+# xsim {tb_v3_audio_negative_container} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL AUDIO_CONTAINER_PCM] case=169 pair=0 got=04030201
+[FAIL AUDIO_CONTAINER_END] case=169 error=1 want=1 pairs=1 want=0
+[FAIL AUDIO_CONTAINER_PCM] case=170 pair=0 got=04030201
+[PASS] independent struct/wave oracle, extension/padding, chunks after data, physical trailing, overflow/invalid/truncation, random backpressure
+PASS tb_v3_audio_negative_container errors=6 comparisons=8880 valid=160 invalid=28
+$finish called at time : 2060260 ns : File "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_audio_negative_container.sv" Line 49
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 17:55:19 2026...

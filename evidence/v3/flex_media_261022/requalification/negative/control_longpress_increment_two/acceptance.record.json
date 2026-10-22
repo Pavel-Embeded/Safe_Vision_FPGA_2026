@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "control_longpress_increment_two",
+  "top": "tb_v3_control_longpress55",
+  "suite": "control_longpress55",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "control_longpress_increment_two",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "control_longpress55",
+    "top": "tb_v3_control_longpress55",
+    "patch": [
+      {
+        "before": "next_n_hold=n_hold+1'b1",
+        "after": "next_n_hold=n_hold+2'd2"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "control_longpress_increment_two",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "control_longpress55",
+    "top": "tb_v3_control_longpress55",
+    "patch": [
+      {
+        "before": "next_n_hold=n_hold+1'b1",
+        "after": "next_n_hold=n_hold+2'd2"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_longpress_increment_two",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\control_longpress_increment_two",
+  "checked": {
+    "metadata": {
+      "mutation": "control_longpress_increment_two",
+      "target": "safevision/rtl/control/v3_user_controls.v",
+      "suite": "control_longpress55",
+      "top": "tb_v3_control_longpress55",
+      "patch": [
+        {
+          "before": "next_n_hold=n_hold+1'b1",
+          "after": "next_n_hold=n_hold+2'd2"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative417\\n\\control_longpress_increment_two",
+      "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+      "mutated_sha256": "1efa22bbb254154c6838d2bbb2015e824c36aaaf0344e36c06e7b6ccc7f76cc4",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        400
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative417\\n\\control_longpress_increment_two\\sim\\tb_v3_control_longpress55"
+    },
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_control_longpress55",
+      "suite": "control_longpress55",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/control_longpress55_sim.json",
+      "current_manifest_sha256": "4df1b8b744a305c2bd25275c39026f8b8e25d21fe4182306d41da8e901c80b37",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      400
+    ],
+    "log_sha256": "57c86d4d71c2e29d4bcb6009ba0f1c04c0e3ced803800cfb589acca0253c7831",
+    "metadata_sha256": "960b9eba056f1801844a9e2d604775fced6ce9e1fa739244310d804a77cd0629",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_longpress_increment_two\\case.json",
+      "sha256": "960b9eba056f1801844a9e2d604775fced6ce9e1fa739244310d804a77cd0629"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_longpress_increment_two\\sim.log",
+      "sha256": "57c86d4d71c2e29d4bcb6009ba0f1c04c0e3ced803800cfb589acca0253c7831"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_longpress_increment_two\\sources.sha256.json",
+      "sha256": "50bac96c6b55b123de1b0f8a3ad9c081a5944a7e5a9e2742967c57570400c552"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_longpress_increment_two\\original.producer.metadata.json",
+      "sha256": "960b9eba056f1801844a9e2d604775fced6ce9e1fa739244310d804a77cd0629"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_longpress_increment_two\\producer.provenance.json",
+      "sha256": "2861c30e71849293b41041b825e2b05b855ea6be6fa9696aa9f93c6efed8b5b0"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_longpress_increment_two\\sources.prj",
+      "sha256": "1da63d9f945dc41f3d88c5fe8d32b5ea37669d6c74e1b1076c3f00abe9021875"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\control_longpress_increment_two\\mutant.v",
+      "sha256": "1efa22bbb254154c6838d2bbb2015e824c36aaaf0344e36c06e7b6ccc7f76cc4"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

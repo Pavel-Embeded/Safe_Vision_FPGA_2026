@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\negative\\boot_millisecond_override_ignored_hd",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\negative\\boot_millisecond_override_ignored_hd\\case.json",
+  "original_metadata_sha256": "8dc7e2bb5719d8fa99dcf4b7923ea2995c709f8a0a0056e733c48f4fef3240a7",
+  "original_log_sha256": "65365cb53991012d5df52dcfe7e0cfb807862f2b5f0351f034a7a2d65bb6798a",
+  "matrix_definition": {
+    "mutation": "boot_millisecond_override_ignored_hd",
+    "target": "safevision/rtl/hd/v3_supervisor.v",
+    "suite": "boot_budget_hd218",
+    "top": "tb_v3_boot_budget_hd218",
+    "patch": [
+      {
+        "before": "BOOT_MS_OVERRIDE>0?BOOT_MS_OVERRIDE:",
+        "after": "1>2?BOOT_MS_OVERRIDE:"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\board_query_binding\\sim\\tb_v3_board_query_catalog",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\board_query_binding\\sim\\tb_v3_board_query_catalog\\case.json",
+  "original_metadata_sha256": "6a27165338fd444a35344186d222e75f57aca181ea675b7d1966ca6405e3d669",
+  "original_log_sha256": "0eec77e07f7f9c9184911a44d11980ef1eb1079c1a73543660ad3f2eca973c42",
+  "matrix_definition": {
+    "mutation": "board_query_binding",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+    "suite": "board_query_catalog",
+    "top": "tb_v3_board_query_catalog",
+    "patch": [
+      {
+        "before": "({32{b_query_select[23]}} & (uart_reply_dropped))",
+        "after": "({32{b_query_select[23]}} & (uart_framing))"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

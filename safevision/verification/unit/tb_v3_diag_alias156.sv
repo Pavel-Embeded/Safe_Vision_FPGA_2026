@@ -31,7 +31,7 @@ module tb_v3_diag_alias156;
   force dut.err_push=injected_event;force dut.err_ts=injected_payload[43:12];
   force dut.err_code=injected_payload[11:4];force dut.err_src=injected_payload[3:0];
   force dut.evt_ready=evt_consume;
-  expected[0]=32'h26102004;expected[1]=32'ha1b2c3d4;expected[2]=32'h000004ab;expected[3]=32'hdeadbeef;
+  expected[0]=32'h26102237;expected[1]=32'ha1b2c3d4;expected[2]=32'h000004ab;expected[3]=32'hdeadbeef;
   expected[4]=32'h000af35e;expected[5]=32'h00123400;expected[6]=32'h01234567;expected[7]=32'h89abcdef;
   expected[8]=32'h00025800;expected[9]=32'h00000017;expected[10]=32'h11223344;expected[11]=32'h55667788;
   expected[12]=32'h13579bdf;expected[13]=32'h2468ace0;expected[14]=32'h06ae4740;expected[15]=32'h00830355;
@@ -51,7 +51,7 @@ module tb_v3_diag_alias156;
   force dut.sdr_busy=1'b1;force dut.sdr_ref_valid=1'b0;
   settings_before={dut.brightness,dut.contrast,dut.osd_alpha,dut.bilinear,dut.fit,dut.fade_enable,dut.volume,dut.period_select,dut.field,dut.menu,dut.auto_enabled};
   for(i=0;i<16;i++)command(i,0,0,expected[i]);
-  command(0,1,0,32'h26102004);
+  command(0,1,0,32'h26102237);
   command(-1,0,3,0);command(16,0,3,0);command(32'h80000000,0,3,0);command(32'h10000004,0,3,0);
   // Change the full selector on the SAME command acceptance edge, including
   // every high bit and negative values. No earlier selector setup is assumed.

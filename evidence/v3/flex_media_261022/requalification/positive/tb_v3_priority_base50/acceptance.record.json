@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_priority_base50",
+  "top": "tb_v3_priority_base50",
+  "suite": "audio_priority_phase",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_priority_base50",
+    "suite": "audio_priority_phase",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_priority_base50",
+    "suite": "audio_priority_phase",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_base50",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_priority_base50\\sim\\tb_v3_priority_base50",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_priority_base50",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 2780,
+      "elapsed_s": 68.25,
+      "suite": "audio_priority_phase",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_priority_base50\\sim\\tb_v3_priority_base50"
+    },
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_priority_base50",
+      "suite": "audio_priority_phase",
+      "ordered_analyzed_HDL": 29,
+      "manifest": "safevision/build/manifests/audio_priority_phase_sim.json",
+      "current_manifest_sha256": "dffc2d2a09ac3906a6e0c0eb150414d41a7a7ea6166484073a4e601a61ee9c0e",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "7cdeb2f336b56f33ccff266f9428ccafda56b31f8104fd50353827eaad7d856c",
+    "metadata_sha256": "ef6560bc55d7d7066ac2a1c8bb5218aa5c33a1bc418e3e73026e8a8e850bbffb",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_base50\\result.json",
+      "sha256": "ef6560bc55d7d7066ac2a1c8bb5218aa5c33a1bc418e3e73026e8a8e850bbffb"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_base50\\sim.log",
+      "sha256": "7cdeb2f336b56f33ccff266f9428ccafda56b31f8104fd50353827eaad7d856c"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_base50\\sources.sha256.json",
+      "sha256": "9a8c2f64a6717fa0d4de4c5720fc4334d2ef3ef06c31af51763ea03748ba626a"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_base50\\original.producer.metadata.json",
+      "sha256": "ef6560bc55d7d7066ac2a1c8bb5218aa5c33a1bc418e3e73026e8a8e850bbffb"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_base50\\producer.provenance.json",
+      "sha256": "fbb03a381aa5106e22896768919ff4203e83736ec90eaec43c9ef8db9edb8ba6"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_base50\\sources.prj",
+      "sha256": "a926a957c98f89c6cbac6fcf7777cb50800987f5354bd17af568bc192893e438"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

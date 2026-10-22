@@ -1,0 +1,31 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_v3_video_one_to_one -s tb_v3_video_one_to_one --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'uptime_bcd' remains unconnected for this instance [D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_video_one_to_one.sv:16]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.video_timing(H_ACTIVE=1280,H_FRO...
+Compiling module work.video_cdc_mailbox(WIDTH=100)
+Compiling module work.video_cdc_mailbox(WIDTH=1)
+Compiling module work.video_cdc_mailbox(WIDTH=9)
+Compiling module work.v3_presentation_ctrl
+Compiling module work.scaler_coords(HD=1)
+Compiling module work.video_cdc_mailbox(WIDTH=24)
+Compiling module work.v3_packed_row_store
+Compiling module work.v3_line_cache(PACKED_ROWS=1)
+Compiling module work.v3_scaler_bilinear_thirds
+Compiling module work.alpha_blend
+Compiling module work.color_adjust
+Compiling module work.v3_status_layers(HD=1,PIXEL_HZ=7...
+Compiling module work.v3_hd_coord_arith_default
+Compiling module work.v3_constant224_blend(EMERGENCY=1...
+Compiling module work.v3_hud_palette224
+Compiling module work.video_cdc_mailbox(WIDTH=57)
+Compiling module work.v3_video_display_core(HD=1,PACKE...
+Compiling module work.tb_v3_video_one_to_one_model(HD=...
+Compiling module work.tb_v3_video_one_to_one
+Built simulation snapshot tb_v3_video_one_to_one

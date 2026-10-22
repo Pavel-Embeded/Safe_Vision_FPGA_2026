@@ -1,0 +1,24 @@
+{
+  "mutation": "fade_product_gate_reversed",
+  "target": "safevision/rtl/hd/v3_video_display_core.v",
+  "suite": "fade_gate151",
+  "top": "tb_v3_fade_gate151",
+  "patch": [
+    {
+      "before": "pr<=selected_alpha==0?14'sd0:",
+      "after": "pr<=selected_alpha!=0?14'sd0:"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\fade_product_gate_reversed\\sim\\tb_v3_fade_gate151",
+  "original_sha256": "7b004785f527b7ddb5e551585300bcc7787354741b8fcd03a4b2243ad1b5643f",
+  "mutated_sha256": "b7d8cc076950eb2dc8b956c560c6ca15300dc35d52931767965b09aa215e2ddd",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1000744
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\fade_product_gate_reversed\\sim\\tb_v3_fade_gate151",
+  "return_code": 1
+}

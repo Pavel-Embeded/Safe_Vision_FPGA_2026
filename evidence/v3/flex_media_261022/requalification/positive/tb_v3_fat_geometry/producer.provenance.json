@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fat_geometry\\sim\\tb_v3_fat_geometry",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fat_geometry\\sim\\tb_v3_fat_geometry\\result.json",
+  "original_metadata_sha256": "9ca6f357d7cfb894914d292a89a54728bdfe982d6361b217f1c83b53e23e3d0f",
+  "original_log_sha256": "4e9e81804879391b71683848b0092ecd14d43a65dd31e559923eb47b61484463",
+  "matrix_definition": {
+    "top": "tb_v3_fat_geometry",
+    "suite": "fat_geometry",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

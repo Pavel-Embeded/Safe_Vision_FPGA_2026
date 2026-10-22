@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_parser_digit_seen\\sim\\tb_v3_parser_digit_seen",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_parser_digit_seen\\sim\\tb_v3_parser_digit_seen\\result.json",
+  "original_metadata_sha256": "e2f7ec57dbc8d2ea14409809e6eaf9eac9ce8867c526c1f896ab072a69c80c6e",
+  "original_log_sha256": "112152fdae7ec2881bce0d1a0f1344d6d95c094d97f5589510469636cf1a29fc",
+  "matrix_definition": {
+    "top": "tb_v3_parser_digit_seen",
+    "suite": "v3",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

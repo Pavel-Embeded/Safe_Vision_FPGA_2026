@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\autoplay_cycle_increment_two\\sim\\tb_v3_controls_period",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\autoplay_cycle_increment_two\\sim\\tb_v3_controls_period\\case.json",
+  "original_metadata_sha256": "324c54e297da2f1ae42aa21012da30de32fb8b207f514d0cf479ad461ebf6889",
+  "original_log_sha256": "5f871d4c46198a83442767cfb3916c6686ea5f83dc0df753487855d0484275b5",
+  "matrix_definition": {
+    "mutation": "autoplay_cycle_increment_two",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "v3",
+    "top": "tb_v3_controls_period",
+    "patch": [
+      {
+        "before": "cycles_raw<=cycles+1'b1;",
+        "after": "cycles_raw<=cycles+2'd2;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_handbook_board",
+  "top": "tb_v3_handbook_board",
+  "suite": "handbook_board",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_handbook_board",
+    "suite": "handbook_board",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_handbook_board",
+    "suite": "handbook_board",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_board",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_handbook_board\\sim\\tb_v3_handbook_board",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_handbook_board",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 59,
+      "elapsed_s": 11.734,
+      "suite": "handbook_board",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_handbook_board\\sim\\tb_v3_handbook_board"
+    },
+    "input_count": 120,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_board",
+      "suite": "handbook_board",
+      "ordered_analyzed_HDL": 105,
+      "manifest": "safevision/build/manifests/handbook_board_sim.json",
+      "current_manifest_sha256": "031ec3fecd51dc649eeafd7178e283c3f5fb4647ec7866072e63e9794398b738",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "fb4995152e478a27c84b38442a4e9d6d2a9ac140c2ce2685b9369212eff6b625",
+    "metadata_sha256": "0dcbdd4b62af4b2507ed3afaf5ca08919fc99615a3909b2bc47e4a42b6ba275a",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_board\\result.json",
+      "sha256": "0dcbdd4b62af4b2507ed3afaf5ca08919fc99615a3909b2bc47e4a42b6ba275a"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_board\\sim.log",
+      "sha256": "fb4995152e478a27c84b38442a4e9d6d2a9ac140c2ce2685b9369212eff6b625"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_board\\sources.sha256.json",
+      "sha256": "eb7c4b3a31287703ce0db9b8dd7274b6a37f5bdfb47369b66cf0ea63f6b98a76"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_board\\original.producer.metadata.json",
+      "sha256": "0dcbdd4b62af4b2507ed3afaf5ca08919fc99615a3909b2bc47e4a42b6ba275a"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_board\\producer.provenance.json",
+      "sha256": "052751bd6271ba885cc84a04c6ea16018ab15cde1c26f118423ceecc16fa9514"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_board\\sources.prj",
+      "sha256": "814aa6cb396f0871155db17f7ad16f367ff25c1d6ada4e2c3868c66a28357e6f"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

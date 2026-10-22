@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_acr_carry_early",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_acr_carry_early\\case.json",
+  "original_metadata_sha256": "fd6c0440b46b2481d3c68ecdebd76f42e2b9a7617ab9890476742cbe0e9d88d9",
+  "original_log_sha256": "cc80ef53964d52cc31828d94076ff71d80ff4c06fdc3216c03cf69422b4f9be3",
+  "matrix_definition": {
+    "mutation": "hd_acr_carry_early",
+    "target": "safevision/rtl/hd/hdmi_acr.v",
+    "suite": "hd_acr_equivalence",
+    "top": "tb_v3_hd_acr_equivalence",
+    "patch": [
+      {
+        "before": "carry[0]<=clocks[3:0]==4'he;",
+        "after": "carry[0]<=clocks[3:0]==4'hd;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

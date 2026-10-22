@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "safevision/rtl/media/bmp_parser.v",
+    "safevision/rtl/media/v3_bmp_normalizer.v"
+  ],
+  "tops": [
+    "tb_v3_flexible_bmp542"
+  ],
+  "assets": [
+    "safevision/verification/assets/bmp542/bmp542_cases.mem",
+    "safevision/verification/assets/bmp542/bmp542_expected.mem"
+  ],
+  "timeouts": {
+    "tb_v3_flexible_bmp542": 1800
+  },
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "generator_dependencies": [],
+  "generated_assets": []
+}

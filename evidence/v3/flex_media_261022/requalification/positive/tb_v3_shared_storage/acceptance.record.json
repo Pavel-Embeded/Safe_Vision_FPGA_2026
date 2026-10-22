@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_shared_storage",
+  "top": "tb_v3_shared_storage",
+  "suite": "shared_storage",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "610_curated",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_shared_storage",
+    "suite": "shared_storage",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_shared_storage",
+    "suite": "shared_storage",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_shared_storage",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original610\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_shared_storage",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 14,
+      "data_comparisons": 614400,
+      "elapsed_s": 1770.329,
+      "suite": "shared_storage",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original610\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage"
+    },
+    "input_count": 42,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_shared_storage",
+      "suite": "shared_storage",
+      "ordered_analyzed_HDL": 33,
+      "manifest": "safevision/build/manifests/shared_storage_sim.json",
+      "current_manifest_sha256": "98a2df2852c4bee95064d052d24117a78edd804102f2a7deb998dcc0d20b7521",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "a4c86741833ade225dcea6ae9b43447844a48244c54c2df43869921bf0577f7d",
+    "metadata_sha256": "5fac5a63f567659c04953f5e1e8fcb65a0d7e2403aabb52e2ed653a81779d438",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_shared_storage\\result.json",
+      "sha256": "5fac5a63f567659c04953f5e1e8fcb65a0d7e2403aabb52e2ed653a81779d438"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_shared_storage\\sim.log",
+      "sha256": "a4c86741833ade225dcea6ae9b43447844a48244c54c2df43869921bf0577f7d"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_shared_storage\\sources.sha256.json",
+      "sha256": "673c9492412fd56d9d89c6d3e61e40933c70c8fb86a19b03f7861f76c9c7b99b"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_shared_storage\\original.producer.metadata.json",
+      "sha256": "5fac5a63f567659c04953f5e1e8fcb65a0d7e2403aabb52e2ed653a81779d438"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_shared_storage\\producer.provenance.json",
+      "sha256": "59cea550f9ee7376f8d2d571b88697ba61fb7598698c65a8c3424638f7d4916e"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_shared_storage\\sources.prj",
+      "sha256": "8eac1ca2ec1c93a5b5b4fe26ebdadaa98a1fda5bd8c5cd4e25aefc017c33ba45"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

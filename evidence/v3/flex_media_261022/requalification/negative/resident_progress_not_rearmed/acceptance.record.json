@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "resident_progress_not_rearmed",
+  "top": "tb_v3_mixed_card217",
+  "suite": "mixed_card217",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "resident_progress_not_rearmed",
+    "target": "safevision/rtl/storage/sd_bmp_player.v",
+    "suite": "mixed_card217",
+    "top": "tb_v3_mixed_card217",
+    "patch": [
+      {
+        "before": "if(RESIDENT_CACHE&&((fst_valid&&bp_ready)||(bpu_valid&&bpu_ready)))to_cnt<=0;",
+        "after": "if(1'b0)to_cnt<=0;"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "resident_progress_not_rearmed",
+    "target": "safevision/rtl/storage/sd_bmp_player.v",
+    "suite": "mixed_card217",
+    "top": "tb_v3_mixed_card217",
+    "patch": [
+      {
+        "before": "if(RESIDENT_CACHE&&((fst_valid&&bp_ready)||(bpu_valid&&bpu_ready)))to_cnt<=0;",
+        "after": "if(1'b0)to_cnt<=0;"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\resident_progress_not_rearmed",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217",
+  "checked": {
+    "metadata": {
+      "mutation": "resident_progress_not_rearmed",
+      "target": "safevision/rtl/storage/sd_bmp_player.v",
+      "suite": "mixed_card217",
+      "top": "tb_v3_mixed_card217",
+      "patch": [
+        {
+          "before": "if(RESIDENT_CACHE&&((fst_valid&&bp_ready)||(bpu_valid&&bpu_ready)))to_cnt<=0;",
+          "after": "if(1'b0)to_cnt<=0;"
+        }
+      ],
+      "original_sha256": "bf29f5516109c424e476984b80894e496f2a7d25989f386a1399bcc9707722de",
+      "mutated_sha256": "3dbf55b3010e0dc1445bf6c2e4481024786547a6e2c3c184cdd91a113eb08904",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        10
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217"
+    },
+    "input_count": 61,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_mixed_card217",
+      "suite": "mixed_card217",
+      "ordered_analyzed_HDL": 52,
+      "manifest": "safevision/build/manifests/mixed_card217_sim.json",
+      "current_manifest_sha256": "8622258308aeb686d279140b869d3bb41d032212491f49365daec73f76e1b2c8",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      10
+    ],
+    "log_sha256": "e8a5ae41bdaf709165b51d7992cd085241b978c83e0e1aec3ca86284078c0a13",
+    "metadata_sha256": "db7e6efaddc4241e54a9d5b5fa3b30e31358466a59a65d2585ca16bd6b3e2c84",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\resident_progress_not_rearmed\\case.json",
+      "sha256": "db7e6efaddc4241e54a9d5b5fa3b30e31358466a59a65d2585ca16bd6b3e2c84"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\resident_progress_not_rearmed\\sim.log",
+      "sha256": "e8a5ae41bdaf709165b51d7992cd085241b978c83e0e1aec3ca86284078c0a13"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\resident_progress_not_rearmed\\sources.sha256.json",
+      "sha256": "e825c4882f090d25547b0f58c52530a4f34ce45234b448d7f1380a944b33af32"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\resident_progress_not_rearmed\\original.producer.metadata.json",
+      "sha256": "db7e6efaddc4241e54a9d5b5fa3b30e31358466a59a65d2585ca16bd6b3e2c84"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\resident_progress_not_rearmed\\producer.provenance.json",
+      "sha256": "93624f14dc2e54d3707db76bb83ed4b871721e7d95228e85f39653f74f86a4e2"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\resident_progress_not_rearmed\\sources.prj",
+      "sha256": "adb88b23810baf15a01592ca5cc27390aa3dd417d6ca657103da412bce224dd3"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\resident_progress_not_rearmed\\mutant.v",
+      "sha256": "3dbf55b3010e0dc1445bf6c2e4481024786547a6e2c3c184cdd91a113eb08904"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

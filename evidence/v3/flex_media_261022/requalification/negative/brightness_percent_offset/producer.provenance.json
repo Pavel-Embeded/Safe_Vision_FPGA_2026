@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\brightness_percent_offset",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\brightness_percent_offset\\case.json",
+  "original_metadata_sha256": "c97d1bf74b5dc6a3c22491283934105591699beb6329a1ea5b517b7c9beff80f",
+  "original_log_sha256": "c094f2280b7af6ae09eb4997b295cccbf6d397dd2939096b522e89617e5161e0",
+  "matrix_definition": {
+    "mutation": "brightness_percent_offset",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "handbook",
+    "top": "tb_v3_handbook_controls",
+    "patch": [
+      {
+        "before": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd100;",
+        "after": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd99;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

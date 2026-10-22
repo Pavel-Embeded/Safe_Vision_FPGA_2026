@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_ui_timebase395",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_ui_timebase395\\result.json",
+  "original_metadata_sha256": "c56388449ce36d0794e08b707d029cd328866dba25eeb337d28fc26cc38b7ecf",
+  "original_log_sha256": "6a8844c759e9ef49dc30238d0be5e4029fbd84d737e153226ad6acc0100ae99a",
+  "matrix_definition": {
+    "top": "tb_v3_ui_timebase395",
+    "suite": "ui_timebase395",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

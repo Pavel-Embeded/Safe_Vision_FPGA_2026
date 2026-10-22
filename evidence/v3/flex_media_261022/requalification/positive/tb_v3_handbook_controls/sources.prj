@@ -1,0 +1,7 @@
+"D:/Codex/svfeatures396/source/safevision/rtl/control/input_sync.v"
+"D:/Codex/svfeatures396/source/safevision/rtl/control/key_debounce.v"
+"D:/Codex/svfeatures396/source/safevision/rtl/control/v3_user_controls.v"
+"D:/Codex/svfeatures396/source/safevision/rtl/control/v3_response_timer.v"
+"D:/Codex/svfeatures396/source/safevision/rtl/video/scaler/scaler_coords.v"
+"D:/Codex/svfeatures396/source/safevision/rtl/video/v3_packed_row_store.v"
+"D:/Codex/svfeatures396/source/safevision/verification/unit/tb_v3_handbook_controls.sv"

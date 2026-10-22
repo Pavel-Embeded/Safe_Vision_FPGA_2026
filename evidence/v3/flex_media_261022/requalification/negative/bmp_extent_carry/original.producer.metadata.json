@@ -1,0 +1,25 @@
+{
+  "mutation": "bmp_extent_carry",
+  "target": "safevision/rtl/media/bmp_parser.v",
+  "suite": "bmp_bounds",
+  "top": "tb_v3_bmp_bounds",
+  "patch": [
+    {
+      "before": "(({1'b0,offbits_r} + {1'b0,required_bytes}) <= {1'b0,file_size})",
+      "after": "((offbits_r + required_bytes) <= file_size)"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "original_sha256": "dc697612fb353985941294c7e7bcc0ad1aaf8d0a6068290ab1003441c51381da",
+  "mutated_sha256": "b92f7f373f51a2d891acbccec57b3eac951a844db24f3c09a0f61472911e4a94",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    3
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\bmp_extent_carry\\sim\\tb_v3_bmp_bounds",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\bmp_extent_carry\\sim\\tb_v3_bmp_bounds"
+}

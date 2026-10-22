@@ -1,0 +1,4 @@
+"D:/Codex/svfeatures297/source/safevision/rtl/audio/v3_pcm_ring.v"
+"D:/Codex/svfeatures297/source/safevision/verification/models/v3_pcm_ring_reference.sv"
+"D:/Codex/svfeatures297/source/safevision/verification/models/v3_pcm_ring_cycle_miter.sv"
+"D:/Codex/svfeatures297/source/safevision/verification/unit/tb_v3_pcm_ring_equivalence.sv"

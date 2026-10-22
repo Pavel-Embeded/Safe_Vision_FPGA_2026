@@ -28,7 +28,7 @@ module tb_v3_hd_handbook_board;
   repeat(10)@(negedge clk);rst_n=1;wait(dut.sys_rst_n&&dut.config_rst_n);repeat(8)@(negedge dut.sys_clk);
   force dut.cmd_valid=cv;force dut.cmd_target=dest;force dut.cmd_catalog_id=id;force dut.cmd_value=value;force dut.cmd_query=query;
   ck(dut.audio.HANDBOOK_PROFILE==1&&dut.audio.meter.HANDBOOK_PROFILE==1,"production pre-volume handbook energy profile is enabled");
-  command(66,36,0,1,32'h26102004);
+  command(66,36,0,1,32'h26102237);
   command(67,2,0,1,1);command(67,18,0,1,5);command(65,37,0,1,80);command(65,41,0,1,0);command(67,33,0,1,70);
   command(65,37,35,0,0);command(65,37,0,1,35);command(65,41,3,0,0);command(65,41,0,1,3);
   command(67,40,1,0,0);command(67,40,0,1,1);command(67,38,7,0,0);command(67,38,0,1,7);

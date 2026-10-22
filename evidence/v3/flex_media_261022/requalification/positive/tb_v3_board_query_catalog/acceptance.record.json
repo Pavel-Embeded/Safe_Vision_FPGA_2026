@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_board_query_catalog",
+  "top": "tb_v3_board_query_catalog",
+  "suite": "board_query_catalog",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_board_query_catalog",
+    "suite": "board_query_catalog",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_board_query_catalog",
+    "suite": "board_query_catalog",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_board_query_catalog",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_board_query_catalog\\sim\\tb_v3_board_query_catalog",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_board_query_catalog",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 12288,
+      "elapsed_s": 12.328,
+      "suite": "board_query_catalog",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_board_query_catalog\\sim\\tb_v3_board_query_catalog"
+    },
+    "input_count": 121,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_board_query_catalog",
+      "suite": "board_query_catalog",
+      "ordered_analyzed_HDL": 106,
+      "manifest": "safevision/build/manifests/board_query_catalog_sim.json",
+      "current_manifest_sha256": "5b038e10b12f100d68576c76d820a3185d43bd8a6eaba1bb86db3a5cc301d424",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "15ec9e94f39e4f45a146d8dbcdadd60493bb0cd52f0be6248826ed08aeabf50f",
+    "metadata_sha256": "82ede9a1755c322980386cf295a581aea77e6a1c9cbfb93040d2f1e08bed9258",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_board_query_catalog\\result.json",
+      "sha256": "82ede9a1755c322980386cf295a581aea77e6a1c9cbfb93040d2f1e08bed9258"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_board_query_catalog\\sim.log",
+      "sha256": "15ec9e94f39e4f45a146d8dbcdadd60493bb0cd52f0be6248826ed08aeabf50f"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_board_query_catalog\\sources.sha256.json",
+      "sha256": "8a40f6afa18935aeea4dbf42e508e70895fed8140f0d19e816db455ae1a34fd6"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_board_query_catalog\\original.producer.metadata.json",
+      "sha256": "82ede9a1755c322980386cf295a581aea77e6a1c9cbfb93040d2f1e08bed9258"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_board_query_catalog\\producer.provenance.json",
+      "sha256": "440b0b6c510b848f51ca95b5290def269d3f493b97611892083f4e949ea196ef"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_board_query_catalog\\sources.prj",
+      "sha256": "32c8930e1069807de51ba600badd4cf487f11110b4fd4ecae6867bc5c3224e8c"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

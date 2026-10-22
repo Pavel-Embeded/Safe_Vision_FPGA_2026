@@ -1,0 +1,61 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sat Oct 17 09:51:19 2026
+# Process ID: 40516
+# Current directory: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/memory_flags_26101718/negative/observer_raw_window_overrun/simulation/tb_v3_memory_path_observer
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_memory_path_observer/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/memory_flags_26101718/negative/observer_raw_window_overrun/simulation/tb_v3_memory_path_observer/sim.log
+# Journal file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/memory_flags_26101718/negative/observer_raw_window_overrun/simulation/tb_v3_memory_path_observer\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_memory_path_observer/xsim_script.tcl
+# xsim {tb_v3_memory_path_observer} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] read window is not armed by unrelated earlier traffic
+[PASS] full byte address, alignment, range and DQM filters
+[PASS] exactly320 zero source/real-write words; padding ignored
+[PASS] all320 correctly aligned raw/host words are zero
+[PASS] alignment negative control observes tail poison
+[FAIL] all windows saturate and freeze after320 words
+[PASS] media reset clears counts and evidence together
+[PASS] host-only one-bit fault is localized after raw storage
+[PASS] raw-only one-bit fault is reported independently
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[PASS] every32-bit position is observed by compact nonzero flags
+[TB] tb_v3_memory_path_observer done errors=1 comparisons=41
+$finish called at time : 41720 ns : File "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_memory_path_observer.sv" Line 67
+exit
+INFO: [Common 17-206] Exiting xsim at Sat Oct 17 09:51:22 2026...

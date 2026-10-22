@@ -1,0 +1,23 @@
+{
+  "mutation": "ui_hold_early",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "ui_boundary409",
+  "top": "tb_v3_ui_boundary409",
+  "patch": [
+    {
+      "before": "HOLD_LIMIT=UI_DIV==1?CLK_HZ:UI_SECOND+1",
+      "after": "HOLD_LIMIT=UI_DIV==1?CLK_HZ:UI_SECOND-2"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\ui_hold_early",
+  "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "mutated_sha256": "73a9f74b530f20b1735bad146f6f186dd3cff75adbc51f0604d77d4d1704eb6a",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    3
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\ui_hold_early\\sim\\tb_v3_ui_boundary409"
+}

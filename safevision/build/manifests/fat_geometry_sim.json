@@ -1,4 +1,13 @@
 {
- "sources":["safevision/rtl/storage/fat32_boot_parser.v","safevision/rtl/storage/file_streamer.v","safevision/rtl/storage/v3_file_streamer.v","safevision/rtl/storage/fat32_directory_scanner.v"],
- "tops":["tb_v3_fat_geometry"],"assets":[]
+  "sources": [
+    "safevision/rtl/storage/fat32_boot_parser.v",
+    "safevision/rtl/storage/file_streamer.v",
+    "safevision/rtl/storage/v3_file_streamer.v",
+    "safevision/rtl/storage/fat32_directory_scanner.v",
+    "safevision/rtl/storage/v3_fat_name_store.v"
+  ],
+  "tops": [
+    "tb_v3_fat_geometry"
+  ],
+  "assets": []
 }

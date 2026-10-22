@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_wav_fallback_equivalence55",
+  "top": "tb_v3_wav_fallback_equivalence55",
+  "suite": "wav_fallback_equivalence55",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_wav_fallback_equivalence55",
+    "suite": "wav_fallback_equivalence55",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_wav_fallback_equivalence55",
+    "suite": "wav_fallback_equivalence55",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_wav_fallback_equivalence55",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_wav_fallback_equivalence55\\sim\\tb_v3_wav_fallback_equivalence55",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_wav_fallback_equivalence55",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 100615,
+      "elapsed_s": 8.219,
+      "suite": "wav_fallback_equivalence55",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_wav_fallback_equivalence55\\sim\\tb_v3_wav_fallback_equivalence55"
+    },
+    "input_count": 43,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_wav_fallback_equivalence55",
+      "suite": "wav_fallback_equivalence55",
+      "ordered_analyzed_HDL": 30,
+      "manifest": "safevision/build/manifests/wav_fallback_equivalence55_sim.json",
+      "current_manifest_sha256": "3100738ee9ce2660126a2c310b5169fbb82d3917844fb80064c3e2128145b4ff",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "680ee8e4038f4e1c651b5fc3e6e151562d5c499f3df91f340fdde4b596cbce23",
+    "metadata_sha256": "2ae0cdf502c244290ba3ae4320eb717a99910dd4cfcfb29cfe91d3ffc2c89611",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_wav_fallback_equivalence55\\result.json",
+      "sha256": "2ae0cdf502c244290ba3ae4320eb717a99910dd4cfcfb29cfe91d3ffc2c89611"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_wav_fallback_equivalence55\\sim.log",
+      "sha256": "680ee8e4038f4e1c651b5fc3e6e151562d5c499f3df91f340fdde4b596cbce23"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_wav_fallback_equivalence55\\sources.sha256.json",
+      "sha256": "7e86d4ba9bce5765149a061236c6950d289eb8701eed501a3a5006ca90733105"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_wav_fallback_equivalence55\\original.producer.metadata.json",
+      "sha256": "2ae0cdf502c244290ba3ae4320eb717a99910dd4cfcfb29cfe91d3ffc2c89611"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_wav_fallback_equivalence55\\producer.provenance.json",
+      "sha256": "16dd1dd261ad24ae7bcc3cf4e6b04bbe0dfa967ab867da0dc66e3ccd40571d4f"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_wav_fallback_equivalence55\\sources.prj",
+      "sha256": "6e05152b59230d8dd088121265515149ef07463c4daf8abb65ec4830f0e2ae74"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "safevision/rtl/storage/v3_fat_name_store.v",
+    "safevision/rtl/storage/fat32_directory_scanner.v"
+  ],
+  "tops": [
+    "tb_v3_directory_limit550"
+  ],
+  "timeouts": {
+    "tb_v3_directory_limit550": 600
+  },
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "generator_dependencies": [],
+  "generated_assets": []
+}

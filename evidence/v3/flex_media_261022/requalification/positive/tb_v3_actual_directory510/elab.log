@@ -1,0 +1,14 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_v3_actual_directory510 -s tb_v3_actual_directory510 --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'name_address' remains unconnected for this instance [D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_actual_directory510.sv:6]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.fat32_directory_scanner(SV_MEDIA...
+Compiling module work.file_index
+Compiling module work.tb_v3_actual_directory510
+Built simulation snapshot tb_v3_actual_directory510

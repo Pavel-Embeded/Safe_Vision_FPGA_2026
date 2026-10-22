@@ -1,0 +1,72 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_final_crc/xsim_script.tcl
+# xsim {tb_v3_final_crc} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[EVENT] t=338000 pl=1 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=4646513000 pl=2 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5064538000 pl=3 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5482563000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900738000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900863000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900888000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900963000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5901063000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=00/00 sk=00
+[EVENT] t=6310863000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=6310963000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=6311163000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=6320038000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6320113000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738313000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738413000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738438000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738513000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738613000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7148413000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7148513000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7148713000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7157613000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7157688000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7575863000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7575988000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7576013000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7576088000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7576188000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7985988000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7986088000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7986288000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7995163000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7995238000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413413000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413538000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413563000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413638000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413738000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8823538000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8823638000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8823838000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8832713000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8832813000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9250988000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9251113000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9251213000 pl=8 sink=0 count=0 mr=1 active=1 kick=1 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9251288000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[PROGRESS] state=8 caches=0 rejected=4
+[EVENT] t=834404063000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=02/22 sk=00
+[EVENT] t=834404088000 pl=13 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=02/22 sk=00
+[EVENT] t=834404163000 pl=4 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=02/22 sk=00
+[PASS]  final-sector CRC fault rejected after four invalid header files
+[PASS]             final-sector error code, detail and file ID retained
+[PASS]               failed SD transaction never grants image ownership
+[PASS] ad last sector bytes never reach writer or producer CRC approval
+PASS tb_v3_final_crc errors=0 comparisons=153280
+$finish called at time : 834404175 ns : File "D:/Codex/svflex537/candidate609/safevision/verification/unit/tb_v3_final_crc.sv" Line 20
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:04:32 . Memory (MB): peak = 219.477 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 16:26:23 2026...

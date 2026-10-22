@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_vblank_hd\\sim\\tb_v3_volume_columns_vblank_hd",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_vblank_hd\\sim\\tb_v3_volume_columns_vblank_hd\\result.json",
+  "original_metadata_sha256": "11fb1b51a6fb02a3781ff0b69f9847590be69631f8992c06bebad76b56121c31",
+  "original_log_sha256": "a61d0c9b20707a2ebf0e61f001bc7d9923b13b28c2dd072d90772efae38d3d48",
+  "matrix_definition": {
+    "top": "tb_v3_volume_columns_vblank_hd",
+    "suite": "volume_columns_vblank_hd",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

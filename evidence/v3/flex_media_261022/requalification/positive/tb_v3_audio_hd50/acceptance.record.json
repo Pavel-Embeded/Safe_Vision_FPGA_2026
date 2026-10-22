@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_audio_hd50",
+  "top": "tb_v3_audio_hd50",
+  "suite": "audio_modes",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_audio_hd50",
+    "suite": "audio_modes",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_audio_hd50",
+    "suite": "audio_modes",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_hd50",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_audio_hd50\\sim\\tb_v3_audio_hd50",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_audio_hd50",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2700,
+      "elapsed_s": 72.25,
+      "suite": "audio_modes",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_audio_hd50\\sim\\tb_v3_audio_hd50"
+    },
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_audio_hd50",
+      "suite": "audio_modes",
+      "ordered_analyzed_HDL": 29,
+      "manifest": "safevision/build/manifests/audio_modes_sim.json",
+      "current_manifest_sha256": "e6c1f3b46518be020a53addcf1e0e9e792d9b19203c03e0a144759b83892d3d0",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "617a04caeb4b3f5b8056a4f8cf916eaa0186ed1124775b62228fb0c9679e4dbb",
+    "metadata_sha256": "63914e8fd7cd09742429c6f794ebe0799f4684432e173d64c284b327e9fed01f",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_hd50\\result.json",
+      "sha256": "63914e8fd7cd09742429c6f794ebe0799f4684432e173d64c284b327e9fed01f"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_hd50\\sim.log",
+      "sha256": "617a04caeb4b3f5b8056a4f8cf916eaa0186ed1124775b62228fb0c9679e4dbb"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_hd50\\sources.sha256.json",
+      "sha256": "63e47eed309b541b8c62e36e217fd172a85573cbb727e3b4023e536affc87034"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_hd50\\original.producer.metadata.json",
+      "sha256": "63914e8fd7cd09742429c6f794ebe0799f4684432e173d64c284b327e9fed01f"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_hd50\\producer.provenance.json",
+      "sha256": "d9df37c2d75d1b416c2be9503d85f0f783e602a7e1dace7b79e971d02a564d83"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_hd50\\sources.prj",
+      "sha256": "15ab83ddd574a0660f0439b651cd9f396c2b136ced4bddcd74d8f64f836b6c2e"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

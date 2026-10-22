@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "credit_wrong_slice",
+  "top": "tb_v3_ingress_credit",
+  "suite": "ingress_credit",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "credit_wrong_slice",
+    "target": "safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v",
+    "suite": "ingress_credit",
+    "top": "tb_v3_ingress_credit",
+    "patch": [
+      {
+        "before": "pair_credit_product[19:11]",
+        "after": "pair_credit_product[20:12]"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "credit_wrong_slice",
+    "target": "safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v",
+    "suite": "ingress_credit",
+    "top": "tb_v3_ingress_credit",
+    "patch": [
+      {
+        "before": "pair_credit_product[19:11]",
+        "after": "pair_credit_product[20:12]"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\credit_wrong_slice",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\credit_wrong_slice\\sim\\tb_v3_ingress_credit",
+  "checked": {
+    "metadata": {
+      "mutation": "credit_wrong_slice",
+      "target": "safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v",
+      "suite": "ingress_credit",
+      "top": "tb_v3_ingress_credit",
+      "patch": [
+        {
+          "before": "pair_credit_product[19:11]",
+          "after": "pair_credit_product[20:12]"
+        }
+      ],
+      "original_sha256": "f1f2d07e4b31a5f5bccaa38d8ee06da84a05a1dc80ff30f89d0eee0cec824c62",
+      "mutated_sha256": "4409b45c2d9b722e4a4d10344e62bb7ba18c5fa9cfddf0759f48fa2eeeed365c",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        6136
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\credit_wrong_slice\\sim\\tb_v3_ingress_credit",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\credit_wrong_slice\\sim\\tb_v3_ingress_credit"
+    },
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_ingress_credit",
+      "suite": "ingress_credit",
+      "ordered_analyzed_HDL": 29,
+      "manifest": "safevision/build/manifests/ingress_credit_sim.json",
+      "current_manifest_sha256": "5866c7532033b7bbc34f98a3cbbf258c2dbe1ed88b370ef160d4da55ce727256",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      6136
+    ],
+    "log_sha256": "efe7ace23d42ff256a940ae865f4fd54b87d60aeb06d393fc98575909302b095",
+    "metadata_sha256": "3b42c3c77bd05a71160e1daaab133a05ea7fced34710bc7e5343c6088b816f6c",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\credit_wrong_slice\\case.json",
+      "sha256": "3b42c3c77bd05a71160e1daaab133a05ea7fced34710bc7e5343c6088b816f6c"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\credit_wrong_slice\\sim.log",
+      "sha256": "efe7ace23d42ff256a940ae865f4fd54b87d60aeb06d393fc98575909302b095"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\credit_wrong_slice\\sources.sha256.json",
+      "sha256": "7cca67aa1e74bf5652b404e417601c14f082a450ae1fad877ef9bbb8d8188e95"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\credit_wrong_slice\\original.producer.metadata.json",
+      "sha256": "3b42c3c77bd05a71160e1daaab133a05ea7fced34710bc7e5343c6088b816f6c"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\credit_wrong_slice\\producer.provenance.json",
+      "sha256": "ef9449daf696e1bb90d3257f92d65075341792024f7c2f026027e6cdaf81ab07"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\credit_wrong_slice\\sources.prj",
+      "sha256": "e747e2a2898e32e7b501c7c9a46bd9aef132abce9dc245a6720ee9a4092b434f"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\credit_wrong_slice\\mutant.v",
+      "sha256": "4409b45c2d9b722e4a4d10344e62bb7ba18c5fa9cfddf0759f48fa2eeeed365c"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

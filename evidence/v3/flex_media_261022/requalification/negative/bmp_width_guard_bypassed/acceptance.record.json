@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "bmp_width_guard_bypassed",
+  "top": "tb_v3_bmp_header199",
+  "suite": "bmp_header199",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "bmp_width_guard_bypassed",
+    "target": "safevision/rtl/media/bmp_parser.v",
+    "suite": "bmp_header199",
+    "top": "tb_v3_bmp_header199",
+    "patch": [
+      {
+        "before": "width_lo_r<=(FLEX_PIXELS?16384:1920)",
+        "after": "1'b1"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "bmp_width_guard_bypassed",
+    "target": "safevision/rtl/media/bmp_parser.v",
+    "suite": "bmp_header199",
+    "top": "tb_v3_bmp_header199",
+    "patch": [
+      {
+        "before": "width_lo_r<=(FLEX_PIXELS?16384:1920)",
+        "after": "1'b1"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\bmp_width_guard_bypassed",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\bmp_width_guard_bypassed\\sim\\tb_v3_bmp_header199",
+  "checked": {
+    "metadata": {
+      "mutation": "bmp_width_guard_bypassed",
+      "target": "safevision/rtl/media/bmp_parser.v",
+      "suite": "bmp_header199",
+      "top": "tb_v3_bmp_header199",
+      "patch": [
+        {
+          "before": "width_lo_r<=(FLEX_PIXELS?16384:1920)",
+          "after": "1'b1"
+        }
+      ],
+      "original_sha256": "dc697612fb353985941294c7e7bcc0ad1aaf8d0a6068290ab1003441c51381da",
+      "mutated_sha256": "a56f19108e6cbf685b8967cec5939e60ed5fc990a0a785e33a1156df41f0c072",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\bmp_width_guard_bypassed\\sim\\tb_v3_bmp_header199",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\bmp_width_guard_bypassed\\sim\\tb_v3_bmp_header199"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_bmp_header199",
+      "suite": "bmp_header199",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/bmp_header199_sim.json",
+      "current_manifest_sha256": "9cc224f179b0c81fbc5d9121043bad1838bb7c84fd7b9302c5c93b09c95b1659",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1
+    ],
+    "log_sha256": "fec9053725e48d2ae1c66a850165d1c0bffe632c697455bf8ba9aa63a6b8d32d",
+    "metadata_sha256": "f8c1f4937368b6c13b41ae4ad6387bccc4caf6de1040f492d8427d55c86ac86b",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\bmp_width_guard_bypassed\\case.json",
+      "sha256": "f8c1f4937368b6c13b41ae4ad6387bccc4caf6de1040f492d8427d55c86ac86b"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\bmp_width_guard_bypassed\\sim.log",
+      "sha256": "fec9053725e48d2ae1c66a850165d1c0bffe632c697455bf8ba9aa63a6b8d32d"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\bmp_width_guard_bypassed\\sources.sha256.json",
+      "sha256": "2b75599d231173feaa7c9a11f39044ed4d8c44dd87dad5ed47c63edbf3393249"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\bmp_width_guard_bypassed\\original.producer.metadata.json",
+      "sha256": "f8c1f4937368b6c13b41ae4ad6387bccc4caf6de1040f492d8427d55c86ac86b"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\bmp_width_guard_bypassed\\producer.provenance.json",
+      "sha256": "2433975f2f3a15eedfa5b288961ac8beeff154cf46b8d9913de37c92bae75155"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\bmp_width_guard_bypassed\\sources.prj",
+      "sha256": "536fd3521c52755ca5926e7e87831de83b37f3ae3e517bc921da84dfe1c51527"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\bmp_width_guard_bypassed\\mutant.v",
+      "sha256": "a56f19108e6cbf685b8967cec5939e60ed5fc990a0a785e33a1156df41f0c072"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

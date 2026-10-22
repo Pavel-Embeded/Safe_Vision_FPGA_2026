@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\directory_cluster_offset_one_early\\sim\\tb_v3_directory_lba70",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\directory_cluster_offset_one_early\\sim\\tb_v3_directory_lba70\\case.json",
+  "original_metadata_sha256": "aa03454a3f252dd215d78d7cc8a16333ed7b0cff06c859a1120e1d93c60617b5",
+  "original_log_sha256": "34805a642657ab0fe6e282e0475a920aa5be4e4531a53b6bcd04097f99effd52",
+  "matrix_definition": {
+    "mutation": "directory_cluster_offset_one_early",
+    "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+    "suite": "directory_lba70",
+    "top": "tb_v3_directory_lba70",
+    "patch": [
+      {
+        "before": "cluster_sectors(wk_next_clus,sec_per_clus)",
+        "after": "cluster_sectors(wk_next_clus-1,sec_per_clus)"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

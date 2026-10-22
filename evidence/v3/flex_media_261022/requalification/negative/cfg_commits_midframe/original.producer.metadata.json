@@ -1,0 +1,24 @@
+{
+  "mutation": "cfg_commits_midframe",
+  "target": "safevision/rtl/video/v3_video_display_core.v",
+  "suite": "handbook_cfg_atomic",
+  "top": "tb_v3_handbook_cfg_atomic",
+  "patch": [
+    {
+      "before": "if(cfg_received&&frame_start)begin",
+      "after": "if(cfg_received)begin"
+    }
+  ],
+  "original_sha256": "9869c1c999d40cf0c86899c352c931c83d30c7a98a645b789c64e58853a4b2f7",
+  "mutated_sha256": "0aa14ee77feebbf88d197c136a74d6bc9184e8ee5798db27b175206ef2022b32",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    96
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic"
+}

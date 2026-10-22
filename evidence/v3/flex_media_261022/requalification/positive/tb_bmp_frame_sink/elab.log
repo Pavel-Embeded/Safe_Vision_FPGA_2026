@@ -1,0 +1,23 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_bmp_frame_sink -s tb_bmp_frame_sink --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'write_drained' remains unconnected for this instance [D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_bmp_frame_sink.sv:128]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.a_pixel_fifo_gray_sync(ADDR_WIDT...
+Compiling module work.a_pixel_fifo_gray_sync(ADDR_WIDT...
+Compiling module work.a_pixel_fifo_eram(ADDRWIDTH_A=10...
+Compiling module work.a_pixel_fifo_ip(AL_EMPTY_NUM=32)
+Compiling module work.a_pixel_fifo
+Compiling module work.frame_address_gen
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer(GAP_TIMEOUT=32'b011...
+Compiling module work.bmp_frame_write_bridge(GAP_TIMEO...
+Compiling module work.bmp_frame_sink(GAP_TIMEOUT=32'b0...
+Compiling module work.tb_bmp_frame_sink
+Built simulation snapshot tb_bmp_frame_sink

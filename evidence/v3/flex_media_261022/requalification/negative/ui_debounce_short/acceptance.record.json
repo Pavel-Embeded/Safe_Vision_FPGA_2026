@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "ui_debounce_short",
+  "top": "tb_v3_ui_boundary409",
+  "suite": "ui_boundary409",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "ui_debounce_short",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "ui_boundary409",
+    "top": "tb_v3_ui_boundary409",
+    "patch": [
+      {
+        "before": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV+1",
+        "after": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "ui_debounce_short",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "ui_boundary409",
+    "top": "tb_v3_ui_boundary409",
+    "patch": [
+      {
+        "before": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV+1",
+        "after": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ui_debounce_short",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\ui_debounce_short",
+  "checked": {
+    "metadata": {
+      "mutation": "ui_debounce_short",
+      "target": "safevision/rtl/control/v3_user_controls.v",
+      "suite": "ui_boundary409",
+      "top": "tb_v3_ui_boundary409",
+      "patch": [
+        {
+          "before": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV+1",
+          "after": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative417\\n\\ui_debounce_short",
+      "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+      "mutated_sha256": "531e14c4012cb56f4ee2fbae2c7d776ed785c64c87cf02c69c9de101ad09153e",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        2
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative417\\n\\ui_debounce_short\\sim\\tb_v3_ui_boundary409"
+    },
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_ui_boundary409",
+      "suite": "ui_boundary409",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/ui_boundary409_sim.json",
+      "current_manifest_sha256": "ec3695091092ef3b968ca7511695a78e84957711cddaa3b463b2884ba5d8938e",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      2
+    ],
+    "log_sha256": "f117e5a44e55fa5506e605926ddab633ef742b302afdd9202c48642d597ef820",
+    "metadata_sha256": "980afeaacb10c7658e2c7e0952a9e578df5628c7bda020911b500986301c58e8",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ui_debounce_short\\case.json",
+      "sha256": "980afeaacb10c7658e2c7e0952a9e578df5628c7bda020911b500986301c58e8"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ui_debounce_short\\sim.log",
+      "sha256": "f117e5a44e55fa5506e605926ddab633ef742b302afdd9202c48642d597ef820"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ui_debounce_short\\sources.sha256.json",
+      "sha256": "3fe9edf6ec18b5ca29335a754f55c6a9100e81b654e1f1d6e47ab4add1524063"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ui_debounce_short\\original.producer.metadata.json",
+      "sha256": "980afeaacb10c7658e2c7e0952a9e578df5628c7bda020911b500986301c58e8"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ui_debounce_short\\producer.provenance.json",
+      "sha256": "0fa06c5a15fc2f59f451c3da4c058127724027d2d3420fcc1c99d736bdf65cda"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ui_debounce_short\\sources.prj",
+      "sha256": "139053bacabce4e04a7949d7b0d32e9978ca7867112d09734280c8b12c07f98f"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ui_debounce_short\\mutant.v",
+      "sha256": "531e14c4012cb56f4ee2fbae2c7d776ed785c64c87cf02c69c9de101ad09153e"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

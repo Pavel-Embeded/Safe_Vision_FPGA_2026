@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_uart\\sim\\tb_v3_uart",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_uart\\sim\\tb_v3_uart\\result.json",
+  "original_metadata_sha256": "0c5865017247e81c220ea3778d8e21664931dd46d378ba34577aed45b95a3182",
+  "original_log_sha256": "37d5d84e9717b82d67f8aff4300da6a3fe4283a48321b89ec7e2803ba30c1359",
+  "matrix_definition": {
+    "top": "tb_v3_uart",
+    "suite": "v3",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

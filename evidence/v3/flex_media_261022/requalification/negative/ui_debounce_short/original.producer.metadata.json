@@ -1,0 +1,23 @@
+{
+  "mutation": "ui_debounce_short",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "ui_boundary409",
+  "top": "tb_v3_ui_boundary409",
+  "patch": [
+    {
+      "before": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV+1",
+      "after": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\ui_debounce_short",
+  "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "mutated_sha256": "531e14c4012cb56f4ee2fbae2c7d776ed785c64c87cf02c69c9de101ad09153e",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\ui_debounce_short\\sim\\tb_v3_ui_boundary409"
+}

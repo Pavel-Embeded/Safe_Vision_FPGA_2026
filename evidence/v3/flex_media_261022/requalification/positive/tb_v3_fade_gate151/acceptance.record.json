@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_fade_gate151",
+  "top": "tb_v3_fade_gate151",
+  "suite": "fade_gate151",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_fade_gate151",
+    "suite": "fade_gate151",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_fade_gate151",
+    "suite": "fade_gate151",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fade_gate151",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_fade_gate151",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_fade_gate151",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2296969,
+      "elapsed_s": 15.265,
+      "suite": "fade_gate151",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_fade_gate151\\sim\\tb_v3_fade_gate151"
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_fade_gate151",
+      "suite": "fade_gate151",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/fade_gate151_sim.json",
+      "current_manifest_sha256": "bc47ac2e4839aaa28ad4e055de19611bbcff32a2357d54d6957b7b317454a677",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "bf0cb9d6d1775160797785f0a81071277ae1665ad8c60d6c25dcd6a3b1fdefc6",
+    "metadata_sha256": "23abadab03af30c9787c9365b4a3d78229a80edc0df0855aea85e76e2c71dcb9",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fade_gate151\\result.json",
+      "sha256": "23abadab03af30c9787c9365b4a3d78229a80edc0df0855aea85e76e2c71dcb9"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fade_gate151\\sim.log",
+      "sha256": "bf0cb9d6d1775160797785f0a81071277ae1665ad8c60d6c25dcd6a3b1fdefc6"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fade_gate151\\sources.sha256.json",
+      "sha256": "1e1db71b67b418d5cdfd81a0502c56fd58003a4076a69b2c991b8cd0a7a3e566"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fade_gate151\\original.producer.metadata.json",
+      "sha256": "23abadab03af30c9787c9365b4a3d78229a80edc0df0855aea85e76e2c71dcb9"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fade_gate151\\producer.provenance.json",
+      "sha256": "eca18332fa170843255b96235159d44e6eec9071411cb212e84683f6b9093e2b"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fade_gate151\\sources.prj",
+      "sha256": "7c933b3f2c1066be854e0c92af4033b118c104eb43fab6c7017bd21eb77c93f5"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

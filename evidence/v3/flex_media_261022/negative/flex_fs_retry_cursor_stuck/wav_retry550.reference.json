@@ -1,0 +1,22 @@
+{
+  "PCM_per_track": 600,
+  "primary": {
+    "cluster": 4,
+    "size": 54
+  },
+  "bad_candidates": [
+    4,
+    5
+  ],
+  "valid_name": "ANYNAME.WAV",
+  "valid_cluster_chain": [
+    16,
+    28,
+    17,
+    29,
+    18,
+    30
+  ],
+  "wav_size": 3054,
+  "oracle": "struct RIFF/PCM data; independent signed stereo integer formula"
+}

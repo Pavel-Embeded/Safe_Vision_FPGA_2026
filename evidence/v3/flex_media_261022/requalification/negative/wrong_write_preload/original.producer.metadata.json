@@ -1,0 +1,23 @@
+{
+  "mutation": "wrong_write_preload",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v",
+  "suite": "bram_adapter_aligned",
+  "top": "tb_bram_adapter_aligned",
+  "patch": [
+    {
+      "before": "wi[3:0]+4'd1",
+      "after": "wi[3:0]+4'd0"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\wrong_write_preload",
+  "original_sha256": "239c0ae596f246f1330f5e99e5dce2059584ed71fabbacbd82ae6ab8cd2bca60",
+  "mutated_sha256": "18fdc9e5869367d933237902f57df4e9eafdf5a40f246c3c719d0abb76de8547",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    4
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\wrong_write_preload\\sim\\tb_bram_adapter_aligned"
+}

@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "related_status_payload_inverted",
+  "top": "tb_v3_related_status_capture",
+  "suite": "related_status_capture",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "related_status_payload_inverted",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v",
+    "suite": "related_status_capture",
+    "top": "tb_v3_related_status_capture",
+    "patch": [
+      {
+        "before": "data<=source_data;",
+        "after": "data<=~source_data;"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "related_status_payload_inverted",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v",
+    "suite": "related_status_capture",
+    "top": "tb_v3_related_status_capture",
+    "patch": [
+      {
+        "before": "data<=source_data;",
+        "after": "data<=~source_data;"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\related_status_payload_inverted",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\related_status_payload_inverted",
+  "checked": {
+    "metadata": {
+      "name": "related_status_payload_inverted",
+      "mutation": "related_status_payload_inverted",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v",
+      "before": "data<=source_data;",
+      "after": "data<=~source_data;",
+      "suite": "related_status_capture",
+      "top": "tb_v3_related_status_capture",
+      "original_sha256": "91cf68fd9834bc2e8020c55db82881e216d331b989a5623101da64030e0fcf30",
+      "mutated_sha256": "7e403bab470c73f3e5e2469e6feee977500aada2d8b1a228e6262a953de40c79",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        4232
+      ],
+      "previous_evidence": "evidence/v3/board_repair_113_33_20261017/negative/related_status_payload_inverted",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\related_status_payload_inverted",
+      "patch": [
+        {
+          "before": "data<=source_data;",
+          "after": "data<=~source_data;"
+        }
+      ],
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\related_status_payload_inverted"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_related_status_capture",
+      "suite": "related_status_capture",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/related_status_capture_sim.json",
+      "current_manifest_sha256": "655b55c33855cb5a45a82952b48d4896ac89877cc2d48fd3e145c937417533ac",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      4232
+    ],
+    "log_sha256": "3a0efd08bd9b618f1655b8c0cfaadee5c0318266886c8163d45bc4eae9a37c37",
+    "metadata_sha256": "74493005bc8bd2b3a48de22725587bdf3490bbdb83e99223758474ce8e21034e",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\related_status_payload_inverted\\case.json",
+      "sha256": "74493005bc8bd2b3a48de22725587bdf3490bbdb83e99223758474ce8e21034e"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\related_status_payload_inverted\\sim.log",
+      "sha256": "3a0efd08bd9b618f1655b8c0cfaadee5c0318266886c8163d45bc4eae9a37c37"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\related_status_payload_inverted\\sources.sha256.json",
+      "sha256": "d501cd854595ff96689fa21d0b5fcab9b87bf6e68e70a453820d9d6e0f32a4b0"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\related_status_payload_inverted\\original.producer.metadata.json",
+      "sha256": "74493005bc8bd2b3a48de22725587bdf3490bbdb83e99223758474ce8e21034e"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\related_status_payload_inverted\\producer.provenance.json",
+      "sha256": "a6f15e45e5bf80c9df5df3cd2c7b335fb27b4c4f368a8f99cabb1ab935c1c7e3"
+    },
+    "sources.after.sha256.json": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\related_status_payload_inverted\\sources.after.sha256.json",
+      "sha256": "d501cd854595ff96689fa21d0b5fcab9b87bf6e68e70a453820d9d6e0f32a4b0"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\related_status_payload_inverted\\mutant.v",
+      "sha256": "7e403bab470c73f3e5e2469e6feee977500aada2d8b1a228e6262a953de40c79"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

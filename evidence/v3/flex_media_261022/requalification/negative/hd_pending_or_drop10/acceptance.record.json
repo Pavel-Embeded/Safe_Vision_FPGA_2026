@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "hd_pending_or_drop10",
+  "top": "tb_v3_hd_pending_or",
+  "suite": "hd_pending_or",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "hd_pending_or_drop10",
+    "target": "safevision/rtl/hd/v3_supervisor.v",
+    "suite": "hd_pending_or",
+    "top": "tb_v3_hd_pending_or",
+    "patch": [
+      {
+        "before": "pending_groups[2]=|pending_alert[10:8]",
+        "after": "pending_groups[2]=|pending_alert[9:8]"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "hd_pending_or_drop10",
+    "target": "safevision/rtl/hd/v3_supervisor.v",
+    "suite": "hd_pending_or",
+    "top": "tb_v3_hd_pending_or",
+    "patch": [
+      {
+        "before": "pending_groups[2]=|pending_alert[10:8]",
+        "after": "pending_groups[2]=|pending_alert[9:8]"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_pending_or_drop10",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_pending_or_drop10\\sim\\tb_v3_hd_pending_or",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_pending_or_drop10",
+      "target": "safevision/rtl/hd/v3_supervisor.v",
+      "suite": "hd_pending_or",
+      "top": "tb_v3_hd_pending_or",
+      "patch": [
+        {
+          "before": "pending_groups[2]=|pending_alert[10:8]",
+          "after": "pending_groups[2]=|pending_alert[9:8]"
+        }
+      ],
+      "original_sha256": "2e7e07748fe4856576e9690cf237f6a34f4a18800ba1cc498891dec53698c0bd",
+      "mutated_sha256": "e761cd563224f4054c1d8382ee23eca52d47fcd46fd099bdecb36fa12a115579",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_pending_or_drop10\\sim\\tb_v3_hd_pending_or",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\hd_pending_or_drop10\\sim\\tb_v3_hd_pending_or"
+    },
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_pending_or",
+      "suite": "hd_pending_or",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/hd_pending_or_sim.json",
+      "current_manifest_sha256": "1c31b248d5c76f1421de2d2555cc13e8696eadbbb2ebeec21296688116a67f4d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1
+    ],
+    "log_sha256": "ce183d97833733a5357cd3e2e18fb64596fbda0cf1389b60930992f77e77ed8c",
+    "metadata_sha256": "9de671ca05680192d8a88e2efd6a4a0633a8c698a87c9a055771562d6d216a99",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_pending_or_drop10\\case.json",
+      "sha256": "9de671ca05680192d8a88e2efd6a4a0633a8c698a87c9a055771562d6d216a99"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_pending_or_drop10\\sim.log",
+      "sha256": "ce183d97833733a5357cd3e2e18fb64596fbda0cf1389b60930992f77e77ed8c"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_pending_or_drop10\\sources.sha256.json",
+      "sha256": "993cbe9250f1505ec95853dba61369992c148cf7b1218c37e5d24c58d3f4cb16"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_pending_or_drop10\\original.producer.metadata.json",
+      "sha256": "9de671ca05680192d8a88e2efd6a4a0633a8c698a87c9a055771562d6d216a99"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_pending_or_drop10\\producer.provenance.json",
+      "sha256": "2021c67757f8d803fd4a34aeb5bd6d29ab6b02f03e842bd660ffba05c5cc022a"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_pending_or_drop10\\sources.prj",
+      "sha256": "e8c2f9affab24095bef425c33e300f3c7042510c7c96eae99ded2c50866c317d"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_pending_or_drop10\\mutant.v",
+      "sha256": "e761cd563224f4054c1d8382ee23eca52d47fcd46fd099bdecb36fa12a115579"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

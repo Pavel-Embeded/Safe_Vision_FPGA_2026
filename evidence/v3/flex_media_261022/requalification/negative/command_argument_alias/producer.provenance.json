@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\command_argument_alias",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\command_argument_alias\\case.json",
+  "original_metadata_sha256": "dadae712ba19b45586f6633451e86bd4e0f925b678e497d92ffcdbad92c31feb",
+  "original_log_sha256": "e961521b5b9e3352caf891ed7b6afcc505e9e41428592ad597fdc145ace400d9",
+  "matrix_definition": {
+    "mutation": "command_argument_alias",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "controls_pipeline_equivalence",
+    "top": "tb_v3_controls_pipeline_equivalence",
+    "patch": [
+      {
+        "before": "argument_q<=command_value[31:9]=={23{command_value[8]}}?command_value[8:0]:9'h100;",
+        "after": "argument_q<=command_value[8:0];"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

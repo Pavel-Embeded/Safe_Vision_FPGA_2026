@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Thu Oct 22 17:53:22 2026
+# Process ID: 35228
+# Current directory: D:/Codex/svflex537/original618/positive/tb_v3_sample_credit/sim/tb_v3_sample_credit
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_sample_credit/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/original618/positive/tb_v3_sample_credit/sim/tb_v3_sample_credit/sim.log
+# Journal file: D:/Codex/svflex537/original618/positive/tb_v3_sample_credit/sim/tb_v3_sample_credit\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_sample_credit/xsim_script.tcl
+# xsim {tb_v3_sample_credit} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] all1024 FIFO levels and4 partial packet states exactly match independent integer division,4096 public credit values,no handshake latency change
+[TB] tb_v3_sample_credit done comparisons=4096 errors=0
+$finish called at time : 4096 ns : File "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_sample_credit.sv" Line 13
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 17:53:27 2026...

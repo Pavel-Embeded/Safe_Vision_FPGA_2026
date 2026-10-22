@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\parser_digit_seen\\sim\\tb_v3_parser_digit_seen",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\parser_digit_seen\\sim\\tb_v3_parser_digit_seen\\case.json",
+  "original_metadata_sha256": "e463796e084b549a056fc8fec2db7429b9cf24b8d8524022883cfa8844163d84",
+  "original_log_sha256": "934782ec17dec7985bd4a530395a373f25dc877ed71433c941fee0c698d9e713",
+  "matrix_definition": {
+    "mutation": "parser_digit_seen",
+    "target": "safevision/rtl/control/v3_command_parser.v",
+    "suite": "parser_digit_seen",
+    "top": "tb_v3_parser_digit_seen",
+    "patch": [
+      {
+        "before": "        number<=decimal_next;digit_seen<=1'b1;end",
+        "after": "        number<=decimal_next;digit_seen<=1'b0;end"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

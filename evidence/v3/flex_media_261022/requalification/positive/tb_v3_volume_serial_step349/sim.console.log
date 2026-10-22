@@ -1,0 +1,16 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_volume_serial_step349/xsim_script.tcl
+# xsim {tb_v3_volume_serial_step349} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] all200 legal restoring-division trial states, both input bits,64 lower-bit patterns including every basis/complement, real HDL next-state
+[TB] tb_v3_volume_serial_step349 done errors=0 comparisons=64000
+$finish called at time : 38401 ns : File "D:/Codex/svq390/source/safevision/verification/unit/tb_v3_volume_serial_step349.sv" Line 25
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:08:31 2026...

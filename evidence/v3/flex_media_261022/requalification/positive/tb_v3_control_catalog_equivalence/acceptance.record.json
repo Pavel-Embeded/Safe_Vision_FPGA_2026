@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_control_catalog_equivalence",
+  "top": "tb_v3_control_catalog_equivalence",
+  "suite": "control_catalog_equivalence",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_control_catalog_equivalence",
+    "suite": "control_catalog_equivalence",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_control_catalog_equivalence",
+    "suite": "control_catalog_equivalence",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_control_catalog_equivalence",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_control_catalog_equivalence",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_control_catalog_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 5000000,
+      "elapsed_s": 14.75,
+      "suite": "control_catalog_equivalence",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svui403\\tb_v3_control_catalog_equivalence\\sim\\tb_v3_control_catalog_equivalence"
+    },
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_control_catalog_equivalence",
+      "suite": "control_catalog_equivalence",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/control_catalog_equivalence_sim.json",
+      "current_manifest_sha256": "4932c3b11cce37460ef026683ed84e8d11752a1b4c8f52054ab9977757f98fc7",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "d0eb0fbca73c8fbba0006b3a1b37115f61960af808f4f0edf1a42c99e9dafff5",
+    "metadata_sha256": "2b0e7b407542da170708486f743fff52d03ded6ce8624510df9b3769fcc7a081",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_control_catalog_equivalence\\result.json",
+      "sha256": "2b0e7b407542da170708486f743fff52d03ded6ce8624510df9b3769fcc7a081"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_control_catalog_equivalence\\sim.log",
+      "sha256": "d0eb0fbca73c8fbba0006b3a1b37115f61960af808f4f0edf1a42c99e9dafff5"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_control_catalog_equivalence\\sources.sha256.json",
+      "sha256": "f40e475048f1a88a03f689e686c842ea191b8ec8f83da24dabf95c1cb096a5be"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_control_catalog_equivalence\\original.producer.metadata.json",
+      "sha256": "2b0e7b407542da170708486f743fff52d03ded6ce8624510df9b3769fcc7a081"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_control_catalog_equivalence\\producer.provenance.json",
+      "sha256": "dede1fd2cb331074b03ae5d2c2305d87f17cdea2864af3a03714b261f082b641"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_control_catalog_equivalence\\sources.prj",
+      "sha256": "4768734909662ba2a45750302fb60f091f3e86df03e747d04d91624019a9eef6"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

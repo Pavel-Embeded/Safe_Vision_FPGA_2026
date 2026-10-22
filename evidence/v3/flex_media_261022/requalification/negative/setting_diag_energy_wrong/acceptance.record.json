@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "setting_diag_energy_wrong",
+  "top": "tb_v3_setting_wave_control_hd198",
+  "suite": "setting_wave_control_hd198",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "setting_diag_energy_wrong",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+    "suite": "setting_wave_control_hd198",
+    "top": "tb_v3_setting_wave_control_hd198",
+    "patch": [
+      {
+        "before": "{18'd0,energy,volume}",
+        "after": "{18'd0,7'd0,volume}"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "setting_diag_energy_wrong",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+    "suite": "setting_wave_control_hd198",
+    "top": "tb_v3_setting_wave_control_hd198",
+    "patch": [
+      {
+        "before": "{18'd0,energy,volume}",
+        "after": "{18'd0,7'd0,volume}"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\setting_diag_energy_wrong",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198",
+  "checked": {
+    "metadata": {
+      "mutation": "setting_diag_energy_wrong",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "setting_wave_control_hd198",
+      "top": "tb_v3_setting_wave_control_hd198",
+      "patch": [
+        {
+          "before": "{18'd0,energy,volume}",
+          "after": "{18'd0,7'd0,volume}"
+        }
+      ],
+      "original_sha256": "624cb7e28b9039d87deab6fb5a19ea8912f27f9a45850c590abf4e89a0123447",
+      "mutated_sha256": "46ff99f578e7045332cb7e83c4992af0940b3f12a385fac40359270d2f30921d",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        3
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198"
+    },
+    "input_count": 122,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_setting_wave_control_hd198",
+      "suite": "setting_wave_control_hd198",
+      "ordered_analyzed_HDL": 106,
+      "manifest": "safevision/build/manifests/setting_wave_control_hd198_sim.json",
+      "current_manifest_sha256": "acdb4440a8d7579f071f089d31d070df05f5a0e1ffac6e8a515a2d64e9f85362",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      3
+    ],
+    "log_sha256": "8d23fbe890be2233e70725ae910f44e4cc9a6c1938f8c9aa9a532d5d91fa93ec",
+    "metadata_sha256": "aa11dd184c238547f849427aacc69977da0c2f97ac3e1a180ee9470b0c3387e3",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\setting_diag_energy_wrong\\case.json",
+      "sha256": "aa11dd184c238547f849427aacc69977da0c2f97ac3e1a180ee9470b0c3387e3"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\setting_diag_energy_wrong\\sim.log",
+      "sha256": "8d23fbe890be2233e70725ae910f44e4cc9a6c1938f8c9aa9a532d5d91fa93ec"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\setting_diag_energy_wrong\\sources.sha256.json",
+      "sha256": "dd1e42e91a7b8ee95b7d4e25f0557b14ddc1c5c3179e43b5750f124ba1d30d47"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\setting_diag_energy_wrong\\original.producer.metadata.json",
+      "sha256": "aa11dd184c238547f849427aacc69977da0c2f97ac3e1a180ee9470b0c3387e3"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\setting_diag_energy_wrong\\producer.provenance.json",
+      "sha256": "dbd03ff0800a1ee7d7f43344fa446d196ebbd931fa8e0991e0e2cd7ed3f506a5"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\setting_diag_energy_wrong\\sources.prj",
+      "sha256": "8feb40dc9a856386da638e38b140032da0a502fc67c3126db1499d44f6cbd7e4"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\setting_diag_energy_wrong\\mutant.v",
+      "sha256": "46ff99f578e7045332cb7e83c4992af0940b3f12a385fac40359270d2f30921d"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

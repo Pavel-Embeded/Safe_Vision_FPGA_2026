@@ -1,0 +1,23 @@
+{
+  "mutation": "brightness_percent_offset",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "handbook",
+  "top": "tb_v3_handbook_controls",
+  "patch": [
+    {
+      "before": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd100;",
+      "after": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd99;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\brightness_percent_offset",
+  "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "mutated_sha256": "f6c79fc46b93fa2bb940e2b77e534ed932661211f46fde0f7546c7bf2fdfddee",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    202
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\brightness_percent_offset\\sim\\tb_v3_handbook_controls"
+}

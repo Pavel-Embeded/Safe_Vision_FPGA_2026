@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\ui_tick_fast",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\ui_tick_fast\\case.json",
+  "original_metadata_sha256": "cf5d7990114f4fbfdedba1a6eab83196d7bb9662bd7343844fbb92e2e2871864",
+  "original_log_sha256": "cf59a01a975592ada972f4ca3715edc2d0aeed682c7fe2cd5f6238f86aa104b4",
+  "matrix_definition": {
+    "mutation": "ui_tick_fast",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "ui_boundary409",
+    "top": "tb_v3_ui_boundary409",
+    "patch": [
+      {
+        "before": "ui_phase==UI_DIV-1",
+        "after": "ui_phase==UI_DIV-2"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

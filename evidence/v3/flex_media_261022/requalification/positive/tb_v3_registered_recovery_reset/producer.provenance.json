@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_registered_recovery_reset",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_registered_recovery_reset\\result.json",
+  "original_metadata_sha256": "7e780df7c6cc2d0aff6e5fef099086e4f927809c0fe33d291a82fe758f98a0f7",
+  "original_log_sha256": "788d4d8e9b5d9ffcf4ee4e566ebc43cef93b91caaf73fc61aa6bd4b104ee244e",
+  "matrix_definition": {
+    "top": "tb_v3_registered_recovery_reset",
+    "suite": "registered_recovery_reset",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

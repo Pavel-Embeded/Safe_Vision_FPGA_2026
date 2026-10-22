@@ -1,0 +1,63 @@
+{
+  "cases": [
+    [
+      1080,
+      1920,
+      0,
+      24,
+      54
+    ],
+    [
+      1080,
+      1920,
+      1,
+      24,
+      138
+    ],
+    [
+      3840,
+      2160,
+      0,
+      32,
+      54
+    ],
+    [
+      641,
+      479,
+      1,
+      32,
+      54
+    ],
+    [
+      16384,
+      1,
+      0,
+      24,
+      54
+    ],
+    [
+      1,
+      16384,
+      1,
+      32,
+      54
+    ],
+    [
+      1,
+      1,
+      1,
+      24,
+      54
+    ],
+    [
+      17,
+      13,
+      0,
+      32,
+      54
+    ]
+  ],
+  "oracle": "Independent NumPy direct source-coordinate floor mapping and integer RGB565 conversion; full640x480 comparisons per case",
+  "pixels": 2457600,
+  "includes": "full4K BGRX32, full1080x1920 portrait both orientations,16384-axis boundaries, odd width, header gap, ignored nonopaque alpha, upscaling"
+}

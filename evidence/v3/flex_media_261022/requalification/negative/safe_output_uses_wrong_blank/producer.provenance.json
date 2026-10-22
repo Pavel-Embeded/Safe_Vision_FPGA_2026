@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\safe_output_uses_wrong_blank\\sim\\tb_v3_frame_safe_integration",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\safe_output_uses_wrong_blank\\sim\\tb_v3_frame_safe_integration\\case.json",
+  "original_metadata_sha256": "4dd5be5cc15175e2e1713cb1717f91a8e3403f521c0cbd14c8b901aeb966829f",
+  "original_log_sha256": "f2abce534627d588929570ac528f0879b669bcb0d44cf18abab581bb9a1312a4",
+  "matrix_definition": {
+    "mutation": "safe_output_uses_wrong_blank",
+    "target": "safevision/rtl/video/v3_frame_safe_select.v",
+    "suite": "frame_safe_integration",
+    "top": "tb_v3_frame_safe_integration",
+    "patch": [
+      {
+        "before": "if(output_vblank)output_selected<=raw_selected;",
+        "after": "if(raw_vblank)output_selected<=raw_selected;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

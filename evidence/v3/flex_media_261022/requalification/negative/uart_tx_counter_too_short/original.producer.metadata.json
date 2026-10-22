@@ -1,0 +1,25 @@
+{
+  "mutation": "uart_tx_counter_too_short",
+  "target": "safevision/rtl/common/uart_tx.v",
+  "suite": "uart_tx_width_equivalence",
+  "top": "tb_v3_uart_tx_width_equivalence",
+  "patch": [
+    {
+      "before": "?((DIV>1)?$clog2(DIV):1):16;",
+      "after": "?((DIV>1)?(($clog2(DIV)>1)?$clog2(DIV)-1:1):1):16;"
+    }
+  ],
+  "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f3\\negative\\uart_tx_counter_too_short",
+  "original_sha256": "4421c2314011ef86428c9256a7170e8fb3b5c2f58b60cdcb5bf97c8095808867",
+  "mutated_sha256": "b1c821af9e22a9a83237c7cf5078dbd2a99fba2ec24b9d43db4285b42818e0a8",
+  "mutant_file": "mutant.v",
+  "detected": true,
+  "normal_completion": true,
+  "process_exit": 1,
+  "error_counts": [
+    1908204
+  ],
+  "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/uart_tx_counter_too_short",
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\uart_tx_counter_too_short",
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\uart_tx_counter_too_short"
+}

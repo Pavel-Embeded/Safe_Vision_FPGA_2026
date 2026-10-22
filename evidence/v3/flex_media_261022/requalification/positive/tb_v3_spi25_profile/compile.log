@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq74/source/safevision/rtl/storage/spi_master.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_master
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq74/source/safevision/verification/unit/tb_v3_spi25_profile.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_spi25_profile

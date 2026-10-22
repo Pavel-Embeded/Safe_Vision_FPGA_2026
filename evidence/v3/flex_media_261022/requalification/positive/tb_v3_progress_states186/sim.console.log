@@ -1,0 +1,16 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_progress_states186/xsim_script.tcl
+# xsim {tb_v3_progress_states186} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] production top,capture/reset/first-valid epochs and original observer edge behavior;8192random across all16 media states,including7/10/11 inactive exclusions; source changes including hold/clear/wrap and asynchronous KEY1 resets
+PASS tb_v3_progress_states186 comparisons=16676 errors=0
+$finish called at time : 83380 ns : File "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_progress_states186.sv" Line 53
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 17:51:29 2026...

@@ -45,7 +45,8 @@
     "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
-    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v"
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+    "safevision/rtl/storage/v3_fat_name_store.v"
   ],
   "tops": [
     "tb_sd_sector_reader",

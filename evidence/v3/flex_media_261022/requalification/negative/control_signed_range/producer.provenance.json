@@ -1,0 +1,26 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\control_signed_range",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\control_signed_range\\case.json",
+  "original_metadata_sha256": "f2163f410903bb6ca484bc80e3c403b78a383e3ae1dc5243bdf5d64a10cbb47a",
+  "original_log_sha256": "ec5d114e04bad36f9f3f05fd9bd19f7d896dae9ed2ad87333dc3038e0dd40a19",
+  "matrix_definition": {
+    "mutation": "control_signed_range",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "control_decode_equivalence",
+    "top": "tb_v3_control_decode_equivalence",
+    "patch": [
+      {
+        "before": " wire value_bright_ok=(~|command_value[31:7]) || (&command_value[31:7]);\n",
+        "after": " wire value_bright_ok=(~|command_value[31:8]) || (&command_value[31:8]);\n"
+      }
+    ],
+    "required_marker": "[FAIL]"
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_fifo_phase50",
+  "top": "tb_v3_fifo_phase50",
+  "suite": "fifo50_fifo_phase49",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_fifo_phase50",
+    "suite": "fifo50_fifo_phase49",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_fifo_phase50",
+    "suite": "fifo50_fifo_phase49",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fifo_phase50",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_fifo_phase50",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_fifo_phase50",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 85945,
+      "elapsed_s": 7.015,
+      "suite": "fifo50_fifo_phase49",
+      "accepted_native_runner": true,
+      "producer": "Normally completed frozen production-source XSim; no runtime overrides",
+      "legacy": false,
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\supplements\\positive\\tb_v3_fifo_phase50"
+    },
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_fifo_phase50",
+      "suite": "fifo50_fifo_phase49",
+      "ordered_analyzed_HDL": 6,
+      "manifest": "safevision/build/manifests/fifo50_fifo_phase49_sim.json",
+      "current_manifest_sha256": "770209fc7d6ac436b349d5f0814a92260638fed24875f3be1c71843a568aa500",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "bdf0a1177c742d7358370c1dcefb32e48e7ad23a9a3eee6f5c8a27c21282ca76",
+    "metadata_sha256": "3bd37dea39243756298b2b421c16522c7ce06da87f3ecc6fc6b704b7529b490d",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fifo_phase50\\result.json",
+      "sha256": "3bd37dea39243756298b2b421c16522c7ce06da87f3ecc6fc6b704b7529b490d"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fifo_phase50\\sim.log",
+      "sha256": "bdf0a1177c742d7358370c1dcefb32e48e7ad23a9a3eee6f5c8a27c21282ca76"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fifo_phase50\\sources.sha256.json",
+      "sha256": "12c930f2bc84c240d8b81fe371f8778fe949233022b7d2d56733841628b9dd94"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fifo_phase50\\original.producer.metadata.json",
+      "sha256": "3bd37dea39243756298b2b421c16522c7ce06da87f3ecc6fc6b704b7529b490d"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fifo_phase50\\producer.provenance.json",
+      "sha256": "8c2a114fa0abd45d755252de0affaaa62e4d0d9b34e71cc10d62cd1235084e51"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fifo_phase50\\sources.prj",
+      "sha256": "a4d59e2847218e96cc787213ce97634b545500f44f29ebf165b991e0cbee7169"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

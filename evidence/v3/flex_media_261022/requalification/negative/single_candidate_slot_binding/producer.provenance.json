@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\single_candidate_slot_binding\\sim\\tb_v3_final_crc",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\single_candidate_slot_binding\\sim\\tb_v3_final_crc\\case.json",
+  "original_metadata_sha256": "80976dc9e2a2078954bc94fa2326626c8ef75ff91f37c0bcfc472e9b29ae8422",
+  "original_log_sha256": "7f728379ba01c6176faf06bd4a949f25b17a10c56dbd279fa6b1504fb02e644d",
+  "matrix_definition": {
+    "mutation": "single_candidate_slot_binding",
+    "target": "safevision/rtl/storage/sd_bmp_player.v",
+    "suite": "media_crc",
+    "top": "tb_v3_final_crc",
+    "patch": [
+      {
+        "before": ".sel_slot(RESIDENT_CACHE?2'd0:pick_slot)",
+        "after": ".sel_slot(RESIDENT_CACHE?2'd1:pick_slot)"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

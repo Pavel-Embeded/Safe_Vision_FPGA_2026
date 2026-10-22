@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\prefill_partial_weight\\sim\\tb_v3_audio_prefill_compare",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\prefill_partial_weight\\sim\\tb_v3_audio_prefill_compare\\case.json",
+  "original_metadata_sha256": "828d87225599710c41edb9f07c389bd1b6584259343f5265a3ddc3eb6927de14",
+  "original_log_sha256": "c7fc183585c65ebfafb4a72887042ec2dacbb13c712f423ce2614ec64719e653",
+  "matrix_definition": {
+    "mutation": "prefill_partial_weight",
+    "target": "safevision/rtl/audio/v3_audio_prefill_compare.v",
+    "suite": "audio_prefill_compare",
+    "top": "tb_v3_audio_prefill_compare",
+    "patch": [
+      {
+        "before": "  wire[10:0] queued_words={1'b0,fifo_words}+(partial?11'd3:11'd0);",
+        "after": "  wire[10:0] queued_words={1'b0,fifo_words}+(partial?11'd0:11'd0);"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

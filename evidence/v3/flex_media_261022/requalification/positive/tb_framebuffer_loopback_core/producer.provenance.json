@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_framebuffer_loopback_core\\sim\\tb_framebuffer_loopback_core",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\positive\\tb_framebuffer_loopback_core\\sim\\tb_framebuffer_loopback_core\\result.json",
+  "original_metadata_sha256": "ff40f6ecec1953fc113da043e5e30cb76317c139041a5fe130c3ea1c45e887d1",
+  "original_log_sha256": "953653e69ef536808d6cf732e5d948f722a479a16a78921a4eb5d97c704df20d",
+  "matrix_definition": {
+    "top": "tb_framebuffer_loopback_core",
+    "suite": "legacy_b_fourbeat",
+    "legacy": true
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

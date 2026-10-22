@@ -1,0 +1,23 @@
+{
+  "mutation": "paired_hd_wrong_neighbor",
+  "target": "safevision/rtl/hd/v3_packed_row_store.v",
+  "suite": "paired_rows_hd288",
+  "top": "tb_v3_paired_rows_hd288",
+  "patch": [
+    {
+      "before": "wire[2:0] tile0={2'b0,rb0[0]},tile1={2'b0,rb1[0]};",
+      "after": "wire[2:0] tile0={2'b0,rb0[0]},tile1={2'b0,rb0[0]};"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative430\\n\\paired_hd_wrong_neighbor",
+  "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+  "mutated_sha256": "ff024628ce57721d6e2d018c569d5665fd9af76b7544a216371197103600c00c",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    4227044
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative430\\n\\paired_hd_wrong_neighbor\\sim\\tb_v3_paired_rows_hd288"
+}

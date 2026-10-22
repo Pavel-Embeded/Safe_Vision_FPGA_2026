@@ -1,6 +1,7 @@
 {
   "sources": [
-    "safevision/rtl/storage/fat32_directory_scanner.v"
+    "safevision/rtl/storage/fat32_directory_scanner.v",
+    "safevision/rtl/storage/v3_fat_name_store.v"
   ],
   "tops": [
     "tb_v3_directory_sv_names"

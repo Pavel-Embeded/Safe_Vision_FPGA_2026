@@ -1,0 +1,29 @@
+{
+  "mutation": "observer_raw_alignment",
+  "target": "safevision/rtl/memory/v3_memory_path_observer.v",
+  "suite": "memory_path_observer",
+  "top": "tb_v3_memory_path_observer",
+  "patch": [
+    {
+      "before": "READ_DATA_LEADS_VALID?previous_raw:physical_read_data",
+      "after": "physical_read_data"
+    }
+  ],
+  "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\memory_flags_26101718\\negative\\observer_raw_alignment",
+  "original_sha256": "e07a2f29248937ce6b4d2df7e542ed21abe81fa95236ad517bf13b1ab798ad0f",
+  "mutated_sha256": "db4e34d064a355befb5200ddb6f17f711e6ca0291e932b878fc06b3815044f2a",
+  "mutant_file": "mutant.v",
+  "detected": true,
+  "normal_completion": true,
+  "process_exit": 1,
+  "error_counts": [
+    34
+  ],
+  "changed_dependencies": [
+    "safevision/rtl/memory/v3_memory_path_observer.v",
+    "safevision/verification/unit/tb_v3_memory_path_observer.sv"
+  ],
+  "previous_evidence": "evidence/v3/memory_flags_26101718/current_gate/negative/observer_raw_alignment",
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\observer_raw_alignment",
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\observer_raw_alignment"
+}

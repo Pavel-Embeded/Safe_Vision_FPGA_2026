@@ -1,0 +1,7 @@
+{
+  "origin_commit": "2bfda8b07b48896776fed0c2242ab493f949874d",
+  "origin_path": "safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v",
+  "original_sha256": "f8325dfa2ea4ff2740d3c4d9475be3d2c496d0e20a5303cbd463eb84ac689b17",
+  "reference_sha256": "b1b75fec2aafdf2c9f1f85afb166987503ff9fcf88725cba662d26f80ba490b8",
+  "transform": "Rename only the original module declaration, preserve every other byte"
+}

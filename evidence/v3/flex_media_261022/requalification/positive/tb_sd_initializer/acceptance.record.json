@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_sd_initializer",
+  "top": "tb_sd_initializer",
+  "suite": "legacy_b_fourbeat",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_sd_initializer",
+    "suite": "legacy_b_fourbeat",
+    "legacy": true
+  },
+  "effective_definition": {
+    "top": "tb_sd_initializer",
+    "suite": "legacy_b_fourbeat",
+    "legacy": true
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_sd_initializer",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_sd_initializer\\sim\\tb_sd_initializer",
+  "checked": {
+    "metadata": {
+      "top": "tb_sd_initializer",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 20,
+      "elapsed_s": 8.313,
+      "suite": "legacy_b_fourbeat",
+      "legacy": true,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_sd_initializer\\sim\\tb_sd_initializer"
+    },
+    "input_count": 83,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_sd_initializer",
+      "suite": "legacy_b_fourbeat",
+      "ordered_analyzed_HDL": 75,
+      "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+      "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [],
+    "log_sha256": "16d07316787af78f4779cb636b44f05bbde36c09e0be1aa4ecb9fd5f9622d256",
+    "metadata_sha256": "68ffe10fbfdb770655bc5d093b4d340400e6b44e4186dd5bfdee2c2a1828ef10",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_sd_initializer\\result.json",
+      "sha256": "68ffe10fbfdb770655bc5d093b4d340400e6b44e4186dd5bfdee2c2a1828ef10"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_sd_initializer\\sim.log",
+      "sha256": "16d07316787af78f4779cb636b44f05bbde36c09e0be1aa4ecb9fd5f9622d256"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_sd_initializer\\sources.sha256.json",
+      "sha256": "c4eebbdb3dd1cb877d4105b142a021f1a018a263d497652c958ec102128aa3d6"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_sd_initializer\\original.producer.metadata.json",
+      "sha256": "68ffe10fbfdb770655bc5d093b4d340400e6b44e4186dd5bfdee2c2a1828ef10"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_sd_initializer\\producer.provenance.json",
+      "sha256": "d250dabd020c63e8fafc6c055390341c82b1ff2d388022122022721c571261aa"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_sd_initializer\\sources.prj",
+      "sha256": "080ea66044d9a85cd693945d6bd9327ede4d6aacd24f27c23752559bb297b97a"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

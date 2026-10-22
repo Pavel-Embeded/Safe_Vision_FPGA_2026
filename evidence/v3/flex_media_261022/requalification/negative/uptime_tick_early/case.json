@@ -1,0 +1,23 @@
+{
+  "mutation": "uptime_tick_early",
+  "target": "safevision/rtl/video/v3_boot_uptime.v",
+  "suite": "uptime193",
+  "top": "tb_v3_uptime193",
+  "patch": [
+    {
+      "before": "if(ticks==CLK_HZ-1)",
+      "after": "if(ticks==CLK_HZ-2)"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative223\\n\\uptime_tick_early\\sim\\tb_v3_uptime193",
+  "original_sha256": "64d34ade9459a6e8a7f5462626d5ab101593afa5ceab27bbc3aaeb310e90d7f4",
+  "mutated_sha256": "2b03d725cc4a97d2b6e15253b26d77d6a2531f412e3ebc9dc6fc86a04baf25e7",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    323641
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative223\\n\\uptime_tick_early\\sim\\tb_v3_uptime193"
+}

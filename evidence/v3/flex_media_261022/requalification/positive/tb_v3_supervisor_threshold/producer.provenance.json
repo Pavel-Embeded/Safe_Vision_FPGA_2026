@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor_threshold",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor_threshold\\result.json",
+  "original_metadata_sha256": "d52d6b3485caae90567546381887e8e727fb9b7c4140a2b973425c3b3b8c97a5",
+  "original_log_sha256": "da160d9b2bba7541336e3941c3a0d66ac438a1ab1e8fc22aaf6a94066e804b4b",
+  "matrix_definition": {
+    "top": "tb_v3_supervisor_threshold",
+    "suite": "supervisor_threshold",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

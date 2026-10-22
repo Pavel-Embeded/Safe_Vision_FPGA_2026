@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_prefix_miter_read_alignment_short_385",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 23,
+  "data_comparisons": 34017,
+  "elapsed_s": 10.735,
+  "suite": "adapter_prefix_base385",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svshared407\\base\\sim\\tb_v3_prefix_miter_read_alignment_short_385"
+}

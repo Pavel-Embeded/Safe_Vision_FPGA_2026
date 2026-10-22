@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_reject_carry",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_reject_carry\\result.json",
+  "original_metadata_sha256": "cf2349ed245397243b0f9dd18086632846848dd5da2d94ace80cfbe72625c399",
+  "original_log_sha256": "98365d30a42c3ef37531f54d97512395a06f97f620a9dc4fa3e9063a93498b69",
+  "matrix_definition": {
+    "top": "tb_v3_hd_reject_carry",
+    "suite": "hd_reject_carry",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

@@ -1,0 +1,18 @@
+{
+  "sources": [
+    "safevision/rtl/video/v3_audio_spectrum.v"
+  ],
+  "tops": [
+    "tb_v3_spectrum539"
+  ],
+  "assets": [
+    "safevision/verification/assets/spectrum539/spectrum_expected539.mem",
+    "safevision/verification/assets/spectrum539/spectrum_peaks539.mem",
+    "safevision/verification/assets/spectrum539/spectrum_samples539.mem",
+    "safevision/assets/audio/v3_spectrum_twiddle.mem"
+  ],
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "generator_dependencies": [],
+  "generated_assets": []
+}

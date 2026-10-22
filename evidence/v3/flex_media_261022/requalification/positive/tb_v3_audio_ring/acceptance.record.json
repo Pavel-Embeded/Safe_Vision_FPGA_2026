@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_audio_ring",
+  "top": "tb_v3_audio_ring",
+  "suite": "audio_complete",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_audio_ring",
+    "suite": "audio_complete",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_audio_ring",
+    "suite": "audio_complete",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_ring",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_audio_ring\\sim\\tb_v3_audio_ring",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_audio_ring",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 540,
+      "elapsed_s": 6.734,
+      "suite": "audio_complete",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_audio_ring\\sim\\tb_v3_audio_ring"
+    },
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_audio_ring",
+      "suite": "audio_complete",
+      "ordered_analyzed_HDL": 29,
+      "manifest": "safevision/build/manifests/audio_complete_sim.json",
+      "current_manifest_sha256": "638e175768c16eaf39da482e3c314033db2a022a5885e58ea57aab3dfc4edb9f",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "b5de1bdf22463c11caa124cf4d6135d4c3a123c1812497bf5de822671d1bcbe0",
+    "metadata_sha256": "01b252e4897cbd8cd3be655e4593fe103e9ca1b987bcd931d1891d5512adc3b3",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_ring\\result.json",
+      "sha256": "01b252e4897cbd8cd3be655e4593fe103e9ca1b987bcd931d1891d5512adc3b3"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_ring\\sim.log",
+      "sha256": "b5de1bdf22463c11caa124cf4d6135d4c3a123c1812497bf5de822671d1bcbe0"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_ring\\sources.sha256.json",
+      "sha256": "3d1103717e2172308cfe709f04c55c26368f96ee280e4cb15ed08c0e23a89ca4"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_ring\\original.producer.metadata.json",
+      "sha256": "01b252e4897cbd8cd3be655e4593fe103e9ca1b987bcd931d1891d5512adc3b3"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_ring\\producer.provenance.json",
+      "sha256": "77bdb7339459c812b309b073153bd020528b26c4798fcac1b7e0d00ffe0a10dc"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_audio_ring\\sources.prj",
+      "sha256": "42e3e73a2c1387b6cd260d5cbbc35d67ffb80d28854240b2762a8760d0e0e93b"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

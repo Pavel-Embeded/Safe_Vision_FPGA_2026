@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_hd_coord_arith",
+  "top": "tb_v3_hd_coord_arith",
+  "suite": "hd_coord_arith",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_hd_coord_arith",
+    "suite": "hd_coord_arith",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_hd_coord_arith",
+    "suite": "hd_coord_arith",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_coord_arith",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_hd_coord_arith",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_coord_arith",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 5284524,
+      "elapsed_s": 11.656,
+      "suite": "hd_coord_arith",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_hd_coord_arith\\sim\\tb_v3_hd_coord_arith"
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_coord_arith",
+      "suite": "hd_coord_arith",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_coord_arith_sim.json",
+      "current_manifest_sha256": "5e34c6096f63f56b1b9a62222f3c4babbca536ac995fc2a41966cebb2301b846",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0
+    ],
+    "log_sha256": "c394b51b9de0e3c90cb91a52736ea9ac379bbf2afce9fdc818645e39b7ff1219",
+    "metadata_sha256": "4f64c43c70ea2fd22afb02fb66fe8a9b085ed7eada24347aab85cac0c266a6ec",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_coord_arith\\result.json",
+      "sha256": "4f64c43c70ea2fd22afb02fb66fe8a9b085ed7eada24347aab85cac0c266a6ec"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_coord_arith\\sim.log",
+      "sha256": "c394b51b9de0e3c90cb91a52736ea9ac379bbf2afce9fdc818645e39b7ff1219"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_coord_arith\\sources.sha256.json",
+      "sha256": "207e6a68165e7c36027f7d85b31a3a730a17589b12f7cace0fb24c3a174d8a1c"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_coord_arith\\original.producer.metadata.json",
+      "sha256": "4f64c43c70ea2fd22afb02fb66fe8a9b085ed7eada24347aab85cac0c266a6ec"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_coord_arith\\producer.provenance.json",
+      "sha256": "98f2b904e54ef200936267dfc630d3eca3950e318e9c946fee64fa29c7aa28da"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_coord_arith\\sources.prj",
+      "sha256": "03b07b023701487078d203bf57f66d3b548dbb489f85b07505ca458b548bc7ac"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

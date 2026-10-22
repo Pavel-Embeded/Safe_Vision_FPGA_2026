@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_hd_audio_sample_fifo",
+  "top": "tb_v3_hd_audio_sample_fifo",
+  "suite": "hd_audio_native",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_hd_audio_sample_fifo",
+    "suite": "hd_audio_native",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_hd_audio_sample_fifo",
+    "suite": "hd_audio_native",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_audio_sample_fifo",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_audio_sample_fifo\\sim\\tb_v3_hd_audio_sample_fifo",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_audio_sample_fifo",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 470,
+      "elapsed_s": 7.063,
+      "suite": "hd_audio_native",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_audio_sample_fifo\\sim\\tb_v3_hd_audio_sample_fifo"
+    },
+    "input_count": 42,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_audio_sample_fifo",
+      "suite": "hd_audio_native",
+      "ordered_analyzed_HDL": 30,
+      "manifest": "safevision/build/manifests/hd_audio_native_sim.json",
+      "current_manifest_sha256": "5021a8653fa990141148177bc802edf55f524f867747a6a585fcccec6a6d5b2b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "bbb3e2cf68fc5212e47214bfb16e1e150a0c56842eceeafe557bd043fed0812f",
+    "metadata_sha256": "25aad2233f7def100c6b8e90f0c361c51e25fd07f1d05f724a01616d4ce3cc51",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_audio_sample_fifo\\result.json",
+      "sha256": "25aad2233f7def100c6b8e90f0c361c51e25fd07f1d05f724a01616d4ce3cc51"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_audio_sample_fifo\\sim.log",
+      "sha256": "bbb3e2cf68fc5212e47214bfb16e1e150a0c56842eceeafe557bd043fed0812f"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_audio_sample_fifo\\sources.sha256.json",
+      "sha256": "7e1c68ce3c714292f11b968f6334f8734cc9e68c395303e769c5915b45ca2aa2"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_audio_sample_fifo\\original.producer.metadata.json",
+      "sha256": "25aad2233f7def100c6b8e90f0c361c51e25fd07f1d05f724a01616d4ce3cc51"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_audio_sample_fifo\\producer.provenance.json",
+      "sha256": "313063a9363f921d020104de7a9d8ce5333918efbe3d819cd8eebf01709dabd3"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_audio_sample_fifo\\sources.prj",
+      "sha256": "70e92e006f996cca5ffca4dc942cacd07d51ffeb5fc278b2772315f6eec90037"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

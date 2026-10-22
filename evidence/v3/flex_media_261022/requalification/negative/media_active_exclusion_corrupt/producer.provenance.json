@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\media_active_exclusion_corrupt\\sim\\tb_v3_progress_states186",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\media_active_exclusion_corrupt\\sim\\tb_v3_progress_states186\\case.json",
+  "original_metadata_sha256": "2d3638d2688de9a9e7989f2d2eedf4f2fa822bb350c14780d0420832ecadd73e",
+  "original_log_sha256": "78b972ed2adf5cc9857bfb6a62593f1c65f4beeea15507e970285850bc3abad3",
+  "matrix_definition": {
+    "mutation": "media_active_exclusion_corrupt",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+    "suite": "progress_states186",
+    "top": "tb_v3_progress_states186",
+    "patch": [
+      {
+        "before": "ref_status_data[15:12]!=7",
+        "after": "ref_status_data[15:12]!=8"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

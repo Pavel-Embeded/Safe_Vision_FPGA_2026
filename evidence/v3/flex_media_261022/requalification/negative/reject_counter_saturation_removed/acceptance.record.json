@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "reject_counter_saturation_removed",
+  "top": "tb_v3_rejected_counter_boundary",
+  "suite": "rejected_counter_boundary",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "reject_counter_saturation_removed",
+    "target": "safevision/rtl/control/v3_command_parser_catalog.v",
+    "suite": "rejected_counter_boundary",
+    "top": "tb_v3_rejected_counter_boundary",
+    "patch": [
+      {
+        "before": "assign rejected=rejected_sum[32]?32'hffffffff:rejected_sum[31:0];",
+        "after": "assign rejected=rejected_sum[31:0];"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "reject_counter_saturation_removed",
+    "target": "safevision/rtl/control/v3_command_parser_catalog.v",
+    "suite": "rejected_counter_boundary",
+    "top": "tb_v3_rejected_counter_boundary",
+    "patch": [
+      {
+        "before": "assign rejected=rejected_sum[32]?32'hffffffff:rejected_sum[31:0];",
+        "after": "assign rejected=rejected_sum[31:0];"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_counter_saturation_removed",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\reject_counter_saturation_removed",
+  "checked": {
+    "metadata": {
+      "mutation": "reject_counter_saturation_removed",
+      "target": "safevision/rtl/control/v3_command_parser_catalog.v",
+      "suite": "rejected_counter_boundary",
+      "top": "tb_v3_rejected_counter_boundary",
+      "patch": [
+        {
+          "before": "assign rejected=rejected_sum[32]?32'hffffffff:rejected_sum[31:0];",
+          "after": "assign rejected=rejected_sum[31:0];"
+        }
+      ],
+      "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\handbook_26101801\\function_01\\negative\\reject_counter_saturation_removed",
+      "original_sha256": "9e95426b4a63e9ae649e88e9adf35f646d389f44d3493add364f40dab9c82f86",
+      "mutated_sha256": "b1baa8c0ff98e979112a146120360cb0a893223e1b42616ed9a2a2febd828407",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        49
+      ],
+      "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/reject_counter_saturation_removed",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\reject_counter_saturation_removed",
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\reject_counter_saturation_removed"
+    },
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_rejected_counter_boundary",
+      "suite": "rejected_counter_boundary",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/rejected_counter_boundary_sim.json",
+      "current_manifest_sha256": "89f09a470b3436115b895ab098fb63acd49a86ec17015b2b8bdd119d0ddf758b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      49
+    ],
+    "log_sha256": "49db776e4872af4ef11546f6f1bdd8163cf6eb400ebaf133ebeafd01473a0a5b",
+    "metadata_sha256": "fb2b5af2179a39ffe558b1079124a6d8cdae325ec0dc51243dd2df8b18da58c5",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_counter_saturation_removed\\case.json",
+      "sha256": "fb2b5af2179a39ffe558b1079124a6d8cdae325ec0dc51243dd2df8b18da58c5"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_counter_saturation_removed\\sim.log",
+      "sha256": "49db776e4872af4ef11546f6f1bdd8163cf6eb400ebaf133ebeafd01473a0a5b"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_counter_saturation_removed\\sources.sha256.json",
+      "sha256": "9de068ddf1f2c68012795a9deba43dc203ec27b500a74f29eb635fb32c91c863"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_counter_saturation_removed\\original.producer.metadata.json",
+      "sha256": "fb2b5af2179a39ffe558b1079124a6d8cdae325ec0dc51243dd2df8b18da58c5"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_counter_saturation_removed\\producer.provenance.json",
+      "sha256": "a9f06b4524809cba8058eeac555669a4a6b14d08248e9b8bff9478f8ad43dbd5"
+    },
+    "sources.after.sha256.json": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_counter_saturation_removed\\sources.after.sha256.json",
+      "sha256": "34294d88101933203f3d47f18cfab1131dcd70b5d324e198364a676b45873b4a"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_counter_saturation_removed\\mutant.v",
+      "sha256": "b1baa8c0ff98e979112a146120360cb0a893223e1b42616ed9a2a2febd828407"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

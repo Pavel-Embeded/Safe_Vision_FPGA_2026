@@ -1,0 +1,25 @@
+{
+  "mutation": "container_stereo",
+  "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+  "suite": "wav_container_negative",
+  "top": "tb_v3_audio_negative_container",
+  "patch": [
+    {
+      "before": "assign sample=word;\n",
+      "after": "assign sample={word[15:0],word[31:16]};\n"
+    }
+  ],
+  "required_marker": "[FAIL AUDIO_CONTAINER_PCM] case=0 ",
+  "original_sha256": "8b51accced125f5db3d83da02412ec5893fa0a64baca216f313be34a6231b223",
+  "mutated_sha256": "a00237992b9c97fc21ee3ca46a7b77202a799d4d9d2f02a7908bc847789db7f0",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    8689
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\container_stereo\\sim\\tb_v3_audio_negative_container",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\container_stereo\\sim\\tb_v3_audio_negative_container"
+}

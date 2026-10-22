@@ -1,0 +1,25 @@
+{
+  "mutation": "media_alias_wrong_digit_order",
+  "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+  "suite": "directory_alias510",
+  "top": "tb_v3_directory_alias510",
+  "patch": [
+    {
+      "before": "media_digits<={media_digits[11:0],sd_data[3:0]};",
+      "after": "media_digits<={sd_data[3:0],media_digits[15:4]};",
+      "occurrences": 2
+    }
+  ],
+  "original_sha256": "5de38d33c99bc4fd7c0dbc1e58901a66e6c8f84d5d889fada3a2aa4a2b3fdf69",
+  "mutated_sha256": "68f2e59f6c9cf6cbe869e223dbc83e5307fa17a7868ff1c12c07eb4e502f4a78",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1280
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\media_alias_wrong_digit_order\\sim\\tb_v3_directory_alias510",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\media_alias_wrong_digit_order\\sim\\tb_v3_directory_alias510"
+}

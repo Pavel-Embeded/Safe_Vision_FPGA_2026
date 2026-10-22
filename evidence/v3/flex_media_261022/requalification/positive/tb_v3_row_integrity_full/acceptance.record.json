@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_row_integrity_full",
+  "top": "tb_v3_row_integrity_full",
+  "suite": "row_integrity_full",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_row_integrity_full",
+    "suite": "row_integrity_full",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_row_integrity_full",
+    "suite": "row_integrity_full",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_row_integrity_full",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_row_integrity_full",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_row_integrity_full",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1941,
+      "data_comparisons": 1920,
+      "elapsed_s": 14.422,
+      "suite": "row_integrity_full",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svfeatures248\\tests\\row_integrity_full\\tb_v3_row_integrity_full"
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_row_integrity_full",
+      "suite": "row_integrity_full",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/row_integrity_full_sim.json",
+      "current_manifest_sha256": "6de0ec351eec1342a4d0ff4d5785cf4e3afd6344781587592a715ce673ab82ef",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "0f2c0b463ff0b99807779492be66fe5840bc6479261e26cfd2c20e34483f936a",
+    "metadata_sha256": "3567b0285f203dd1c27c793510b70dc045dda9531fbd74b294fa3c6c73984379",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_row_integrity_full\\result.json",
+      "sha256": "3567b0285f203dd1c27c793510b70dc045dda9531fbd74b294fa3c6c73984379"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_row_integrity_full\\sim.log",
+      "sha256": "0f2c0b463ff0b99807779492be66fe5840bc6479261e26cfd2c20e34483f936a"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_row_integrity_full\\sources.sha256.json",
+      "sha256": "67aeb02ee4f818a76a270441e08b5a2577eb4d32064e15e5dff835178239240d"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_row_integrity_full\\original.producer.metadata.json",
+      "sha256": "3567b0285f203dd1c27c793510b70dc045dda9531fbd74b294fa3c6c73984379"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_row_integrity_full\\producer.provenance.json",
+      "sha256": "79e1a3392ee61db2b9a3b1e64d040a7f4101d1614a94d625c8bdf43023d6019b"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_row_integrity_full\\sources.prj",
+      "sha256": "44e9608b8d1aa0fb8760305246705c1079a75776436024a24b1f4cdef9e9a44c"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

@@ -8,6 +8,44 @@ from pathlib import Path
 import hashlib,json,re
 
 def read(p):return json.loads(p.read_text(encoding='utf-8-sig'))
+STRICT_RUNNER='safevision/tools/run_v3_sim_flexible.py'
+def strict_inputs(root,folder,manifest,top,before=None):
+    """Additional checks apply only to explicitly selected new FLEX suites."""
+    root=Path(root).resolve();folder=Path(folder).resolve()
+    assert manifest.get('strict_generated_inputs')==1,'strict manifest flag absent'
+    assert manifest.get('native_runner')==STRICT_RUNNER,'strict FLEX runner not selected'
+    before=before if before is not None else read(folder/'sources.sha256.json')
+    assert STRICT_RUNNER in before,'strict FLEX runner missing from actual original capture'
+    assert before[STRICT_RUNNER]==hashlib.sha256((root/STRICT_RUNNER).read_bytes()).hexdigest(),'strict runner changed'
+    for key in ('generator_dependencies','generated_assets'):
+        assert isinstance(manifest.get(key),list),'strict manifest requires explicit '+key
+        assert len(manifest[key])==len(set(manifest[key])),'duplicate strict '+key
+    generation_before=read(folder/'generation.before.sha256.json');generation_after=read(folder/'generation.after.sha256.json')
+    assert generation_before==generation_after,'source or generator dependency changed during generation'
+    nongenerated={name:digest for name,digest in before.items()if not name.startswith('generated:')}
+    assert nongenerated==generation_before,'pre-generation fingerprint differs from compiled input capture'
+    generator=manifest.get('generators',{}).get(top)
+    manifest_inputs=[name for name in before if name.startswith('safevision/build/manifests/')and name.endswith('_sim.json')]
+    assert len(manifest_inputs)==1,'one explicit strict manifest fingerprint required'
+    assert read(root/manifest_inputs[0])==manifest,'captured manifest is not the selected strict manifest'
+    required=list(manifest['generator_dependencies'])+[STRICT_RUNNER]+manifest_inputs
+    if generator:required.append(generator)
+    for name in required:
+        assert name in before,'explicit generator dependency missing in original capture: '+name
+        path=(root/name).resolve();assert path.is_relative_to(root),'generator dependency escaped root'
+        assert path.is_file()and hashlib.sha256(path.read_bytes()).hexdigest()==before[name],'generator dependency changed: '+name
+    copied={Path(name).name:name for name in manifest.get('assets',[])}
+    assert len(copied)==len(manifest.get('assets',[])),'copied asset basename collision'
+    generated=list(manifest['generated_assets'])+list(copied)
+    assert len(generated)==len(set(generated)),'copied/generated runtime asset collision'
+    assert {name for name in before if name.startswith('generated:')}=={'generated:'+name for name in generated},'declared runtime assets differ from captured original files'
+    for name in generated:
+        assert isinstance(name,str)and name and not Path(name).is_absolute(),'invalid generated relative asset path'
+        path=(folder/name).resolve();assert path.is_relative_to(folder),'runtime asset escaped evidence folder: '+name
+        assert path.is_file()and hashlib.sha256(path.read_bytes()).hexdigest()==before['generated:'+name],'runtime asset changed or missing: '+name
+        if name in copied:assert before['generated:'+name]==before[copied[name]],'runtime static copy differs from captured source asset'
+    after=read(folder/'sources.after.sha256.json');assert after==before,'source/runtime asset changed during native execution'
+    return dict(strict_generated_inputs_verified=True,native_runner=STRICT_RUNNER,generator_dependencies=len(manifest['generator_dependencies']),runtime_assets=len(generated),generation_inputs=len(generation_before),generation_before_sha256=hashlib.sha256((folder/'generation.before.sha256.json').read_bytes()).hexdigest(),generation_after_sha256=hashlib.sha256((folder/'generation.after.sha256.json').read_bytes()).hexdigest())
 def check(root,folder,metadata,negative=None):
     root=Path(root).resolve();folder=Path(folder).resolve();before=read(folder/'sources.sha256.json')
     hdl=[n for n in before if not n.startswith('generated:') and n.endswith(('.v','.sv'))]
@@ -42,7 +80,8 @@ def check(root,folder,metadata,negative=None):
         if generator:assert generator in before,'current generator missing in original input capture'
         digest=hashlib.sha256(manifest.read_bytes()).hexdigest()
         if metadata.get('producer_manifest_sha256'):assert metadata['producer_manifest_sha256']==digest,'producer manifest changed'
-        return dict(accepted=True,top=top,suite=suite,ordered_analyzed_HDL=len(observed),manifest=manifest.relative_to(root).as_posix(),current_manifest_sha256=digest,binding='actual_compiler_and_current_manifest')
+        strict=strict_inputs(root,folder,m,top,before)if m.get('strict_generated_inputs')==1 else {}
+        return dict(accepted=True,top=top,suite=suite,ordered_analyzed_HDL=len(observed),manifest=manifest.relative_to(root).as_posix(),current_manifest_sha256=digest,binding='actual_compiler_and_current_manifest',**strict)
     assert metadata.get('legacy'),('modern suite lacks explicit current manifest',suite)
     # The historical A runner captured all five benches as one conservative
     # fingerprint set, then compiled one bench per native execution. Every

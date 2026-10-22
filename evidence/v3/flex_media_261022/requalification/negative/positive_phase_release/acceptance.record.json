@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "positive_phase_release",
+  "top": "tb_v3_reset_release_phase",
+  "suite": "reset_release_phase",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "positive_phase_release",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
+    "suite": "reset_release_phase",
+    "top": "tb_v3_reset_release_phase",
+    "patch": [
+      {
+        "before": "    generate if (RELEASE_FALLING) begin : falling_release",
+        "after": "    generate if (1'b0) begin : falling_release"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "positive_phase_release",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
+    "suite": "reset_release_phase",
+    "top": "tb_v3_reset_release_phase",
+    "patch": [
+      {
+        "before": "    generate if (RELEASE_FALLING) begin : falling_release",
+        "after": "    generate if (1'b0) begin : falling_release"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\positive_phase_release",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\positive_phase_release\\sim\\tb_v3_reset_release_phase",
+  "checked": {
+    "metadata": {
+      "mutation": "positive_phase_release",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
+      "suite": "reset_release_phase",
+      "top": "tb_v3_reset_release_phase",
+      "patch": [
+        {
+          "before": "    generate if (RELEASE_FALLING) begin : falling_release",
+          "after": "    generate if (1'b0) begin : falling_release"
+        }
+      ],
+      "original_sha256": "0ace3c2d5da5ea15547a8f9c66a2f1bc28de31cb33b146ec750bd6771f6f69e9",
+      "mutated_sha256": "634f4aba6d9cd52a08186d01e0856cc956ad46d78864ffea4c86080bfe2e8b07",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        200
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\positive_phase_release\\sim\\tb_v3_reset_release_phase",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\positive_phase_release\\sim\\tb_v3_reset_release_phase"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_reset_release_phase",
+      "suite": "reset_release_phase",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/reset_release_phase_sim.json",
+      "current_manifest_sha256": "7ca1004f1afe4df6ce667a1fb74b9b89a05aaec4d715f6be69fe86fe111f44b0",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      200
+    ],
+    "log_sha256": "b42f374c202434b83f55d26ec9f84f04c80d48d31a1dfbcd766a822c7ff5844f",
+    "metadata_sha256": "8b934292b2c76fd03871b97af47209638cf26ffa9a6b10ae029f932ea5a8033c",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\positive_phase_release\\case.json",
+      "sha256": "8b934292b2c76fd03871b97af47209638cf26ffa9a6b10ae029f932ea5a8033c"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\positive_phase_release\\sim.log",
+      "sha256": "b42f374c202434b83f55d26ec9f84f04c80d48d31a1dfbcd766a822c7ff5844f"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\positive_phase_release\\sources.sha256.json",
+      "sha256": "b793f384d38015c983fd84aba72fff42dc50334fce28a72deb946f1db2d30aa6"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\positive_phase_release\\original.producer.metadata.json",
+      "sha256": "8b934292b2c76fd03871b97af47209638cf26ffa9a6b10ae029f932ea5a8033c"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\positive_phase_release\\producer.provenance.json",
+      "sha256": "aed68da6b04a2db02f9fc0c501ed364c6e606eeeef94ed8d521386dfbd491023"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\positive_phase_release\\sources.prj",
+      "sha256": "faf75fab336ae51d9ef722be5bbbaffe3fafbb374bc5ec2e8ca6e205e7c5d723"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\positive_phase_release\\mutant.v",
+      "sha256": "634f4aba6d9cd52a08186d01e0856cc956ad46d78864ffea4c86080bfe2e8b07"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

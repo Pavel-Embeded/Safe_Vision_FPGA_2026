@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_frame_writer_bounds",
+  "top": "tb_frame_writer_bounds",
+  "suite": "legacy_b_fourbeat",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_frame_writer_bounds",
+    "suite": "legacy_b_fourbeat",
+    "legacy": true
+  },
+  "effective_definition": {
+    "top": "tb_frame_writer_bounds",
+    "suite": "legacy_b_fourbeat",
+    "legacy": true
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_frame_writer_bounds",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_frame_writer_bounds\\sim\\tb_frame_writer_bounds",
+  "checked": {
+    "metadata": {
+      "top": "tb_frame_writer_bounds",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 5,
+      "elapsed_s": 6.687,
+      "suite": "legacy_b_fourbeat",
+      "legacy": true,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_frame_writer_bounds\\sim\\tb_frame_writer_bounds"
+    },
+    "input_count": 83,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_frame_writer_bounds",
+      "suite": "legacy_b_fourbeat",
+      "ordered_analyzed_HDL": 75,
+      "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+      "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [],
+    "log_sha256": "47dc8a2863d5859b3242362a0355a244276d60cac74dec5eda2aadcc97e0861f",
+    "metadata_sha256": "441127aaa00a754493b85767b0e35afc10302f070633ee4a063aef6ef07e444d",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_frame_writer_bounds\\result.json",
+      "sha256": "441127aaa00a754493b85767b0e35afc10302f070633ee4a063aef6ef07e444d"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_frame_writer_bounds\\sim.log",
+      "sha256": "47dc8a2863d5859b3242362a0355a244276d60cac74dec5eda2aadcc97e0861f"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_frame_writer_bounds\\sources.sha256.json",
+      "sha256": "c4eebbdb3dd1cb877d4105b142a021f1a018a263d497652c958ec102128aa3d6"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_frame_writer_bounds\\original.producer.metadata.json",
+      "sha256": "441127aaa00a754493b85767b0e35afc10302f070633ee4a063aef6ef07e444d"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_frame_writer_bounds\\producer.provenance.json",
+      "sha256": "33c9a684b0805308e332c93ccb277fef3f2422482cf3f73bbac002f08cd7569f"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_frame_writer_bounds\\sources.prj",
+      "sha256": "080ea66044d9a85cd693945d6bd9327ede4d6aacd24f27c23752559bb297b97a"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

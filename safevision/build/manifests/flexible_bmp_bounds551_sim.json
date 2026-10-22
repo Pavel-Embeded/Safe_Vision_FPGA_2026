@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "safevision/rtl/media/bmp_parser.v",
+    "safevision/rtl/media/v3_bmp_normalizer.v"
+  ],
+  "tops": [
+    "tb_v3_flexible_bmp_bounds551"
+  ],
+  "assets": [
+    "safevision/verification/assets/bmp_bounds551/cases.mem",
+    "safevision/verification/assets/bmp_bounds551/headers.mem"
+  ],
+  "timeouts": {
+    "tb_v3_flexible_bmp_bounds551": 300
+  },
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "generator_dependencies": [],
+  "generated_assets": []
+}

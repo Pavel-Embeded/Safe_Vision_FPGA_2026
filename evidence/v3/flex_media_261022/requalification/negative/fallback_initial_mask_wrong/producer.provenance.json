@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\fallback_initial_mask_wrong\\sim\\tb_v3_wav_fallback_equivalence55",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\fallback_initial_mask_wrong\\sim\\tb_v3_wav_fallback_equivalence55\\case.json",
+  "original_metadata_sha256": "187e8ddf331e9e81ee9d2074dafc63e77b83393665dffc01c0ae587e235c95b1",
+  "original_log_sha256": "a7b8c9df494f5b680ab3d28493b0600c41ab53fe94e05dec1f483fd40000e6fe",
+  "matrix_definition": {
+    "mutation": "fallback_initial_mask_wrong",
+    "target": "safevision/rtl/storage/v3_wav_source.v",
+    "suite": "wav_fallback_equivalence55",
+    "top": "tb_v3_wav_fallback_equivalence55",
+    "patch": [
+      {
+        "before": "fallback_initial_mask<=(dir_bad||scan_code!=0)?4'hf:~found;",
+        "after": "fallback_initial_mask<=(dir_bad||scan_code!=0)?4'hf:found;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

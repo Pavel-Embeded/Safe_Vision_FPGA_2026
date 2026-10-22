@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\negative\\fade_product_gate_reversed",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\negative\\fade_product_gate_reversed\\case.json",
+  "original_metadata_sha256": "a03a647a8e70e58429c882b5d866637b10f7cbdfd82f16552eb2d17788f1661b",
+  "original_log_sha256": "78c4c4d3a95e526ca588108f0e7fe86f4915b0e1f3bd50c223738cde4d6516c6",
+  "matrix_definition": {
+    "mutation": "fade_product_gate_reversed",
+    "target": "safevision/rtl/hd/v3_video_display_core.v",
+    "suite": "fade_gate151",
+    "top": "tb_v3_fade_gate151",
+    "patch": [
+      {
+        "before": "pr<=selected_alpha==0?14'sd0:",
+        "after": "pr<=selected_alpha!=0?14'sd0:"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

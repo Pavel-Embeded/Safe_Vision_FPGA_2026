@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "diag_query_class_misroute",
+  "top": "tb_v3_diag_board",
+  "suite": "diag_board",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "diag_query_class_misroute",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+    "suite": "diag_board",
+    "top": "tb_v3_diag_board",
+    "patch": [
+      {
+        "before": "b_reply_query<=cmd_query&&!b_diag_selected;",
+        "after": "b_reply_query<=cmd_query;"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "diag_query_class_misroute",
+    "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+    "suite": "diag_board",
+    "top": "tb_v3_diag_board",
+    "patch": [
+      {
+        "before": "b_reply_query<=cmd_query&&!b_diag_selected;",
+        "after": "b_reply_query<=cmd_query;"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\diag_query_class_misroute",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\diag_query_class_misroute\\sim\\tb_v3_diag_board",
+  "checked": {
+    "metadata": {
+      "mutation": "diag_query_class_misroute",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "diag_board",
+      "top": "tb_v3_diag_board",
+      "patch": [
+        {
+          "before": "b_reply_query<=cmd_query&&!b_diag_selected;",
+          "after": "b_reply_query<=cmd_query;"
+        }
+      ],
+      "original_sha256": "624cb7e28b9039d87deab6fb5a19ea8912f27f9a45850c590abf4e89a0123447",
+      "mutated_sha256": "8860d98a8a1dc354b934423b99f25f703925e838bd329ee9e03aed615b535472",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\diag_query_class_misroute\\sim\\tb_v3_diag_board",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\diag_query_class_misroute\\sim\\tb_v3_diag_board"
+    },
+    "input_count": 120,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_diag_board",
+      "suite": "diag_board",
+      "ordered_analyzed_HDL": 105,
+      "manifest": "safevision/build/manifests/diag_board_sim.json",
+      "current_manifest_sha256": "f4b545bf36ae15576b92e6a1abd687961dbe7773b2ab28749c24688f64b3104f",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1
+    ],
+    "log_sha256": "b9b2424d222dd5ba1386c7a30cd364016f958730ee227dec3a0c23945225cdb0",
+    "metadata_sha256": "f27428f5a4e2507e02b87a024b7e567416a0c8c379b02e3e7e05c4a2f61fb991",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\diag_query_class_misroute\\case.json",
+      "sha256": "f27428f5a4e2507e02b87a024b7e567416a0c8c379b02e3e7e05c4a2f61fb991"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\diag_query_class_misroute\\sim.log",
+      "sha256": "b9b2424d222dd5ba1386c7a30cd364016f958730ee227dec3a0c23945225cdb0"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\diag_query_class_misroute\\sources.sha256.json",
+      "sha256": "20f47966ddc70379c473573af012d855392e567e150116d2023651be33607e42"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\diag_query_class_misroute\\original.producer.metadata.json",
+      "sha256": "f27428f5a4e2507e02b87a024b7e567416a0c8c379b02e3e7e05c4a2f61fb991"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\diag_query_class_misroute\\producer.provenance.json",
+      "sha256": "4993308057d0ffcb0e9826e24cc72118a05b14e1eaacdaf184fe09e6c2bb6ac9"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\diag_query_class_misroute\\sources.prj",
+      "sha256": "ae69a50d53a7b2759e7806e6618ad5d1b9da98e8cd36f4bb6086001db8c9d528"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\diag_query_class_misroute\\mutant.v",
+      "sha256": "8860d98a8a1dc354b934423b99f25f703925e838bd329ee9e03aed615b535472"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

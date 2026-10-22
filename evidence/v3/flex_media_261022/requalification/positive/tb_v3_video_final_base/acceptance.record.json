@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_video_final_base",
+  "top": "tb_v3_video_final_base",
+  "suite": "video_v3_final",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_video_final_base",
+    "suite": "video_v3_final",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_video_final_base",
+    "suite": "video_v3_final",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_video_final_base",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_video_final_base\\sim\\tb_v3_video_final_base",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_video_final_base",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 8,
+      "data_comparisons": 2150400,
+      "elapsed_s": 708.672,
+      "suite": "video_v3_final",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_video_final_base\\sim\\tb_v3_video_final_base"
+    },
+    "input_count": 34,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_video_final_base",
+      "suite": "video_v3_final",
+      "ordered_analyzed_HDL": 21,
+      "manifest": "safevision/build/manifests/video_v3_final_sim.json",
+      "current_manifest_sha256": "6dc159b98931fd4c5d186cbe8a19c066de027a6f744c2cefb61cbd6151b7ae3c",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "632ec09bc6ae4dc27970cd2a08113f76a56638a527faf9d8e05a871f5a967308",
+    "metadata_sha256": "62b47a400bc43a8c43e728b8b30e4d9b9104b3a92a83ed616a295b903ff24b5b",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_video_final_base\\result.json",
+      "sha256": "62b47a400bc43a8c43e728b8b30e4d9b9104b3a92a83ed616a295b903ff24b5b"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_video_final_base\\sim.log",
+      "sha256": "632ec09bc6ae4dc27970cd2a08113f76a56638a527faf9d8e05a871f5a967308"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_video_final_base\\sources.sha256.json",
+      "sha256": "bc493cd9aecb0aa1ca8e0d6312575f18aefd16d2bdc95824c3332a13d4d61dd0"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_video_final_base\\original.producer.metadata.json",
+      "sha256": "62b47a400bc43a8c43e728b8b30e4d9b9104b3a92a83ed616a295b903ff24b5b"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_video_final_base\\producer.provenance.json",
+      "sha256": "ea711d88fb6ba777ecd6bd0e03fd5d3e5dc1cd4aecb0e1ffe8aa616768048aaa"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_video_final_base\\sources.prj",
+      "sha256": "4d90d082dc5eab47b211fb4f6030230f80a8a8e49b8ce0cce44fed48604b7fe5"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

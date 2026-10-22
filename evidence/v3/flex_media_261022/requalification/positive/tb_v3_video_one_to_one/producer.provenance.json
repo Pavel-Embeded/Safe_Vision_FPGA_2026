@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_video_one_to_one\\sim\\tb_v3_video_one_to_one",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_video_one_to_one\\sim\\tb_v3_video_one_to_one\\result.json",
+  "original_metadata_sha256": "19e10f72353506623f106175571defaee81cc2f9e05e6d7c019aedcc627bc26e",
+  "original_log_sha256": "50283fcfdc5a026ba0650748aa32096f365b68a9b3460c73fbd9b90c1a8af113",
+  "matrix_definition": {
+    "top": "tb_v3_video_one_to_one",
+    "suite": "video_v3_one_to_one",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

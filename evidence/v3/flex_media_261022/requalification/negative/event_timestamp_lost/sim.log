@@ -1,0 +1,28 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Thu Oct 22 17:56:27 2026
+# Process ID: 40896
+# Current directory: D:/Codex/svflex537/original618/negative/event_timestamp_lost/sim/tb_v3_diag_board
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_diag_board/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/original618/negative/event_timestamp_lost/sim/tb_v3_diag_board/sim.log
+# Journal file: D:/Codex/svflex537/original618/negative/event_timestamp_lost/sim/tb_v3_diag_board\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_diag_board/xsim_script.tcl
+# xsim {tb_v3_diag_board} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=             6380000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=             6390000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=             6400000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=             6410000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=             6420000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=             6430000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=             6440000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=             6450000
+[TB] tb_v3_diag_board done errors=8 comparisons=78
+$finish called at time : 6460 ns : File "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_diag_board.sv" Line 84
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 17:56:30 2026...

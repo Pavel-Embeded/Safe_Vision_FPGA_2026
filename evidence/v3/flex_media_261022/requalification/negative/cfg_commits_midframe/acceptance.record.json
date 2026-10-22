@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "cfg_commits_midframe",
+  "top": "tb_v3_handbook_cfg_atomic",
+  "suite": "handbook_cfg_atomic",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "cfg_commits_midframe",
+    "target": "safevision/rtl/video/v3_video_display_core.v",
+    "suite": "handbook_cfg_atomic",
+    "top": "tb_v3_handbook_cfg_atomic",
+    "patch": [
+      {
+        "before": "if(cfg_received&&frame_start)begin",
+        "after": "if(cfg_received)begin"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "cfg_commits_midframe",
+    "target": "safevision/rtl/video/v3_video_display_core.v",
+    "suite": "handbook_cfg_atomic",
+    "top": "tb_v3_handbook_cfg_atomic",
+    "patch": [
+      {
+        "before": "if(cfg_received&&frame_start)begin",
+        "after": "if(cfg_received)begin"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\cfg_commits_midframe",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic",
+  "checked": {
+    "metadata": {
+      "mutation": "cfg_commits_midframe",
+      "target": "safevision/rtl/video/v3_video_display_core.v",
+      "suite": "handbook_cfg_atomic",
+      "top": "tb_v3_handbook_cfg_atomic",
+      "patch": [
+        {
+          "before": "if(cfg_received&&frame_start)begin",
+          "after": "if(cfg_received)begin"
+        }
+      ],
+      "original_sha256": "9869c1c999d40cf0c86899c352c931c83d30c7a98a645b789c64e58853a4b2f7",
+      "mutated_sha256": "0aa14ee77feebbf88d197c136a74d6bc9184e8ee5798db27b175206ef2022b32",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        96
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic"
+    },
+    "input_count": 35,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_cfg_atomic",
+      "suite": "handbook_cfg_atomic",
+      "ordered_analyzed_HDL": 21,
+      "manifest": "safevision/build/manifests/handbook_cfg_atomic_sim.json",
+      "current_manifest_sha256": "6d7dc8c108fa5181866dd5a940ce7b665d6dcdd6e3e28b54f4d4637b2b03e92c",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      96
+    ],
+    "log_sha256": "bc0ff91953df232c03c93ba3c14bbc46352666f57822587724c58abc292ecdfd",
+    "metadata_sha256": "88ff9408e2f927570d0301612c13671ce9ad4c4e9d92ff201d5617099d18dcd2",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\cfg_commits_midframe\\case.json",
+      "sha256": "88ff9408e2f927570d0301612c13671ce9ad4c4e9d92ff201d5617099d18dcd2"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\cfg_commits_midframe\\sim.log",
+      "sha256": "bc0ff91953df232c03c93ba3c14bbc46352666f57822587724c58abc292ecdfd"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\cfg_commits_midframe\\sources.sha256.json",
+      "sha256": "d374c7a62dcba4fc214b917a436599867b09bc31d2bb1c9d67e8b05594fc7dfe"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\cfg_commits_midframe\\original.producer.metadata.json",
+      "sha256": "88ff9408e2f927570d0301612c13671ce9ad4c4e9d92ff201d5617099d18dcd2"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\cfg_commits_midframe\\producer.provenance.json",
+      "sha256": "8f08ee0e69d0bb07a57918a93dd7e6b599427d5d1ece9e30f6629124e3279a49"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\cfg_commits_midframe\\sources.prj",
+      "sha256": "5b04c41d2d3487decb5aaaebf863922ed3f0a236407bd41a0df96a8410d573d8"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\cfg_commits_midframe\\mutant.v",
+      "sha256": "0aa14ee77feebbf88d197c136a74d6bc9184e8ee5798db27b175206ef2022b32"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

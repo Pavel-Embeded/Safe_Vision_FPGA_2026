@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "brightness_percent_offset",
+  "top": "tb_v3_handbook_controls",
+  "suite": "handbook",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "brightness_percent_offset",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "handbook",
+    "top": "tb_v3_handbook_controls",
+    "patch": [
+      {
+        "before": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd100;",
+        "after": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd99;"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "brightness_percent_offset",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "handbook",
+    "top": "tb_v3_handbook_controls",
+    "patch": [
+      {
+        "before": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd100;",
+        "after": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd99;"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\brightness_percent_offset",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\brightness_percent_offset",
+  "checked": {
+    "metadata": {
+      "mutation": "brightness_percent_offset",
+      "target": "safevision/rtl/control/v3_user_controls.v",
+      "suite": "handbook",
+      "top": "tb_v3_handbook_controls",
+      "patch": [
+        {
+          "before": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd100;",
+          "after": "percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd99;"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative417\\n\\brightness_percent_offset",
+      "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+      "mutated_sha256": "f6c79fc46b93fa2bb940e2b77e534ed932661211f46fde0f7546c7bf2fdfddee",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        202
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative417\\n\\brightness_percent_offset\\sim\\tb_v3_handbook_controls"
+    },
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_controls",
+      "suite": "handbook",
+      "ordered_analyzed_HDL": 7,
+      "manifest": "safevision/build/manifests/handbook_sim.json",
+      "current_manifest_sha256": "25ec72e6010492c51f0537f48ce3c6f4911b7f382c681df9c4fc5302d966aa68",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      202
+    ],
+    "log_sha256": "c094f2280b7af6ae09eb4997b295cccbf6d397dd2939096b522e89617e5161e0",
+    "metadata_sha256": "c97d1bf74b5dc6a3c22491283934105591699beb6329a1ea5b517b7c9beff80f",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\brightness_percent_offset\\case.json",
+      "sha256": "c97d1bf74b5dc6a3c22491283934105591699beb6329a1ea5b517b7c9beff80f"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\brightness_percent_offset\\sim.log",
+      "sha256": "c094f2280b7af6ae09eb4997b295cccbf6d397dd2939096b522e89617e5161e0"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\brightness_percent_offset\\sources.sha256.json",
+      "sha256": "10668ed46151dcabb4599bb2da5b227f17ea246bd951897d76797de34049b27e"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\brightness_percent_offset\\original.producer.metadata.json",
+      "sha256": "c97d1bf74b5dc6a3c22491283934105591699beb6329a1ea5b517b7c9beff80f"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\brightness_percent_offset\\producer.provenance.json",
+      "sha256": "13aa88a88e51f2fd02d97d84f93b9456e597f9d8eb136d64b040d9daf7f545ea"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\brightness_percent_offset\\sources.prj",
+      "sha256": "69c267232f4ed35a246c1d33a64ca0a4281b2157df29a87c3486377297ea5ecc"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\brightness_percent_offset\\mutant.v",
+      "sha256": "f6c79fc46b93fa2bb940e2b77e534ed932661211f46fde0f7546c7bf2fdfddee"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

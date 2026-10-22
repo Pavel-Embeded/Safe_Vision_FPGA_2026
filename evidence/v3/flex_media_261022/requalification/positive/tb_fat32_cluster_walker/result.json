@@ -1,0 +1,12 @@
+{
+  "top": "tb_fat32_cluster_walker",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 33,
+  "elapsed_s": 8.265,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_fat32_cluster_walker\\sim\\tb_fat32_cluster_walker"
+}

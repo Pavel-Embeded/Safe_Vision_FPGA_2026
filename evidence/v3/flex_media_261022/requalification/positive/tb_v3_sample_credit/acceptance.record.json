@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_sample_credit",
+  "top": "tb_v3_sample_credit",
+  "suite": "sample_credit",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_sample_credit",
+    "suite": "sample_credit",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_sample_credit",
+    "suite": "sample_credit",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_sample_credit",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_sample_credit\\sim\\tb_v3_sample_credit",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_sample_credit",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 4096,
+      "elapsed_s": 8.031,
+      "suite": "sample_credit",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_sample_credit\\sim\\tb_v3_sample_credit"
+    },
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_sample_credit",
+      "suite": "sample_credit",
+      "ordered_analyzed_HDL": 29,
+      "manifest": "safevision/build/manifests/sample_credit_sim.json",
+      "current_manifest_sha256": "ed487116d56999eb920aaea399dc0ee55e709a475d3585994b71f8482364b2e0",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "b1f77eee3413a23f53c11293f304182d217ec91338af70aaf351d886d3ab90ed",
+    "metadata_sha256": "d129746c1c6c00f80f894d0ef4d34b2e79ae5ea4096de58d82bd8e9b205f5d1a",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_sample_credit\\result.json",
+      "sha256": "d129746c1c6c00f80f894d0ef4d34b2e79ae5ea4096de58d82bd8e9b205f5d1a"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_sample_credit\\sim.log",
+      "sha256": "b1f77eee3413a23f53c11293f304182d217ec91338af70aaf351d886d3ab90ed"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_sample_credit\\sources.sha256.json",
+      "sha256": "585f19b6a637f7bab8625282e52dd102540e4cbfb8c94ecfe9157dced6c12743"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_sample_credit\\original.producer.metadata.json",
+      "sha256": "d129746c1c6c00f80f894d0ef4d34b2e79ae5ea4096de58d82bd8e9b205f5d1a"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_sample_credit\\producer.provenance.json",
+      "sha256": "421518d8c93dd23c3029c976fec3251d19cdd045071b3f9a1da0720c870cd6d7"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_sample_credit\\sources.prj",
+      "sha256": "3d5f6be6ffec918e40cc13d77a31a8c6a764fe97ba56986b3c31e5ea8fb47cbd"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

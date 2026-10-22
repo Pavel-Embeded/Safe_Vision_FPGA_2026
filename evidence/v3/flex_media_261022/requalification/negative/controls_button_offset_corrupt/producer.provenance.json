@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\controls_button_offset_corrupt",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\controls_button_offset_corrupt\\case.json",
+  "original_metadata_sha256": "931ba1394480240c953e5273b2118ae781cc13ee32b4fb4458e6cf1238891cc0",
+  "original_log_sha256": "d64901016167a0ffecd9e7219f45a6024cf04bf4b92695bd2c9bfccab63b7822",
+  "matrix_definition": {
+    "mutation": "controls_button_offset_corrupt",
+    "target": "safevision/rtl/control/v3_user_controls.v",
+    "suite": "handbook",
+    "top": "tb_v3_handbook_controls",
+    "patch": [
+      {
+        "before": "button_bright_up=$signed({1'b0,brightness_pct,1'b0})-9'sd90;",
+        "after": "button_bright_up=$signed({1'b0,brightness_pct,1'b0})-9'sd88;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

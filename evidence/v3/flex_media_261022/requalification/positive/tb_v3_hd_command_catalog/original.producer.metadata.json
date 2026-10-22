@@ -1,0 +1,13 @@
+{
+  "top": "tb_v3_hd_command_catalog",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 489242,
+  "elapsed_s": 18.844,
+  "suite": "hd_command_catalog",
+  "accepted_native_runner": true,
+  "producer": "Normally completed current production-source XSim; no runtime overrides",
+  "legacy": false,
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_command_catalog"
+}

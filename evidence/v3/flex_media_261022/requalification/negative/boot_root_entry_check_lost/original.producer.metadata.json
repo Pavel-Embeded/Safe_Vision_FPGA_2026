@@ -1,0 +1,24 @@
+{
+  "mutation": "boot_root_entry_check_lost",
+  "target": "safevision/rtl/storage/fat32_boot_parser.v",
+  "suite": "fat32_boot_parser_predicates288",
+  "top": "tb_v3_fat32_boot_parser_predicates288",
+  "patch": [
+    {
+      "before": "if(bcnt==18)hdr_roote_matches<=hdr_roote_matches&&(sd_data==8'd0);",
+      "after": "if(bcnt==18)hdr_roote_matches<=1'b1;"
+    }
+  ],
+  "original_sha256": "04d3c0a320526246450e14d7bd71cec3e613ed6c6654d9dd96414f05ad6e3ec7",
+  "mutated_sha256": "14611aeb329bdc2233ce87dcde8ab0216c7283bbcafeb58051cadb8df992098b",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    738386
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\boot_root_entry_check_lost\\sim\\tb_v3_fat32_boot_parser_predicates288",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\boot_root_entry_check_lost\\sim\\tb_v3_fat32_boot_parser_predicates288"
+}

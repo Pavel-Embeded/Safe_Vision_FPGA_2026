@@ -1,0 +1,35 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Thu Oct 22 17:55:34 2026
+# Process ID: 22388
+# Current directory: D:/Codex/svflex537/original618/negative/descriptor_numeric_payload_zero_hd/sim/tb_v3_hd_status_miter233
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_hd_status_miter233/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/original618/negative/descriptor_numeric_payload_zero_hd/sim/tb_v3_hd_status_miter233/sim.log
+# Journal file: D:/Codex/svflex537/original618/negative/descriptor_numeric_payload_zero_hd/sim/tb_v3_hd_status_miter233\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_hd_status_miter233/xsim_script.tcl
+# xsim {tb_v3_hd_status_miter233} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] status descriptor HD=1 x=246 y=9 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=2ad1d72996a90943b3e371b83
+[FAIL] status descriptor HD=1 x=248 y=9 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=2ad1d72996a90943b3e371b83
+[FAIL] status descriptor HD=1 x=238 y=10 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=32191000133a199cb67061670
+[FAIL] status descriptor HD=1 x=240 y=10 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=32191000133a199cb67061670
+[FAIL] status descriptor HD=1 x=245 y=10 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=4a811ee0c2fa738e67b00b759
+[FAIL] status descriptor HD=1 x=249 y=10 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=4a811ee0c2fa738e67b00b759
+[FAIL] status descriptor HD=1 x=245 y=11 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=4fe24f734789a2d562c3da2ee
+[FAIL] status descriptor HD=1 x=241 y=12 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=377a32b154a96ec771e3163ca
+[FAIL] status descriptor HD=1 x=240 y=13 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=075a24d8bbe3b2381ea9cac39
+[FAIL] status descriptor HD=1 x=245 y=13 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=26f41c768a2107bbaf6b7f405
+[FAIL] status descriptor HD=1 x=246 y=13 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=26f41c768a2107bbaf6b7f405
+[FAIL] status descriptor HD=1 x=249 y=13 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=26f41c768a2107bbaf6b7f405
+[FAIL] status descriptor HD=1 x=229 y=14 a=1086f800ffff18000000e0 b=1086f80000001800000000 cfg=60e8d2a4ad3380aa8879f8511
+[FAIL] status descriptor HD=1 x=231 y=14 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=60e8d2a4ad3380aa8879f8511
+[TB] tb_v3_hd_status_miter233 done errors=1443 comparisons=3712510
+$finish called at time : 37125280 ns : File "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_hd_status_miter233.sv" Line 47
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:38 . Memory (MB): peak = 218.086 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 17:56:14 2026...

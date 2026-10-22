@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "response_startup_allowed",
+  "top": "tb_v3_pixel_response_tracker",
+  "suite": "pixel_response_tracker",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "response_startup_allowed",
+    "target": "safevision/rtl/control/v3_pixel_response_tracker.v",
+    "suite": "pixel_response_tracker",
+    "top": "tb_v3_pixel_response_tracker",
+    "patch": [
+      {
+        "before": "source_output_valid&&target_is_next&&",
+        "after": "source_output_valid&&"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "response_startup_allowed",
+    "target": "safevision/rtl/control/v3_pixel_response_tracker.v",
+    "suite": "pixel_response_tracker",
+    "top": "tb_v3_pixel_response_tracker",
+    "patch": [
+      {
+        "before": "source_output_valid&&target_is_next&&",
+        "after": "source_output_valid&&"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\response_startup_allowed",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\response_startup_allowed",
+  "checked": {
+    "metadata": {
+      "mutation": "response_startup_allowed",
+      "target": "safevision/rtl/control/v3_pixel_response_tracker.v",
+      "suite": "pixel_response_tracker",
+      "top": "tb_v3_pixel_response_tracker",
+      "patch": [
+        {
+          "before": "source_output_valid&&target_is_next&&",
+          "after": "source_output_valid&&"
+        }
+      ],
+      "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f2\\negative\\response_startup_allowed",
+      "original_sha256": "e1ec3eeca67d4897bbfe6cc932831524f8d7a3e361fdd09297da7efc0c7cd2c7",
+      "mutated_sha256": "6c2c5851ba67bda5972fe1d1d64485a079e2d2def2b2b425a5ef08bc1c782e20",
+      "mutant_file": "mutant.v",
+      "detected": true,
+      "normal_completion": true,
+      "process_exit": 1,
+      "error_counts": [
+        5
+      ],
+      "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/response_startup_allowed",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\response_startup_allowed",
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\response_startup_allowed"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_pixel_response_tracker",
+      "suite": "pixel_response_tracker",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/pixel_response_tracker_sim.json",
+      "current_manifest_sha256": "a0628a1e7d65d64d35a421f228dcb55305979efef869942c9696aef9e2037429",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      5
+    ],
+    "log_sha256": "43481eefbb990073b87c1dc3227748c972e1104fd5beb78500f514e326a7f819",
+    "metadata_sha256": "b8b1a3ba4cb1cc721e61ad3b268273b900881ee231e6d42083e68768aade27d7",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\response_startup_allowed\\case.json",
+      "sha256": "b8b1a3ba4cb1cc721e61ad3b268273b900881ee231e6d42083e68768aade27d7"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\response_startup_allowed\\sim.log",
+      "sha256": "43481eefbb990073b87c1dc3227748c972e1104fd5beb78500f514e326a7f819"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\response_startup_allowed\\sources.sha256.json",
+      "sha256": "a27dac2b91a2856f7ae925bd9f4caf64baa4b49baf5325cfab1890acea7e5d04"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\response_startup_allowed\\original.producer.metadata.json",
+      "sha256": "b8b1a3ba4cb1cc721e61ad3b268273b900881ee231e6d42083e68768aade27d7"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\response_startup_allowed\\producer.provenance.json",
+      "sha256": "38be3d23aa8b1ac96582e5ea9244e08e2ed1af9ea34b2ff6cbb30eea0549e5f9"
+    },
+    "sources.after.sha256.json": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\response_startup_allowed\\sources.after.sha256.json",
+      "sha256": "f15b38273c0ac40eff0967c135eacf6ffc970bc1534ad72ee9392ca74115f897"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\response_startup_allowed\\mutant.v",
+      "sha256": "6c2c5851ba67bda5972fe1d1d64485a079e2d2def2b2b425a5ef08bc1c782e20"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

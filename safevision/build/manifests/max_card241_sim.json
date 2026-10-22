@@ -48,7 +48,9 @@
     "safevision/verification/models/sd_spi_card_model.sv",
     "safevision/rtl/memory/v3_row_integrity.v",
     "safevision/rtl/storage/sd_checked_sector_reader.v",
-    "safevision/rtl/media/v3_bmp_normalizer.v"
+    "safevision/rtl/media/v3_bmp_normalizer.v",
+    "safevision/rtl/storage/v3_fat_name_store.v",
+    "safevision/rtl/storage/v3_flexible_media_index.v"
   ],
   "tops": [
     "tb_v3_max_card241"
