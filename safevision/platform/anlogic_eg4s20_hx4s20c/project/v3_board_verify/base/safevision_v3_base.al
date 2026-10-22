@@ -984,7 +984,7 @@
                     <post_place_opt>medium</post_place_opt>
                     <hfn_opt_effort>low</hfn_opt_effort>
                     <pr_strategy>5</pr_strategy>
-                    <seed>0</seed>
+                    <seed>1</seed>
                     <opt_timing>off</opt_timing>
                 </PlaceProperty>
                 <RouteProperty>
