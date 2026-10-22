@@ -27,7 +27,7 @@ wire[33:0] padded_end={2'd0,assembled}+34'd1+assembled[0];
 // or111-bit context change; the widened legacy expressions remain debug views.
 (* use_ripple=1 *) wire[31:0] riff_after_byte=riff_left-32'd1;
 (* use_ripple=1 *) wire[31:0] file_payload_limit=file_size-32'd8;
-(* keep="true" *) wire[3:0] chunk_gt,chunk_eq,file_gt,file_eq;
+wire[3:0] chunk_gt,chunk_eq,file_gt,file_eq;
 genvar bound_byte;
 generate for(bound_byte=0;bound_byte<4;bound_byte=bound_byte+1)begin:bound_compare
  assign chunk_gt[bound_byte]=assembled[8*bound_byte+:8]>riff_after_byte[8*bound_byte+:8];

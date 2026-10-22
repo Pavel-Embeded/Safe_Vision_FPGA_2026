@@ -121,6 +121,7 @@ def build_parameters(root,mode=None):
   ('gate','pack_effort'):{'low','medium','high'},
   ('gate','bdd_opt'):{'on','off'},('gate','lut4_map'):{'on','off'},
   ('place','effort'):{'low','medium','high'},
+  ('place','opt_timing'):{'medium','off'},
   ('place','seed'):{'0','1','7','13','31'},
   ('place','post_place_opt'):{'auto','medium','high','ultra'},
   ('place','hfn_opt_effort'):{'low','medium','high'},

@@ -11,3 +11,6 @@ set_param route timing greedy
 
 # Measured capacity profile; original clocks, I/O and STA gates retained.
 set_param rtl min_ripple_len 32
+
+# Measured EG4 packing strategy; clocks and full STA limits stay unchanged.
+set_param place opt_timing off

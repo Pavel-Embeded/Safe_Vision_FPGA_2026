@@ -141,13 +141,11 @@ module fat32_boot_parser (
     // ★ log2(spc)：供 total_clus 的移位使用（见 M_EVAL 里的注释）。
     //   只有走到"全部合法"那一支时才会用到它，而那一支已经被 spc_ok 保证
     //   spc 是 2 的幂（1..128），所以一个优先编码器就够了，不需要通用除法。
-    wire [2:0] w_log2_spc = (spc[7]) ? 3'd7 :
-                            (spc[6]) ? 3'd6 :
-                            (spc[5]) ? 3'd5 :
-                            (spc[4]) ? 3'd4 :
-                            (spc[3]) ? 3'd3 :
-                            (spc[2]) ? 3'd2 :
-                            (spc[1]) ? 3'd1 : 3'd0;
+    (* dsp_style="yes" *) wire[39:0] boot_root_product=w_rc*spc;
+    wire [2:0] w_log2_spc = spc_log;
+    wire[31:0] payload_sectors=(w_ts32 - ({16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32)));
+    wire[7:0] reciprocal_spc=8'd128>>spc_log;
+    (* dsp_style="yes" *) wire[39:0] clus_product=payload_sectors*reciprocal_spc;
     wire nfat_ok = (nfat == 8'd1) || (nfat == 8'd2);
     // BPB fields stop changing after byte47; only these five predicates
     // need staging before evaluation following byte511. Keep address math
@@ -265,7 +263,7 @@ module fat32_boot_parser (
                     root_clus      <= w_rc;
                     data_start_lba <= {16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32);
                     root_dir_lba   <= {16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32)
-                                      + ((w_rc - 32'd2) << w_log2_spc);
+                                      + (boot_root_product[31:0]-{23'd0,spc,1'b0});
                     total_sec      <= w_ts32;
                     // ★ 这里绝对不能用 `/ spc`。
                     //   Verilog 的除法运算符会被综合器实现成【组合除法阵列】：
@@ -276,7 +274,7 @@ module fat32_boot_parser (
                     //   改用移位：本分支已由 spc_ok 保证 spc 是 2 的幂（1..128），
                     //   所以 `X / spc` 与 `X >> log2(spc)` 对无符号数是【逐值等价】的。
                     //   ⇒ 行为与原来完全一致（既有 TB 断言逐字不变），只是不再有除法器。
-                    total_clus     <= (w_ts32 - ({16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32))) >> w_log2_spc;
+                    total_clus     <= clus_product[38:7];
                     mstate         <= M_DONE;
                 end
             end
