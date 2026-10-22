@@ -15472,3 +15472,71 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/tools/run_v3_pll.py -text
 
 /safevision/tools/v3_resource_policy.py -text
+
+/safevision/build/manifests/compact_ingress616_sim.json -text
+
+/safevision/build/manifests/directory_fault550_sim.json -text
+
+/safevision/build/manifests/directory_limit550_sim.json -text
+
+/safevision/build/manifests/flexible540_sim.json -text
+
+/safevision/build/manifests/flexible_bmp542_sim.json -text
+
+/safevision/build/manifests/flexible_bmp_bounds551_sim.json -text
+
+/safevision/build/manifests/flexible_fs550_sim.json -text
+
+/safevision/build/manifests/flexible_retry_fs550_sim.json -text
+
+/safevision/build/manifests/progress_recovery561_sim.json -text
+
+/safevision/build/manifests/progress_recovery_hd561_sim.json -text
+
+/safevision/build/manifests/progress_watchdog_base561_sim.json -text
+
+/safevision/build/manifests/progress_watchdog_hd561_sim.json -text
+
+/safevision/build/manifests/spectrum539_sim.json -text
+
+/safevision/build/manifests/wav_retry550_sim.json -text
+
+/safevision/tools/audit_v3_compact_ingress616.py -text
+
+/safevision/verification/assets/bmp542/bmp542_cases.mem -text
+
+/safevision/verification/assets/bmp542/bmp542_expected.mem -text
+
+/safevision/verification/assets/bmp542/reference.json -text
+
+/safevision/verification/assets/bmp_bounds551/cases.mem -text
+
+/safevision/verification/assets/bmp_bounds551/headers.mem -text
+
+/safevision/verification/assets/bmp_bounds551/reference.json -text
+
+/safevision/verification/assets/flexible540/flexible_directory540.mem -text
+
+/safevision/verification/assets/flexible540/flexible_expected540.mem -text
+
+/safevision/verification/assets/flexible540/flexible_lengths540.mem -text
+
+/safevision/verification/assets/flexible540/flexible_names540.mem -text
+
+/safevision/verification/assets/spectrum539/reference.json -text
+
+/safevision/verification/assets/spectrum539/spectrum_expected539.mem -text
+
+/safevision/verification/assets/spectrum539/spectrum_peaks539.mem -text
+
+/safevision/verification/assets/spectrum539/spectrum_samples539.mem -text
+
+/safevision/verification/fixtures/generate_flexible_fs550.py -text
+
+/safevision/verification/models/v3_pcm_ingress_shared_fifo_default_reference616.freeze.json -text
+
+/safevision/verification/unit/tb_v3_compact_ingress616.sv -text
+
+/safevision/verification/unit/tb_v3_flexible_retry_fs550.sv -text
+
+/safevision/verification/unit/tb_v3_spectrum539.sv -text
