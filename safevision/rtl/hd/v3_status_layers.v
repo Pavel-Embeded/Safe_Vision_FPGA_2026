@@ -511,7 +511,7 @@ module v3_status_layers #(
  wire user_panel=USER_FEATURES&&raw_de&&(
   (raw_x>=8&&raw_x<296&&raw_y>=56&&raw_y<72)||
   (raw_x>=8&&raw_x<112&&raw_y>=HEIGHT-24&&raw_y<HEIGHT-8)||
-  (raw_x>=WIDTH-272&&raw_x<WIDTH-16&&raw_y>=HEIGHT-130&&raw_y<HEIGHT-62));
+  (raw_x>=(FLEX_SPECTRUM?WIDTH-304:WIDTH-272)&&raw_x<WIDTH-16&&raw_y>=(FLEX_SPECTRUM?HEIGHT-160:HEIGHT-130)&&raw_y<(FLEX_SPECTRUM?HEIGHT-36:HEIGHT-62)));
  wire bar_edge=user_panel||setting_edge||column_edge||bar_box&&(raw_x==80||raw_x==281||raw_y==HEIGHT-22||raw_y==HEIGHT-11);
  wire bar_fill=column_fill||bar_box&&raw_x>80&&raw_x<81+energy*2&&raw_y>HEIGHT-22&&raw_y<HEIGHT-11;
  wire wave_trace,wave_grid;wire[15:0] wave_colour;
@@ -528,7 +528,8 @@ module v3_status_layers #(
  reg[2:0] wave_trace_pipe,wave_grid_pipe;reg[15:0] wave_colour_pipe[0:2];integer spectrum_ci;
  always @(posedge pixel_clk or negedge pixel_rst_n)
   if(!pixel_rst_n)for(spectrum_ci=0;spectrum_ci<3;spectrum_ci=spectrum_ci+1)wave_colour_pipe[spectrum_ci]<=0;
-  else begin wave_colour_pipe[0]<=wave_colour;for(spectrum_ci=1;spectrum_ci<3;spectrum_ci=spectrum_ci+1)wave_colour_pipe[spectrum_ci]<=wave_colour_pipe[spectrum_ci-1];endreg[3:0] uptime_pipe;
+  else begin wave_colour_pipe[0]<=wave_colour;for(spectrum_ci=1;spectrum_ci<3;spectrum_ci=spectrum_ci+1)wave_colour_pipe[spectrum_ci]<=wave_colour_pipe[spectrum_ci-1];end
+ reg[3:0] uptime_pipe;
  always @(posedge pixel_clk or negedge pixel_rst_n)
   if(!pixel_rst_n)begin wave_trace_pipe<=0;wave_grid_pipe<=0;uptime_pipe<=0;end
   else begin wave_trace_pipe<={wave_trace_pipe[1:0],wave_trace};wave_grid_pipe<={wave_grid_pipe[1:0],wave_grid};

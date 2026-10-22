@@ -32,6 +32,14 @@ def check_roms(text,root):
   matches=[n for n,data,parity,widths in mapped if data==expected and parity==expected_parity and (not is_descriptor or widths==['9','9'])]
   if len(matches)!=1:raise ValueError('mapped ROM content missing/corrupt/duplicated: '+name)
   result.append({'asset':name,'mapped_instance':matches[0],'bytes_compared':1024,'parity_bits_compared':1024,'logical_bits':9216 if is_descriptor else 8192,'payload_sha256':hashlib.sha256(expected+expected_parity).hexdigest()})
+ if '.FLEX_SPECTRUM(1)'in top:
+  asset=root/'safevision/assets/audio/v3_spectrum_twiddle.mem'
+  values=[int(t,16)for t in asset.read_text(encoding='utf-8-sig').split()]
+  if len(values)!=256 or any(v<0 or v>0xffffffff for v in values):raise ValueError('invalid spectrum twiddle ROM shape')
+  expected=b''.join(v.to_bytes(4,'little')for v in values);parity=bytes(128)
+  matches=[n for n,data,p,widths in mapped if data==expected and p==parity]
+  if len(matches)!=1:raise ValueError('mapped spectrum twiddle ROM missing/corrupt/duplicated')
+  result.append(dict(asset=asset.name,mapped_instance=matches[0],bytes_compared=1024,parity_bits_compared=1024,logical_bits=8192,payload_sha256=hashlib.sha256(expected+parity).hexdigest()))
  return result
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--netlist',type=Path,required=True);ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()

@@ -15180,3 +15180,5 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/rtl/video/v3_audio_spectrum.v -text
 
 /safevision/rtl/video/v3_spectrum_twiddle.mem -text
+
+/safevision/tools/check_v3_rom_netlist.py -text

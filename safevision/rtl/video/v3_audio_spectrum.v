@@ -160,11 +160,50 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  wire[6:0] height=levels[{display_bank,column}];
  wire fill=ready&&area&&dx[2:0]<6&&y<BASELINE&&y>=BASELINE-height;
  wire peak=ready&&area&&dx[2:0]<6&&peaks[column]!=0&&y==BASELINE-peaks[column];
+ function[14:0] glyph;input[7:0] c;begin
+  case(c)
+   "0":glyph=15'b111_101_101_101_111;"1":glyph=15'b010_110_010_010_111;
+   "2":glyph=15'b110_001_010_100_111;"3":glyph=15'b110_001_010_001_110;
+   "4":glyph=15'b101_101_111_001_001;"5":glyph=15'b111_100_110_001_110;
+   "6":glyph=15'b011_100_111_101_111;"8":glyph=15'b111_101_111_101_111;
+   "S":glyph=15'b011_100_010_001_110;"P":glyph=15'b110_101_110_100_100;
+   "E":glyph=15'b111_100_110_100_111;"C":glyph=15'b011_100_100_100_011;
+   "T":glyph=15'b111_010_010_010_010;"R":glyph=15'b110_101_110_101_101;
+   "U":glyph=15'b101_101_101_101_111;"M":glyph=15'b101_111_111_101_101;
+   "H":glyph=15'b101_101_111_101_101;"z":glyph=15'b000_111_010_100_111;
+   "k":glyph=15'b100_101_110_101_101;"-":glyph=15'b000_000_111_000_000;
+   default:glyph=0;
+  endcase
+ end endfunction
+ function[7:0] title_char;input[2:0] i;begin
+  case(i)0:title_char="S";1:title_char="P";2:title_char="E";3:title_char="C";
+   4:title_char="T";5:title_char="R";6:title_char="U";default:title_char="M";endcase
+ end endfunction
+ function dot;input[7:0] c;input[3:0] column;input[3:0] row;reg[14:0] bits;begin
+  bits=glyph(c);dot=column<6&&row<10?bits[14-(row>>1)*3-(column>>1)]:1'b0;
+ end endfunction
+ wire[11:0] title_x=x-LEFT,title_y=y-(BASELINE-88);
+ wire title_pixel=de&&x>=LEFT&&x<LEFT+64&&y>=BASELINE-88&&y<BASELINE-78&&dot(title_char(title_x[5:3]),{1'b0,title_x[2:0]},title_y[3:0]);
+ reg[7:0] legend_char;reg[11:0] legend_x,axis_y;reg[7:0] axis_char;
+ always @*begin
+  legend_x=dx;legend_char=0;
+  if(dx<40)case(dx[5:3])0:legend_char="1";1,2:legend_char="0";3:legend_char="H";4:legend_char="z";default:;endcase
+  else if(dx>=80&&dx<96)begin legend_x=dx-80;legend_char=legend_x[3]?"k":"1";end
+  else if(dx>=176&&dx<192)begin legend_x=dx-176;legend_char=legend_x[3]?"k":"5";end
+  else if(dx>=224&&dx<248)begin legend_x=dx-224;case(legend_x[4:3])0:legend_char="2";1:legend_char="0";default:legend_char="k";endcase end
+  axis_y=y-(BASELINE-68);axis_char=0;
+  if(y>=BASELINE-68&&y<BASELINE-58)axis_char=x>=LEFT-8?"0":0;
+  else if(y>=BASELINE-48&&y<BASELINE-38)begin axis_y=y-(BASELINE-48);axis_char=x<LEFT-16?"-":x<LEFT-8?"3":"0";end
+  else if(y>=BASELINE-28&&y<BASELINE-18)begin axis_y=y-(BASELINE-28);axis_char=x<LEFT-16?"-":x<LEFT-8?"6":"0";end
+ end
+ wire[11:0] legend_y=y-(BASELINE+8),axis_x=x-(LEFT-24);
+ wire legend_pixel=de&&x>=LEFT&&x<LEFT+256&&y>=BASELINE+8&&y<BASELINE+18&&dot(legend_char,{1'b0,legend_x[2:0]},legend_y[3:0]);
+ wire axis_pixel=de&&x>=LEFT-24&&x<LEFT&&dot(axis_char,{1'b0,axis_x[2:0]},axis_y[3:0]);
  always @(posedge clk or negedge rst_n)
   if(!rst_n)begin trace_pixel<=0;grid_pixel<=0;colour<=0;end
   else begin
-   trace_pixel<=fill||peak;
-   grid_pixel<=area&&(y==BASELINE||y==BASELINE-16||y==BASELINE-32||y==BASELINE-48||y==BASELINE-64);
-   colour<=peak?16'hffe0:y<BASELINE-48?16'hf97f:y<BASELINE-32?16'h8bff:y<BASELINE-16?16'h05ff:16'h031f;
+   trace_pixel<=fill||peak||title_pixel;
+   grid_pixel<=(area&&(y==BASELINE||y==BASELINE-24||y==BASELINE-44||y==BASELINE-64))||legend_pixel||axis_pixel;
+   colour<=title_pixel?16'hffff:peak?16'hffe0:y<BASELINE-48?16'hf97f:y<BASELINE-32?16'h8bff:y<BASELINE-16?16'h05ff:16'h031f;
   end
 endmodule
