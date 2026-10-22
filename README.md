@@ -2,6 +2,8 @@
 
 ## 本地最新 BASE：实卡多尺寸与三位编号修复（2026-10-22）
 
+Windows 重新检出本项目时，完整原始证据含较深目录，请启用 Git 的仓库级长路径支持：首次克隆使用 `git -c core.longpaths=true clone --config core.longpaths=true <仓库地址>`；已有检出在项目内执行 `git config --local core.longpaths true`。这是保存完整证据目录的路径要求，不影响位流与板上功能。
+
 当前本地推荐使用 [新 BASE 位流](artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/SafeVision_BASE_34462ee.bit)，批准提交 `34462ee`。支持卡上 `SV001～SV004.BMP` 与 `SV0001～SV0004.WAV`，内部补零配对，保留四位命名及原有全部 BASE 功能。实际图片依次为480×800、641×479、1280×720、1920×1080，等比例居中适配。运行时ID仍26102004，以提交和位流SHA区分。
 
 290个独立正向顶层与205个正常结束的语义负控通过当前输入审计，其中112个原正向及41个原负控因本次RTL变更重跑；新增实际根目录重放和三项命名故障注入。BASE重新布局布线通过全部Slow/Fast时序，setup/hold为+0.190/+0.024ns，LUT18165/19600，DFF13117/19600，物理RAM60/64。
