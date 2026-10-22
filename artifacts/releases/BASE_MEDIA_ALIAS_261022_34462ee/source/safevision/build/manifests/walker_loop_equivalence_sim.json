@@ -1,0 +1,13 @@
+{
+  "defines": [],
+  "sources": [
+    "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+    "safevision/verification/models/v3_cluster_walker_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_walker_loop_equivalence"
+  ],
+  "timeouts": {
+    "tb_v3_walker_loop_equivalence": 600
+  }
+}

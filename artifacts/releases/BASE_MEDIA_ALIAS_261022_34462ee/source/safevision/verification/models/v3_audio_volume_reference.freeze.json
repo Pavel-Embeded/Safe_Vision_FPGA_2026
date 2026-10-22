@@ -1,0 +1,7 @@
+{
+  "original_source": "safevision/rtl/audio/v3_audio_volume.v",
+  "original_sha256": "e414ac4070f9907598fa7511b1a60727d27a4197285447fa0b3a8ee3f7b0c28c",
+  "production_modified": true,
+  "reference_sha256": "55ccee65fe850a33abe4b89e4ab0ac08856f91759478b6863d816c6600489d57",
+  "original_source_commit": "4cc88201737df7545d3fdd5b65750bb9011b21c3"
+}

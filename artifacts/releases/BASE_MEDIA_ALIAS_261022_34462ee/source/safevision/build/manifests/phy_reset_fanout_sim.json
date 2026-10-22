@@ -1,0 +1,10 @@
+{
+  "defines": [],
+  "sources": [
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v"
+  ],
+  "tops": [
+    "tb_v3_phy_reset_fanout"
+  ]
+}

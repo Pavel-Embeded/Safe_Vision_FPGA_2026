@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_priority_difference",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 600040,
+  "elapsed_s": 9.219,
+  "suite": "c",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_priority_difference\\sim\\tb_v3_priority_difference"
+}

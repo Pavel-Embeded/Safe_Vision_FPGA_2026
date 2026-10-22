@@ -1,0 +1,24 @@
+{
+  "mutation": "progress_equality_reversed",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+  "suite": "progress_top176",
+  "top": "tb_v3_progress_top176",
+  "patch": [
+    {
+      "before": "wire mem_progress=|mem_progress_q;",
+      "after": "wire mem_progress=~|mem_progress_q;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\progress_equality_reversed\\sim\\tb_v3_progress_top176",
+  "original_sha256": "b3b8011e9d0e58b893bf1685eecc222f4aada50b4721414c2211ee975f8111e9",
+  "mutated_sha256": "b559d3f69b260d5588351541a3026e19f93cf2318b6b49ebe99e98b10645441d",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    100292
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\progress_equality_reversed\\sim\\tb_v3_progress_top176",
+  "return_code": 1
+}

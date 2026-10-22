@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 12:48:20 2026
+# Process ID: 468
+# Current directory: D:/Codex/svq237/p/tb_v3_hd_progress_clear/sim/tb_v3_hd_progress_clear
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_hd_progress_clear/xsim_script.tcl}
+# Log file: D:/Codex/svq237/p/tb_v3_hd_progress_clear/sim/tb_v3_hd_progress_clear/sim.log
+# Journal file: D:/Codex/svq237/p/tb_v3_hd_progress_clear/sim/tb_v3_hd_progress_clear\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_hd_progress_clear/xsim_script.tcl
+# xsim {tb_v3_hd_progress_clear} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] exact published progress over7 limits/dividers,saturation,heartbeat,media reset,async reset;no public latency change
+[TB] tb_v3_hd_progress_clear done errors=0 comparisons=175343
+$finish called at time : 250422 ns : File "D:/Codex/svq237/source/safevision/verification/unit/tb_v3_hd_progress_clear.sv" Line 35
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 12:48:25 2026...

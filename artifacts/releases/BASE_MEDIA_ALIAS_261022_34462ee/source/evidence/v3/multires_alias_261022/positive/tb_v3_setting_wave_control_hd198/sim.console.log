@@ -1,0 +1,16 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_setting_wave_control_hd198/xsim_script.tcl
+# xsim {tb_v3_setting_wave_control_hd198} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] production C:VOL/DIAG100 live values,actual HD parameter binding;full-raster behavior separately mandatory
+PASS tb_v3_setting_wave_control_hd198 errors=0 comparisons=14
+$finish called at time : 1972 ns : File "D:/Codex/svmultires510/source/safevision/verification/unit/tb_v3_setting_wave_control198.sv" Line 37
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 10:48:55 2026...

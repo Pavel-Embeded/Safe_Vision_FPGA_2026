@@ -1,0 +1,10 @@
+{
+  "sources": [
+    "safevision/rtl/media/bmp_parser.v",
+    "safevision/rtl/media/v3_bmp_normalizer.v",
+    "safevision/verification/models/v3_bmp_normalizer199_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_normalizer_miter203"
+  ]
+}

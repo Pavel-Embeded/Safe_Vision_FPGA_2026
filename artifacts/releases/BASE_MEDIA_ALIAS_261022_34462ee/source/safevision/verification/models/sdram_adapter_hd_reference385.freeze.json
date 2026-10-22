@@ -1,0 +1,13 @@
+{
+  "original_source_commit": "5ece9156a28f44514b564472f4d821e72f09b77a",
+  "original_path": "safevision/verification/models/origins/5ece915/adapter_hd385.original.v",
+  "original_sha256": "23629a32943dfdd68e8f413113101f38141af24d3c7e64295e5018d2a864ee6f",
+  "reference_sha256": "f16dd8747a3b50dcb5d46d010d08cd39f573de2be2a9a9a971f97a3559f88604",
+  "namespace_only": [
+    [
+      "module sdram_app_adapter #(",
+      "module sdram_adapter_hd_reference385 #("
+    ]
+  ],
+  "original_repository_path": "safevision/rtl/hd/sdram_app_adapter.v"
+}

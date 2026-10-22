@@ -1,0 +1,23 @@
+{
+  "mutation": "retimed_rounding",
+  "target": "safevision/rtl/video/scaler/v3_scaler_bilinear_thirds.v",
+  "suite": "thirds_scaler",
+  "top": "tb_v3_thirds_scaler",
+  "patch": [
+    {
+      "before": "  begin common_sum={1'b0,a}+{1'b0,b}+7'd1;",
+      "after": "  begin common_sum={1'b0,a}+{1'b0,b}+7'd0;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative430\\n\\retimed_rounding",
+  "original_sha256": "576cf59641f8b6f847a23fe84bad4d7a620d448bcd26b4ff3a50449bbaaf0722",
+  "mutated_sha256": "f7ac294103d2dde689ed2ffc17dd4f14bbd7ea282906bbba6f05fc6fdebdb65c",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    22791
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative430\\n\\retimed_rounding\\sim\\tb_v3_thirds_scaler"
+}

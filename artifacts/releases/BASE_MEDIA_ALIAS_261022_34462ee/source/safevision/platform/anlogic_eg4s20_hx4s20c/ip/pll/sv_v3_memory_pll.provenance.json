@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "configuration_method": "TD official primitive/template parameterization; IPTool automatic generation not claimed",
+  "template_path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_board_memory_pll.v",
+  "template_sha256": "abed6112f11a2b52fa52dab4a49ba08cce5693f86bf0a7a9305af1660f27bd42",
+  "system_hz": 100000000,
+  "memory_hz": 50000000,
+  "sdram_shift_ns": 8,
+  "vco_hz": 1000000000,
+  "basis": "50MHz shared-memory deadline proof; +10ns native SDRAM probe setup -0.565ns, +8ns probe setup +0.996ns/hold +0.023ns with unchanged IO budget. Full-board routed timing remains required.",
+  "hardware_verified": false,
+  "native_derived_clocks_verified": true,
+  "validation": {
+    "official_model": "v3_pll50_phase8_model: 301 comparisons; 1ns phase corruption detected",
+    "native_probe": "v3_sdram50_phase8_promoted: routed SYS100/MEM50 rise0ns/SDRAM50 rise8ns; setup +0.996ns, hold +0.023ns",
+    "scope": "small actual vendor SDRAM/adapter diagnostic; full-board final route still required",
+    "hardware_verified": false
+  }
+}

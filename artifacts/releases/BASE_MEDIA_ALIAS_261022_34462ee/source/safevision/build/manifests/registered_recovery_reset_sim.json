@@ -1,0 +1,9 @@
+{
+  "sources": [
+    "safevision/rtl/control/media_recovery_ctrl.v",
+    "safevision/verification/models/v3_recovery_reset_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_registered_recovery_reset"
+  ]
+}

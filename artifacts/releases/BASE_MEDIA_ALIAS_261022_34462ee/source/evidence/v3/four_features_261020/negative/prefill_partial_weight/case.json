@@ -1,0 +1,23 @@
+{
+  "mutation": "prefill_partial_weight",
+  "target": "safevision/rtl/audio/v3_audio_prefill_compare.v",
+  "suite": "audio_prefill_compare",
+  "top": "tb_v3_audio_prefill_compare",
+  "patch": [
+    {
+      "before": "  wire[10:0] queued_words={1'b0,fifo_words}+(partial?11'd3:11'd0);",
+      "after": "  wire[10:0] queued_words={1'b0,fifo_words}+(partial?11'd0:11'd0);"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative430\\n\\prefill_partial_weight",
+  "original_sha256": "c6fdef81233882954808bb887db65147fc4b387fc413d91ae836f77429b405f5",
+  "mutated_sha256": "7c5e38a8af2612fde87af899888b5ae7f01275c3073e8d7bb1c21d4661bfb92e",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2478
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative430\\n\\prefill_partial_weight\\sim\\tb_v3_audio_prefill_compare"
+}

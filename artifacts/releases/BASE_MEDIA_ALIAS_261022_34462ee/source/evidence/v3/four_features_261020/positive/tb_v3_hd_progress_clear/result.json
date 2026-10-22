@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_hd_progress_clear",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 175343,
+  "elapsed_s": 10.218,
+  "suite": "hd_progress_clear",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq237\\p\\tb_v3_hd_progress_clear\\sim\\tb_v3_hd_progress_clear"
+}

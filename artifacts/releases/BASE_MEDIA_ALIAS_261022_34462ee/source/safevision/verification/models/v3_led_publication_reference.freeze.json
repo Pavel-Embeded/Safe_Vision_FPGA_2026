@@ -1,0 +1,9 @@
+{
+  "original_path": "safevision/verification/models/origins/0b2de54/v3_led_publication_reference.original.v",
+  "original_source_commit": "0b2de548c8c94e9e4b85573653bdd28c74736a39",
+  "original_sha256": "d79a9e2144ee745f7725e05206ed9677432764ac76cfe627187c4290559fc8dd",
+  "reference_sha256": "d362c0a91019ebf4815a4452102f7c8d0b0764a98e816d1f25c344605d896ec9",
+  "fragment_sha256": "4156651e82d133fde43a9fb53b39c742784dfa9f016003dea70eb26099046bd7",
+  "transformation": "Extract original LED/UART publication fragment and wrap with same ports; no fragment logic changes",
+  "original_repository_path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v"
+}

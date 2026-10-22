@@ -1,0 +1,70 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 17:56:49 2026
+# Process ID: 43268
+# Current directory: D:/Codex/svq416/p/tb_c_audio/sim/tb_c_audio
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_c_audio/xsim_script.tcl}
+# Log file: D:/Codex/svq416/p/tb_c_audio/sim/tb_c_audio/sim.log
+# Journal file: D:/Codex/svq416/p/tb_c_audio/sim/tb_c_audio\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_c_audio/xsim_script.tcl
+# xsim {tb_c_audio} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] S1ÿÿÿๅÿÿÿฝÿÿÿ audio_l = 0
+[PASS] S1ÿÿÿๅÿÿÿฝÿÿÿ audio_r = 0
+[PASS] S1ÿÿÿๅÿÿÿฝÿÿÿ audio_valid = 0
+[PASS] ÿÿÿๅÿÿÿฝÿÿÿ audio_underflow = 0
+[PASS] S1.5 ÿÿÿไÿÿÿ pcm_rd = 0
+[PASS] ÿÿÿฑÿÿÿÿÿÿ๏ÿ0x1234 -> 0x001234
+[PASS] ÿÿÿฑÿÿÿÿÿÿ๏ÿ0x8000 -> 0xFF8000
+[PASS] ÿÿÿฐÿÿÿๆÿÿÿ—ถ audio_valiÿÿÿÿÿÿ
+[PASS] ÿÿÿๆÿÿÿÿÿÿถ pcm_rd ÿÿÿๆÿÿÿÿÿÿฒ
+[PASS] 5 track_ÿÿÿๆÿÿÿ ÿÿÿฌÿÿÿๆÿÿÿ€ÿÿÿ 
+[PASS] S2.ÿÿÿÿÿÿบÿÿถ underfloÿÿÿธÿÿÿ
+[PASS] ÿÿÿธÿÿÿ€ÿÿÿๅÿÿÿ’ÿÿÿ€ÿÿÿๅÿÿÿÿÿÿ
+[PASS] S2.8 audio_validÿÿÿชÿÿÿ็ÿÿÿธÿÿÿ
+[PASS] ÿÿÿฆÿÿÿๆÿÿÿฑ• 0xFFFF -> 0xFFFFFF
+[PASS] ÿÿÿฆÿÿÿๆÿÿÿฑ• 0x0001 -> 0x000001
+[PASS] S4.ÿÿÿฉบ -> audio_lÿÿÿÿÿÿไÿบ 0
+[PASS] S4.ÿÿÿฉบ -> audio_rÿÿÿÿÿÿไÿบ 0
+[PASS] S4.3ÿÿÿบ -> underflow +1
+[PASS] S4.ÿÿÿฉÿÿÿถÿÿÿๆÿÿÿฟ pcm_rd
+[PASS] flowÿÿÿÿÿÿ็ÿÿÿÿÿÿÿÿÿ่ÿÿÿธÿÿÿก
+[PASS] 5.1 ÿÿÿๆÿÿÿÿÿÿÿÿÿๅÿ underflow
+[PASS] S6 sample_tiÿÿÿๅÿÿÿ = TICK_N+1
+[PASS] T1.1ÿÿÿชÿÿÿ่ÿฝ -> tone_l = 0
+[PASS] T1.2ÿÿÿชÿÿÿ่ÿฝ -> tone_r = 0
+[PASS] hase 0x0200 -> +sin_q(1) = 98135
+[PASS] e 0x3E00 -> +sin_q(31) = 1997591
+[PASS] ÿÿÿquadÿÿÿตÿÿÿนÿÿ-> +sin_q(31)
+[PASS] e 0x4200 -> +sin_q(30) = 1990369
+[PASS] .5 phase 0x8ÿÿÿ๏ÿ18ÿÿÿบÿÿÿ-> 0
+[PASS] ase 0x8200 -> -sin_q(1) = -98135
+[PASS]  0xC000 -> -sin_q(31) = -1997591
+[PASS]  0xC200 -> -sin_q(30) = -1990369
+[PASS] T2.9 toneÿÿÿไÿ tone_ÿÿÿธÿÿÿด
+[PASS] ÿÿÿÿÿÿ็ÿÿÿฌÿÿÿฐÿÿจ 990..101ÿÿÿ
+[PASS] A1.ÿÿÿคÿÿÿÿÿÿบÿÿฒ gain = 0
+[PASS] ÿÿÿๅÿÿÿฝÿÿÿฉÿÿÿฒ audio_valid = 0
+[PASS] A2.1 alarm=0 -> gain ÿÿÿๆÿ 0
+[PASS] A2.2 gain=0 -> ÿÿÿๅÿÿÿÿÿÿ WAV
+[PASS] ÿÿÿฌÿÿÿๆÿÿÿ—ถ audio_valiÿÿÿÿÿÿ
+[PASS] ÿÿÿฐÿÿÿÿÿÿๆÿÿÿธÿÿÿ…ÿÿ STEP(32)
+[PASS] arm ÿÿÿ็ÿญ -> gaÿÿÿ้ÿÿÿ’ÿÿÿฐ 256
+[PASS] .3 gain=256 & tone=0 -> ÿÿÿๅÿบ 0
+[PASS] in=32 -> out=(wav*224)>>8=875000
+[PASS]  alaÿÿÿๆÿÿÿปÿÿÿถ gaiÿÿÿฟÿÿÿ 256
+[PASS] ain=256 ÿÿÿ่ÿÿÿÿÿÿ’ÿÿÿๆÿÿÿญÿÿÿณ
+[PASS] .1 alarmÿÿÿคÿÿ€ -> gain ÿÿÿๅÿฐ 0
+[PASS] gain=0 -ÿÿÿพÿÿÿบÿÿÿๅÿÿÿÿÿÿ WAV
+[PASS] ÿÿÿ 0x100000*96/256 = 0x060000
+[PASS] ÿÿÿฌÿÿÿๆÿÿÿ—ถ audio_valiÿÿÿÿÿÿ
+[PASS] A7.2 audio_validÿÿÿชÿÿÿ็ÿÿÿธÿÿÿ
+[TB] tb_c_audio done, errors=0 (tick_period=4 tone_wraps=1000)
+$finish called at time : 480776 ns : File "D:/Codex/svq416/source/safevision/verification/unit/tb_c_audio.sv" Line 342
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:56:52 2026...

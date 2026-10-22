@@ -1,0 +1,47 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_c_playback_fsm/xsim_script.tcl
+# xsim {tb_c_playback_fsm} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS]                                                        BOOT mute
+[PASS]                                                     BOOT to SCAN
+[PASS]                                   incomplete scan cannot PRELOAD
+[PASS]                                    active alarm rejects recovery
+[PASS]                              recovery begins with isolated reset
+[PASS]                       finite reset releases before recovery work
+[PASS]         unfinished work waits instead of failing after one cycle
+[PASS]                                     verified work returns MANUAL
+[PASS]                                    valid four-image scan PRELOAD
+[PASS]                        sticky scan_done cannot terminate preload
+[PASS]                                           preload success MANUAL
+[PASS]                                                 manual slot wrap
+[PASS]                                                 commit one cycle
+[PASS]                                                 manual slot wrap
+[PASS]                                                 commit one cycle
+[PASS]                                                 manual slot wrap
+[PASS]                                                 commit one cycle
+[PASS]                                                 manual slot wrap
+[PASS]                                                 commit one cycle
+[PASS]                                                      auto enable
+[PASS]                                     auto uses enabled transition
+[PASS]                                      transition waits until done
+[PASS]                                          transition commits once
+[PASS]                                                        UART stop
+[PASS]                                                manual transition
+[PASS]                                            transition fault SAFE
+[PASS]                                   explicit recovery failure SAFE
+[PASS]                                         recovery timeout bounded
+[PASS]                    alarm honored during BOOT without muting SAFE
+[PASS]                                 severe fault honored during SCAN
+[PASS]                                     alarm honored during PRELOAD
+[PASS]                  missing transition completion times out to SAFE
+[TB] tb_c_playback_fsm done, errors=0
+$finish called at time : 2740 ns : File "D:/Codex/svq416/source/safevision/verification/unit/tb_c_playback_fsm.sv" Line 43
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:57:08 2026...

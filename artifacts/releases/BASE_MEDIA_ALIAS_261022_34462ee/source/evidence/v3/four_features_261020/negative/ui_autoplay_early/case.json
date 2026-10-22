@@ -1,0 +1,23 @@
+{
+  "mutation": "ui_autoplay_early",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "ui_boundary409",
+  "top": "tb_v3_ui_boundary409",
+  "patch": [
+    {
+      "before": "cycles_raw==UI_SECOND-1",
+      "after": "cycles_raw==UI_SECOND-2"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\ui_autoplay_early",
+  "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "mutated_sha256": "0c47d0e3ddd39731a23c3b24a11d0bf554a767adfc8d7ff6463585a4072ac786",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    8
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\ui_autoplay_early\\sim\\tb_v3_ui_boundary409"
+}

@@ -1,0 +1,18 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_common_fifo -s tb_common_fifo --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'evt_ready' remains unconnected for this instance [D:/Codex/svmultires510/source/safevision/verification/unit/tb_common_fifo.sv:249]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.rv_skid_buffer
+Compiling module work.sync_fifo_default
+Compiling module work.fifo_health_monitor
+Compiling module work.memory_bandwidth_monitor_default
+Compiling module work.sync_fifo(W=44,DEPTH=8,ALMOST_FU...
+Compiling module work.error_report
+Compiling module work.tb_common_fifo
+Built simulation snapshot tb_common_fifo

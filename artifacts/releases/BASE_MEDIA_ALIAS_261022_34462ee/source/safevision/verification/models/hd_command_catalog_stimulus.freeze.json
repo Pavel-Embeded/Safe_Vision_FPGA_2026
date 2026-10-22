@@ -1,0 +1,7 @@
+{
+  "original": "safevision/verification/unit/tb_v3_command_catalog.sv",
+  "original_sha256": "09bc2e3321cf2cafeb1450a485e972062fcb857809b1fc3e3e7c700b6066d9b6",
+  "derived": "safevision/verification/unit/tb_v3_hd_command_catalog.sv",
+  "derived_sha256": "a9ee6dc4d08b84a8a592b7fc14055a484dc5fd246e6ccabb77ce7d3d77001bfb",
+  "permitted_change": "Only top identifier renamed to distinguish the HD implementation test"
+}

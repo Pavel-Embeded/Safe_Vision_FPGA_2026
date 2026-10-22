@@ -1,0 +1,23 @@
+{
+  "mutation": "base_final_crc_bypassed",
+  "target": "safevision/rtl/video/v3_line_cache.v",
+  "suite": "video_v3_cache",
+  "top": "tb_v3_video_cache",
+  "patch": [
+    {
+      "before": "if(final_crc_mismatch)",
+      "after": "if(1'b0)"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative318\\n\\base_final_crc_bypassed\\sim\\tb_v3_video_cache",
+  "original_sha256": "60afbda510f8a218fcfa63d9a2d92ed39cd00ebb2313bae2d94fbfc46636e6f2",
+  "mutated_sha256": "486878356d62a6002fe02a00f2c98f8beac250e8437c0fbbc3868280e8d84ea2",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative318\\n\\base_final_crc_bypassed\\sim\\tb_v3_video_cache"
+}

@@ -1,0 +1,23 @@
+{
+  "mutation": "cluster_lba_wrong_bias",
+  "target": "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
+  "suite": "file_lba_equivalence",
+  "top": "tb_v3_file_lba_equivalence",
+  "patch": [
+    {
+      "before": "?{23'd0,sec_per_clus,1'b0}:32'd0",
+      "after": "?{24'd0,sec_per_clus}:32'd0"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative178\\n\\cluster_lba_wrong_bias\\sim\\tb_v3_file_lba_equivalence",
+  "original_sha256": "1d4380037a6e159f33fccc67563486ac3b39375c02a09f5fa54a90f6706b2229",
+  "mutated_sha256": "4cf310db6bfd4ee5c98ecd2bff81bcf7358d7b2096e8bfc68483d440e6d34c90",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    352308
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative178\\n\\cluster_lba_wrong_bias\\sim\\tb_v3_file_lba_equivalence"
+}

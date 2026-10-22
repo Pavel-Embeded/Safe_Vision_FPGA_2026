@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative430/n/boot_root_entry_check_lost/mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_boot_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/verification/models/fat32_boot_parser255_reference.sv" into library work
+INFO: [VRFC 10-311] analyzing module fat32_boot_parser255_reference
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/verification/unit/tb_v3_fat32_boot_parser_predicates288.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_fat32_boot_parser_predicates288

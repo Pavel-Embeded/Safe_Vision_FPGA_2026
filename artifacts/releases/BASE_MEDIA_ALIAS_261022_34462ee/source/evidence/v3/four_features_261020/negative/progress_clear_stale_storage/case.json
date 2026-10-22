@@ -1,0 +1,23 @@
+{
+  "mutation": "progress_clear_stale_storage",
+  "target": "safevision/rtl/hd/v3_supervisor.v",
+  "suite": "hd_progress_clear",
+  "top": "tb_v3_hd_progress_clear",
+  "patch": [
+    {
+      "before": "else progress_raw<=progress_timer;",
+      "after": "else progress_raw<=progress_raw;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative240\\n\\progress_clear_stale_storage\\sim\\tb_v3_hd_progress_clear",
+  "original_sha256": "6f2123d8e10c87bab52db9b920a6ad8a6d812897caabbec6ad6349e89beb0d0b",
+  "mutated_sha256": "df39497bb670d903fdaed0e6dd0ffb5d76c6a7964ee30582e980661720db0b9f",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    29239
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative240\\n\\progress_clear_stale_storage\\sim\\tb_v3_hd_progress_clear"
+}

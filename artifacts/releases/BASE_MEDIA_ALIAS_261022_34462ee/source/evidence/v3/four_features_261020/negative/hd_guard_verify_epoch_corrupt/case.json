@@ -1,0 +1,23 @@
+{
+  "mutation": "hd_guard_verify_epoch_corrupt",
+  "target": "safevision/rtl/hd/v3_row_integrity.v",
+  "suite": "hd_guard_480_320",
+  "top": "tb_v3_hd_guard_480_320",
+  "patch": [
+    {
+      "before": "verify_row<=0;row_offset<=0;crc_state<=32'hffffffff;state<=RETIRE;",
+      "after": "verify_row<=0;row_offset<=0;crc_state<=32'd0;state<=RETIRE;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_guard_verify_epoch_corrupt\\sim\\tb_v3_hd_guard_480_320",
+  "original_sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368",
+  "mutated_sha256": "407282d2cb4e504b07c099f58035f20c065a5f258d9cb20e524363060b06b9c3",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    476690
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative318\\n\\hd_guard_verify_epoch_corrupt\\sim\\tb_v3_hd_guard_480_320"
+}

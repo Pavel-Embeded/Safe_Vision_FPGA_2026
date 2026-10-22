@@ -1,0 +1,23 @@
+{
+  "mutation": "positive_phase_release",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v",
+  "suite": "reset_release_phase",
+  "top": "tb_v3_reset_release_phase",
+  "patch": [
+    {
+      "before": "    generate if (RELEASE_FALLING) begin : falling_release",
+      "after": "    generate if (1'b0) begin : falling_release"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative430\\n\\positive_phase_release",
+  "original_sha256": "0ace3c2d5da5ea15547a8f9c66a2f1bc28de31cb33b146ec750bd6771f6f69e9",
+  "mutated_sha256": "92cc802b14d8f18be27598dc94f486d2a653b160e16f9fbc91b2982a38f8aec6",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    200
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative430\\n\\positive_phase_release\\sim\\tb_v3_reset_release_phase"
+}

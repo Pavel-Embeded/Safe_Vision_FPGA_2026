@@ -1,0 +1,645 @@
+﻿{
+    "filesystem":  {
+                       "total_clusters":  1935360,
+                       "sectors_per_cluster":  8,
+                       "fat_lba":  10718,
+                       "volume_base":  8192,
+                       "data_lba":  40960,
+                       "root_cluster":  2
+                   },
+    "read_only":  true,
+    "accepted":  true,
+    "short_entries":  22,
+    "entries":  [
+                    {
+                        "name":  "HX4S20C.",
+                        "cluster":  0,
+                        "short_raw":  "HX4S20C    ",
+                        "bytes":  0,
+                        "attr":  8,
+                        "short_raw_hex":  "4858345332304320202020",
+                        "index":  0
+                    },
+                    {
+                        "name":  "SYSTEM~1.",
+                        "cluster":  3,
+                        "short_raw":  "SYSTEM~1   ",
+                        "bytes":  0,
+                        "attr":  22,
+                        "short_raw_hex":  "53595354454D7E31202020",
+                        "index":  3
+                    },
+                    {
+                        "short_raw":  "SV0014  BMP",
+                        "index":  4,
+                        "name":  "SV0014.BMP",
+                        "cluster":  9943,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  479,
+                                       "compression":  0,
+                                       "width":  641,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  921650,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  921650,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303031342020424D50"
+                    },
+                    {
+                        "short_raw":  "SV0015  BMP",
+                        "index":  5,
+                        "name":  "SV0015.BMP",
+                        "cluster":  10169,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  720,
+                                       "compression":  0,
+                                       "width":  1280,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  2764854,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  2764854,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303031352020424D50"
+                    },
+                    {
+                        "short_raw":  "SV0016  BMP",
+                        "index":  6,
+                        "name":  "SV0016.BMP",
+                        "cluster":  10845,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  1080,
+                                       "compression":  0,
+                                       "width":  1920,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  6220854,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  6220854,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303031362020424D50"
+                    },
+                    {
+                        "short_raw":  "SV0002  WAV",
+                        "index":  30,
+                        "name":  "SV0002.WAV",
+                        "cluster":  1136,
+                        "header":  {
+                                       "signature":  "RIFF",
+                                       "sample_rate":  48000,
+                                       "channels":  2,
+                                       "wave":  "WAVE",
+                                       "bits":  16,
+                                       "chunk":  "fmt ",
+                                       "format":  1
+                                   },
+                        "bytes":  1536044,
+                        "attr":  33,
+                        "short_raw_hex":  "5356303030322020574156"
+                    },
+                    {
+                        "short_raw":  "SV0003  WAV",
+                        "index":  31,
+                        "name":  "SV0003.WAV",
+                        "cluster":  1512,
+                        "header":  {
+                                       "signature":  "RIFF",
+                                       "sample_rate":  48000,
+                                       "channels":  2,
+                                       "wave":  "WAVE",
+                                       "bits":  16,
+                                       "chunk":  "fmt ",
+                                       "format":  1
+                                   },
+                        "bytes":  1536044,
+                        "attr":  33,
+                        "short_raw_hex":  "5356303030332020574156"
+                    },
+                    {
+                        "short_raw":  "SV0004  WAV",
+                        "index":  32,
+                        "name":  "SV0004.WAV",
+                        "cluster":  1888,
+                        "header":  {
+                                       "signature":  "RIFF",
+                                       "sample_rate":  48000,
+                                       "channels":  2,
+                                       "wave":  "WAVE",
+                                       "bits":  16,
+                                       "chunk":  "fmt ",
+                                       "format":  1
+                                   },
+                        "bytes":  1536044,
+                        "attr":  33,
+                        "short_raw_hex":  "5356303030342020574156"
+                    },
+                    {
+                        "short_raw":  "SV0001  WAV",
+                        "index":  33,
+                        "name":  "SV0001.WAV",
+                        "cluster":  2264,
+                        "header":  {
+                                       "signature":  "RIFF",
+                                       "sample_rate":  48000,
+                                       "channels":  2,
+                                       "wave":  "WAVE",
+                                       "bits":  16,
+                                       "chunk":  "fmt ",
+                                       "format":  1
+                                   },
+                        "bytes":  1536044,
+                        "attr":  33,
+                        "short_raw_hex":  "5356303030312020574156"
+                    },
+                    {
+                        "short_raw":  "SV001   BMP",
+                        "index":  115,
+                        "name":  "SV001.BMP",
+                        "cluster":  6,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  800,
+                                       "compression":  0,
+                                       "width":  480,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  1152054,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  1152054,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303031202020424D50"
+                    },
+                    {
+                        "short_raw":  "SV002   BMP",
+                        "index":  116,
+                        "name":  "SV002.BMP",
+                        "cluster":  288,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  479,
+                                       "compression":  0,
+                                       "width":  641,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  921650,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  921650,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303032202020424D50"
+                    },
+                    {
+                        "short_raw":  "SV003   BMP",
+                        "index":  117,
+                        "name":  "SV003.BMP",
+                        "cluster":  514,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  720,
+                                       "compression":  0,
+                                       "width":  1280,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  2764854,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  2764854,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303033202020424D50"
+                    },
+                    {
+                        "short_raw":  "SV004   BMP",
+                        "index":  118,
+                        "name":  "SV004.BMP",
+                        "cluster":  2736,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  1080,
+                                       "compression":  0,
+                                       "width":  1920,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  6220854,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  6220854,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303034202020424D50"
+                    },
+                    {
+                        "short_raw":  "SV005   BMP",
+                        "index":  119,
+                        "name":  "SV005.BMP",
+                        "cluster":  4255,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  800,
+                                       "compression":  0,
+                                       "width":  480,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  1152054,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  1152054,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303035202020424D50"
+                    },
+                    {
+                        "short_raw":  "SV006   BMP",
+                        "index":  120,
+                        "name":  "SV006.BMP",
+                        "cluster":  4537,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  479,
+                                       "compression":  0,
+                                       "width":  641,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  921650,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  921650,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303036202020424D50"
+                    },
+                    {
+                        "short_raw":  "SV007   BMP",
+                        "index":  121,
+                        "name":  "SV007.BMP",
+                        "cluster":  4763,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  720,
+                                       "compression":  0,
+                                       "width":  1280,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  2764854,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  2764854,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303037202020424D50"
+                    },
+                    {
+                        "short_raw":  "SV008   BMP",
+                        "index":  122,
+                        "name":  "SV008.BMP",
+                        "cluster":  5439,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  1080,
+                                       "compression":  0,
+                                       "width":  1920,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  6220854,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  6220854,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303038202020424D50"
+                    },
+                    {
+                        "short_raw":  "SV009   BMP",
+                        "index":  123,
+                        "name":  "SV009.BMP",
+                        "cluster":  6958,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  800,
+                                       "compression":  0,
+                                       "width":  480,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  1152054,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  1152054,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303039202020424D50"
+                    },
+                    {
+                        "short_raw":  "SV0010  BMP",
+                        "index":  124,
+                        "name":  "SV0010.BMP",
+                        "cluster":  7240,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  479,
+                                       "compression":  0,
+                                       "width":  641,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  921650,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  921650,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303031302020424D50"
+                    },
+                    {
+                        "short_raw":  "SV0011  BMP",
+                        "index":  125,
+                        "name":  "SV0011.BMP",
+                        "cluster":  7466,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  720,
+                                       "compression":  0,
+                                       "width":  1280,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  2764854,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  2764854,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303031312020424D50"
+                    },
+                    {
+                        "short_raw":  "SV0012  BMP",
+                        "index":  126,
+                        "name":  "SV0012.BMP",
+                        "cluster":  8142,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  1080,
+                                       "compression":  0,
+                                       "width":  1920,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  6220854,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  6220854,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303031322020424D50"
+                    },
+                    {
+                        "short_raw":  "SV0013  BMP",
+                        "index":  127,
+                        "name":  "SV0013.BMP",
+                        "cluster":  9661,
+                        "header":  {
+                                       "pixel_offset":  54,
+                                       "height":  800,
+                                       "compression":  0,
+                                       "width":  480,
+                                       "planes":  1,
+                                       "signature":  "BM",
+                                       "declared_bytes":  1152054,
+                                       "dib_bytes":  40,
+                                       "bpp":  24
+                                   },
+                        "bytes":  1152054,
+                        "attr":  0,
+                        "short_raw_hex":  "5356303031332020424D50"
+                    }
+                ],
+    "requests":  [
+                     {
+                         "lba":  0,
+                         "uart_xor":  57,
+                         "bytes":  530,
+                         "sd_crc":  27323,
+                         "seq":  1
+                     },
+                     {
+                         "lba":  8192,
+                         "uart_xor":  206,
+                         "bytes":  530,
+                         "sd_crc":  1804,
+                         "seq":  2
+                     },
+                     {
+                         "lba":  40960,
+                         "uart_xor":  94,
+                         "bytes":  530,
+                         "sd_crc":  480,
+                         "seq":  3
+                     },
+                     {
+                         "lba":  40961,
+                         "uart_xor":  248,
+                         "bytes":  530,
+                         "sd_crc":  18814,
+                         "seq":  4
+                     },
+                     {
+                         "lba":  40962,
+                         "uart_xor":  9,
+                         "bytes":  530,
+                         "sd_crc":  23622,
+                         "seq":  5
+                     },
+                     {
+                         "lba":  40963,
+                         "uart_xor":  137,
+                         "bytes":  530,
+                         "sd_crc":  23062,
+                         "seq":  6
+                     },
+                     {
+                         "lba":  40964,
+                         "uart_xor":  173,
+                         "bytes":  530,
+                         "sd_crc":  25376,
+                         "seq":  7
+                     },
+                     {
+                         "lba":  40965,
+                         "uart_xor":  195,
+                         "bytes":  530,
+                         "sd_crc":  48216,
+                         "seq":  8
+                     },
+                     {
+                         "lba":  40966,
+                         "uart_xor":  134,
+                         "bytes":  530,
+                         "sd_crc":  20059,
+                         "seq":  9
+                     },
+                     {
+                         "lba":  40967,
+                         "uart_xor":  72,
+                         "bytes":  530,
+                         "sd_crc":  62380,
+                         "seq":  10
+                     },
+                     {
+                         "lba":  10718,
+                         "uart_xor":  28,
+                         "bytes":  530,
+                         "sd_crc":  42578,
+                         "seq":  11
+                     },
+                     {
+                         "lba":  120488,
+                         "uart_xor":  83,
+                         "bytes":  530,
+                         "sd_crc":  43412,
+                         "seq":  12
+                     },
+                     {
+                         "lba":  122296,
+                         "uart_xor":  247,
+                         "bytes":  530,
+                         "sd_crc":  30076,
+                         "seq":  13
+                     },
+                     {
+                         "lba":  127704,
+                         "uart_xor":  141,
+                         "bytes":  530,
+                         "sd_crc":  43091,
+                         "seq":  14
+                     },
+                     {
+                         "lba":  50032,
+                         "uart_xor":  125,
+                         "bytes":  530,
+                         "sd_crc":  20362,
+                         "seq":  15
+                     },
+                     {
+                         "lba":  53040,
+                         "uart_xor":  228,
+                         "bytes":  530,
+                         "sd_crc":  61465,
+                         "seq":  16
+                     },
+                     {
+                         "lba":  56048,
+                         "uart_xor":  129,
+                         "bytes":  530,
+                         "sd_crc":  53869,
+                         "seq":  17
+                     },
+                     {
+                         "lba":  59056,
+                         "uart_xor":  206,
+                         "bytes":  530,
+                         "sd_crc":  45163,
+                         "seq":  18
+                     },
+                     {
+                         "lba":  40992,
+                         "uart_xor":  76,
+                         "bytes":  530,
+                         "sd_crc":  61229,
+                         "seq":  19
+                     },
+                     {
+                         "lba":  43248,
+                         "uart_xor":  108,
+                         "bytes":  530,
+                         "sd_crc":  43412,
+                         "seq":  20
+                     },
+                     {
+                         "lba":  45056,
+                         "uart_xor":  59,
+                         "bytes":  530,
+                         "sd_crc":  30076,
+                         "seq":  21
+                     },
+                     {
+                         "lba":  62832,
+                         "uart_xor":  59,
+                         "bytes":  530,
+                         "sd_crc":  43091,
+                         "seq":  22
+                     },
+                     {
+                         "lba":  74984,
+                         "uart_xor":  57,
+                         "bytes":  530,
+                         "sd_crc":  11487,
+                         "seq":  23
+                     },
+                     {
+                         "lba":  77240,
+                         "uart_xor":  43,
+                         "bytes":  530,
+                         "sd_crc":  12674,
+                         "seq":  24
+                     },
+                     {
+                         "lba":  79048,
+                         "uart_xor":  97,
+                         "bytes":  530,
+                         "sd_crc":  6660,
+                         "seq":  25
+                     },
+                     {
+                         "lba":  84456,
+                         "uart_xor":  201,
+                         "bytes":  530,
+                         "sd_crc":  50410,
+                         "seq":  26
+                     },
+                     {
+                         "lba":  96608,
+                         "uart_xor":  56,
+                         "bytes":  530,
+                         "sd_crc":  60119,
+                         "seq":  27
+                     },
+                     {
+                         "lba":  98864,
+                         "uart_xor":  25,
+                         "bytes":  530,
+                         "sd_crc":  40480,
+                         "seq":  28
+                     },
+                     {
+                         "lba":  100672,
+                         "uart_xor":  116,
+                         "bytes":  530,
+                         "sd_crc":  62934,
+                         "seq":  29
+                     },
+                     {
+                         "lba":  106080,
+                         "uart_xor":  182,
+                         "bytes":  530,
+                         "sd_crc":  53447,
+                         "seq":  30
+                     },
+                     {
+                         "lba":  118232,
+                         "uart_xor":  212,
+                         "bytes":  530,
+                         "sd_crc":  61229,
+                         "seq":  31
+                     }
+                 ],
+    "sectors_read":  31
+}

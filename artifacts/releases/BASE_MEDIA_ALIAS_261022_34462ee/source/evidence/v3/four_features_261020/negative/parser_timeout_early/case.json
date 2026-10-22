@@ -1,0 +1,26 @@
+{
+  "mutation": "parser_timeout_early",
+  "target": "safevision/rtl/control/v3_command_parser_catalog.v",
+  "suite": "command_catalog",
+  "top": "tb_v3_command_catalog",
+  "patch": [
+    {
+      "before": "timer_expired<=timer==TIMEOUT-2;",
+      "after": "timer_expired<=timer==TIMEOUT-3;"
+    }
+  ],
+  "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\handbook_26101801\\function_01\\negative\\parser_timeout_early",
+  "original_sha256": "9e95426b4a63e9ae649e88e9adf35f646d389f44d3493add364f40dab9c82f86",
+  "mutated_sha256": "994cbef5a74373fe4fdcaf68b27e56bbd2f1ddd510c18cfd0a25bc1046a82750",
+  "mutant_file": "mutant.v",
+  "detected": true,
+  "normal_completion": true,
+  "process_exit": 1,
+  "error_counts": [
+    3,
+    4
+  ],
+  "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/parser_timeout_early",
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\parser_timeout_early",
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\parser_timeout_early"
+}

@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_hd_packed_rows",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 2,
+  "data_comparisons": 769442,
+  "elapsed_s": 9.718,
+  "suite": "hd_packed",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_hd_packed_rows\\sim\\tb_v3_hd_packed_rows"
+}

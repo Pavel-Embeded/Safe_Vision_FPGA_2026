@@ -1,0 +1,9 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures248/source/safevision/rtl/common/crc16_ccitt.v" into library work
+INFO: [VRFC 10-311] analyzing module crc16_ccitt
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures248/source/safevision/rtl/memory/frame_address_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_address_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures248/source/safevision/rtl/memory/frame_writer.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_writer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures248/source/safevision/verification/unit/tb_v3_exact_samples247.sv" into library work
+INFO: [VRFC 10-311] analyzing module exact_sample_case247
+INFO: [VRFC 10-311] analyzing module tb_v3_exact_samples247

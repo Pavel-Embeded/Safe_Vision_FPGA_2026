@@ -1,0 +1,10 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative417/n/argument_invalid_aliases_zero/mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_user_controls
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/verification/models/v3_controls_pipeline_reference.sv" into library work
+INFO: [VRFC 10-311] analyzing module v3_controls_pipeline_reference
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/rtl/control/input_sync.v" into library work
+INFO: [VRFC 10-311] analyzing module input_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/rtl/control/key_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module key_debounce
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/verification/unit/tb_v3_control_argument296.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_control_argument296

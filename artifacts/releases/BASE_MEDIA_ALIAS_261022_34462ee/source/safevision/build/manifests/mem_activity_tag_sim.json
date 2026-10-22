@@ -1,0 +1,16 @@
+{
+  "sources": [
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_mem_activity_tag.v",
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v"
+  ],
+  "tops": [
+    "tb_v3_mem_activity_tag",
+    "tb_v3_mem_activity_tag_phase3",
+    "tb_v3_mem_activity_tag_phase5"
+  ],
+  "test_sources": {
+    "tb_v3_mem_activity_tag": "safevision/verification/unit/tb_v3_mem_activity_tag.sv",
+    "tb_v3_mem_activity_tag_phase3": "safevision/verification/unit/tb_v3_mem_activity_tag.sv",
+    "tb_v3_mem_activity_tag_phase5": "safevision/verification/unit/tb_v3_mem_activity_tag.sv"
+  }
+}

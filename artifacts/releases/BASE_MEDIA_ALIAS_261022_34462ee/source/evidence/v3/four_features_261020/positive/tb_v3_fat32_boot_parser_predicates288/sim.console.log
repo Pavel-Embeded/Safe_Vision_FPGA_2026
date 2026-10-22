@@ -1,0 +1,17 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_fat32_boot_parser_predicates288/xsim_script.tcl
+# xsim {tb_v3_fat32_boot_parser_predicates288} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] public header contract:4096 targeted complete headers:all256 values of16 fields;exact public results,error priority and reset edges
+[TB] tb_v3_fat32_boot_parser_predicates288 done errors=0 comparisons=7388549
+$finish called at time : 73885495 ns : File "D:/Codex/svfeatures285/source/safevision/verification/unit/tb_v3_fat32_boot_parser_predicates288.sv" Line 91
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:11 . Memory (MB): peak = 219.586 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 13:59:54 2026...

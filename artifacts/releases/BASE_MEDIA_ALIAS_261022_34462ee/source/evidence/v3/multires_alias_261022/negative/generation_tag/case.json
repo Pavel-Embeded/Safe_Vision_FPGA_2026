@@ -1,0 +1,29 @@
+{
+  "mutation": "generation_tag",
+  "target": "safevision/rtl/audio/v3_pcm_ring.v",
+  "suite": "audio_negative",
+  "top": "tb_v3_audio_negative_generation",
+  "patch": [
+    {
+      "before": "      if(reading&&rvalid)begin out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+      "after": "      if(reading&&rvalid)begin out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+    },
+    {
+      "before": "      out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+      "after": "      out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+    }
+  ],
+  "required_marker": "[FAIL AUDIO_GENERATION]",
+  "producer_folder": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\generation_tag\\sim\\tb_v3_audio_negative_generation",
+  "original_sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8",
+  "mutated_sha256": "d87ff16953cdd783ddbd3cb32c1d9c62da1fb1083342e7cf28b292be919c93ae",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    540
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\generation_tag\\sim\\tb_v3_audio_negative_generation",
+  "return_code": 1
+}

@@ -1,0 +1,23 @@
+{
+  "mutation": "descriptor_ninth_bit_lost_hd",
+  "target": "safevision/rtl/hd/v3_status_layers.v",
+  "suite": "hd_status_miter233",
+  "top": "tb_v3_hd_status_miter233",
+  "patch": [
+    {
+      "before": "normal_code1<=text_rom[normal_text_address];",
+      "after": "normal_code1<={1'b0,text_rom[normal_text_address][7:0]};"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative240\\n\\descriptor_ninth_bit_lost_hd\\sim\\tb_v3_hd_status_miter233",
+  "original_sha256": "375ca9a42e66fe541f62c71dd81a37cec813b5a61ee759b63f426364c15e22e8",
+  "mutated_sha256": "34f6da000d52f4f90215e5117b8f50d80951b30ea5039e97c8f4f7eeea7b7ad2",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    8059
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative240\\n\\descriptor_ninth_bit_lost_hd\\sim\\tb_v3_hd_status_miter233"
+}

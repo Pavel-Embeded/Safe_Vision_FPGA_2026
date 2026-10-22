@@ -1,0 +1,4 @@
+"D:/Codex/svq237/source/safevision/rtl/hd/v3_status_layers.v"
+"D:/Codex/svq237/source/safevision/verification/models/v3_hd_status_reference.sv"
+"D:/Codex/svq237/source/safevision/rtl/video/v3_pcm_waveform.v"
+"D:/Codex/svq237/source/safevision/verification/unit/tb_v3_hd_status_raster_equivalence.sv"

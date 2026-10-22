@@ -1,0 +1,23 @@
+{
+  "mutation": "rx_tick_prediction_wrong_threshold",
+  "target": "safevision/rtl/common/uart_rx.v",
+  "suite": "uart_rx_equivalence",
+  "top": "tb_v3_uart_rx_equivalence",
+  "patch": [
+    {
+      "before": "acc>=CLK_HZ-BAUD*32",
+      "after": "acc>=CLK_HZ-BAUD*31"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative75\\n\\rx_tick_prediction_wrong_threshold\\sim\\tb_v3_uart_rx_equivalence",
+  "original_sha256": "07b60712d5862c0f0044789ef6bfec8ac9a73aede026583db85ed91cda216d4f",
+  "mutated_sha256": "754c21fa11fa63737b4dc7a92e469ea553fb97a7638c7c6262afc0ff68437e8c",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    422505
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative75\\n\\rx_tick_prediction_wrong_threshold\\sim\\tb_v3_uart_rx_equivalence"
+}

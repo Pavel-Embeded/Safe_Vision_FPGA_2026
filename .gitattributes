@@ -15140,3 +15140,13 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/verification/assets/card_directory510/** -text
 
 /docs/changes/BASE_MEDIA_ALIAS_261022.md -text
+
+/artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/** -text
+
+/artifacts/board_validation/BASE_MEDIA_ALIAS_261022_34462ee/** -text
+
+/artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/*.bit binary
+
+/artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/native/*/gate.netlist.v binary
+
+/artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/native/*/route.netlist.v binary

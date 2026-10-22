@@ -1,0 +1,17 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_bmp_frame_write_bridge/xsim_script.tcl
+# xsim {tb_bmp_frame_write_bridge} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] BMP direction=0 slot=0 words=153600 gap=70000
+[PASS] BMP direction=1 slot=3 words=153600 gap=70000
+PASS tb_bmp_frame_write_bridge: checks=307200
+$finish called at time : 13408208 ns : File "D:/Codex/svmultires510/source/safevision/verification/unit/tb_bmp_frame_write_bridge.sv" Line 54
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 10:28:12 2026...

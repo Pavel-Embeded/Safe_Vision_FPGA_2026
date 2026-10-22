@@ -1,0 +1,23 @@
+{
+  "mutation": "hd_packed_selector",
+  "target": "safevision/rtl/hd/v3_packed_row_store.v",
+  "suite": "paired_rows_hd288",
+  "top": "tb_v3_paired_rows_hd288",
+  "patch": [
+    {
+      "before": "qa0=qa[tile0_q[0]]",
+      "after": "qa0=qa[~tile0_q[0]]"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_packed_selector\\sim\\tb_v3_paired_rows_hd288",
+  "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+  "mutated_sha256": "5d2a646a059b1cc43bf98ddd9da61771eeb9bebb40d5d6a317e9e702508c3f3c",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    8462362
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative318\\n\\hd_packed_selector\\sim\\tb_v3_paired_rows_hd288"
+}

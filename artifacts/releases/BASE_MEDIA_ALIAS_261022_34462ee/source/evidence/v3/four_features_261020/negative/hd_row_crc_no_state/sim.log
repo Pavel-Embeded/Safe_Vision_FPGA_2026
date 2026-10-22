@@ -1,0 +1,26 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 14:49:16 2026
+# Process ID: 25936
+# Current directory: D:/Codex/svnegative318/n/hd_row_crc_no_state/sim/tb_v3_hd_row_crc_balance
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_hd_row_crc_balance/xsim_script.tcl}
+# Log file: D:/Codex/svnegative318/n/hd_row_crc_no_state/sim/tb_v3_hd_row_crc_balance/sim.log
+# Journal file: D:/Codex/svnegative318/n/hd_row_crc_no_state/sim/tb_v3_hd_row_crc_balance\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_hd_row_crc_balance/xsim_script.tcl
+# xsim {tb_v3_hd_row_crc_balance} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] CRC state=00000001 data=00000000 actual=00000000 expected=b8bc6765
+[FAIL] CRC state=00000002 data=00000000 actual=00000000 expected=aa09c88b
+[FAIL] CRC state=00000004 data=00000000 actual=00000000 expected=8f629757
+[FAIL] CRC state=00000008 data=00000000 actual=00000000 expected=c5b428ef
+[FAIL] CRC state=00000010 data=00000000 actual=00000000 expected=5019579f
+PASS tb_v3_hd_row_crc_balance comparisons=1000068 errors=1000034
+$finish called at time : 1000068 ns : File "D:/Codex/svfeatures312/source/safevision/verification/unit/tb_v3_hd_row_crc_balance.sv" Line 22
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 219.285 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 14:49:27 2026...

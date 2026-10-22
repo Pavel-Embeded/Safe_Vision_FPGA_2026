@@ -1,0 +1,24 @@
+{
+  "mutation": "hd_decimal_times8",
+  "target": "safevision/rtl/hd/v3_command_parser_catalog.v",
+  "suite": "catalog_csa_math",
+  "top": "tb_v3_catalog_csa_math",
+  "patch": [
+    {
+      "before": "decimal_sum=decimal_a^decimal_b^decimal_c;",
+      "after": "decimal_sum=decimal_a^decimal_c;"
+    }
+  ],
+  "original_sha256": "2df89083cb8337b5c7886a1bf8220542ffd9ae2796b975caec1a396d4d94a4e3",
+  "mutated_sha256": "8d78592a1fd4aafeb666d411bc76cc8f18b9bb3614fc4e3a64879c4da208da1d",
+  "mutant_file": "mutant.v",
+  "return_code": 1,
+  "normal_completion": true,
+  "detected": true,
+  "error_counts": [
+    16100000
+  ],
+  "previous_evidence": "evidence/v3/handbook_26101901/gate19/negative/hd_decimal_times8",
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_decimal_times8",
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_decimal_times8"
+}

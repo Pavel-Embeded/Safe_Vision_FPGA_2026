@@ -1,0 +1,28 @@
+{
+  "mutation": "container_extension",
+  "top": "tb_v3_audio_negative_container",
+  "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+  "suite": "wav_container_negative",
+  "patch": [
+    {
+      "before": "       left<=assembled;pad<=assembled[0];index<=0;\n",
+      "after": "       left<=(kind==K_FMT&&assembled>16)?32'd16:assembled;pad<=assembled[0];index<=0;\n"
+    }
+  ],
+  "original_sha256": "6860b296d77a986cdd82d4a440349e6c811868d154427751bac46b077d116fa8",
+  "mutated_sha256": "a40485de92b007bb701d9fe0770367b06866553a3553a02a46a99ff3cd9755ac",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "required_marker": "[FAIL AUDIO_CONTAINER_END] case=1 ",
+  "detected": true,
+  "normal_completion": true,
+  "error_counts": [
+    150
+  ],
+  "log_sha256": "fd106fc3a815ff32673d890b799241bd53dd6629714ec9a014c5b3cae5848204",
+  "initial_checker_accepted": false,
+  "assessment": "Raw normal ending, named semantic failure, nonzero errors, no compile/runtime fatal; initial checker falsely required the literal closed bracket [FAIL]",
+  "previous_evidence": "evidence/v3/handbook_26101901/development41/negative/container_extension",
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\container_extension",
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\container_extension"
+}

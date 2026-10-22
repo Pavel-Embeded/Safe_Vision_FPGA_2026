@@ -1,0 +1,38 @@
+rtl
+----------------------------------------------------------------
+     Parameter     |  Current Value  |  Default Value  |  Note  
+----------------------------------------------------------------
+     infer_fsm     |       off       |      auto       |   *    
+  min_control_set  |        2        |        8        |   *    
+  min_ripple_len   |       16        |      auto       |   *    
+----------------------------------------------------------------
+gate
+------------------------------------------------------------
+   Parameter   |  Current Value  |  Default Value  |  Note  
+------------------------------------------------------------
+    bdd_opt    |       on        |       off       |   *    
+   map_mode    |   area_prior    |      auto       |   *    
+   opt_area    |      high       |     medium      |   *    
+  pack_effort  |      high       |     medium      |   *    
+------------------------------------------------------------
+place
+---------------------------------------------------------------------
+       Parameter        |  Current Value  |  Default Value  |  Note  
+---------------------------------------------------------------------
+       ce_weight        |       on        |        -        |  wild  
+     cn_opt_effort      |      high       |        -        |  wild  
+    critical_hfn_opt    |       on        |        -        |  wild  
+         effort         |      high       |     medium      |   *    
+  enhanced_beeline_opt  |        3        |        -        |  wild  
+     hfn_opt_effort     |       low       |     medium      |   *    
+          ofv           |       70        |       80        |   *    
+     post_place_opt     |     medium      |      auto       |   *    
+      pr_strategy       |        5        |        1        |   *    
+---------------------------------------------------------------------
+route
+----------------------------------------------------------
+  Parameter  |  Current Value  |  Default Value  |  Note  
+----------------------------------------------------------
+   effort    |   routability   |     normal      |   *    
+   timing    |     greedy      |       on        |   *    
+----------------------------------------------------------

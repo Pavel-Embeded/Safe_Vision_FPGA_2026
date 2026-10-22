@@ -1,0 +1,8 @@
+{
+  "sources": [
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v"
+  ],
+  "tops": [
+    "tb_v3_related_status_capture"
+  ]
+}

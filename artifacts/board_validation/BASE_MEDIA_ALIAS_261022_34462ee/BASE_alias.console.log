@@ -1,0 +1,21 @@
+RUN-1002 : start command "download -bit D:/Codex/svmedia_portable521/BASE_MEDIA_ALIAS_261022_34462ee/SafeVision_BASE_34462ee.bit -mode jtag -spd 7 -cable 0"
+PRG-2014 : Chip validation success: EG4S20BG256
+RUN-1002 : start command "bit_to_vec -chip EG4S20BG256 -m jtag_burst -freq 5.000000 -bit D:/Codex/svmedia_portable521/BASE_MEDIA_ALIAS_261022_34462ee/SafeVision_BASE_34462ee.bit"
+RUN-1003 : finish command "bit_to_vec -chip EG4S20BG256 -m jtag_burst -freq 5.000000 -bit D:/Codex/svmedia_portable521/BASE_MEDIA_ALIAS_261022_34462ee/SafeVision_BASE_34462ee.bit" in  0.101508s wall, 0.109375s user + 0.000000s system = 0.109375s CPU (107.8%)
+
+RUN-1004 : used memory is 45 MB, reserved memory is 32 MB, peak memory is 60 MB
+RUN-1002 : start command "program -cable 0 -mode svf -spd 7 -p"
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+RUN-1003 : finish command "program -cable 0 -mode svf -spd 7 -p" in  6.432458s wall, 0.015625s user + 0.093750s system = 0.109375s CPU (1.7%)
+
+RUN-1004 : used memory is 30 MB, reserved memory is 17 MB, peak memory is 60 MB
+RUN-1003 : finish command "download -bit D:/Codex/svmedia_portable521/BASE_MEDIA_ALIAS_261022_34462ee/SafeVision_BASE_34462ee.bit -mode jtag -spd 7 -cable 0" in  6.738878s wall, 0.125000s user + 0.093750s system = 0.218750s CPU (3.2%)
+
+RUN-1004 : used memory is 30 MB, reserved memory is 18 MB, peak memory is 60 MB
+MEDIA SRAM COMPLETED

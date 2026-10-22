@@ -1,0 +1,3 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/read_fix_26101702/full/source/safevision/verification/unit/tb_a_graphics_frontend.sv" into library work
+INFO: [VRFC 10-311] analyzing module graphics_frame_checker
+INFO: [VRFC 10-311] analyzing module tb_a_graphics_frontend

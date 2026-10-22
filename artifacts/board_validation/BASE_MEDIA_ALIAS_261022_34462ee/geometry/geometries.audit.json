@@ -1,0 +1,29 @@
+{
+  "raw_transactions_valid": true,
+  "firmware_id": "26102004",
+  "ordered_valid_acks": 632,
+  "health_observations": 42,
+  "physical_display_verified": false,
+  "physical_audio_verified": false,
+  "github_uploaded": false,
+  "rx_sha256": "253f3546a67afea1315d9dc52f4993a6daffec372d2c6cfcc35a0a02c265ec5a",
+  "trace_sha256": "dee3b1293e7c266f8a68ad52c483af7b26894c696c38a3ddcf1d8c025e26012f",
+  "actual_cached_image_ids": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "video_path_accepted": true,
+  "audio_wav_all_valid": true,
+  "wav_fallback_masks": [
+    0
+  ],
+  "accepted": true,
+  "combinations": 8,
+  "manual_fade_commits": 32,
+  "auto_commits": 32,
+  "settings_restored": true,
+  "physical_button_test": false,
+  "emergency_latency_test": false
+}
