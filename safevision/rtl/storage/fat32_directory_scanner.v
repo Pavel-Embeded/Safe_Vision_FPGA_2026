@@ -45,7 +45,7 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0) (
+module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0,EXTERNAL_LBA=0,EXTERNAL_TIMER=0) (
     input  wire        clk,
     input  wire        rst_n,
 
@@ -75,7 +75,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
     input  wire        ent_ready,      // 下游反压
 
     // ---- 到 sd_sector_reader 的读请求（与 fat32_boot_parser 同一种接法）----
-    output reg  [31:0] sd_rd_addr,
+    output wire [31:0] sd_rd_addr,
     output wire [15:0] sd_rd_len,
     output reg         sd_rd_en,
     input  wire        sd_rd_ready,
@@ -103,7 +103,10 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
     input  wire [7:0]  wk_err_code,
     input  wire [7:0]  wk_err_detail,
     input wire[7:0] name_address,output wire[15:0] name_data,output wire[8:0] name_length
-);
+,
+
+    input wire[31:0] external_lba,output wire lba_active,
+    input wire[31:0] external_timeout_count,output wire timeout_tick,timeout_reset);
 
     // Mounted FAT32 contract: sectors/cluster is a power of two in 1..128.
     function [31:0] cluster_sectors;
@@ -123,7 +126,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
     wire cluster_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0);
     wire[31:0] directory_lba_bias=data_start_lba-(cluster_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
     wire[31:0] directory_cluster_offset=cluster_sectors(wk_next_clus,sec_per_clus);
-    (* use_ripple=1 *) wire[31:0] directory_next_lba=directory_lba_bias+directory_cluster_offset;
+    (* use_ripple=1 *) wire[31:0] directory_next_lba=EXTERNAL_LBA?external_lba:(directory_lba_bias+directory_cluster_offset);
 
     // ------------------------------------------------------------------------
     // 状态
@@ -136,6 +139,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
                      D_ERR      = 3'd6;
 
     reg  [2:0]  mstate;
+    assign lba_active=(mstate==D_WALK);
     reg  [31:0] cur_clus;       // 正在遍历的簇号
     reg  [31:0] cur_lba;        // 正在遍历的扇区号
     reg  [7:0]  sec_in_clus;    // 本簇已经读了几个扇区
@@ -143,7 +147,8 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
     // Every counting state exits or clears at SD_TO_DATA. The last
     // scheduled increment can reach SD_TO_DATA+1, which this width retains.
     localparam integer TO_W=$clog2(`SD_TO_DATA+32'd2);
-    reg [TO_W-1:0] to_cnt;         // 单次读事务的兜底超时
+    reg [TO_W-1:0] local_to_cnt;
+    wire[TO_W-1:0] to_cnt=EXTERNAL_TIMER?external_timeout_count[TO_W-1:0]:local_to_cnt;         // 单次读事务的兜底超时
 
     // The outputs themselves are the entry assembly registers. They are
     // meaningful only with ent_valid. wait_ent prevents every next byte until
@@ -157,7 +162,8 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
       4'h3,media_digits[15:12],4'h3,media_digits[11:8],
       4'h3,media_digits[7:4],4'h3,media_digits[3:0],16'h2020,
       (media_bmp?24'h424d50:24'h574156)};
-    assign ent_name=SV_MEDIA_ONLY?media_name:full_name;
+    wire[87:0] shared_short_name;
+    assign ent_name=SV_MEDIA_ONLY?media_name:(FULL_NAMES?shared_short_name:full_name);
     wire [87:0] name_raw=ent_name;       // 11 Byte 名，收完后 byte0 在 [87:80]
     wire [7:0] attr_raw=ent_attr;
     wire [15:0] fc_h=ent_first_clus[31:16];           // FstClusHI
@@ -178,14 +184,22 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
     generate if(FULL_NAMES)begin:full_names
       v3_fat_name_store names(.clk(clk),.rst_n(rst_n),.scan_start(scan_en),
        .byte_valid(sd_data_valid&&sd_data_ready),.byte_offset(ent_off),.data(sd_data),
-       .read_address(name_address),.read_data(name_data),.name_length(name_length),.busy(name_busy),.lfn_valid());
-    end else begin:no_full_names assign name_busy=0;assign name_data=0;assign name_length=0;end endgenerate
+       .read_address(name_address),.read_data(name_data),.name_length(name_length),.busy(name_busy),.lfn_valid(),.raw_short_name(shared_short_name));
+    end else begin:no_full_names assign shared_short_name=0;assign name_busy=0;assign name_data=0;assign name_length=0;end endgenerate
     assign sd_data_ready = (mstate == D_SEC_RECV) && !wait_ent && !name_busy;
     assign sd_rd_len     = 16'd1;          // 单扇区读
 
     // ------------------------------------------------------------------------
     // 主状态机
     // ------------------------------------------------------------------------
+    assign timeout_tick=rst_n&&((mstate==D_SEC_REQ)||(mstate==D_SEC_RECV&&!wait_ent));
+    assign timeout_reset=rst_n&&(
+      (mstate==D_IDLE&&scan_en)||
+      (mstate==D_SEC_REQ&&to_cnt!=`SD_TO_DATA&&sd_rd_ready)||
+      (mstate==D_SEC_RECV&&to_cnt!=`SD_TO_DATA&&!sd_timeout_err&&!sd_crc16_err&&sd_data_valid&&sd_data_ready&&bcnt==511&&!stop_pending&&((sec_in_clus+8'd1)<sec_per_clus))||
+      (mstate==D_WALK&&wk_done&&!wk_eoc&&!wk_error));
+    reg[31:0] legacy_rd_addr;
+    assign sd_rd_addr=FULL_NAMES?cur_lba:legacy_rd_addr;
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             mstate       <= D_IDLE;
@@ -198,7 +212,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
             cur_lba      <= 32'd0;
             sec_in_clus  <= 8'd0;
             bcnt         <= 9'd0;
-            to_cnt       <= 32'd0;
+            local_to_cnt <= 32'd0;
 
 
 
@@ -214,7 +228,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
             ent_size       <= 32'h0;
             ent_index      <= 16'h0;
             ent_valid      <= 1'b0;
-            sd_rd_addr     <= 32'd0;
+            legacy_rd_addr <= 32'd0;
             sd_rd_en       <= 1'b0;
             wk_cur_clus    <= 32'd0;
             wk_start       <= 1'b0;
@@ -243,7 +257,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
                     cur_lba      <= root_dir_lba;
                     sec_in_clus  <= 8'd0;
                     bcnt         <= 9'd0;
-                    to_cnt       <= 32'd0;
+                    local_to_cnt <= 32'd0;
 
 
 
@@ -261,7 +275,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
             end
             // ---- 请求读当前目录扇区 ------------------------------------------
             D_SEC_REQ: begin
-                to_cnt <= to_cnt + 32'd1;
+                local_to_cnt <= to_cnt + 32'd1;
                 if (to_cnt == `SD_TO_DATA) begin
                     err_code   <= `ERR_SD_IO;
                     err_detail <= `DET_SD_TOKEN_TO;
@@ -272,17 +286,17 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
                     err_detail <= sd_err_detail;
                     mstate     <= D_ERR;
                 end else if (!wait_ent && sd_rd_ready) begin
-                    sd_rd_addr <= cur_lba;
+                    legacy_rd_addr <= cur_lba;
                     sd_rd_en   <= 1'b1;
                     bcnt       <= 9'd0;
-                    to_cnt     <= 32'd0;
+                    local_to_cnt <= 32'd0;
                     mstate     <= D_SEC_RECV;
                 end
             end
             // ---- 收一个扇区，边收边装配目录项 --------------------------------
             D_SEC_RECV: begin
                 // 被下游反压时不推进超时，否则"下游慢"会被误判成"卡超时"
-                if (!wait_ent) to_cnt <= to_cnt + 32'd1;
+                if (!wait_ent) local_to_cnt <= to_cnt + 32'd1;
                 if (to_cnt == `SD_TO_DATA) begin
                     err_code   <= `ERR_SD_IO;
                     err_detail <= `DET_SD_TOKEN_TO;
@@ -322,11 +336,11 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
                             stop_pending <= 1'b1;
                             skip_entry   <= 1'b1;
                         end
-                        if(!SV_MEDIA_ONLY)full_name <= {full_name[79:0], sd_data};
+                        if(!SV_MEDIA_ONLY&&!FULL_NAMES)full_name <= {full_name[79:0], sd_data};
                     end
                     // 主名 8 + 扩展名 3，一路左移，收完 byte0 落在 [87:80]
                     5'd1, 5'd2, 5'd3, 5'd4, 5'd5, 5'd6, 5'd7, 5'd8, 5'd9, 5'd10:
-                        if(!SV_MEDIA_ONLY)full_name <= {full_name[79:0], sd_data};
+                        if(!SV_MEDIA_ONLY&&!FULL_NAMES)full_name <= {full_name[79:0], sd_data};
                     5'd11: ent_attr <= sd_data;
                     // ★★ 首簇号两个 16 位字段是【小端】（FAT32 全表小端，与 BPB 一致）：
                     //   0x14 = FstClusHI 低字节 -> ent_first_clus[23:16]，0x15 高字节 -> ent_first_clus[31:24]
@@ -379,7 +393,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
                         end else begin
                             cur_lba     <= cur_lba + 32'd1;
                             sec_in_clus <= sec_in_clus + 8'd1;
-                            to_cnt      <= 32'd0;
+                            local_to_cnt <= 32'd0;
                             mstate      <= D_SEC_REQ;
                         end
                     end
@@ -408,7 +422,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
                         wk_cur_clus <= wk_next_clus;
                         cur_lba     <= directory_next_lba;
                         sec_in_clus <= 8'd0;
-                        to_cnt      <= 32'd0;
+                        local_to_cnt <= 32'd0;
                         mstate      <= D_SEC_REQ;
                     end
                 end

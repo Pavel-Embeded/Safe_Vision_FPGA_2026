@@ -35,7 +35,7 @@
 
 // V3 derivative: freeze ONLY idle_between_sectors during intentional cache pause.
 // Native clk remains running; timeout protection stays enabled for every live transaction.
-module v3_file_streamer_compact_ctx (
+module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_TIMER=0,DIRECT_REQUEST_ADDRESS=0) (
     input wire context_load,
     input wire [135:0] context_in,
     output wire [135:0] context_out,
@@ -83,7 +83,7 @@ module v3_file_streamer_compact_ctx (
     input  wire [7:0]  wk_err_detail,
 
     // ---- 到 sd_sector_reader 的读请求 ----
-    output reg  [31:0] sd_rd_addr,
+    output wire [31:0] sd_rd_addr,
     output wire [15:0] sd_rd_len,
     output reg         sd_rd_en,
     input  wire        sd_rd_ready,
@@ -96,7 +96,10 @@ module v3_file_streamer_compact_ctx (
     input  wire        sd_crc16_err,
     input  wire [7:0]  sd_err_code,
     input  wire [7:0]  sd_err_detail
-);
+,
+
+    input wire[31:0] external_lba,output wire[31:0] lba_cluster,
+    input wire[31:0] external_timeout_count,output wire timeout_tick,timeout_reset);
 
     // Mounted FAT32 contract: sectors/cluster is a power of two in 1..128.
     function [31:0] cluster_sectors;
@@ -133,7 +136,8 @@ module v3_file_streamer_compact_ctx (
     // Every counting state exits or clears at SD_TO_DATA. The last
     // scheduled increment can reach SD_TO_DATA+1, which this width retains.
     localparam integer TO_W=$clog2(`SD_TO_DATA+32'd2);
-    reg [TO_W-1:0] to_cnt;
+    reg [TO_W-1:0] local_to_cnt;
+    wire[TO_W-1:0] to_cnt=EXTERNAL_TIMER?external_timeout_count[TO_W-1:0]:local_to_cnt;
 
     assign idle_between_sectors = (mstate == F_SEC_REQ) && !valid;
     assign sd_data_ready = (mstate == F_SEC_RECV) && !valid;   // 手里端着字节就不再向上游要
@@ -151,12 +155,22 @@ module v3_file_streamer_compact_ctx (
     // (base-2*SPC). Move the subtract away from the selected cluster path.
     // Invalid SPC still maps to base because cluster_sectors returns zero.
     wire [31:0] cluster_argument=(mstate==F_IDLE)?first_clus:wk_next_clus;
+    assign lba_cluster=cluster_argument;
     wire cluster_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0);
     (* use_ripple=1 *) wire [31:0] cluster_lba_bias=data_start_lba-(cluster_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
     wire[31:0] cluster_offset=cluster_sectors(cluster_argument,sec_per_clus);
-    (* use_ripple=1 *) wire[31:0] next_cluster_lba=cluster_lba_bias+cluster_offset;
+    (* use_ripple=1 *) wire[31:0] next_cluster_lba=EXTERNAL_LBA?external_lba:(cluster_lba_bias+cluster_offset);
     wire [31:0] next_count=cnt+32'd1;
     wire last_file_byte=next_count==fsize;
+    wire timeout_enabled=rst_n&&stream_enable&&context_enable&&!context_load;
+    assign timeout_tick=timeout_enabled&&((mstate==F_SEC_REQ)||(mstate==F_SEC_RECV&&!valid));
+    assign timeout_reset=rst_n&&(context_load||(timeout_enabled&&(
+      (mstate==F_IDLE&&start)||
+      (mstate==F_SEC_REQ&&to_cnt!=`SD_TO_DATA&&!valid&&sd_rd_ready)||
+      (mstate==F_SEC_RECV&&to_cnt!=`SD_TO_DATA&&!sd_timeout_err&&!sd_crc16_err&&!valid&&sd_data_valid&&sd_data_ready&&bcnt==511&&!stop_pending&&!last_file_byte&&((sec_in_clus+8'd1)<sec_per_clus))||
+      (mstate==F_WALK&&wk_done&&!wk_eoc&&!wk_error))));
+    reg[31:0] legacy_rd_addr;
+    assign sd_rd_addr=DIRECT_REQUEST_ADDRESS?cur_lba:legacy_rd_addr;
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             mstate       <= F_IDLE;
@@ -167,7 +181,7 @@ module v3_file_streamer_compact_ctx (
             cnt          <= 32'd0;
             fsize        <= 32'd0;
             stop_pending <= 1'b0;
-            to_cnt       <= 32'd0;
+            local_to_cnt <= 32'd0;
             busy         <= 1'b0;
             done         <= 1'b0;
             error        <= 1'b0;
@@ -182,14 +196,14 @@ module v3_file_streamer_compact_ctx (
             wk_cur_clus  <= 32'd0;
             wk_start     <= 1'b0;
             wk_rst_walk  <= 1'b0;
-            sd_rd_addr   <= 32'd0;
+            legacy_rd_addr <= 32'd0;
             sd_rd_en     <= 1'b0;
         end else if(context_load)begin
             {wk_cur_clus,cur_lba,sec_in_clus,cnt,fsize} <= context_in;
-            mstate<=F_SEC_REQ;bcnt<=0;to_cnt<=0;stop_pending<=0;
+            mstate<=F_SEC_REQ;bcnt<=0;local_to_cnt <=0;stop_pending<=0;
             busy<=1;done<=0;error<=0;err_code<=0;err_detail<=0;
             data<=0;valid<=0;sof<=0;eof<=0;dbg_state<=F_SEC_REQ;
-            sd_rd_addr<=0;sd_rd_en<=0;wk_start<=0;wk_rst_walk<=0;
+            legacy_rd_addr <=0;sd_rd_en<=0;wk_start<=0;wk_rst_walk<=0;
         end else if (stream_enable && context_enable) begin
             dbg_state   <= mstate;
             sd_rd_en    <= 1'b0;        // 单拍脉冲
@@ -228,7 +242,7 @@ module v3_file_streamer_compact_ctx (
                     sec_in_clus  <= 8'd0;
                     bcnt         <= 9'd0;
                     stop_pending <= 1'b0;
-                    to_cnt       <= 32'd0;
+                    local_to_cnt <= 32'd0;
                     wk_cur_clus  <= first_clus;
                     wk_rst_walk  <= 1'b1;      // 走新链前清跳簇计数
                     if (file_size == 32'd0) begin
@@ -241,23 +255,23 @@ module v3_file_streamer_compact_ctx (
             end
             // ---- 请求读当前扇区 ----------------------------------------------
             F_SEC_REQ: begin
-                to_cnt <= to_cnt + 32'd1;
+                local_to_cnt <= to_cnt + 32'd1;
                 if (to_cnt == `SD_TO_DATA) begin
                     err_code   <= `ERR_SD_IO;
                     err_detail <= `DET_SD_TOKEN_TO;
                     mstate     <= F_ERR;
                 end else if (!valid && sd_rd_ready) begin
-                    sd_rd_addr <= cur_lba;
+                    legacy_rd_addr <= cur_lba;
                     sd_rd_en   <= 1'b1;
                     bcnt       <= 9'd0;
-                    to_cnt     <= 32'd0;
+                    local_to_cnt <= 32'd0;
                     mstate     <= F_SEC_RECV;
                 end
             end
             // ---- 收一个扇区，边收边往下游送 ---------------------------------
             F_SEC_RECV: begin
                 // 下游慢不算上游超时
-                if (!valid) to_cnt <= to_cnt + 32'd1;
+                if (!valid) local_to_cnt <= to_cnt + 32'd1;
                 if (to_cnt == `SD_TO_DATA) begin
                     err_code   <= `ERR_SD_IO;
                     err_detail <= `DET_SD_TOKEN_TO;
@@ -297,7 +311,7 @@ module v3_file_streamer_compact_ctx (
                             end else begin
                                 cur_lba     <= cur_lba + 32'd1;
                                 sec_in_clus <= sec_in_clus + 8'd1;
-                                to_cnt      <= 32'd0;
+                                local_to_cnt <= 32'd0;
                                 mstate      <= F_SEC_REQ;
                             end
                         end
@@ -321,7 +335,7 @@ module v3_file_streamer_compact_ctx (
                         wk_cur_clus <= wk_next_clus;
                         cur_lba     <= next_cluster_lba;
                         sec_in_clus <= 8'd0;
-                        to_cnt      <= 32'd0;
+                        local_to_cnt <= 32'd0;
                         mstate      <= F_SEC_REQ;
                     end
                 end

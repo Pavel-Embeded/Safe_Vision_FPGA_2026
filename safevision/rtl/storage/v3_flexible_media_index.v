@@ -19,7 +19,6 @@ module v3_flexible_media_index(
  reg[8:0] best_length,cursor_length,character;
  // ent_valid/ent_ready freezes raw scanner metadata throughout compare/copy.
  wire[8:0] current_length=phase==2 ? name_length-9'd4 : name_length;
- reg[16:0] best_number;
  wire[31:0] current_cluster=ent_first_clus,current_size=ent_size;
  wire[15:0] current_index=ent_index;
  (* ram_style="bram" *)reg[15:0] names[0:511];
@@ -32,41 +31,35 @@ module v3_flexible_media_index(
  assign name_address=character[7:0];
  assign ent_ready=state==RELEASE;
  assign sel_valid=best_valid;
- function[7:0] upper;input[7:0] c;begin upper=c>=8'h61&&c<=8'h7a ? c-8'h20 : c;end endfunction
+ function[7:0] upper;input[7:0] c;begin upper=c&8'hdf;end endfunction
  wire bmp=upper(ent_name[23:16])==8'h42&&upper(ent_name[15:8])==8'h4d&&upper(ent_name[7:0])==8'h50;
  wire wav=upper(ent_name[23:16])==8'h57&&upper(ent_name[15:8])==8'h41&&upper(ent_name[7:0])==8'h56;
  wire legal=ent_attr!=8'h0f&&!ent_attr[3]&&!ent_attr[4]&&ent_name[87:80]!=8'he5&&ent_name[87:80]!=0&&ent_first_clus>=2&&ent_size!=0&&ent_index!=16'hffff;
- function[16:0] numbered;input[87:0] s;reg[15:0] v;reg ok;integer k;reg[7:0] c;begin
-  v=0;ok=upper(s[87:80])==8'h53&&upper(s[79:72])==8'h56&&s[39:24]==16'h2020;
-  for(k=0;k<4;k=k+1)begin c=s[71-k*8-:8];
-   if(k==3&&c==8'h20)begin end
-   else if(c>=8'h30&&c<=8'h39)v={v[11:0],c[3:0]};else ok=0;
-  end
-  numbered={ok&&v!=0,v};
- end endfunction
- wire[16:0] candidate_number=numbered(ent_name),selected_number=best_number;
  // The ordinal candidate supersedes the first candidate when it exists.
  // One 64-bit descriptor therefore represents both fallback cases exactly.
  reg[31:0] fallback_wav_cluster,fallback_wav_size;
- reg fallback_wav_valid,paired,commit_pending,exact_pair;
+ reg fallback_wav_valid,paired,commit_pending;
  reg[2:0] wav_ordinal;
  wire[8:0] target_length=phase==2?(best_length>=4?best_length-4:0):(compare_best?best_length:cursor_length);
- wire[15:0] current_char=character<current_length?name_data:16'd0;
- wire[15:0] target_char=character<target_length?retained_character:16'd0;
+ wire current_end=character>=current_length,target_end=character>=target_length;
+ wire both_character=!current_end&&!target_end;
+ wire char_equal=(current_end&&target_end)||(both_character&&name_data==retained_character);
+ wire char_less=(current_end&&!target_end)||(both_character&&name_data<retained_character);
+ wire char_greater=!char_equal&&!char_less;
  task release_entry;begin state<=RELEASE;end endtask
  task copy_current;begin character<=0;state<=COPY_WAIT;end endtask
  task select_current_metadata;begin
-  best_valid<=1;best_length<=current_length;best_number<=candidate_number;
+  best_valid<=1;best_length<=current_length;
   sel_first_clus<=current_cluster;sel_size<=current_size;sel_key<=current_index+16'd1;
  end endtask
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
    state<=IDLE;phase<=0;compare_best<=0;best_valid<=0;cursor_valid<=0;best_bank<=0;cursor_bank<=1;
-   best_length<=0;cursor_length<=0;character<=0;best_number<=0;
+   best_length<=0;cursor_length<=0;character<=0;
    rescan_request<=0;idx_done<=0;file_cnt<=0;file_valid<=0;
    sel_key<=0;sel_first_clus<=0;sel_size<=0;sel_wav_first_clus<=0;sel_wav_size<=0;sel_wav_valid<=0;
    bmp_seen<=0;wav_seen<=0;wav_ordinal<=0;fallback_wav_cluster<=0;fallback_wav_size<=0;
-   fallback_wav_valid<=0;paired<=0;commit_pending<=0;exact_pair<=0;
+   fallback_wav_valid<=0;paired<=0;commit_pending<=0;
   end else begin
    idx_done<=0;rescan_request<=0;
    if(idx_clear)begin
@@ -74,7 +67,7 @@ module v3_flexible_media_index(
     cursor_valid<=cursor_key!=0&&best_valid;cursor_length<=best_length;
     cursor_bank<=best_bank;best_bank<=~best_bank;best_valid<=0;
     file_cnt<=0;file_valid<=0;sel_wav_valid<=0;bmp_seen<=0;wav_seen<=0;wav_ordinal<=0;
-    fallback_wav_valid<=0;paired<=0;commit_pending<=0;exact_pair<=0;
+    fallback_wav_valid<=0;paired<=0;commit_pending<=0;
    end else begin
     case(state)
      IDLE:if(ent_valid)begin
@@ -92,27 +85,25 @@ module v3_flexible_media_index(
         fallback_wav_valid<=1;fallback_wav_cluster<=ent_first_clus;fallback_wav_size<=ent_size;
        end
        
-       if(!exact_pair&&name_length>=4&&best_length>=4&&name_length==best_length)begin
+       if(!paired&&name_length>=4&&best_length>=4&&name_length==best_length)begin
         character<=0;compare_best<=1;state<=WAIT_NAME;
-       end else if(!paired&&candidate_number[16]&&selected_number[16]&&candidate_number[15:0]==selected_number[15:0])begin
-        paired<=1;sel_wav_first_clus<=ent_first_clus;sel_wav_size<=ent_size;release_entry();
        end else release_entry();
       end else release_entry();
      end
      WAIT_NAME:state<=COMPARE;
      COMPARE:begin
       if(phase==2)begin
-       if(current_char!=target_char)release_entry();
-       else if(character==current_length)begin paired<=1;exact_pair<=1;sel_wav_first_clus<=current_cluster;sel_wav_size<=current_size;release_entry();end
+       if(!char_equal)release_entry();
+       else if(character==current_length)begin paired<=1;sel_wav_first_clus<=current_cluster;sel_wav_size<=current_size;release_entry();end
        else begin character<=character+1'b1;state<=WAIT_NAME;end
       end else if(compare_best)begin
-       if(current_char<target_char)copy_current();
-       else if(current_char>target_char||character==current_length)release_entry();
+       if(char_less)copy_current();
+       else if(char_greater||character==current_length)release_entry();
        else begin character<=character+1'b1;state<=WAIT_NAME;end
       end else begin
-       if(current_char>target_char)begin
+       if(char_greater)begin
         if(best_valid)begin compare_best<=1;character<=0;state<=WAIT_NAME;end else copy_current();
-       end else if(current_char<target_char||character==current_length)release_entry();
+       end else if(char_less||character==current_length)release_entry();
        else begin character<=character+1'b1;state<=WAIT_NAME;end
       end
      end

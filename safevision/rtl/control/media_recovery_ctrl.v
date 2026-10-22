@@ -6,9 +6,10 @@ module media_recovery_ctrl #(
  parameter integer TIMEOUT_CYCLES=500000000,MAX_ATTEMPTS=3,PROGRESSIVE_WAIT=0
 )(
  input wire clk,rst_n,request,done,failed,fatal,
- input wire progress,
  output wire busy,media_reset,output reg rescan_start,recovered,
- output reg safe_latched,output reg[1:0]attempts,output reg[2:0]state
+ output reg safe_latched,output reg[1:0]attempts,output reg[2:0]state,
+ // Append optional inputs so legacy positional instances retain every port.
+ input wire progress
 );
  localparam IDLE=0,RESET=1,SETTLE=2,START=3,WAIT=4,LOCKED=5;
  localparam integer SHORT_LIMIT=RESET_CYCLES>SETTLE_CYCLES?RESET_CYCLES:SETTLE_CYCLES;

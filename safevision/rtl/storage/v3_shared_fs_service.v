@@ -1,10 +1,12 @@
+`include "safevision_defs.vh"
 // One physical scanner/file/walker, shared only between disjoint lifetimes.
 // All ports use REF clk. Ownership changes reset rst_n for at least one REF edge.
 // No arbitration/CDC lives in this module: callers retain their sector owners.
 module v3_shared_fs_service #(parameter integer FLEX_FILES=0)(input wire clk,rst_n,
- input wire[7:0] name_address,output wire[15:0] name_data,output wire[8:0] name_length,
  input wire[7:0] sec_per_clus,input wire[31:0] fat_start_lba,data_start_lba,root_dir_lba,root_clus,total_clus,
- input wire[444:0] core_cmd,output wire[836:0] core_rsp);
+ input wire[444:0] core_cmd,output wire[836:0] core_rsp,
+ // Optional full-name sideband appends to the verified legacy port order.
+ input wire[7:0] name_address,output wire[15:0] name_data,output wire[8:0] name_length);
 wire c_kernel_rst_n;
 wire c_scan_start;
 wire c_ent_ready;
@@ -81,8 +83,27 @@ wire [31:0] w_sd_rd_addr;
 wire [15:0] w_sd_rd_len;
 wire w_sd_rd_en;
 wire w_sd_data_ready;
+// One combinational LBA converter serves disjoint scanner/file lifetimes.
+// Scanner owns it only in D_WALK; neither caller takes an extra clock edge.
+wire directory_lba_active;
+localparam integer SHARED_TO_W=$clog2(`SD_TO_DATA+32'd2);
+reg[SHARED_TO_W-1:0] shared_timeout;
+wire[2:0] timeout_ticks,timeout_resets;
+always @(posedge clk or negedge rst_n)
+ if(!rst_n)shared_timeout<=0;
+ else if(|timeout_resets)shared_timeout<=0;
+ else if(|timeout_ticks)shared_timeout<=shared_timeout+1'b1;
+
+wire[31:0] file_lba_cluster;
+wire[31:0] shared_cluster=directory_lba_active?w_next_clus:file_lba_cluster;
+wire shared_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0);
+(* use_dsp=1 *) wire[31:0] shared_product=shared_cluster*sec_per_clus;
+(* use_ripple=1 *) wire[31:0] shared_lba_bias=data_start_lba-(shared_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
+(* use_ripple=1 *) wire[31:0] shared_lba=shared_lba_bias+(shared_spc_legal?shared_product:32'd0);
 assign core_rsp={d_scan_done,d_dir_bad,d_err_code,d_err_detail,d_dbg_state,d_ent_name,d_ent_attr,d_ent_first_clus,d_ent_size,d_ent_index,d_ent_valid,d_sd_rd_addr,d_sd_rd_len,d_sd_rd_en,d_sd_data_ready,d_wk_cur_clus,d_wk_start,d_wk_rst_walk,f_busy,f_done,f_error,f_err_code,f_err_detail,f_bytes_rd,f_dbg_state,f_data,f_valid,f_sof,f_eof,f_idle_between_sectors,f_context_out,f_sd_rd_addr,f_sd_rd_len,f_sd_rd_en,f_sd_data_ready,f_wk_cur_clus,f_wk_start,f_wk_rst_walk,w_busy,w_done,w_next_clus,w_eoc,w_error,w_err_code,w_err_detail,w_hop_cnt,w_dbg_state,w_sd_rd_addr,w_sd_rd_len,w_sd_rd_en,w_sd_data_ready};
-fat32_directory_scanner #(.SV_MEDIA_ONLY(FLEX_FILES?0:1),.FULL_NAMES(FLEX_FILES)) ds(.clk(clk),
+fat32_directory_scanner #(.SV_MEDIA_ONLY(FLEX_FILES?0:1),.FULL_NAMES(FLEX_FILES),.EXTERNAL_LBA(FLEX_FILES),.EXTERNAL_TIMER(FLEX_FILES)) ds(.clk(clk),
+ .external_timeout_count({32'd0,shared_timeout}),.timeout_tick(timeout_ticks[0]),.timeout_reset(timeout_resets[0]),
+ .external_lba(shared_lba),.lba_active(directory_lba_active),
  .name_address(name_address),.name_data(name_data),.name_length(name_length),
  .rst_n(rst_n),
  .sec_per_clus(sec_per_clus),
@@ -127,7 +148,9 @@ fat32_directory_scanner #(.SV_MEDIA_ONLY(FLEX_FILES?0:1),.FULL_NAMES(FLEX_FILES)
  .wk_rst_walk(d_wk_rst_walk));
 wire[135:0] compact_fs_context;
 assign f_context_out={129'd0,compact_fs_context};
-v3_file_streamer_compact_ctx fs(.clk(clk),
+v3_file_streamer_compact_ctx #(.EXTERNAL_LBA(FLEX_FILES),.EXTERNAL_TIMER(FLEX_FILES),.DIRECT_REQUEST_ADDRESS(FLEX_FILES)) fs(.clk(clk),
+ .external_timeout_count({32'd0,shared_timeout}),.timeout_tick(timeout_ticks[1]),.timeout_reset(timeout_resets[1]),
+ .external_lba(shared_lba),.lba_cluster(file_lba_cluster),
  .rst_n(rst_n&&c_kernel_rst_n),
  .context_load(c_fs_load),
  .context_in(c_fs_context[135:0]),
@@ -177,7 +200,8 @@ v3_file_streamer_compact_ctx fs(.clk(clk),
  .wk_cur_clus(f_wk_cur_clus),
  .wk_start(f_wk_start),
  .wk_rst_walk(f_wk_rst_walk));
-v3_cluster_walker_ctx wk(.clk(clk),
+v3_cluster_walker_ctx #(.EXTERNAL_TIMER(FLEX_FILES),.DIRECT_REQUEST_ADDRESS(FLEX_FILES)) wk(.clk(clk),
+ .external_timeout_count({32'd0,shared_timeout}),.timeout_tick(timeout_ticks[2]),.timeout_reset(timeout_resets[2]),
  .rst_n(rst_n&&c_kernel_rst_n),
  .context_load(c_wk_load),
  .context_hop(c_wk_hop),

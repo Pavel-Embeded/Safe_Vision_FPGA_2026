@@ -33,7 +33,7 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module v3_cluster_walker_ctx (
+module v3_cluster_walker_ctx #(parameter integer EXTERNAL_TIMER=0,DIRECT_REQUEST_ADDRESS=0) (
     input wire context_load,input wire [31:0] context_hop,
     input  wire        clk,
     input  wire        rst_n,
@@ -57,7 +57,7 @@ module v3_cluster_walker_ctx (
     input  wire [31:0] total_clus,    // 总簇数（判越界 / 判环）
 
     // ---- 到 sd_sector_reader 的读请求 ----
-    output reg  [31:0] sd_rd_addr,
+    output wire [31:0] sd_rd_addr,
     output wire [15:0] sd_rd_len,
     output reg         sd_rd_en,
     input  wire        sd_rd_ready,
@@ -70,7 +70,9 @@ module v3_cluster_walker_ctx (
     input  wire        sd_crc16_err,
     input  wire [7:0]  sd_err_code,
     input  wire [7:0]  sd_err_detail
-);
+,
+
+    input wire[31:0] external_timeout_count,output wire timeout_tick,timeout_reset);
 
     // ------------------------------------------------------------------------
     // 状态
@@ -88,7 +90,8 @@ module v3_cluster_walker_ctx (
     // Every counting state exits or clears at SD_TO_DATA. The last
     // scheduled increment can reach SD_TO_DATA+1, which this width retains.
     localparam integer TO_W=$clog2(`SD_TO_DATA+32'd2);
-    reg [TO_W-1:0] to_cnt;        // 兜底超时
+    reg [TO_W-1:0] local_to_cnt;
+    wire[TO_W-1:0] to_cnt=EXTERNAL_TIMER?external_timeout_count[TO_W-1:0]:local_to_cnt;        // 兜底超时
 
     // 入口地址
     wire [31:0] fat_byte_off = {cur_clus[29:0], 2'b00};   // clus*4
@@ -130,13 +133,18 @@ module v3_cluster_walker_ctx (
     // ------------------------------------------------------------------------
     // 主状态机
     // ------------------------------------------------------------------------
+    assign timeout_tick=rst_n&&!context_load&&((mstate==W_REQ)||(mstate==W_RECV));
+    assign timeout_reset=rst_n&&!context_load&&(
+      (mstate==W_IDLE&&start)||(mstate==W_REQ&&to_cnt!=`SD_TO_DATA&&sd_rd_ready));
+    reg[31:0] legacy_rd_addr;
+    assign sd_rd_addr=DIRECT_REQUEST_ADDRESS?fat_lba:legacy_rd_addr;
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             mstate     <= W_IDLE;
             bcnt       <= 9'd0;
             fat_off    <= 9'd0;
             fat_val    <= 32'h0;
-            to_cnt     <= 32'd0;
+            local_to_cnt <= 32'd0;
             busy       <= 1'b0;
             done       <= 1'b0;
             next_clus  <= 32'd0;
@@ -146,7 +154,7 @@ module v3_cluster_walker_ctx (
             err_detail <= `DET_NONE;
             hop_cnt    <= 32'd0;
             dbg_state  <= W_IDLE;
-            sd_rd_addr <= 32'd0;
+            legacy_rd_addr <= 32'd0;
             sd_rd_en   <= 1'b0;
         end else if(context_load)begin hop_cnt<=context_hop;
         end else begin
@@ -170,27 +178,27 @@ module v3_cluster_walker_ctx (
                     fat_off    <= {cur_clus[6:0], 2'b00};   // (clus*4) % 512
                     fat_val    <= 32'h0;
                     bcnt       <= 9'd0;
-                    to_cnt     <= 32'd0;
+                    local_to_cnt <= 32'd0;
                     mstate     <= W_REQ;
                 end
             end
             // ---- 请求读 FAT 扇区 ---------------------------------------------
             W_REQ: begin
-                to_cnt <= to_cnt + 32'd1;
+                local_to_cnt <= to_cnt + 32'd1;
                 if (to_cnt == `SD_TO_DATA) begin
                     err_code   <= `ERR_SD_IO;
                     err_detail <= `DET_SD_TOKEN_TO;
                     mstate     <= W_ERR;
                 end else if (sd_rd_ready) begin
-                    sd_rd_addr <= fat_lba;
+                    legacy_rd_addr <= fat_lba;
                     sd_rd_en   <= 1'b1;
-                    to_cnt     <= 32'd0;
+                    local_to_cnt <= 32'd0;
                     mstate     <= W_RECV;
                 end
             end
             // ---- 收 FAT 扇区，抽出 4 Byte 入口 -------------------------------
             W_RECV: begin
-                to_cnt <= to_cnt + 32'd1;
+                local_to_cnt <= to_cnt + 32'd1;
                 if (to_cnt == `SD_TO_DATA) begin
                     err_code   <= `ERR_SD_IO;
                     err_detail <= `DET_SD_TOKEN_TO;

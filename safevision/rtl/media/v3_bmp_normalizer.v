@@ -11,20 +11,27 @@
 module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
  input wire clk,rst_n,input wire[7:0] din,input wire din_valid,
  output wire din_ready,input wire din_sof,din_eof,
- input wire[15:0] width,height,input wire top_down,input wire[7:0] bpp,
+ input wire[15:0] width,height,input wire top_down,
  output reg[15:0] pixel,output reg pixel_valid,input wire pixel_ready,
  output wire[9:0] x,y,output wire img_sof,img_eof,
- output reg done,error,output reg[7:0] err_code,err_detail,output wire[3:0] dbg_state);
+ output reg done,error,output reg[7:0] err_code,err_detail,output wire[3:0] dbg_state,input wire[7:0] bpp);
  localparam IDLE=0,GEOM=1,SETUP=2,YADV=3,READ=4,STORE=5,XADV=6,ROWEND=7,
   EWAIT=8,EPUSH=9,EHOLD=10,DRAIN=11,FINISH=12,FAILED=13;
  localparam SB=FLEX_PIXELS?15:11,XB=FLEX_PIXELS?15:12;
+ // Complete aspect-fit domain1..16384: ceil(W/dw)<=68 and
+ // ceil(H/dh)<=51, including the clamped one-pixel minor dimension.
+ // These are DDA advances, not source coordinates. GEOM's full-width
+ // divisor temporarily occupies src_row and is cleared before source rows.
+ localparam SX=FLEX_PIXELS?7:SB,SY=FLEX_PIXELS?6:SB;
+ localparam DH=FLEX_PIXELS?9:10,PX=FLEX_PIXELS?9:10,PY=FLEX_PIXELS?8:10;
  reg[3:0] state;reg[SB-1:0] w,h;reg orientation,wide;
- reg[9:0] dw,dh,pad_x,pad_before;
- reg[SB-1:0] src_row,cols_left,skip_x,skip_y,y_steps;
- reg[XB-1:0] x_error;reg[SB-1:0] y_error;reg[9:0] store_x,out_x,out_row;
+ reg[9:0] dw;reg[DH-1:0] dh;reg[PX-1:0] pad_x;reg[PY-1:0] pad_before;
+ reg[SB-1:0] src_row,cols_left;reg[SX-1:0] skip_x;reg[SY-1:0] skip_y,y_steps;
+ reg[XB-1:0] x_error;reg[SB-1:0] y_error;reg[9:0] store_x,out_x;reg[DH-1:0]out_row;
  reg[7:0] blue,green;reg[1:0] phase,padding_left;reg[15:0] captured;
  reg after_row,eof_seen,have_row,initial_y,line_full;
  wire[SB+XB-1:0] geometry_scratch={y_error,x_error};
+ wire[SB-1:0] geometry_divisor=FLEX_PIXELS?src_row:skip_x;
  // Canonical line uses two native RAM9K tiles; no distributed tail.
  // Pixel precision and the existing synchronous read latency are unchanged.
  (* ram_style="bram" *) reg[15:0] row_pixels[0:639];
@@ -52,10 +59,13 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
  task begin_input_row;begin cols_left<=w;phase<=0;padding_left<=w[1:0];skip_x<=0;x_error<=0;store_x<=0;line_full<=0;end endtask
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
-   state<=IDLE;w<=0;h<=0;orientation<=0;wide<=0;
-   dw<=0;dh<=0;pad_x<=0;pad_before<=0;src_row<=0;cols_left<=0;skip_x<=0;skip_y<=0;y_steps<=0;padding_left<=0;line_full<=0;
-   x_error<=0;y_error<=0;store_x<=0;out_x<=0;out_row<=0;blue<=0;green<=0;phase<=0;captured<=0;
-   after_row<=0;eof_seen<=0;have_row<=0;initial_y<=0;pixel<=0;pixel_valid<=0;done<=0;error<=0;err_code<=0;err_detail<=0;
+   state<=IDLE;orientation<=0;out_x<=0;out_row<=0;pixel<=0;pixel_valid<=0;done<=0;error<=0;err_code<=0;err_detail<=0;
+   // FLEX private working state is fully overwritten by IDLE/GEOM/SETUP
+   // before any output is eligible. Public reset values stay exact.
+   if(!FLEX_PIXELS)begin
+    w<=0;h<=0;wide<=0;dw<=0;dh<=0;pad_x<=0;pad_before<=0;src_row<=0;cols_left<=0;skip_x<=0;skip_y<=0;y_steps<=0;padding_left<=0;line_full<=0;
+    x_error<=0;y_error<=0;store_x<=0;blue<=0;green<=0;phase<=0;captured<=0;after_row<=0;eof_seen<=0;have_row<=0;initial_y<=0;
+   end
   end else begin
    done<=0;
    case(state)
@@ -66,14 +76,15 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
      end else begin
       w<=width[SB-1:0];h<=abs_height[SB-1:0];cols_left<=width[SB-1:0];padding_left<=width[1:0];orientation<=top_down;wide<=width480>=height640;
       {y_error,x_error}<=width480>=height640?height640:width480;
-      skip_x<=width480>=height640?width[SB-1:0]:abs_height[SB-1:0];store_x<=0;
-      src_row<=0;skip_y<=0;y_steps<=0;line_full<=0;
+      skip_x<=FLEX_PIXELS?0:(width480>=height640?width[SB-1:0]:abs_height[SB-1:0]);store_x<=0;
+      src_row<=FLEX_PIXELS?(width480>=height640?width[SB-1:0]:abs_height[SB-1:0]):0;skip_y<=0;y_steps<=0;line_full<=0;
       store_x<=0;out_x<=0;out_row<=0;phase<=0;after_row<=0;eof_seen<=0;have_row<=0;state<=GEOM;
      end
     end
-    GEOM:if(geometry_scratch>=skip_x)begin {y_error,x_error}<=geometry_scratch-skip_x;store_x<=store_x+1'b1;end
+    GEOM:if(geometry_scratch>=geometry_divisor)begin {y_error,x_error}<=geometry_scratch-geometry_divisor;store_x<=store_x+1'b1;end
      else begin dw<=wide?10'd640:store_x==0?10'd1:store_x;dh<=wide?(store_x==0?10'd1:store_x):10'd480;state<=SETUP;end
     SETUP:begin x_error<=((10'd640-dw)>>1)+dw;skip_x<=0;store_x<=0;
+     if(FLEX_PIXELS)src_row<=0;
      pad_x<=(10'd640-dw)>>1;
      pad_before<=orientation?((10'd480-dh)>>1):(10'd480-dh-((10'd480-dh)>>1));
      y_steps<=0;y_error<=orientation?11'd0:h-1'b1;initial_y<=1;state<=YADV;

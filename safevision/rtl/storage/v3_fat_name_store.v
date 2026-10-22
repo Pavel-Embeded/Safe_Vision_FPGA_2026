@@ -10,10 +10,11 @@ module v3_fat_name_store(
  input wire clk,rst_n,scan_start,byte_valid,input wire[4:0] byte_offset,
  input wire[7:0] data,input wire[7:0] read_address,
  output wire[15:0] read_data,output wire[8:0] name_length,
- output reg busy,output reg lfn_valid);
+ output reg busy,output reg lfn_valid,output wire[87:0] raw_short_name);
  (* ram_style="bram" *)reg[15:0] name_ram[0:511];
  reg[15:0] ram_read;
  reg[87:0] prefix;
+ assign raw_short_name=prefix;
  reg[3:0] base_length;reg[1:0] extension_length;
  reg chain_valid,is_lfn,flush_lfn;
  reg[4:0] expected_order;

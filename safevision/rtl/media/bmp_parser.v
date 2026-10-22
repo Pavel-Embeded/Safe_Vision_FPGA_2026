@@ -76,12 +76,12 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
 
     reg  [1:0]  mstate;
     reg  [5:0] hcnt;          // Header position only: read in H_HEAD, 0..53.
-    reg  [31:0] skip_cnt;      // 头之后、像素之前还要丢掉的字节数
+    reg  [31:0] legacy_skip_cnt;      // 头之后、像素之前还要丢掉的字节数
     reg         hdr_ok;
 
     // ---- Header bytes: exact retained fields plus unpublished predicates ----
     reg  [31:0] bfsize_r;
-    reg  [31:0] offbits_r;
+    reg  [31:0] offbits_r; wire[31:0] skip_cnt=FLEX_PIXELS?offbits_r:legacy_skip_cnt;
     reg         dib_ge40_r;
     reg         dib_within_offset_r;
     reg  [15:0] width_lo_r;
@@ -102,7 +102,9 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
     // Extended DIB metadata must end before bfOffBits. Compare each little-
     // endian byte as it arrives, so no additional 32-bit retained field is
     // needed. Legacy mode retains its original header acceptance contract.
-    wire [31:0] dib_capacity = offbits_r - 32'd14;
+    wire[31:0] offbits_decrement = FLEX_PIXELS?((mstate==H_XFER)?32'd1:(hcnt==53)?32'd54:32'd14):32'd14;
+    wire[31:0] offbits_delta=offbits_r-offbits_decrement;
+    wire [31:0] dib_capacity = offbits_delta;
     wire dib_ok    = dib_ge40_r && (!FLEX_PIXELS || dib_within_offset_r);
     wire legacy_size_ok = (width_lo_r == 16'd640) && width_hi_zero_r &&
                      ((height_lo_r == 16'd480) || (height_lo_r == 16'hfe20)) &&
@@ -137,9 +139,10 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
         if (!rst_n) begin
             mstate      <= H_HEAD;
             hcnt        <= 6'd0;
-            skip_cnt    <= 32'd0;
+            if(!FLEX_PIXELS)legacy_skip_cnt <= 32'd0;
             
             hdr_ok      <= 1'b0;
+            if(!FLEX_PIXELS)begin
             bfsize_r    <= 32'h0;
             offbits_r   <= 32'h0;
             dib_ge40_r <= 1'b0;
@@ -154,6 +157,7 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
             bpp_hi_zero_r <= 1'b0;
             comp_r      <= 32'h0;
             sig_match_r <= 1'b0;
+            end
             check_done  <= 1'b0;
             check_error <= 1'b0;
             err_code    <= `ERR_NONE;
@@ -241,8 +245,8 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
                             else                err_detail <= `DET_BMP_TRUNC;
                         end
                         // 头之后到像素开头之间可能还有调色板/填充，要丢掉
-                        skip_cnt <= (offbits_r > BMP_HDR_BYTES)
-                                    ? (offbits_r - BMP_HDR_BYTES) : 32'd0;
+                        if(FLEX_PIXELS)offbits_r <= (offbits_r > BMP_HDR_BYTES)?offbits_delta:32'd0;
+                        else legacy_skip_cnt <= (offbits_r > BMP_HDR_BYTES)?(offbits_r-BMP_HDR_BYTES):32'd0;
                         out_eof  <= eof;
                         // 文件只有头、没有像素数据时直接收尾
                         mstate   <= eof ? H_DONE : H_XFER;
@@ -260,7 +264,7 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
 
                 if (valid && ready) begin
                     if (skip_cnt != 32'd0) begin
-                        skip_cnt <= skip_cnt - 32'd1;      // 调色板 / 填充，丢掉
+                        if(FLEX_PIXELS)offbits_r<=offbits_delta;else legacy_skip_cnt<=skip_cnt-32'd1;      // 调色板 / 填充，丢掉
                     end else if (hdr_ok && (!VARIABLE_SIZE || pixels_remaining!=0)) begin
                         out_data  <= data;
                         out_valid <= 1'b1;
@@ -287,8 +291,9 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
                 end
                 if (!out_valid) begin
                     hcnt      <= 6'd0;
-                    skip_cnt  <= 32'd0;
+                    if(!FLEX_PIXELS)legacy_skip_cnt <= 32'd0;
                     hdr_ok    <= 1'b0;
+                    if(!FLEX_PIXELS)begin
                     sig_match_r <= 1'b0;
                     bfsize_r  <= 32'h0;
                     offbits_r <= 32'h0;
@@ -303,6 +308,7 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
                     bpp_lo_r <= 8'h0;
                     bpp_hi_zero_r <= 1'b0;
                     comp_r    <= 32'h0;
+                    end
                     mstate    <= H_HEAD;
                 end
             end

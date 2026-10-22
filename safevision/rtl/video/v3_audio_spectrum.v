@@ -12,35 +12,96 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  localparam CAPTURE=0,WINDOW_WAIT=1,WINDOW_MUL=2,WINDOW_WRITE=3,
   A_WAIT=4,A_LATCH=5,B_LATCH=6,MUL0=7,MUL1=8,MUL2=9,MUL3=10,
   PRODUCT=11,WRITE_A=12,WRITE_B=13,STEP=14,BIN_WAIT=15,BIN_READ=16,
-  BIN_NEXT=17,BAND_WRITE=18,PUBLISH=19;
+  BIN_NEXT=17,BAND_WRITE=18,PUBLISH=19,COEFFICIENT_FETCH=21,HISTORY_REQUEST=22,HISTORY_WAIT=23,BAND_PEAK_WRITE=24;
+ localparam LEFT=WIDTH-272,BASELINE=HEIGHT-64;
+ wire[11:0] dx=x-LEFT;
+ wire area=de&&x>=LEFT&&x<LEFT+256&&y>=BASELINE-68&&y<=BASELINE;
+ wire[4:0] column=dx[7:3];
+ reg[4:0] band;
+ reg pending_bank,display_bank;wire[6:0] band_height;
  (* ram_style="bram" *)reg[35:0] data_ram[0:511];
- // One synchronous ROM port is time-shared by the existing A/B operand
- // read cycles. Only a quarter-wave is stored; +/-1 endpoints are constants.
- (* rom_style="bram" *)reg[15:0] twiddle_rom[0:511];
- initial $readmemh(TWIDDLE_FILE,twiddle_rom);
+ // One true-dual-port9 RAM combines the immutable quarter-wave table and
+ // two display banks. Coefficients occupy0..255, display words256..383.
+ (* ram_style="bram" *)reg[8:0] shared_ram[0:1023];
+ reg[15:0] initial_coefficients[0:511];integer init_index;
+ initial begin
+  $readmemh(TWIDDLE_FILE,initial_coefficients);
+  for(init_index=0;init_index<1024;init_index=init_index+1)shared_ram[init_index]=0;
+  for(init_index=0;init_index<128;init_index=init_index+1)begin
+   shared_ram[init_index*2]=initial_coefficients[init_index][8:0];
+   shared_ram[init_index*2+1]={2'b00,initial_coefficients[init_index][15:9]};
+  end
+ end
  reg[4:0] state;reg[8:0] sample_index,read_address,write_address;
  reg write_enable;reg[35:0] write_data,read_data;
  reg[7:0] twiddle_address;
  wire[6:0] sine_address=twiddle_address[7]?-twiddle_address[6:0]:twiddle_address[6:0];
  wire[6:0] cosine_address=twiddle_address[7]?twiddle_address[6:0]:-twiddle_address[6:0];
- wire[6:0] coefficient_address=state>=A_LATCH&&state<=WRITE_B?sine_address:cosine_address;
- reg[15:0] coefficient_data;
- reg sine_endpoint,cosine_endpoint,cosine_negative;
- wire signed[15:0] sine_value=sine_endpoint?16'sd32767:$signed(coefficient_data);
- wire signed[15:0] cosine_value=cosine_endpoint?16'sd32767:$signed(coefficient_data);
- wire signed[15:0] cosine_coefficient=cosine_negative?-cosine_value:cosine_value;
+ wire compute_enable=state==CAPTURE||state==PUBLISH||!area;
+ reg[8:0] shared_a_data,shared_b_data;
+ reg[15:0] fetched_cosine,fetched_sine;
+ reg coefficient_window;
+ reg[2:0] request_count,response_count;
+ reg request_tag;reg[1:0] response_part;
+ reg history_tag,history_available;reg[6:0] history_value,pending_peak_word;
+ wire[2:0] fetch_goal=coefficient_window?3'd2:3'd4;
+ wire coefficient_request=state==COEFFICIENT_FETCH&&request_count<fetch_goal&&!area;
+ wire history_request=state==HISTORY_REQUEST&&!area;
+ wire[6:0] quarter_address=request_count[1]?sine_address:cosine_address;
+ wire[9:0] display_level_address={3'b010,display_bank,column,1'b0};
+ wire[9:0] display_peak_address={3'b010,display_bank,column,1'b1};
+ wire[9:0] history_address={3'b010,display_bank,band,1'b1};
+ wire[9:0] pending_address={3'b010,pending_bank,band,state==BAND_PEAK_WRITE};
+ wire[9:0] shared_a_address=area?display_level_address:history_request?history_address:{2'b00,quarter_address,request_count[0]};
+ wire[9:0] shared_b_address=area?display_peak_address:pending_address;
+ wire shared_write_enable=rst_n&&!area&&(state==BAND_WRITE||state==BAND_PEAK_WRITE);
+ wire[8:0] shared_write_data={2'b00,state==BAND_WRITE?band_height:pending_peak_word};
+ wire signed[15:0] positive_cosine=twiddle_address==0?16'sd32767:$signed(fetched_cosine);
+ wire signed[15:0] sine_value=twiddle_address==128?16'sd32767:$signed(fetched_sine);
+ wire signed[15:0] cosine_coefficient=twiddle_address[7]?-positive_cosine:positive_cosine;
  always @(posedge clk)begin
-  read_data<=data_ram[read_address];
-  coefficient_data<=twiddle_rom[{2'b00,coefficient_address}];
-  sine_endpoint<=twiddle_address==8'd128;
-  cosine_endpoint<=twiddle_address==8'd0;
-  cosine_negative<=twiddle_address[7];
+  shared_a_data<=shared_ram[shared_a_address];
+  shared_b_data<=shared_ram[shared_b_address];
+  if(shared_write_enable)shared_ram[shared_b_address]<=shared_write_data;
+  if(compute_enable)read_data<=data_ram[read_address];
   if(write_enable)data_ram[write_address]<=write_data;
  end
+ // A tagged response is captured even if the next pixel takes both read ports.
+ // No in-flight coefficient/history response can be lost on a display pause.
+ always @(posedge clk or negedge rst_n)begin
+  if(!rst_n)begin
+   request_count<=0;response_count<=0;request_tag<=0;response_part<=0;
+   fetched_cosine<=0;fetched_sine<=0;history_tag<=0;history_available<=0;history_value<=0;
+  end else begin
+   request_tag<=coefficient_request;response_part<=request_count[1:0];history_tag<=history_request;
+   if(state!=COEFFICIENT_FETCH)begin request_count<=0;response_count<=0;end
+   else begin
+    if(coefficient_request)request_count<=request_count+1'b1;
+    if(request_tag)begin
+     response_count<=response_count+1'b1;
+     case(response_part)
+      0:fetched_cosine[8:0]<=shared_a_data;
+      1:fetched_cosine[15:9]<=shared_a_data[6:0];
+      2:fetched_sine[8:0]<=shared_a_data;
+      3:fetched_sine[15:9]<=shared_a_data[6:0];
+     endcase
+    end
+   end
+   if(state==HISTORY_REQUEST)history_available<=0;
+   if(history_tag)begin history_available<=1;history_value<=shared_a_data[6:0];end
+  end
+ end
+ // synthesis translate_off
+ wire[13:0] spectrum_ram[0:63];genvar display_alias;
+ generate for(display_alias=0;display_alias<64;display_alias=display_alias+1)begin:simulation_bank_view
+  assign spectrum_ram[display_alias]={shared_ram[256+display_alias*2][6:0],shared_ram[257+display_alias*2][6:0]};
+ end endgenerate
+ always @(posedge clk)if(shared_write_enable&&shared_b_address<256)$fatal(1,"immutable coefficient RAM write");
+ // synthesis translate_on
  function[8:0] reverse9;input[8:0] v;integer i;begin for(i=0;i<9;i=i+1)reverse9[i]=v[8-i];end endfunction
  reg signed[17:0] multiply_a,multiply_b;
  reg signed[35:0] multiply_result;
- always @(posedge clk)multiply_result<=multiply_a*multiply_b;
+ always @(posedge clk)if(compute_enable)multiply_result<=multiply_a*multiply_b;
  reg signed[17:0] ar,ai,tr,ti;
  wire signed[17:0] br=read_data[35:18],bi=read_data[17:0];
  reg signed[15:0] wr;wire signed[15:0] wi=-sine_value;
@@ -53,17 +114,10 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  reg[8:0] group_base,j,half_size;
  wire[8:0] butterfly_a=group_base|j,butterfly_b=group_base|j|half_size;
  reg[7:0] twiddle_step;
- reg[4:0] band;
  reg[8:0] bin_index;
  reg[18:0] band_magnitude,max_magnitude;
  reg[8:0] pending_dominant;
  reg[6:0] pending_peak;
- reg pending_bank,display_bank;
- // The display reads one packed level/peak word. A separate 32-word history
- // has only the analysis read port, avoiding duplicated 64-word peak RAMs.
- // ready gates uninitialised data until the first complete bank is filled.
- (* ram_style="distributed" *)reg[13:0] spectrum_ram[0:63];
- (* ram_style="distributed" *)reg[6:0] peak_history[0:31];
  function[8:0] band_end;input[4:0] b;begin
   if(b<16)band_end={4'd0,b}+9'd2;
   else case(b)
@@ -94,43 +148,42 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
    default:log_height=0;
   endcase
  end endfunction
- wire[6:0] band_height=log_height(band_magnitude);
- wire[6:0] previous_peak=ready?peak_history[band]:7'd0;
+ assign band_height=log_height(band_magnitude);
+ wire[6:0] previous_peak=ready?history_value:7'd0;
  wire[6:0] next_peak=band_height>previous_peak?band_height:previous_peak==0?7'd0:previous_peak-7'd1;
  wire[8:0] next_j=j+9'd1;
  wire[9:0] next_group={1'b0,group_base}+{half_size,1'b0};
- wire[17:0] absolute_re=read_data[35]?18'd0-read_data[35:18]:read_data[35:18];
- wire[17:0] absolute_im=read_data[17]?18'd0-read_data[17:0]:read_data[17:0];
+ wire signed[17:0] absolute_factor_re=read_data[35]?-18'sd1:18'sd1;
+ wire signed[17:0] absolute_factor_im=read_data[17]?-18'sd1:18'sd1;
+ wire signed[35:0] absolute_product_re=$signed(read_data[35:18])*absolute_factor_re;
+ wire signed[35:0] absolute_product_im=$signed(read_data[17:0])*absolute_factor_im;
+ wire[17:0] absolute_re=absolute_product_re[17:0],absolute_im=absolute_product_im[17:0];
  wire[18:0] bin_magnitude=absolute_re>=absolute_im?{1'b0,absolute_re}+({1'b0,absolute_im}>>1):{1'b0,absolute_im}+({1'b0,absolute_re}>>1);
  wire signed[36:0] real_product=$signed({p0[35],p0})-$signed({p1[35],p1});
  wire signed[36:0] imag_product=$signed({p2[35],p2})+$signed({multiply_result[35],multiply_result});
- wire signed[18:0] sum_re=$signed({ar[17],ar})+$signed({tr[17],tr});
- wire signed[18:0] sum_im=$signed({ai[17],ai})+$signed({ti[17],ti});
- wire signed[18:0] dif_re=$signed({ar[17],ar})-$signed({tr[17],tr});
- wire signed[18:0] dif_im=$signed({ai[17],ai})-$signed({ti[17],ti});
- always @(posedge clk)begin
-  if(rst_n&&state==BAND_WRITE)begin
-   spectrum_ram[{pending_bank,band}]<={band_height,next_peak};
-   peak_history[band]<=next_peak;
-  end
- end
+ wire butterfly_subtract=state==WRITE_B;
+ wire[18:0] butterfly_term_re={tr[17],tr}^{19{butterfly_subtract}};
+ wire[18:0] butterfly_term_im={ti[17],ti}^{19{butterfly_subtract}};
+ wire[18:0] butterfly_result_re={ar[17],ar}+butterfly_term_re+butterfly_subtract;
+ wire[18:0] butterfly_result_im={ai[17],ai}+butterfly_term_im+butterfly_subtract;
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
    state<=CAPTURE;sample_index<=0;read_address<=0;write_address<=0;write_enable<=0;write_data<=0;
-   twiddle_address<=0;multiply_a<=0;multiply_b<=0;sample_sum<=0;block_mean<=0;capture_negative_cos<=0;
+   twiddle_address<=0;coefficient_window<=1;pending_peak_word<=0;multiply_a<=0;multiply_b<=0;sample_sum<=0;block_mean<=0;capture_negative_cos<=0;
    ar<=0;ai<=0;tr<=0;ti<=0;wr<=0;p0<=0;p1<=0;p2<=0;
    stage<=0;group_base<=0;j<=0;half_size<=1;twiddle_step<=0;
    band<=0;bin_index<=1;band_magnitude<=0;max_magnitude<=0;pending_dominant<=0;pending_peak<=0;
    pending_bank<=0;display_bank<=1;ready<=0;spectrum_sequence<=0;dominant_bin<=0;peak_height<=0;
   end else begin
    write_enable<=0;
-   case(state)
+   if(compute_enable)case(state)
     CAPTURE:if(pcm_valid)begin
      write_address<=reverse9(sample_index);write_data<={ {2{pcm_left[23]}},pcm_left[23:8],18'd0};write_enable<=1;
      sample_sum<=sum_next[24:0];
-     if(sample_index==511)begin block_mean<=sum_next>>>9;sample_index<=0;read_address<=0;twiddle_address<=0;capture_negative_cos<=0;state<=WINDOW_WAIT;end
+     if(sample_index==511)begin block_mean<=sum_next>>>9;sample_index<=0;read_address<=0;twiddle_address<=0;capture_negative_cos<=0;coefficient_window<=1;state<=COEFFICIENT_FETCH;end
      else sample_index<=sample_index+1'b1;
     end
+    COEFFICIENT_FETCH:if(response_count==fetch_goal)state<=coefficient_window?WINDOW_WAIT:A_WAIT;
     WINDOW_WAIT:state<=WINDOW_MUL;
     WINDOW_MUL:begin
      multiply_a<=$signed(read_data[35:18])-$signed({{2{block_mean[15]}},block_mean});
@@ -142,10 +195,10 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
      write_address<=reverse9(sample_index);write_data<={multiply_result[32:15],18'd0};write_enable<=1;
      if(sample_index==511)begin
       stage<=0;half_size<=1;twiddle_step<=0;group_base<=0;j<=0;
-      read_address<=0;twiddle_address<=0;state<=A_WAIT;
+      read_address<=0;twiddle_address<=0;coefficient_window<=0;state<=COEFFICIENT_FETCH;
      end else begin
       sample_index<=sample_index+1'b1;read_address<=reverse9(sample_index+9'd1);
-      twiddle_address<=sample_index[7:0]+1'b1;capture_negative_cos<=(sample_index+9'd1)>=256;state<=WINDOW_WAIT;
+      twiddle_address<=sample_index[7:0]+1'b1;capture_negative_cos<=(sample_index+9'd1)>=256;coefficient_window<=1;state<=COEFFICIENT_FETCH;
      end
     end
     A_WAIT:begin read_address<=butterfly_b;state<=A_LATCH;end
@@ -158,18 +211,18 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
     MUL2:begin p1<=multiply_result;multiply_a<=bi;multiply_b<={{2{wr[15]}},wr};state<=MUL3;end
     MUL3:begin p2<=multiply_result;state<=PRODUCT;end
     PRODUCT:begin tr<=real_product>>>15;ti<=imag_product>>>15;state<=WRITE_A;end
-    WRITE_A:begin write_enable<=1;write_address<=butterfly_a;write_data<={sum_re[18:1],sum_im[18:1]};state<=WRITE_B;end
-    WRITE_B:begin write_enable<=1;write_address<=butterfly_b;write_data<={dif_re[18:1],dif_im[18:1]};state<=STEP;end
+    WRITE_A:begin write_enable<=1;write_address<=butterfly_a;write_data<={butterfly_result_re[18:1],butterfly_result_im[18:1]};state<=WRITE_B;end
+    WRITE_B:begin write_enable<=1;write_address<=butterfly_b;write_data<={butterfly_result_re[18:1],butterfly_result_im[18:1]};state<=STEP;end
     STEP:begin
      if(next_j<half_size)begin
       j<=j+1'b1;
-      read_address<=group_base|next_j;twiddle_address<=twiddle_address+twiddle_step;state<=A_WAIT;
+      read_address<=group_base|next_j;twiddle_address<=twiddle_address+twiddle_step;coefficient_window<=0;state<=COEFFICIENT_FETCH;
      end else if(!next_group[9])begin
       group_base<=next_group[8:0];j<=0;
-      read_address<=next_group[8:0];twiddle_address<=0;state<=A_WAIT;
+      read_address<=next_group[8:0];twiddle_address<=0;coefficient_window<=0;state<=COEFFICIENT_FETCH;
      end else if(stage!=8)begin
       stage<=stage+1'b1;half_size<=half_size<<1;twiddle_step<=stage==0?8'd128:twiddle_step>>1;group_base<=0;j<=0;
-      read_address<=0;twiddle_address<=0;state<=A_WAIT;
+      read_address<=0;twiddle_address<=0;coefficient_window<=0;state<=COEFFICIENT_FETCH;
      end else begin band<=0;bin_index<=1;read_address<=1;band_magnitude<=0;max_magnitude<=0;pending_dominant<=0;pending_peak<=0;state<=BIN_WAIT;end
     end
     BIN_WAIT:state<=BIN_READ;
@@ -178,10 +231,16 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
      if(bin_magnitude>max_magnitude)begin max_magnitude<=bin_magnitude;pending_dominant<=bin_index;end
      state<=BIN_NEXT;
     end
-    BIN_NEXT:if(bin_index+9'd1==band_end(band))state<=BAND_WRITE;
+    BIN_NEXT:if(bin_index+9'd1==band_end(band))state<=HISTORY_REQUEST;
      else begin bin_index<=bin_index+1'b1;read_address<=bin_index+1'b1;state<=BIN_WAIT;end
+    HISTORY_REQUEST:state<=HISTORY_WAIT;
+    HISTORY_WAIT:if(history_available)state<=BAND_WRITE;
     BAND_WRITE:begin
+     pending_peak_word<=next_peak;
      if(band_height>pending_peak)pending_peak<=band_height;
+     state<=BAND_PEAK_WRITE;
+    end
+    BAND_PEAK_WRITE:begin
      if(band==31)state<=PUBLISH;
      else begin band<=band+1'b1;band_magnitude<=0;bin_index<=bin_index+1'b1;read_address<=bin_index+1'b1;state<=BIN_WAIT;end
     end
@@ -193,14 +252,12 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
    endcase
   end
  end
- localparam LEFT=WIDTH-272,BASELINE=HEIGHT-64;
- wire[11:0] dx=x-LEFT;
- wire area=de&&x>=LEFT&&x<LEFT+256&&y>=BASELINE-68&&y<=BASELINE;
- wire[4:0] column=dx[7:3];
- wire[13:0] displayed_band=spectrum_ram[{display_bank,column}];
+ wire[13:0] displayed_band={shared_a_data[6:0],shared_b_data[6:0]};
+ reg plot_area,plot_bar,plot_ready,title_delayed,grid_delayed,render_valid;
+ reg[6:0] plot_dy;reg[1:0] plot_colour;
  wire[6:0] height=displayed_band[13:7],held_peak=displayed_band[6:0];
- wire fill=ready&&area&&dx[2:0]<6&&y<BASELINE&&y>=BASELINE-height;
- wire peak=ready&&area&&dx[2:0]<6&&held_peak!=0&&y==BASELINE-held_peak;
+ wire fill=plot_ready&&plot_area&&plot_bar&&plot_dy!=0&&plot_dy<=height;
+ wire peak=plot_ready&&plot_area&&plot_bar&&held_peak!=0&&plot_dy==held_peak;
  function[14:0] glyph;input[7:0] c;begin
   case(c)
    "0":glyph=15'b111_101_101_101_111;"1":glyph=15'b010_110_010_010_111;
@@ -240,11 +297,18 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  wire[11:0] legend_y=y-(BASELINE+8),axis_x=x-(LEFT-24);
  wire legend_pixel=de&&x>=LEFT&&x<LEFT+256&&y>=BASELINE+8&&y<BASELINE+18&&dot(legend_char,{1'b0,legend_x[2:0]},legend_y[3:0]);
  wire axis_pixel=de&&x>=LEFT-24&&x<LEFT&&dot(axis_char,{1'b0,axis_x[2:0]},axis_y[3:0]);
+ // Shared BRAM outputs and registered geometry describe the same input pixel.
  always @(posedge clk or negedge rst_n)
-  if(!rst_n)begin trace_pixel<=0;grid_pixel<=0;colour<=0;end
+  if(!rst_n)begin plot_area<=0;plot_bar<=0;plot_ready<=0;title_delayed<=0;grid_delayed<=0;plot_dy<=0;plot_colour<=0;render_valid<=0;end
   else begin
-   trace_pixel<=fill||peak||title_pixel;
-   grid_pixel<=(area&&(y==BASELINE||y==BASELINE-24||y==BASELINE-44||y==BASELINE-64))||legend_pixel||axis_pixel;
-   colour<=title_pixel?16'hffff:peak?16'hffe0:y<BASELINE-48?16'hf800:y<BASELINE-32?16'hffe0:y<BASELINE-16?16'h07e0:16'h05bf;
+   plot_area<=area;plot_bar<=dx[2:0]<6;plot_ready<=ready;plot_dy<=BASELINE-y;
+   title_delayed<=title_pixel;
+   grid_delayed<=(area&&(y==BASELINE||y==BASELINE-24||y==BASELINE-44||y==BASELINE-64))||legend_pixel||axis_pixel;
+   plot_colour<=y<BASELINE-48?2'd3:y<BASELINE-32?2'd2:y<BASELINE-16?2'd1:2'd0;
+   render_valid<=1;
   end
+ always @*begin
+  trace_pixel=fill||peak||title_delayed;grid_pixel=grid_delayed;
+  colour=!render_valid?16'd0:title_delayed?16'hffff:peak?16'hffe0:plot_colour==3?16'hf800:plot_colour==2?16'hffe0:plot_colour==1?16'h07e0:16'h05bf;
+ end
 endmodule
