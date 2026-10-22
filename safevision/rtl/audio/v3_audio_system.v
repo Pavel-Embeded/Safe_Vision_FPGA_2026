@@ -58,7 +58,7 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
 
  wire[8:0] global_ingress_pairs;wire global_sector_room;
  wire[10:0] global_ingress_words;wire global_ingress_partial;
- v3_pcm_ingress_shared_fifo ingress_shared(.rst(media_reset_any),.wr_clk(ref_clk),.rd_clk(mem_clk),
+ v3_pcm_ingress_shared_fifo #(.AW(PREINDEXED?9:10)) ingress_shared(.rst(media_reset_any),.wr_clk(ref_clk),.rd_clk(mem_clk),
  .wr_data(source_data),.wr_valid(source_valid),.wr_ready(source_ready),.wr_pairs(global_ingress_pairs),
  .sector_room(global_sector_room),.wr_words(global_ingress_words),.wr_partial(global_ingress_partial),.rd_data(ingress_data),.rd_valid(ingress_valid),.rd_ready(ingress_ready));
  genvar g;generate for(g=0;g<4;g=g+1)begin:ingress_status

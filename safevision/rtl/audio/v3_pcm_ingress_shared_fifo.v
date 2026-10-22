@@ -1,11 +1,12 @@
 // REF -> MEM single source, tagged four-track queue. One source track is active
 // at a time; valid/data remain held until the THIRD 16-bit word is accepted.
 // Full 512-byte PCM sector = 128 pairs = 384 FIFO words. Admit a sector only
-// at a group boundary and <=632/1023 words, reserving >=391 = 384+7 words.
+// at a group boundary and <=2**AW-392 words, reserving >=391=384+7.
+// Default AW10 retains the historical1023-word capacity; AW9 uses511 words.
 // MEM retains the tag at FIFO head until the ring accepts the entire pair.
 // This queue is valid for V3 bounded prefill (<~1.5k/track << ring CAP16384).
 // A generic permanently-full destination could cause head-of-line blocking.
-module v3_pcm_ingress_shared_fifo(
+module v3_pcm_ingress_shared_fifo #(parameter integer AW=10)(
  input wire rst,wr_clk,rd_clk,input wire[127:0] wr_data,input wire[3:0] wr_valid,
  output wire[3:0] wr_ready,output wire[8:0] wr_pairs,output wire sector_room,
  output wire[10:0] wr_words,output wire wr_partial,
@@ -25,7 +26,7 @@ module v3_pcm_ingress_shared_fifo(
   endcase
  end
  wire[15:0] fifo_wdata=(write_part==0)?selected_data[15:0]:(write_part==1)?selected_data[31:16]:{14'd0,selected};
- wire fifo_wr_ready,fifo_rd_valid;wire[15:0] fifo_data;wire[9:0] words;
+ wire fifo_wr_ready,fifo_rd_valid;wire[15:0] fifo_data;wire[AW-1:0] fifo_words;wire[9:0] words=fifo_words;
  wire[10:0] rounded_words={1'b0,words}+11'd2;
  wire fifo_wr_valid=wr_rst_n&&(|wr_valid);
  wire fifo_rd_ready=rd_rst_n&&((read_part!=2)||rd_ready[fifo_data[1:0]]);
@@ -38,11 +39,11 @@ module v3_pcm_ingress_shared_fifo(
  assign wr_pairs=pair_credit_product[19:11]+(write_part!=0);
  assign wr_words={1'b0,words};
  assign wr_partial=(write_part!=0);
- assign sector_room=wr_rst_n&&write_part==0&&words<=11'd632;
+ assign sector_room=wr_rst_n&&write_part==0&&words<=((1<<AW)-392);
  assign rd_data={4{low_words}};
  assign rd_valid=(rd_rst_n&&read_part==2&&fifo_rd_valid)?(4'b1<<fifo_data[1:0]):4'd0;
- sv_async_fifo #(.WIDTH(16),.AW(10)) q(.rst(rst),.wr_clk(wr_clk),.wr_data(fifo_wdata),
- .wr_valid(fifo_wr_valid),.wr_ready(fifo_wr_ready),.wr_level(words),.rd_clk(rd_clk),
+ sv_async_fifo #(.WIDTH(16),.AW(AW)) q(.rst(rst),.wr_clk(wr_clk),.wr_data(fifo_wdata),
+ .wr_valid(fifo_wr_valid),.wr_ready(fifo_wr_ready),.wr_level(fifo_words),.rd_clk(rd_clk),
  .rd_data(fifo_data),.rd_valid(fifo_rd_valid),.rd_ready(fifo_rd_ready),.rd_level());
  always @(posedge wr_clk or negedge wr_rst_n)
   if(!wr_rst_n)write_part<=0;
