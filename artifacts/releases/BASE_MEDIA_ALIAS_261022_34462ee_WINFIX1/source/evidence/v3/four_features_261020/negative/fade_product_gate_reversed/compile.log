@@ -1,0 +1,7 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative209/n/fade_product_gate_reversed/mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_video_display_core
+INFO: [VRFC 10-311] analyzing module v3_frame_fade_blend
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq202/source/safevision/verification/models/v3_fade_reference151.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_fade_reference151
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq202/source/safevision/verification/unit/tb_v3_fade_gate151.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_fade_gate151

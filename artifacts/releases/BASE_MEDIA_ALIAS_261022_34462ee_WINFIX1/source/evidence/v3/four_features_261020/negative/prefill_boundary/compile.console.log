@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative430/n/prefill_boundary/mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_audio_prefill_compare
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/verification/unit/tb_v3_audio_prefill_compare.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_audio_prefill_compare

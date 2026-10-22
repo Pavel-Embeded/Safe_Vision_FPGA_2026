@@ -1,0 +1,14 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v" into library work
+INFO: [VRFC 10-311] analyzing module reset_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_phy_reset_fanout
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative430/n/phy_lane_payload/mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_hdmi_phy_wrapper
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi_phy_warpper.v" into library work
+INFO: [VRFC 10-311] analyzing module hdmi_phy_wrapper
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/lane_lvds_10_1.v" into library work
+INFO: [VRFC 10-311] analyzing module lane_lvds_10_1
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/verification/models/v3_eg_oddr_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module EG_LOGIC_ODDR
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures413/source/safevision/verification/unit/tb_v3_phy_lane_equivalence.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_phy_lane_equivalence

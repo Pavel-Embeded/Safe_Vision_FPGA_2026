@@ -1,0 +1,10 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq237/source/safevision/rtl/hd/v3_supervisor.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_supervisor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq237/source/safevision/verification/models/v3_hd_supervisor_reference.sv" into library work
+INFO: [VRFC 10-311] analyzing module v3_hd_supervisor_reference
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq237/source/safevision/rtl/hd/media_recovery_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module media_recovery_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq237/source/safevision/rtl/safety/fault_manager.v" into library work
+INFO: [VRFC 10-311] analyzing module fault_manager
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq237/source/safevision/verification/unit/tb_v3_hd_supervisor_alert_equivalence.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_hd_supervisor_alert_equivalence

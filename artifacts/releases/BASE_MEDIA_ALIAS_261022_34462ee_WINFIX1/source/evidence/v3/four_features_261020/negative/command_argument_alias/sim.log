@@ -1,0 +1,32 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 17:49:26 2026
+# Process ID: 24624
+# Current directory: D:/Codex/svnegative417/n/command_argument_alias/sim/tb_v3_controls_pipeline_equivalence
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_controls_pipeline_equivalence/xsim_script.tcl}
+# Log file: D:/Codex/svnegative417/n/command_argument_alias/sim/tb_v3_controls_pipeline_equivalence/sim.log
+# Journal file: D:/Codex/svnegative417/n/command_argument_alias/sim/tb_v3_controls_pipeline_equivalence\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_controls_pipeline_equivalence/xsim_script.tcl
+# xsim {tb_v3_controls_pipeline_equivalence} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] full controls contract with precisely one registered command edge cycle7
+[FAIL] full controls contract with precisely one registered command edge cycle23
+[FAIL] full controls contract with precisely one registered command edge cycle39
+[FAIL] full controls contract with precisely one registered command edge cycle40
+[FAIL] full controls contract with precisely one registered command edge cycle41
+[FAIL] full controls contract with precisely one registered command edge cycle42
+[FAIL] full controls contract with precisely one registered command edge cycle43
+[FAIL] full controls contract with precisely one registered command edge cycle44
+[FAIL] full controls contract with precisely one registered command edge cycle45
+[FAIL] full controls contract with precisely one registered command edge cycle46
+[FAIL] full controls contract with precisely one registered command edge cycle47
+[TB] tb_v3_controls_pipeline_equivalence done errors=473471 comparisons=599346
+$finish called at time : 6000040 ns : File "D:/Codex/svfeatures413/source/safevision/verification/unit/tb_v3_controls_pipeline_equivalence.sv" Line 67
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 219.629 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 17:49:35 2026...

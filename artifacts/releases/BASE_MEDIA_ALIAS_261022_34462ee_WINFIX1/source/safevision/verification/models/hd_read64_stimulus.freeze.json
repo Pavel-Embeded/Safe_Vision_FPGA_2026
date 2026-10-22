@@ -1,0 +1,54 @@
+[
+  {
+    "original_path": "safevision/verification/unit/tb_v3_read_alignment.sv",
+    "copy_path": "safevision/verification/unit/tb_v3_hd_read64.sv",
+    "original_source_commit": "f734af34d075fbe584572b37de47522d3e37eac3",
+    "original_sha256": "d139db97f2873badedaa7a0bc79f108ff8ef7530319223bd45dc5ea2b30a0ecb",
+    "reference_sha256": "ed46ac293174dfa798cf024f0de5ec06ceff95aae38464c24bdbb99c3247774e",
+    "namespace_only": [
+      [
+        "tb_v3_read_alignment",
+        "tb_v3_hd_read64"
+      ]
+    ]
+  },
+  {
+    "original_path": "safevision/verification/unit/tb_v3_read_alignment_short.sv",
+    "copy_path": "safevision/verification/unit/tb_v3_hd_read64_short.sv",
+    "original_source_commit": "f734af34d075fbe584572b37de47522d3e37eac3",
+    "original_sha256": "7a760b7fa25cfff344b8b7571741ddee563524b9da6e362e5b1638525cbd7251",
+    "reference_sha256": "4882afd9da73cdc1c3c7e9b03ae8ff93e7dc9c48e9fc11252f458a241dfba99c",
+    "namespace_only": [
+      [
+        "tb_v3_read_alignment_short",
+        "tb_v3_hd_read64_short"
+      ]
+    ]
+  },
+  {
+    "original_path": "safevision/verification/unit/tb_v3_read_alignment_long.sv",
+    "copy_path": "safevision/verification/unit/tb_v3_hd_read64_long.sv",
+    "original_source_commit": "f734af34d075fbe584572b37de47522d3e37eac3",
+    "original_sha256": "6a6511440a8142df04967469520b6921fc43d5d165db1dfe65a00ace677ac6e2",
+    "reference_sha256": "0280efbc209f649cfaa57e411a66364ae696756e4a8fa7d190c59afc7924f7c6",
+    "namespace_only": [
+      [
+        "tb_v3_read_alignment_long",
+        "tb_v3_hd_read64_long"
+      ]
+    ]
+  },
+  {
+    "original_path": "safevision/verification/unit/tb_v3_read_alignment_basic.sv",
+    "copy_path": "safevision/verification/unit/tb_v3_hd_read64_basic.sv",
+    "original_source_commit": "f734af34d075fbe584572b37de47522d3e37eac3",
+    "original_sha256": "5b10bc4b110d81ee8cbbaf56dc27bb573019d7ff5377686cb064876afdef945b",
+    "reference_sha256": "eedbe93c94ecb5692253dbbab83b1428f1a61a7f6bbb39263b2f8a9d2632d29a",
+    "namespace_only": [
+      [
+        "tb_v3_read_alignment_basic",
+        "tb_v3_hd_read64_basic"
+      ]
+    ]
+  }
+]

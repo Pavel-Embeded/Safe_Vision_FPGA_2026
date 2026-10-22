@@ -1,0 +1,9 @@
+{
+  "original_source_commit": "d0f5bd209786ccbf1edc52112d598618515dcea5",
+  "original_module": "v3_pcm_ring",
+  "reference_module": "v3_pcm_ring_reference",
+  "module_suffix": " #(",
+  "original_sha256": "1bf284059ab9eea4a838caa00c5c1a6abd9133f62341ec1ea961a85370795f2d",
+  "reference_sha256": "4c0e019910e29886c342ef206c35100590efeb0012442cadefde8110ca5be2fd",
+  "namespace_change_only": true
+}

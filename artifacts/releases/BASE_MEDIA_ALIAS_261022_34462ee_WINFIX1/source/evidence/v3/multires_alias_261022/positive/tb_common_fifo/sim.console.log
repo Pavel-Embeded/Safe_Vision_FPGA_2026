@@ -1,0 +1,76 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_common_fifo/xsim_script.tcl
+# xsim {tb_common_fifo} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] skid-A1яяя¦яяя—яяяияяя…яяя“яяяеяяя­яяяЁ
+[PASS] skid-AяяядяяяёяяяЌяяязя¬ 1яяяЌ out_datяяяїяяяЃ
+[PASS] skid-AяяядяяяёяяяЌяяязя¬ 2яяяЌ out_datяяяїяяяЃ
+[PASS] kid-A1: яяяеяяяЇяяяяяяеяяя”яяя¶ in_readяяяпяяя€яяя†яяяжяяя«яяя‰
+[PASS] skid-A1: яяяеяяяњяяяґяяяеяяяЅяяя„яяядяяя­яяя‚яяяйяяяЏяяяє
+[PASS] skid-A1:яяя–яяяйяяяєяяяЈяя® 0x11 -> 0x22
+[PASS] skid-A1яяяЋяяяєяяЋ out_valiяяяЅяяя¶
+[PASS] skid-A2: яяязя­ 8яяяЌяяяеяяя…яяяЁяяяеяяяјяяяЌяяяеяяяЉяяя‰
+[PASS] skid-A2: яяязя­ 8яяяЌ out_valяяяжяяя°яяяЎ
+[PASS] skid-A2: яяязяяяѕяяяєяяяеяЏ 0x30..0x3яяя­яяя®
+[PASS] fifo-B1: яяядяяяђЋ empty=яяяЃdata_count=0
+[PASS] fifo-B1:яяя™ 10 яяяеяЋ data_count=10
+[PASS] fifo-B1:яяя™ 10 яяяеяЋ emptyяяядяяя«яяяЋ almost_emptяяяяяяј
+[PASS] fifo-Bяяяия» 3яяяЄяяЋ data_count=7
+[PASS] fifo-B2:яяя™яя° яяяжя¶ data_count=47
+[PASS] fifo-B2: 47яяяйяяяЂј 48яяЊalmost_full=0
+[PASS] fifo-B2яяя€яяяѕяяяеяј 4яяя—¶ almost_fulяяя‹яяя
+[PASS] ifo-B3: яяяжяЎ 6яяя—¶ full=1яяЊdata_counяяяѓяяя–яя° DEPTяяяњяяя«
+[PASS] яяя»яяя¶яяязяяя†яяяЊdata_couяяядяяяёє 64яяяеяяяЊяяя€яяяжяяя‡яяя‰
+[PASS] fifo-Bяяяжяяя—яяя™яяяжяЎ -> overflow_cnt=4
+[PASS] fifo-B4:яяяџяяяеяяя€яяяїяя¦ = 64
+[PASS] fifo-Bяяяияяя‡яяя„ 64 яяяеяяяЉяяяЋяяяеяяяЎяяяЏяяяеяяяёяяяґ
+[PASS] fifo-B4: яяязяяяђЋ empty=яяяЃdata_count=0
+[PASS] fifo-B4:яяяЃяяяеяЋ min_levelяяяјяяя†яяяжяяяЅяяяґяяяжяяяЎяяя‰
+[PASS] яяяия» 4яяяЎяяЊempty / data_counяяяёяяяяяядяяяєяяяџяяяжяяяЌяяя‰
+[PASS] fifo-B4яяя©яяя¶яя» яяя¬Ў -> underflow_cnt=4
+[PASS] fifo-BяяязяяяЇяяя‹яяяея™ 1яяяЄ -> data_count=1
+[PASS] яяя‹яяяеяяя…яяя„яяяияяяѓяяя«яяязяяяЇяяяєяяяжяяя’яяяЄяяяеяяяµяяя‰
+[PASS] fifo-B4:яяяЌяяядяяя¬яяяЋяяяжяяяёяяяє
+[PASS] fifo-Bяяяйяяя–яяяЌяяяеяяяёяяяє
+[PASS] fifo-BяяяйяяяЋяяяЌяяяеяЋ underflow / overflow яяяжяяяЅяяя¶
+[PASS] fifo-B6: яяядяяяЃњ 10яяя‹яяяџяяґ overflow_cnt = 0
+[PASS] fifo-B6: яяязяяяЇяяяєяяя™яяяеяяяњяяя‘яяџ -> underflow_cnt = 0
+[PASS] fifo-B6: min_level яяязяяя®яяяј
+[PASS] яяяйяяя†яяяҐяя„ яяядяяя­яяя‚яяяйяяяЊяяяЏяяяеяяяјяяяЌяяяжяяяЌяяя‰
+[PASS] fifo-Bяяяжяяя·яяяЋ FIFяяяёяяяє
+[PASS] monitor-C: clr яяязяяяёяяяЌяяяияяяЅ• 10яяядяяяяяя«яяяйяяя­яяя‰
+[PASS] monitor-Cяяя›яяяЋяяядяяяўяяя°яяядяє min_level
+[PASS] monitor-C:яяяґяяяжяяяЅяяяЌяяяея min_level
+[PASS] monitor-C: cur_levяяяияяяљЏ data_count
+[PASS] monitor-Cяяя©яяя¶яя» яяя¬Ў -> underflow_cnt=3
+[PASS] monitor-яяяжяяя—яяя™яяяжяЎ -> overflow_cnt=5
+[PASS] bw-D: 4 B/яяЌ @125MHz -> rd_bw = 500 Mяяяпяяяёяяя‹яяядяяя‡яяя‰
+[PASS] bw-D: 2 B/яяЌ @125MHz -> wr_bw = 250 Mяяяпяяяёяяя‹яяядяяя‡яяя‰
+[PASS] bw-D: яяядяяяЄяяяЈяяяеяє 4000 Byte
+[PASS] bw-D: яяядяяяЄяяяЈяяяеяҐ 2000 Byte
+[PASS] bw-D: window_doneяяяЇяяяжяяя„яяяІ
+[PASS] bw-D: яяядяяяёяяя—яяяеяяяґяяяЎяяяеяє 8000 Byte
+[PASS] bw-яяязяяяєяяяЄяяяеяяяёяяяЅяяяжяяяёяяяґ
+[PASS] error-E:яяяЌяяяеяЋ evt_validяяяЂЃevt_fulяяягяЃdrop_cnt=0
+[PASS] error-E:яяя‹яяҐ яяяќяяяЋ evt_valid=1
+[PASS] error-E: 8яяяЎяяяжяяя·яяя¦ 8 -> evt_full=1
+[PASS] error-EяяяЃяяяЅяяяжяяя—¶ drop_cnt=0
+[PASS] error-E: яяяеяяя†яяя‹яяяжяЎ -> drop_cnt=2
+[PASS] error-Eяяяєяяяєяя¶ evt_fullяяяќяяядяє 1
+[PASS] яяяяяя– evt_type = яяяжяЎ err_sяяяјяяяІяяядяяя»яяяЄяяяияяя›яяя‰
+[PASS] яяяйя– evt_valueяяяйяяяќЎ err_coяяяјяяяІяяядяяя»яяяЄяяяияяя›яяя‰
+[PASS] error-яяяйяяя€яяяћяяяпяЊevt_valid яяядяє 1
+--------------------------------------------------
+[SUMMARY] tb_common_fifo : PASS=58 FAIL=0
+[RESULT] ALL PASS
+--------------------------------------------------
+$finish called at time : 24 us : File "D:/Codex/svmultires510/source/safevision/verification/unit/tb_common_fifo.sv" Line 568
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 10:28:24 2026...

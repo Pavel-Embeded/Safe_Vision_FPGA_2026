@@ -1,0 +1,16 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_hd_window_pipeline/xsim_script.tcl
+# xsim {tb_v3_hd_window_pipeline} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] production pipeline independent event queue,original timestamps,threshold equality/overflow,manual bypass,mixed contention,resets windows=299 video=199 audio=199
+[TB] tb_v3_hd_window_pipeline done comparisons=1358516 errors=0
+$finish called at time : 3000020 ns : File "D:/Codex/svq237/source/safevision/verification/unit/tb_v3_hd_window_pipeline.sv" Line 81
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 12:48:25 2026...

@@ -1,0 +1,24 @@
+{
+  "mutation": "control_write_binding",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "control_decode_equivalence",
+  "top": "tb_v3_control_decode_equivalence",
+  "patch": [
+    {
+      "before": "operation[OP_CONTRAST]:if(value_byte_qualified)contrast<=command_value_eff;else reply_code<=3;",
+      "after": "operation[OP_CONTRAST]:if(value_byte_qualified)osd_alpha<=command_value_eff;else reply_code<=3;"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "producer_folder": "D:\\Codex\\svnegative417\\n\\control_write_binding",
+  "original_sha256": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "mutated_sha256": "477116713a21acbaac9b36ac5d8fa0777ed2e1707df866ac292e7ed40f0b710e",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    215232
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative417\\n\\control_write_binding\\sim\\tb_v3_control_decode_equivalence"
+}

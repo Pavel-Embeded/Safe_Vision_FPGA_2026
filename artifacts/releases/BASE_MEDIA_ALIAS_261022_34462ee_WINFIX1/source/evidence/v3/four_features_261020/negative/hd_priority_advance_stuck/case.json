@@ -1,0 +1,23 @@
+{
+  "mutation": "hd_priority_advance_stuck",
+  "target": "safevision/rtl/hd/v3_supervisor.v",
+  "suite": "hd_supervisor_alert",
+  "top": "tb_v3_hd_supervisor_alert_equivalence",
+  "patch": [
+    {
+      "before": "pending<=pending_next;",
+      "after": "pending<=pending;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative240\\n\\hd_priority_advance_stuck\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+  "original_sha256": "6f2123d8e10c87bab52db9b920a6ad8a6d812897caabbec6ad6349e89beb0d0b",
+  "mutated_sha256": "50f82f04bf9f85bf41d2ee1251e2130139a0429b1c70d2d03822d25cf590c507",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    198321
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative240\\n\\hd_priority_advance_stuck\\sim\\tb_v3_hd_supervisor_alert_equivalence"
+}

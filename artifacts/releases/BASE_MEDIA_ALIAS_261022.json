@@ -1,15 +1,16 @@
 {
   "schema": 1,
-  "package": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee",
+  "package": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1",
   "board_validation": "artifacts/board_validation/BASE_MEDIA_ALIAS_261022_34462ee",
   "approval_source_commit": "34462ee3b4fa03295322efa66353b1f221b4e337",
   "publication_source_commit": "07c4b157900f154cca17c3a054ca65fce4741b5d",
   "design_build_commit": "603f0b96ebca4aba725145be19c10c2c393a6551",
-  "bitstream": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/SafeVision_BASE_34462ee.bit",
+  "bitstream": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/SafeVision_BASE_34462ee.bit",
   "bit_sha256": "f5cdfedd128199509f45e038397a650214ff3d3ada426fef3dcb835f9af8f5f9",
-  "release_index_sha256": "65d81e7a755c6225b2f93b9d27f6b1a60f337568dee921c417be7924f3e6c93b",
+  "release_index_sha256": "81cc70356a1c73fb7a3bbd34350ed280fb546a9f79b9e009bfeacaa0a1be8c6b",
   "firmware_id": "26102004",
   "github_uploaded": false,
   "flash_written": false,
-  "TF_written": false
+  "TF_written": false,
+  "packaging_revision": "WINFIX1"
 }

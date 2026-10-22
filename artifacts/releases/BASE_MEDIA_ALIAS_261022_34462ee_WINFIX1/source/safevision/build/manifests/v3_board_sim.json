@@ -1,0 +1,11 @@
+{
+ "defines": [],
+ "sources": [
+  "safevision/rtl/control/v3_supervisor.v",
+  "safevision/rtl/control/media_recovery_ctrl.v",
+  "safevision/rtl/safety/fault_manager.v",
+  "safevision/rtl/memory/v3_aux_mux.v",
+  "safevision/rtl/storage/spi_master.v"
+ ],
+ "tops": ["tb_v3_supervisor", "tb_v3_supervisor_tick", "tb_v3_aux_mux", "tb_v3_spi_budget"]
+}

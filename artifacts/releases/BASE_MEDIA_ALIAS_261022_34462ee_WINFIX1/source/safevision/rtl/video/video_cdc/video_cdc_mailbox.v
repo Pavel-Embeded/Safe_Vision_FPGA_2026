@@ -1,0 +1,41 @@
+// One outstanding, non-droppable bundled-data mailbox. Common reset epoch:
+// assert reset in BOTH domains together; release synchronously in each domain.
+// src_data is captured on src_valid&&src_ready and held through the return ACK.
+// dst_data/valid are stable during backpressure. Synchronizers + settle edge
+// give payload time to settle; physical max-delay constraints remain required.
+// Data registers may merge equivalent/constant bits; synchronizer stages remain
+// preserved. Native CDC endpoint audits and8ns payload constraints are mandatory.
+module video_cdc_mailbox #(parameter integer WIDTH=32)(
+    input wire src_clk,src_rst_n,input wire [WIDTH-1:0] src_data,
+    input wire src_valid,output wire src_ready,
+    input wire dst_clk,dst_rst_n,output reg [WIDTH-1:0] dst_data,
+    output reg dst_valid,input wire dst_ready
+);
+    reg [WIDTH-1:0] payload;
+    reg req_toggle,ack_toggle;
+    (* async_reg="true", keep="true" *) reg ack_meta,ack_sync,req_meta,req_sync;
+    reg settling;
+    assign src_ready=(req_toggle==ack_sync) && src_rst_n;
+    // The private payload has no meaning before its request toggle. Every
+    // new request captures data first, while the destination output and all
+    // protocol state retain their asynchronous reset. Public behavior,
+    // including zero destination data during reset, is unchanged.
+    always @(posedge src_clk)
+        if(src_rst_n&&src_valid&&src_ready)payload<=src_data;
+    always @(posedge src_clk or negedge src_rst_n) begin
+        if(!src_rst_n)begin req_toggle<=0;ack_meta<=0;ack_sync<=0;end
+        else begin
+            ack_meta<=ack_toggle;ack_sync<=ack_meta;
+            if(src_valid&&src_ready)begin req_toggle<=~req_toggle;end
+        end
+    end
+    always @(posedge dst_clk or negedge dst_rst_n) begin
+        if(!dst_rst_n)begin req_meta<=0;req_sync<=0;ack_toggle<=0;settling<=0;dst_data<=0;dst_valid<=0;end
+        else begin
+            req_meta<=req_toggle;req_sync<=req_meta;
+            if(!dst_valid && !settling && req_sync!=ack_toggle)settling<=1;
+            if(settling)begin dst_data<=payload;dst_valid<=1;settling<=0;end
+            if(dst_valid&&dst_ready)begin dst_valid<=0;ack_toggle<=req_sync;end
+        end
+    end
+endmodule

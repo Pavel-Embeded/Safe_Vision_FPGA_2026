@@ -1,0 +1,11 @@
+{
+  "sources": [
+    "safevision/rtl/control/v3_user_controls.v",
+    "safevision/verification/models/v3_controls_pipeline_reference.sv",
+    "safevision/rtl/control/input_sync.v",
+    "safevision/rtl/control/key_debounce.v"
+  ],
+  "tops": [
+    "tb_v3_controls_pipeline_equivalence"
+  ]
+}

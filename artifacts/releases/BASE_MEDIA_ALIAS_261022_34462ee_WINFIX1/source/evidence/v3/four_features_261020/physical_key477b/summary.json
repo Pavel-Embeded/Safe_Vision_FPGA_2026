@@ -1,0 +1,154 @@
+{
+  "accepted": true,
+  "positive_cases": 1,
+  "negative_cases": 11,
+  "old_real_routed_pad_mapping_rejected": true,
+  "old_route_rejection": "routed name/standard mismatch: btn_auto",
+  "original_manual_sha256": "e6d066fdc433259697bcf5dfe9eb791cf8a87d289c75e69fa40172d716afccfe",
+  "original_manual_printed_page": 19,
+  "extracted_physical_key_balls": {
+    "KEY1": "A2",
+    "KEY2": "B2",
+    "KEY3": "B1",
+    "KEY4": "C1"
+  },
+  "manual_extraction_sha256": "09aef924adf096f04366107d2728b113c387f8d07a2f55290d9ac8670fab3004",
+  "checker_sha256": "74ac33a85dcd295890101bf6bdfd89fb6906a6753f99674855ec61d35a81da16",
+  "source_adc_sha256": "4a068c3132512704ad09f8291e7b0875312fa10c70cc1960964a5388b923c766",
+  "source_reference_sha256": "39f6e1d38a8c09657687bae3f564aabbfd6b0744d01738ed06b590dfb5a3693f",
+  "test_script_sha256": "dcecf33b92a7075528f1c9e1fdaa1040c65bde550a0a115113d6717e88c3825b",
+  "records": [
+    {
+      "name": "positive",
+      "positive": true,
+      "accepted": true,
+      "rejected": false,
+      "issue": null,
+      "result": {
+        "accepted": true,
+        "logical_ports": 21,
+        "physical_pads": 25,
+        "adc_checked": true,
+        "physical_pad_table_checked": false,
+        "hardware_verified": false,
+        "physical_key_contract": [
+          {
+            "button": "KEY1",
+            "ball": "A2",
+            "logical_port": "rst_n",
+            "active_level": 0
+          },
+          {
+            "button": "KEY2",
+            "ball": "B2",
+            "logical_port": "btn_next",
+            "active_level": 0
+          },
+          {
+            "button": "KEY3",
+            "ball": "B1",
+            "logical_port": "btn_auto",
+            "active_level": 0
+          },
+          {
+            "button": "KEY4",
+            "ball": "C1",
+            "logical_port": "btn_emergency",
+            "active_level": 0
+          }
+        ],
+        "key_contract_source": "HX4S20 manual2410 printed p19; KEY3=B1 and KEY4=C1"
+      }
+    },
+    {
+      "name": "old_original_without_new_metadata",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "physical KEY1..4 function contract differs from manual2410 p19",
+      "result": null
+    },
+    {
+      "name": "adc_swapped",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "KEY3 ADC ball differs from manual2410 p19: btn_auto",
+      "result": null
+    },
+    {
+      "name": "reference_swapped",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "KEY3 reference ball differs from manual2410 p19: btn_auto",
+      "result": null
+    },
+    {
+      "name": "both_swapped_previous_bug",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "KEY3 reference ball differs from manual2410 p19: btn_auto",
+      "result": null
+    },
+    {
+      "name": "both_swapped_and_metadata",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "physical KEY1..4 function contract differs from manual2410 p19",
+      "result": null
+    },
+    {
+      "name": "missing_key_contract",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "physical KEY1..4 function contract differs from manual2410 p19",
+      "result": null
+    },
+    {
+      "name": "mislabelled_key",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "physical KEY1..4 function contract differs from manual2410 p19",
+      "result": null
+    },
+    {
+      "name": "wrong_active_level",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "physical KEY1..4 function contract differs from manual2410 p19",
+      "result": null
+    },
+    {
+      "name": "key_pull_down",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "KEY3 must retain its active-low pull-up",
+      "result": null
+    },
+    {
+      "name": "duplicate_key_ball",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "KEY3 ADC ball differs from manual2410 p19: btn_auto",
+      "result": null
+    },
+    {
+      "name": "missing_key_port",
+      "positive": false,
+      "accepted": true,
+      "rejected": true,
+      "issue": "KEY3 ADC ball differs from manual2410 p19: btn_auto",
+      "result": null
+    }
+  ],
+  "hardware_verified": false,
+  "native_STA_approved": false
+}

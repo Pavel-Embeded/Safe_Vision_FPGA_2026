@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_exact_samples247",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 3,
+  "data_comparisons": 111,
+  "elapsed_s": 7.656,
+  "suite": "exact_samples247",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svfeatures248\\tests\\exact_samples247\\tb_v3_exact_samples247"
+}

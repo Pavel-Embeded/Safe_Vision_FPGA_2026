@@ -1,0 +1,25 @@
+{
+  "mutation": "alpha_front",
+  "target": "safevision/rtl/video/video_compositor/alpha_blend.v",
+  "suite": "v3",
+  "top": "tb_v3_math",
+  "patch": [
+    {
+      "before": "   pr<=dr*$signed({1'b0,alpha});pg<=dg*$signed({1'b0,alpha});pb<=db*$signed({1'b0,alpha});\n",
+      "after": "   pr<=-dr*$signed({1'b0,alpha});pg<=dg*$signed({1'b0,alpha});pb<=db*$signed({1'b0,alpha});\n"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "producer_folder": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\alpha_front\\sim\\tb_v3_math",
+  "original_sha256": "70f7ba36601a87b05f649e9417dfe668936014e1048ff84f2db0bec949796eb8",
+  "mutated_sha256": "d5046b6f1c18cdd77d6674891a41e84a63551ecfa90ff6de789c1c22411c5198",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2716
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\alpha_front\\sim\\tb_v3_math",
+  "return_code": 1
+}

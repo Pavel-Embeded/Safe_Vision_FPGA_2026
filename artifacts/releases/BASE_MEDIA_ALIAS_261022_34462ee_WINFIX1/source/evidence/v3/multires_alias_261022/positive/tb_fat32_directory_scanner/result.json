@@ -1,0 +1,12 @@
+{
+  "top": "tb_fat32_directory_scanner",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 57,
+  "elapsed_s": 11.672,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svmultires510\\regression\\positive\\tb_fat32_directory_scanner\\sim\\tb_fat32_directory_scanner"
+}

@@ -1,0 +1,23 @@
+{
+  "mutation": "descriptor_numeric_payload_zero_base",
+  "target": "safevision/rtl/video/v3_status_layers.v",
+  "suite": "status_miter231",
+  "top": "tb_v3_status_miter231",
+  "patch": [
+    {
+      "before": "decimal_word_q<=decimal_digits[decimal_source];",
+      "after": "decimal_word_q<=10'd0;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative240\\n\\descriptor_numeric_payload_zero_base\\sim\\tb_v3_status_miter231",
+  "original_sha256": "546b1dce475bd18809e3654721da53b1d375881d70f1d060acde7e93ff103d76",
+  "mutated_sha256": "fdb16ba99aa9dbf1dcc5a74fa16204420a598f8b3959a40ba15417ec8ad8d492",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2815
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative240\\n\\descriptor_numeric_payload_zero_base\\sim\\tb_v3_status_miter231"
+}

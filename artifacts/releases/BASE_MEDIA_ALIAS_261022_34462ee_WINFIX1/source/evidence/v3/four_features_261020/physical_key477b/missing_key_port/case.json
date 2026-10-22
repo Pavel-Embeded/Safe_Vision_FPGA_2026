@@ -1,0 +1,8 @@
+{
+  "name": "missing_key_port",
+  "positive": false,
+  "accepted": true,
+  "rejected": true,
+  "issue": "KEY3 ADC ball differs from manual2410 p19: btn_auto",
+  "result": null
+}

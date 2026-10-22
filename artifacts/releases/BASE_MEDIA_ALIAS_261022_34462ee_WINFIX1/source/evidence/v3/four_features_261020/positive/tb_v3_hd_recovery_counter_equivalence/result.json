@@ -1,0 +1,13 @@
+{
+  "top": "tb_v3_hd_recovery_counter_equivalence",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 1907934,
+  "elapsed_s": 7.782,
+  "suite": "hd_recovery_counter",
+  "accepted_native_runner": true,
+  "producer": "Normally completed frozen production-source XSim, no runtime source overrides",
+  "legacy": false,
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_recovery_counter_equivalence"
+}

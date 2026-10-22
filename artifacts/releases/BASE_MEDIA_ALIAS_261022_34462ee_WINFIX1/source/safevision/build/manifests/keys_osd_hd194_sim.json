@@ -1,0 +1,20 @@
+{
+  "sources": [
+    "safevision/rtl/control/input_sync.v",
+    "safevision/rtl/control/key_debounce.v",
+    "safevision/rtl/control/v3_user_controls.v",
+    "safevision/rtl/control/v3_response_timer.v",
+    "safevision/rtl/video/scaler/scaler_coords.v",
+    "safevision/rtl/video/v3_packed_row_store.v",
+    "safevision/rtl/video/v3_pcm_waveform.v",
+    "safevision/rtl/hd/v3_status_layers.v"
+  ],
+  "tops": [
+    "tb_v3_keys_osd_hd194"
+  ],
+  "assets": [
+    "safevision/assets/fonts/font8x16_compact.mem",
+    "safevision/assets/fonts/v3_handbook_status_text.mem",
+    "safevision/assets/fonts/v3_four_features_text.mem"
+  ]
+}

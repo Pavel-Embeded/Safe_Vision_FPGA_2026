@@ -1,0 +1,13 @@
+{
+  "defines": [],
+  "sources": [
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v"
+  ],
+  "tops": [
+    "tb_v3_read_alignment",
+    "tb_v3_read_alignment_short",
+    "tb_v3_read_alignment_long",
+    "tb_v3_read_alignment_basic"
+  ],
+  "assets": []
+}

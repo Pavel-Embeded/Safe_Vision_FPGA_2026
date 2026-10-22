@@ -1,0 +1,19 @@
+{
+  "sources": [
+    "safevision/rtl/hd/v3_supervisor.v",
+    "safevision/verification/models/v3_hd_supervisor_reference.sv",
+    "safevision/rtl/hd/media_recovery_ctrl.v",
+    "safevision/rtl/safety/fault_manager.v"
+  ],
+  "tops": [
+    "tb_v3_hd_supervisor_windows"
+  ],
+  "test_sources": {
+    "tb_v3_hd_supervisor_windows": [
+      "safevision/verification/unit/tb_v3_hd_supervisor_windows.sv"
+    ]
+  },
+  "timeouts": {
+    "tb_v3_hd_supervisor_windows": 900
+  }
+}

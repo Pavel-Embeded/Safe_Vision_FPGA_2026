@@ -1,0 +1,51 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_frame_writer/xsim_script.tcl
+# xsim {tb_frame_writer} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] T0 SDRAM init_done
+[PASS] яяяжя  mem_error
+---- T1 ж­ЈеёёдёЂеё§е†™е…Ґ ----
+[PASS] яяяеяяя…яяяЌ slot_valid[0]=0
+[PASS] T1 wr_donяяяєяяяџ
+[PASS] T1 slot_valid[0яяяЅяяяЌ
+[PASS] T1 crc_oяяяЂяяя‡
+[PASS] T1 px_cnt=307200
+[PASS] T1 яяяеяяя”яяяЇ
+[PASS] Tяяя…яяя–яяяжяяяЅяяяЌ
+[PASS] T1яяяЅяяҐ(0,0)
+[PASS] яяяжяяяџҐ(639,0)
+[PASS] яяяжяяяџҐ(0,479)
+[PASS] T1яяяЅяяҐ(639,479)
+[PASS] T1яяяЅяяҐ(320,240)
+[PASS] TяяяЉяяяҐ(100,50)
+---- T2 еѓЏзґ ж•°е°‘дёЂдёЄ ----
+[PASS] T2 яяяеяяя”яяяЇ
+[PASS] Tяяя»яяя†яяЃ DET_FS_SHORT
+[PASS] T2 яяязяЃ ERR_MEDIA_INVALID
+[PASS] T2 slot_valid[яяяжяяяЅяяяЌ
+[PASS] T2 px_cnt=307199
+---- T3 еѓЏзґ ж•°е¤љдёЂдёЄ ----
+[PASS] T3 яяяеяяя”яяяЇ
+[PASS] Tяяя»яяя†яяЃ DET_BMP_SIZE
+[PASS] T3 slot_valid[яяяжяяяЅяяяЌ
+---- T4 slot_valid ж—¶еєЏ ----
+[PASS] яяяЄяяяжяяяё§+CRяяяЌяяяеяяяЅяяяЌ
+---- T5 и¶Љз•Ње†™иў«ж‹’з»ќ ----
+[PASS] T5яяяЉяяяжяяяџяяя°яяяияяя‹яяяќ
+[PASS] T5яяя†яяязяЃ DET_BMP_TRUNC
+[PASS] T5 slot_valid[яяяжяяяЅяяяЌ
+[PASS] яяя§яяя„ slot_valid яяяияяяЇяяя…
+========================================
+  ж–­иЁЂжЂ»ж•° 28пјЊе¤±иґҐ 0
+ е…ЁйѓЁйЂљиї‡ (PASS)
+========================================
+$finish called at time : 11065312 ns : File "D:/Codex/svmultires510/source/safevision/verification/unit/tb_frame_writer.sv" Line 348
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 10:28:49 2026...

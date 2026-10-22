@@ -1,0 +1,13 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures235/source/safevision/rtl/video/v3_pcm_waveform.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_pcm_waveform
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures235/source/safevision/rtl/hd/v3_status_layers.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_status_layers
+INFO: [VRFC 10-311] analyzing module v3_volume_column
+INFO: [VRFC 10-311] analyzing module v3_volume_setting_column
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures235/source/safevision/verification/models/v3_hd_status_layers226_reference.sv" into library work
+INFO: [VRFC 10-311] analyzing module v3_status_layers226_hd_reference
+INFO: [VRFC 10-311] analyzing module v3_volume_column226_hd_reference
+INFO: [VRFC 10-311] analyzing module v3_volume_setting_column226_hd_reference
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures235/source/safevision/verification/unit/tb_v3_hd_status_miter233.sv" into library work
+INFO: [VRFC 10-311] analyzing module hdstatus_case233
+INFO: [VRFC 10-311] analyzing module tb_v3_hd_status_miter233

@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_ui_boundary409",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 32,
+  "data_comparisons": 31,
+  "elapsed_s": 22.125,
+  "suite": "ui_boundary409",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svui410\\positive\\sim\\tb_v3_ui_boundary409"
+}

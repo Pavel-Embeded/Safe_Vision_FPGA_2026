@@ -1,0 +1,13 @@
+{
+  "original_path": "safevision/verification/unit/tb_v3_uart_link.sv",
+  "copy_path": "safevision/verification/unit/tb_v3_hd_uart_link.sv",
+  "original_source_commit": "e0467f9b2454783bd3275b0b3311f258e94c2a7e",
+  "original_sha256": "40401ba48387a32e9a1b6d2faf132038cde3bdaa8dca5bc30d3fe46f15c5e0bd",
+  "reference_sha256": "c74e845be7407eaf4268120f1db2261ba559387d7c737b137b5d245334636f4b",
+  "namespace_only": [
+    [
+      "tb_v3_uart_link",
+      "tb_v3_hd_uart_link"
+    ]
+  ]
+}

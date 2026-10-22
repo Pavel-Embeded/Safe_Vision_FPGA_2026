@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/related_status_26101711/negative/related_status_payload_inverted/mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_related_status_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_related_status_capture.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_related_status_capture

@@ -1,0 +1,7 @@
+"D:/Codex/svq74/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v"
+"D:/Codex/svq74/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v"
+"D:/Codex/svq74/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/hdmi/v3_hdmi_phy_wrapper.v"
+"D:/Codex/svq74/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi_phy_warpper.v"
+"D:/Codex/svq74/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/lane_lvds_10_1.v"
+"D:/Codex/svq74/source/safevision/verification/models/v3_eg_oddr_model.sv"
+"D:/Codex/svq74/source/safevision/verification/unit/tb_v3_phy_lane_equivalence.sv"

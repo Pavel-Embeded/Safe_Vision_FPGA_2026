@@ -1,0 +1,23 @@
+{
+  "mutation": "hud_green_channel_zeroed",
+  "target": "safevision/rtl/video/v3_constant224_blend.v",
+  "suite": "hud_palette192",
+  "top": "tb_v3_hud_palette192",
+  "patch": [
+    {
+      "before": "g_kind={foreground[10]^foreground[9],foreground[10]}",
+      "after": "g_kind=2'd0"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative209\\n\\hud_green_channel_zeroed\\sim\\tb_v3_hud_palette192",
+  "original_sha256": "150b02018a20b19d8a32f85b97dc89da38ca36825ae4c050346f1f300078c153",
+  "mutated_sha256": "f19ae510dffe354a8725f5008046c9c79d4f58a13d093dea76895e25d3900d2c",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    327678
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative209\\n\\hud_green_channel_zeroed\\sim\\tb_v3_hud_palette192"
+}

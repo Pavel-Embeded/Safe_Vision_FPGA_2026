@@ -1,0 +1,24 @@
+{
+  "mutation": "odd_pad_lost",
+  "suite": "wav_bounds_equivalence",
+  "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+  "patch": [
+    {
+      "before": "||(assembled[0]&&(&chunk_eq))",
+      "after": ""
+    }
+  ],
+  "top": "tb_v3_wav_bounds_equivalence",
+  "original_sha256": "6860b296d77a986cdd82d4a440349e6c811868d154427751bac46b077d116fa8",
+  "mutated_sha256": "8b1bfb65acc4352eef0105468c7f3bbbbd216fa50b082b9783cecde15f3ad924",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1927
+  ],
+  "detected": true,
+  "previous_evidence": "evidence/v3/handbook_26101901/development41/negative/odd_pad_lost",
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\odd_pad_lost",
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\odd_pad_lost"
+}

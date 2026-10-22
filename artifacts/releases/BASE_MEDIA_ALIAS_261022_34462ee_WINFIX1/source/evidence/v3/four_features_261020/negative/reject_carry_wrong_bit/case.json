@@ -1,0 +1,23 @@
+{
+  "mutation": "reject_carry_wrong_bit",
+  "target": "safevision/rtl/hd/v3_supervisor.v",
+  "suite": "hd_reject_carry",
+  "top": "tb_v3_hd_reject_carry",
+  "patch": [
+    {
+      "before": "rejected_rise=rejected_order_sum[16]",
+      "after": "rejected_rise=rejected_order_sum[15]"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative240\\n\\reject_carry_wrong_bit\\sim\\tb_v3_hd_reject_carry",
+  "original_sha256": "6f2123d8e10c87bab52db9b920a6ad8a6d812897caabbec6ad6349e89beb0d0b",
+  "mutated_sha256": "14b697e52ff78734024bdab017e12e9b2e86e158b520d707d0875071f3803bfe",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    622537
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative240\\n\\reject_carry_wrong_bit\\sim\\tb_v3_hd_reject_carry"
+}

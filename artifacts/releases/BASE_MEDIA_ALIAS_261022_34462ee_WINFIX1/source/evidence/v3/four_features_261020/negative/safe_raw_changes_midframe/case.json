@@ -1,0 +1,23 @@
+{
+  "mutation": "safe_raw_changes_midframe",
+  "target": "safevision/rtl/video/v3_frame_safe_select.v",
+  "suite": "frame_safe_integration",
+  "top": "tb_v3_frame_safe_integration",
+  "patch": [
+    {
+      "before": "if(raw_vblank)raw_selected<=request;",
+      "after": "if(1'b1)raw_selected<=request;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative318\\n\\safe_raw_changes_midframe\\sim\\tb_v3_frame_safe_integration",
+  "original_sha256": "2a15840e3d7f90557b3d84fe5acdb1803e9d242458f0d8cef71c8e1fbcdcd4be",
+  "mutated_sha256": "bdb2a075fa37759e8b79f70d2d9a05ee67217202f82fc24c0b7a8cce1068a514",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    3068
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative318\\n\\safe_raw_changes_midframe\\sim\\tb_v3_frame_safe_integration"
+}

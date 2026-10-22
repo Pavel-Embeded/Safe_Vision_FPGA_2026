@@ -1,0 +1,23 @@
+{
+  "mutation": "priority_saturation",
+  "target": "safevision/rtl/audio/audio_priority_arbiter.v",
+  "suite": "priority_difference",
+  "top": "tb_v3_priority_difference",
+  "patch": [
+    {
+      "before": "    wire [8:0] gain_up = ({1'b0,gain} + {1'b0,ramp_step} > 10'd256) ? 9'd256 : (gain + ramp_step);",
+      "after": "    wire [8:0] gain_up = (gain + ramp_step > 9'd256) ? 9'd256 : (gain + ramp_step);"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative430\\n\\priority_saturation",
+  "original_sha256": "8f71762f08fed32641a2e5845ab679995eff46c54b3864a9fe8be5c057900764",
+  "mutated_sha256": "ec2f712a4a7ad04f52662ed41dce63da58511bff43d49c7a6521aecec3729fd7",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    30425
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative430\\n\\priority_saturation\\sim\\tb_v3_priority_difference"
+}

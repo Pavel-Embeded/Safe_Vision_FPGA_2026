@@ -1,0 +1,13 @@
+{
+  "original_path": "safevision/verification/unit/tb_v3_handbook_packed.sv",
+  "copy_path": "safevision/verification/unit/tb_v3_hd_packed_rows.sv",
+  "original_source_commit": "e0467f9b2454783bd3275b0b3311f258e94c2a7e",
+  "original_sha256": "d3b00a1157b8b514a1e5a8373a6369f878c99ec1b3a617c2b9d93041ba2a326b",
+  "reference_sha256": "66d9747b42b717eaaa110a8a4492a3f278ff5e18b3a7a8fccb8654356481daa4",
+  "namespace_only": [
+    [
+      "tb_v3_handbook_packed",
+      "tb_v3_hd_packed_rows"
+    ]
+  ]
+}

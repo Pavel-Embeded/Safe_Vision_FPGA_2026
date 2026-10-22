@@ -1,0 +1,13 @@
+{
+  "sources": [
+    "safevision/rtl/hd/sdram_app_adapter.v"
+  ],
+  "tops": [
+    "tb_v3_prefetch_prefix_hd382"
+  ],
+  "test_sources": {
+    "tb_v3_prefetch_prefix_hd382": [
+      "safevision/verification/unit/tb_v3_prefetch_prefix_hd382.sv"
+    ]
+  }
+}

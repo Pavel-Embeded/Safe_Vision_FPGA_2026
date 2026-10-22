@@ -1,0 +1,23 @@
+{
+  "mutation": "volume_right_remainder_not_reset",
+  "target": "safevision/rtl/audio/v3_audio_volume.v",
+  "suite": "volume_dsp_equivalence",
+  "top": "tb_v3_volume_dsp_equivalence",
+  "patch": [
+    {
+      "before": "if(count==36)begin left_out<=result;product<=multiplied[29:0];remainder<=0;divide_count<=0;",
+      "after": "if(count==36)begin left_out<=result;product<=multiplied[29:0];remainder<=1;divide_count<=0;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative174\\n\\volume_right_remainder_not_reset\\sim\\tb_v3_volume_dsp_equivalence",
+  "original_sha256": "62a8fc172b26b2cb7441989a39ebc0853d646c03c270ed3ee041d5a655be216c",
+  "mutated_sha256": "24c07ef923fede8e40407b6a10debef8fb490e6509bb921582a402a6be7fb755",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2025566
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative174\\n\\volume_right_remainder_not_reset\\sim\\tb_v3_volume_dsp_equivalence"
+}

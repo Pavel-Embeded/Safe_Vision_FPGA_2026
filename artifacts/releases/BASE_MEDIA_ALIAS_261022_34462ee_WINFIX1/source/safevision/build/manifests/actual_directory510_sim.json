@@ -1,0 +1,13 @@
+{
+  "sources": [
+    "safevision/rtl/storage/fat32_directory_scanner.v",
+    "safevision/rtl/storage/file_index.v"
+  ],
+  "tops": [
+    "tb_v3_actual_directory510"
+  ],
+  "assets": [
+    "safevision/verification/assets/card_directory510/actual_entries509.mem",
+    "safevision/verification/assets/card_directory510/actual_root509.mem"
+  ]
+}

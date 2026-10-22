@@ -1,0 +1,9 @@
+{
+  "sources": [
+    "safevision/rtl/audio/audio_priority_arbiter.v",
+    "safevision/verification/models/audio_priority_arbiter_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_priority_difference"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_paired_rows_hd288",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 2,
+  "data_comparisons": 8462384,
+  "elapsed_s": 42.719,
+  "suite": "paired_rows_hd288",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_paired_rows_hd288\\sim\\tb_v3_paired_rows_hd288"
+}

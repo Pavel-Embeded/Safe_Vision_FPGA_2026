@@ -1,0 +1,15 @@
+{
+  "sources": [
+    "safevision/rtl/control/input_sync.v",
+    "safevision/rtl/control/key_debounce.v",
+    "safevision/rtl/control/v3_user_controls.v"
+  ],
+  "tops": [
+    "tb_v3_ui_timebase395"
+  ],
+  "test_sources": {
+    "tb_v3_ui_timebase395": [
+      "safevision/verification/unit/tb_v3_ui_timebase395.sv"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+{"sources":["safevision/rtl/memory/v3_row_integrity.v"],"tops":["tb_v3_row_integrity_full"],"assets":["safevision/verification/fixtures/row_crc_full_golden.mem"]}

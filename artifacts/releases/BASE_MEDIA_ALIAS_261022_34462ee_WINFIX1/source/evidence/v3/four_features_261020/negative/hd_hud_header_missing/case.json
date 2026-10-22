@@ -1,0 +1,23 @@
+{
+  "mutation": "hd_hud_header_missing",
+  "target": "safevision/rtl/hd/v3_status_layers.v",
+  "suite": "hd_status_raster",
+  "top": "tb_v3_hd_status_raster_equivalence",
+  "patch": [
+    {
+      "before": "raw_y>=7&&raw_y<23",
+      "after": "raw_y>=15&&raw_y<23"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative240\\n\\hd_hud_header_missing\\sim\\tb_v3_hd_status_raster_equivalence",
+  "original_sha256": "375ca9a42e66fe541f62c71dd81a37cec813b5a61ee759b63f426364c15e22e8",
+  "mutated_sha256": "34c0fe013bd3d3eee70f305e751d0733cb229f0f1c7a78d6e7970975a8ce6ef0",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    7533
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative240\\n\\hd_hud_header_missing\\sim\\tb_v3_hd_status_raster_equivalence"
+}

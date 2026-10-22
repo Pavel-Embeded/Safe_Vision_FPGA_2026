@@ -1,0 +1,35 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 12:27:12 2026
+# Process ID: 39248
+# Current directory: D:/Codex/svnegative240/n/volume_column_gain_ignored/sim/tb_v3_volume_columns_hd
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_volume_columns_hd/xsim_script.tcl}
+# Log file: D:/Codex/svnegative240/n/volume_column_gain_ignored/sim/tb_v3_volume_columns_hd/sim.log
+# Journal file: D:/Codex/svnegative240/n/volume_column_gain_ignored/sim/tb_v3_volume_columns_hd\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_volume_columns_hd/xsim_script.tcl
+# xsim {tb_v3_volume_columns_hd} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] HD=1 independent exact gain including input clamps
+[FAIL] HD=0 independent exact gain including input clamps
+[FAIL] HD=0 independent exact gain including input clamps
+[FAIL] HD=0 independent exact gain including input clamps
+[FAIL] HD=1 independent segmented column raster
+[FAIL] HD=1 independent segmented column raster
+[FAIL] HD=0 independent exact gain including input clamps
+[FAIL] HD=1 independent segmented column raster
+[FAIL] HD=1 independent segmented column raster
+[FAIL] HD=1 four-clock RGB colour/position
+[FAIL] HD=1 four-clock HUD alpha/edge/fill
+[FAIL] HD=0 independent exact gain including input clamps
+[FAIL] HD=0 independent exact gain including input clamps
+[FAIL] HD=0 independent exact gain including input clamps
+[TB] tb_v3_volume_columns_hd done errors=46310 comparisons=279676
+$finish called at time : 6452863 ns : File "D:/Codex/svq237/source/safevision/verification/unit/tb_v3_volume_columns.sv" Line 69
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 218.504 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 12:27:21 2026...

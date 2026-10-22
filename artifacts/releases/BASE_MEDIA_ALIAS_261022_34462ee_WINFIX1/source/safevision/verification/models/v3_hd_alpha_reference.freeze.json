@@ -1,0 +1,13 @@
+{
+  "original_path": "safevision/rtl/video/video_compositor/alpha_blend.v",
+  "original_source_commit": "e0467f9b2454783bd3275b0b3311f258e94c2a7e",
+  "original_sha256": "70f7ba36601a87b05f649e9417dfe668936014e1048ff84f2db0bec949796eb8",
+  "reference_sha256": "29c88ec8f5b26b7bd085fc9df91fe560c0b263bfd1c185e1156a01eaa6a4c58e",
+  "copy_path": "safevision/verification/models/v3_hd_alpha_reference.v",
+  "namespace_only": [
+    [
+      "module alpha_blend(",
+      "module v3_hd_alpha_reference("
+    ]
+  ]
+}

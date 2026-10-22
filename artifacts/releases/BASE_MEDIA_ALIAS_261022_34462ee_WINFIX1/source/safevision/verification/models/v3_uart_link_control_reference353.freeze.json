@@ -1,0 +1,13 @@
+{
+  "original_source_commit": "5ece9156a28f44514b564472f4d821e72f09b77a",
+  "original_path": "safevision/verification/models/origins/5ece915/uart_control353.original.v",
+  "original_sha256": "af8e7c88b3dedd1feafc5f7f33f41e8e3baf365436b67fec62de0e4c45eb30ad",
+  "reference_sha256": "224a194e722bbbbc4f87bf936bc258c5131f5b23e38987348b61689ae27a7bdc",
+  "namespace_only": [
+    [
+      "module v3_uart_link #(",
+      "module v3_uart_link_control_reference353 #("
+    ]
+  ],
+  "original_repository_path": "safevision/rtl/control/v3_uart_link.v"
+}

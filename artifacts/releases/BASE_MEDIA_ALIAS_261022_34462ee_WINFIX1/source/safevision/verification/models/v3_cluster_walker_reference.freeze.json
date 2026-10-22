@@ -1,0 +1,9 @@
+{
+  "original_source_commit": "d0f5bd209786ccbf1edc52112d598618515dcea5",
+  "original_module": "v3_cluster_walker_ctx",
+  "reference_module": "v3_cluster_walker_reference",
+  "module_suffix": " (",
+  "original_sha256": "e0c0a839dee6da67503901744b0b6e8e3bc4fabbb8324f7dd44f8fa6bc77adfc",
+  "reference_sha256": "526891424d842204e8b9d92a0995c7592dd68c14aeb056b7bde2fc20834a1d3e",
+  "namespace_change_only": true
+}

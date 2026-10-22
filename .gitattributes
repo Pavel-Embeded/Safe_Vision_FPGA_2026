@@ -15150,3 +15150,11 @@ evidence/v3/handbook_26101802/research_01/** -text
 /artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/native/*/gate.netlist.v binary
 
 /artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/native/*/route.netlist.v binary
+
+/artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/** -text
+
+/artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/*.bit binary
+
+/artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/native/*/gate.netlist.v binary
+
+/artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/native/*/route.netlist.v binary

@@ -1,0 +1,9 @@
+{
+  "sources": [
+    "safevision/rtl/hd/v3_row_integrity.v"
+  ],
+  "tops": [
+    "tb_v3_hd_guard_decode"
+  ],
+  "defines": []
+}

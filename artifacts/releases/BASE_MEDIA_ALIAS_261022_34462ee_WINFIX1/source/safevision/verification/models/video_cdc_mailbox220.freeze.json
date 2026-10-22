@@ -1,0 +1,6 @@
+{
+  "commit": "4b81883d49aaa87a8aec6b7c127725a7187cf658",
+  "path": "safevision/rtl/video/video_cdc/video_cdc_mailbox.v",
+  "original_sha256": "7a949c6c2015ec69e4bfd19835d58675e5f4d9b8ec4da324b971ed413ad9f83a",
+  "transform": "Only module identifier renamed"
+}

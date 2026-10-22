@@ -1,0 +1,23 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_v3_hd_window_pipeline -s tb_v3_hd_window_pipeline --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'media_reset' remains unconnected for this instance [D:/Codex/svq237/source/safevision/verification/unit/tb_v3_hd_window_pipeline.sv:8]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.media_recovery_ctrl(RESET_CYCLES...
+Compiling module work.fault_manager(CLK_HZ=1000)
+Compiling module work.v3_supervisor(CLK_HZ=1000,WINDOW...
+Compiling module work.tb_v3_hd_window_pipeline
+Built simulation snapshot tb_v3_hd_window_pipeline
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/svq237/p/tb_v3_hd_window_pipeline/sim/tb_v3_hd_window_pipeline/xsim.dir/tb_v3_hd_window_pipeline/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Tue Oct 20 12:48:16 2026...

@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_mem_activity_tag_phase5",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 8036,
+  "elapsed_s": 7.813,
+  "suite": "mem_activity_tag",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101804\\positive\\tb_v3_mem_activity_tag_phase5"
+}

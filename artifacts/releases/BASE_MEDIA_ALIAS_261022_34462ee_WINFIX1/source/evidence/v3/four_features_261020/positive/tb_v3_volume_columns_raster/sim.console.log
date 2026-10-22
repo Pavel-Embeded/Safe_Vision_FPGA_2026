@@ -1,0 +1,17 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_volume_columns_raster/xsim_script.tcl
+# xsim {tb_v3_volume_columns_raster} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] three actual BASE/HD rasters, production HD predecode enabled, mid-frame updates and preserved existing HUD
+[TB] tb_v3_volume_columns_raster done errors=0 comparisons=4989190
+$finish called at time : 37125122 ns : File "D:/Codex/svq237/source/safevision/verification/unit/tb_v3_volume_columns_raster.sv" Line 47
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:01:46 . Memory (MB): peak = 219.727 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 12:32:21 2026...

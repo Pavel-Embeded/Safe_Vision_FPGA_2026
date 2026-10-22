@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_supervisor_tick",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 1040,
+  "elapsed_s": 8.641,
+  "suite": "v3_board",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq343\\p\\tb_v3_supervisor_tick\\sim\\tb_v3_supervisor_tick"
+}

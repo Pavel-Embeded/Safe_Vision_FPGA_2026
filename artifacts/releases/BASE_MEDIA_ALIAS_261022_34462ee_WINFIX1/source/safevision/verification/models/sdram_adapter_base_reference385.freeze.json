@@ -1,0 +1,13 @@
+{
+  "original_source_commit": "5ece9156a28f44514b564472f4d821e72f09b77a",
+  "original_path": "safevision/verification/models/origins/5ece915/adapter_base385.original.v",
+  "original_sha256": "7fcf807b1e1da9526adf439061c5d5a59142d1eab76efca091428f87cd7704f3",
+  "reference_sha256": "113c0d5b6211f5ccfce7266e677c95b844799905e10bc6cfb6ada44707a0d985",
+  "namespace_only": [
+    [
+      "module sdram_app_adapter #(",
+      "module sdram_adapter_base_reference385 #("
+    ]
+  ],
+  "original_repository_path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v"
+}

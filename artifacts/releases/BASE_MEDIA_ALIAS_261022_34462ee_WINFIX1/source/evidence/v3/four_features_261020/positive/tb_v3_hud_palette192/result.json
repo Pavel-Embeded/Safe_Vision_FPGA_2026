@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_hud_palette192",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 1835016,
+  "elapsed_s": 9.296,
+  "suite": "hud_palette192",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq200\\p\\tb_v3_hud_palette192\\sim\\tb_v3_hud_palette192"
+}

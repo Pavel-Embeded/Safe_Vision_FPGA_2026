@@ -1,0 +1,9 @@
+{
+  "sources": [
+    "safevision/rtl/video/video_cdc/video_cdc_mailbox.v",
+    "safevision/verification/models/video_cdc_mailbox220_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_mailbox_miter228"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "original_path": "evidence/v3/handbook_26101901/gate19/positive/tb_v3_hd_status_raster_equivalence/original_v3_status_layers.v.txt",
+  "original_source_commit": "e0467f9b2454783bd3275b0b3311f258e94c2a7e",
+  "original_sha256": "6c0f3f71dea5fc129ad11441deb66dac31f1802c6b22d43ba9604e87a6f3ec05",
+  "reference_sha256": "18bafe00a3ec23a1fe7bbf52a7a736320115fb53478ad47508d70bb2489fe409",
+  "namespace_only": [
+    [
+      "module v3_status_layers #(",
+      "module v3_hd_status_reference #("
+    ]
+  ],
+  "original_repository_path": "safevision/rtl/video/v3_status_layers.v",
+  "origin_archive_reason": "BASE now adds opt-in volume columns. Preserve the exact original commit blob with the accepted reference test; golden reference and original/reference hashes remain unchanged."
+}
