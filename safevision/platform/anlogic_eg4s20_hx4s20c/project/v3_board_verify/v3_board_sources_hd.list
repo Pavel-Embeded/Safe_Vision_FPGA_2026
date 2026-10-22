@@ -57,6 +57,8 @@ rtl/storage/mbr_parser.v
 rtl/storage/fat32_boot_parser.v
 rtl/storage/fat32_directory_scanner.v
 rtl/storage/fat32_cluster_walker.v
+rtl/storage/v3_fat_name_store.v
+rtl/storage/v3_flexible_media_index.v
 rtl/storage/file_index.v
 rtl/storage/file_streamer.v
 rtl/storage/sd_bmp_player.v
@@ -104,6 +106,7 @@ platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v
 platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_mem_activity_tag.v
 rtl/memory/v3_memory_path_observer.v
 rtl/video/v3_frame_safe_select.v
+rtl/video/v3_audio_spectrum.v
 rtl/video/v3_pcm_waveform.v
 rtl/video/v3_boot_uptime.v
 rtl/media/v3_bmp_normalizer.v

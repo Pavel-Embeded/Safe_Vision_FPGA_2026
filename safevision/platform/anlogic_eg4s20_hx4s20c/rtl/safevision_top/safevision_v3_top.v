@@ -93,7 +93,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire[31:0] ext_addr;wire[15:0] ext_len;wire[7:0] ext_data,ext_code,ext_detail;
  wire[7:0] sec_per_clus;wire[31:0] fat_start,data_start,root_lba,root_clus,total_clus;
  wire[444:0] fs_core_cmd;wire[836:0] fs_core_rsp;wire fs_service_ready;
- sd_bmp_player #(.GUARDED_CS(1),.MID_REF_SAMPLE(1),.SHARED_SERVICE(1),.RESIDENT_CACHE(1),.CLK_HZ(50000000),.CLK_DIV_INIT(249),.CLK_DIV_FAST(0),.MOUNT_TO_N(100000000)) player(
+ sd_bmp_player #(.FLEX_FILES(1),.GUARDED_CS(1),.MID_REF_SAMPLE(1),.SHARED_SERVICE(1),.RESIDENT_CACHE(1),.CLK_HZ(50000000),.CLK_DIV_INIT(249),.CLK_DIV_FAST(0),.MOUNT_TO_N(100000000)) player(
  .clk(clk),.rst_n(ref_media_rst_n),.cs_guard_rst_n(ref_rst_n),.run(1'b1),.btn_next(1'b0),.btn_auto(1'b0),.restart(1'b0),
  .sd_ncs(sd_ncs),.sd_dclk(sd_dclk),.sd_mosi(sd_mosi),.sd_miso(sd_miso),
  .px_word(px_word),.px_word_valid(px_valid),.px_word_ready(px_ready),.frame_active(frame_active),
@@ -266,7 +266,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  energy,fault_code,audio_underflows,hud_latency};
  wire[11:0] raw_x,raw_y,out_x,out_y;wire raw_de,raw_hs,raw_vs;
  wire[23:0] rgb;wire out_hs,out_vs,out_de;
- v3_video_display_core #(.HD(HD),.HANDBOOK_PROFILE(1),.USER_FEATURES(1),.VOLUME_COLUMNS(0),.VOLUME_SETTING(0),.STATUS_TEXT_FILE("../../assets/fonts/v3_handbook_status_text.mem"),.PIXEL_HZ(PIXEL_HZ),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
+ v3_video_display_core #(.FLEX_SPECTRUM(1),.HD(HD),.HANDBOOK_PROFILE(1),.USER_FEATURES(1),.VOLUME_COLUMNS(0),.VOLUME_SETTING(0),.STATUS_TEXT_FILE("../../assets/fonts/v3_handbook_status_text.mem"),.PIXEL_HZ(PIXEL_HZ),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
  .sys_rst_n(sys_rst_n),.mem_rst_n(mem_rst_n),.pixel_rst_n(pixel_rst_n),.media_reset(media_reset),
  .uptime_bcd(boot_bcd_pixel),.wave_pcm_valid(pcm_valid),.wave_pcm_left(pcm_left),
  .cfg_valid(1'b1),.cfg_ready(cfg_ready),.cfg_data(cfg_data),.cache_valid(cache_sys),.next_request(next_request || auto_tick),
@@ -471,7 +471,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  (* keep="true" *) wire[31:0] b_diag_payload2=({32{b_diag_low[2]}} & {20'd0,ref_status_sys[203:192]});
  (* keep="true" *) wire[31:0] b_diag_payload3=({32{b_diag_low[3]}} & ref_status_sys[79:48]) |
   ({32{b_diag_low[4]}} & {18'd0,energy,volume});
- (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & 32'h26102004);
+ (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & 32'h26102237);
  (* keep="true" *) wire[31:0] b_diag_next1=b_diag_payload1 & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next2=b_diag_payload2 & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next3=b_diag_payload3 & {32{b_diag_payload_valid}};

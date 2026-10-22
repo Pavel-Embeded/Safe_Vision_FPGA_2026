@@ -39,6 +39,11 @@ def native_rom_sidecars(root,write=False):
   if write:target.write_bytes(raw)
   if not target.is_file()or target.read_bytes()!=raw:raise ValueError('native ROM sidecar missing/stale: '+relative.as_posix())
   result.append(relative)
+ canonical=root/'safevision/assets/audio/v3_spectrum_twiddle.mem'
+ raw=canonical.read_bytes();relative=Path('safevision/rtl/video/v3_spectrum_twiddle.mem');target=root/relative
+ if write:target.write_bytes(raw)
+ if not target.is_file()or target.read_bytes()!=raw:raise ValueError('native spectrum ROM sidecar missing/stale')
+ result.append(relative)
  return result
 
 def scope(root):

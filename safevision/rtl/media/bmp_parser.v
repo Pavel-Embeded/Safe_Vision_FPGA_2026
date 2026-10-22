@@ -30,7 +30,7 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module bmp_parser #(parameter integer VARIABLE_SIZE=0) (
+module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
     input  wire        clk,
     input  wire        rst_n,
 
@@ -103,16 +103,16 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0) (
                      ((height_lo_r == 16'd480) || (height_lo_r == 16'hfe20)) &&
                      height_hi_match_r;
     wire[15:0] height_abs=height_sign_r?(~height_lo_r+16'd1):height_lo_r;
-    wire size_ok=VARIABLE_SIZE?(width_lo_r!=0&&width_lo_r<=1920&&width_hi_zero_r&&height_abs!=0&&height_abs<=1080&&height_hi_match_r):legacy_size_ok;
-    wire[12:0] dynamic_w3=({2'd0,width_lo_r[10:0]}<<1)+{2'd0,width_lo_r[10:0]};
-    wire[12:0] dynamic_stride=((dynamic_w3+13'd3)>>2)<<2;
-    wire[24:0] dynamic_bytes=dynamic_stride*height_abs[10:0];
-    wire[31:0] required_bytes=VARIABLE_SIZE?{7'd0,dynamic_bytes}:BMP_PIX_BYTES;
+    wire size_ok=VARIABLE_SIZE?(width_lo_r!=0&&width_lo_r<=(FLEX_PIXELS?16384:1920)&&width_hi_zero_r&&height_abs!=0&&height_abs<=(FLEX_PIXELS?16384:1080)&&height_hi_match_r):legacy_size_ok;
+    wire[16:0] dynamic_w3=FLEX_PIXELS&&bpp_lo_r==32?({1'b0,width_lo_r}<<2):({1'b0,width_lo_r}<<1)+{1'b0,width_lo_r};
+    wire[16:0] dynamic_stride=((dynamic_w3+17'd3)>>2)<<2;
+    wire[31:0] dynamic_bytes=dynamic_stride*height_abs;
+    wire[31:0] required_bytes=VARIABLE_SIZE?dynamic_bytes:BMP_PIX_BYTES;
     // bfSize is consumed when the header publishes its check. Reuse its
     // private storage for the pixel countdown in the following transfer
     // epoch; all public diagnostic fields retain their original registers.
     wire[31:0] pixels_remaining=bfsize_r;
-    wire fmt_ok    = planes_one_r && (bpp_lo_r == 8'd24) && bpp_hi_zero_r && (comp_r == 32'd0);
+    wire fmt_ok    = planes_one_r && ((bpp_lo_r == 8'd24)||(FLEX_PIXELS&&bpp_lo_r==8'd32)) && bpp_hi_zero_r && (comp_r == 32'd0);
     wire trunc_ok  = (offbits_r >= BMP_HDR_BYTES) &&
                      (bfsize_r <= file_size) &&
                      // Include the carry bit. A 32-bit sum can wrap a huge

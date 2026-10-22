@@ -1,6 +1,6 @@
 `include "safevision_defs.vh"
 // BGR24 byte stream -> canonical640x480 RGB565, aspect fit, black letterbox.
-// Supported source1..1920 x1..1080, either BMP orientation. No frame RAM:
+// FLEX_PIXELS supports BGR24/BGRX32 source1..16384 on each axis; either orientation. No frame RAM:
 // a selected row is horizontally resampled, then replayed for upscaling.
 // Rational DDA gives exact floor(x*source/dest) without a divider/DSP.
 // Bottom-up Y uses ceil((j+1)*H/dh)-1 so its canonical pixels are identical
@@ -8,22 +8,23 @@
 // Backpressure is propagated; output remains stable until accepted.
 // Relative skips and pixel countdowns remove redundant full byte/target counters.
 // Reuse row DDA/skip/column registers as geometry scratch before the row epoch.
-module v3_bmp_normalizer(
+module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
  input wire clk,rst_n,input wire[7:0] din,input wire din_valid,
  output wire din_ready,input wire din_sof,din_eof,
- input wire[15:0] width,height,input wire top_down,
+ input wire[15:0] width,height,input wire top_down,input wire[7:0] bpp,
  output reg[15:0] pixel,output reg pixel_valid,input wire pixel_ready,
  output wire[9:0] x,y,output wire img_sof,img_eof,
  output reg done,error,output reg[7:0] err_code,err_detail,output wire[3:0] dbg_state);
  localparam IDLE=0,GEOM=1,SETUP=2,YADV=3,READ=4,STORE=5,XADV=6,ROWEND=7,
   EWAIT=8,EPUSH=9,EHOLD=10,DRAIN=11,FINISH=12,FAILED=13;
- reg[3:0] state;reg[10:0] w,h;reg orientation,wide;
+ localparam SB=FLEX_PIXELS?15:11,XB=FLEX_PIXELS?15:12;
+ reg[3:0] state;reg[SB-1:0] w,h;reg orientation,wide;
  reg[9:0] dw,dh,pad_x,pad_before;
- reg[10:0] src_row,cols_left,skip_x,skip_y,y_steps;
- reg[11:0] x_error;reg[10:0] y_error;reg[9:0] store_x,out_x,out_row;
+ reg[SB-1:0] src_row,cols_left,skip_x,skip_y,y_steps;
+ reg[XB-1:0] x_error;reg[SB-1:0] y_error;reg[9:0] store_x,out_x,out_row;
  reg[7:0] blue,green;reg[1:0] phase,padding_left;reg[15:0] captured;
  reg after_row,eof_seen,have_row,initial_y,line_full;
- wire[22:0] geometry_scratch={y_error,x_error};
+ wire[SB+XB-1:0] geometry_scratch={y_error,x_error};
  // Canonical line uses two native RAM9K tiles; no distributed tail.
  // Pixel precision and the existing synchronous read latency are unchanged.
  (* ram_style="bram" *) reg[15:0] row_pixels[0:639];
@@ -39,14 +40,15 @@ module v3_bmp_normalizer(
  end
  wire row_black=out_row<pad_before||out_row>=pad_before+dh;
  wire col_black=out_x<pad_x||out_x>=x_error[9:0];
- wire last_row_byte=(phase==2&&cols_left==1&&w[1:0]==0)||(phase==3&&padding_left==1);
+ wire bytes4=FLEX_PIXELS&&bpp==32;
+ wire last_row_byte=bytes4?(phase==3&&cols_left==0):((phase==2&&cols_left==1&&w[1:0]==0)||(phase==3&&padding_left==1));
  assign din_ready=state==READ||state==DRAIN;
  assign x=out_x;assign y=orientation?out_row:10'd479-out_row;
  assign img_sof=pixel_valid&&out_x==0&&out_row==0;
  assign img_eof=pixel_valid&&out_x==639&&out_row==479;
  assign dbg_state=state;
  wire[15:0] abs_height=top_down?(~height+16'd1):height;
- wire[20:0] width480=width[10:0]*10'd480,height640=abs_height[10:0]*10'd640;
+ wire[SB+9:0] width480=width[SB-1:0]*10'd480,height640=abs_height[SB-1:0]*10'd640;
  task begin_input_row;begin cols_left<=w;phase<=0;padding_left<=w[1:0];skip_x<=0;x_error<=0;store_x<=0;line_full<=0;end endtask
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
@@ -59,12 +61,12 @@ module v3_bmp_normalizer(
    case(state)
     IDLE:if(din_valid&&din_sof)begin
      error<=0;err_code<=0;err_detail<=0;pixel_valid<=0;
-     if(width==0||width>1920||abs_height==0||abs_height>1080)begin
+     if(width==0||width>(FLEX_PIXELS?16384:1920)||abs_height==0||abs_height>(FLEX_PIXELS?16384:1080))begin
       error<=1;err_code<=`ERR_MEDIA_INVALID;err_detail<=`DET_BMP_SIZE;done<=1;state<=FAILED;
      end else begin
-      w<=width[10:0];h<=abs_height[10:0];cols_left<=width[10:0];padding_left<=width[1:0];orientation<=top_down;wide<=width480>=height640;
-      {y_error,x_error}<=width480>=height640?{3'd0,height640[19:0]}:{3'd0,width480[19:0]};
-      skip_x<=width480>=height640?width[10:0]:abs_height[10:0];store_x<=0;
+      w<=width[SB-1:0];h<=abs_height[SB-1:0];cols_left<=width[SB-1:0];padding_left<=width[1:0];orientation<=top_down;wide<=width480>=height640;
+      {y_error,x_error}<=width480>=height640?height640:width480;
+      skip_x<=width480>=height640?width[SB-1:0]:abs_height[SB-1:0];store_x<=0;
       src_row<=0;skip_y<=0;y_steps<=0;line_full<=0;
       store_x<=0;out_x<=0;out_row<=0;phase<=0;after_row<=0;eof_seen<=0;have_row<=0;state<=GEOM;
      end
@@ -86,13 +88,13 @@ module v3_bmp_normalizer(
       0:begin blue<=din;phase<=1;end
       1:begin green<=din;phase<=2;end
       2:begin
-       phase<=cols_left==1&&w[1:0]!=0?2'd3:2'd0;cols_left<=cols_left-1'b1;
+       phase<=bytes4||(cols_left==1&&w[1:0]!=0)?2'd3:2'd0;cols_left<=cols_left-1'b1;
        if(skip_y==0&&!line_full)begin
         if(skip_x>1)skip_x<=skip_x-1'b1;
         else begin captured<={din[7:3],green[7:2],blue[7:3]};after_row<=last_row_byte;state<=STORE;end
        end
       end
-      3:padding_left<=padding_left-1'b1;
+      3:if(bytes4)phase<=0;else padding_left<=padding_left-1'b1;
      endcase
      if(din_eof)begin
       eof_seen<=1;

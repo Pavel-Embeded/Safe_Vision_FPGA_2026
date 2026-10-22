@@ -5,7 +5,7 @@
 // Compact font is lossless for the checked-in font: rows 0/15 and codes >=128
 // are blank; rows 1/2,...,13/14 are identical. Both ROMs fit one RAM9K tile.
 module v3_status_layers #(
- parameter integer HD=0,HANDBOOK_PROFILE=0,USER_FEATURES=0,VOLUME_COLUMNS=0,VOLUME_SETTING=0,PIXEL_HZ=HD?74250000:25175000,PIPE_LATENCY=21,
+ parameter integer HD=0,HANDBOOK_PROFILE=0,USER_FEATURES=0,FLEX_SPECTRUM=0,VOLUME_COLUMNS=0,VOLUME_SETTING=0,PIXEL_HZ=HD?74250000:25175000,PIPE_LATENCY=21,
  parameter integer RASTER_PREDECODE=0,
  parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
  parameter COMPACT_FONT_FILE="../../assets/fonts/font8x16_compact.mem",
@@ -514,13 +514,21 @@ module v3_status_layers #(
   (raw_x>=WIDTH-272&&raw_x<WIDTH-16&&raw_y>=HEIGHT-130&&raw_y<HEIGHT-62));
  wire bar_edge=user_panel||setting_edge||column_edge||bar_box&&(raw_x==80||raw_x==281||raw_y==HEIGHT-22||raw_y==HEIGHT-11);
  wire bar_fill=column_fill||bar_box&&raw_x>80&&raw_x<81+energy*2&&raw_y>HEIGHT-22&&raw_y<HEIGHT-11;
- wire wave_trace,wave_grid;
- generate if(USER_FEATURES)begin:waveform
+ wire wave_trace,wave_grid;wire[15:0] wave_colour;
+ generate if(USER_FEATURES&&FLEX_SPECTRUM)begin:spectrum
+  v3_audio_spectrum #(.WIDTH(WIDTH),.HEIGHT(HEIGHT)) analyzer(
+   .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(frame_start),.pcm_valid(wave_pcm_valid),.pcm_left(wave_pcm_left),
+   .x(raw_x),.y(raw_y),.de(raw_de),.trace_pixel(wave_trace),.grid_pixel(wave_grid),.colour(wave_colour),.ready(),.spectrum_sequence(),.dominant_bin(),.peak_height());
+ end else if(USER_FEATURES)begin:waveform
+  assign wave_colour=16'h05bf;
   v3_pcm_waveform #(.WIDTH(WIDTH),.HEIGHT(HEIGHT)) scope(
    .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(frame_start),.pcm_valid(wave_pcm_valid),.pcm_left(wave_pcm_left),
    .x(raw_x),.y(raw_y),.de(raw_de),.trace_pixel(wave_trace),.grid_pixel(wave_grid),.ready());
- end else begin:no_waveform assign wave_trace=0;assign wave_grid=0;end endgenerate
- reg[2:0] wave_trace_pipe,wave_grid_pipe;reg[3:0] uptime_pipe;
+ end else begin:no_waveform assign wave_trace=0;assign wave_grid=0;assign wave_colour=0;end endgenerate
+ reg[2:0] wave_trace_pipe,wave_grid_pipe;reg[15:0] wave_colour_pipe[0:2];integer spectrum_ci;
+ always @(posedge pixel_clk or negedge pixel_rst_n)
+  if(!pixel_rst_n)for(spectrum_ci=0;spectrum_ci<3;spectrum_ci=spectrum_ci+1)wave_colour_pipe[spectrum_ci]<=0;
+  else begin wave_colour_pipe[0]<=wave_colour;for(spectrum_ci=1;spectrum_ci<3;spectrum_ci=spectrum_ci+1)wave_colour_pipe[spectrum_ci]<=wave_colour_pipe[spectrum_ci-1];endreg[3:0] uptime_pipe;
  always @(posedge pixel_clk or negedge pixel_rst_n)
   if(!pixel_rst_n)begin wave_trace_pipe<=0;wave_grid_pipe<=0;uptime_pipe<=0;end
   else begin wave_trace_pipe<={wave_trace_pipe[1:0],wave_trace};wave_grid_pipe<={wave_grid_pipe[1:0],wave_grid};
@@ -540,7 +548,7 @@ module v3_status_layers #(
  assign osd_alpha=de_pipe[3]&&((font_dot&&cat[3]==0)||panel_pipe[3])?oa[3]:0;
  assign emergency_rgb565=16'hf800;
  assign emergency_alpha=de_pipe[3]&&(border_pipe[3]||(font_dot&&cat[3]==1))?8'd224:0;
- assign hud_rgb565=wave_trace_pipe[2]?16'h05bf:setting_caption_pipe[3]||(font_dot&&cat[3]==2)?16'hffff:setting_fill_pipe[3]?16'h05bf:bar_fill_pipe[3]?(column_fill_pipe[3]?column_rgb:16'h07e0):wave_grid_pipe[2]?16'h7bef:USER_FEATURES?16'd0:16'h7bef;
+ assign hud_rgb565=wave_trace_pipe[2]?wave_colour_pipe[2]:setting_caption_pipe[3]||(font_dot&&cat[3]==2)?16'hffff:setting_fill_pipe[3]?16'h05bf:bar_fill_pipe[3]?(column_fill_pipe[3]?column_rgb:16'h07e0):wave_grid_pipe[2]?16'h7bef:USER_FEATURES?16'd0:16'h7bef;
  assign hud_alpha=de_pipe[3]&&(wave_trace_pipe[2]||wave_grid_pipe[2]||(font_dot&&cat[3]==2)||bar_fill_pipe[3]||bar_edge_pipe[3]||setting_fill_pipe[3]||setting_caption_pipe[3])?8'd224:0;
  wire[12:0] dy=raw_y>=HEIGHT/2?raw_y-HEIGHT/2:HEIGHT/2-raw_y;
  wire arrow=(raw_x>=WIDTH/2-96&&raw_x<WIDTH/2-32&&dy<=(raw_x-(WIDTH/2-96))/2)||

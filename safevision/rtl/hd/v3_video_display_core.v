@@ -4,7 +4,7 @@
 // resetting scan. cfg is committed in vertical blank; audio/video target and
 // final generation are atomic bundled descriptors across clock domains.
 module v3_video_display_core #(
- parameter integer HD=0,HANDBOOK_PROFILE=0,USER_FEATURES=0,VOLUME_COLUMNS=0,VOLUME_SETTING=0,FADE_FRAMES=32,MEM_TIMEOUT=4000000,TRANSITION_TIMEOUT_FRAMES=300,PACKED_CACHE=0,
+ parameter integer HD=0,HANDBOOK_PROFILE=0,USER_FEATURES=0,FLEX_SPECTRUM=0,VOLUME_COLUMNS=0,VOLUME_SETTING=0,FADE_FRAMES=32,MEM_TIMEOUT=4000000,TRANSITION_TIMEOUT_FRAMES=300,PACKED_CACHE=0,
  parameter FONT_FILE="font8x16.mem",
  parameter COMPACT_FONT_FILE="../../assets/fonts/font8x16_compact.mem",
  parameter STATUS_TEXT_FILE="../../assets/fonts/v3_status_text.mem",
@@ -210,7 +210,7 @@ module v3_video_display_core #(
  wire frame_safe_raw,frame_safe_output;
  wire[15:0] osd_pixel4,em_pixel4,hud_pixel4,safe_pixel4;
  wire[7:0] osd_alpha4,em_alpha4,hud_alpha4;
- v3_status_layers #(.USER_FEATURES(USER_FEATURES),.RASTER_PREDECODE(HD),.HD(HD),.HANDBOOK_PROFILE(HANDBOOK_PROFILE),.VOLUME_COLUMNS(VOLUME_COLUMNS),.VOLUME_SETTING(VOLUME_SETTING),.PIXEL_HZ(PIXEL_HZ),.PIPE_LATENCY(LATENCY),.FONT_FILE(FONT_FILE),
+ v3_status_layers #(.FLEX_SPECTRUM(FLEX_SPECTRUM),.USER_FEATURES(USER_FEATURES),.RASTER_PREDECODE(HD),.HD(HD),.HANDBOOK_PROFILE(HANDBOOK_PROFILE),.VOLUME_COLUMNS(VOLUME_COLUMNS),.VOLUME_SETTING(VOLUME_SETTING),.PIXEL_HZ(PIXEL_HZ),.PIPE_LATENCY(LATENCY),.FONT_FILE(FONT_FILE),
   .COMPACT_FONT_FILE(COMPACT_FONT_FILE),.TEXT_FILE(STATUS_TEXT_FILE)) graphics(
   .pixel_clk(pixel_clk),.pixel_rst_n(pixel_rst_n),.raw_x(raw_x),.raw_y(raw_y),.raw_de(raw_de),
   .frame_start(frame_start),.cfg_data(cfg),.cache_valid(slots),.underflows(pixel_underflows),

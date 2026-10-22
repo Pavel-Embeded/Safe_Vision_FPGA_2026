@@ -45,7 +45,7 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
+module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0) (
     input  wire        clk,
     input  wire        rst_n,
 
@@ -101,7 +101,8 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
     input  wire        wk_eoc,
     input  wire        wk_error,
     input  wire [7:0]  wk_err_code,
-    input  wire [7:0]  wk_err_detail
+    input  wire [7:0]  wk_err_detail,
+    input wire[7:0] name_address,output wire[15:0] name_data,output wire[8:0] name_length
 );
 
     // Mounted FAT32 contract: sectors/cluster is a power of two in 1..128.
@@ -173,7 +174,13 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
     wire [4:0]  ent_off = bcnt[4:0];        // 本条目录项内的字节偏移 0..31
 
     // 下游没取走目录项时，把数据流按住（sd_sector_reader 会自然停 SCLK）
-    assign sd_data_ready = (mstate == D_SEC_RECV) && !wait_ent;
+    wire name_busy;
+    generate if(FULL_NAMES)begin:full_names
+      v3_fat_name_store names(.clk(clk),.rst_n(rst_n),.scan_start(scan_en),
+       .byte_valid(sd_data_valid&&sd_data_ready),.byte_offset(ent_off),.data(sd_data),
+       .read_address(name_address),.read_data(name_data),.name_length(name_length),.busy(name_busy),.lfn_valid());
+    end else begin:no_full_names assign name_busy=0;assign name_data=0;assign name_length=0;end endgenerate
+    assign sd_data_ready = (mstate == D_SEC_RECV) && !wait_ent && !name_busy;
     assign sd_rd_len     = 16'd1;          // 单扇区读
 
     // ------------------------------------------------------------------------

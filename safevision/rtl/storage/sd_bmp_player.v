@@ -53,6 +53,7 @@ module sd_bmp_player #(
     parameter integer GUARDED_CS = 0,
     parameter integer MID_REF_SAMPLE = 0,
     parameter integer RESIDENT_CACHE = 0,
+    parameter integer FLEX_FILES = 0,
     // SPI 分频（见文件头推导；按 50 MHz 取默认）
     // ★★ 2026-10-06 板级实测后：初始化时钟由 396.8 kHz **降到 100 kHz**。
     //   背景：真卡初始化约 1/10 成功、`ED=11`（CMD0 的 R1 ≠ 0x01）；加内部上拉后
@@ -392,6 +393,10 @@ module sd_bmp_player #(
     wire service_ready_int=service_gap&&(service_owner_q==ext_owner)&&rst_n;
     wire[444:0] local_core_cmd,selected_core_cmd;
     wire[836:0] physical_core_rsp;
+    wire[7:0] full_name_address;wire[15:0] service_name_data,legacy_name_data;wire[8:0] service_name_length,legacy_name_length;
+    wire[15:0] full_name_data=SHARED_SERVICE?service_name_data:legacy_name_data;
+    wire[8:0] full_name_length=SHARED_SERVICE?service_name_length:legacy_name_length;
+    wire flexible_rescan;
     assign external_service_ready=SHARED_SERVICE&&ext_owner&&service_ready_int;
     assign external_core_rsp=external_service_ready?physical_core_rsp:837'd0;
     // service_ready_int implies service_owner_q==ext_owner. During the
@@ -453,7 +458,7 @@ wire svc_w_sd_rd_en;
 wire svc_w_sd_data_ready;
 assign {svc_d_scan_done,svc_d_dir_bad,svc_d_err_code,svc_d_err_detail,svc_d_dbg_state,svc_d_ent_name,svc_d_ent_attr,svc_d_ent_first_clus,svc_d_ent_size,svc_d_ent_index,svc_d_ent_valid,svc_d_sd_rd_addr,svc_d_sd_rd_len,svc_d_sd_rd_en,svc_d_sd_data_ready,svc_d_wk_cur_clus,svc_d_wk_start,svc_d_wk_rst_walk,svc_f_busy,svc_f_done,svc_f_error,svc_f_err_code,svc_f_err_detail,svc_f_bytes_rd,svc_f_dbg_state,svc_f_data,svc_f_valid,svc_f_sof,svc_f_eof,svc_f_idle_between_sectors,svc_f_context_out,svc_f_sd_rd_addr,svc_f_sd_rd_len,svc_f_sd_rd_en,svc_f_sd_data_ready,svc_f_wk_cur_clus,svc_f_wk_start,svc_f_wk_rst_walk,svc_w_busy,svc_w_done,svc_w_next_clus,svc_w_eoc,svc_w_error,svc_w_err_code,svc_w_err_detail,svc_w_hop_cnt,svc_w_dbg_state,svc_w_sd_rd_addr,svc_w_sd_rd_len,svc_w_sd_rd_en,svc_w_sd_data_ready}=physical_core_rsp;
 generate if(SHARED_SERVICE)begin:shared_service
-      v3_shared_fs_service service(.clk(clk),.rst_n(service_ready_int),.sec_per_clus(bp_spc),
+      v3_shared_fs_service #(.FLEX_FILES(FLEX_FILES)) service(.name_address(full_name_address),.name_data(service_name_data),.name_length(service_name_length),.clk(clk),.rst_n(service_ready_int),.sec_per_clus(bp_spc),
        .fat_start_lba(bp_fat_lba),.data_start_lba(bp_data_lba),.root_dir_lba(bp_root_lba),
        .root_clus(bp_root_clus),.total_clus(bp_tot_clus),.core_cmd(selected_core_cmd),.core_rsp(physical_core_rsp));
     end else begin:no_shared_service
@@ -494,7 +499,8 @@ wire legacy_u_scan_wk_start;
 assign dn_wk_start=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_wk_start:1'd0):legacy_u_scan_wk_start;
 wire legacy_u_scan_wk_rst_walk;
 assign dn_wk_rst=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_d_wk_rst_walk:1'd0):legacy_u_scan_wk_rst_walk;
-fat32_directory_scanner u_scan (
+fat32_directory_scanner #(.FULL_NAMES(FLEX_FILES)) u_scan (
+        .name_address(full_name_address),.name_data(legacy_name_data),.name_length(legacy_name_length),
         .clk(clk), .rst_n(SHARED_SERVICE?1'b0:rst_n), .scan_en(scan_en),
         .scan_done(legacy_u_scan_scan_done), .dir_bad(legacy_u_scan_dir_bad), .err_code(legacy_u_scan_err_code), .err_detail(legacy_u_scan_err_detail),
         .dbg_state(),
@@ -574,6 +580,17 @@ fat32_cluster_walker u_wk_dir (
         end
     end
 
+    generate if(FLEX_FILES)begin:flexible_index
+    v3_flexible_media_index u_idx(.clk(clk),.rst_n(rst_n),.idx_clear(idx_clear),.idx_commit(idx_commit),
+      .cursor_key(cursor_key),.resident_slot(cache_count[1:0]),.ent_name(ent_name),.ent_attr(ent_attr),
+      .ent_first_clus(ent_first_clus),.ent_size(ent_size),.ent_index(ent_index),.ent_valid(ent_valid),.ent_ready(ent_ready),
+      .name_address(full_name_address),.name_data(full_name_data),.name_length(full_name_length),.rescan_request(flexible_rescan),
+      .idx_done(idx_done),.file_cnt(file_cnt),.file_valid(file_valid),.sel_key(selected_key),
+      .sel_first_clus(sel_first_clus),.sel_size(sel_size),.sel_valid(sel_valid),
+      .sel_wav_first_clus(sel_wav_clus),.sel_wav_size(sel_wav_size),.sel_wav_valid(sel_wav_valid),.bmp_seen(bmp_seen),.wav_seen(wav_seen));
+    assign insufficient=file_cnt<4;assign idx_ec=0;assign idx_ed=0;
+    end else begin:legacy_index
+    assign full_name_address=0;assign flexible_rescan=0;
     file_index #(.CURSOR_MODE(RESIDENT_CACHE),.CANDIDATE_SLOTS(RESIDENT_CACHE?1:4)) u_idx (
         .clk(clk), .rst_n(rst_n),
         .ent_name(ent_name_q), .ent_attr(ent_attr_q), .ent_first_clus(ent_first_clus_q),
@@ -589,6 +606,8 @@ fat32_cluster_walker u_wk_dir (
         .sel_wav_valid(sel_wav_valid),
         .bmp_seen(bmp_seen), .wav_seen(wav_seen)
     );
+
+    end endgenerate
 
     wire legacy_u_fst_busy;
 assign fst_busy=SHARED_SERVICE?(!ext_owner&&service_ready_int?svc_f_busy:1'd0):legacy_u_fst_busy;
@@ -680,7 +699,7 @@ fat32_cluster_walker u_wk_fst (
     );
 
     // ---- 媒体链：字节流 → 像素 → 行序重映射 → 逐 word 写请求 ----
-    bmp_parser #(.VARIABLE_SIZE(RESIDENT_CACHE)) u_bmp (
+    bmp_parser #(.VARIABLE_SIZE(RESIDENT_CACHE),.FLEX_PIXELS(FLEX_FILES)) u_bmp (
         .clk(clk), .rst_n(file_rst_n),
         .data(fst_data), .valid(fst_valid), .ready(bp_ready), .eof(fst_eof),
         .file_size(sel_size),
@@ -717,7 +736,8 @@ fat32_cluster_walker u_wk_fst (
     assign bpu_ready = !hold_valid || px_word_ready;
 
     generate if(RESIDENT_CACHE)begin:normalized_bmp
-    v3_bmp_normalizer u_unpack (
+    v3_bmp_normalizer #(.FLEX_PIXELS(FLEX_FILES)) u_unpack (
+        .bpp(bmp_bpp),
         .clk(clk),.rst_n(file_rst_n),.din(bpo_data),.din_valid(bpo_valid),.din_ready(bpo_ready),.din_sof(bpo_sof),.din_eof(bpo_eof),
         .width(bmp_width),.height(bmp_height),.top_down(bmp_top_down),
         .pixel(bpu_pixel),.pixel_valid(bpu_valid),.pixel_ready(bpu_ready),.x(bpu_x),.y(bpu_y),.img_sof(bpu_sof),.img_eof(bpu_eof),
@@ -1064,7 +1084,8 @@ fat32_cluster_walker u_wk_fst (
                 // ------------------------------------------------------------
                 S_INDEX: begin
                     to_cnt <= to_cnt + 32'd1;
-                    if (idx_done) begin
+                    if(FLEX_FILES&&flexible_rescan)begin scan_sub<=1;to_cnt<=0;state_o<=S_SCAN;end
+                    else if (idx_done) begin
                         to_cnt <= 32'd0;
                         if (file_cnt == 4'd0) begin
                             fail_stage <= ST_IDX;

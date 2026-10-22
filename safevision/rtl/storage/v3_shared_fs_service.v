@@ -1,7 +1,8 @@
 // One physical scanner/file/walker, shared only between disjoint lifetimes.
 // All ports use REF clk. Ownership changes reset rst_n for at least one REF edge.
 // No arbitration/CDC lives in this module: callers retain their sector owners.
-module v3_shared_fs_service(input wire clk,rst_n,
+module v3_shared_fs_service #(parameter integer FLEX_FILES=0)(input wire clk,rst_n,
+ input wire[7:0] name_address,output wire[15:0] name_data,output wire[8:0] name_length,
  input wire[7:0] sec_per_clus,input wire[31:0] fat_start_lba,data_start_lba,root_dir_lba,root_clus,total_clus,
  input wire[444:0] core_cmd,output wire[836:0] core_rsp);
 wire c_kernel_rst_n;
@@ -81,7 +82,8 @@ wire [15:0] w_sd_rd_len;
 wire w_sd_rd_en;
 wire w_sd_data_ready;
 assign core_rsp={d_scan_done,d_dir_bad,d_err_code,d_err_detail,d_dbg_state,d_ent_name,d_ent_attr,d_ent_first_clus,d_ent_size,d_ent_index,d_ent_valid,d_sd_rd_addr,d_sd_rd_len,d_sd_rd_en,d_sd_data_ready,d_wk_cur_clus,d_wk_start,d_wk_rst_walk,f_busy,f_done,f_error,f_err_code,f_err_detail,f_bytes_rd,f_dbg_state,f_data,f_valid,f_sof,f_eof,f_idle_between_sectors,f_context_out,f_sd_rd_addr,f_sd_rd_len,f_sd_rd_en,f_sd_data_ready,f_wk_cur_clus,f_wk_start,f_wk_rst_walk,w_busy,w_done,w_next_clus,w_eoc,w_error,w_err_code,w_err_detail,w_hop_cnt,w_dbg_state,w_sd_rd_addr,w_sd_rd_len,w_sd_rd_en,w_sd_data_ready};
-fat32_directory_scanner #(.SV_MEDIA_ONLY(1)) ds(.clk(clk),
+fat32_directory_scanner #(.SV_MEDIA_ONLY(FLEX_FILES?0:1),.FULL_NAMES(FLEX_FILES)) ds(.clk(clk),
+ .name_address(name_address),.name_data(name_data),.name_length(name_length),
  .rst_n(rst_n),
  .sec_per_clus(sec_per_clus),
  .root_clus(root_clus),
