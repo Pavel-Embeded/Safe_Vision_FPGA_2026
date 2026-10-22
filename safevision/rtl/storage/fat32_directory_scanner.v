@@ -286,11 +286,20 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
                     mstate     <= D_ERR;
                 end else if (sd_data_valid && sd_data_ready) begin
                     if(SV_MEDIA_ONLY)case(ent_off)
-                      0:begin media_name_ok<=sd_data==8'h53;media_bmp<=0;media_wav<=0;end
+                      0:begin media_name_ok<=sd_data==8'h53;media_bmp<=0;media_wav<=0;media_digits<=0;end
                       1:if(sd_data!=8'h56)media_name_ok<=0;
-                      2,3,4,5:begin
+                      2,3,4:begin
                         media_digits<={media_digits[11:0],sd_data[3:0]};
                         if(sd_data<8'h30||sd_data>8'h39)media_name_ok<=0;
+                      end
+                      // Three digits plus three spaces is an alias of the
+                      // zero-padded four-digit ID. Reset at byte0 prevents
+                      // a previous entry's high nibble leaking into that ID.
+                      // Raw scanner mode keeps every original name byte.
+                      5:begin
+                        if(sd_data>=8'h30&&sd_data<=8'h39)
+                          media_digits<={media_digits[11:0],sd_data[3:0]};
+                        else if(sd_data!=8'h20)media_name_ok<=0;
                       end
                       6,7:if(sd_data!=8'h20)media_name_ok<=0;
                       8:begin media_bmp<=sd_data==8'h42;media_wav<=sd_data==8'h57;end
