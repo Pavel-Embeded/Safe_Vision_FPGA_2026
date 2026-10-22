@@ -1,0 +1,25 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_top_sdram_loopback -s tb_top_sdram_loopback --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.reset_sync_default
+Compiling module work.sv_system_pll
+Compiling module work.sdr_pat_gen
+Compiling module work.sdram
+Compiling module work.uart_tx(CLK_FREQ=125000000)
+Compiling module work.top_sdram_loopback(POWERUP_CYC=2...
+Compiling module work.tb_top_sdram_loopback
+Built simulation snapshot tb_top_sdram_loopback
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/svmultires510/regression/positive/tb_top_sdram_loopback/sim/tb_top_sdram_loopback/xsim.dir/tb_top_sdram_loopback/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Thu Oct 22 10:29:04 2026...

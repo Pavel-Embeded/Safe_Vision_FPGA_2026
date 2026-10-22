@@ -1,0 +1,24 @@
+{
+  "mutation": "credit_wrong_slice",
+  "target": "safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v",
+  "suite": "ingress_credit",
+  "top": "tb_v3_ingress_credit",
+  "patch": [
+    {
+      "before": "pair_credit_product[19:11]",
+      "after": "pair_credit_product[20:12]"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\credit_wrong_slice\\sim\\tb_v3_ingress_credit",
+  "original_sha256": "f8325dfa2ea4ff2740d3c4d9475be3d2c496d0e20a5303cbd463eb84ac689b17",
+  "mutated_sha256": "09dbdd1968acd41b3372c4df6b09304069dff3d850aba4b9cea7eea653edf1cf",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    4092
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\credit_wrong_slice\\sim\\tb_v3_ingress_credit",
+  "return_code": 1
+}

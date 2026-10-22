@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Thu Oct 22 10:30:34 2026
+# Process ID: 11536
+# Current directory: D:/Codex/svmultires510/regression/positive/tb_v3_board_query_catalog/sim/tb_v3_board_query_catalog
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_board_query_catalog/xsim_script.tcl}
+# Log file: D:/Codex/svmultires510/regression/positive/tb_v3_board_query_catalog/sim/tb_v3_board_query_catalog/sim.log
+# Journal file: D:/Codex/svmultires510/regression/positive/tb_v3_board_query_catalog/sim/tb_v3_board_query_catalog\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_board_query_catalog/xsim_script.tcl
+# xsim {tb_v3_board_query_catalog} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+WARNING: File ../../assets/fonts/font8x16_compact.mem referenced on D:/Codex/svmultires510/source/safevision/verification/models/top_ip_stub.sv at line 128 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+WARNING: File ../../assets/control/v3_command_catalog.mem referenced on D:/Codex/svmultires510/source/safevision/verification/models/top_ip_stub.sv at line 128 cannot be opened for reading. Please ensure that this file is available in the current working directory.
+[PASS] all24 numeric board queries match original ASCII block cycle exact
+[TB] tb_v3_board_query_catalog done errors=0 comparisons=12288
+$finish called at time : 42265001 ps : File "D:/Codex/svmultires510/source/safevision/verification/unit/tb_v3_board_query_catalog.sv" Line 112
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 10:30:40 2026...

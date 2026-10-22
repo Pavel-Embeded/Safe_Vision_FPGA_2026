@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "profile": "four_features_261020",
-  "source_build_commit": "9c789eaddd514997c534602026ca14d20b03edbe",
-  "positive_records_including_aliases": 289,
+  "source_build_commit": "603f0b96ebca4aba725145be19c10c2c393a6551",
+  "positive_records_including_aliases": 291,
   "positive": [
     {
       "top": "tb_a_basics",
@@ -1443,6 +1443,16 @@
       "top": "tb_wav_parser",
       "suite": "legacy_b_fourbeat",
       "legacy": true
+    },
+    {
+      "top": "tb_v3_directory_alias510",
+      "suite": "directory_alias510",
+      "legacy": false
+    },
+    {
+      "top": "tb_v3_actual_directory510",
+      "suite": "actual_directory510",
+      "legacy": false
     }
   ],
   "negative": [
@@ -3898,6 +3908,45 @@
           "after": "wi[3:0]+4'd0"
         }
       ]
+    },
+    {
+      "mutation": "media_alias_reject_three_digits",
+      "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+      "suite": "directory_alias510",
+      "top": "tb_v3_directory_alias510",
+      "patch": [
+        {
+          "before": "else if(sd_data!=8'h20)media_name_ok<=0;",
+          "after": "else media_name_ok<=0;",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "mutation": "media_alias_retain_previous_high_nibble",
+      "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+      "suite": "directory_alias510",
+      "top": "tb_v3_directory_alias510",
+      "patch": [
+        {
+          "before": "media_wav<=0;media_digits<=0;end",
+          "after": "media_wav<=0;end",
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "mutation": "media_alias_wrong_digit_order",
+      "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+      "suite": "directory_alias510",
+      "top": "tb_v3_directory_alias510",
+      "patch": [
+        {
+          "before": "media_digits<={media_digits[11:0],sd_data[3:0]};",
+          "after": "media_digits<={sd_data[3:0],media_digits[15:4]};",
+          "occurrences": 2
+        }
+      ]
     }
   ],
   "physical_source_sha256": {
@@ -4038,7 +4087,7 @@
     "safevision/rtl/safety/fault_manager.v": "48ca28dbb0c1b5148200e01910bb8385aa6a342b4a10df58ffe39f441dfc2f21",
     "safevision/rtl/storage/fat32_boot_parser.v": "2987ee8158dccf3b9194e63fa118609f88d6a08e467c8b2c1a04e1f54d69d274",
     "safevision/rtl/storage/fat32_cluster_walker.v": "f028d5233cfdcc031ecf0fc64e69195cf6174e54e1e8d012302f72bce6cc373d",
-    "safevision/rtl/storage/fat32_directory_scanner.v": "2d11afa38df1a3cc48f12a8ad4e79ad5aff673ef9fe7f97f74ac3fc18f6f764e",
+    "safevision/rtl/storage/fat32_directory_scanner.v": "7d5696e3004c3010be530f1ef349e3eb5505a456b6dd49bc2891a8cc8d813e63",
     "safevision/rtl/storage/file_index.v": "cffadd84bcbee49f68d9f50c78646efa7bfc2060cb09abf0c719555273ad4254",
     "safevision/rtl/storage/file_streamer.v": "a30c5c8adf02fd596f26f3a708ebd92eb9e7fd7b785fd4d71cdf7aac630584b0",
     "safevision/rtl/storage/mbr_parser.v": "86cf833b3c3c21e9b3cca029ba6d73244dc39037966286a0f27687f624614c6f",

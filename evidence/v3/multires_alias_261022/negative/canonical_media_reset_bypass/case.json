@@ -1,0 +1,24 @@
+{
+  "mutation": "canonical_media_reset_bypass",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+  "suite": "v3_board_clocks",
+  "top": "tb_v3_board_clocks",
+  "patch": [
+    {
+      "before": ".media_reset(!media_common_rst_n),.mounted",
+      "after": ".media_reset(media_reset),.mounted"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\canonical_media_reset_bypass\\sim\\tb_v3_board_clocks",
+  "original_sha256": "b3b8011e9d0e58b893bf1685eecc222f4aada50b4721414c2211ee975f8111e9",
+  "mutated_sha256": "b14150a8b9d8aca337640f888f8505c0e8833cd3bcfb1dafbbb5418768e2a49d",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    134
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\canonical_media_reset_bypass\\sim\\tb_v3_board_clocks",
+  "return_code": 1
+}

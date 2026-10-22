@@ -31,8 +31,15 @@ def audit(root,manifest,repository,inspect_incomplete=False):
  if not inspect_incomplete:assert index['complete'],'positive producer has not completed'
  matrix_path=within(root,index['matrix']);matrix=read(matrix_path);assert matrix['profile']==index['profile']
  assert matrix['source_build_commit']==index['source_build_commit']
- assert len(matrix['positive'])==288 and len(matrix['negative'])==202 and matrix['positive_records_including_aliases']==289
- assert len({r['top']for r in matrix['positive']})==288 and len({r['mutation']for r in matrix['negative']})==202
+ alias_extension=index.get('media_alias_extension_schema')==1
+ expected_positive=290 if alias_extension else 288
+ expected_negative=205 if alias_extension else 202
+ expected_records=291 if alias_extension else 289
+ assert len(matrix['positive'])==expected_positive and len(matrix['negative'])==expected_negative and matrix['positive_records_including_aliases']==expected_records
+ assert len({r['top']for r in matrix['positive']})==expected_positive and len({r['mutation']for r in matrix['negative']})==expected_negative
+ if alias_extension:
+  assert {'tb_v3_directory_alias510','tb_v3_actual_directory510'}<=set(r['top']for r in matrix['positive'])
+  assert {'media_alias_reject_three_digits','media_alias_retain_previous_high_nibble','media_alias_wrong_digit_order'}<=set(r['mutation']for r in matrix['negative'])
  hardware=snapshot(root);assert hardware==matrix['physical_source_sha256']and len(hardware)==198
  # Native identity hashes preserve actual bytes; Git additionally applies its
  # recorded text filters. Use the same explicit blob binding as the native
@@ -161,9 +168,14 @@ def audit(root,manifest,repository,inspect_incomplete=False):
  for n in read(folder/'sources.sha256.json'):protected[n]=sha(within(root,n))
  for p in folder.rglob('*'):
   if p.is_file():protected[p.relative_to(root).as_posix()]=sha(p)
+ if alias_extension:
+  from audit_v3_media_alias510 import audit as audit_media_alias
+  audit_media_alias(root)
+  for p in(root/'evidence/v3/multires_alias_261022').rglob('*'):
+   if p.is_file():protected[p.relative_to(root).as_posix()]=sha(p)
  for p in(root/'safevision/tools').rglob('*.py'):protected[p.relative_to(root).as_posix()]=sha(p)
  gui=[check_gui(root,m)for m in ('base','hd')]
- result=dict(accepted=bool(index['complete']and not missing_positive),profile=index['profile'],source_build_commit=matrix['source_build_commit'],required_positive_records_including_aliases=289,positive_unique_tops=len(records),missing_positive=missing_positive,strict_normal_ending_mutants=202,physical_inputs=198,positive=records,negative=faults,source_sha256=hardware,proof_sha256=protected,gui_cli=gui,current_serial_division_proof=True,routed_sta_passed=False,bitstreams_verified=False,hardware_verified=False,release_ready=False)
+ result=dict(accepted=bool(index['complete']and not missing_positive),profile=index['profile'],source_build_commit=matrix['source_build_commit'],required_positive_records_including_aliases=expected_records,positive_unique_tops=len(records),missing_positive=missing_positive,strict_normal_ending_mutants=expected_negative,physical_inputs=198,positive=records,negative=faults,source_sha256=hardware,proof_sha256=protected,gui_cli=gui,current_serial_division_proof=True,routed_sta_passed=False,bitstreams_verified=False,hardware_verified=False,release_ready=False)
  return result
 
 def main():

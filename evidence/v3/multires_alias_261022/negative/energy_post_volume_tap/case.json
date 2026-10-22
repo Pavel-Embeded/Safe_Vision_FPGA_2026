@@ -1,0 +1,24 @@
+{
+  "mutation": "energy_post_volume_tap",
+  "target": "safevision/rtl/audio/v3_audio_system.v",
+  "suite": "handbook_audio_energy",
+  "top": "tb_v3_handbook_audio_energy",
+  "patch": [
+    {
+      "before": "HANDBOOK_PROFILE?mix_valid:scaled_valid),\n .pcm_l(HANDBOOK_PROFILE?mix_l[23:8]:pcm_scaled[23:8]),.pcm_r(HANDBOOK_PROFILE?mix_r[23:8]:pcm_scaled[47:32]),",
+      "after": "scaled_valid),\n .pcm_l(pcm_scaled[23:8]),.pcm_r(pcm_scaled[47:32]),"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\energy_post_volume_tap\\sim\\tb_v3_handbook_audio_energy",
+  "original_sha256": "4a7a1ce434249e7e370eef5a5768c94c171af907ecbac5d982dd08b78b2f7b79",
+  "mutated_sha256": "b4b54524403c843e433c5cd33071614bae7806bd0a0066d92286cfe93ce10525",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    4
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\energy_post_volume_tap\\sim\\tb_v3_handbook_audio_energy",
+  "return_code": 1
+}

@@ -1,0 +1,13 @@
+{
+  "top": "tb_v3_hd_uart_link_catalog",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 108,
+  "elapsed_s": 7.984,
+  "suite": "hd_uart_catalog",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svmultires510\\regression\\positive\\tb_v3_hd_uart_link_catalog\\sim\\tb_v3_hd_uart_link_catalog"
+}

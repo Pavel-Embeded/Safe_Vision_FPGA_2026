@@ -1,0 +1,13 @@
+{
+  "top": "tb_v3_mixed_card217",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 12,
+  "data_comparisons": 614400,
+  "elapsed_s": 807.359,
+  "suite": "mixed_card217",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svmultires510\\regression\\positive\\tb_v3_mixed_card217\\sim\\tb_v3_mixed_card217"
+}

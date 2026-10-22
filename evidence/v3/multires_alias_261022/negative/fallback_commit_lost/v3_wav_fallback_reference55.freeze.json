@@ -1,0 +1,14 @@
+{
+  "original_source_commit": "149fbfbb9a291d9e69f50732f5df89db34028c1d",
+  "original_repository_path": "safevision/rtl/storage/v3_wav_source.v",
+  "original_path": "safevision/verification/models/origins/149fbfb/v3_wav_source.v",
+  "original_sha256": "07e59af5352b6f7d9efd0cb463e295eec1a81f838b259a4a40691385f6c6a344",
+  "reference_path": "safevision/verification/models/v3_wav_fallback_reference55.sv",
+  "reference_sha256": "4065218e8360f977a5bcf8497d5908ab8b14bad8babb6757e1a73aa50c3ffee0",
+  "namespace_only": [
+    [
+      "module v3_wav_source #(",
+      "module v3_wav_fallback_reference55 #("
+    ]
+  ]
+}

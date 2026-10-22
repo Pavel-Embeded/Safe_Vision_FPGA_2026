@@ -1,0 +1,12 @@
+{
+  "top": "tb_ab_storage_contract",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 16,
+  "elapsed_s": 7.125,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svmultires510\\regression\\positive\\tb_ab_storage_contract\\sim\\tb_ab_storage_contract"
+}

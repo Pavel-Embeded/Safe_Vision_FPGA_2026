@@ -1,0 +1,24 @@
+{
+  "mutation": "resident_progress_not_rearmed",
+  "target": "safevision/rtl/storage/sd_bmp_player.v",
+  "suite": "mixed_card217",
+  "top": "tb_v3_mixed_card217",
+  "patch": [
+    {
+      "before": "if(RESIDENT_CACHE&&((fst_valid&&bp_ready)||(bpu_valid&&bpu_ready)))to_cnt<=0;",
+      "after": "if(1'b0)to_cnt<=0;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217",
+  "original_sha256": "20e4e3faf16520b929f40971fe13d9913e1557e938c52de6d50a92f33579b114",
+  "mutated_sha256": "eb41891774433878138f7363e25a4325cd26d413d8ddea6f8bc765f1641c81e8",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    10
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217",
+  "return_code": 1
+}

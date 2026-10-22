@@ -15132,3 +15132,11 @@ evidence/v3/handbook_26101802/research_01/** -text
 "/safevision/verification/unit/tb_wav_parser.sv" -text
 "/safevision/verification/unit/v3_command_parser_reference.sv" -text
 /safevision/tools/host/** -text
+
+/safevision/build/manifests/directory_alias510_sim.json -text
+
+/safevision/build/manifests/actual_directory510_sim.json -text
+
+/safevision/verification/assets/card_directory510/** -text
+
+/docs/changes/BASE_MEDIA_ALIAS_261022.md -text

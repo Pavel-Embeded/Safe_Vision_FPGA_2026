@@ -1,0 +1,24 @@
+{
+  "mutation": "board_query_binding",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+  "suite": "board_query_catalog",
+  "top": "tb_v3_board_query_catalog",
+  "patch": [
+    {
+      "before": "({32{b_query_select[23]}} & (uart_reply_dropped))",
+      "after": "({32{b_query_select[23]}} & (uart_framing))"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\board_query_binding\\sim\\tb_v3_board_query_catalog",
+  "original_sha256": "b3b8011e9d0e58b893bf1685eecc222f4aada50b4721414c2211ee975f8111e9",
+  "mutated_sha256": "cd3b04c715b2667d2bd2135b29488476125468cc6322614d48ff896c6ee2fb4b",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    141
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svmultires510\\regression_recovered\\negative\\board_query_binding\\sim\\tb_v3_board_query_catalog",
+  "return_code": 1
+}
