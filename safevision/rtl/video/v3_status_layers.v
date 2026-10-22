@@ -425,16 +425,18 @@ module v3_status_layers #(
  wire bar_edge=user_panel||setting_edge||column_edge||bar_box&&(raw_x==80||raw_x==281||raw_y==HEIGHT-22||raw_y==HEIGHT-11);
  wire bar_fill=column_fill||bar_box&&raw_x>80&&raw_x<81+energy*2&&raw_y>HEIGHT-22&&raw_y<HEIGHT-11;
  wire wave_trace,wave_grid;wire[15:0] wave_colour;
+ wire spectrum_ready;wire[15:0] spectrum_sequence;
  generate if(USER_FEATURES&&FLEX_SPECTRUM)begin:spectrum
   v3_audio_spectrum #(.WIDTH(WIDTH),.HEIGHT(HEIGHT)) analyzer(
    .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(frame_start),.pcm_valid(wave_pcm_valid),.pcm_left(wave_pcm_left),
-   .x(raw_x),.y(raw_y),.de(raw_de),.trace_pixel(wave_trace),.grid_pixel(wave_grid),.colour(wave_colour),.ready(),.spectrum_sequence(),.dominant_bin(),.peak_height());
+   .x(raw_x),.y(raw_y),.de(raw_de),.trace_pixel(wave_trace),.grid_pixel(wave_grid),.colour(wave_colour),.ready(spectrum_ready),.spectrum_sequence(spectrum_sequence),.dominant_bin(),.peak_height());
  end else if(USER_FEATURES)begin:waveform
+  assign spectrum_ready=0;assign spectrum_sequence=0;
   assign wave_colour=16'h05bf;
   v3_pcm_waveform #(.WIDTH(WIDTH),.HEIGHT(HEIGHT)) scope(
    .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(frame_start),.pcm_valid(wave_pcm_valid),.pcm_left(wave_pcm_left),
    .x(raw_x),.y(raw_y),.de(raw_de),.trace_pixel(wave_trace),.grid_pixel(wave_grid),.ready());
- end else begin:no_waveform assign wave_trace=0;assign wave_grid=0;assign wave_colour=0;end endgenerate
+ end else begin:no_waveform assign spectrum_ready=0;assign spectrum_sequence=0;assign wave_trace=0;assign wave_grid=0;assign wave_colour=0;end endgenerate
  reg[2:0] wave_trace_pipe,wave_grid_pipe;reg[15:0] wave_colour_pipe[0:2];integer spectrum_ci;
  always @(posedge pixel_clk or negedge pixel_rst_n)
   if(!pixel_rst_n)for(spectrum_ci=0;spectrum_ci<3;spectrum_ci=spectrum_ci+1)wave_colour_pipe[spectrum_ci]<=0;

@@ -4,7 +4,7 @@
 // Four independent byte/parser/cluster contexts pause only BETWEEN sectors.
 // Shared SD ownership is held to rd_done/error; FIFO room reserves a full sector.
 // Missing/invalid WAV sets fallback[slot], never blocks a media-ready decision.
-module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_n,mounted,cache_ready,
+module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0,PREINDEXED=0)(input wire clk,rst_n,mounted,cache_ready,
  input wire [63:0] cache_keys,input wire [7:0] sec_per_clus,
  input wire [31:0] fat_start_lba,data_start_lba,root_dir_lba,root_clus,total_clus,
  input wire [3:0] slot_fill,sector_room,
@@ -14,7 +14,10 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  input wire rd_ready,input wire [7:0] data,input wire data_valid,
  output wire data_ready,input wire data_last,rd_done,timeout_err,crc16_err,
  input wire [7:0] err_code,err_detail,
- input wire external_service_ready,output wire[444:0] core_cmd,input wire[836:0] core_rsp);
+ input wire external_service_ready,output wire[444:0] core_cmd,input wire[836:0] core_rsp,
+ input wire media_descriptor_valid,output wire media_descriptor_ready,
+ input wire[1:0] media_descriptor_slot,input wire[63:0] media_descriptor,
+ input wire media_descriptor_found);
  // One shared file/parser/walker execution kernel. Only immutable sector-boundary
  // contexts are saved. A 16bit single-port context RAM avoids four arithmetic FSMs.
  localparam FS_BITS=136,WP_BITS=111,CTX_BITS=FS_BITS+WP_BITS+32;
@@ -25,7 +28,11 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  // Immutable four-track descriptors share unused words of the existing context
  // RAM. Only one 64-bit working register is needed during scan and file START.
  reg[63:0] track_descriptor;reg[3:0] descriptor_pending;
- reg scan_start,scan_seen;
+ reg scan_start,scan_seen;reg[3:0] preindexed_received;
+ // Only one failed track is repaired at a time. Cursor advances by physical
+ // directory slot, including rejected candidates, so every retry is bounded.
+ reg retry_mode,retry_candidate;reg[15:0] retry_cursor;
+ wire file_phase=index_done&&!(PREINDEXED&&retry_mode&&state==Q_SCAN);
  wire scan_done,dir_bad;wire [7:0] scan_code;wire [87:0] name;wire [31:0] fc,size;wire ev;
  wire valid_name=name[87:72]==16'h5356&&name[39:24]==16'h2020&&name[23:0]==24'h574156&&
  name[71:64]>=8'h30&&name[71:64]<=8'h39&&name[63:56]>=8'h30&&name[63:56]<=8'h39&&
@@ -45,7 +52,7 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  reg [CTX_PAD-CTX_BITS-1:0] context_padding;
 wire [15:0] context_q;
  wire [7:0] context_address=active*CTX_WORDS+context_index;
- wire entry_ready=state==Q_SCAN&&descriptor_pending==0&&!index_done;
+ wire entry_ready=state==Q_SCAN&&descriptor_pending==0&&(!index_done||(PREINDEXED&&retry_mode));
  wire descriptor_write=state==Q_SCAN&&descriptor_pending!=0;
  reg[1:0] descriptor_slot;reg[3:0] descriptor_matches;integer descriptor_i;
  always @*begin
@@ -58,7 +65,15 @@ wire [15:0] context_q;
   for(descriptor_i=0;descriptor_i<4;descriptor_i=descriptor_i+1)
    if(key==cache_keys[descriptor_i*16+:16]&&!found[descriptor_i])descriptor_matches[descriptor_i]=1;
  end
- wire descriptor_capture=ev&&entry_ready&&valid_name&&fc>=2&&size>=44&&|descriptor_matches;
+ wire[15:0] svc_d_ent_index,legacy_ds_ent_index;
+ wire[15:0] directory_index=EXTERNAL_SERVICE?svc_d_ent_index:legacy_ds_ent_index;
+ function[7:0] ascii_upper;input[7:0] c;begin ascii_upper=c>=8'h61&&c<=8'h7a ? c-8'h20 : c;end endfunction
+ wire any_wav=ascii_upper(name[23:16])==8'h57&&ascii_upper(name[15:8])==8'h41&&ascii_upper(name[7:0])==8'h56;
+ wire retry_capture=PREINDEXED&&retry_mode&&!retry_candidate&&ev&&entry_ready&&any_wav&&fc>=2&&size>=44&&directory_index>=retry_cursor&&directory_index!=16'hffff;
+ wire descriptor_capture=!PREINDEXED&&ev&&entry_ready&&valid_name&&fc>=2&&size>=44&&|descriptor_matches;
+ assign media_descriptor_ready=PREINDEXED&&!retry_mode&&state==Q_SCAN&&descriptor_pending==0&&!index_done;
+ wire preindexed_capture=media_descriptor_valid&&media_descriptor_ready;
+ wire[3:0] preindexed_mask=4'b1<<media_descriptor_slot;
  // Contexts occupy words 0..71; four descriptors occupy 128..143.
  wire[7:0] ram_address=descriptor_write?{4'b1000,descriptor_slot,context_index[1:0]}:
   state==Q_DESC1?{4'b1000,active,context_index[1:0]}:context_address;
@@ -68,7 +83,7 @@ wire [15:0] context_q;
  wire scan_ws,scan_wr,file_ws,file_wr,wb,wd,we,w_eoc;wire [7:0] wc,wt;
  wire [7:0] bytes_data;wire fvalid,fend,fbusy,fdone,ferr,waverr,pauseable,parser_ready;
  wire [31:0] sample;wire sample_valid;
- wire pause_boundary=state==Q_RUN&&kernel_progress&&pauseable&&!fvalid&&!sample_valid;
+ wire pause_boundary=state==Q_RUN&&kernel_progress&&pauseable&&!fvalid&&!sample_valid&&!(PREINDEXED&&retry_mode);
  wire run_kernel=(state==Q_RUN||state==Q_START)&&!pause_boundary;
  // The kernel registers themselves are the LOAD shift chain: no staging copy.
  wire [CTX_PAD-1:0] export_context={context_padding,hop_count,fs_context,wp_context};
@@ -104,27 +119,42 @@ wire [15:0] context_q;
   if(!rst_n)begin
    state<=Q_SCAN;kernel_progress<=0;active<=0;rr<=0;saved<=0;context_padding<=0;context_index<=0;
    scan_start<=0;scan_seen<=0;index_done<=0;fallback_storage<=0;fallback_initial_mask<=0;fallback_initial_pending<=0;found<=0;
-   track_descriptor<=0;descriptor_pending<=0;
+   track_descriptor<=0;descriptor_pending<=0;preindexed_received<=0;retry_mode<=0;retry_candidate<=0;retry_cursor<=0;
   end else begin
    scan_start<=0;fallback_storage<=fallback;fallback_initial_pending<=0;
    fallback_initial_mask<=(dir_bad||scan_code!=0)?4'hf:~found;
-   if(!scan_seen&&mounted&&cache_ready&&(!EXTERNAL_SERVICE||external_service_ready))begin scan_seen<=1;scan_start<=1;end
+   if(!PREINDEXED&&!scan_seen&&mounted&&cache_ready&&(!EXTERNAL_SERVICE||external_service_ready))begin scan_seen<=1;scan_start<=1;end
    if(descriptor_capture)begin
     found<=found|descriptor_matches;descriptor_pending<=descriptor_matches;
     track_descriptor<={size,fc};context_index<=0;
    end
+   if(preindexed_capture)begin
+    preindexed_received<=preindexed_received|preindexed_mask;
+    if(media_descriptor_found&&media_descriptor[31:0]>=2&&media_descriptor[63:32]>=44)begin
+     found<=found|preindexed_mask;descriptor_pending<=preindexed_mask;
+     track_descriptor<=media_descriptor;context_index<=0;
+    end
+   end
+   if(retry_capture)begin
+    descriptor_pending<=4'b1<<active;track_descriptor<={size,fc};context_index<=0;
+    retry_cursor<=directory_index+1'b1;retry_candidate<=1;
+   end
    case(state)
     Q_SCAN:begin
+     if(PREINDEXED&&retry_mode&&!scan_seen&&!scan_start)scan_seen<=1;
      if(descriptor_write)begin
       track_descriptor<={track_descriptor[15:0],track_descriptor[63:16]};
       if(context_index==3)begin descriptor_pending[descriptor_slot]<=0;context_index<=0;end
       else context_index<=context_index+1'b1;
      end
-     if(scan_seen&&scan_done&&descriptor_pending==0&&!descriptor_capture)begin
+     if(PREINDEXED&&retry_mode&&scan_seen&&scan_done&&descriptor_pending==0&&!retry_capture)begin
+      if(retry_candidate&&!dir_bad&&scan_code==0)begin context_index<=0;state<=Q_DESC1;end
+      else begin fallback_storage[active]<=1;retry_mode<=0;state<=Q_CHOOSE;end
+     end else if(!retry_mode&&(PREINDEXED?(preindexed_received==15&&mounted&&cache_ready&&(!EXTERNAL_SERVICE||external_service_ready)):(scan_seen&&scan_done))&&descriptor_pending==0&&!descriptor_capture&&!preindexed_capture)begin
       index_done<=1;fallback_initial_pending<=1;state<=Q_CHOOSE;
      end
     end
-    Q_CHOOSE:if(eligible)begin kernel_progress<=0;active<=chosen;rr<=chosen+1'b1;context_index<=0;
+    Q_CHOOSE:if(eligible)begin kernel_progress<=0;active<=chosen;rr<=chosen+1'b1;context_index<=0;retry_mode<=0;retry_cursor<=0;
      if(saved[chosen])state<=Q_LOAD1;else state<=Q_DESC1;
     end
     Q_DESC1:state<=Q_DESC2;
@@ -137,11 +167,18 @@ wire [15:0] context_q;
     Q_START:state<=Q_RUN;
     Q_RUN:begin
      if(fvalid&&(parser_ready||waverr))kernel_progress<=1;
-     if(waverr||ferr)fallback_storage[active]<=1;
+     // Confirm a retried header before allowing a sector-boundary track switch;
+     // otherwise a long JUNK header could lose its strictly advancing cursor.
+     if(PREINDEXED&&retry_mode&&sample_valid)begin retry_mode<=0;retry_cursor<=0;end
+     if((waverr||ferr)&&!PREINDEXED)fallback_storage[active]<=1;
      // Never freeze an unconsumed byte or sample; never abandon a live sector.
      if((fdone&&!fbusy&&!sample_valid)||((waverr||ferr)&&pauseable&&!fvalid&&!sample_valid))begin
-      saved[active]<=0;state<=Q_CHOOSE;
-     end else if(kernel_progress&&pauseable&&!fvalid&&!sample_valid)state<=Q_SAVE0;
+      saved[active]<=0;
+      if(PREINDEXED&&(waverr||ferr))begin
+       retry_mode<=1;retry_candidate<=0;scan_seen<=0;scan_start<=1;state<=Q_SCAN;
+       if(!retry_mode)retry_cursor<=0;
+      end else state<=Q_CHOOSE;
+     end else if(kernel_progress&&pauseable&&!fvalid&&!sample_valid&&!(PREINDEXED&&retry_mode))state<=Q_SAVE0;
     end
     Q_SAVE0:begin context_index<=0;state<=Q_SAVE;end
     Q_SAVE:begin
@@ -168,7 +205,6 @@ wire [87:0] svc_d_ent_name;
 wire [7:0] svc_d_ent_attr;
 wire [31:0] svc_d_ent_first_clus;
 wire [31:0] svc_d_ent_size;
-wire [15:0] svc_d_ent_index;
 wire svc_d_ent_valid;
 wire [31:0] svc_d_sd_rd_addr;
 wire [15:0] svc_d_sd_rd_len;
@@ -242,9 +278,9 @@ wire legacy_ds_wk_start;
 assign scan_ws=EXTERNAL_SERVICE?(external_service_ready?svc_d_wk_start:1'd0):legacy_ds_wk_start;
 wire legacy_ds_wk_rst_walk;
 assign scan_wr=EXTERNAL_SERVICE?(external_service_ready?svc_d_wk_rst_walk:1'd0):legacy_ds_wk_rst_walk;
-fat32_directory_scanner ds(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:rst_n),.scan_en(scan_start),.scan_done(legacy_ds_scan_done),.dir_bad(legacy_ds_dir_bad),.err_code(legacy_ds_err_code),
+fat32_directory_scanner #(.FULL_NAMES(PREINDEXED)) ds(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:rst_n),.scan_en(scan_start),.scan_done(legacy_ds_scan_done),.dir_bad(legacy_ds_dir_bad),.err_code(legacy_ds_err_code),
  .dbg_state(legacy_ds_dbg_state),.sec_per_clus(sec_per_clus),.root_clus(root_clus),.root_dir_lba(root_dir_lba),.data_start_lba(data_start_lba),
- .ent_name(legacy_ds_ent_name),.ent_first_clus(legacy_ds_ent_first_clus),.ent_size(legacy_ds_ent_size),.ent_valid(legacy_ds_ent_valid),.ent_ready(entry_ready),
+ .ent_name(legacy_ds_ent_name),.ent_first_clus(legacy_ds_ent_first_clus),.ent_size(legacy_ds_ent_size),.ent_index(legacy_ds_ent_index),.ent_valid(legacy_ds_ent_valid),.ent_ready(entry_ready),.name_address(8'd0),
  .sd_rd_addr(legacy_ds_sd_rd_addr),.sd_rd_len(legacy_ds_sd_rd_len),.sd_rd_en(legacy_ds_sd_rd_en),.sd_rd_ready(ready[0]),
  .sd_data(data),.sd_data_valid(dv[0]),.sd_data_ready(legacy_ds_sd_data_ready),.sd_data_last(dl[0]),.sd_rd_done(done[0]),
  .sd_timeout_err(toerr[0]),.sd_crc16_err(crcerr[0]),.sd_err_code(err_code),.sd_err_detail(err_detail),
@@ -277,8 +313,8 @@ assign en[2]=EXTERNAL_SERVICE?(external_service_ready?svc_w_sd_rd_en:1'd0):legac
 wire legacy_wk_sd_data_ready;
 assign dr[2]=EXTERNAL_SERVICE?(external_service_ready?svc_w_sd_data_ready:1'd0):legacy_wk_sd_data_ready;
 v3_cluster_walker_ctx wk(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rst_n),.context_load(load_context),
- .context_hop(next_context[WP_BITS+FS_BITS+:32]),.rst_walk(index_done?(run_kernel&&file_wr):scan_wr),.start(index_done?(run_kernel&&file_ws):scan_ws),
- .cur_clus(index_done?file_cur:scan_cur),.busy(legacy_wk_busy),.done(legacy_wk_done),.next_clus(legacy_wk_next_clus),.hop_cnt(legacy_wk_hop_cnt),
+ .context_hop(next_context[WP_BITS+FS_BITS+:32]),.rst_walk(file_phase?(run_kernel&&file_wr):scan_wr),.start(file_phase?(run_kernel&&file_ws):scan_ws),
+ .cur_clus(file_phase?file_cur:scan_cur),.busy(legacy_wk_busy),.done(legacy_wk_done),.next_clus(legacy_wk_next_clus),.hop_cnt(legacy_wk_hop_cnt),
  .eoc(legacy_wk_eoc),.error(legacy_wk_error),.err_code(legacy_wk_err_code),.err_detail(legacy_wk_err_detail),.dbg_state(legacy_wk_dbg_state),
  .fat_start_lba(fat_start_lba),.total_clus(total_clus),.sd_rd_addr(legacy_wk_sd_rd_addr),.sd_rd_len(legacy_wk_sd_rd_len),.sd_rd_en(legacy_wk_sd_rd_en),.sd_rd_ready(ready[2]),
  .sd_data(data),.sd_data_valid(dv[2]),.sd_data_ready(legacy_wk_sd_data_ready),.sd_data_last(dl[2]),.sd_rd_done(done[2]),
@@ -334,7 +370,7 @@ v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rs
  reg [1:0] phase,owner;reg [4:0] arm_wait;reg [1:0] pick;reg want;
  always @*begin pick=0;want=0;
   if(states[2]==1)begin pick=2;want=1;end
-  else if(!index_done&&states[0]==1)begin pick=0;want=1;end
+  else if((!index_done||(PREINDEXED&&retry_mode))&&states[0]==1)begin pick=0;want=1;end
   else if(state==Q_RUN&&!pause_boundary&&states[1]==1)begin pick=1;want=1;end
  end
  assign rd_en=phase==1&&en[owner];assign rd_addr=addr[owner];assign rd_len=lens[owner];
@@ -357,5 +393,5 @@ v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rs
    default:phase<=0;
   endcase
  end
-assign core_cmd={kernel_rst_n,scan_start,entry_ready,load_context,run_kernel,start,track_descriptor[31:0],track_descriptor[63:32],(parser_ready||waverr)&&run_kernel,{129'd0,next_context[WP_BITS+:FS_BITS]},load_context,next_context[WP_BITS+FS_BITS+:32],index_done?(run_kernel&&file_wr):scan_wr,index_done?(run_kernel&&file_ws):scan_ws,index_done?file_cur:scan_cur,ready,dv,dl,done,toerr,crcerr,data,err_code,err_detail};
+assign core_cmd={kernel_rst_n,scan_start,entry_ready,load_context,run_kernel,start,track_descriptor[31:0],track_descriptor[63:32],(parser_ready||waverr)&&run_kernel,{129'd0,next_context[WP_BITS+:FS_BITS]},load_context,next_context[WP_BITS+FS_BITS+:32],file_phase?(run_kernel&&file_wr):scan_wr,file_phase?(run_kernel&&file_ws):scan_ws,file_phase?file_cur:scan_cur,ready,dv,dl,done,toerr,crcerr,data,err_code,err_detail};
 endmodule

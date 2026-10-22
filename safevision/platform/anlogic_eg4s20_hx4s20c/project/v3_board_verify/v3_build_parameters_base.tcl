@@ -8,3 +8,6 @@ set_param place seed 0
 
 # Target measured SYS100 watchdog route using documented setup-margin mode.
 set_param route timing greedy
+
+# Measured capacity profile; original clocks, I/O and STA gates retained.
+set_param rtl min_ripple_len 32

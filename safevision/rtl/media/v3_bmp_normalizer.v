@@ -112,7 +112,13 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
     EHOLD:if(pixel_ready)begin
      pixel_valid<=0;if(!col_black)store_x<=store_x+1'b1;
      if(out_x!=639)begin out_x<=out_x+1'b1;state<=EWAIT;end
-     else if(out_row==479)state<=eof_seen?FINISH:DRAIN;
+     else if(out_row==479)begin
+      state<=eof_seen?FINISH:DRAIN;
+      // Downscaling can finish the visible frame before the source's last
+      // rows. Keep checking the unselected tail instead of accepting an
+      // arbitrary early EOF after the final sampled row.
+      if(!eof_seen)begin src_row<=src_row+1'b1;begin_input_row();end
+     end
      else begin
       out_x<=0;store_x<=0;out_row<=out_row+1'b1;
       if(out_row+1'b1<pad_before||out_row+1'b1>=pad_before+dh)state<=EWAIT;
@@ -120,7 +126,20 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
       else begin y_error<=y_error+h;y_steps<=0;state<=YADV;end
      end
     end
-    DRAIN:if(din_valid&&din_eof)begin eof_seen<=1;state<=FINISH;end
+    DRAIN:if(din_valid)begin
+     case(phase)
+      0:phase<=1;
+      1:phase<=2;
+      2:begin phase<=bytes4||(cols_left==1&&w[1:0]!=0)?2'd3:2'd0;cols_left<=cols_left-1'b1;end
+      3:if(bytes4)phase<=0;else padding_left<=padding_left-1'b1;
+     endcase
+     if(last_row_byte && src_row!=h-1'b1)begin src_row<=src_row+1'b1;begin_input_row();end
+     if(din_eof)begin
+      eof_seen<=1;
+      if(last_row_byte && src_row==h-1'b1)state<=FINISH;
+      else begin error<=1;err_code<=`ERR_MEDIA_INVALID;err_detail<=`DET_BMP_TRUNC;done<=1;state<=FAILED;end
+     end
+    end
     FINISH:begin done<=1;state<=IDLE;end
     FAILED:begin pixel_valid<=0;state<=IDLE;end
     default:state<=IDLE;

@@ -35,11 +35,25 @@ def check_roms(text,root):
  if '.FLEX_SPECTRUM(1)'in top:
   asset=root/'safevision/assets/audio/v3_spectrum_twiddle.mem'
   values=[int(t,16)for t in asset.read_text(encoding='utf-8-sig').split()]
-  if len(values)!=256 or any(v<0 or v>0xffffffff for v in values):raise ValueError('invalid spectrum twiddle ROM shape')
-  expected=b''.join(v.to_bytes(4,'little')for v in values);parity=bytes(128)
-  matches=[n for n,data,p,widths in mapped if data==expected and p==parity]
+  if len(values)!=512 or any(v<0 or v>0xffff for v in values) or any(values[128:]):raise ValueError('invalid quarter-wave spectrum ROM shape/padding')
+  spectrum=(root/'safevision/rtl/video/v3_audio_spectrum.v').read_text(encoding='utf-8-sig')
+  shared=bool(re.search(r'reg\s*\[8:0\]\s+shared_ram\s*\[0:1023\]',spectrum))
+  if shared:
+   # One physical DP9 RAM: quarter coefficients are split into two nine-bit
+   # words each. Both display banks and every unused word start at zero.
+   words=[0]*1024
+   for i,v in enumerate(values[:128]):words[2*i]=v&511;words[2*i+1]=(v>>9)&127
+   expected=bytes(v&255 for v in words)
+   parity=sum(((v>>8)&1)<<i for i,v in enumerate(words)).to_bytes(128,'little')
+   reviewed_widths=['9','9']
+  else:
+   # TD maps each logical16 word into physical18; bits8/17 are in INITP.
+   expected=b''.join(bytes((v&255,(v>>9)&255))for v in values)
+   parity=sum((((v>>8)&1)|(((v>>17)&1)<<1))<<(2*i)for i,v in enumerate(values)).to_bytes(128,'little')
+   reviewed_widths=['18','18']
+  matches=[n for n,data,p,widths in mapped if data==expected and p==parity and widths==reviewed_widths]
   if len(matches)!=1:raise ValueError('mapped spectrum twiddle ROM missing/corrupt/duplicated')
-  result.append(dict(asset=asset.name,mapped_instance=matches[0],bytes_compared=1024,parity_bits_compared=1024,logical_bits=8192,payload_sha256=hashlib.sha256(expected+parity).hexdigest()))
+  result.append(dict(asset=asset.name,mapped_instance=matches[0],bytes_compared=1024,parity_bits_compared=1024,logical_bits=2048 if shared else 8192,quarter_wave_coefficients=128,zero_padding_words=384,layout='shared_dp9_coefficient_display'if shared else 'quarter_pdpw18',mutable_display_words=128 if shared else 0,unused_zero_words=640 if shared else 384,payload_sha256=hashlib.sha256(expected+parity).hexdigest()))
  return result
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--netlist',type=Path,required=True);ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()

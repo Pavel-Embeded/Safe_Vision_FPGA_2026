@@ -140,7 +140,12 @@ module sd_bmp_player #(
     output wire[7:0] fs_sec_per_clus,
     output wire[31:0] fs_fat_start_lba,fs_data_start_lba,fs_root_dir_lba,fs_root_clus,fs_total_clus,
     output reg[31:0] progress_count,
-    output reg[15:0] last_reject_error,last_reject_key
+    output reg[15:0] last_reject_error,last_reject_key,
+    // REF-domain immutable WAV descriptor, committed only after image approval.
+    // The index remains frozen in S_SWAP until the audio context RAM accepts it.
+    output wire media_descriptor_valid,input wire media_descriptor_ready,
+    output wire[1:0] media_descriptor_slot,output wire[63:0] media_descriptor,
+    output wire media_descriptor_found
 );
 
     // ========================================================================
@@ -397,6 +402,10 @@ module sd_bmp_player #(
     wire[15:0] full_name_data=SHARED_SERVICE?service_name_data:legacy_name_data;
     wire[8:0] full_name_length=SHARED_SERVICE?service_name_length:legacy_name_length;
     wire flexible_rescan;
+    assign media_descriptor_valid=FLEX_FILES&&RESIDENT_CACHE&&state_o==S_SWAP;
+    assign media_descriptor_slot=out_slot;
+    assign media_descriptor={sel_wav_size,sel_wav_clus};
+    assign media_descriptor_found=sel_wav_valid;
     assign external_service_ready=SHARED_SERVICE&&ext_owner&&service_ready_int;
     assign external_core_rsp=external_service_ready?physical_core_rsp:837'd0;
     // service_ready_int implies service_owner_q==ext_owner. During the
@@ -1055,14 +1064,18 @@ fat32_cluster_walker u_wk_fst (
                 // 目录遍历：idx_clear（单拍）→ scan_en（单拍）→ 等 scan_done
                 //            → idx_commit（单拍）→ S_INDEX
                 S_SCAN: begin
-                    to_cnt <= to_cnt + 32'd1;
+                    // A complete arbitrary-name directory may span many SD
+                    // sectors. Bound a lack of progress rather than rejecting
+                    // a healthy large directory after a fixed total duration.
+                    if(FLEX_FILES&&((rd_data_valid&&bus_data_ready)||(ent_valid&&ent_ready)))to_cnt<=0;
+                    else to_cnt <= to_cnt + 32'd1;
                     case (scan_sub)
                         2'd0: begin idx_clear <= 1'b1; scan_sub <= 2'd1; end
                         2'd1: begin scan_en   <= 1'b1; scan_sub <= 2'd2; end
                         2'd2: begin scan_sub<=2'd3; end // let scanner consume start and clear stale done
                         default: begin
                             if (scan_done) begin
-                                if (dir_bad) begin
+                                if (dir_bad||(FLEX_FILES&&dn_ec!=`ERR_NONE)) begin
                                     fail_stage <= ST_SCAN;
                                     err_code   <= dn_ec;
                                     err_detail <= dn_ed;
@@ -1210,8 +1223,12 @@ fat32_cluster_walker u_wk_fst (
                 // ------------------------------------------------------------
                 // 换帧已在 mem 侧完成（含 core 的 swap）⇒ 换另一槽、准备下一幅
                 S_SWAP: begin
-                    to_cnt <= 0;
+                    if(FLEX_FILES&&RESIDENT_CACHE&&!media_descriptor_ready)begin
+                     to_cnt<=to_cnt+1'b1;
+                     if(to_cnt>=SWAP_TO_N)begin fail_stage<=ST_STREAM;err_code<=MY_TO_SWAP;err_detail<=0;state_o<=S_ERROR;end
+                    end else to_cnt <= 0;
                     if(RESIDENT_CACHE) begin
+                       if(!FLEX_FILES||media_descriptor_ready)begin
                         // Every accepted image owns a DIFFERENT resident slot.
                         // Candidate cursor advances on both pass and rejection.
                         out_slot<=cache_count[1:0];cursor_key<=selected_key;
@@ -1219,6 +1236,7 @@ fat32_cluster_walker u_wk_fst (
                         else if(cur_file==last_slot) begin
                             cur_file<=0;pick_slot<=0;scan_sub<=0;state_o<=S_SCAN;
                         end else begin cur_file<=cur_file+1'b1;pick_slot<=cur_file+1'b1;state_o<=S_READY;end
+                       end
                     end else begin out_slot<=out_slot^2'b01;state_o<=S_READY;end
                 end
 

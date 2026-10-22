@@ -86,6 +86,11 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire[1:0] load_slot;wire[3:0] player_state,player_stage;
  wire[7:0] player_code,player_detail;wire sd_ready,card_usable;
  wire[3:0] cache_ref;wire[2:0] cache_count;wire[63:0] cache_keys;wire[15:0] rejected_files;
+ // REF-domain descriptor handshake.  A descriptor is published only after
+ // the corresponding BMP passes the SDRAM integrity check.  The audio source
+ // stores it in its existing context RAM before allowing the next publication.
+ wire media_descriptor_valid,media_descriptor_ready,media_descriptor_found;
+ wire[1:0] media_descriptor_slot;wire[63:0] media_descriptor;
  wire[31:0] player_bytes,player_progress;wire[15:0] player_frames,last_reject_error,last_reject_key;
  wire[7:0] init_r1;wire[2:0] init_seq;
  wire sink_ready,sink_done,sink_ok;
@@ -102,6 +107,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  .init_r1(init_r1),.init_seq(init_seq),.sd_ready(sd_ready),.card_usable(card_usable),.file_cnt(),.cur_file(),
  .cur_file_size(),.cur_bytes_rd(player_bytes),.cur_px_written(),.last_frame_ok_o(),.frame_cnt(player_frames),
  .cache_valid(cache_ref),.cache_count(cache_count),.cache_keys(cache_keys),.rejected_files(rejected_files),
+ .media_descriptor_valid(media_descriptor_valid),.media_descriptor_ready(media_descriptor_ready),
+ .media_descriptor_slot(media_descriptor_slot),.media_descriptor(media_descriptor),.media_descriptor_found(media_descriptor_found),
  .progress_count(player_progress),.last_reject_error(last_reject_error),.last_reject_key(last_reject_key),
  .external_core_cmd(fs_core_cmd),.external_core_rsp(fs_core_rsp),.external_service_ready(fs_service_ready),
  .ext_rd_en(ext_req),.ext_rd_addr(ext_addr),.ext_rd_len(ext_len),.ext_rd_ready(ext_ready),
@@ -243,8 +250,9 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  video_level_sync frame_heartbeat_sync(.clk(sys_clk),.rst_n(sys_rst_n),.async_level(frame_toggle),.level(frame_toggle_sys));
  always @(posedge sys_clk or negedge sys_rst_n)if(!sys_rst_n)previous_frame_toggle<=0;else previous_frame_toggle<=frame_toggle_sys;
  wire err_push;wire[7:0] err_code;wire[3:0] err_src;wire[2:0] err_level;wire[31:0] err_ts;
- // 4.9s WAIT plus finite reset/settle leaves margin inside the 5s SAFE goal.
- v3_supervisor #(.BOOT_MS_OVERRIDE(60000),.RECOVER_CYCLES(490000000),.WINDOW_PIPELINE(HD)) supervisor(.clk(sys_clk),.rst_n(sys_rst_n),.manual_safe(manual_safe),.recover_request(recover_request),.cache_ready(cached),
+ // SAFE is immediate; the4.9s recovery WAIT budget measures inactivity.
+ // Valid large-file progress extends preload, never the frame/media watchdogs.
+ v3_supervisor #(.PROGRESSIVE_LOAD(1),.BOOT_MS_OVERRIDE(60000),.RECOVER_CYCLES(490000000),.WINDOW_PIPELINE(HD)) supervisor(.clk(sys_clk),.rst_n(sys_rst_n),.manual_safe(manual_safe),.recover_request(recover_request),.cache_ready(cached),
  .media_failed(ref_status_sys[15:12]==10 || mem_status_sys[7:0]!=0),
  .media_code((mem_status_sys[7:0]!=0)?mem_status_sys[7:0]:ref_status_sys[31:24]),
  .integrity_fault(mem_status_sys[11] || video_fault || presentation_fault),.bus_fault(mem_status_sys[10] || mem_status_sys[9]),.fatal(pll_loss_sys),
@@ -286,7 +294,9 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  if(audio_commit_valid && audio_commit_ready)audio_commit_valid<=0;
  if(frame_commit)begin audio_commit_valid<=1;audio_commit_slot<=active_slot;audio_commit_gen<=generation;end
  end end
- v3_audio_system #(.EXTERNAL_SERVICE(1),.MEDIA_RESET_INCLUDES_GLOBAL(1),.HANDBOOK_PROFILE(1)) audio(.external_service_ready(fs_service_ready),.core_cmd(fs_core_cmd),.core_rsp(fs_core_rsp),
+ v3_audio_system #(.PREINDEXED(1),.EXTERNAL_SERVICE(1),.MEDIA_RESET_INCLUDES_GLOBAL(1),.HANDBOOK_PROFILE(1)) audio(.external_service_ready(fs_service_ready),.core_cmd(fs_core_cmd),.core_rsp(fs_core_rsp),
+ .media_descriptor_valid(media_descriptor_valid),.media_descriptor_ready(media_descriptor_ready),
+ .media_descriptor_slot(media_descriptor_slot),.media_descriptor(media_descriptor),.media_descriptor_found(media_descriptor_found),
  .ref_clk(clk),.mem_clk(mem_clk),.audio_clk(audio_clk),.pixel_clk(pixel_clk),.sys_clk(sys_clk),
  .rst_n(control_common_rst_n),.media_reset(!media_common_rst_n),.mounted(card_usable && sd_ready),.cache_ready(&cache_ref),.cache_keys(cache_keys),
  .sec_per_clus(sec_per_clus),.fat_start_lba(fat_start),.data_start_lba(data_start),.root_dir_lba(root_lba),.root_clus(root_clus),.total_clus(total_clus),

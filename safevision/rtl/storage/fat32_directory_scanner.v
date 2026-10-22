@@ -347,7 +347,7 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
                     // 末字节：本条装配完成，做跳过判定
                     5'd31: begin
                         ent_size[31:24] <= sd_data;
-                        if (!stop_pending && !skip_entry && (!SV_MEDIA_ONLY || (media_name_ok&&(media_bmp||media_wav)))) begin
+                        if (!stop_pending && !skip_entry && (!FULL_NAMES||slot_cnt!=16'hffff) && (!SV_MEDIA_ONLY || (media_name_ok&&(media_bmp||media_wav)))) begin
                             if (attr_raw == 8'h0F) begin
                                 // 长文件名碎片：跳过
                             end else if (attr_raw[3]) begin
@@ -382,6 +382,14 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0)
                             to_cnt      <= 32'd0;
                             mstate      <= D_SEC_REQ;
                         end
+                    end
+                    // Generic media keys reserve zero as the initial cursor.
+                    // Reject an oversized directory before slot+1 can wrap to
+                    // zero and cause repeated selection or an endless preload.
+                    // End-of-directory padding does not consume this budget.
+                    if(FULL_NAMES&&ent_off==31&&slot_cnt==16'hffff&&!stop_pending)begin
+                        dir_bad<=1'b1;err_code<=`ERR_MEDIA_INVALID;err_detail<=`DET_DIR_OOB;
+                        mstate<=D_ERR;
                     end
                 end
             end

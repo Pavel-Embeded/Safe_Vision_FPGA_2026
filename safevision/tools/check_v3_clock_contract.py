@@ -21,12 +21,14 @@ def supervisor_parameters(text):
   raise ValueError('unsupported supervisor parameter syntax')
  if len({key for key,value in pairs})!=len(pairs):raise ValueError('duplicate supervisor parameter')
  values=dict(pairs)
- if not set(values)<={'RECOVER_CYCLES','WINDOW_PIPELINE','BOOT_MS_OVERRIDE'} or not re.fullmatch(r'\d+',values.get('RECOVER_CYCLES','')):
+ if not set(values)<={'RECOVER_CYCLES','WINDOW_PIPELINE','BOOT_MS_OVERRIDE','PROGRESSIVE_LOAD'} or not re.fullmatch(r'\d+',values.get('RECOVER_CYCLES','')):
   raise ValueError('unexpected or nonliteral supervisor recovery parameter')
  if 'BOOT_MS_OVERRIDE'in values and values['BOOT_MS_OVERRIDE']!='60000':
   raise ValueError('variable-resolution board load budget must be60000ms')
  if 'WINDOW_PIPELINE'in values and values['WINDOW_PIPELINE']!='HD':
   raise ValueError('window pipeline must explicitly follow the HD mode')
+ if 'PROGRESSIVE_LOAD'in values and values['PROGRESSIVE_LOAD']!='1':
+  raise ValueError('progressive media load must be explicitly enabled or omitted')
  return values
 
 
@@ -88,9 +90,20 @@ def check(root):
   if Fraction(re.search(r'\.FIN\("([\d.]+)"\)',mt)[1])*1000000!=ref_hz:raise ValueError('memory PLL FIN differs from board reference')
   vals={k:int(re.search(r'\.'+k+r'\((\d+)\)',mt)[1])for k in ['REFCLK_DIV','FBCLK_DIV']}
   sys_hz=ref_hz*vals['FBCLK_DIV']/vals['REFCLK_DIV']
-  recovery_cycles=int(supervisor_parameters(t)['RECOVER_CYCLES'])
+  supervisor=supervisor_parameters(t)
+  recovery_cycles=int(supervisor['RECOVER_CYCLES'])
   if recovery_cycles!=sys_hz*49/10 or (recovery_cycles+130)>=sys_hz*5:raise ValueError('recovery wait/reset/settle deadline exceeds5s envelope')
   spi_profile={'enabled':True,'fast_hz':25000000,'sample_edge':'falling_REF','hold_budget_ns':10,'native_edges_separately_required':True,'recovery_wait_seconds':float(Fraction(recovery_cycles,sys_hz)),'electrical_contract_sha256':hashlib.sha256(budget_path.read_bytes()).hexdigest()}
+  progressive=supervisor.get('PROGRESSIVE_LOAD')=='1'
+  if progressive:
+   if t.count('.FLEX_FILES(1)')!=1:raise ValueError('progressive load requires the bounded flexible media loader')
+   for mode in ('control','hd'):
+    raw=(root/f'safevision/rtl/{mode}/v3_supervisor.v').read_text(encoding='utf-8')
+    if raw.count('.PROGRESSIVE_WAIT(PROGRESSIVE_LOAD)')!=1 or raw.count('.progress(progress_heartbeat || mem_heartbeat)')!=1:
+     raise ValueError('progressive recovery heartbeat is not propagated: '+mode)
+  spi_profile.update(recovery_budget_kind='no_progress'if progressive else'total_wait',
+    boot_budget_kind='no_progress'if progressive else'total_preload',
+    total_recovery_duration_bounded_by_this_check=not progressive)
  else:spi_profile={'enabled':False,'profile':'legacy','native_edges_separately_required':True}
  return {'complete':True,'kind':'configured_nominal_clock_contract','clocks':clocks,'spi_profile':spi_profile,'board_reference_hz':float(ref_hz),
   'board_sdc_sha256':hashlib.sha256(sdc.read_bytes()).hexdigest(),

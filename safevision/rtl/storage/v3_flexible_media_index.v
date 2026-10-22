@@ -16,10 +16,12 @@ module v3_flexible_media_index(
  localparam IDLE=0,WAIT_NAME=1,COMPARE=2,COPY_WAIT=3,COPY_WORD=4,RELEASE=5;
  reg[2:0] state;reg[1:0] phase;reg compare_best;
  reg best_valid,cursor_valid,best_bank,cursor_bank;
- reg[8:0] best_length,cursor_length,character,current_length;
- reg[87:0] best_short,current_short;
- reg[31:0] current_cluster,current_size;
- reg[15:0] current_index;
+ reg[8:0] best_length,cursor_length,character;
+ // ent_valid/ent_ready freezes raw scanner metadata throughout compare/copy.
+ wire[8:0] current_length=phase==2 ? name_length-9'd4 : name_length;
+ reg[16:0] best_number;
+ wire[31:0] current_cluster=ent_first_clus,current_size=ent_size;
+ wire[15:0] current_index=ent_index;
  (* ram_style="bram" *)reg[15:0] names[0:511];
  reg[15:0] retained_character;
  wire selected_bank=compare_best?best_bank:cursor_bank;
@@ -33,7 +35,7 @@ module v3_flexible_media_index(
  function[7:0] upper;input[7:0] c;begin upper=c>=8'h61&&c<=8'h7a ? c-8'h20 : c;end endfunction
  wire bmp=upper(ent_name[23:16])==8'h42&&upper(ent_name[15:8])==8'h4d&&upper(ent_name[7:0])==8'h50;
  wire wav=upper(ent_name[23:16])==8'h57&&upper(ent_name[15:8])==8'h41&&upper(ent_name[7:0])==8'h56;
- wire legal=ent_attr!=8'h0f&&!ent_attr[3]&&!ent_attr[4]&&ent_name[87:80]!=8'he5&&ent_name[87:80]!=0&&ent_first_clus>=2&&ent_size!=0;
+ wire legal=ent_attr!=8'h0f&&!ent_attr[3]&&!ent_attr[4]&&ent_name[87:80]!=8'he5&&ent_name[87:80]!=0&&ent_first_clus>=2&&ent_size!=0&&ent_index!=16'hffff;
  function[16:0] numbered;input[87:0] s;reg[15:0] v;reg ok;integer k;reg[7:0] c;begin
   v=0;ok=upper(s[87:80])==8'h53&&upper(s[79:72])==8'h56&&s[39:24]==16'h2020;
   for(k=0;k<4;k=k+1)begin c=s[71-k*8-:8];
@@ -42,53 +44,58 @@ module v3_flexible_media_index(
   end
   numbered={ok&&v!=0,v};
  end endfunction
- wire[16:0] candidate_number=numbered(ent_name),selected_number=numbered(best_short);
- reg[31:0] first_wav_cluster,first_wav_size,ordinal_wav_cluster,ordinal_wav_size;
- reg first_wav_valid,ordinal_wav_valid,paired,commit_pending;
+ wire[16:0] candidate_number=numbered(ent_name),selected_number=best_number;
+ // The ordinal candidate supersedes the first candidate when it exists.
+ // One 64-bit descriptor therefore represents both fallback cases exactly.
+ reg[31:0] fallback_wav_cluster,fallback_wav_size;
+ reg fallback_wav_valid,paired,commit_pending,exact_pair;
+ reg[2:0] wav_ordinal;
  wire[8:0] target_length=phase==2?(best_length>=4?best_length-4:0):(compare_best?best_length:cursor_length);
  wire[15:0] current_char=character<current_length?name_data:16'd0;
  wire[15:0] target_char=character<target_length?retained_character:16'd0;
  task release_entry;begin state<=RELEASE;end endtask
  task copy_current;begin character<=0;state<=COPY_WAIT;end endtask
  task select_current_metadata;begin
-  best_valid<=1;best_length<=current_length;best_short<=current_short;
+  best_valid<=1;best_length<=current_length;best_number<=candidate_number;
   sel_first_clus<=current_cluster;sel_size<=current_size;sel_key<=current_index+16'd1;
  end endtask
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
    state<=IDLE;phase<=0;compare_best<=0;best_valid<=0;cursor_valid<=0;best_bank<=0;cursor_bank<=1;
-   best_length<=0;cursor_length<=0;character<=0;current_length<=0;best_short<=0;current_short<=0;
-   current_cluster<=0;current_size<=0;current_index<=0;rescan_request<=0;idx_done<=0;file_cnt<=0;file_valid<=0;
+   best_length<=0;cursor_length<=0;character<=0;best_number<=0;
+   rescan_request<=0;idx_done<=0;file_cnt<=0;file_valid<=0;
    sel_key<=0;sel_first_clus<=0;sel_size<=0;sel_wav_first_clus<=0;sel_wav_size<=0;sel_wav_valid<=0;
-   bmp_seen<=0;wav_seen<=0;first_wav_cluster<=0;first_wav_size<=0;ordinal_wav_cluster<=0;ordinal_wav_size<=0;
-   first_wav_valid<=0;ordinal_wav_valid<=0;paired<=0;commit_pending<=0;
+   bmp_seen<=0;wav_seen<=0;wav_ordinal<=0;fallback_wav_cluster<=0;fallback_wav_size<=0;
+   fallback_wav_valid<=0;paired<=0;commit_pending<=0;exact_pair<=0;
   end else begin
    idx_done<=0;rescan_request<=0;
    if(idx_clear)begin
     phase<=1;state<=IDLE;character<=0;
     cursor_valid<=cursor_key!=0&&best_valid;cursor_length<=best_length;
     cursor_bank<=best_bank;best_bank<=~best_bank;best_valid<=0;
-    file_cnt<=0;file_valid<=0;sel_wav_valid<=0;bmp_seen<=0;wav_seen<=0;
-    first_wav_valid<=0;ordinal_wav_valid<=0;paired<=0;commit_pending<=0;
+    file_cnt<=0;file_valid<=0;sel_wav_valid<=0;bmp_seen<=0;wav_seen<=0;wav_ordinal<=0;
+    fallback_wav_valid<=0;paired<=0;commit_pending<=0;exact_pair<=0;
    end else begin
     case(state)
      IDLE:if(ent_valid)begin
       if(phase==1&&legal&&bmp)begin
        if(bmp_seen!=65535)bmp_seen<=bmp_seen+1'b1;
-       current_length<=name_length;current_cluster<=ent_first_clus;current_size<=ent_size;current_short<=ent_name;current_index<=ent_index;
+       
        character<=0;compare_best<=0;
        if(cursor_valid)state<=WAIT_NAME;
        else if(best_valid)begin compare_best<=1;state<=WAIT_NAME;end
        else state<=COPY_WAIT;
       end else if(phase==2&&legal&&wav)begin
        if(wav_seen!=65535)wav_seen<=wav_seen+1'b1;
-       if(!first_wav_valid)begin first_wav_valid<=1;first_wav_cluster<=ent_first_clus;first_wav_size<=ent_size;end
-       if(wav_seen=={14'd0,resident_slot})begin ordinal_wav_valid<=1;ordinal_wav_cluster<=ent_first_clus;ordinal_wav_size<=ent_size;end
-       current_cluster<=ent_first_clus;current_size<=ent_size;
-       if(candidate_number[16]&&selected_number[16]&&candidate_number[15:0]==selected_number[15:0])begin
+       if(wav_ordinal<4)wav_ordinal<=wav_ordinal+1'b1;
+       if(!fallback_wav_valid||wav_ordinal=={1'b0,resident_slot})begin
+        fallback_wav_valid<=1;fallback_wav_cluster<=ent_first_clus;fallback_wav_size<=ent_size;
+       end
+       
+       if(!exact_pair&&name_length>=4&&best_length>=4&&name_length==best_length)begin
+        character<=0;compare_best<=1;state<=WAIT_NAME;
+       end else if(!paired&&candidate_number[16]&&selected_number[16]&&candidate_number[15:0]==selected_number[15:0])begin
         paired<=1;sel_wav_first_clus<=ent_first_clus;sel_wav_size<=ent_size;release_entry();
-       end else if(!paired&&name_length>=4&&best_length>=4&&name_length==best_length)begin
-        current_length<=name_length-4;character<=0;compare_best<=1;state<=WAIT_NAME;
        end else release_entry();
       end else release_entry();
      end
@@ -96,7 +103,7 @@ module v3_flexible_media_index(
      COMPARE:begin
       if(phase==2)begin
        if(current_char!=target_char)release_entry();
-       else if(character==current_length)begin paired<=1;sel_wav_first_clus<=current_cluster;sel_wav_size<=current_size;release_entry();end
+       else if(character==current_length)begin paired<=1;exact_pair<=1;sel_wav_first_clus<=current_cluster;sel_wav_size<=current_size;release_entry();end
        else begin character<=character+1'b1;state<=WAIT_NAME;end
       end else if(compare_best)begin
        if(current_char<target_char)copy_current();
@@ -118,13 +125,13 @@ module v3_flexible_media_index(
     if(idx_commit)commit_pending<=1;
     if(commit_pending&&state==IDLE&&!ent_valid)begin
      commit_pending<=0;
-     if(phase==1&&best_valid)begin phase<=2;rescan_request<=1;wav_seen<=0;end
+     if(phase==1&&best_valid)begin phase<=2;rescan_request<=1;wav_seen<=0;wav_ordinal<=0;end
      else begin
       phase<=0;idx_done<=1;file_cnt<=best_valid?1:0;file_valid<=best_valid?1:0;
-      sel_wav_valid<=paired||ordinal_wav_valid||first_wav_valid;
+      sel_wav_valid<=paired||fallback_wav_valid;
       if(!paired)begin
-       sel_wav_first_clus<=ordinal_wav_valid?ordinal_wav_cluster:first_wav_cluster;
-       sel_wav_size<=ordinal_wav_valid?ordinal_wav_size:first_wav_size;
+       sel_wav_first_clus<=fallback_wav_cluster;
+       sel_wav_size<=fallback_wav_size;
       end
      end
     end

@@ -7,7 +7,7 @@
 // commit_valid is retained until commit_ready. slot/generation change atomically.
 // Only matching-generation samples can reach the output; mismatches drain at
 // AUDIO clock speed. A missing/invalid WAV selects the same ROM as a quiet fallback.
-module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_SERVICE=0,MEDIA_RESET_INCLUDES_GLOBAL=0,HANDBOOK_PROFILE=0)(
+module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_SERVICE=0,MEDIA_RESET_INCLUDES_GLOBAL=0,HANDBOOK_PROFILE=0,PREINDEXED=0)(
  input wire ref_clk,mem_clk,audio_clk,pixel_clk,sys_clk,rst_n,media_reset,
  input wire external_service_ready,output wire[444:0] core_cmd,input wire[836:0] core_rsp,
  input wire mounted,cache_ready,input wire [63:0] cache_keys,input wire [7:0] sec_per_clus,
@@ -25,7 +25,11 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  output wire req,wr,output wire [31:0] addr,wdata,output wire [15:0] len,
  input wire ack,busy,input wire [31:0] rdata,input wire rvalid,
  output wire pcm_valid,output wire [23:0] left,right,
- output wire acr_valid,output wire [19:0] N,CTS);
+ output wire acr_valid,output wire [19:0] N,CTS,
+ // All descriptor signals are REF-domain; accepted during resident preload.
+ input wire media_descriptor_valid,output wire media_descriptor_ready,
+ input wire[1:0] media_descriptor_slot,input wire[63:0] media_descriptor,
+ input wire media_descriptor_found);
  // Every global endpoint has asynchronous assertion and local synchronous release.
  // All mailbox endpoints in a group share the SAME raw assertion epoch.
  wire ref_global_rst_n,mem_global_rst_n,audio_global_rst_n,pixel_global_rst_n,sys_global_rst_n;
@@ -65,7 +69,10 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
   assign room[g]=global_sector_room;
  end endgenerate
 
- v3_wav_source #(.EXTERNAL_SERVICE(EXTERNAL_SERVICE)) source(.external_service_ready(external_service_ready),.core_cmd(core_cmd),.core_rsp(core_rsp),.clk(ref_clk),.rst_n(ref_rst_n),.mounted(mounted),.cache_ready(cache_ready),
+ v3_wav_source #(.EXTERNAL_SERVICE(EXTERNAL_SERVICE),.PREINDEXED(PREINDEXED)) source(
+ .media_descriptor_valid(media_descriptor_valid),.media_descriptor_ready(media_descriptor_ready),
+ .media_descriptor_slot(media_descriptor_slot),.media_descriptor(media_descriptor),.media_descriptor_found(media_descriptor_found),
+ .external_service_ready(external_service_ready),.core_cmd(core_cmd),.core_rsp(core_rsp),.clk(ref_clk),.rst_n(ref_rst_n),.mounted(mounted),.cache_ready(cache_ready),
  .cache_keys(cache_keys),.sec_per_clus(sec_per_clus),.fat_start_lba(fat_start_lba),.data_start_lba(data_start_lba),
  .root_dir_lba(root_dir_lba),.root_clus(root_clus),.total_clus(total_clus),.slot_fill(fill),.sector_room(room),
  .pcm_data(source_data),.pcm_valid(source_valid),.pcm_ready(source_ready),.index_done(index_ref),.fallback(fb_ref),

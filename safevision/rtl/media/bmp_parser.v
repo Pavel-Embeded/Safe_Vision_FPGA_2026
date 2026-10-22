@@ -83,6 +83,7 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
     reg  [31:0] bfsize_r;
     reg  [31:0] offbits_r;
     reg         dib_ge40_r;
+    reg         dib_within_offset_r;
     reg  [15:0] width_lo_r;
     reg         width_hi_zero_r;
     reg  [15:0] height_lo_r;
@@ -98,7 +99,11 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
     // Keep exact diagnostic low words and sign; compress only unpublished
     // predicates. Header fields are complete before byte 53 publishes results.
     wire sig_ok    = sig_match_r;
-    wire dib_ok    = dib_ge40_r;
+    // Extended DIB metadata must end before bfOffBits. Compare each little-
+    // endian byte as it arrives, so no additional 32-bit retained field is
+    // needed. Legacy mode retains its original header acceptance contract.
+    wire [31:0] dib_capacity = offbits_r - 32'd14;
+    wire dib_ok    = dib_ge40_r && (!FLEX_PIXELS || dib_within_offset_r);
     wire legacy_size_ok = (width_lo_r == 16'd640) && width_hi_zero_r &&
                      ((height_lo_r == 16'd480) || (height_lo_r == 16'hfe20)) &&
                      height_hi_match_r;
@@ -138,6 +143,7 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
             bfsize_r    <= 32'h0;
             offbits_r   <= 32'h0;
             dib_ge40_r <= 1'b0;
+            dib_within_offset_r <= 1'b0;
             width_lo_r <= 16'h0;
             width_hi_zero_r <= 1'b0;
             height_lo_r <= 16'h0;
@@ -178,8 +184,10 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
                         6'd1 : sig_match_r <= sig_match_r && (data == 8'h4d);
                         6'd2, 6'd3, 6'd4, 6'd5  : bfsize_r  <= {data, bfsize_r[31:8]};
                         6'd10, 6'd11, 6'd12, 6'd13: offbits_r <= {data, offbits_r[31:8]};
-                        6'd14: dib_ge40_r <= (data >= 8'd40);
-                        6'd15, 6'd16, 6'd17: dib_ge40_r <= dib_ge40_r || (data != 8'd0);
+                        6'd14: begin dib_ge40_r <= (data >= 8'd40); dib_within_offset_r <= data <= dib_capacity[7:0]; end
+                        6'd15: begin dib_ge40_r <= dib_ge40_r || (data != 8'd0); if(data != dib_capacity[15:8])dib_within_offset_r <= data < dib_capacity[15:8]; end
+                        6'd16: begin dib_ge40_r <= dib_ge40_r || (data != 8'd0); if(data != dib_capacity[23:16])dib_within_offset_r <= data < dib_capacity[23:16]; end
+                        6'd17: begin dib_ge40_r <= dib_ge40_r || (data != 8'd0); if(data != dib_capacity[31:24])dib_within_offset_r <= data < dib_capacity[31:24]; end
                         6'd18: width_lo_r[7:0] <= data;
                         6'd19: width_lo_r[15:8] <= data;
                         6'd20: width_hi_zero_r <= (data == 8'd0);
@@ -285,6 +293,7 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
                     bfsize_r  <= 32'h0;
                     offbits_r <= 32'h0;
                     dib_ge40_r <= 1'b0;
+                    dib_within_offset_r <= 1'b0;
                     width_lo_r <= 16'h0;
                     width_hi_zero_r <= 1'b0;
                     height_lo_r <= 16'h0;

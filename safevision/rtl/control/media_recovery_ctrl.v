@@ -3,9 +3,10 @@
 // counter clock-enable fanout. START primes it; WAIT retains failure priority.
 module media_recovery_ctrl #(
  parameter integer RESET_CYCLES=32,SETTLE_CYCLES=32,
- parameter integer TIMEOUT_CYCLES=500000000,MAX_ATTEMPTS=3
+ parameter integer TIMEOUT_CYCLES=500000000,MAX_ATTEMPTS=3,PROGRESSIVE_WAIT=0
 )(
  input wire clk,rst_n,request,done,failed,fatal,
+ input wire progress,
  output wire busy,media_reset,output reg rescan_start,recovered,
  output reg safe_latched,output reg[1:0]attempts,output reg[2:0]state
 );
@@ -15,15 +16,18 @@ module media_recovery_ctrl #(
  localparam integer WAIT_W=32; // Retain native32-bit carry mapping; only WAIT owns this counter.
  reg[SHORT_W-1:0]short_timer;
  reg[WAIT_W-1:0]wait_timer;
- reg wait_expired;
+ reg wait_expired_raw;
+ wire wait_progress=PROGRESSIVE_WAIT && progress;
+ wire wait_expired=wait_expired_raw && !wait_progress;
  wire next_wait_expired=TIMEOUT_CYCLES<=1?1'b1:(wait_timer>=TIMEOUT_CYCLES-2);
  // Counter values after leaving WAIT are private and cleared by START.
  // Count through a coincident done/failed/fatal exit; this removes those
  // late inputs from32 enables without changing any public recovery edge.
  always @(posedge clk or negedge rst_n)begin
-  if(!rst_n)begin wait_timer<=0;wait_expired<=TIMEOUT_CYCLES<=1;end
-  else if(state==START&&!fatal)begin wait_timer<=0;wait_expired<=TIMEOUT_CYCLES<=1;end
-  else if(state==WAIT&&!wait_expired)begin wait_timer<=wait_timer+1'b1;wait_expired<=next_wait_expired;end
+  if(!rst_n)begin wait_timer<=0;wait_expired_raw<=TIMEOUT_CYCLES<=1;end
+  else if(state==START&&!fatal)begin wait_timer<=0;wait_expired_raw<=TIMEOUT_CYCLES<=1;end
+  else if(state==WAIT&&wait_progress)begin wait_timer<=0;wait_expired_raw<=TIMEOUT_CYCLES<=1;end
+  else if(state==WAIT&&!wait_expired)begin wait_timer<=wait_timer+1'b1;wait_expired_raw<=next_wait_expired;end
  end
 
  assign busy=(state!=IDLE&&state!=LOCKED);

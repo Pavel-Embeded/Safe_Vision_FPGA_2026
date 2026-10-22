@@ -15182,3 +15182,293 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/rtl/video/v3_spectrum_twiddle.mem -text
 
 /safevision/tools/check_v3_rom_netlist.py -text
+
+/safevision/assets/control/v3_command_catalog.mem -text
+
+/safevision/assets/fonts/font8x16.mem -text
+
+/safevision/assets/fonts/font8x16_compact.mem -text
+
+/safevision/assets/fonts/v3_four_features_text.mem -text
+
+/safevision/assets/fonts/v3_handbook_status_text.mem -text
+
+/safevision/assets/fonts/v3_status_text.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/NOTICE.md -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi_phy_warpper.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/lane_lvds_10_1.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/source.sha256.json -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.ipc -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.provenance.json -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_hd_pll.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/global_def.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdram.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base.tcl -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base/font8x16.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base/font8x16_compact.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base/v3_command_catalog.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base/v3_four_features_text.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base/v3_handbook_status_text.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base/v3_status_text.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base_mode.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/hd.tcl -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/hd/font8x16.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/hd/font8x16_compact.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/hd/v3_command_catalog.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/hd/v3_four_features_text.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/hd/v3_handbook_status_text.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/hd/v3_status_text.mem -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/hd_mode.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/pll50_check.sdc -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/pll50_check.tcl -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/resource_policy.json -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board.adc -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_build_parameters.tcl -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_physical.adc -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_physical_base.adc -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_mem_activity_tag.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/hdmi/v3_hdmi_phy_wrapper.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v -text
+
+/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v -text
+
+/safevision/rtl/audio/alarm_tone_gen.v -text
+
+/safevision/rtl/audio/audio_energy.v -text
+
+/safevision/rtl/audio/audio_priority_arbiter.v -text
+
+/safevision/rtl/audio/hdmi_acr.v -text
+
+/safevision/rtl/audio/v3_audio_prefill_compare.v -text
+
+/safevision/rtl/audio/v3_audio_priority_serial.v -text
+
+/safevision/rtl/audio/v3_audio_system.v -text
+
+/safevision/rtl/audio/v3_audio_volume.v -text
+
+/safevision/rtl/audio/v3_pcm_ingress_fifo.v -text
+
+/safevision/rtl/audio/v3_pcm_packet_fifo.v -text
+
+/safevision/rtl/common/crc16_ccitt.v -text
+
+/safevision/rtl/common/crc7.v -text
+
+/safevision/rtl/common/error_report.v -text
+
+/safevision/rtl/common/sv_async_fifo.v -text
+
+/safevision/rtl/common/sync_fifo.v -text
+
+/safevision/rtl/common/uart_tx.v -text
+
+/safevision/rtl/control/input_sync.v -text
+
+/safevision/rtl/control/key_debounce.v -text
+
+/safevision/rtl/control/media_recovery_ctrl.v -text
+
+/safevision/rtl/control/v3_command_parser.v -text
+
+/safevision/rtl/control/v3_command_parser_catalog.v -text
+
+/safevision/rtl/control/v3_diag_query.v -text
+
+/safevision/rtl/control/v3_pixel_response_tracker.v -text
+
+/safevision/rtl/control/v3_response_timer.v -text
+
+/safevision/rtl/control/v3_uart_link.v -text
+
+/safevision/rtl/hd/alpha_blend.v -text
+
+/safevision/rtl/hd/sdram_app_adapter.v -text
+
+/safevision/rtl/hd/v3_four_features_text.mem -text
+
+/safevision/rtl/include/crc32_word.vh -text
+
+/safevision/rtl/include/event_code_defs.vh -text
+
+/safevision/rtl/include/fault_code_defs.vh -text
+
+/safevision/rtl/include/pixel_format_defs.vh -text
+
+/safevision/rtl/include/safevision_defs.vh -text
+
+/safevision/rtl/include/video_mode_defs.vh -text
+
+/safevision/rtl/media/bmp_unpack.v -text
+
+/safevision/rtl/media/v3_wav_parser_ctx.v -text
+
+/safevision/rtl/media/wav_parser.v -text
+
+/safevision/rtl/memory/frame_address_gen.v -text
+
+/safevision/rtl/memory/frame_writer.v -text
+
+/safevision/rtl/memory/mem_ctrl.v -text
+
+/safevision/rtl/memory/memory_arbiter.v -text
+
+/safevision/rtl/memory/v3_aux_mux.v -text
+
+/safevision/rtl/memory/v3_memory_path_observer.v -text
+
+/safevision/rtl/memory/v3_row_integrity.v -text
+
+/safevision/rtl/safety/fault_manager.v -text
+
+/safevision/rtl/storage/fat32_boot_parser.v -text
+
+/safevision/rtl/storage/file_index.v -text
+
+/safevision/rtl/storage/file_streamer.v -text
+
+/safevision/rtl/storage/mbr_parser.v -text
+
+/safevision/rtl/storage/sd_checked_sector_reader.v -text
+
+/safevision/rtl/storage/sd_initializer.v -text
+
+/safevision/rtl/storage/sd_sector_reader.v -text
+
+/safevision/rtl/storage/v3_file_streamer.v -text
+
+/safevision/rtl/storage/v3_file_streamer_ctx.v -text
+
+/safevision/rtl/storage/v3_spi_cs_guard.v -text
+
+/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v -text
+
+/safevision/rtl/video/graphics_rom/font8x16_rom.v -text
+
+/safevision/rtl/video/hdmi_output/hdmi_video_bridge.v -text
+
+/safevision/rtl/video/osd_overlay/osd_text_layer.v -text
+
+/safevision/rtl/video/scaler/scaler_bilinear.v -text
+
+/safevision/rtl/video/scaler/scaler_coords.v -text
+
+/safevision/rtl/video/scaler/v3_scaler_bilinear_thirds.v -text
+
+/safevision/rtl/video/v3_boot_uptime.v -text
+
+/safevision/rtl/video/v3_constant224_blend.v -text
+
+/safevision/rtl/video/v3_four_features_text.mem -text
+
+/safevision/rtl/video/v3_frame_safe_select.v -text
+
+/safevision/rtl/video/v3_line_cache.v -text
+
+/safevision/rtl/video/v3_packed_row_store.v -text
+
+/safevision/rtl/video/v3_pcm_waveform.v -text
+
+/safevision/rtl/video/v3_presentation_ctrl.v -text
+
+/safevision/rtl/video/video_cdc/video_cdc_mailbox.v -text
+
+/safevision/rtl/video/video_cdc/video_level_sync.v -text
+
+/safevision/rtl/video/video_compositor/alpha_blend.v -text
+
+/safevision/rtl/video/video_compositor/color_adjust.v -text
+
+/safevision/rtl/video/video_timing/video_timing.v -text
+
+/safevision/tools/audit_v3_raw_logs.py -text
+
+/safevision/tools/check_board_timing.py -text
+
+/safevision/tools/check_v3_board_reference.py -text
+
+/safevision/tools/check_v3_command_catalog.py -text
+
+/safevision/tools/check_v3_io_scope.py -text
+
+/safevision/tools/check_v3_sample_netlist.py -text
+
+/safevision/tools/check_v3_volume_reciprocal.py -text
+
+/safevision/tools/configure_v3_pll.py -text
+
+/safevision/tools/gen_v3_cdc.py -text
+
+/safevision/tools/run_v3_board.ps1 -text
+
+/safevision/tools/run_v3_board.py -text
+
+/safevision/tools/run_v3_pll.py -text
+
+/safevision/tools/v3_resource_policy.py -text

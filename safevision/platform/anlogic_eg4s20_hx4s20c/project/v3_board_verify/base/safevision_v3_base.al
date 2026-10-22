@@ -965,7 +965,7 @@
             <Strategy Name="Default_Synthesis_Strategy">
                 <RtlProperty>
                     <min_control_set>2</min_control_set>
-                    <min_ripple_len>16</min_ripple_len>
+                    <min_ripple_len>32</min_ripple_len>
                     <infer_fsm>off</infer_fsm>
                 </RtlProperty>
                 <GateProperty>

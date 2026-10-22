@@ -3,7 +3,7 @@
 // synchronized event pulses. Idle media/memory engines do not arm watchdogs.
 // The fixed raster heartbeat remains required while a static image is shown.
 module v3_supervisor #(
- parameter integer CLK_HZ=100000000,BOOT_CYCLES=2000000000,BOOT_MS_OVERRIDE=0,
+ parameter integer CLK_HZ=100000000,BOOT_CYCLES=2000000000,BOOT_MS_OVERRIDE=0,PROGRESSIVE_LOAD=0,
  parameter integer FRAME_CYCLES=10000000,MEM_CYCLES=20000000,
  parameter integer PROGRESS_CYCLES=50000000,RECOVER_CYCLES=2000000000,WINDOW_PIPELINE=0
 )(input wire clk,rst_n,manual_safe,recover_request,cache_ready,media_failed,
@@ -79,6 +79,9 @@ module v3_supervisor #(
  endfunction
  wire video_threshold=!video_limit[32] && ge_groups(video_gt,video_eq);
  wire audio_threshold=!audio_limit[32] && ge_groups(audio_gt,audio_eq);
+ // Only verified media/memory progress extends a long preload. Raster
+ // heartbeats cannot hide an idle or stalled media loader.
+ wire load_progress=PROGRESSIVE_LOAD && (progress_heartbeat || mem_heartbeat);
  reg initialized,fault_i_old,fault_b_old,failed_old,hd_fault_old;
  reg[10:0] pending,selection,new_events;
  reg[15:0] rejected_old;reg[3:0] fallback_old;
@@ -86,7 +89,8 @@ module v3_supervisor #(
  wire recovered,recover_safe,rescan_unused,reset_unused;
  wire recover_failed=media_failed || integrity_fault || bus_fault;
  media_recovery_ctrl #(.RESET_CYCLES(64),.SETTLE_CYCLES(64),
- .TIMEOUT_CYCLES(RECOVER_CYCLES),.MAX_ATTEMPTS(3)) recovery(
+ .TIMEOUT_CYCLES(RECOVER_CYCLES),.MAX_ATTEMPTS(3),.PROGRESSIVE_WAIT(PROGRESSIVE_LOAD)) recovery(
+ .progress(progress_heartbeat || mem_heartbeat),
  .clk(clk),.rst_n(rst_n),.request(recover_request && !manual_safe),
  .done(cache_ready && !recover_failed),.failed(recover_failed),.fatal(fatal_latched),
  .busy(recovery_busy),.media_reset(media_reset),.rescan_start(rescan_unused),
@@ -108,7 +112,7 @@ module v3_supervisor #(
   if(watch_tick && frame_timer==FRAME_LIMIT-1 && !frame_heartbeat && !recovered)new_events[5]=1;
   if(watch_tick && memory_active && mem_timer==MEM_LIMIT-1 && !mem_heartbeat && !media_reset)new_events[6]=1;
   if(watch_tick && media_active && progress_timer==PROGRESS_LIMIT-1 && !progress_heartbeat && !media_reset)new_events[7]=1;
-  if((hdmi_drops!=last_hd && !hd_fault_old) || (watch_tick && !initialized && !cache_ready && !recovery_busy && boot_timer==BOOT_LIMIT-1) || (fatal && !fatal_latched))new_events[8]=1;
+  if((hdmi_drops!=last_hd && !hd_fault_old) || (watch_tick && !initialized && !cache_ready && !recovery_busy && boot_timer==BOOT_LIMIT-1 && !load_progress) || (fatal && !fatal_latched))new_events[8]=1;
   if(rejected_files>rejected_old && !media_reset)new_events[9]=1;
   if((|(audio_fallback & ~fallback_old)) && !media_reset)new_events[10]=1;
   selection=priority_selection;
@@ -192,7 +196,7 @@ module v3_supervisor #(
    rejected_old<=rejected_files;fallback_old<=audio_fallback;
    if(watch_tick)begin ms_timer<=0;ms_now<=ms_now+1'b1;end else ms_timer<=ms_timer+1'b1;
    if(cache_ready)initialized<=1;
-   if(initialized || recovery_busy || cache_ready)boot_timer<=0;
+   if(initialized || recovery_busy || cache_ready || load_progress)boot_timer<=0;
    else if(watch_tick && boot_timer<BOOT_LIMIT)boot_timer<=boot_timer+1'b1;
    if(frame_heartbeat || recovered)frame_timer<=0;
    else if(watch_tick && frame_timer<FRAME_LIMIT)frame_timer<=frame_timer+1'b1;
