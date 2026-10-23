@@ -1,0 +1,24 @@
+{
+  "mutation": "ring_early_write_completion",
+  "target": "safevision/rtl/audio/v3_pcm_ring.v",
+  "suite": "pcm_ring_equivalence",
+  "top": "tb_v3_pcm_ring_equivalence",
+  "patch": [
+    {
+      "before": "wire finish_write=(state==2)&&!busy&&!reading;",
+      "after": "wire finish_write=(state==1)&&ack&&!reading;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative318\\n\\ring_early_write_completion\\sim\\tb_v3_pcm_ring_equivalence",
+  "original_sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8",
+  "mutated_sha256": "520e5c064f635ed5e02d58f18053cd069d4740f1d1606114af1588398a6ead3d",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    0,
+    4882
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative318\\n\\ring_early_write_completion\\sim\\tb_v3_pcm_ring_equivalence"
+}

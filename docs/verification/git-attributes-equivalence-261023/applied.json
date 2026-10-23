@@ -1,0 +1,26 @@
+{
+  "accepted": true,
+  "applied": true,
+  "source_root": "D:\\Codex\\svflex537\\candidate892",
+  "source_attribute_sha256": "18f6f48023b2c09d72b42f0c2a23b0232131ea0d5d0d07cf379b48dabb0a0803",
+  "source_commit": "c6a6549871d97755708120d2a76239011cef94bb",
+  "before_bytes": 1015820,
+  "after_bytes": 168319,
+  "removed_concrete_rules": 9388,
+  "restored_exceptions": 0,
+  "all_queried_paths": 57855,
+  "effective_attributes_equal": true,
+  "before_effective_attributes_sha256": "bfdf9c6a02b71cdbed054391a2c06385f681f44db4fe9d9b5bf4b9524e1836ff",
+  "after_effective_attributes_sha256": "bfdf9c6a02b71cdbed054391a2c06385f681f44db4fe9d9b5bf4b9524e1836ff",
+  "candidate_sha256": "223de765c28b33ed29008b4f674f46bca74b601d572f0a989070e9c275355ee8",
+  "all_glob_rules_retained_in_order": true,
+  "all_removed_named_paths_included": true,
+  "nested_attributes_preserved_sha256": {
+    "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/.gitattributes": "4fcdb96afa3f0b90e696017ef2959caf6840244ffc5540f5f67be5cbd11f2edd",
+    "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/.gitattributes": "4fcdb96afa3f0b90e696017ef2959caf6840244ffc5540f5f67be5cbd11f2edd"
+  },
+  "no_source_changes": false,
+  "physical206_unchanged": true,
+  "source_attribute_current_sha256": "223de765c28b33ed29008b4f674f46bca74b601d572f0a989070e9c275355ee8",
+  "only_nonphysical_metadata_changed": true
+}

@@ -1,0 +1,62 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\parser_timeout_early\\sim\\tb_v3_command_catalog",
+  "native_log_sha256": "8a60f5de6893212dbeaa8e8f622b8feb60ef04c5c66cbf9167e717ef29036770",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "parser_timeout_early",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\parser_timeout_early\\sim\\tb_v3_command_catalog",
+    "checked": {
+      "metadata": {
+        "mutation": "parser_timeout_early",
+        "target": "safevision/rtl/control/v3_command_parser_catalog.v",
+        "suite": "command_catalog",
+        "top": "tb_v3_command_catalog",
+        "patch": [
+          {
+            "before": "timer_expired<=timer==TIMEOUT-2;",
+            "after": "timer_expired<=timer==TIMEOUT-3;"
+          }
+        ],
+        "original_sha256": "2df89083cb8337b5c7886a1bf8220542ffd9ae2796b975caec1a396d4d94a4e3",
+        "mutated_sha256": "be90368cf0c0e38cd42018cdf9c6696d5a81094a213102bb72d50c6eb0ca21b2",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          3,
+          4
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\parser_timeout_early\\sim\\tb_v3_command_catalog",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\parser_timeout_early\\sim\\tb_v3_command_catalog"
+      },
+      "metadata_sha256": "330af03931d12fd9e2cf6a07ab97c40ffbe95faf5f0d8d18b15296f36ddc503d",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_command_catalog",
+        "suite": "command_catalog",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/command_catalog_sim.json",
+        "current_manifest_sha256": "a08f85fbf7fbb121a5bc67a1872c113080e8b3fb0f8ee9500bab70f05e33511d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        3,
+        4
+      ],
+      "log_sha256": "8a60f5de6893212dbeaa8e8f622b8feb60ef04c5c66cbf9167e717ef29036770"
+    },
+    "elapsed_s": 9.219
+  }
+}

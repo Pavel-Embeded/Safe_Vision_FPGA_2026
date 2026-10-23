@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\energy_display_gain_removed",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\energy_display_gain_removed\\case.json",
+  "original_metadata_sha256": "d1b61af8b7d5745056bb9f7bdd5f9d74a89682f6ce422e48ea130e1776570e48",
+  "original_log_sha256": "e0e7ec164b4bb62bc452901479746f1950beba94385ba457654857cd7c77ebdf",
+  "matrix_definition": {
+    "mutation": "energy_display_gain_removed",
+    "target": "safevision/rtl/audio/audio_energy.v",
+    "suite": "handbook_energy",
+    "top": "tb_v3_handbook_energy",
+    "patch": [
+      {
+        "before": "{1'b0,raw}+{2'b0,raw[7:1]}",
+        "after": "{1'b0,raw}"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

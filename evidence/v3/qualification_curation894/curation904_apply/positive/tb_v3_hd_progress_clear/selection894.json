@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_progress_clear",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_progress_clear",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_progress_clear",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_progress_clear",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 175343,
+        "elapsed_s": 12.422,
+        "suite": "hd_progress_clear",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_hd_progress_clear\\sim\\tb_v3_hd_progress_clear"
+      },
+      "metadata_sha256": "1a317ad087b2e789ddbddf9a5f1de7ca972a6f0d4afc921c36c024d3a0218cfc",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_progress_clear",
+        "suite": "hd_progress_clear",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/hd_progress_clear_sim.json",
+        "current_manifest_sha256": "8c0659482e5407bcb725f1d15405eda05d8966ebd57c286e7c57cc68059ce22b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d92bcdc218cf39999c35abe68fb4351fdf49fa8dcb811ac8e309053d6a8f4e7d"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_progress_clear",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_progress_clear",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 175343,
+      "elapsed_s": 12.422,
+      "suite": "hd_progress_clear",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_hd_progress_clear\\sim\\tb_v3_hd_progress_clear"
+    },
+    "metadata_sha256": "1a317ad087b2e789ddbddf9a5f1de7ca972a6f0d4afc921c36c024d3a0218cfc",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_progress_clear",
+      "suite": "hd_progress_clear",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/hd_progress_clear_sim.json",
+      "current_manifest_sha256": "8c0659482e5407bcb725f1d15405eda05d8966ebd57c286e7c57cc68059ce22b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "d92bcdc218cf39999c35abe68fb4351fdf49fa8dcb811ac8e309053d6a8f4e7d",
+    "sources_sha256": "49c35c2f74d3c40df469b20a8b7ed3debccb804e4ef26f88c579bb97c76ca3da",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_hd_progress_clear\\sim\\results.json",
+          "sha256": "cc68298ae1d3eb232688a54c98fdc20da3d5a655e17330183ac371d8915358a1",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

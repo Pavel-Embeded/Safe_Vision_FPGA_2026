@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_catalog_csa_math",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_catalog_csa_math",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_catalog_csa_math",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_catalog_csa_math",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 16100016,
+        "elapsed_s": 22.313,
+        "suite": "catalog_csa_math",
+        "accepted_native_runner": true,
+        "producer": "Normally completed current production-source XSim; no runtime overrides",
+        "legacy": false,
+        "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_catalog_csa_math"
+      },
+      "metadata_sha256": "6213363d675c139998f9d55b303c093c8dff64972a13d112a3861763a99cde70",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_catalog_csa_math",
+        "suite": "catalog_csa_math",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/catalog_csa_math_sim.json",
+        "current_manifest_sha256": "0405372c9dcd176ff367b90b74f94f4731d8415e4eb2f095619a1e98433f9fdf",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "b754e2f4aa259694db1984682c2ad4eb7a35b57c970c5d1be4f8c6761de4db31"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_catalog_csa_math",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_catalog_csa_math",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 16100016,
+      "elapsed_s": 22.313,
+      "suite": "catalog_csa_math",
+      "accepted_native_runner": true,
+      "producer": "Normally completed current production-source XSim; no runtime overrides",
+      "legacy": false,
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_catalog_csa_math"
+    },
+    "metadata_sha256": "6213363d675c139998f9d55b303c093c8dff64972a13d112a3861763a99cde70",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_catalog_csa_math",
+      "suite": "catalog_csa_math",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/catalog_csa_math_sim.json",
+      "current_manifest_sha256": "0405372c9dcd176ff367b90b74f94f4731d8415e4eb2f095619a1e98433f9fdf",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "b754e2f4aa259694db1984682c2ad4eb7a35b57c970c5d1be4f8c6761de4db31",
+    "sources_sha256": "20d0f3136be69c8027b5e8845f7dfac78d527490fa434a835e04da3c153ca7b8",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_catalog_csa_math\\producer.results.json",
+          "sha256": "ccec5e3cc12bf5969278599692a0f6afee0f20ea07db83c5ea3d84f45e4be6ea",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

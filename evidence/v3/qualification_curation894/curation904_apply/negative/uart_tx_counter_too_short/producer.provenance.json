@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\uart_tx_counter_too_short",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\uart_tx_counter_too_short\\case.json",
+  "original_metadata_sha256": "778b9eb41e1b53c66997be652f1fd3d69f52cd0cd8b2db6a8b83effb42844c52",
+  "original_log_sha256": "6e6f8e1529323be6fab8536324e58259c8901855f62a80acfbf57a2921ed6940",
+  "matrix_definition": {
+    "mutation": "uart_tx_counter_too_short",
+    "target": "safevision/rtl/common/uart_tx.v",
+    "suite": "uart_tx_width_equivalence",
+    "top": "tb_v3_uart_tx_width_equivalence",
+    "patch": [
+      {
+        "before": "?((DIV>1)?$clog2(DIV):1):16;",
+        "after": "?((DIV>1)?(($clog2(DIV)>1)?$clog2(DIV)-1:1):1):16;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

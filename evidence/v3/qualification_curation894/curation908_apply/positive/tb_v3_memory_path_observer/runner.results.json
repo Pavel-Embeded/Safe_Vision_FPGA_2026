@@ -1,0 +1,16 @@
+{
+  "suite": "memory_path_observer",
+  "results": [
+    {
+      "top": "tb_v3_memory_path_observer",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 41,
+      "data_comparisons": 41,
+      "elapsed_s": 7.922
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

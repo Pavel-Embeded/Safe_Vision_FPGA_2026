@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "hd_row_crc_basis",
+  "top": "tb_v3_hd_row_crc_balance",
+  "suite": "hd_row_crc",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "hd_row_crc_basis",
+    "target": "safevision/rtl/hd/v3_line_cache.v",
+    "suite": "hd_row_crc",
+    "top": "tb_v3_hd_row_crc_balance",
+    "patch": [
+      {
+        "before": "assign row_crc_next[0]=^{",
+        "after": "assign row_crc_next[0]=~^{"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "hd_row_crc_basis",
+    "target": "safevision/rtl/hd/v3_line_cache.v",
+    "suite": "hd_row_crc",
+    "top": "tb_v3_hd_row_crc_balance",
+    "patch": [
+      {
+        "before": "assign row_crc_next[0]=^{",
+        "after": "assign row_crc_next[0]=~^{"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_row_crc_basis",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_row_crc_basis",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_row_crc_basis",
+      "target": "safevision/rtl/hd/v3_line_cache.v",
+      "suite": "hd_row_crc",
+      "top": "tb_v3_hd_row_crc_balance",
+      "patch": [
+        {
+          "before": "assign row_crc_next[0]=^{",
+          "after": "assign row_crc_next[0]=~^{"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_row_crc_basis\\sim\\tb_v3_hd_row_crc_balance",
+      "original_sha256": "f4f87f6fb77a1f4b4c65ec53471438eace8af55d3878cd2a423033186e590695",
+      "mutated_sha256": "3f6737c445ec8b33bf1050d19010e19e26352a3cbb1ef0f52aabfda0ac4c1564",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1000068
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative318\\n\\hd_row_crc_basis\\sim\\tb_v3_hd_row_crc_balance"
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_row_crc_balance",
+      "suite": "hd_row_crc",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_row_crc_sim.json",
+      "current_manifest_sha256": "58f1e9292320f77008ad31219bf3267398e5948dbed09c254c9f2390ffad816d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1000068
+    ],
+    "log_sha256": "39fdae9129791d810b6b676233febced3e7c48f3d06c8ad2bf046f501d8eb3e3",
+    "metadata_sha256": "3266b8665e5de10293b7fda2f8f69e3c049108925149053b0ef138189a4add9a",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_row_crc_basis\\case.json",
+      "sha256": "3266b8665e5de10293b7fda2f8f69e3c049108925149053b0ef138189a4add9a"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_row_crc_basis\\sim.log",
+      "sha256": "39fdae9129791d810b6b676233febced3e7c48f3d06c8ad2bf046f501d8eb3e3"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_row_crc_basis\\sources.sha256.json",
+      "sha256": "1c1ce5a57f0e255b41dd03c23be7b17db70875ddbc52316813b3c52575d946e8"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_row_crc_basis\\original.producer.metadata.json",
+      "sha256": "3266b8665e5de10293b7fda2f8f69e3c049108925149053b0ef138189a4add9a"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_row_crc_basis\\producer.provenance.json",
+      "sha256": "09a042f0166dec039a42ad402bd95c6b962e28ea19fe0876889bfd04c56aa9d3"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_row_crc_basis\\sources.prj",
+      "sha256": "fcde84b2d4177f8ad002be8c02f0b9390cb82b2ca6d1e80638f79daac739cc09"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_row_crc_basis\\mutant.v",
+      "sha256": "3f6737c445ec8b33bf1050d19010e19e26352a3cbb1ef0f52aabfda0ac4c1564"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

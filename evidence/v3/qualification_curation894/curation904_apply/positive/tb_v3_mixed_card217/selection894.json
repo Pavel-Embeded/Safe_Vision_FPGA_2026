@@ -1,0 +1,129 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_mixed_card217",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_mixed_card217",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_mixed_card217",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_mixed_card217",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 12,
+        "data_comparisons": 614400,
+        "elapsed_s": 1245.312,
+        "suite": "mixed_card217",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_mixed_card217\\sim\\tb_v3_mixed_card217"
+      },
+      "metadata_sha256": "844de3a63fc510dac883573053cb8afaffa7c74ef3047a05942d752d7e3787b0",
+      "normal_completion": true,
+      "input_count": 61,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_mixed_card217",
+        "suite": "mixed_card217",
+        "ordered_analyzed_HDL": 52,
+        "manifest": "safevision/build/manifests/mixed_card217_sim.json",
+        "current_manifest_sha256": "8622258308aeb686d279140b869d3bb41d032212491f49365daec73f76e1b2c8",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "2b4b4becd8959bbccd2643f0fb00e6a93d48695e768eebc712fbdf285b476fa5"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_mixed_card217",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_mixed_card217",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 12,
+      "data_comparisons": 614400,
+      "elapsed_s": 1245.312,
+      "suite": "mixed_card217",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_mixed_card217\\sim\\tb_v3_mixed_card217"
+    },
+    "metadata_sha256": "844de3a63fc510dac883573053cb8afaffa7c74ef3047a05942d752d7e3787b0",
+    "input_count": 61,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_mixed_card217",
+      "suite": "mixed_card217",
+      "ordered_analyzed_HDL": 52,
+      "manifest": "safevision/build/manifests/mixed_card217_sim.json",
+      "current_manifest_sha256": "8622258308aeb686d279140b869d3bb41d032212491f49365daec73f76e1b2c8",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "2b4b4becd8959bbccd2643f0fb00e6a93d48695e768eebc712fbdf285b476fa5",
+    "sources_sha256": "7d641e1187a584f88bacf75e251159306e1735cd69de81d4979fba219903054a",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_mixed_card217\\runner.results.json",
+          "sha256": "de9817fc0a32dff0dc19d9b12e64adcba5716f9139cdda913e87af9e01135489",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_mixed_card217\\sim\\results.json",
+          "sha256": "de9817fc0a32dff0dc19d9b12e64adcba5716f9139cdda913e87af9e01135489",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": true,
+      "binding": "replay_verified_current_generated_assets",
+      "receipt": "D:\\Codex\\svflex537\\curation869_plan02\\generated_replay\\mixed_card217\\tb_v3_mixed_card217\\07cbb3fc371828ea\\replay.receipt.json",
+      "receipt_sha256": "225e02e156f0ed60d09a71bea051bb0f334e5968ce2ea891dede73608f3277fe",
+      "generated_assets": {
+        "expected0.mem": {
+          "sha256": "8077b796f6640e96e912f71df789f436edf542c0ea96be825767acc26ecae808",
+          "size": 1536000
+        },
+        "expected1.mem": {
+          "sha256": "d5681a49c6acca45d6587ac9b321e4673270a7af49188b645c5a69a2584633a8",
+          "size": 1536000
+        },
+        "expected2.mem": {
+          "sha256": "71f22ec6c8402576b4d23c3af61f417d5ad8d99c7d93267d35fcc30c068ae151",
+          "size": 1536000
+        },
+        "expected3.mem": {
+          "sha256": "25775e68dd343bc1755b670e82c244529531e491d6956b4e01ae685356fefdee",
+          "size": 1536000
+        },
+        "fixture.json": {
+          "sha256": "909c229e1c3b4ab2081a4e99b119ed9e75aeed1f03142227e2cd1ad4bcaca71b",
+          "size": 429
+        },
+        "payload_bytes.mem": {
+          "sha256": "4a5073c754fd7edb98dbdc429995d116deaad305338e7574dbcb271d30725357",
+          "size": 10
+        },
+        "resident_card.mem": {
+          "sha256": "405d9f3015c2395a1fb287f9279e7a6fe15ade721ff97ed1598495a30981b586",
+          "size": 16777216
+        }
+      }
+    }
+  }
+}

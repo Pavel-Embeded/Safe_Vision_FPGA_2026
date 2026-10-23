@@ -1,0 +1,114 @@
+{
+  "kind": "negative",
+  "name": "setting_diag_energy_wrong",
+  "record": {
+    "kind": "negative",
+    "name": "setting_diag_energy_wrong",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198",
+    "checked": {
+      "metadata": {
+        "mutation": "setting_diag_energy_wrong",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "setting_wave_control_hd198",
+        "top": "tb_v3_setting_wave_control_hd198",
+        "patch": [
+          {
+            "before": "{18'd0,energy,volume}",
+            "after": "{18'd0,7'd0,volume}"
+          }
+        ],
+        "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+        "mutated_sha256": "c7be955d9c1701370fa964814df2a51ec101dd33d952e8877b1802b002993d85",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          3
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198",
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198"
+      },
+      "metadata_sha256": "54e2f1635d6a1c71d2fd8522f6eb99d62c0db470526159cf56cc7c4d36bf8488",
+      "normal_completion": true,
+      "input_count": 122,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_setting_wave_control_hd198",
+        "suite": "setting_wave_control_hd198",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/setting_wave_control_hd198_sim.json",
+        "current_manifest_sha256": "acdb4440a8d7579f071f089d31d070df05f5a0e1ffac6e8a515a2d64e9f85362",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        3
+      ],
+      "log_sha256": "2ff0fc25b9ade2c71a18ddd1a0b30ce009f0b9702c6df93d78f3ba5cb04b34f4"
+    },
+    "elapsed_s": 12.891,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198",
+  "checked": {
+    "metadata": {
+      "mutation": "setting_diag_energy_wrong",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "setting_wave_control_hd198",
+      "top": "tb_v3_setting_wave_control_hd198",
+      "patch": [
+        {
+          "before": "{18'd0,energy,volume}",
+          "after": "{18'd0,7'd0,volume}"
+        }
+      ],
+      "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+      "mutated_sha256": "c7be955d9c1701370fa964814df2a51ec101dd33d952e8877b1802b002993d85",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        3
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198",
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198"
+    },
+    "metadata_sha256": "54e2f1635d6a1c71d2fd8522f6eb99d62c0db470526159cf56cc7c4d36bf8488",
+    "input_count": 122,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_setting_wave_control_hd198",
+      "suite": "setting_wave_control_hd198",
+      "ordered_analyzed_HDL": 106,
+      "manifest": "safevision/build/manifests/setting_wave_control_hd198_sim.json",
+      "current_manifest_sha256": "acdb4440a8d7579f071f089d31d070df05f5a0e1ffac6e8a515a2d64e9f85362",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      3
+    ],
+    "log_sha256": "2ff0fc25b9ade2c71a18ddd1a0b30ce009f0b9702c6df93d78f3ba5cb04b34f4",
+    "sources_sha256": "2eb9ef781d4c093dfa28edb4f0d1f7b30fcdacc4fd9d6da9f6cf7092d6588379",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\negative\\setting_diag_energy_wrong\\sim\\results.json",
+          "sha256": "70cc11640c28c5ddf21110e17f9edd3d290651bc963b0babeff0e192d6942d02",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

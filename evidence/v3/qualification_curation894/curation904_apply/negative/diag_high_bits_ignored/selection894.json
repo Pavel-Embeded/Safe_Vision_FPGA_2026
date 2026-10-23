@@ -1,0 +1,114 @@
+{
+  "kind": "negative",
+  "name": "diag_high_bits_ignored",
+  "record": {
+    "kind": "negative",
+    "name": "diag_high_bits_ignored",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\diag_high_bits_ignored\\sim\\tb_v3_diag_alias156",
+    "checked": {
+      "metadata": {
+        "mutation": "diag_high_bits_ignored",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "diag_alias156",
+        "top": "tb_v3_diag_alias156",
+        "patch": [
+          {
+            "before": "b_diag_payload_valid=!cmd_query && b_diag_small;",
+            "after": "b_diag_payload_valid=!cmd_query;"
+          }
+        ],
+        "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+        "mutated_sha256": "604b1bcd2adc922ad0f12b1da95c1e8f9bc31c51271a3144c7fc7b2b1a4ac4e9",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          140
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\diag_high_bits_ignored\\sim\\tb_v3_diag_alias156",
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\diag_high_bits_ignored\\sim\\tb_v3_diag_alias156"
+      },
+      "metadata_sha256": "43eb8a459168680179cb5ff94a704b28f12d18d58f39b65f7ee2c58ca0eca803",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_diag_alias156",
+        "suite": "diag_alias156",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/diag_alias156_sim.json",
+        "current_manifest_sha256": "8ce9e0690cfb3df3b55a6492f9f8c799d1304d52d5045fec553eea467afe28a3",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        140
+      ],
+      "log_sha256": "bbdc2b8d6943028ec78ea3194bd83d200e20f749d1798f015a76289badbedb11"
+    },
+    "elapsed_s": 15.985,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\negative\\diag_high_bits_ignored\\sim\\tb_v3_diag_alias156",
+  "checked": {
+    "metadata": {
+      "mutation": "diag_high_bits_ignored",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "diag_alias156",
+      "top": "tb_v3_diag_alias156",
+      "patch": [
+        {
+          "before": "b_diag_payload_valid=!cmd_query && b_diag_small;",
+          "after": "b_diag_payload_valid=!cmd_query;"
+        }
+      ],
+      "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+      "mutated_sha256": "604b1bcd2adc922ad0f12b1da95c1e8f9bc31c51271a3144c7fc7b2b1a4ac4e9",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        140
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\diag_high_bits_ignored\\sim\\tb_v3_diag_alias156",
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\diag_high_bits_ignored\\sim\\tb_v3_diag_alias156"
+    },
+    "metadata_sha256": "43eb8a459168680179cb5ff94a704b28f12d18d58f39b65f7ee2c58ca0eca803",
+    "input_count": 120,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_diag_alias156",
+      "suite": "diag_alias156",
+      "ordered_analyzed_HDL": 105,
+      "manifest": "safevision/build/manifests/diag_alias156_sim.json",
+      "current_manifest_sha256": "8ce9e0690cfb3df3b55a6492f9f8c799d1304d52d5045fec553eea467afe28a3",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      140
+    ],
+    "log_sha256": "bbdc2b8d6943028ec78ea3194bd83d200e20f749d1798f015a76289badbedb11",
+    "sources_sha256": "efd634d78785409b2b29de35227458858f9362634eada22c8c7d4babf43e6241",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\negative\\diag_high_bits_ignored\\sim\\results.json",
+          "sha256": "ed55863205e62ca3e33655ac9832d57c7602fd65570ec6b9b8d81cc25997bf1c",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

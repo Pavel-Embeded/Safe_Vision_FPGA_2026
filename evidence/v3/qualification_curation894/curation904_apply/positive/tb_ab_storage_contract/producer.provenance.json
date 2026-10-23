@@ -1,0 +1,48 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_ab_storage_contract\\sim\\tb_ab_storage_contract",
+  "native_log_sha256": "c7b54eed23770afc971963031fa7df4c1b0960172de1681a751ea3e56d414493",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_ab_storage_contract",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_ab_storage_contract\\sim\\tb_ab_storage_contract",
+    "checked": {
+      "metadata": {
+        "top": "tb_ab_storage_contract",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 16,
+        "elapsed_s": 11.359,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_ab_storage_contract\\sim\\tb_ab_storage_contract"
+      },
+      "metadata_sha256": "faab7f114276ac5e43b5d8d501724da83b34ca7ee1a8aa5525a8a4edb9e3c257",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_ab_storage_contract",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "c7b54eed23770afc971963031fa7df4c1b0960172de1681a751ea3e56d414493"
+    },
+    "elapsed_s": 11.969
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_lfn_checksum_bypass\\sim\\tb_v3_flexible540",
+  "native_log_sha256": "ca139437a5e7c065eb651761e2a8fbd2a06930c7f87c07b8da94f01f98361d0e",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "flex_fs_lfn_checksum_bypass",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_lfn_checksum_bypass\\sim\\tb_v3_flexible540",
+    "checked": {
+      "metadata": {
+        "mutation": "flex_fs_lfn_checksum_bypass",
+        "target": "safevision/rtl/storage/v3_fat_name_store.v",
+        "suite": "flexible540",
+        "top": "tb_v3_flexible540",
+        "patch": [
+          {
+            "before": "alias_checksum==chain_checksum",
+            "after": "1'b1"
+          }
+        ],
+        "original_sha256": "ac20c8d9014f5d0aa9e72f2e64138fd5bafa0d03ae32830da1efa10aef6e2dc7",
+        "mutated_sha256": "4f57712ed6dcea024ae3c7ee41314227537018337beb9064cbd5ac3f0832fdf3",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "detected": true,
+        "error_counts": [
+          850
+        ],
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "original_producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_lfn_checksum_bypass\\sim\\tb_v3_flexible540",
+        "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_lfn_checksum_bypass\\sim\\tb_v3_flexible540"
+      },
+      "metadata_sha256": "4fb1d5a3a8dca2f2c7f556500ebc20fd289fa30c627a296d6faf04dac58a7798",
+      "normal_completion": true,
+      "input_count": 19,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_flexible540",
+        "suite": "flexible540",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/flexible540_sim.json",
+        "current_manifest_sha256": "d46eddeb0337d9348e8079f516188e0226e99e27105a11a1d8d9ade6eec1a0c1",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 4,
+        "generation_inputs": 15,
+        "generation_before_sha256": "84f546c489d25cbd896d7571b13e8953d1e760257eac7006f1f23ccf68c84253",
+        "generation_after_sha256": "84f546c489d25cbd896d7571b13e8953d1e760257eac7006f1f23ccf68c84253"
+      },
+      "error_counts": [
+        850
+      ],
+      "log_sha256": "ca139437a5e7c065eb651761e2a8fbd2a06930c7f87c07b8da94f01f98361d0e"
+    },
+    "elapsed_s": 7.312,
+    "prior_preflight_refusal": {
+      "kind": "negative",
+      "name": "flex_fs_lfn_checksum_bypass",
+      "console": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\negative\\flex_fs_lfn_checksum_bypass\\runner.console.log",
+        "sha256": "8ea8171b7995ad36212eae54abee0f773b46c6f46738b3f71dab60b7ae160e25"
+      },
+      "exception": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\negative\\flex_fs_lfn_checksum_bypass\\exception.txt",
+        "sha256": "b5a15b0f139cd63c15d9288a670e18f3188b6035821ee77b38d6ba9ad903ae4e"
+      },
+      "native_compiler_started": false,
+      "not_counted_as_pass": true
+    }
+  }
+}

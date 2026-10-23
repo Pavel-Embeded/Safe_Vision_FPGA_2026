@@ -1,0 +1,44 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_hd_hex_payload74/xsim_script.tcl
+# xsim {tb_v3_hd_hex_payload74} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] HEX/public raster HD=0 HB=0 x=328 y=45 cfg=0ee8f8f40743301bdb0e0f7d0 got=31 want=30
+[FAIL] HEX/public raster HD=0 HB=1 x=328 y=45 cfg=0ee8f8f40743301bdb0e0f7d0 got=31 want=30
+[FAIL] HEX/public raster HD=1 HB=0 x=328 y=45 cfg=0ee8f8f40743301bdb0e0f7d0 got=31 want=30
+[FAIL] HEX/public raster HD=1 HB=1 x=328 y=45 cfg=0ee8f8f40743301bdb0e0f7d0 got=31 want=30
+[FAIL] HEX/public raster HD=0 HB=0 x=330 y=46 cfg=031156138aba901c56f7a19a8 got=31 want=30
+[FAIL] HEX/public raster HD=0 HB=1 x=330 y=46 cfg=031156138aba901c56f7a19a8 got=31 want=30
+[FAIL] HEX/public raster HD=1 HB=0 x=330 y=46 cfg=031156138aba901c56f7a19a8 got=31 want=30
+[FAIL] HEX/public raster HD=1 HB=1 x=330 y=46 cfg=031156138aba901c56f7a19a8 got=31 want=30
+[FAIL] HEX/public raster HD=0 HB=0 x=332 y=47 cfg=164c1dad1fe7d012c3aaea240 got=31 want=30
+[FAIL] HEX/public raster HD=0 HB=1 x=332 y=47 cfg=164c1dad1fe7d012c3aaea240 got=31 want=30
+[FAIL] HEX/public raster HD=1 HB=0 x=332 y=47 cfg=164c1dad1fe7d012c3aaea240 got=31 want=30
+[FAIL] HEX/public raster HD=1 HB=1 x=332 y=47 cfg=164c1dad1fe7d012c3aaea240 got=31 want=30
+[FAIL] HEX/public raster HD=0 HB=0 x=334 y=48 cfg=79cce978f06720172c2a1ef18 got=31 want=30
+[FAIL] HEX/public raster HD=0 HB=1 x=334 y=48 cfg=79cce978f06720172c2a1ef18 got=31 want=30
+[FAIL] HEX/public raster HD=1 HB=0 x=334 y=48 cfg=79cce978f06720172c2a1ef18 got=31 want=30
+[FAIL] HEX/public raster HD=1 HB=1 x=334 y=48 cfg=79cce978f06720172c2a1ef18 got=31 want=30
+[FAIL] HEX/public raster HD=0 HB=0 x=336 y=45 cfg=3f69d7ce36c21011ea8f20470 got=30 want=31
+[FAIL] HEX/public raster HD=0 HB=1 x=336 y=45 cfg=3f69d7ce36c21011ea8f20470 got=30 want=31
+[FAIL] HEX/public raster HD=1 HB=0 x=336 y=45 cfg=3f69d7ce36c21011ea8f20470 got=30 want=31
+[FAIL] HEX/public raster HD=1 HB=1 x=336 y=45 cfg=3f69d7ce36c21011ea8f20470 got=30 want=31
+[FAIL] HEX/public raster HD=0 HB=0 x=338 y=46 cfg=15b183259c1a401a405774ac8 got=30 want=31
+[FAIL] HEX/public raster HD=0 HB=1 x=338 y=46 cfg=15b183259c1a401a405774ac8 got=30 want=31
+[FAIL] HEX/public raster HD=1 HB=0 x=338 y=46 cfg=15b183259c1a401a405774ac8 got=30 want=31
+[FAIL] HEX/public raster HD=1 HB=1 x=338 y=46 cfg=15b183259c1a401a405774ac8 got=30 want=31
+[FAIL] HEX/public raster HD=0 HB=0 x=340 y=47 cfg=41259397488e501894c3641e0 got=30 want=31
+[FAIL] HEX/public raster HD=0 HB=1 x=340 y=47 cfg=41259397488e501894c3641e0 got=30 want=31
+[FAIL] HEX/public raster HD=1 HB=0 x=340 y=47 cfg=41259397488e501894c3641e0 got=30 want=31
+[FAIL] HEX/public raster HD=1 HB=1 x=340 y=47 cfg=41259397488e501894c3641e0 got=30 want=31
+PASS tb_v3_hd_hex_payload74 errors=16480 comparisons=786480
+$finish called at time : 1966202 ns : File "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_hd_hex_payload74.sv" Line 34
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:19 . Memory (MB): peak = 218.531 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 17:42:26 2026...

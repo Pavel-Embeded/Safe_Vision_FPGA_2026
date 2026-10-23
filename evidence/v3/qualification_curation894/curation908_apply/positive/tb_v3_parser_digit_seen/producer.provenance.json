@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_parser_digit_seen\\sim\\tb_v3_parser_digit_seen",
+  "native_log_sha256": "d4de3538a7e804f21181d9f81679b553a6d23730e087a9bc4f6f3502ad23fff1",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_parser_digit_seen",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_parser_digit_seen\\sim\\tb_v3_parser_digit_seen",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_parser_digit_seen",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 32,
+        "elapsed_s": 7.906,
+        "suite": "v3",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_parser_digit_seen\\sim\\tb_v3_parser_digit_seen"
+      },
+      "metadata_sha256": "c3cef5b7593c683c5a33df7475434187a375a66c45d058a57e2668543be5ec96",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_parser_digit_seen",
+        "suite": "v3",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/v3_sim.json",
+        "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d4de3538a7e804f21181d9f81679b553a6d23730e087a9bc4f6f3502ad23fff1"
+    },
+    "elapsed_s": 8.156
+  }
+}

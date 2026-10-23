@@ -1,0 +1,24 @@
+{
+  "mutation": "hd_hud_menu_alias",
+  "target": "safevision/rtl/hd/v3_status_layers.v",
+  "suite": "hd_status_raster",
+  "top": "tb_v3_hd_status_raster_equivalence",
+  "patch": [
+    {
+      "before": "menu_q<=next_menu;",
+      "after": "menu_q<=next_menu^4'd1;"
+    }
+  ],
+  "original_sha256": "4065a5148957f6d77b15b1427bea7703bf2a5cddda5b6727f8c044c54717010c",
+  "mutated_sha256": "6727675bfe979ffc0c3d0d873109240852d674c618a136c6fb46698a482e36b3",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    218597
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_hud_menu_alias\\sim\\tb_v3_hd_status_raster_equivalence",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\hd_hud_menu_alias\\sim\\tb_v3_hd_status_raster_equivalence"
+}

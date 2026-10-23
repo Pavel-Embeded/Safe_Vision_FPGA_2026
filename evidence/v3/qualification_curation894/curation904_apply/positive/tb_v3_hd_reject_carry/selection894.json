@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_reject_carry",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_reject_carry",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_reject_carry",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_reject_carry",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 786432,
+        "elapsed_s": 9.922,
+        "suite": "hd_reject_carry",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_hd_reject_carry\\sim\\tb_v3_hd_reject_carry"
+      },
+      "metadata_sha256": "cf2349ed245397243b0f9dd18086632846848dd5da2d94ace80cfbe72625c399",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_reject_carry",
+        "suite": "hd_reject_carry",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/hd_reject_carry_sim.json",
+        "current_manifest_sha256": "dc46bffc8ecd4f0cd3ced68e4136196b703144bdd99ee3a1e51c058c1daa74ff",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "98365d30a42c3ef37531f54d97512395a06f97f620a9dc4fa3e9063a93498b69"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_reject_carry",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_reject_carry",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 786432,
+      "elapsed_s": 9.922,
+      "suite": "hd_reject_carry",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_hd_reject_carry\\sim\\tb_v3_hd_reject_carry"
+    },
+    "metadata_sha256": "cf2349ed245397243b0f9dd18086632846848dd5da2d94ace80cfbe72625c399",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_reject_carry",
+      "suite": "hd_reject_carry",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/hd_reject_carry_sim.json",
+      "current_manifest_sha256": "dc46bffc8ecd4f0cd3ced68e4136196b703144bdd99ee3a1e51c058c1daa74ff",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "98365d30a42c3ef37531f54d97512395a06f97f620a9dc4fa3e9063a93498b69",
+    "sources_sha256": "3dad24297601fc6a08b478e757ec6e2025c4f3ac118c98e1018f45a0ada8b837",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_hd_reject_carry\\sim\\results.json",
+          "sha256": "ae97981486f82084c86cb5aeb60fb7f7c113bd5ae788dc819ef859633b337ea4",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

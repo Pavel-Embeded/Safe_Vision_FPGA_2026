@@ -1,0 +1,26 @@
+{
+  "mutation": "coord_one_pixel_early",
+  "target": "safevision/rtl/video/v3_hd_coord_arith.v",
+  "suite": "hd_coord_arith",
+  "top": "tb_v3_hd_coord_arith",
+  "patch": [
+    {
+      "before": "localparam[11:0]WRAP_X=HT-19,LAST_Y=VT-1;\n reg[4:0]fill;\n wire previous_line=(raw_x<12'd19);\n wire[11:0]delayed_x=previous_line?(raw_x+WRAP_X):(raw_x-12'd19);",
+      "after": "localparam[11:0]WRAP_X=HT-18,LAST_Y=VT-1;\n reg[4:0]fill;\n wire previous_line=(raw_x<12'd18);\n wire[11:0]delayed_x=previous_line?(raw_x+WRAP_X):(raw_x-12'd18);"
+    }
+  ],
+  "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f11\\negative\\coord_one_pixel_early",
+  "original_sha256": "1f5afe73c8f5c886ba819e8840aff1fa655901adbdfa9f86d468051dbb59c9e6",
+  "mutated_sha256": "066a03facce3ac8d3b2a4a9b80b83fa16775be6404f6d526c0641372284e2c84",
+  "mutant_file": "mutant.v",
+  "detected": true,
+  "normal_completion": true,
+  "process_exit": 1,
+  "error_counts": [
+    2640024,
+    2640024
+  ],
+  "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/coord_one_pixel_early",
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\coord_one_pixel_early",
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\coord_one_pixel_early"
+}

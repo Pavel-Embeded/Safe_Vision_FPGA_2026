@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\mem_activity_frozen\\sim\\tb_v3_mem_activity_tag_phase5",
+  "native_log_sha256": "4794e60b72d26fb4e9eff1c93a53e332d8ea3ee9b79afa916293eb150b9d1d0d",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "mem_activity_frozen",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\mem_activity_frozen\\sim\\tb_v3_mem_activity_tag_phase5",
+    "checked": {
+      "metadata": {
+        "mutation": "mem_activity_frozen",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_mem_activity_tag.v",
+        "suite": "mem_activity_tag",
+        "top": "tb_v3_mem_activity_tag_phase5",
+        "patch": [
+          {
+            "before": "else if(activity)tag<=~tag;",
+            "after": "else if(activity)tag<=tag;"
+          }
+        ],
+        "original_sha256": "7e9a26e289a315d0392c29a345864ac4d40da787d46921215d0a03a11b35e204",
+        "mutated_sha256": "ec53bdb396ea7299cbd93af6d8e0073277a95699fe175e0cbee9dc946680863c",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          4
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\mem_activity_frozen\\sim\\tb_v3_mem_activity_tag_phase5",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\mem_activity_frozen\\sim\\tb_v3_mem_activity_tag_phase5"
+      },
+      "metadata_sha256": "7521e3353770894673737bb64dd65b082068b3ae1dc984e6d66099f7b40bd6a1",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_mem_activity_tag_phase5",
+        "suite": "mem_activity_tag",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/mem_activity_tag_sim.json",
+        "current_manifest_sha256": "0390fa06781f4c8002c5aafaaa671d7c97ce438d159868a2d24b5b0b79fa8dff",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        4
+      ],
+      "log_sha256": "4794e60b72d26fb4e9eff1c93a53e332d8ea3ee9b79afa916293eb150b9d1d0d"
+    },
+    "elapsed_s": 13.547
+  }
+}

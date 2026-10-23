@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_uart_formatter_equivalence",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_uart_formatter_equivalence",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_uart_formatter_equivalence",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_uart_formatter_equivalence",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 128672,
+        "elapsed_s": 8.031,
+        "suite": "hd_formatter",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq390\\p\\tb_v3_hd_uart_formatter_equivalence\\sim\\tb_v3_hd_uart_formatter_equivalence"
+      },
+      "metadata_sha256": "0b7abae5fe92130ac03497e97c1232a3b1428ebe27709168c06ec244b2557690",
+      "normal_completion": true,
+      "input_count": 16,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_uart_formatter_equivalence",
+        "suite": "hd_formatter",
+        "ordered_analyzed_HDL": 8,
+        "manifest": "safevision/build/manifests/hd_formatter_sim.json",
+        "current_manifest_sha256": "f9c5e78ea0c69edc20a9565bd4c858c2c7dd45b463bf05bbbe87a807d7b658c4",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "61efc11655676b0c8cec8fbb9d056e8b1869d85da5a960bdddcdb9e9aa5e58d4"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_uart_formatter_equivalence",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_uart_formatter_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 128672,
+      "elapsed_s": 8.031,
+      "suite": "hd_formatter",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq390\\p\\tb_v3_hd_uart_formatter_equivalence\\sim\\tb_v3_hd_uart_formatter_equivalence"
+    },
+    "metadata_sha256": "0b7abae5fe92130ac03497e97c1232a3b1428ebe27709168c06ec244b2557690",
+    "input_count": 16,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_uart_formatter_equivalence",
+      "suite": "hd_formatter",
+      "ordered_analyzed_HDL": 8,
+      "manifest": "safevision/build/manifests/hd_formatter_sim.json",
+      "current_manifest_sha256": "f9c5e78ea0c69edc20a9565bd4c858c2c7dd45b463bf05bbbe87a807d7b658c4",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "61efc11655676b0c8cec8fbb9d056e8b1869d85da5a960bdddcdb9e9aa5e58d4",
+    "sources_sha256": "46ad451ad51815e5ea33500f0c376357ed76c6f97f9c9dc77ab7a0694500028a",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq390\\p\\tb_v3_hd_uart_formatter_equivalence\\sim\\results.json",
+          "sha256": "c677195c5b6c8c50be8639f0f8752490ab78a069c63cc59120d37f66d0c64259",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "kind": "negative",
+  "name": "container_extension",
+  "record": {
+    "kind": "negative",
+    "name": "container_extension",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\container_extension",
+    "checked": {
+      "metadata": {
+        "mutation": "container_extension",
+        "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+        "suite": "wav_container_negative",
+        "top": "tb_v3_audio_negative_container",
+        "patch": [
+          {
+            "before": "       left<=assembled;pad<=assembled[0];index<=0;\n",
+            "after": "       left<=(kind==K_FMT&&assembled>16)?32'd16:assembled;pad<=assembled[0];index<=0;\n"
+          }
+        ],
+        "required_marker": "[FAIL AUDIO_CONTAINER_END] case=1 ",
+        "original_sha256": "d0896f4bf0b7fcc77096f4459d2e4d6fa45adeaf667d02274740f27b08ab53b6",
+        "mutated_sha256": "7501146e716044d18845bf552024570187c703a4a45d2e31927cb7b38cfc51be",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          150
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\container_extension\\sim\\tb_v3_audio_negative_container",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\container_extension\\sim\\tb_v3_audio_negative_container"
+      },
+      "metadata_sha256": "c81f9d749c90f28cad2f307f6abcac558105644c9db90356e5f7e6daaaae88c9",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_negative_container",
+        "suite": "wav_container_negative",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/wav_container_negative_sim.json",
+        "current_manifest_sha256": "0980d3505124a196c85f3d667039a8a6a3cc14ffabffb80bfa49ef252052e717",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        150
+      ],
+      "log_sha256": "4810413699442a2b7c8f4f6cfd1032c92dc5a66653aa5e4bec8a297dbdc0023c"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\container_extension",
+  "checked": {
+    "metadata": {
+      "mutation": "container_extension",
+      "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+      "suite": "wav_container_negative",
+      "top": "tb_v3_audio_negative_container",
+      "patch": [
+        {
+          "before": "       left<=assembled;pad<=assembled[0];index<=0;\n",
+          "after": "       left<=(kind==K_FMT&&assembled>16)?32'd16:assembled;pad<=assembled[0];index<=0;\n"
+        }
+      ],
+      "required_marker": "[FAIL AUDIO_CONTAINER_END] case=1 ",
+      "original_sha256": "d0896f4bf0b7fcc77096f4459d2e4d6fa45adeaf667d02274740f27b08ab53b6",
+      "mutated_sha256": "7501146e716044d18845bf552024570187c703a4a45d2e31927cb7b38cfc51be",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        150
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\container_extension\\sim\\tb_v3_audio_negative_container",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\container_extension\\sim\\tb_v3_audio_negative_container"
+    },
+    "metadata_sha256": "c81f9d749c90f28cad2f307f6abcac558105644c9db90356e5f7e6daaaae88c9",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_audio_negative_container",
+      "suite": "wav_container_negative",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/wav_container_negative_sim.json",
+      "current_manifest_sha256": "0980d3505124a196c85f3d667039a8a6a3cc14ffabffb80bfa49ef252052e717",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      150
+    ],
+    "log_sha256": "4810413699442a2b7c8f4f6cfd1032c92dc5a66653aa5e4bec8a297dbdc0023c",
+    "sources_sha256": "e651f097f40469154910e7eecb3c3162ccdeda13c329816c006fd671e2cb5d2c",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\container_extension\\runner.results.json",
+          "sha256": "882d9e2306aa53a7c786f4bb0712477cbbf258840bc82264fcbcfedb8ec4533e",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\container_extension\\sim\\results.json",
+          "sha256": "882d9e2306aa53a7c786f4bb0712477cbbf258840bc82264fcbcfedb8ec4533e",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": true,
+      "binding": "replay_verified_current_generated_assets",
+      "receipt": "D:\\Codex\\svflex537\\curation869_plan02\\generated_replay\\wav_container_negative\\tb_v3_audio_negative_container\\da93d6c172426e9c\\replay.receipt.json",
+      "receipt_sha256": "b5769ff17f8e8860f80d5150e1258029e7fcbdc248ce3114efd3e395b7eecd7f",
+      "generated_assets": {
+        "compact_desc.mem": {
+          "sha256": "5c335502a95155294fc0a96aa36755829b2bcd2cf95b55e8cabb4a26a5d0ffc1",
+          "size": 9410
+        },
+        "compact_disk.mem": {
+          "sha256": "5e88081e74d97160ee8c37c849c4993e741cf566514ee52342edfefdb5cfba3b",
+          "size": 257544
+        },
+        "compact_fixture.json": {
+          "sha256": "2758434a913e00b7f83eeeb2624f80aeaf2ea5946156678e6d36c9525ed37b19",
+          "size": 21567
+        },
+        "compact_pcm.mem": {
+          "sha256": "9bdaf3ef46d7e0f222e0d0e06ed4e0002f87734861552f5832d3efee435afd8c",
+          "size": 86890
+        }
+      }
+    }
+  }
+}

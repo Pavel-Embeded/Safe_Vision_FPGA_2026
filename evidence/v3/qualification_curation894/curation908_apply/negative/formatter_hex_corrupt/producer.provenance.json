@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\formatter_hex_corrupt\\sim\\tb_v3_uart_formatter_equivalence",
+  "native_log_sha256": "462d91fef6be8ad5e068fa8f4b3c3e27e449b45ff5a0232202ee2dc3f6e66eda",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "formatter_hex_corrupt",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\formatter_hex_corrupt\\sim\\tb_v3_uart_formatter_equivalence",
+    "checked": {
+      "metadata": {
+        "mutation": "formatter_hex_corrupt",
+        "target": "safevision/rtl/control/v3_uart_link.v",
+        "suite": "uart_formatter_equivalence",
+        "top": "tb_v3_uart_formatter_equivalence",
+        "patch": [
+          {
+            "before": "byte_tx=format_hex?hex(format_nibble):format_literal;",
+            "after": "byte_tx=format_hex?hex(format_nibble^4'd1):format_literal;"
+          }
+        ],
+        "original_sha256": "47906bd6a546bc8975ae87dbf2106613c8aa1d92630fb303e643715f85da9dcc",
+        "mutated_sha256": "f795f56ee0dc3dec2605c1cd101cd647b2dc568848e7a9dfe5d79f0ed8fabc3e",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          49156
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\formatter_hex_corrupt\\sim\\tb_v3_uart_formatter_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\formatter_hex_corrupt\\sim\\tb_v3_uart_formatter_equivalence"
+      },
+      "metadata_sha256": "fe8afc5fc982032e65064ff2ce96dad1e09b3452bdc19cd4e0b14ea3034fc248",
+      "normal_completion": true,
+      "input_count": 16,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_uart_formatter_equivalence",
+        "suite": "uart_formatter_equivalence",
+        "ordered_analyzed_HDL": 8,
+        "manifest": "safevision/build/manifests/uart_formatter_equivalence_sim.json",
+        "current_manifest_sha256": "a676ca7ff79cffdec6a2f81335364be8666cbf12129088b0d0cfd611ca34a580",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        49156
+      ],
+      "log_sha256": "462d91fef6be8ad5e068fa8f4b3c3e27e449b45ff5a0232202ee2dc3f6e66eda"
+    },
+    "elapsed_s": 6.984
+  }
+}

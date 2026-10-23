@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures406/source/safevision/rtl/hd/sdram_app_adapter.v" into library work
+INFO: [VRFC 10-311] analyzing module sdram_app_adapter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures406/source/safevision/verification/models/sdram_adapter_hd_reference385.sv" into library work
+INFO: [VRFC 10-311] analyzing module sdram_adapter_hd_reference385
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures406/source/safevision/verification/unit/tb_v3_prefix_miter_hd_read64_basic_385.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_prefix_miter_hd_read64_basic_385

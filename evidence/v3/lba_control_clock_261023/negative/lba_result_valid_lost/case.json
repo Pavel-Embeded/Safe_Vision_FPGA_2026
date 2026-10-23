@@ -3,20 +3,24 @@
   "target": "safevision/rtl/storage/v3_shared_fs_service.v",
   "suite": "lba_pipeline747",
   "top": "tb_v3_lba_pipeline747",
+  "before": "valid2<=valid1;",
+  "after": "valid2<=1'b0;",
+  "errors": [
+    4096
+  ],
   "patch": [
     {
       "before": "valid2<=valid1;",
       "after": "valid2<=1'b0;"
     }
   ],
-  "original_sha256": "4d5928d8e1a3adc40b10848dc8751d4777d964ce95d7cab137043094bf1fb480",
-  "mutated_sha256": "10743c22dbce21aaa1fea6ca2ac7bb4b4d80c300dd9410a28893d0e413b6e49f",
+  "original_sha256": "d49bada402150da3dbbc8b1e5fa7ddad3ac1765aa5205683599e2d5eafb88fc5",
+  "mutated_sha256": "d27d14b3e2fa230d68136a93012f88a14172bca6f005d716117a6a903357b608",
   "mutant_file": "mutant.v",
   "process_exit": 1,
   "normal_completion": true,
   "detected": true,
   "error_counts": [
     4096
-  ],
-  "original_producer": "D:\\Codex\\svflex537\\lba790\\lba_result_valid_lost\\sim\\tb_v3_lba_pipeline747"
+  ]
 }

@@ -1,0 +1,114 @@
+{
+  "kind": "negative",
+  "name": "cfg_commits_midframe",
+  "record": {
+    "kind": "negative",
+    "name": "cfg_commits_midframe",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic",
+    "checked": {
+      "metadata": {
+        "mutation": "cfg_commits_midframe",
+        "target": "safevision/rtl/video/v3_video_display_core.v",
+        "suite": "handbook_cfg_atomic",
+        "top": "tb_v3_handbook_cfg_atomic",
+        "patch": [
+          {
+            "before": "if(cfg_received&&frame_start)begin",
+            "after": "if(cfg_received)begin"
+          }
+        ],
+        "original_sha256": "0eba70c5dbc2cf05e0562786fd83131ffb066a050e9b7cc6f5965ffc02a810a5",
+        "mutated_sha256": "8660f23f0ba1e3b728351f816f393bc92c581c563f0ad6bc4cd0f28e8d586d81",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          96
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic",
+        "original_producer": "D:\\Codex\\svflex537\\qualification860\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic"
+      },
+      "metadata_sha256": "8bc7c7d5bc0080bd46af55345eb6e97a9f580a605ed19af772af52d3603ea929",
+      "normal_completion": true,
+      "input_count": 35,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_cfg_atomic",
+        "suite": "handbook_cfg_atomic",
+        "ordered_analyzed_HDL": 21,
+        "manifest": "safevision/build/manifests/handbook_cfg_atomic_sim.json",
+        "current_manifest_sha256": "6d7dc8c108fa5181866dd5a940ce7b665d6dcdd6e3e28b54f4d4637b2b03e92c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        96
+      ],
+      "log_sha256": "725ba5ad5082b971d9c0d543f55c0963e3255b11bb625b9e617b663bae854d67"
+    },
+    "elapsed_s": 10.985,
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification860\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic",
+  "checked": {
+    "metadata": {
+      "mutation": "cfg_commits_midframe",
+      "target": "safevision/rtl/video/v3_video_display_core.v",
+      "suite": "handbook_cfg_atomic",
+      "top": "tb_v3_handbook_cfg_atomic",
+      "patch": [
+        {
+          "before": "if(cfg_received&&frame_start)begin",
+          "after": "if(cfg_received)begin"
+        }
+      ],
+      "original_sha256": "0eba70c5dbc2cf05e0562786fd83131ffb066a050e9b7cc6f5965ffc02a810a5",
+      "mutated_sha256": "8660f23f0ba1e3b728351f816f393bc92c581c563f0ad6bc4cd0f28e8d586d81",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        96
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic",
+      "original_producer": "D:\\Codex\\svflex537\\qualification860\\negative\\cfg_commits_midframe\\sim\\tb_v3_handbook_cfg_atomic"
+    },
+    "metadata_sha256": "8bc7c7d5bc0080bd46af55345eb6e97a9f580a605ed19af772af52d3603ea929",
+    "input_count": 35,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_cfg_atomic",
+      "suite": "handbook_cfg_atomic",
+      "ordered_analyzed_HDL": 21,
+      "manifest": "safevision/build/manifests/handbook_cfg_atomic_sim.json",
+      "current_manifest_sha256": "6d7dc8c108fa5181866dd5a940ce7b665d6dcdd6e3e28b54f4d4637b2b03e92c",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      96
+    ],
+    "log_sha256": "725ba5ad5082b971d9c0d543f55c0963e3255b11bb625b9e617b663bae854d67",
+    "sources_sha256": "516922940169eaa95a20077acbb4a54d793a31a9df3fde69c682824bc8cf1045",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification860\\negative\\cfg_commits_midframe\\sim\\results.json",
+          "sha256": "f66fba2a92d0abfd98122d25599126300e097d4fa4f5d9538776fa3870866b8f",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

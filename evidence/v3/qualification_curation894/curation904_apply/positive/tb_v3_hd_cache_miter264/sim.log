@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Oct 20 15:04:25 2026
+# Process ID: 18056
+# Current directory: D:/Codex/svq309/p/tb_v3_hd_cache_miter264/sim/tb_v3_hd_cache_miter264
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_hd_cache_miter264/xsim_script.tcl}
+# Log file: D:/Codex/svq309/p/tb_v3_hd_cache_miter264/sim/tb_v3_hd_cache_miter264/sim.log
+# Journal file: D:/Codex/svq309/p/tb_v3_hd_cache_miter264/sim/tb_v3_hd_cache_miter264\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_hd_cache_miter264/xsim_script.tcl
+# xsim {tb_v3_hd_cache_miter264} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] even/odd 8-neighbor packing, last column clamp and row reuse
+[PASS] intentionally corrupt CRC rejected before row publication
+[PASS] fetch reset flush and revalidation
+[TB] tb_v3_hd_cache_miter264 done comparisons=30350 errors=0
+PASS tb_v3_hd_cache_miter264
+$finish called at time : 131434212 ps : File "D:/Codex/svq309/source/safevision/verification/unit/tb_v3_hd_cache_miter264.sv" Line 135
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 15:04:29 2026...

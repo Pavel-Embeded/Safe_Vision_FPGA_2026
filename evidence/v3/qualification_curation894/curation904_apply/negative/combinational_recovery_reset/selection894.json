@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "combinational_recovery_reset",
+  "record": {
+    "kind": "negative",
+    "name": "combinational_recovery_reset",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\combinational_recovery_reset",
+    "checked": {
+      "metadata": {
+        "mutation": "combinational_recovery_reset",
+        "target": "safevision/rtl/control/media_recovery_ctrl.v",
+        "suite": "registered_recovery_reset",
+        "top": "tb_v3_registered_recovery_reset",
+        "patch": [
+          {
+            "before": "assign media_reset=media_reset_q;",
+            "after": "assign media_reset=(state==RESET);"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\combinational_recovery_reset\\sim\\tb_v3_registered_recovery_reset",
+        "original_sha256": "5952cc814bf6e6d5424e074d9ffc36e7ab5276a38b8ee7a6b866b41e22bd21dd",
+        "mutated_sha256": "d69eeb0d51fa6db936f54841bfec35c3907b18b731fdb9ac05ef245353e5ab5a",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          2
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\combinational_recovery_reset\\sim\\tb_v3_registered_recovery_reset",
+        "return_code": 1
+      },
+      "metadata_sha256": "7e37db5f8800d63e5892bfa648cae4a912ef62f1e429f6d0f484addeb06d5cd0",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_registered_recovery_reset",
+        "suite": "registered_recovery_reset",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/registered_recovery_reset_sim.json",
+        "current_manifest_sha256": "c00fd50099846aef4f2ce700c22d134f012860bb7fcc6f32cc92bf0d32178c5c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        2
+      ],
+      "log_sha256": "778ef2422e502be3261555d5bd6fe382e20e9b680b463885a23f18bb4cf7b03e"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\combinational_recovery_reset",
+  "checked": {
+    "metadata": {
+      "mutation": "combinational_recovery_reset",
+      "target": "safevision/rtl/control/media_recovery_ctrl.v",
+      "suite": "registered_recovery_reset",
+      "top": "tb_v3_registered_recovery_reset",
+      "patch": [
+        {
+          "before": "assign media_reset=media_reset_q;",
+          "after": "assign media_reset=(state==RESET);"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\combinational_recovery_reset\\sim\\tb_v3_registered_recovery_reset",
+      "original_sha256": "5952cc814bf6e6d5424e074d9ffc36e7ab5276a38b8ee7a6b866b41e22bd21dd",
+      "mutated_sha256": "d69eeb0d51fa6db936f54841bfec35c3907b18b731fdb9ac05ef245353e5ab5a",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        2
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\combinational_recovery_reset\\sim\\tb_v3_registered_recovery_reset",
+      "return_code": 1
+    },
+    "metadata_sha256": "7e37db5f8800d63e5892bfa648cae4a912ef62f1e429f6d0f484addeb06d5cd0",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_registered_recovery_reset",
+      "suite": "registered_recovery_reset",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/registered_recovery_reset_sim.json",
+      "current_manifest_sha256": "c00fd50099846aef4f2ce700c22d134f012860bb7fcc6f32cc92bf0d32178c5c",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      2
+    ],
+    "log_sha256": "778ef2422e502be3261555d5bd6fe382e20e9b680b463885a23f18bb4cf7b03e",
+    "sources_sha256": "bff9ea6efc5ef08091a0b6d1b0a2c6401614b98b6009745fd7fa920702896c6a",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\regression576_stable\\negative\\combinational_recovery_reset\\sim\\results.json",
+          "sha256": "fa7c4b28971ab3b05b8d74201a91cb2ecda6d55f4ad085a2f15907a9d1eea884",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

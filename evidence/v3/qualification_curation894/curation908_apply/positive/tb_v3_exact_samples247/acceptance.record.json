@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_exact_samples247",
+  "top": "tb_v3_exact_samples247",
+  "suite": "exact_samples247",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_exact_samples247",
+    "suite": "exact_samples247",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_exact_samples247",
+    "suite": "exact_samples247",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_exact_samples247",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_exact_samples247",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_exact_samples247",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 3,
+      "data_comparisons": 111,
+      "elapsed_s": 7.656,
+      "suite": "exact_samples247",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svfeatures248\\tests\\exact_samples247\\tb_v3_exact_samples247"
+    },
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_exact_samples247",
+      "suite": "exact_samples247",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/exact_samples247_sim.json",
+      "current_manifest_sha256": "a5b450181b60517114b1dd1f7292bc8721f24aed4b3ab0a525656b4333fb73cc",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "d537134a3ce6766bbe727477be062e7e314e7b7bd15a2f5701ab3a1a8f17d97b",
+    "metadata_sha256": "9b8fe3005a48440861de60ba876f0744a11cb74fe550b1a35e8dc917e0e0b8e7",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_exact_samples247\\result.json",
+      "sha256": "9b8fe3005a48440861de60ba876f0744a11cb74fe550b1a35e8dc917e0e0b8e7"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_exact_samples247\\sim.log",
+      "sha256": "d537134a3ce6766bbe727477be062e7e314e7b7bd15a2f5701ab3a1a8f17d97b"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_exact_samples247\\sources.sha256.json",
+      "sha256": "44306820af13e69567cbe2159b5f5143bced0d38afac855d698741445a40681b"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_exact_samples247\\original.producer.metadata.json",
+      "sha256": "9b8fe3005a48440861de60ba876f0744a11cb74fe550b1a35e8dc917e0e0b8e7"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_exact_samples247\\producer.provenance.json",
+      "sha256": "bda50c4ab815bee90e25ce17223ccc2987f6b3a0b1ce8a9f9bbc524d441052d5"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_exact_samples247\\sources.prj",
+      "sha256": "822fda8748a32e9096ebb4c1d12021ea4cc650681a9d46d9e2e76e7641ee3624"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

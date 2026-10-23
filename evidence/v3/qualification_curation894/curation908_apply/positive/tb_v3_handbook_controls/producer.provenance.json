@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_handbook_controls\\sim\\tb_v3_handbook_controls",
+  "native_log_sha256": "07be8cdab4d22d41540dc6c8e32fb6f147806a768c68ccd5e52786d32277ba29",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_handbook_controls",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_handbook_controls\\sim\\tb_v3_handbook_controls",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_handbook_controls",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 685,
+        "elapsed_s": 6.687,
+        "suite": "handbook",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_handbook_controls\\sim\\tb_v3_handbook_controls"
+      },
+      "metadata_sha256": "e842ed16cac1688cf482e318f146a521944facf0ed51dfbbf513f996a0a3589b",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_controls",
+        "suite": "handbook",
+        "ordered_analyzed_HDL": 7,
+        "manifest": "safevision/build/manifests/handbook_sim.json",
+        "current_manifest_sha256": "25ec72e6010492c51f0537f48ce3c6f4911b7f382c681df9c4fc5302d966aa68",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "07be8cdab4d22d41540dc6c8e32fb6f147806a768c68ccd5e52786d32277ba29"
+    },
+    "elapsed_s": 6.86
+  }
+}

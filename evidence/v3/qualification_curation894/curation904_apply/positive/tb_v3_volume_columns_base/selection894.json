@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_volume_columns_base",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_volume_columns_base",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_columns_base",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_volume_columns_base",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 279676,
+        "elapsed_s": 11.704,
+        "suite": "volume_columns_base",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_base\\sim\\tb_v3_volume_columns_base"
+      },
+      "metadata_sha256": "1dd95ad33de9b93409df722883fb99630d7a692235f4793b133f14ae3ee563c8",
+      "normal_completion": true,
+      "input_count": 17,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_volume_columns_base",
+        "suite": "volume_columns_base",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/volume_columns_base_sim.json",
+        "current_manifest_sha256": "4a8a0788b1650fc4720d3c01756087a95fd5a78f4099eabbf538fa5bb8a224ad",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "7a2481d354d2157af6d1d341e4ba8e7314453c59091cb18254fd6756b1dd33fa"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_columns_base",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_volume_columns_base",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 279676,
+      "elapsed_s": 11.704,
+      "suite": "volume_columns_base",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_base\\sim\\tb_v3_volume_columns_base"
+    },
+    "metadata_sha256": "1dd95ad33de9b93409df722883fb99630d7a692235f4793b133f14ae3ee563c8",
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_volume_columns_base",
+      "suite": "volume_columns_base",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/volume_columns_base_sim.json",
+      "current_manifest_sha256": "4a8a0788b1650fc4720d3c01756087a95fd5a78f4099eabbf538fa5bb8a224ad",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "7a2481d354d2157af6d1d341e4ba8e7314453c59091cb18254fd6756b1dd33fa",
+    "sources_sha256": "76c4fb424d86bdf058f66dee0da368d04f04ad54a4d676d8c7a675fa8959f97f",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_base\\sim\\results.json",
+          "sha256": "fae683ba9b94b4b69f5e55e282bea80f857a494cceed771d3ea130c405203517",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

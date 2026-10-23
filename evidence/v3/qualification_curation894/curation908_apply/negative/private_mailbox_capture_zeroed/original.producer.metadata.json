@@ -1,0 +1,23 @@
+{
+  "mutation": "private_mailbox_capture_zeroed",
+  "target": "safevision/rtl/video/video_cdc/video_cdc_mailbox.v",
+  "suite": "mailbox_miter228",
+  "top": "tb_v3_mailbox_miter228",
+  "patch": [
+    {
+      "before": "if(src_rst_n&&src_valid&&src_ready)payload<=src_data;",
+      "after": "if(src_rst_n&&src_valid&&src_ready)payload<=0;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative240\\n\\private_mailbox_capture_zeroed\\sim\\tb_v3_mailbox_miter228",
+  "original_sha256": "6e9fda76c6ee8decb8caf66eb52d255ecfe588ed2a64c87d61d39b15b188931a",
+  "mutated_sha256": "51bfab73a13eb3a7e3e849695c29cfb574eec4467681114bde569c2091fdb8c2",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    209114
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative240\\n\\private_mailbox_capture_zeroed\\sim\\tb_v3_mailbox_miter228"
+}

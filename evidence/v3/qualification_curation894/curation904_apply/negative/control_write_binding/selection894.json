@@ -1,0 +1,120 @@
+{
+  "kind": "negative",
+  "name": "control_write_binding",
+  "record": {
+    "kind": "negative",
+    "name": "control_write_binding",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\control_write_binding",
+    "checked": {
+      "metadata": {
+        "mutation": "control_write_binding",
+        "target": "safevision/rtl/control/v3_user_controls.v",
+        "suite": "control_decode_equivalence",
+        "top": "tb_v3_control_decode_equivalence",
+        "patch": [
+          {
+            "before": "operation[OP_CONTRAST]:if(value_byte_qualified)contrast<=command_value_eff;else reply_code<=3;",
+            "after": "operation[OP_CONTRAST]:if(value_byte_qualified)osd_alpha<=command_value_eff;else reply_code<=3;"
+          }
+        ],
+        "required_marker": "[FAIL]",
+        "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+        "mutated_sha256": "6063c66e48ab9edd729edf9f5ed19d1ad69a4acb7845ee8e47825891524edb4b",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          215232
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_write_binding\\sim\\tb_v3_control_decode_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_write_binding\\sim\\tb_v3_control_decode_equivalence"
+      },
+      "metadata_sha256": "d04beb7c8eb5d86d7e08449b62869137178a34f100b20d10d4e313f0b00249c6",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_control_decode_equivalence",
+        "suite": "control_decode_equivalence",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/control_decode_equivalence_sim.json",
+        "current_manifest_sha256": "d20e0519c02302d8bd304eb2c3d11803b4713307caa3ab6690a5cd5e27d9066d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        215232
+      ],
+      "log_sha256": "63a9d44feefbdff8a074cbf89e018b1f26fd5c4b6bbec3fe1fe47f80dd1ca48b"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\control_write_binding",
+  "checked": {
+    "metadata": {
+      "mutation": "control_write_binding",
+      "target": "safevision/rtl/control/v3_user_controls.v",
+      "suite": "control_decode_equivalence",
+      "top": "tb_v3_control_decode_equivalence",
+      "patch": [
+        {
+          "before": "operation[OP_CONTRAST]:if(value_byte_qualified)contrast<=command_value_eff;else reply_code<=3;",
+          "after": "operation[OP_CONTRAST]:if(value_byte_qualified)osd_alpha<=command_value_eff;else reply_code<=3;"
+        }
+      ],
+      "required_marker": "[FAIL]",
+      "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+      "mutated_sha256": "6063c66e48ab9edd729edf9f5ed19d1ad69a4acb7845ee8e47825891524edb4b",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        215232
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_write_binding\\sim\\tb_v3_control_decode_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_write_binding\\sim\\tb_v3_control_decode_equivalence"
+    },
+    "metadata_sha256": "d04beb7c8eb5d86d7e08449b62869137178a34f100b20d10d4e313f0b00249c6",
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_control_decode_equivalence",
+      "suite": "control_decode_equivalence",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/control_decode_equivalence_sim.json",
+      "current_manifest_sha256": "d20e0519c02302d8bd304eb2c3d11803b4713307caa3ab6690a5cd5e27d9066d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      215232
+    ],
+    "log_sha256": "63a9d44feefbdff8a074cbf89e018b1f26fd5c4b6bbec3fe1fe47f80dd1ca48b",
+    "sources_sha256": "fa3436696f4a433964710f6ab5d7a579eb6be208daac012a63bfe3dbdb80c28e",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\control_write_binding\\runner.results.json",
+          "sha256": "c11e3e6d20696407db7091c3e0888454e8b94c012607776829455dc4c87ca0e1",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification702\\negative\\control_write_binding\\sim\\results.json",
+          "sha256": "c11e3e6d20696407db7091c3e0888454e8b94c012607776829455dc4c87ca0e1",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

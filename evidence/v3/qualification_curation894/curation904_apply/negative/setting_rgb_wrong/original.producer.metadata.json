@@ -1,0 +1,24 @@
+{
+  "mutation": "setting_rgb_wrong",
+  "target": "safevision/rtl/video/v3_status_layers.v",
+  "suite": "volume_setting_base88",
+  "top": "tb_v3_volume_setting_base88",
+  "patch": [
+    {
+      "before": "setting_fill_pipe[3]?16'h05bf:",
+      "after": "setting_fill_pipe[3]?16'hf800:"
+    }
+  ],
+  "original_sha256": "b64c3351f196ace3e56cde256089c02175810cd2bdf63309e2cab8c7dadf75b7",
+  "mutated_sha256": "c4af25e0f4e59f526e112e012e0a172171b4608236d7b5c3360fbf3309706ca2",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    33646
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\setting_rgb_wrong\\sim\\tb_v3_volume_setting_base88",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\setting_rgb_wrong\\sim\\tb_v3_volume_setting_base88"
+}

@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "hd_priority_advance_stuck",
+  "record": {
+    "kind": "negative",
+    "name": "hd_priority_advance_stuck",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_priority_advance_stuck",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_priority_advance_stuck",
+        "target": "safevision/rtl/hd/v3_supervisor.v",
+        "suite": "hd_supervisor_alert",
+        "top": "tb_v3_hd_supervisor_alert_equivalence",
+        "patch": [
+          {
+            "before": "pending<=pending_next;",
+            "after": "pending<=pending;"
+          }
+        ],
+        "original_sha256": "2e7e07748fe4856576e9690cf237f6a34f4a18800ba1cc498891dec53698c0bd",
+        "mutated_sha256": "878f0014ff1f698a32f3b2be639db0fc96505d16ab62f3cce57cf58bb2c109d9",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          198321
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_priority_advance_stuck\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\hd_priority_advance_stuck\\sim\\tb_v3_hd_supervisor_alert_equivalence"
+      },
+      "metadata_sha256": "e1dd36c579e9737132d390afcd314b8e43ee8c556b062104ee7a68fa0b6025d3",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_supervisor_alert_equivalence",
+        "suite": "hd_supervisor_alert",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/hd_supervisor_alert_sim.json",
+        "current_manifest_sha256": "522a928de1ee9c7e732ebc8e8e1310687fa9cb0787e5b8a180eb77ce2c0b04dc",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        198321
+      ],
+      "log_sha256": "b99a94a9b028833cb57caf94a619ff7f9b4192f57e4cd57c636cca447d82860d"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_priority_advance_stuck",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_priority_advance_stuck",
+      "target": "safevision/rtl/hd/v3_supervisor.v",
+      "suite": "hd_supervisor_alert",
+      "top": "tb_v3_hd_supervisor_alert_equivalence",
+      "patch": [
+        {
+          "before": "pending<=pending_next;",
+          "after": "pending<=pending;"
+        }
+      ],
+      "original_sha256": "2e7e07748fe4856576e9690cf237f6a34f4a18800ba1cc498891dec53698c0bd",
+      "mutated_sha256": "878f0014ff1f698a32f3b2be639db0fc96505d16ab62f3cce57cf58bb2c109d9",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        198321
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_priority_advance_stuck\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\hd_priority_advance_stuck\\sim\\tb_v3_hd_supervisor_alert_equivalence"
+    },
+    "metadata_sha256": "e1dd36c579e9737132d390afcd314b8e43ee8c556b062104ee7a68fa0b6025d3",
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_supervisor_alert_equivalence",
+      "suite": "hd_supervisor_alert",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/hd_supervisor_alert_sim.json",
+      "current_manifest_sha256": "522a928de1ee9c7e732ebc8e8e1310687fa9cb0787e5b8a180eb77ce2c0b04dc",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      198321
+    ],
+    "log_sha256": "b99a94a9b028833cb57caf94a619ff7f9b4192f57e4cd57c636cca447d82860d",
+    "sources_sha256": "eb18460c02af95e94414db0fd76ba9ee657de4c928f37763875b6a899b8a1a6d",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\negative\\hd_priority_advance_stuck\\sim\\results.json",
+          "sha256": "06b8dfcab9162879fcbd78aea4bbf84e4ad9b9a560b816b091a60e7ac99913cb",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

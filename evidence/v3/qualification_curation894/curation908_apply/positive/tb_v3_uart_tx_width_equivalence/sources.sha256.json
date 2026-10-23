@@ -1,0 +1,13 @@
+{
+  "safevision/rtl/common/uart_tx.v": "4421c2314011ef86428c9256a7170e8fb3b5c2f58b60cdcb5bf97c8095808867",
+  "safevision/verification/models/v3_uart_tx_reference.sv": "5029142eb9ddd99b7892dccab2be98d37854d5105f978fa192827289fecad7b6",
+  "safevision/verification/unit/tb_v3_uart_tx_width_equivalence.sv": "1878ebf539009a151666c0c10d1ee8d859febece2708130105f89f381ac383b2",
+  "safevision/rtl/include/crc32_word.vh": "17f9d826d1d26514a3bf1a8c6db95189ccd982c470112d1f5cdb8c9bcb89a36a",
+  "safevision/rtl/include/event_code_defs.vh": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2",
+  "safevision/rtl/include/fault_code_defs.vh": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e",
+  "safevision/rtl/include/pixel_format_defs.vh": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0",
+  "safevision/rtl/include/safevision_defs.vh": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5",
+  "safevision/rtl/include/video_mode_defs.vh": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997",
+  "safevision/tools/run_v3_sim.py": "3effe62a0f063b7e03d9af851cfa1ac99032da91093dc76587f2591bd62cef86",
+  "safevision/build/manifests/uart_tx_width_equivalence_sim.json": "5f001b5c96a59475117240f60339136fcdfa08ea4722926697930d9402e930df"
+}

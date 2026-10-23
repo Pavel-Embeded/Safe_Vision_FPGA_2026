@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_slot_partition_hd249",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 2196608,
+  "elapsed_s": 9.594,
+  "suite": "slot_partition_hd249",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_slot_partition_hd249\\sim\\tb_v3_slot_partition_hd249"
+}

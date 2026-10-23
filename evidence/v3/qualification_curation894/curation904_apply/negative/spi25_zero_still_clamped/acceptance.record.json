@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "spi25_zero_still_clamped",
+  "top": "tb_v3_spi25_profile",
+  "suite": "spi25_profile",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "spi25_zero_still_clamped",
+    "target": "safevision/rtl/storage/spi_master.v",
+    "suite": "spi25_profile",
+    "top": "tb_v3_spi25_profile",
+    "patch": [
+      {
+        "before": "!MID_REF_SAMPLE && clk_div[7:0]",
+        "after": "clk_div[7:0]"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "spi25_zero_still_clamped",
+    "target": "safevision/rtl/storage/spi_master.v",
+    "suite": "spi25_profile",
+    "top": "tb_v3_spi25_profile",
+    "patch": [
+      {
+        "before": "!MID_REF_SAMPLE && clk_div[7:0]",
+        "after": "clk_div[7:0]"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_zero_still_clamped",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\spi25_zero_still_clamped",
+  "checked": {
+    "metadata": {
+      "mutation": "spi25_zero_still_clamped",
+      "target": "safevision/rtl/storage/spi_master.v",
+      "suite": "spi25_profile",
+      "top": "tb_v3_spi25_profile",
+      "patch": [
+        {
+          "before": "!MID_REF_SAMPLE && clk_div[7:0]",
+          "after": "clk_div[7:0]"
+        }
+      ],
+      "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f11\\negative\\spi25_zero_still_clamped",
+      "original_sha256": "8567f354ad78e7652706169eae8a2f80081727cf62a9c32677bb6d970365f1e6",
+      "mutated_sha256": "70d876397eed986cc0cbd595e635782983015a73ff0f0660b643b68b2ec982ea",
+      "mutant_file": "mutant.v",
+      "detected": true,
+      "normal_completion": true,
+      "process_exit": 1,
+      "error_counts": [
+        4351,
+        4351
+      ],
+      "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/spi25_zero_still_clamped",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\spi25_zero_still_clamped",
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\spi25_zero_still_clamped"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_spi25_profile",
+      "suite": "spi25_profile",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/spi25_profile_sim.json",
+      "current_manifest_sha256": "7ce48e1b6fa33144dcb629370ab75c25a3df68c5421c7ab408974ed8ab852921",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      4351,
+      4351
+    ],
+    "log_sha256": "4d1a93f48a2da5e299ae07e18d19c5bbffa8ca3e38e37ff5a3749cfb9b69c47d",
+    "metadata_sha256": "a9f012a745f783136ddb96fc2b7346726978ba377165e35a0e58b2073fb8feff",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_zero_still_clamped\\case.json",
+      "sha256": "a9f012a745f783136ddb96fc2b7346726978ba377165e35a0e58b2073fb8feff"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_zero_still_clamped\\sim.log",
+      "sha256": "4d1a93f48a2da5e299ae07e18d19c5bbffa8ca3e38e37ff5a3749cfb9b69c47d"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_zero_still_clamped\\sources.sha256.json",
+      "sha256": "2a06915aa7e6f309a3c60be9c386ac34ad4bbd5c9ff55a7df9a1083db354b251"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_zero_still_clamped\\original.producer.metadata.json",
+      "sha256": "a9f012a745f783136ddb96fc2b7346726978ba377165e35a0e58b2073fb8feff"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_zero_still_clamped\\producer.provenance.json",
+      "sha256": "9e2326272c1963deaa60cb312c91b1d61118c6675137c757c64066fcfe8bbf75"
+    },
+    "sources.after.sha256.json": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_zero_still_clamped\\sources.after.sha256.json",
+      "sha256": "82f12934ffa4308d1d9f7d51c171118f1986d22a62aa3ec44f9d37de15b11b9b"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_zero_still_clamped\\mutant.v",
+      "sha256": "70d876397eed986cc0cbd595e635782983015a73ff0f0660b643b68b2ec982ea"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

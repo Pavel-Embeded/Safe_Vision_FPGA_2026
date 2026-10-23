@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_priority_serial_gain",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_priority_serial_gain",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_priority_serial_gain",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_priority_serial_gain",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 28718,
+        "elapsed_s": 6.75,
+        "suite": "priority_serial",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_priority_serial_gain\\sim\\tb_v3_priority_serial_gain"
+      },
+      "metadata_sha256": "eda55d6ba382d079d1f9dd7745d945fd8d856b2ed7b8e9c4c2b910647b145fba",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_priority_serial_gain",
+        "suite": "priority_serial",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/priority_serial_sim.json",
+        "current_manifest_sha256": "7489f7dd7b3716e30ebc3461b843dd3ef1234798918bc5b327daf1c5416b93c0",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "54104ee493e14f189f3fbbb677acefd56b563fa1bfecc3c3d67dff789bd87caa"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_priority_serial_gain",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_priority_serial_gain",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 28718,
+      "elapsed_s": 6.75,
+      "suite": "priority_serial",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_priority_serial_gain\\sim\\tb_v3_priority_serial_gain"
+    },
+    "metadata_sha256": "eda55d6ba382d079d1f9dd7745d945fd8d856b2ed7b8e9c4c2b910647b145fba",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_priority_serial_gain",
+      "suite": "priority_serial",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/priority_serial_sim.json",
+      "current_manifest_sha256": "7489f7dd7b3716e30ebc3461b843dd3ef1234798918bc5b327daf1c5416b93c0",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "54104ee493e14f189f3fbbb677acefd56b563fa1bfecc3c3d67dff789bd87caa",
+    "sources_sha256": "a9993e12a5966559e32f5a9718dfbdd6d3d14d98007d155e00352d597cec5e25",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq74\\p\\tb_v3_priority_serial_gain\\sim\\results.json",
+          "sha256": "a934df8664a4d9d2122e9ddf3f4917d7f553e80fb1314a45e65aa7fda3aa6b79",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

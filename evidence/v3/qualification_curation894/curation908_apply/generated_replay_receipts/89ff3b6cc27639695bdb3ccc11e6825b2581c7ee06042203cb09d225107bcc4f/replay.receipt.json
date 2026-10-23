@@ -1,0 +1,47 @@
+{
+  "input_identity": "9b91d7a1caf20740ca4a6e2e2daf0881f0ffa54f0d1646008c443a1898f2bd9b",
+  "command": [
+    "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "D:\\Codex\\svflex537\\candidate852\\safevision\\tools\\gen_v3_audio_unaligned_fixture.py",
+    "--output",
+    "D:\\Codex\\svflex537\\curation869_plan02\\generated_replay\\hd_audio_native\\tb_v3_hd_audio_context\\9b91d7a1caf20740"
+  ],
+  "cwd": "D:\\Codex\\svflex537\\candidate852",
+  "native_process_exit": 0,
+  "generator": "safevision/tools/gen_v3_audio_unaligned_fixture.py",
+  "generator_sha256": "5af70d7a3d27c421398b5777aca74b4d51045e2b8e6dd6375ea5492f0c9b7e03",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+  "executable_sha256": "ceabb31054d429f57cb3825775677eeaf0db35fdabbc5ff6aef661c037154b00",
+  "parameters": [
+    "--output",
+    "<isolated directory>"
+  ],
+  "fixed_seed_values": [],
+  "replay_dependency_sha256": {
+    "safevision/tools/gen_v3_audio_fixture.py": "b0d091377a7d7cad9a2e6ab51e43137b0f4275b65cbf942d8237f131b08ccac6"
+  },
+  "dependencies_not_in_historical_capture": [
+    "safevision/tools/gen_v3_audio_fixture.py"
+  ],
+  "pillow_version": null,
+  "historical_tool_versions_not_invented": true,
+  "seed_contract": "exact captured native-runner command; no implicit random seed input",
+  "generated_assets": {
+    "audio_disk_unaligned.mem": {
+      "sha256": "c4ca5947d517e276bd4a6edc4b2d68c24e0cf654d0990ae61a584240dd6ff126",
+      "size": 262144
+    },
+    "audio_pcm_unaligned.mem": {
+      "sha256": "c7ae384225f741daf0a2a5d17f3189fc07bb375e70a91f27a1280de3427e77af",
+      "size": 80000
+    }
+  },
+  "console_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "binding": "replay_verified_current_generated_assets",
+  "original_before_after_hashes_captured": false,
+  "scope": "Current deterministic replay equals retained actual runtime assets; not a newly executed HDL test"
+}

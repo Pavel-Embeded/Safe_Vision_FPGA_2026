@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\volume_divisor_corrupt",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\volume_divisor_corrupt\\case.json",
+  "original_metadata_sha256": "fbedb219b822ab0ea941481bf9e315a767bdbcbb2ce8076ee30f48d1a7bcb19a",
+  "original_log_sha256": "81045624012f25d4a7a444d7666eb426e881bd77d831b41307187d3ef9fe7d6b",
+  "matrix_definition": {
+    "mutation": "volume_divisor_corrupt",
+    "target": "safevision/rtl/audio/v3_audio_volume.v",
+    "suite": "volume_dsp_equivalence",
+    "top": "tb_v3_volume_dsp_equivalence",
+    "patch": [
+      {
+        "before": "trial>=8'd100",
+        "after": "trial>=8'd101"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

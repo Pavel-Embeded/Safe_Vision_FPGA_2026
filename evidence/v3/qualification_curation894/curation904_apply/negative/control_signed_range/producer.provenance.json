@@ -1,0 +1,61 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_signed_range\\sim\\tb_v3_control_decode_equivalence",
+  "native_log_sha256": "2d7f04bbb71e197cfafd87ee55b92b664c5c6b6fdf86951b198df84b6b36edd0",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "control_signed_range",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_signed_range\\sim\\tb_v3_control_decode_equivalence",
+    "checked": {
+      "metadata": {
+        "mutation": "control_signed_range",
+        "target": "safevision/rtl/control/v3_user_controls.v",
+        "suite": "control_decode_equivalence",
+        "top": "tb_v3_control_decode_equivalence",
+        "patch": [
+          {
+            "before": " wire value_bright_ok=(~|command_value[31:7]) || (&command_value[31:7]);\n",
+            "after": " wire value_bright_ok=(~|command_value[31:8]) || (&command_value[31:8]);\n"
+          }
+        ],
+        "required_marker": "[FAIL]",
+        "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+        "mutated_sha256": "bf38e784d64cf349d79a263b722f2cff1a4c4dcd0044d6315901d5995f3ecd8e",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          105316
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_signed_range\\sim\\tb_v3_control_decode_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_signed_range\\sim\\tb_v3_control_decode_equivalence"
+      },
+      "metadata_sha256": "1520cbf37923b225d6975b749ab4a17d8ca571d6e109e7ccd48dcf4a523bea10",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_control_decode_equivalence",
+        "suite": "control_decode_equivalence",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/control_decode_equivalence_sim.json",
+        "current_manifest_sha256": "d20e0519c02302d8bd304eb2c3d11803b4713307caa3ab6690a5cd5e27d9066d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        105316
+      ],
+      "log_sha256": "2d7f04bbb71e197cfafd87ee55b92b664c5c6b6fdf86951b198df84b6b36edd0"
+    },
+    "elapsed_s": 12.469
+  }
+}

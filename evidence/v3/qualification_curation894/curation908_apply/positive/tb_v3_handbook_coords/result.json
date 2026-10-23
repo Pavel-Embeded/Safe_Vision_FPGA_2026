@@ -1,0 +1,13 @@
+{
+  "top": "tb_v3_handbook_coords",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 2,
+  "data_comparisons": 4915216,
+  "elapsed_s": 16.203,
+  "suite": "handbook",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_handbook_coords\\sim\\tb_v3_handbook_coords"
+}

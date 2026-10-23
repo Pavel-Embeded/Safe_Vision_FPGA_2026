@@ -1,0 +1,111 @@
+{
+  "kind": "negative",
+  "name": "hd_inverse5_coefficient_corrupt",
+  "record": {
+    "kind": "negative",
+    "name": "hd_inverse5_coefficient_corrupt",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_inverse5_coefficient_corrupt",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_inverse5_coefficient_corrupt",
+        "target": "safevision/rtl/hd/v3_row_integrity.v",
+        "suite": "hd_guard_decode",
+        "top": "tb_v3_hd_guard_decode",
+        "patch": [
+          {
+            "before": "digits[8:2]-digits[6:0]",
+            "after": "digits[8:2]+digits[6:0]"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_inverse5_coefficient_corrupt\\sim\\tb_v3_hd_guard_decode",
+        "original_sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368",
+        "mutated_sha256": "85330037ef8fbe420bc51fa4e61aba0f70ed7eea22a46b65c9e63b2ae7177ec4",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1888
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svnegative318\\n\\hd_inverse5_coefficient_corrupt\\sim\\tb_v3_hd_guard_decode"
+      },
+      "metadata_sha256": "29d4b8faa0006b9cfe86206f3ac827e78ca45ffd7d08839234b2b48e3bb74b71",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_guard_decode",
+        "suite": "hd_guard_decode",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/hd_guard_decode_sim.json",
+        "current_manifest_sha256": "cf7f41b0390d19fa12b5d73f4582f952834ff9dbdbbcdb1771014a4407f633b4",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1888
+      ],
+      "log_sha256": "db304aebe754686e0a59561de66a56319f34c8cf073d832ce6a645c275b22109"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_inverse5_coefficient_corrupt",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_inverse5_coefficient_corrupt",
+      "target": "safevision/rtl/hd/v3_row_integrity.v",
+      "suite": "hd_guard_decode",
+      "top": "tb_v3_hd_guard_decode",
+      "patch": [
+        {
+          "before": "digits[8:2]-digits[6:0]",
+          "after": "digits[8:2]+digits[6:0]"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_inverse5_coefficient_corrupt\\sim\\tb_v3_hd_guard_decode",
+      "original_sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368",
+      "mutated_sha256": "85330037ef8fbe420bc51fa4e61aba0f70ed7eea22a46b65c9e63b2ae7177ec4",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1888
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative318\\n\\hd_inverse5_coefficient_corrupt\\sim\\tb_v3_hd_guard_decode"
+    },
+    "metadata_sha256": "29d4b8faa0006b9cfe86206f3ac827e78ca45ffd7d08839234b2b48e3bb74b71",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_guard_decode",
+      "suite": "hd_guard_decode",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/hd_guard_decode_sim.json",
+      "current_manifest_sha256": "cf7f41b0390d19fa12b5d73f4582f952834ff9dbdbbcdb1771014a4407f633b4",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1888
+    ],
+    "log_sha256": "db304aebe754686e0a59561de66a56319f34c8cf073d832ce6a645c275b22109",
+    "sources_sha256": "7d7f1ee62692d1f58f9a2775f8dcbed8b7cb2711702afefd9121eafccdf04531",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svnegative318\\n\\hd_inverse5_coefficient_corrupt\\sim\\results.json",
+          "sha256": "c233e0a7c010ce0d69695c88c03a214a13028b98758d7159efab0b6f713524c4",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

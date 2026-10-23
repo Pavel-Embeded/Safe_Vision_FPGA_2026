@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_event_timestamp\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\hd_event_timestamp\\sim\\tb_v3_hd_supervisor_alert_equivalence\\case.json",
+  "original_metadata_sha256": "30e8c0a6c1a31f6c835af754b9e0e5b91706183231ae79afba32f65056adcba7",
+  "original_log_sha256": "9d8174d14377c06ee6f3c9928ba9a329f17247d0213bc452170b53c2f081285e",
+  "matrix_definition": {
+    "mutation": "hd_event_timestamp",
+    "target": "safevision/rtl/hd/v3_supervisor.v",
+    "suite": "hd_supervisor_alert",
+    "top": "tb_v3_hd_supervisor_alert_equivalence",
+    "patch": [
+      {
+        "before": "stamps[stamp_i]<=(WINDOW_PIPELINE&&(stamp_i==3||stamp_i==4))?window_ms_q:ms_now;",
+        "after": "stamps[stamp_i]<=0;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

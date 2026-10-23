@@ -1,0 +1,16 @@
+{
+  "suite": "rejected_counter_boundary",
+  "results": [
+    {
+      "top": "tb_v3_rejected_counter_boundary",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2591,
+      "elapsed_s": 6.844
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_pending_or",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_pending_or",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_pending_or",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_pending_or",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 2048,
+        "elapsed_s": 7.375,
+        "suite": "hd_pending_or",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_pending_or\\sim\\tb_v3_hd_pending_or"
+      },
+      "metadata_sha256": "d4e2e199c95fabb3f95f769d82df53669a910aaa7eaa26a431610314ea7d17c5",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_pending_or",
+        "suite": "hd_pending_or",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/hd_pending_or_sim.json",
+        "current_manifest_sha256": "1c31b248d5c76f1421de2d2555cc13e8696eadbbb2ebeec21296688116a67f4d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "25fbd96a081e5721365168f1fd6d2fff89fb5d99e9779ff3a6d8a7ae3dac9c7e"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_pending_or",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_pending_or",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2048,
+      "elapsed_s": 7.375,
+      "suite": "hd_pending_or",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_pending_or\\sim\\tb_v3_hd_pending_or"
+    },
+    "metadata_sha256": "d4e2e199c95fabb3f95f769d82df53669a910aaa7eaa26a431610314ea7d17c5",
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_pending_or",
+      "suite": "hd_pending_or",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/hd_pending_or_sim.json",
+      "current_manifest_sha256": "1c31b248d5c76f1421de2d2555cc13e8696eadbbb2ebeec21296688116a67f4d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "25fbd96a081e5721365168f1fd6d2fff89fb5d99e9779ff3a6d8a7ae3dac9c7e",
+    "sources_sha256": "fb80a4d4b6f1ea2c2f28165707998ab827ae8c3d0dee24f952890c47a46ee817",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_pending_or\\sim\\results.json",
+          "sha256": "924a99b9f9bc0a1855f7a612d886d07707775a14be9dba0a11537fc46e1531a4",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

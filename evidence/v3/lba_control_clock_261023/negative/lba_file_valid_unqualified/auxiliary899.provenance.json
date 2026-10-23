@@ -1,0 +1,76 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\lba_current892\\lba_file_valid_unqualified\\sim\\tb_v3_lba_pipeline747",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "lba",
+    "kind": "negative",
+    "name": "lba_file_valid_unqualified",
+    "row": {
+      "mutation": "lba_file_valid_unqualified",
+      "target": "safevision/rtl/storage/v3_shared_fs_service.v",
+      "suite": "lba_pipeline747",
+      "top": "tb_v3_lba_pipeline747",
+      "patch": [
+        {
+          "before": ".external_lba_valid(file_lba_valid)",
+          "after": ".external_lba_valid(1'b1)"
+        }
+      ],
+      "original_sha256": "4d5928d8e1a3adc40b10848dc8751d4777d964ce95d7cab137043094bf1fb480",
+      "mutated_sha256": "d482ce9bfb3bfceb30039448bc3a23b88537234162108c316673d85062be2a75",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "detected": true,
+      "error_counts": [
+        8184
+      ],
+      "original_producer": "D:\\Codex\\svflex537\\lba790\\lba_file_valid_unqualified\\sim\\tb_v3_lba_pipeline747",
+      "before": ".external_lba_valid(file_lba_valid)",
+      "after": ".external_lba_valid(1'b1)",
+      "errors": [
+        8184
+      ],
+      "legacy": false
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\lba_control_clock_261023\\negative\\lba_file_valid_unqualified",
+    "packed": false,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "existing_current892_actual_native_capture",
+    "producer_folder": "D:\\Codex\\svflex537\\lba_current892\\lba_file_valid_unqualified\\sim\\tb_v3_lba_pipeline747",
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_lba_pipeline747",
+        "suite": "lba_pipeline747",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/lba_pipeline747_sim.json",
+        "current_manifest_sha256": "45d4888e177264946f34dcfc186e373449c57072eca8bdbba8ec6151a314320c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\lba_current892\\lba_file_valid_unqualified\\sim\\results.json",
+            "sha256": "d35e0bc2fda4490f6865df72b25367fcb714acb7e03b3a759ee40b3a390e3fec",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 38,
+      "normal_completion": true,
+      "error_counts": [
+        8184
+      ],
+      "log_sha256": "aa68ec1db688446163129dca3ce48b125d96fc57d4d2c653cac950d1330d596f",
+      "source_fingerprint_sha256": "0aac93ecb6fa72fb174acff5d120166d2b151fff194f1739dde27e4051232de5"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\lba_control_clock_261023\\negative\\lba_file_valid_unqualified"
+  },
+  "actual_execution_retained": true
+}

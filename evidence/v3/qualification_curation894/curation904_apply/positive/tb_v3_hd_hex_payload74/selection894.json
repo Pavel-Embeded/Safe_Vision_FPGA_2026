@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_hex_payload74",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_hex_payload74",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_hex_payload74",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_hex_payload74",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 786480,
+        "elapsed_s": 28.687,
+        "suite": "hd_hex_payload74",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_hex_payload74\\sim\\tb_v3_hd_hex_payload74"
+      },
+      "metadata_sha256": "36c31a5f2b3f3aa784fc35822a5fb10c9ac19af10ec5ed4131191df685fd8ceb",
+      "normal_completion": true,
+      "input_count": 19,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_hex_payload74",
+        "suite": "hd_hex_payload74",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/hd_hex_payload74_sim.json",
+        "current_manifest_sha256": "8731a5c36ad2867901ec0a217dca117dce7b311d84c58fe311fb65c1cf0d20e5",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "376ad6a7f8a8088c5cfd50f6796a80ecca09617be6f4ce2e91f91ecd00d37a40"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_hex_payload74",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_hex_payload74",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 786480,
+      "elapsed_s": 28.687,
+      "suite": "hd_hex_payload74",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_hex_payload74\\sim\\tb_v3_hd_hex_payload74"
+    },
+    "metadata_sha256": "36c31a5f2b3f3aa784fc35822a5fb10c9ac19af10ec5ed4131191df685fd8ceb",
+    "input_count": 19,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_hex_payload74",
+      "suite": "hd_hex_payload74",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/hd_hex_payload74_sim.json",
+      "current_manifest_sha256": "8731a5c36ad2867901ec0a217dca117dce7b311d84c58fe311fb65c1cf0d20e5",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "376ad6a7f8a8088c5cfd50f6796a80ecca09617be6f4ce2e91f91ecd00d37a40",
+    "sources_sha256": "b4a77d51a9b7ed808958783257f499bb028b557d6ddb39f193c934898c62738c",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_hd_hex_payload74\\sim\\results.json",
+          "sha256": "a50880797b63f44f0131c9df6628390f4955c7fd32f87e3cd496f58230fa826d",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_guard_source_epoch_corrupt",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_guard_source_epoch_corrupt\\case.json",
+  "original_metadata_sha256": "e6a9f7fee5a28bbd33151db84e284083f252c3bbe43cbcb0d194884b26cd1422",
+  "original_log_sha256": "d66a423ef4d065e45af259b92738fb6ac778db1e4075f80c637fed075d251a6d",
+  "matrix_definition": {
+    "mutation": "hd_guard_source_epoch_corrupt",
+    "target": "safevision/rtl/hd/v3_row_integrity.v",
+    "suite": "hd_guard_480_320",
+    "top": "tb_v3_hd_guard_480_320",
+    "patch": [
+      {
+        "before": "source_count<=0;column<=0;crc_state<=32'hffffffff;producer_row<=top_down?0:ROWS-1;",
+        "after": "source_count<=0;column<=0;crc_state<=32'd0;producer_row<=top_down?0:ROWS-1;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

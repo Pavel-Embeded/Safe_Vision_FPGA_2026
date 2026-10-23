@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_priority_serial_gain",
+  "top": "tb_v3_priority_serial_gain",
+  "suite": "priority_serial",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_priority_serial_gain",
+    "suite": "priority_serial",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_priority_serial_gain",
+    "suite": "priority_serial",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_serial_gain",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_priority_serial_gain",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_priority_serial_gain",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 28718,
+      "elapsed_s": 6.75,
+      "suite": "priority_serial",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_priority_serial_gain\\sim\\tb_v3_priority_serial_gain"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_priority_serial_gain",
+      "suite": "priority_serial",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/priority_serial_sim.json",
+      "current_manifest_sha256": "7489f7dd7b3716e30ebc3461b843dd3ef1234798918bc5b327daf1c5416b93c0",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "54104ee493e14f189f3fbbb677acefd56b563fa1bfecc3c3d67dff789bd87caa",
+    "metadata_sha256": "eda55d6ba382d079d1f9dd7745d945fd8d856b2ed7b8e9c4c2b910647b145fba",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_serial_gain\\result.json",
+      "sha256": "eda55d6ba382d079d1f9dd7745d945fd8d856b2ed7b8e9c4c2b910647b145fba"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_serial_gain\\sim.log",
+      "sha256": "54104ee493e14f189f3fbbb677acefd56b563fa1bfecc3c3d67dff789bd87caa"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_serial_gain\\sources.sha256.json",
+      "sha256": "a9993e12a5966559e32f5a9718dfbdd6d3d14d98007d155e00352d597cec5e25"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_serial_gain\\original.producer.metadata.json",
+      "sha256": "eda55d6ba382d079d1f9dd7745d945fd8d856b2ed7b8e9c4c2b910647b145fba"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_serial_gain\\producer.provenance.json",
+      "sha256": "f8fe9ff8134c0268c997f8f4f87d8f205018e2a87f686cbe6f0f0968a6501f87"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_serial_gain\\sources.prj",
+      "sha256": "2bde5d9b220ff0eefdf418cb15f177524aad9a7f32ba2046c8ce1387fbcdeeb5"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

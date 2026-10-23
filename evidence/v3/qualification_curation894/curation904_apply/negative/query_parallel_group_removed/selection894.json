@@ -1,0 +1,114 @@
+{
+  "kind": "negative",
+  "name": "query_parallel_group_removed",
+  "record": {
+    "kind": "negative",
+    "name": "query_parallel_group_removed",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\query_parallel_group_removed\\sim\\tb_v3_board_query_catalog",
+    "checked": {
+      "metadata": {
+        "mutation": "query_parallel_group_removed",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "board_query_catalog",
+        "top": "tb_v3_board_query_catalog",
+        "patch": [
+          {
+            "before": "wire[31:0] b_query_data=b_query_group0 |",
+            "after": "wire[31:0] b_query_data=32'd0 |"
+          }
+        ],
+        "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+        "mutated_sha256": "ef12125cfc43532aa91067ba192b0f12196be5c40fb5272af857e561777caff0",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          655
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\query_parallel_group_removed\\sim\\tb_v3_board_query_catalog",
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\query_parallel_group_removed\\sim\\tb_v3_board_query_catalog"
+      },
+      "metadata_sha256": "5caa5407dafb1e97c79e2ad8600d817703d1e1111e4e0e0a1107cda1265c919e",
+      "normal_completion": true,
+      "input_count": 121,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_board_query_catalog",
+        "suite": "board_query_catalog",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/board_query_catalog_sim.json",
+        "current_manifest_sha256": "5b038e10b12f100d68576c76d820a3185d43bd8a6eaba1bb86db3a5cc301d424",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        655
+      ],
+      "log_sha256": "e54a2eefb51671c5ac14f9a525433899ea9f331cd7f936aa561c5fbe88d0c062"
+    },
+    "elapsed_s": 20.297,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\negative\\query_parallel_group_removed\\sim\\tb_v3_board_query_catalog",
+  "checked": {
+    "metadata": {
+      "mutation": "query_parallel_group_removed",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "board_query_catalog",
+      "top": "tb_v3_board_query_catalog",
+      "patch": [
+        {
+          "before": "wire[31:0] b_query_data=b_query_group0 |",
+          "after": "wire[31:0] b_query_data=32'd0 |"
+        }
+      ],
+      "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+      "mutated_sha256": "ef12125cfc43532aa91067ba192b0f12196be5c40fb5272af857e561777caff0",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        655
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\query_parallel_group_removed\\sim\\tb_v3_board_query_catalog",
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\query_parallel_group_removed\\sim\\tb_v3_board_query_catalog"
+    },
+    "metadata_sha256": "5caa5407dafb1e97c79e2ad8600d817703d1e1111e4e0e0a1107cda1265c919e",
+    "input_count": 121,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_board_query_catalog",
+      "suite": "board_query_catalog",
+      "ordered_analyzed_HDL": 106,
+      "manifest": "safevision/build/manifests/board_query_catalog_sim.json",
+      "current_manifest_sha256": "5b038e10b12f100d68576c76d820a3185d43bd8a6eaba1bb86db3a5cc301d424",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      655
+    ],
+    "log_sha256": "e54a2eefb51671c5ac14f9a525433899ea9f331cd7f936aa561c5fbe88d0c062",
+    "sources_sha256": "9d523d7a31971abf01ae42750a1c498a89b5d0e00bdc5f8213a07f3aacc03a0f",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\negative\\query_parallel_group_removed\\sim\\results.json",
+          "sha256": "3666b83fef3025a17b211b59cd541085e674c36c3a4045c7031617509cf1eee3",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "walker_equal_hop_allowed",
+  "record": {
+    "kind": "negative",
+    "name": "walker_equal_hop_allowed",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\walker_equal_hop_allowed",
+    "checked": {
+      "metadata": {
+        "mutation": "walker_equal_hop_allowed",
+        "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+        "suite": "walker_loop_equivalence",
+        "top": "tb_v3_walker_loop_equivalence",
+        "patch": [
+          {
+            "before": "(gt[0]||eq[0])",
+            "after": "gt[0]"
+          }
+        ],
+        "original_sha256": "023d744b37004f6673e85cd750202e408c5567f04be5b7d186ad5c473f7049e2",
+        "mutated_sha256": "74bb565d48c5b94919fdbb6d65cb9d9d55b6ffcf0af22d41ef5bcdd8442331d3",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          638208
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\walker_equal_hop_allowed\\sim\\tb_v3_walker_loop_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\walker_equal_hop_allowed\\sim\\tb_v3_walker_loop_equivalence"
+      },
+      "metadata_sha256": "3ef521d9bdc17f37b702a2123e14cb8bf119f25968aee2b58c95059573e04c29",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_walker_loop_equivalence",
+        "suite": "walker_loop_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/walker_loop_equivalence_sim.json",
+        "current_manifest_sha256": "ead9c16d665ff8ad1e8721891048d7522e7a81e1dbe00170d3291d6abaa9c1c7",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        638208
+      ],
+      "log_sha256": "107a9533013a50066a03840035c967d97084acca6af863604765964d9a9164e1"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\walker_equal_hop_allowed",
+  "checked": {
+    "metadata": {
+      "mutation": "walker_equal_hop_allowed",
+      "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+      "suite": "walker_loop_equivalence",
+      "top": "tb_v3_walker_loop_equivalence",
+      "patch": [
+        {
+          "before": "(gt[0]||eq[0])",
+          "after": "gt[0]"
+        }
+      ],
+      "original_sha256": "023d744b37004f6673e85cd750202e408c5567f04be5b7d186ad5c473f7049e2",
+      "mutated_sha256": "74bb565d48c5b94919fdbb6d65cb9d9d55b6ffcf0af22d41ef5bcdd8442331d3",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        638208
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\walker_equal_hop_allowed\\sim\\tb_v3_walker_loop_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\walker_equal_hop_allowed\\sim\\tb_v3_walker_loop_equivalence"
+    },
+    "metadata_sha256": "3ef521d9bdc17f37b702a2123e14cb8bf119f25968aee2b58c95059573e04c29",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_walker_loop_equivalence",
+      "suite": "walker_loop_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/walker_loop_equivalence_sim.json",
+      "current_manifest_sha256": "ead9c16d665ff8ad1e8721891048d7522e7a81e1dbe00170d3291d6abaa9c1c7",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      638208
+    ],
+    "log_sha256": "107a9533013a50066a03840035c967d97084acca6af863604765964d9a9164e1",
+    "sources_sha256": "8100abd90f8b2311cb58573f656ae51fdba4bb495677ae7106d0eccb4bb5fd91",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\negative\\walker_equal_hop_allowed\\sim\\results.json",
+          "sha256": "648a99c9d2177092bb97db4f6cf505a84b55a340dc1621227bf3e5b63386c2cf",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

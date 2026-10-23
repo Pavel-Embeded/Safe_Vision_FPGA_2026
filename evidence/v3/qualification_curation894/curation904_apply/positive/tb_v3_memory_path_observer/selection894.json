@@ -1,0 +1,75 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_memory_path_observer",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_memory_path_observer",
+    "accepted": true,
+    "producer_folder": "D:\\Codex\\svflex537\\qualification869_observer\\sim\\tb_v3_memory_path_observer",
+    "action": "fresh_native_execution_historical_wrapper_gap",
+    "command": [
+      "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "D:\\Codex\\svflex537\\candidate852\\safevision\\tools\\run_v3_sim.py",
+      "--suite",
+      "memory_path_observer",
+      "--top",
+      "tb_v3_memory_path_observer",
+      "--run-dir",
+      "D:\\Codex\\svflex537\\qualification869_observer\\sim"
+    ],
+    "actual_native_coordinator_exit": 0,
+    "elapsed_s": 8.063,
+    "cohort": "D:\\Codex\\svflex537\\qualification869_observer\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification869_observer\\sim\\tb_v3_memory_path_observer",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_memory_path_observer",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 41,
+      "data_comparisons": 41,
+      "elapsed_s": 7.922,
+      "suite": "memory_path_observer",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification869_observer\\sim\\tb_v3_memory_path_observer"
+    },
+    "metadata_sha256": "bf52015f2e9bddccda82eba59c83a967a17e847b4ef12f98eeac609d38f95e58",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_memory_path_observer",
+      "suite": "memory_path_observer",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/memory_path_observer_sim.json",
+      "current_manifest_sha256": "32c3449726c8f66c29421b46cd8eb5a64ebea65a95652dc278f7368b8b268aef",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "5d9a47361a3774662b63a03bf8aeb2ed63af6c8f27bd04e0228e5dd9d7ccd740",
+    "sources_sha256": "d9040ecc7463764556da7295d070c8c6c784a141530dc7bbe8551b8fde5ff937",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification869_observer\\sim\\results.json",
+          "sha256": "c246dfb103358ec7b32443efb8b9a11434d750dfe673a0661d6233e657a30626",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

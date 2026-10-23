@@ -1,0 +1,15 @@
+{
+  "accepted": false,
+  "expected_accept": false,
+  "external_reset": false,
+  "sys_output": 1,
+  "raw_sha256": {
+    "gate.netlist.v": "a02052c6f25c590dd4a35c178e20db88e8004f383833f190e2d9a07c50e32ac4",
+    "route.netlist.v": "721a35decacc6958b75a15471836edd687a277dc2ef5af5419b01f07d90678bc",
+    "route.clocks": "7e67e8ae1c996e3f9514f98accab18e9d4f944a64727d27d10577141c14a6897"
+  },
+  "error": "actual PLL clock has no clock endpoints: system_pll/pll_inst.clkc[0]",
+  "result": null,
+  "timing_signoff_by_this_check": false,
+  "hardware_verified": false
+}

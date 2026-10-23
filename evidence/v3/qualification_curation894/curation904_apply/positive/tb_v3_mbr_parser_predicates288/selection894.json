@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_mbr_parser_predicates288",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_mbr_parser_predicates288",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_mbr_parser_predicates288",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_mbr_parser_predicates288",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 7388549,
+        "elapsed_s": 16.547,
+        "suite": "mbr_parser_predicates288",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svfeatures285\\tests\\mbr_parser_predicates288\\tb_v3_mbr_parser_predicates288"
+      },
+      "metadata_sha256": "1fc58794b4a0d86220a7f48672091ab9e66cd0a27c41d2b84e721fc275f9f0cb",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_mbr_parser_predicates288",
+        "suite": "mbr_parser_predicates288",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/mbr_parser_predicates288_sim.json",
+        "current_manifest_sha256": "3bdef603e9ecfd64b581a8d698ccdcb924f5fd57320d04b74203d1cd8be9854b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "17b9e82e6d5ca9593e4ce39877f1855185b8dce54048f7860152e24ffaa9a4bf"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_mbr_parser_predicates288",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_mbr_parser_predicates288",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 7388549,
+      "elapsed_s": 16.547,
+      "suite": "mbr_parser_predicates288",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svfeatures285\\tests\\mbr_parser_predicates288\\tb_v3_mbr_parser_predicates288"
+    },
+    "metadata_sha256": "1fc58794b4a0d86220a7f48672091ab9e66cd0a27c41d2b84e721fc275f9f0cb",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_mbr_parser_predicates288",
+      "suite": "mbr_parser_predicates288",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/mbr_parser_predicates288_sim.json",
+      "current_manifest_sha256": "3bdef603e9ecfd64b581a8d698ccdcb924f5fd57320d04b74203d1cd8be9854b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "17b9e82e6d5ca9593e4ce39877f1855185b8dce54048f7860152e24ffaa9a4bf",
+    "sources_sha256": "794dc0bae48e6b519a01735e122cb5f450452e1937ec997e9db96ca4a50000f9",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svfeatures285\\tests\\mbr_parser_predicates288\\results.json",
+          "sha256": "8afd306c2e621a5094f1991f7bc6a71ec2bd65e56392ba8bee4d7f75a79dc858",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

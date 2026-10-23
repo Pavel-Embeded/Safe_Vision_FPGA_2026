@@ -1,0 +1,142 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\wav\\negative\\fast_context_not_restored\\sim\\tb_v3_wav_context730",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "wav",
+    "kind": "negative",
+    "name": "fast_context_not_restored",
+    "row": {
+      "mutation": "fast_context_not_restored",
+      "target": "safevision/rtl/storage/v3_wav_source.v",
+      "suite": "wav_context730",
+      "top": "tb_v3_wav_context730",
+      "patch": [
+        {
+          "before": ".bound_context_in(next_context[WP_CORE_BITS+:WP_BOUND_BITS])",
+          "after": ".bound_context_in(34'd0)"
+        }
+      ],
+      "original_sha256": "8d7bd4d1c12267aa75144190c7ab6c3c4460c8fc9d72f6c61bad45c80336ad28",
+      "mutated_sha256": "7b50f6a1a53a0686ddfcbb826e30dd7cbec9a4a87e6c5b80a1f8631d83ef3d20",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "detected": true,
+      "error_counts": [
+        9
+      ],
+      "original_producer": "D:\\Codex\\svflex537\\wav789\\fast_context_not_restored\\sim\\tb_v3_wav_context730",
+      "legacy": false
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\wav_pipeline_261023\\negative\\fast_context_not_restored",
+    "packed": false,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "fresh_native_auxiliary_requalification",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\wav\\negative\\fast_context_not_restored\\sim\\tb_v3_wav_context730",
+    "checked": {
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_context730",
+        "suite": "wav_context730",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/wav_context730_sim.json",
+        "current_manifest_sha256": "7e7b4615b376da3fab492bc82c32b423adcef6d19a9a0d860b083e15fe8cc3e7",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        9
+      ],
+      "metadata": {
+        "mutation": "fast_context_not_restored",
+        "target": "safevision/rtl/storage/v3_wav_source.v",
+        "suite": "wav_context730",
+        "top": "tb_v3_wav_context730",
+        "patch": [
+          {
+            "before": ".bound_context_in(next_context[WP_CORE_BITS+:WP_BOUND_BITS])",
+            "after": ".bound_context_in(34'd0)"
+          }
+        ],
+        "original_sha256": "8d7bd4d1c12267aa75144190c7ab6c3c4460c8fc9d72f6c61bad45c80336ad28",
+        "mutated_sha256": "7b50f6a1a53a0686ddfcbb826e30dd7cbec9a4a87e6c5b80a1f8631d83ef3d20",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "detected": true,
+        "error_counts": [
+          9
+        ],
+        "original_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\wav\\negative\\fast_context_not_restored\\sim\\tb_v3_wav_context730",
+        "legacy": false,
+        "return_code": 1
+      },
+      "metadata_sha256": "1215e5b40d7fed1d927c7482dfe88a3003b9dd2d7619e9fe461cf3c47eb16def",
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\wav\\negative\\fast_context_not_restored\\sim\\results.json",
+            "sha256": "51254b8274fd479a8b9b89d97860113d12c7b3affcb9abccf9f0393ceb278197",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "log_sha256": "bd4bbe97a9eea883f95cee4f84dc166df521b814586b227f22276116c4d27fb2",
+      "normal_completion": true
+    },
+    "command": [
+      "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "D:\\Codex\\svflex537\\candidate883\\safevision\\tools\\run_v3_sim.py",
+      "--suite",
+      "wav_context730",
+      "--top",
+      "tb_v3_wav_context730",
+      "--run-dir",
+      "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\wav\\negative\\fast_context_not_restored\\sim",
+      "--override-source",
+      "safevision/rtl/storage/v3_wav_source.v=D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\wav\\negative\\fast_context_not_restored\\inputs\\mutant.v"
+    ],
+    "actual_native_process_exit": 1,
+    "elapsed_s": 20.156,
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_context730",
+        "suite": "wav_context730",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/wav_context730_sim.json",
+        "current_manifest_sha256": "7e7b4615b376da3fab492bc82c32b423adcef6d19a9a0d860b083e15fe8cc3e7",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\wav\\negative\\fast_context_not_restored\\sim\\results.json",
+            "sha256": "51254b8274fd479a8b9b89d97860113d12c7b3affcb9abccf9f0393ceb278197",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 41,
+      "normal_completion": true,
+      "error_counts": [
+        9
+      ],
+      "log_sha256": "bd4bbe97a9eea883f95cee4f84dc166df521b814586b227f22276116c4d27fb2",
+      "source_fingerprint_sha256": "ec9371d84369556c2ca11e4349084b0e5bab3edd0c5b5d4db7a06e334b8dea05"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\wav_pipeline_261023\\negative\\fast_context_not_restored"
+  },
+  "actual_execution_retained": true
+}

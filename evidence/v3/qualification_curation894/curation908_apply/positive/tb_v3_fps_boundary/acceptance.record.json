@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_fps_boundary",
+  "top": "tb_v3_fps_boundary",
+  "suite": "video_v3_fps",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "top": "tb_v3_fps_boundary",
+    "suite": "video_v3_fps",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_fps_boundary",
+    "suite": "video_v3_fps",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fps_boundary",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fps_boundary\\sim\\tb_v3_fps_boundary",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_fps_boundary",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 16396,
+      "elapsed_s": 9.938,
+      "suite": "video_v3_fps",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fps_boundary\\sim\\tb_v3_fps_boundary"
+    },
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_fps_boundary",
+      "suite": "video_v3_fps",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/video_v3_fps_sim.json",
+      "current_manifest_sha256": "66734072db3c8c0b72637b137494913cba28463eb614e2a36e8ca001409aa2ab",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "3bd345f37a767972b9689b28bb569be0575be10f831ad0e7b22bf50adf2b6620",
+    "metadata_sha256": "6e6cd820f05a85711c928f7c7f711a63a78960978c8fd6f7b979417408cf3f9b",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fps_boundary\\result.json",
+      "sha256": "6e6cd820f05a85711c928f7c7f711a63a78960978c8fd6f7b979417408cf3f9b"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fps_boundary\\sim.log",
+      "sha256": "3bd345f37a767972b9689b28bb569be0575be10f831ad0e7b22bf50adf2b6620"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fps_boundary\\sources.sha256.json",
+      "sha256": "66f26ba48479fe979563f1bca69f6bb51c5f8885ab2d3e3d05415c4bab0e64a2"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fps_boundary\\original.producer.metadata.json",
+      "sha256": "6e6cd820f05a85711c928f7c7f711a63a78960978c8fd6f7b979417408cf3f9b"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fps_boundary\\producer.provenance.json",
+      "sha256": "029b1cf2d38c8546092f79e6a4741056fa8594f434b8947877a6cfa5378158cc"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_fps_boundary\\sources.prj",
+      "sha256": "eb80fe4ef99df615a7bf00d5c2089019b6b46e51302e8ffe12865253fa548c1d"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fps_boundary\\sim\\tb_v3_fps_boundary",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fps_boundary\\sim\\tb_v3_fps_boundary\\result.json",
+  "original_metadata_sha256": "6e6cd820f05a85711c928f7c7f711a63a78960978c8fd6f7b979417408cf3f9b",
+  "original_log_sha256": "3bd345f37a767972b9689b28bb569be0575be10f831ad0e7b22bf50adf2b6620",
+  "matrix_definition": {
+    "top": "tb_v3_fps_boundary",
+    "suite": "video_v3_fps",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

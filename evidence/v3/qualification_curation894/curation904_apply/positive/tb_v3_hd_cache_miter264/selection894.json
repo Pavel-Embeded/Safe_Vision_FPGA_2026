@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_cache_miter264",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_cache_miter264",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_cache_miter264",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_cache_miter264",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 3,
+        "data_comparisons": 30350,
+        "elapsed_s": 7.875,
+        "suite": "hd_cache_miter264",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_hd_cache_miter264\\sim\\tb_v3_hd_cache_miter264"
+      },
+      "metadata_sha256": "f50b84f35f4ca528fa05165c2a4523dfc6f21056f1d5a2420cc2562757bb564c",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_cache_miter264",
+        "suite": "hd_cache_miter264",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/hd_cache_miter264_sim.json",
+        "current_manifest_sha256": "a6709b37d6d5ec6492a39e0bc0187c7ed9138180a7721dfbec17b15887f66e69",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "469eed703634cab12353c62962ab24ad955b3e6afbf2614e9bfbeb3dfec2cd75"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_cache_miter264",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_cache_miter264",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 3,
+      "data_comparisons": 30350,
+      "elapsed_s": 7.875,
+      "suite": "hd_cache_miter264",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_hd_cache_miter264\\sim\\tb_v3_hd_cache_miter264"
+    },
+    "metadata_sha256": "f50b84f35f4ca528fa05165c2a4523dfc6f21056f1d5a2420cc2562757bb564c",
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_cache_miter264",
+      "suite": "hd_cache_miter264",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/hd_cache_miter264_sim.json",
+      "current_manifest_sha256": "a6709b37d6d5ec6492a39e0bc0187c7ed9138180a7721dfbec17b15887f66e69",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "469eed703634cab12353c62962ab24ad955b3e6afbf2614e9bfbeb3dfec2cd75",
+    "sources_sha256": "4ff5f5b1f8911a9e64425c9fe571b57745882b1e0052f752d0e1ef22e29a471d",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq309\\p\\tb_v3_hd_cache_miter264\\sim\\results.json",
+          "sha256": "7dc3135993f04fe5fea02605df54d7cf6701e8aeff4d7889e84e6945e1e251ec",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

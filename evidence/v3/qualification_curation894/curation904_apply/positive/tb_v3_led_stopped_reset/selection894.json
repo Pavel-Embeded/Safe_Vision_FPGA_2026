@@ -1,0 +1,101 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_led_stopped_reset",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_led_stopped_reset",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_led_stopped_reset\\sim\\tb_v3_led_stopped_reset",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_led_stopped_reset",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 215,
+        "elapsed_s": 8.063,
+        "suite": "led_publication",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_led_stopped_reset\\sim\\tb_v3_led_stopped_reset"
+      },
+      "metadata_sha256": "75decba4883e0c864b150e1010d06af0c7aa2e02d56ac4f09c71297bb0e28b6d",
+      "normal_completion": true,
+      "input_count": 14,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_led_stopped_reset",
+        "suite": "led_publication",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/led_publication_sim.json",
+        "current_manifest_sha256": "e956995cbb14ee2ca268e8a632fe8abf7333ea43d91a671aece5c32cfe3e6c96",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "630734f48a5a89638742d2514b2e07bf37ce6d7f226ae44013bb2f050252ed5e"
+    },
+    "elapsed_s": 8.359,
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_led_stopped_reset\\sim\\tb_v3_led_stopped_reset",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_led_stopped_reset",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 215,
+      "elapsed_s": 8.063,
+      "suite": "led_publication",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_led_stopped_reset\\sim\\tb_v3_led_stopped_reset"
+    },
+    "metadata_sha256": "75decba4883e0c864b150e1010d06af0c7aa2e02d56ac4f09c71297bb0e28b6d",
+    "input_count": 14,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_led_stopped_reset",
+      "suite": "led_publication",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/led_publication_sim.json",
+      "current_manifest_sha256": "e956995cbb14ee2ca268e8a632fe8abf7333ea43d91a671aece5c32cfe3e6c96",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "630734f48a5a89638742d2514b2e07bf37ce6d7f226ae44013bb2f050252ed5e",
+    "sources_sha256": "745a7cf7107996842692b2bd73c0dbeec4321570b16c297276bc7ac3c4d823e0",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_led_stopped_reset\\sim\\results.json",
+          "sha256": "129523eca22eca53107e97c68ac858069df3cb552b8725147975d62df89271aa",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": true,
+      "binding": "replay_verified_current_generated_assets",
+      "receipt": "D:\\Codex\\svflex537\\curation869_plan02\\generated_replay\\led_publication\\tb_v3_led_stopped_reset\\8297645666a32f15\\replay.receipt.json",
+      "receipt_sha256": "c7c5bd408023ccb97d9af67bb04d09f2c9181ad6343d4d6d5b39693b5f967b0d",
+      "generated_assets": {
+        "led_publication.binding.json": {
+          "sha256": "bfe9309f2e08ebb75fff6ef1002e25d0493fed06ac17015a05f0ac76499507bb",
+          "size": 388
+        }
+      }
+    }
+  }
+}

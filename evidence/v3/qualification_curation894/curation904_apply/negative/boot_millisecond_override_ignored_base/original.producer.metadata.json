@@ -1,0 +1,24 @@
+{
+  "mutation": "boot_millisecond_override_ignored_base",
+  "target": "safevision/rtl/control/v3_supervisor.v",
+  "suite": "boot_budget_base218",
+  "top": "tb_v3_boot_budget218",
+  "patch": [
+    {
+      "before": "BOOT_MS_OVERRIDE>0?BOOT_MS_OVERRIDE:",
+      "after": "1>2?BOOT_MS_OVERRIDE:"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\boot_millisecond_override_ignored_base\\sim\\tb_v3_boot_budget218",
+  "original_sha256": "09023498ac634ad775e0a8e911efffd7f4a113f6a470a59145ccee00c47c1eb8",
+  "mutated_sha256": "2687422b771d4faa64665d137fa16f882debfae7850e382d0e246e3d7ad18152",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    119987
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\boot_millisecond_override_ignored_base\\sim\\tb_v3_boot_budget218",
+  "return_code": 1
+}

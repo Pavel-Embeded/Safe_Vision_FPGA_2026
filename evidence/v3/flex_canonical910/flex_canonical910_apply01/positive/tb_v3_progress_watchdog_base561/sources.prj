@@ -1,0 +1,7 @@
+"D:/Codex/svflex537/candidate616/safevision/rtl/control/v3_supervisor.v"
+"D:/Codex/svflex537/candidate616/safevision/rtl/control/media_recovery_ctrl.v"
+"D:/Codex/svflex537/candidate616/safevision/rtl/safety/fault_manager.v"
+"D:/Codex/svflex537/candidate616/safevision/verification/models/v3_supervisor_reference.sv"
+"D:/Codex/svflex537/candidate616/safevision/verification/models/v3_hd_supervisor_reference.sv"
+"D:/Codex/svflex537/candidate616/safevision/verification/models/v3_recovery_reset_reference.sv"
+"D:/Codex/svflex537/candidate616/safevision/verification/unit/tb_v3_progress_watchdog561.sv"

@@ -1,0 +1,111 @@
+{
+  "kind": "negative",
+  "name": "prefetch_high_carry_wrong",
+  "record": {
+    "kind": "negative",
+    "name": "prefetch_high_carry_wrong",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\prefetch_high_carry_wrong",
+    "checked": {
+      "metadata": {
+        "mutation": "prefetch_high_carry_wrong",
+        "target": "safevision/rtl/hd/sdram_app_adapter.v",
+        "suite": "prefetch_prefix_hd382",
+        "top": "tb_v3_prefetch_prefix_hd382",
+        "patch": [
+          {
+            "before": "prefetch_sum[21]?rfbase_high_ones:rfbase_high_zero",
+            "after": "prefetch_sum[21]?rfbase_high_zero:rfbase_high_ones"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svnegative417\\n\\prefetch_high_carry_wrong",
+        "original_sha256": "5a14d685f24dd91b37a6ca39716cd808b9d92420655bb8cb010c558b462e8f10",
+        "mutated_sha256": "71fb35b208726d33196aa7e452afcf11dbb68fe96567e35209596c45e00df179",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          735
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svnegative417\\n\\prefetch_high_carry_wrong\\sim\\tb_v3_prefetch_prefix_hd382"
+      },
+      "metadata_sha256": "33b1562a2b7cd26699746d7aef8806bd8caa1b5b4a72db8d94d0b3def0ad52a6",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_prefetch_prefix_hd382",
+        "suite": "prefetch_prefix_hd382",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/prefetch_prefix_hd382_sim.json",
+        "current_manifest_sha256": "c64fe4c97d61271e9050f04de589d3030e2a1a7c779c334174f802c8979e3dc1",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        735
+      ],
+      "log_sha256": "515e808af72c2acc37990dd72fb4cb2c17b6338f0fea52de5fb536e9b2fd953d"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\prefetch_high_carry_wrong",
+  "checked": {
+    "metadata": {
+      "mutation": "prefetch_high_carry_wrong",
+      "target": "safevision/rtl/hd/sdram_app_adapter.v",
+      "suite": "prefetch_prefix_hd382",
+      "top": "tb_v3_prefetch_prefix_hd382",
+      "patch": [
+        {
+          "before": "prefetch_sum[21]?rfbase_high_ones:rfbase_high_zero",
+          "after": "prefetch_sum[21]?rfbase_high_zero:rfbase_high_ones"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative417\\n\\prefetch_high_carry_wrong",
+      "original_sha256": "5a14d685f24dd91b37a6ca39716cd808b9d92420655bb8cb010c558b462e8f10",
+      "mutated_sha256": "71fb35b208726d33196aa7e452afcf11dbb68fe96567e35209596c45e00df179",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        735
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative417\\n\\prefetch_high_carry_wrong\\sim\\tb_v3_prefetch_prefix_hd382"
+    },
+    "metadata_sha256": "33b1562a2b7cd26699746d7aef8806bd8caa1b5b4a72db8d94d0b3def0ad52a6",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_prefetch_prefix_hd382",
+      "suite": "prefetch_prefix_hd382",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/prefetch_prefix_hd382_sim.json",
+      "current_manifest_sha256": "c64fe4c97d61271e9050f04de589d3030e2a1a7c779c334174f802c8979e3dc1",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      735
+    ],
+    "log_sha256": "515e808af72c2acc37990dd72fb4cb2c17b6338f0fea52de5fb536e9b2fd953d",
+    "sources_sha256": "8fbe0563bd7b5bb9806b868368846c0b4415bd722962f60b40ff01a3f0dbe245",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svnegative417\\n\\prefetch_high_carry_wrong\\sim\\results.json",
+          "sha256": "3e2e723c9bdb3c1a51b6e3b09885029fc716d8cf8f4f193056e1094bf856aeb0",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

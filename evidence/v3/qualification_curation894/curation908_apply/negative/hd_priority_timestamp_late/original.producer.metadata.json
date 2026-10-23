@@ -1,0 +1,24 @@
+{
+  "mutation": "hd_priority_timestamp_late",
+  "target": "safevision/rtl/hd/v3_supervisor.v",
+  "suite": "hd_supervisor_alert",
+  "top": "tb_v3_hd_supervisor_alert_equivalence",
+  "patch": [
+    {
+      "before": "else priority_ts<={4{priority_next}};",
+      "after": "else priority_ts<={4{priority_q}};"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_priority_timestamp_late\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+  "original_sha256": "2e7e07748fe4856576e9690cf237f6a34f4a18800ba1cc498891dec53698c0bd",
+  "mutated_sha256": "5eae516dabbb2fed57fa97c9e0ee5dde30128a3bc810b25bf088dee3afb98369",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    149224
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_priority_timestamp_late\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+  "return_code": 1
+}

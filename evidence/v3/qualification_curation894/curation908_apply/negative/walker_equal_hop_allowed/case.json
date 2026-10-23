@@ -1,0 +1,24 @@
+{
+  "mutation": "walker_equal_hop_allowed",
+  "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+  "suite": "walker_loop_equivalence",
+  "top": "tb_v3_walker_loop_equivalence",
+  "patch": [
+    {
+      "before": "(gt[0]||eq[0])",
+      "after": "gt[0]"
+    }
+  ],
+  "original_sha256": "023d744b37004f6673e85cd750202e408c5567f04be5b7d186ad5c473f7049e2",
+  "mutated_sha256": "74bb565d48c5b94919fdbb6d65cb9d9d55b6ffcf0af22d41ef5bcdd8442331d3",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    638208
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\walker_equal_hop_allowed\\sim\\tb_v3_walker_loop_equivalence",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\walker_equal_hop_allowed\\sim\\tb_v3_walker_loop_equivalence"
+}

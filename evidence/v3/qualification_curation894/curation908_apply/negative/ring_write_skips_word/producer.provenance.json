@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\ring_write_skips_word",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\ring_write_skips_word\\case.json",
+  "original_metadata_sha256": "7339fa9f6ce531b554324c68c96c36516de90c9f218b098630b7c1a319e721a7",
+  "original_log_sha256": "14d7510e435ff8abed9bf383646a99541aa403c2b0b9e9ed80baf1ddffc0ba9a",
+  "matrix_definition": {
+    "mutation": "ring_write_skips_word",
+    "target": "safevision/rtl/audio/v3_pcm_ring.v",
+    "suite": "ring_pointer_count300",
+    "top": "tb_v3_ring_pointer_count300",
+    "patch": [
+      {
+        "before": "wp[slot_index]<=wp[slot_index]+1'b1;",
+        "after": "wp[slot_index]<=wp[slot_index]+2'd2;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_row_crc_balance",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_row_crc_balance",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_row_crc_balance",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_row_crc_balance",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 1000068,
+        "elapsed_s": 18.109,
+        "suite": "hd_row_crc",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq268\\p\\tb_v3_hd_row_crc_balance\\sim\\tb_v3_hd_row_crc_balance"
+      },
+      "metadata_sha256": "ec02dd341575bbbfeca6c33ceb4370d43b4fb8459ce9fdf96d96052b828ccd6c",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_row_crc_balance",
+        "suite": "hd_row_crc",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_row_crc_sim.json",
+        "current_manifest_sha256": "58f1e9292320f77008ad31219bf3267398e5948dbed09c254c9f2390ffad816d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "cd0acc32593bcf783b319443e11072beb5c0905b92a5fc6f5beeebccd122e8b1"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_row_crc_balance",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_row_crc_balance",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 1000068,
+      "elapsed_s": 18.109,
+      "suite": "hd_row_crc",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq268\\p\\tb_v3_hd_row_crc_balance\\sim\\tb_v3_hd_row_crc_balance"
+    },
+    "metadata_sha256": "ec02dd341575bbbfeca6c33ceb4370d43b4fb8459ce9fdf96d96052b828ccd6c",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_row_crc_balance",
+      "suite": "hd_row_crc",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_row_crc_sim.json",
+      "current_manifest_sha256": "58f1e9292320f77008ad31219bf3267398e5948dbed09c254c9f2390ffad816d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "cd0acc32593bcf783b319443e11072beb5c0905b92a5fc6f5beeebccd122e8b1",
+    "sources_sha256": "fd26736b257bfdf86ccd921d6b05eee2ebe0b1338f0ed4d1e45c518a0617c579",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq268\\p\\tb_v3_hd_row_crc_balance\\sim\\results.json",
+          "sha256": "cbae4659bd7ada11b1bc388c17e527ed0c75e6332842051611387f1562139285",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

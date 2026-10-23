@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_uart_rom_base357",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_uart_rom_base357",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_uart_rom_base357",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_uart_rom_base357",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 108,
+        "elapsed_s": 12.469,
+        "suite": "uart_rom_base357",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_uart_rom_base357\\sim\\tb_v3_uart_rom_base357"
+      },
+      "metadata_sha256": "f00a441f1d55fd84cb51db850bebbcf9ea64d81120f757da8f36200610351dbf",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_uart_rom_base357",
+        "suite": "uart_rom_base357",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/uart_rom_base357_sim.json",
+        "current_manifest_sha256": "ee213e6f65af5535211d1293385d887538a1a0940c718c9528a5e806aa7f4014",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "ecbe06e82ca4213f7eefd3dbd62dfb73e2d3dd88e60f296a14412c508d406fd1"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_uart_rom_base357",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_uart_rom_base357",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 108,
+      "elapsed_s": 12.469,
+      "suite": "uart_rom_base357",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_uart_rom_base357\\sim\\tb_v3_uart_rom_base357"
+    },
+    "metadata_sha256": "f00a441f1d55fd84cb51db850bebbcf9ea64d81120f757da8f36200610351dbf",
+    "input_count": 42,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_uart_rom_base357",
+      "suite": "uart_rom_base357",
+      "ordered_analyzed_HDL": 30,
+      "manifest": "safevision/build/manifests/uart_rom_base357_sim.json",
+      "current_manifest_sha256": "ee213e6f65af5535211d1293385d887538a1a0940c718c9528a5e806aa7f4014",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "ecbe06e82ca4213f7eefd3dbd62dfb73e2d3dd88e60f296a14412c508d406fd1",
+    "sources_sha256": "b79a883729f6c0d223152954b11bcde06fb476fb9ea4ec3c623fb7ef97f6a156",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_uart_rom_base357\\runner.results.json",
+          "sha256": "01521aa181f0a1a36e21e3b96f926b0b9e07b108b06986844ba530c6c7ec8608",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_uart_rom_base357\\sim\\results.json",
+          "sha256": "01521aa181f0a1a36e21e3b96f926b0b9e07b108b06986844ba530c6c7ec8608",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

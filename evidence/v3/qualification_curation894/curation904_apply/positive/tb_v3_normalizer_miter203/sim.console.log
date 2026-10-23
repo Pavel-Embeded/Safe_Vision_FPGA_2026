@@ -1,0 +1,32 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_normalizer_miter203/xsim_script.tcl
+# xsim {tb_v3_normalizer_miter203} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[CASE] 1x1 topdown0 output307200 errors=0
+[CASE] 1x1 topdown1 output307200 errors=0
+[CASE] 3x2 topdown0 output307200 errors=0
+[CASE] 3x2 topdown1 output307200 errors=0
+[CASE] 319x241 topdown0 output307200 errors=0
+[CASE] 319x241 topdown1 output307200 errors=0
+[CASE] 641x479 topdown0 output307200 errors=0
+[CASE] 641x479 topdown1 output307200 errors=0
+[CASE] 640x480 topdown0 output307200 errors=0
+[CASE] 640x480 topdown1 output307200 errors=0
+[CASE] 800x600 topdown0 output307200 errors=0
+[CASE] 1280x720 topdown1 output307200 errors=0
+[CASE] 1920x1080 topdown0 output307200 errors=0
+[CASE] 1920x1 topdown1 output307200 errors=0
+[CASE] 1x1080 topdown0 output307200 errors=0
+[PASS] complete frames vs independent rational reference,24bit,padding,both orientations,letterbox,up/downscale,backpressure,trailing bytes
+[TB] tb_v3_normalizer_miter203 done errors=0 comparisons=64403817
+$finish called at time : 495478880 ns : File "D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_v3_normalizer_miter203.sv" Line 79
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:02:59 . Memory (MB): peak = 219.621 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:35:43 2026...

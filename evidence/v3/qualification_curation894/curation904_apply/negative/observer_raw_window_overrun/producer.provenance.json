@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\observer_raw_window_overrun",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\observer_raw_window_overrun\\case.json",
+  "original_metadata_sha256": "6ff462716881c495b3de004f1f7f0110eaf8f7a8e333cdbaa5d15784f20b81a5",
+  "original_log_sha256": "2ea76da71894e7c6adf833fdf73421ea3391789d256395e7eea984f6c383053b",
+  "matrix_definition": {
+    "mutation": "observer_raw_window_overrun",
+    "target": "safevision/rtl/memory/v3_memory_path_observer.v",
+    "suite": "memory_path_observer",
+    "top": "tb_v3_memory_path_observer",
+    "patch": [
+      {
+        "before": "physical_read_valid && raw_count<WORDS",
+        "after": "physical_read_valid && raw_count<=WORDS"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

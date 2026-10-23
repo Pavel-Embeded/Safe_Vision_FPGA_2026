@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_phy_lane_equivalence",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_phy_lane_equivalence",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_phy_lane_equivalence",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_phy_lane_equivalence",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 400000,
+        "elapsed_s": 7.375,
+        "suite": "phy_lane_equivalence",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_phy_lane_equivalence\\sim\\tb_v3_phy_lane_equivalence"
+      },
+      "metadata_sha256": "3502d94125c438916db94b1e6e39e5067f56e7079a794d1dd18ecbbb71216557",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_phy_lane_equivalence",
+        "suite": "phy_lane_equivalence",
+        "ordered_analyzed_HDL": 7,
+        "manifest": "safevision/build/manifests/phy_lane_equivalence_sim.json",
+        "current_manifest_sha256": "49fd1833b86e9bb0011fef8ca9847ba6a321412840c755a8e1eda136a3ec079d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "5994fa0f87d5b50d77db9371e0e5a0559395c3d889e69cc142e5b8ade28029f8"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_phy_lane_equivalence",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_phy_lane_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 400000,
+      "elapsed_s": 7.375,
+      "suite": "phy_lane_equivalence",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_phy_lane_equivalence\\sim\\tb_v3_phy_lane_equivalence"
+    },
+    "metadata_sha256": "3502d94125c438916db94b1e6e39e5067f56e7079a794d1dd18ecbbb71216557",
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_phy_lane_equivalence",
+      "suite": "phy_lane_equivalence",
+      "ordered_analyzed_HDL": 7,
+      "manifest": "safevision/build/manifests/phy_lane_equivalence_sim.json",
+      "current_manifest_sha256": "49fd1833b86e9bb0011fef8ca9847ba6a321412840c755a8e1eda136a3ec079d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "5994fa0f87d5b50d77db9371e0e5a0559395c3d889e69cc142e5b8ade28029f8",
+    "sources_sha256": "80852de7fb311c10a266373365426e3debde4d720969774e1e857aab2713e81e",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq74\\p\\tb_v3_phy_lane_equivalence\\sim\\results.json",
+          "sha256": "ea6a9d6381df555c20882a66387acd8e57f96a5663823ce336b7137d15725120",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

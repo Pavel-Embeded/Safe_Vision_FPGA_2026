@@ -1,0 +1,125 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_resident",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_resident",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_resident",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_resident",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 12,
+        "data_comparisons": 614400,
+        "elapsed_s": 1624.563,
+        "suite": "media",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_resident\\sim\\tb_v3_resident"
+      },
+      "metadata_sha256": "2d0dd392b887a74a8bf20d6a4d37e7aa890dd5d0c81e1ef4f0eacfc98daf64b0",
+      "normal_completion": true,
+      "input_count": 61,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_resident",
+        "suite": "media",
+        "ordered_analyzed_HDL": 52,
+        "manifest": "safevision/build/manifests/media_sim.json",
+        "current_manifest_sha256": "a0b0232c16822be08c844a9442926ee376dd7aad88844ed7542119ce9c655191",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "de992ce72321944b0296d3442f4f1bebadeaa5ebd9d9f3aa5052927d4ab696a8"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_resident",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_resident",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 12,
+      "data_comparisons": 614400,
+      "elapsed_s": 1624.563,
+      "suite": "media",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_resident\\sim\\tb_v3_resident"
+    },
+    "metadata_sha256": "2d0dd392b887a74a8bf20d6a4d37e7aa890dd5d0c81e1ef4f0eacfc98daf64b0",
+    "input_count": 61,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_resident",
+      "suite": "media",
+      "ordered_analyzed_HDL": 52,
+      "manifest": "safevision/build/manifests/media_sim.json",
+      "current_manifest_sha256": "a0b0232c16822be08c844a9442926ee376dd7aad88844ed7542119ce9c655191",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "de992ce72321944b0296d3442f4f1bebadeaa5ebd9d9f3aa5052927d4ab696a8",
+    "sources_sha256": "81d8c4bf8f223efa84707e981f6c2d1dadb93f06da615e6a3fcc39911a15bc53",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_resident\\runner.results.json",
+          "sha256": "792ac98eb945262d17769d0b938ccddbe628f3ad0b30e31df9125628c42e46b0",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_resident\\sim\\results.json",
+          "sha256": "792ac98eb945262d17769d0b938ccddbe628f3ad0b30e31df9125628c42e46b0",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": true,
+      "binding": "replay_verified_current_generated_assets",
+      "receipt": "D:\\Codex\\svflex537\\curation869_plan02\\generated_replay\\media\\tb_v3_resident\\30ecc00b47e29ec6\\replay.receipt.json",
+      "receipt_sha256": "97e0f86f8ba0dc388199d072648654231a24cb0a77011fb3aa3d1096d335fed0",
+      "generated_assets": {
+        "expected0.mem": {
+          "sha256": "49c7ee07d93f9b4673bf14ba27a340012a6845f0f2072f0a019227216a8176be",
+          "size": 1536000
+        },
+        "expected1.mem": {
+          "sha256": "f3e836b01b5247d749d6ee8b0f24f2de1090e46a1b4274e5757d2c316e3662d0",
+          "size": 1536000
+        },
+        "expected2.mem": {
+          "sha256": "7e4166608424ca0d10eb3c26755026aa5e80eee653bc051f2d3fc95ce8b16af8",
+          "size": 1536000
+        },
+        "expected3.mem": {
+          "sha256": "88d42ab3587b4506a8cbd870e2d1244d6f870dd97ec79942e581b3fef0516c6d",
+          "size": 1536000
+        },
+        "fixture.json": {
+          "sha256": "b9a8fa2c0ff3c6820b4b22f805e896f5ad62931b5e2ca76047d35da329ebfa50",
+          "size": 173
+        },
+        "resident_card.mem": {
+          "sha256": "a68b64f081e26741d97bcef0878d4e93a159500504b05c2a3f17c4b26a0a0063",
+          "size": 16777216
+        }
+      }
+    }
+  }
+}

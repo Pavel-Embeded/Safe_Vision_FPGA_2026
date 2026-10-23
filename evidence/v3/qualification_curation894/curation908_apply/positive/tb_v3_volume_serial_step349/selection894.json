@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_volume_serial_step349",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_volume_serial_step349",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_serial_step349",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_volume_serial_step349",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 64000,
+        "elapsed_s": 9.093,
+        "suite": "volume_serial_step349",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq390\\p\\tb_v3_volume_serial_step349\\sim\\tb_v3_volume_serial_step349"
+      },
+      "metadata_sha256": "b250bac2ff192c04f496e76faf20ace24aade3539f0d1296cfe1cef1908d71fb",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_volume_serial_step349",
+        "suite": "volume_serial_step349",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/volume_serial_step349_sim.json",
+        "current_manifest_sha256": "1bcd4b08e55c9db9889f086d1c2f640e20fbb81ead052bdf5b301baefa3a85dc",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "5a1ad8e7ff36094c81d052e3795edbc40249ad9947a8a065a22007a9df6dce97"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_serial_step349",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_volume_serial_step349",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 64000,
+      "elapsed_s": 9.093,
+      "suite": "volume_serial_step349",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq390\\p\\tb_v3_volume_serial_step349\\sim\\tb_v3_volume_serial_step349"
+    },
+    "metadata_sha256": "b250bac2ff192c04f496e76faf20ace24aade3539f0d1296cfe1cef1908d71fb",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_volume_serial_step349",
+      "suite": "volume_serial_step349",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/volume_serial_step349_sim.json",
+      "current_manifest_sha256": "1bcd4b08e55c9db9889f086d1c2f640e20fbb81ead052bdf5b301baefa3a85dc",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "5a1ad8e7ff36094c81d052e3795edbc40249ad9947a8a065a22007a9df6dce97",
+    "sources_sha256": "465ef8cda8cd77cb48c79e72008e9151c144ee5e5bfed8677cdb88362b44514d",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq390\\p\\tb_v3_volume_serial_step349\\sim\\results.json",
+          "sha256": "2bd1c1e88f708f5bcf7009dfb9c4b6051ee63a021549fdbb603a35390c1c10d6",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

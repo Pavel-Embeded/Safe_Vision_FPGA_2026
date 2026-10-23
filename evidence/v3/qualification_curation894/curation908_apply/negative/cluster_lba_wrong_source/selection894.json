@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "cluster_lba_wrong_source",
+  "record": {
+    "kind": "negative",
+    "name": "cluster_lba_wrong_source",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\cluster_lba_wrong_source",
+    "checked": {
+      "metadata": {
+        "mutation": "cluster_lba_wrong_source",
+        "target": "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
+        "suite": "file_lba_equivalence",
+        "top": "tb_v3_file_lba_equivalence",
+        "patch": [
+          {
+            "before": "(mstate==F_IDLE)?first_clus:wk_next_clus",
+            "after": "(mstate==F_IDLE)?wk_next_clus:first_clus"
+          }
+        ],
+        "original_sha256": "fffd4d7366dc95f31f9ef6c16589b618ed3f2c34deb90c0d83e167eed09d755a",
+        "mutated_sha256": "d6b0408ddb65f8756abb157eddbc80012219e3d4f44ee82e487a4cfbd6f7e747",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          347188
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\cluster_lba_wrong_source\\sim\\tb_v3_file_lba_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\cluster_lba_wrong_source\\sim\\tb_v3_file_lba_equivalence"
+      },
+      "metadata_sha256": "eaafe9a8a5b3d4bede7fdb03892c0ff8f979bdfb9ba9de701ca6bc4319226dc6",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_file_lba_equivalence",
+        "suite": "file_lba_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/file_lba_equivalence_sim.json",
+        "current_manifest_sha256": "5eb11206df27aed0a26e69acfa064eed51f1eae4a2a543899717ce4374feec57",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        347188
+      ],
+      "log_sha256": "13886f405dc60a2d1fb403a952c8b97d525f4478c76b493a1fe6d6fa19d8c734"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\cluster_lba_wrong_source",
+  "checked": {
+    "metadata": {
+      "mutation": "cluster_lba_wrong_source",
+      "target": "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
+      "suite": "file_lba_equivalence",
+      "top": "tb_v3_file_lba_equivalence",
+      "patch": [
+        {
+          "before": "(mstate==F_IDLE)?first_clus:wk_next_clus",
+          "after": "(mstate==F_IDLE)?wk_next_clus:first_clus"
+        }
+      ],
+      "original_sha256": "fffd4d7366dc95f31f9ef6c16589b618ed3f2c34deb90c0d83e167eed09d755a",
+      "mutated_sha256": "d6b0408ddb65f8756abb157eddbc80012219e3d4f44ee82e487a4cfbd6f7e747",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        347188
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\cluster_lba_wrong_source\\sim\\tb_v3_file_lba_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\cluster_lba_wrong_source\\sim\\tb_v3_file_lba_equivalence"
+    },
+    "metadata_sha256": "eaafe9a8a5b3d4bede7fdb03892c0ff8f979bdfb9ba9de701ca6bc4319226dc6",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_file_lba_equivalence",
+      "suite": "file_lba_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/file_lba_equivalence_sim.json",
+      "current_manifest_sha256": "5eb11206df27aed0a26e69acfa064eed51f1eae4a2a543899717ce4374feec57",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      347188
+    ],
+    "log_sha256": "13886f405dc60a2d1fb403a952c8b97d525f4478c76b493a1fe6d6fa19d8c734",
+    "sources_sha256": "3786c67924c0d2bb5ebabddb48f2dda0b4e62fbc156efe088c483a27f2a38a3f",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\cluster_lba_wrong_source\\runner.results.json",
+          "sha256": "44169176ff879dffa2c9f7daa37049256dee55493a476513a827e80af2e10336",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\cluster_lba_wrong_source\\sim\\results.json",
+          "sha256": "44169176ff879dffa2c9f7daa37049256dee55493a476513a827e80af2e10336",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

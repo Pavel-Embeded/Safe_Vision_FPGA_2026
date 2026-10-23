@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_hd_coord_arith",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 5284524,
+  "elapsed_s": 11.656,
+  "suite": "hd_coord_arith",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_hd_coord_arith\\sim\\tb_v3_hd_coord_arith"
+}

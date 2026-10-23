@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_audio_media_root_equivalence",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_audio_media_root_equivalence",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_audio_media_root_equivalence",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_audio_media_root_equivalence",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 1039238,
+        "elapsed_s": 30.047,
+        "suite": "audio_media_root_equivalence",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_audio_media_root_equivalence\\sim\\tb_v3_audio_media_root_equivalence"
+      },
+      "metadata_sha256": "5c575e73775e9ce84896d4b0c507a9e5a73179a82704848cd955ee55d60e203e",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_media_root_equivalence",
+        "suite": "audio_media_root_equivalence",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/audio_media_root_equivalence_sim.json",
+        "current_manifest_sha256": "b5b82114427b89460f7e78e4479dce963e6aaaa3b182f88f2803d4592e2ca276",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "047d469fd669ae77ea00a712e89b19459771f1d2600b3180443c5f683c39682f"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_audio_media_root_equivalence",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_audio_media_root_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 1039238,
+      "elapsed_s": 30.047,
+      "suite": "audio_media_root_equivalence",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_audio_media_root_equivalence\\sim\\tb_v3_audio_media_root_equivalence"
+    },
+    "metadata_sha256": "5c575e73775e9ce84896d4b0c507a9e5a73179a82704848cd955ee55d60e203e",
+    "input_count": 42,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_audio_media_root_equivalence",
+      "suite": "audio_media_root_equivalence",
+      "ordered_analyzed_HDL": 30,
+      "manifest": "safevision/build/manifests/audio_media_root_equivalence_sim.json",
+      "current_manifest_sha256": "b5b82114427b89460f7e78e4479dce963e6aaaa3b182f88f2803d4592e2ca276",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "047d469fd669ae77ea00a712e89b19459771f1d2600b3180443c5f683c39682f",
+    "sources_sha256": "5e9b8b5faf0bbc33fa9d799a883fbc0c0c3537abd441ea233e50b2bc3ca84dd4",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_audio_media_root_equivalence\\runner.results.json",
+          "sha256": "eda611500f23d049db3b32cb1c8b197d3fbf0c171966367deab14e02eb6e0736",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_audio_media_root_equivalence\\sim\\results.json",
+          "sha256": "eda611500f23d049db3b32cb1c8b197d3fbf0c171966367deab14e02eb6e0736",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

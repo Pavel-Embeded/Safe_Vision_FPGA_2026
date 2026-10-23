@@ -1,0 +1,152 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\lba\\negative\\wrong_actual_SYS\\sim\\tb_v3_control_clock776",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "lba",
+    "kind": "negative",
+    "name": "wrong_actual_SYS",
+    "row": {
+      "mutation": "wrong_actual_SYS",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "control_clock776",
+      "top": "tb_v3_control_clock776",
+      "patch": [
+        {
+          "before": "assign sys_clk=HD?pll_sys100_clk:mem_clk;",
+          "after": "assign sys_clk=pll_sys100_clk;"
+        }
+      ],
+      "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+      "mutated_sha256": "57874eec7cd9419bd5ec06e9160d85eb43f01b3f318fdf21db8eea674fcb8b5d",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "detected": true,
+      "error_counts": [
+        5
+      ],
+      "original_producer": "D:\\Codex\\svflex537\\clock853\\refresh\\native\\wrong_actual_SYS\\sim\\tb_v3_control_clock776",
+      "before": "assign sys_clk=HD?pll_sys100_clk:mem_clk;",
+      "after": "assign sys_clk=pll_sys100_clk;",
+      "errors": [
+        5
+      ],
+      "legacy": false
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\lba_control_clock_261023\\negative\\wrong_actual_SYS",
+    "packed": false,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "fresh_native_auxiliary_requalification",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\lba\\negative\\wrong_actual_SYS\\sim\\tb_v3_control_clock776",
+    "checked": {
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_control_clock776",
+        "suite": "control_clock776",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/control_clock776_sim.json",
+        "current_manifest_sha256": "991350185151b0ff5fdd9b84c3624cb1fe0f4bd3d71b00b4ee689974ae64d2a9",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        5
+      ],
+      "metadata": {
+        "mutation": "wrong_actual_SYS",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "control_clock776",
+        "top": "tb_v3_control_clock776",
+        "patch": [
+          {
+            "before": "assign sys_clk=HD?pll_sys100_clk:mem_clk;",
+            "after": "assign sys_clk=pll_sys100_clk;"
+          }
+        ],
+        "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+        "mutated_sha256": "57874eec7cd9419bd5ec06e9160d85eb43f01b3f318fdf21db8eea674fcb8b5d",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "detected": true,
+        "error_counts": [
+          5
+        ],
+        "original_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\lba\\negative\\wrong_actual_SYS\\sim\\tb_v3_control_clock776",
+        "before": "assign sys_clk=HD?pll_sys100_clk:mem_clk;",
+        "after": "assign sys_clk=pll_sys100_clk;",
+        "errors": [
+          5
+        ],
+        "legacy": false,
+        "return_code": 1
+      },
+      "metadata_sha256": "ed6e25d74dfb513294851e7da181f1e79127fbf834d2fb04c0f6b367015870ca",
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\lba\\negative\\wrong_actual_SYS\\sim\\results.json",
+            "sha256": "218bf98a10d9469e3e0f0d1016674216d2fdea3197a83f07e2cad0e1c2ed1cfa",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "log_sha256": "d7795964ea077b85901db000c4fec91e4ba1faaeb2b405d735b81ca4b7308f87",
+      "normal_completion": true
+    },
+    "command": [
+      "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "D:\\Codex\\svflex537\\candidate883\\safevision\\tools\\run_v3_sim.py",
+      "--suite",
+      "control_clock776",
+      "--top",
+      "tb_v3_control_clock776",
+      "--run-dir",
+      "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\lba\\negative\\wrong_actual_SYS\\sim",
+      "--override-source",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v=D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\lba\\negative\\wrong_actual_SYS\\inputs\\mutant.v"
+    ],
+    "actual_native_process_exit": 1,
+    "elapsed_s": 18.656,
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_control_clock776",
+        "suite": "control_clock776",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/control_clock776_sim.json",
+        "current_manifest_sha256": "991350185151b0ff5fdd9b84c3624cb1fe0f4bd3d71b00b4ee689974ae64d2a9",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\lba\\negative\\wrong_actual_SYS\\sim\\results.json",
+            "sha256": "218bf98a10d9469e3e0f0d1016674216d2fdea3197a83f07e2cad0e1c2ed1cfa",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 120,
+      "normal_completion": true,
+      "error_counts": [
+        5
+      ],
+      "log_sha256": "d7795964ea077b85901db000c4fec91e4ba1faaeb2b405d735b81ca4b7308f87",
+      "source_fingerprint_sha256": "9a56be98f1d3f16719ceba7feec8a0c484b7c0f1f5477b1197e1e2e85a6a9fab"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\lba_control_clock_261023\\negative\\wrong_actual_SYS"
+  },
+  "actual_execution_retained": true
+}

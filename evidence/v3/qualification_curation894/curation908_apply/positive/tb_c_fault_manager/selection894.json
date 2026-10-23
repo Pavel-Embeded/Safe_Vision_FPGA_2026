@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_c_fault_manager",
+  "record": {
+    "kind": "positive",
+    "name": "tb_c_fault_manager",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_c_fault_manager",
+    "checked": {
+      "metadata": {
+        "top": "tb_c_fault_manager",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 5012,
+        "elapsed_s": 8.75,
+        "suite": "c",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_c_fault_manager\\sim\\tb_c_fault_manager"
+      },
+      "metadata_sha256": "15711e17a42064296cf24fb6fae91eccbe1859a87aab64a3bd5ed42b17577b60",
+      "normal_completion": true,
+      "input_count": 26,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_c_fault_manager",
+        "suite": "c",
+        "ordered_analyzed_HDL": 18,
+        "manifest": "safevision/build/manifests/c_sim.json",
+        "current_manifest_sha256": "6a00786194425f45495f385a6fd6f4dafe6e5f38c4a11f3a3270773a0b277cb7",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "4f9fca856544284e2755874b266b3a151269d7d73320e0ff3d95931f9ceeae17"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_c_fault_manager",
+  "checked": {
+    "metadata": {
+      "top": "tb_c_fault_manager",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 5012,
+      "elapsed_s": 8.75,
+      "suite": "c",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_c_fault_manager\\sim\\tb_c_fault_manager"
+    },
+    "metadata_sha256": "15711e17a42064296cf24fb6fae91eccbe1859a87aab64a3bd5ed42b17577b60",
+    "input_count": 26,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_c_fault_manager",
+      "suite": "c",
+      "ordered_analyzed_HDL": 18,
+      "manifest": "safevision/build/manifests/c_sim.json",
+      "current_manifest_sha256": "6a00786194425f45495f385a6fd6f4dafe6e5f38c4a11f3a3270773a0b277cb7",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "4f9fca856544284e2755874b266b3a151269d7d73320e0ff3d95931f9ceeae17",
+    "sources_sha256": "79d59d261a2e67b52c442a3b12e58f843cbcfa62da85f2c3aa7fe781d984de82",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_c_fault_manager\\sim\\results.json",
+          "sha256": "fc43c04ee4b26f23aebb937aaf79e2ef727ed1d8638ab68ab02cd6975c6e59b4",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

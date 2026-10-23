@@ -1,0 +1,93 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_supervisor",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_supervisor",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_supervisor",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 4034,
+        "elapsed_s": 9.547,
+        "suite": "v3_board",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_supervisor\\sim\\tb_v3_supervisor"
+      },
+      "metadata_sha256": "bde93a66610498201d8ec2d3b99f44f48a83af29ea52302e6d98464aecab1a8d",
+      "normal_completion": true,
+      "input_count": 14,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_supervisor",
+        "suite": "v3_board",
+        "ordered_analyzed_HDL": 6,
+        "manifest": "safevision/build/manifests/v3_board_sim.json",
+        "current_manifest_sha256": "c87876b115dc0c838a6d351ad7b2c6493b61c07167939537fde753fd2b7eb0db",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0,
+        0
+      ],
+      "log_sha256": "6f34e1852e84b1e1581d3bbe327f06a8d1abb7c0ea5e69e333b85630847f5682"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_supervisor",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 4034,
+      "elapsed_s": 9.547,
+      "suite": "v3_board",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_supervisor\\sim\\tb_v3_supervisor"
+    },
+    "metadata_sha256": "bde93a66610498201d8ec2d3b99f44f48a83af29ea52302e6d98464aecab1a8d",
+    "input_count": 14,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_supervisor",
+      "suite": "v3_board",
+      "ordered_analyzed_HDL": 6,
+      "manifest": "safevision/build/manifests/v3_board_sim.json",
+      "current_manifest_sha256": "c87876b115dc0c838a6d351ad7b2c6493b61c07167939537fde753fd2b7eb0db",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0
+    ],
+    "log_sha256": "6f34e1852e84b1e1581d3bbe327f06a8d1abb7c0ea5e69e333b85630847f5682",
+    "sources_sha256": "38afc619f15460297227d6a04f04962b08391347d218b50d4a66715416b22d0f",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_supervisor\\sim\\results.json",
+          "sha256": "2c98c2d7f08d3e2d282c4e695c98d3a01222abbe8bd5a23c17ddf0a6092f230f",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

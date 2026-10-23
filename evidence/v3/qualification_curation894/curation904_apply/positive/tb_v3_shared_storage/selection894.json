@@ -1,0 +1,129 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_shared_storage",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_shared_storage",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_shared_storage",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 14,
+        "data_comparisons": 614400,
+        "elapsed_s": 1853.047,
+        "suite": "shared_storage",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage"
+      },
+      "metadata_sha256": "ccc966d2ad50ed9907156161f4d46bad413f5dce003913ae1d62fb50f974aac0",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_shared_storage",
+        "suite": "shared_storage",
+        "ordered_analyzed_HDL": 33,
+        "manifest": "safevision/build/manifests/shared_storage_sim.json",
+        "current_manifest_sha256": "98a2df2852c4bee95064d052d24117a78edd804102f2a7deb998dcc0d20b7521",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d9bfb5842345c4bfb65a9c5b797047d06e14ea7329be3ec79cc6bbcbe23efd62"
+    },
+    "elapsed_s": 1856.296,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_shared_storage",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 14,
+      "data_comparisons": 614400,
+      "elapsed_s": 1853.047,
+      "suite": "shared_storage",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage"
+    },
+    "metadata_sha256": "ccc966d2ad50ed9907156161f4d46bad413f5dce003913ae1d62fb50f974aac0",
+    "input_count": 42,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_shared_storage",
+      "suite": "shared_storage",
+      "ordered_analyzed_HDL": 33,
+      "manifest": "safevision/build/manifests/shared_storage_sim.json",
+      "current_manifest_sha256": "98a2df2852c4bee95064d052d24117a78edd804102f2a7deb998dcc0d20b7521",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "d9bfb5842345c4bfb65a9c5b797047d06e14ea7329be3ec79cc6bbcbe23efd62",
+    "sources_sha256": "1ec8a82a176ad585facdbac3d1261da214a8f3c0a928d905a682c540bf0df8de",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_shared_storage\\sim\\results.json",
+          "sha256": "4d27f83c23b66472e603abb14a02e5bf8026dcf13cc8ae1b8e1125f26d00b7b2",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": true,
+      "binding": "replay_verified_current_generated_assets",
+      "receipt": "D:\\Codex\\svflex537\\curation904_apply\\generated_replay\\shared_storage\\tb_v3_shared_storage\\64f7388760192c1a\\replay.receipt.json",
+      "receipt_sha256": "c5b5fe68fa4ac75d0c63e18badc30dd129e1a1244430bbd6dab090a0771cf153",
+      "generated_assets": {
+        "expected0.mem": {
+          "sha256": "49c7ee07d93f9b4673bf14ba27a340012a6845f0f2072f0a019227216a8176be",
+          "size": 1536000
+        },
+        "expected1.mem": {
+          "sha256": "f3e836b01b5247d749d6ee8b0f24f2de1090e46a1b4274e5757d2c316e3662d0",
+          "size": 1536000
+        },
+        "expected2.mem": {
+          "sha256": "7e4166608424ca0d10eb3c26755026aa5e80eee653bc051f2d3fc95ce8b16af8",
+          "size": 1536000
+        },
+        "expected3.mem": {
+          "sha256": "88d42ab3587b4506a8cbd870e2d1244d6f870dd97ec79942e581b3fef0516c6d",
+          "size": 1536000
+        },
+        "fixture.json": {
+          "sha256": "b9a8fa2c0ff3c6820b4b22f805e896f5ad62931b5e2ca76047d35da329ebfa50",
+          "size": 173
+        },
+        "lifecycle_fixture.json": {
+          "sha256": "563a6fc4bab38ef08f6bae045191295ba296a6a1fba30619a0af4705776d86a5",
+          "size": 288
+        },
+        "lifecycle_pcm.mem": {
+          "sha256": "95e51cea664f0318509c90676c93e310a11650eab54af62a0c13b1aec2710caa",
+          "size": 240000
+        },
+        "resident_card.mem": {
+          "sha256": "f0ae4cfd241a4a9fb40aa010061917800ad21b4dbe7ea2ff695f557ab255e6f5",
+          "size": 16777216
+        }
+      }
+    }
+  }
+}

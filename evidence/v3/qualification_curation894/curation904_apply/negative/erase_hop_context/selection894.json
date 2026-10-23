@@ -1,0 +1,133 @@
+{
+  "kind": "negative",
+  "name": "erase_hop_context",
+  "record": {
+    "kind": "negative",
+    "name": "erase_hop_context",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\erase_hop_context",
+    "checked": {
+      "metadata": {
+        "mutation": "erase_hop_context",
+        "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+        "suite": "audio_negative",
+        "top": "tb_v3_audio_negative_hop",
+        "patch": [
+          {
+            "before": "        end else if(context_load)begin hop_cnt<=context_hop;\n",
+            "after": "        end else if(context_load)begin hop_cnt<=0;\n"
+          }
+        ],
+        "required_marker": "[FAIL AUDIO_HOP_CONTEXT]",
+        "original_sha256": "023d744b37004f6673e85cd750202e408c5567f04be5b7d186ad5c473f7049e2",
+        "mutated_sha256": "153a694804ed1ad1a6226e6fc3ef7a23d124789b9b524989edf1679549292fe4",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop"
+      },
+      "metadata_sha256": "b5b8e61c90c38e4fe41b6fa62eaa8795daf9936af2be46d2a013ce09e575d9c0",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_negative_hop",
+        "suite": "audio_negative",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/audio_negative_sim.json",
+        "current_manifest_sha256": "f38cf2e03d2a863c9b23e3e9b2025c637733c55d961b86535a88eb12d271e440",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1
+      ],
+      "log_sha256": "d6d86d56b7be3d48da1cb9bad78da7a75ebc25e0470a700fbee348670b3f9cd4"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\erase_hop_context",
+  "checked": {
+    "metadata": {
+      "mutation": "erase_hop_context",
+      "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+      "suite": "audio_negative",
+      "top": "tb_v3_audio_negative_hop",
+      "patch": [
+        {
+          "before": "        end else if(context_load)begin hop_cnt<=context_hop;\n",
+          "after": "        end else if(context_load)begin hop_cnt<=0;\n"
+        }
+      ],
+      "required_marker": "[FAIL AUDIO_HOP_CONTEXT]",
+      "original_sha256": "023d744b37004f6673e85cd750202e408c5567f04be5b7d186ad5c473f7049e2",
+      "mutated_sha256": "153a694804ed1ad1a6226e6fc3ef7a23d124789b9b524989edf1679549292fe4",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop"
+    },
+    "metadata_sha256": "b5b8e61c90c38e4fe41b6fa62eaa8795daf9936af2be46d2a013ce09e575d9c0",
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_audio_negative_hop",
+      "suite": "audio_negative",
+      "ordered_analyzed_HDL": 28,
+      "manifest": "safevision/build/manifests/audio_negative_sim.json",
+      "current_manifest_sha256": "f38cf2e03d2a863c9b23e3e9b2025c637733c55d961b86535a88eb12d271e440",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1
+    ],
+    "log_sha256": "d6d86d56b7be3d48da1cb9bad78da7a75ebc25e0470a700fbee348670b3f9cd4",
+    "sources_sha256": "d10c791f4448f0d97d28b4377a76dbc81514dabb57aa58fc892c81960cf3dc88",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\erase_hop_context\\runner.results.json",
+          "sha256": "cd3e2d4bfc7d598839e57ffe0b053ef796ffb4006665278651968dd0c203c48f",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\erase_hop_context\\sim\\results.json",
+          "sha256": "cd3e2d4bfc7d598839e57ffe0b053ef796ffb4006665278651968dd0c203c48f",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": true,
+      "binding": "replay_verified_current_generated_assets",
+      "receipt": "D:\\Codex\\svflex537\\curation869_plan02\\generated_replay\\audio_negative\\tb_v3_audio_negative_hop\\05c7d898545baf05\\replay.receipt.json",
+      "receipt_sha256": "366701a7e914a00ee9dacef6b0478564bd7c653b5d905c4fd07007c625460308",
+      "generated_assets": {
+        "audio_disk_unaligned.mem": {
+          "sha256": "c4ca5947d517e276bd4a6edc4b2d68c24e0cf654d0990ae61a584240dd6ff126",
+          "size": 262144
+        },
+        "audio_pcm_unaligned.mem": {
+          "sha256": "c7ae384225f741daf0a2a5d17f3189fc07bb375e70a91f27a1280de3427e77af",
+          "size": 80000
+        }
+      }
+    }
+  }
+}

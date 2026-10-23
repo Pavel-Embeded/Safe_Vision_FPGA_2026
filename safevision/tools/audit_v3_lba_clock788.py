@@ -12,7 +12,8 @@ POSITIVE={
  'lba_public_contract':dict(suite='lba_pipeline747',top='tb_v3_lba_pipeline747',comparisons=28673),
  'lba_wait_timeout':dict(suite='lba_timeout759',top='tb_v3_lba_timeout759',comparisons=521),
  'control_clock':dict(suite='control_clock776',top='tb_v3_control_clock776',comparisons=30),
- 'board_clocks':dict(suite='v3_board_clocks',top='tb_v3_board_clocks',comparisons=195),
+ 'board_clocks':dict(suite='v3_board_clocks',top='tb_v3_board_clocks',comparisons=219),
+ 'two_edge_math':dict(suite='lba_dual883',top='tb_v3_lba_dual883',comparisons=126446),
 }
 NEGATIVE=[
  dict(mutation='lba_product_spc_lost',target=FS,suite='lba_pipeline747',top='tb_v3_lba_pipeline747',before='wire[7:0] product_factor=sec_per_clus;',after="wire[7:0] product_factor=8'd1;",errors=[2047]),

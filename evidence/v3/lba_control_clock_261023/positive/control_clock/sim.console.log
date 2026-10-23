@@ -11,6 +11,6 @@ Time resolution is 1 ps
 run -all
 [PASS] actual selected BASE50/HD100 control clock wiring, calibrated time units and real-baud RX
 [TB] tb_v3_control_clock776 done errors=0 comparisons=30
-$finish called at time : 308320345 ps : File "D:/Codex/svflex537/clock810_root/safevision/verification/unit/tb_v3_control_clock776.sv" Line 52
+$finish called at time : 308320345 ps : File "D:/Codex/svflex537/candidate883/safevision/verification/unit/tb_v3_control_clock776.sv" Line 52
 exit
-INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:01:48 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 16:13:10 2026...

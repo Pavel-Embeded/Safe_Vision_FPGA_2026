@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_volume_setting_hd88",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_volume_setting_hd88",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_setting_hd88",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_volume_setting_hd88",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 406274,
+        "elapsed_s": 9.672,
+        "suite": "volume_setting_hd88",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_setting_hd88\\sim\\tb_v3_volume_setting_hd88"
+      },
+      "metadata_sha256": "f7e2a67b1352b56acdc72fa0735a40e49b99e49fbc5849a1237b8082ffc08dd4",
+      "normal_completion": true,
+      "input_count": 17,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_volume_setting_hd88",
+        "suite": "volume_setting_hd88",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/volume_setting_hd88_sim.json",
+        "current_manifest_sha256": "b2b40c16490f3b281e21548a5ebd0017943dda2be97a047b7ca71da1ff150c51",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "abcdf5e6dda2a768720e8bcc5e89012f8ea8d7a442ce8d57477ca8d08372039f"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_setting_hd88",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_volume_setting_hd88",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 406274,
+      "elapsed_s": 9.672,
+      "suite": "volume_setting_hd88",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_setting_hd88\\sim\\tb_v3_volume_setting_hd88"
+    },
+    "metadata_sha256": "f7e2a67b1352b56acdc72fa0735a40e49b99e49fbc5849a1237b8082ffc08dd4",
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_volume_setting_hd88",
+      "suite": "volume_setting_hd88",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/volume_setting_hd88_sim.json",
+      "current_manifest_sha256": "b2b40c16490f3b281e21548a5ebd0017943dda2be97a047b7ca71da1ff150c51",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "abcdf5e6dda2a768720e8bcc5e89012f8ea8d7a442ce8d57477ca8d08372039f",
+    "sources_sha256": "f00e92adfb89a1d1aaa76b7ce33b3b465a0cbbee49d2d44a9a9e830199b99b5e",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_setting_hd88\\sim\\results.json",
+          "sha256": "42915600d6786cd5ecdd2d7d688ef852cbb2891d52b332a95fc2526f5c7bd71d",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

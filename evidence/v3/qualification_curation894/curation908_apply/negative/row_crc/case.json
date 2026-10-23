@@ -1,0 +1,25 @@
+{
+  "mutation": "row_crc",
+  "target": "safevision/rtl/memory/v3_row_integrity.v",
+  "suite": "v3",
+  "top": "tb_v3_row_integrity",
+  "patch": [
+    {
+      "before": "  if(signature_write)signatures[source_index]<=~next_source_crc;\n",
+      "after": "  if(signature_write)signatures[source_index]<=(~next_source_crc)^32'h1;\n"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "original_sha256": "ef3840a00b74e7940591e40f53aa68fcae9022a2dc192ed2ee5973cb9a2c0b66",
+  "mutated_sha256": "c2b8f68331b70baf23cb57acc13689c77a39b4e224233dc0bdfc27d3e2e39b9b",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    37
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\row_crc\\sim\\tb_v3_row_integrity",
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\row_crc\\sim\\tb_v3_row_integrity"
+}

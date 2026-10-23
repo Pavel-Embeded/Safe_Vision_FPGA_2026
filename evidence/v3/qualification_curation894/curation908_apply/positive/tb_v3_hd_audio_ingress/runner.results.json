@@ -1,0 +1,16 @@
+{
+  "suite": "hd_audio_native",
+  "results": [
+    {
+      "top": "tb_v3_hd_audio_ingress",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 454,
+      "elapsed_s": 7.797
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

@@ -1,0 +1,29 @@
+{
+  "oracle": "Pillow decode + independent rational nearest-neighbor reference",
+  "cases": [
+    [
+      1,
+      1,
+      false
+    ],
+    [
+      1,
+      1080,
+      true
+    ],
+    [
+      1920,
+      1,
+      false
+    ],
+    [
+      1920,
+      1080,
+      true
+    ]
+  ],
+  "source_bytes": 6231100,
+  "normalized_pixels": 1228800,
+  "cluster_chain": "descending",
+  "invalid_prefix_files": 4
+}

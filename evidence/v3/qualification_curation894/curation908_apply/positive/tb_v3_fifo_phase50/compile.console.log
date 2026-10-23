@@ -1,0 +1,15 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq53/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/memory/sv_async_fifo_hd_phase.v" into library work
+INFO: [VRFC 10-311] analyzing module sv_async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq53/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v" into library work
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_ip
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_gray_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq53/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v" into library work
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_eram
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq53/source/safevision/verification/models/v3_fifo_phase49_reference.sv" into library work
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_phase49_reference
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_gray_phase49_reference
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq53/source/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo_phase/sv_fifo_phase_ip.v" into library work
+INFO: [VRFC 10-311] analyzing module sv_fifo_phase_ip
+INFO: [VRFC 10-311] analyzing module sv_fifo_phase_gray_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq53/source/safevision/verification/unit/tb_v3_fifo_phase50.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_fifo_phase50

@@ -1,0 +1,16 @@
+{
+  "suite": "v3_board_clocks",
+  "results": [
+    {
+      "top": "tb_v3_board_clocks",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 219,
+      "elapsed_s": 16.656
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

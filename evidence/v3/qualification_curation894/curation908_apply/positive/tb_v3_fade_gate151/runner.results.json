@@ -1,0 +1,16 @@
+{
+  "suite": "fade_gate151",
+  "results": [
+    {
+      "top": "tb_v3_fade_gate151",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2296969,
+      "elapsed_s": 15.422
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

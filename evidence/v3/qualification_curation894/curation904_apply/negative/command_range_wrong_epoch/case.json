@@ -1,0 +1,24 @@
+{
+  "mutation": "command_range_wrong_epoch",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "controls_pipeline_equivalence",
+  "top": "tb_v3_controls_pipeline_equivalence",
+  "patch": [
+    {
+      "before": "assign value_bright_qualified=(argument_q[8]==argument_q[7]);",
+      "after": "assign value_bright_qualified=value_bright_ok;"
+    }
+  ],
+  "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+  "mutated_sha256": "7f37c1d13037d669c864d98880ac38b067e5736a05509bbcf78b8217bf003585",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    140431
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\command_range_wrong_epoch\\sim\\tb_v3_controls_pipeline_equivalence",
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\command_range_wrong_epoch\\sim\\tb_v3_controls_pipeline_equivalence"
+}

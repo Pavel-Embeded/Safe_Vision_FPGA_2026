@@ -1,0 +1,63 @@
+{
+  "input_identity": "07cbb3fc371828eab6acde908361ca1db90b1e078e2b2e94f353172cefaeb563",
+  "command": [
+    "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "D:\\Codex\\svflex537\\candidate852\\safevision\\verification\\fixtures\\generate_mixed_card217.py",
+    "--output",
+    "D:\\Codex\\svflex537\\curation869_plan02\\generated_replay\\mixed_card217\\tb_v3_mixed_card217\\07cbb3fc371828ea"
+  ],
+  "cwd": "D:\\Codex\\svflex537\\candidate852",
+  "native_process_exit": 0,
+  "generator": "safevision/verification/fixtures/generate_mixed_card217.py",
+  "generator_sha256": "1a2710a13d882b6acb9b4df988d99f7e704b8866c770f60bede913915bfb0c57",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+  "executable_sha256": "ceabb31054d429f57cb3825775677eeaf0db35fdabbc5ff6aef661c037154b00",
+  "parameters": [
+    "--output",
+    "<isolated directory>"
+  ],
+  "fixed_seed_values": [],
+  "replay_dependency_sha256": {},
+  "dependencies_not_in_historical_capture": [],
+  "pillow_version": "12.3.0",
+  "historical_tool_versions_not_invented": true,
+  "seed_contract": "exact captured native-runner command; no implicit random seed input",
+  "generated_assets": {
+    "expected0.mem": {
+      "sha256": "8077b796f6640e96e912f71df789f436edf542c0ea96be825767acc26ecae808",
+      "size": 1536000
+    },
+    "expected1.mem": {
+      "sha256": "d5681a49c6acca45d6587ac9b321e4673270a7af49188b645c5a69a2584633a8",
+      "size": 1536000
+    },
+    "expected2.mem": {
+      "sha256": "71f22ec6c8402576b4d23c3af61f417d5ad8d99c7d93267d35fcc30c068ae151",
+      "size": 1536000
+    },
+    "expected3.mem": {
+      "sha256": "25775e68dd343bc1755b670e82c244529531e491d6956b4e01ae685356fefdee",
+      "size": 1536000
+    },
+    "fixture.json": {
+      "sha256": "909c229e1c3b4ab2081a4e99b119ed9e75aeed1f03142227e2cd1ad4bcaca71b",
+      "size": 429
+    },
+    "payload_bytes.mem": {
+      "sha256": "4a5073c754fd7edb98dbdc429995d116deaad305338e7574dbcb271d30725357",
+      "size": 10
+    },
+    "resident_card.mem": {
+      "sha256": "405d9f3015c2395a1fb287f9279e7a6fe15ade721ff97ed1598495a30981b586",
+      "size": 16777216
+    }
+  },
+  "console_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "binding": "replay_verified_current_generated_assets",
+  "original_before_after_hashes_captured": false,
+  "scope": "Current deterministic replay equals retained actual runtime assets; not a newly executed HDL test"
+}

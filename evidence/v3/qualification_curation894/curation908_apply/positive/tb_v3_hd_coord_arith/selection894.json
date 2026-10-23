@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_coord_arith",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_coord_arith",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_coord_arith",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_coord_arith",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 5284524,
+        "elapsed_s": 11.656,
+        "suite": "hd_coord_arith",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_hd_coord_arith\\sim\\tb_v3_hd_coord_arith"
+      },
+      "metadata_sha256": "4f64c43c70ea2fd22afb02fb66fe8a9b085ed7eada24347aab85cac0c266a6ec",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_coord_arith",
+        "suite": "hd_coord_arith",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_coord_arith_sim.json",
+        "current_manifest_sha256": "5e34c6096f63f56b1b9a62222f3c4babbca536ac995fc2a41966cebb2301b846",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0,
+        0
+      ],
+      "log_sha256": "c394b51b9de0e3c90cb91a52736ea9ac379bbf2afce9fdc818645e39b7ff1219"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_coord_arith",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_coord_arith",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 5284524,
+      "elapsed_s": 11.656,
+      "suite": "hd_coord_arith",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_hd_coord_arith\\sim\\tb_v3_hd_coord_arith"
+    },
+    "metadata_sha256": "4f64c43c70ea2fd22afb02fb66fe8a9b085ed7eada24347aab85cac0c266a6ec",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_coord_arith",
+      "suite": "hd_coord_arith",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_coord_arith_sim.json",
+      "current_manifest_sha256": "5e34c6096f63f56b1b9a62222f3c4babbca536ac995fc2a41966cebb2301b846",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0
+    ],
+    "log_sha256": "c394b51b9de0e3c90cb91a52736ea9ac379bbf2afce9fdc818645e39b7ff1219",
+    "sources_sha256": "207e6a68165e7c36027f7d85b31a3a730a17589b12f7cace0fb24c3a174d8a1c",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq74\\p\\tb_v3_hd_coord_arith\\sim\\results.json",
+          "sha256": "9c9c801d54f0faba3f69e6100557a9450eba94b2b61d40c0921ceb7532339b96",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

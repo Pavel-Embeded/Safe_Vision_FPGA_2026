@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_prefix_miter_hd_read64_basic_385",
+  "top": "tb_v3_prefix_miter_hd_read64_basic_385",
+  "suite": "adapter_prefix_hd385",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_prefix_miter_hd_read64_basic_385",
+    "suite": "adapter_prefix_hd385",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_prefix_miter_hd_read64_basic_385",
+    "suite": "adapter_prefix_hd385",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_prefix_miter_hd_read64_basic_385",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_prefix_miter_hd_read64_basic_385",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_prefix_miter_hd_read64_basic_385",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 20,
+      "data_comparisons": 45429,
+      "elapsed_s": 8.172,
+      "suite": "adapter_prefix_hd385",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svshared407\\hd\\sim\\tb_v3_prefix_miter_hd_read64_basic_385"
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_prefix_miter_hd_read64_basic_385",
+      "suite": "adapter_prefix_hd385",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/adapter_prefix_hd385_sim.json",
+      "current_manifest_sha256": "c99fec2902d71270a6f1acacae771e12fd3386fa108dab5f9b4803411cb47c01",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0
+    ],
+    "log_sha256": "47ed1552d473d87c88506ac2c3f6ba633cf41e157ac182b833841e078698b0f9",
+    "metadata_sha256": "88a5dc5888b6744edbb83bff60767825fea181e7adee164882a8b5c2bdc70874",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_prefix_miter_hd_read64_basic_385\\result.json",
+      "sha256": "88a5dc5888b6744edbb83bff60767825fea181e7adee164882a8b5c2bdc70874"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_prefix_miter_hd_read64_basic_385\\sim.log",
+      "sha256": "47ed1552d473d87c88506ac2c3f6ba633cf41e157ac182b833841e078698b0f9"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_prefix_miter_hd_read64_basic_385\\sources.sha256.json",
+      "sha256": "c478221e23e5af47d58332780665b8c763b7b9f7363779740aea0497fea53ed5"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_prefix_miter_hd_read64_basic_385\\original.producer.metadata.json",
+      "sha256": "88a5dc5888b6744edbb83bff60767825fea181e7adee164882a8b5c2bdc70874"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_prefix_miter_hd_read64_basic_385\\producer.provenance.json",
+      "sha256": "b4900ba94e2a59063e59e75a1e798ddf549395f2bd9975150d8a9f057cf9494d"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_prefix_miter_hd_read64_basic_385\\sources.prj",
+      "sha256": "fcf20184f481191fc45348b2dae860fde07f853e09351c1df742b425596d15cc"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

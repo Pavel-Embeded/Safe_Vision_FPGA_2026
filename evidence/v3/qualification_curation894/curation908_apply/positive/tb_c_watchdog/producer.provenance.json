@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_c_watchdog",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_c_watchdog\\result.json",
+  "original_metadata_sha256": "94e4dfaee75917b77cc987b820a4e88bc49d248a9b00f89599e5e8ccfa373fb7",
+  "original_log_sha256": "f9c765309b02d24d06f636cc1fa9911c8bad9de209edb6f9cd508c3dea52aa47",
+  "matrix_definition": {
+    "top": "tb_c_watchdog",
+    "suite": "c",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

@@ -1,0 +1,13 @@
+{
+  "top": "tb_v3_board_clocks",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 219,
+  "elapsed_s": 16.656,
+  "suite": "v3_board_clocks",
+  "legacy": false,
+  "producer_process_exit": 0,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svflex537\\clock853\\refresh\\native\\board_clocks\\sim\\tb_v3_board_clocks"
+}

@@ -1,0 +1,114 @@
+{
+  "accepted": true,
+  "complete": true,
+  "positive": 1,
+  "expected_rejections": 14,
+  "results": [
+    {
+      "case": "real134_originals_and_exact_current_stimulus",
+      "expected_reject": false,
+      "rejected": false,
+      "error": null
+    },
+    {
+      "case": "restored_sys0_cannot_masquerade_as_qualified_stimulus",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: current stimulus is not the exact qualified transformation"
+    },
+    {
+      "case": "LF_normalization_cannot_change_actual_compiled_bytes",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: current stimulus is not the exact qualified transformation"
+    },
+    {
+      "case": "unapproved_comment_change_rejected",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: current stimulus is not the exact qualified transformation"
+    },
+    {
+      "case": "unapproved_second_logic_change_rejected",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: current stimulus is not the exact qualified transformation"
+    },
+    {
+      "case": "one_of_other133_oracles_changed",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: original frozen reference changed: safevision/verification/models/ab_frame_sink.sv"
+    },
+    {
+      "case": "archived_original_changed",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: archived original is not the untouched original Git blob"
+    },
+    {
+      "case": "current_sys1_cannot_replace_original_archive",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: archived original is not the untouched original Git blob"
+    },
+    {
+      "case": "frozen_oracle_SHA_rebased_to_new_stimulus",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: entire134 original reference inventory differs from original Git matrix"
+    },
+    {
+      "case": "original_Git_matrix_SHA_map_changed",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: entire134 original reference inventory differs from original Git matrix"
+    },
+    {
+      "case": "one_original_oracle_removed_from_inventory",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: entire134 original reference inventory differs from original Git matrix"
+    },
+    {
+      "case": "original_Git_clock_blob_substituted",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: archived original is not the untouched original Git blob"
+    },
+    {
+      "case": "original_commit_anchor_replaced",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: qualification metadata/allowed transformation changed"
+    },
+    {
+      "case": "allowed_transform_relaxed",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: qualification metadata/allowed transformation changed"
+    },
+    {
+      "case": "current_clock_input_missing",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "qualified clock stimulus: original/reference input set is incomplete"
+    }
+  ],
+  "original_reference_count": 134,
+  "unchanged_current_oracles": 133,
+  "original_source_commit": "c6a6549871d97755708120d2a76239011cef94bb",
+  "original_clock_sha256": "d0ad18b9a432c74002cf87356d4a629783b110ec4d7dbbd8dfd3781e9986c6bd",
+  "current_clock_sha256": "cd9669c84ba0798fbf2a840a2eadd2637a5a081b765f29c993ea177e8af8ea92",
+  "original_Git_matrix_frozen_map_exact": true,
+  "original_oracle_SHA_map_rebased": false,
+  "source_inventory": {
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\test_clock_stimulus905.py": "3c27a48e25da38f7ac6e96834a820620633bdb72691a315452661343a3f852a8",
+    "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\audit_v3_clock_stimulus905.py": "d54569d369a60e149ec50b87c4d29a12cd6d65705ce4901e6d80c91e5f2ab409",
+    "D:\\Codex\\svflex537\\clock_stimulus905\\qualification.json": "d142c6d4b095691f233392a5c44816c7b58eae7a66b00b37a07704e29e050517",
+    "D:\\Codex\\svflex537\\clock_stimulus905\\original\\v3_memory_pll_clock_model.sv": "d0ad18b9a432c74002cf87356d4a629783b110ec4d7dbbd8dfd3781e9986c6bd"
+  },
+  "root_inputs_modified": false,
+  "physical206_modified": false,
+  "scope": "pure-memory original-Git/reference/transformation protection controls; full installed audit additionally replays board219 and native3/24+3/14"
+}

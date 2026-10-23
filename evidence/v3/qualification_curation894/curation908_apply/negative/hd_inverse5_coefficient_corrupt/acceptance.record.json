@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "hd_inverse5_coefficient_corrupt",
+  "top": "tb_v3_hd_guard_decode",
+  "suite": "hd_guard_decode",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "hd_inverse5_coefficient_corrupt",
+    "target": "safevision/rtl/hd/v3_row_integrity.v",
+    "suite": "hd_guard_decode",
+    "top": "tb_v3_hd_guard_decode",
+    "patch": [
+      {
+        "before": "digits[8:2]-digits[6:0]",
+        "after": "digits[8:2]+digits[6:0]"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "hd_inverse5_coefficient_corrupt",
+    "target": "safevision/rtl/hd/v3_row_integrity.v",
+    "suite": "hd_guard_decode",
+    "top": "tb_v3_hd_guard_decode",
+    "patch": [
+      {
+        "before": "digits[8:2]-digits[6:0]",
+        "after": "digits[8:2]+digits[6:0]"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_inverse5_coefficient_corrupt",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_inverse5_coefficient_corrupt",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_inverse5_coefficient_corrupt",
+      "target": "safevision/rtl/hd/v3_row_integrity.v",
+      "suite": "hd_guard_decode",
+      "top": "tb_v3_hd_guard_decode",
+      "patch": [
+        {
+          "before": "digits[8:2]-digits[6:0]",
+          "after": "digits[8:2]+digits[6:0]"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_inverse5_coefficient_corrupt\\sim\\tb_v3_hd_guard_decode",
+      "original_sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368",
+      "mutated_sha256": "85330037ef8fbe420bc51fa4e61aba0f70ed7eea22a46b65c9e63b2ae7177ec4",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1888
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative318\\n\\hd_inverse5_coefficient_corrupt\\sim\\tb_v3_hd_guard_decode"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_guard_decode",
+      "suite": "hd_guard_decode",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/hd_guard_decode_sim.json",
+      "current_manifest_sha256": "cf7f41b0390d19fa12b5d73f4582f952834ff9dbdbbcdb1771014a4407f633b4",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1888
+    ],
+    "log_sha256": "db304aebe754686e0a59561de66a56319f34c8cf073d832ce6a645c275b22109",
+    "metadata_sha256": "29d4b8faa0006b9cfe86206f3ac827e78ca45ffd7d08839234b2b48e3bb74b71",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_inverse5_coefficient_corrupt\\case.json",
+      "sha256": "29d4b8faa0006b9cfe86206f3ac827e78ca45ffd7d08839234b2b48e3bb74b71"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_inverse5_coefficient_corrupt\\sim.log",
+      "sha256": "db304aebe754686e0a59561de66a56319f34c8cf073d832ce6a645c275b22109"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_inverse5_coefficient_corrupt\\sources.sha256.json",
+      "sha256": "7d7f1ee62692d1f58f9a2775f8dcbed8b7cb2711702afefd9121eafccdf04531"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_inverse5_coefficient_corrupt\\original.producer.metadata.json",
+      "sha256": "29d4b8faa0006b9cfe86206f3ac827e78ca45ffd7d08839234b2b48e3bb74b71"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_inverse5_coefficient_corrupt\\producer.provenance.json",
+      "sha256": "1458aa3a74ea01bc4fb9ce893523ac1cd30a681af151d6f3c625517a758195b4"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_inverse5_coefficient_corrupt\\sources.prj",
+      "sha256": "ac74b23ac5ebfad7b4628c2a25a0f2a76c0ce4dd4967c16a0bfeec6c43fe0560"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_inverse5_coefficient_corrupt\\mutant.v",
+      "sha256": "85330037ef8fbe420bc51fa4e61aba0f70ed7eea22a46b65c9e63b2ae7177ec4"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

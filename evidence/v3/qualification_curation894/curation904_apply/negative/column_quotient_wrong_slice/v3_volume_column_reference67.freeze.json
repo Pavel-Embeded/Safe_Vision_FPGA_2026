@@ -1,0 +1,16 @@
+{
+  "original_source_commit": "b2269a52db29ebdef27211f95c69deb641b84d65",
+  "original_repository_path": "safevision/rtl/video/v3_status_layers.v",
+  "original_path": "safevision/verification/models/origins/b2269a5/volume_column67.original.v",
+  "original_sha256": "b4e50d26155afd4bcb85062e7d58cee0361bb2cc52c574d58f2df9b75a8f3be2",
+  "fragment_start": "module v3_volume_column #",
+  "reference_path": "safevision/verification/models/v3_volume_column_reference67.sv",
+  "reference_sha256": "a7f102a4d496fe4fad08d33aa86c7be3e8e5e71aec860a355394187aa6e61e56",
+  "namespace_only": [
+    [
+      "module v3_volume_column #",
+      "module v3_volume_column_reference67 #"
+    ]
+  ],
+  "fragment_sha256": "e2f49cb753cf6ab40c69eb056635c7ab2d96fc392ce8f0e529c2864656e84a94"
+}

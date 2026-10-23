@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_waveform193",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_waveform193",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_waveform193",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_waveform193",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 208915,
+        "elapsed_s": 9.828,
+        "suite": "waveform193",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq200\\p\\tb_v3_waveform193\\sim\\tb_v3_waveform193"
+      },
+      "metadata_sha256": "8fdf3f15348389070413216abd1088caf96ddb8ccf1341368b97f3ecad732617",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_waveform193",
+        "suite": "waveform193",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/waveform193_sim.json",
+        "current_manifest_sha256": "542aabd9cbcc23883a8c98729e514edc49888c83722b2c396b0812a369f47a5f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "a43ab7d7c2d6703a72fa37d8a5c538eb4230e49dff65fd20337034043029902c"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_waveform193",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_waveform193",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 208915,
+      "elapsed_s": 9.828,
+      "suite": "waveform193",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq200\\p\\tb_v3_waveform193\\sim\\tb_v3_waveform193"
+    },
+    "metadata_sha256": "8fdf3f15348389070413216abd1088caf96ddb8ccf1341368b97f3ecad732617",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_waveform193",
+      "suite": "waveform193",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/waveform193_sim.json",
+      "current_manifest_sha256": "542aabd9cbcc23883a8c98729e514edc49888c83722b2c396b0812a369f47a5f",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "a43ab7d7c2d6703a72fa37d8a5c538eb4230e49dff65fd20337034043029902c",
+    "sources_sha256": "4db3bf15d0105a9a9f5c13ee6f5b297a349a5e53789533b41d7b0ba317158f88",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq200\\p\\tb_v3_waveform193\\sim\\results.json",
+          "sha256": "006467cd264ff12aa18c60663ae5a88bb79ab79fbb30e2af087822d01f82d13e",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

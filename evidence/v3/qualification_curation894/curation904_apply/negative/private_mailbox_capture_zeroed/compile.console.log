@@ -1,0 +1,7 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative240/n/private_mailbox_capture_zeroed/mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module video_cdc_mailbox
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq237/source/safevision/verification/models/video_cdc_mailbox220_reference.sv" into library work
+INFO: [VRFC 10-311] analyzing module video_cdc_mailbox220_reference
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq237/source/safevision/verification/unit/tb_v3_mailbox_miter228.sv" into library work
+INFO: [VRFC 10-311] analyzing module mailbox_case228
+INFO: [VRFC 10-311] analyzing module tb_v3_mailbox_miter228

@@ -1,0 +1,21 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 13:32:05 2026
+# Process ID: 46528
+# Current directory: D:/Codex/svflex537/qualification811/positive/tb_v3_hd_audio_underflow/sim/tb_v3_hd_audio_underflow
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_hd_audio_underflow/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/qualification811/positive/tb_v3_hd_audio_underflow/sim/tb_v3_hd_audio_underflow/sim.log
+# Journal file: D:/Codex/svflex537/qualification811/positive/tb_v3_hd_audio_underflow/sim/tb_v3_hd_audio_underflow\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_hd_audio_underflow/xsim_script.tcl
+# xsim {tb_v3_hd_audio_underflow} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] first/new generation bounded priming, true timeout underflow, alarm survives media reset
+PASS tb_v3_hd_audio_underflow errors=0 comparisons=1548
+$finish called at time : 1009315450 ps : File "D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_v3_hd_audio_underflow.sv" Line 36
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:32:10 2026...

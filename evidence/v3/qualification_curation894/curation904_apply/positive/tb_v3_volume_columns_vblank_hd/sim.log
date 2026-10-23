@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Thu Oct 22 17:41:28 2026
+# Process ID: 38284
+# Current directory: D:/Codex/svflex537/original618/positive/tb_v3_volume_columns_vblank_hd/sim/tb_v3_volume_columns_vblank_hd
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_volume_columns_vblank_hd/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/original618/positive/tb_v3_volume_columns_vblank_hd/sim/tb_v3_volume_columns_vblank_hd/sim.log
+# Journal file: D:/Codex/svflex537/original618/positive/tb_v3_volume_columns_vblank_hd/sim/tb_v3_volume_columns_vblank_hd\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_volume_columns_vblank_hd/xsim_script.tcl
+# xsim {tb_v3_volume_columns_vblank_hd} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] actual production first-vertical-blank snapshot; four BASE/HD rasters; immutable column and preserved HUD
+[TB] tb_v3_volume_columns_vblank_hd done errors=0 comparisons=6566752
+$finish called at time : 49005122 ns : File "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_volume_columns_vblank_hd.sv" Line 55
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:01:32 . Memory (MB): peak = 218.445 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 17:43:03 2026...

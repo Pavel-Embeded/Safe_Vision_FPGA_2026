@@ -1,0 +1,76 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\lba_current892\\lba_result_valid_lost\\sim\\tb_v3_lba_pipeline747",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "lba",
+    "kind": "negative",
+    "name": "lba_result_valid_lost",
+    "row": {
+      "mutation": "lba_result_valid_lost",
+      "target": "safevision/rtl/storage/v3_shared_fs_service.v",
+      "suite": "lba_pipeline747",
+      "top": "tb_v3_lba_pipeline747",
+      "patch": [
+        {
+          "before": "valid2<=valid1;",
+          "after": "valid2<=1'b0;"
+        }
+      ],
+      "original_sha256": "4d5928d8e1a3adc40b10848dc8751d4777d964ce95d7cab137043094bf1fb480",
+      "mutated_sha256": "10743c22dbce21aaa1fea6ca2ac7bb4b4d80c300dd9410a28893d0e413b6e49f",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "detected": true,
+      "error_counts": [
+        4096
+      ],
+      "original_producer": "D:\\Codex\\svflex537\\lba790\\lba_result_valid_lost\\sim\\tb_v3_lba_pipeline747",
+      "before": "valid2<=valid1;",
+      "after": "valid2<=1'b0;",
+      "errors": [
+        4096
+      ],
+      "legacy": false
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\lba_control_clock_261023\\negative\\lba_result_valid_lost",
+    "packed": false,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "existing_current892_actual_native_capture",
+    "producer_folder": "D:\\Codex\\svflex537\\lba_current892\\lba_result_valid_lost\\sim\\tb_v3_lba_pipeline747",
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_lba_pipeline747",
+        "suite": "lba_pipeline747",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/lba_pipeline747_sim.json",
+        "current_manifest_sha256": "45d4888e177264946f34dcfc186e373449c57072eca8bdbba8ec6151a314320c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\lba_current892\\lba_result_valid_lost\\sim\\results.json",
+            "sha256": "00146d0210e901724ca60e5d676a62ee9d374b25c0a9aded9aa1dac429790c0e",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 38,
+      "normal_completion": true,
+      "error_counts": [
+        4096
+      ],
+      "log_sha256": "365a9c1a18e9d428984acc8b881cf9cc9a4980a7977989ec8576f857cd0a053e",
+      "source_fingerprint_sha256": "4bc691ddf8bc5e3714b1580d42904fb0d3157295e18f5e7ac7d910b69cddc260"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\lba_control_clock_261023\\negative\\lba_result_valid_lost"
+  },
+  "actual_execution_retained": true
+}

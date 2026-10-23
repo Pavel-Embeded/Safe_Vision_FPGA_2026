@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_wav_pair55_wav_errors",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_wav_pair55_wav_errors",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_wav_pair55_wav_errors",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_wav_pair55_wav_errors",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 14911,
+        "elapsed_s": 9.985,
+        "suite": "wav_source_pair55",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_pair55_wav_errors\\sim\\tb_v3_wav_pair55_wav_errors"
+      },
+      "metadata_sha256": "f23e39ec257f4f5b55f638a6d8a596f644922009dc392d0c5f3aada1a6ba842a",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_pair55_wav_errors",
+        "suite": "wav_source_pair55",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/wav_source_pair55_sim.json",
+        "current_manifest_sha256": "edb121fdc6819b42051ab6e7de73793c54786eb372cfcabf4a509e6579c0dafc",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d76f2adee608e6f4d6bed065156b8b30f588ff065be2d0faaaafe97c6f261f64"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_wav_pair55_wav_errors",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_wav_pair55_wav_errors",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 14911,
+      "elapsed_s": 9.985,
+      "suite": "wav_source_pair55",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_pair55_wav_errors\\sim\\tb_v3_wav_pair55_wav_errors"
+    },
+    "metadata_sha256": "f23e39ec257f4f5b55f638a6d8a596f644922009dc392d0c5f3aada1a6ba842a",
+    "input_count": 42,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_wav_pair55_wav_errors",
+      "suite": "wav_source_pair55",
+      "ordered_analyzed_HDL": 30,
+      "manifest": "safevision/build/manifests/wav_source_pair55_sim.json",
+      "current_manifest_sha256": "edb121fdc6819b42051ab6e7de73793c54786eb372cfcabf4a509e6579c0dafc",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "d76f2adee608e6f4d6bed065156b8b30f588ff065be2d0faaaafe97c6f261f64",
+    "sources_sha256": "f48f9158a30f5a74ea09b069c5afc17cb369a49a0976afab9ef94c832084c02b",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_wav_pair55_wav_errors\\runner.results.json",
+          "sha256": "b4134336b435f5e1f48c909805140934a89eb8e3a8c159fb4bbc630ac44c8f93",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_pair55_wav_errors\\sim\\results.json",
+          "sha256": "b4134336b435f5e1f48c909805140934a89eb8e3a8c159fb4bbc630ac44c8f93",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

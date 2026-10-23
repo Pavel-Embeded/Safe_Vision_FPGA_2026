@@ -1,0 +1,236 @@
+{
+  "complete": true,
+  "accepted": true,
+  "results": [
+    {
+      "case": "unchanged_real_positive",
+      "expected_reject": false,
+      "rejected": false,
+      "error": null,
+      "input_kind": "unchanged_real_TD_capture"
+    },
+    {
+      "case": "gate_high_clock_mem50",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "gate wrong clock ownership for video/cache/packed_data$store/high_pending: PLL outputs [1]",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "gate_packet_clock_write100",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "gate wrong clock ownership for video/cache/packed_data$store/packet_data[17]: PLL outputs [0]",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "route_high_clock_mem50",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "route wrong clock ownership for video/cache/packed_data$store/high_pending: PLL outputs [1]",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "route_packet_clock_write100",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "route wrong clock ownership for video/cache/packed_data$store/packet_data[17]: PLL outputs [0]",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "gate_ram_write_mem50",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "gate packed BRAM write port is not WRITE100: video/cache/packed_data$store/ramread0_syn_6",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "route_ram_write_mem50",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "route packed BRAM write port is not WRITE100: video/cache/packed_data$store/ramread0_syn_6",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "xml_high_clock_missing",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "routed XML endpoint clock ownership differs for video/cache/packed_data$store/write_fault_reg_syn_8.clk: []",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "xml_high_wrong_clock_owner",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "routed XML endpoint clock ownership differs for video/cache/packed_data$store/write_fault_reg_syn_8.clk: ['system_pll/pll_inst.clkc[1]']",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "xml_ram_write_missing",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "packed BRAM write XML endpoint differs: video/cache/packed_data$store/ramread0_syn_6.clka",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "xml_ram_write_wrong_clock_owner",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "packed BRAM write XML endpoint differs: video/cache/packed_data$store/ramread0_syn_6.clka",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "xml_write100_zero_endpoints",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "actual PLL clock has no clock endpoints: system_pll/pll_inst.clkc[0]",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "xml_write100_frequency_drift",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "actual derived system PLL clock/frequency mismatch: system_pll/pll_inst.clkc[0]",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "xml_duplicate_clock",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "missing/duplicate native XML clock",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "actual_external_reset_missing",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "expected FF Q driver missing/duplicated: reset_cache_write/release_pipe[0] count=0",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "base_control_wrong_pll_output",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "gate wrong clock ownership for reset_sys/release_pipe[0]: PLL outputs [0]",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "packed_present_but_scope_disabled",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "packed cache exists in native netlist despite disabled source scope",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "nonpacked_bounded_not_applicable",
+      "expected_reject": false,
+      "rejected": false,
+      "error": null,
+      "input_kind": "scope_control"
+    },
+    {
+      "case": "gate_pll_phase_relationship_drift",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "actual system PLL is not the phase-related MEM50/WRITE100 profile",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "gate_missing_packet_q",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "expected FF Q driver missing/duplicated: video/cache/packed_data$store/packet_data[17] count=0",
+      "input_kind": "parser_negative_control"
+    },
+    {
+      "case": "unchanged_bad_real_capture",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "actual PLL clock has no clock endpoints: system_pll/pll_inst.clkc[0]",
+      "input_kind": "unchanged_real_TD_capture"
+    },
+    {
+      "case": "actual_configured_clock_contract",
+      "expected_reject": false,
+      "rejected": false,
+      "error": null,
+      "input_kind": "unchanged_actual_configured_source"
+    },
+    {
+      "case": "explicit_write_clock_replaced_by_mem50",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "external WRITE100/reset production wiring differs: .cache_write_clk(pll_sys100_clk),.cache_write_rst_n(cache_write_rst_n)",
+      "input_kind": "configured_source_control"
+    },
+    {
+      "case": "explicit_reset_synchronizer_mem50",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "external WRITE100/reset production wiring differs: reset_syncreset_cache_write(.clk(pll_sys100_clk),.async_rst_n(media_common_rst_n),.rst_n(cache_write_rst_n));",
+      "input_kind": "configured_source_control"
+    },
+    {
+      "case": "core_external_clock_bypassed",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "display cache does not select the explicit WRITE100/reset contract",
+      "input_kind": "configured_source_control"
+    },
+    {
+      "case": "core_external_reset_bypassed",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "display cache does not select the explicit WRITE100/reset contract",
+      "input_kind": "configured_source_control"
+    },
+    {
+      "case": "physical_sys_clock_replaced_by_pll100_in_base",
+      "expected_reject": true,
+      "rejected": true,
+      "error": "unsupported named actual clock/recovery plan: assignsys_clk=HD?pll_sys100_clk:mem_clk;",
+      "input_kind": "configured_source_control"
+    }
+  ],
+  "positive_cases": 3,
+  "expected_rejections": 24,
+  "original_native_captures": [
+    {
+      "folder": "D:\\Codex\\svflex537\\native734\\base",
+      "files": [
+        {
+          "name": "gate.netlist.v",
+          "sha256": "d53f958f2812f6e96a359f42a2557f7b04359d45ace64efa53b2362ba2bdaa53"
+        },
+        {
+          "name": "route.netlist.v",
+          "sha256": "13123cda40fdce5e2163fcd9381e9f23d164b079f80dcac234c02325677fa970"
+        },
+        {
+          "name": "route.clocks",
+          "sha256": "1870ebcc2d43feced2faf8c637676ed107930d8db8b5166dd7080653aab7d69a"
+        }
+      ]
+    },
+    {
+      "folder": "D:\\Codex\\svflex537\\native803\\base",
+      "files": [
+        {
+          "name": "gate.netlist.v",
+          "sha256": "a02052c6f25c590dd4a35c178e20db88e8004f383833f190e2d9a07c50e32ac4"
+        },
+        {
+          "name": "route.netlist.v",
+          "sha256": "721a35decacc6958b75a15471836edd687a277dc2ef5af5419b01f07d90678bc"
+        },
+        {
+          "name": "route.clocks",
+          "sha256": "7e67e8ae1c996e3f9514f98accab18e9d4f944a64727d27d10577141c14a6897"
+        }
+      ]
+    }
+  ],
+  "no_native_reports_modified": true,
+  "timing_signoff_by_this_check": false,
+  "hardware_verified": false
+}

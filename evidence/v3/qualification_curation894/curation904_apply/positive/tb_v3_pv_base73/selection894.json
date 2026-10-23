@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_pv_base73",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_pv_base73",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_pv_base73",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_pv_base73",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 2,
+        "data_comparisons": 2908,
+        "elapsed_s": 105.484,
+        "suite": "audio_priority_volume",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_pv_base73\\sim\\tb_v3_pv_base73"
+      },
+      "metadata_sha256": "2bbc3d463e3adb1381b606cb8351f99adf987d108c36ea363cf2a5da342e14ce",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_pv_base73",
+        "suite": "audio_priority_volume",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/audio_priority_volume_sim.json",
+        "current_manifest_sha256": "3247c97b1b4aaf21fc9a17586c7e2b3fe0340dfe33de1ed858e8b26e6809800c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "9c5cd9777014e6e151c28040e1b17f6060409eda1bd237bb666a6529f2982f7c"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_pv_base73",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_pv_base73",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 2908,
+      "elapsed_s": 105.484,
+      "suite": "audio_priority_volume",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_pv_base73\\sim\\tb_v3_pv_base73"
+    },
+    "metadata_sha256": "2bbc3d463e3adb1381b606cb8351f99adf987d108c36ea363cf2a5da342e14ce",
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_pv_base73",
+      "suite": "audio_priority_volume",
+      "ordered_analyzed_HDL": 29,
+      "manifest": "safevision/build/manifests/audio_priority_volume_sim.json",
+      "current_manifest_sha256": "3247c97b1b4aaf21fc9a17586c7e2b3fe0340dfe33de1ed858e8b26e6809800c",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "9c5cd9777014e6e151c28040e1b17f6060409eda1bd237bb666a6529f2982f7c",
+    "sources_sha256": "937b5e70be8f253e1702b7f0eb970d41d2957b797dd7d7baabe52f90b29d1868",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_pv_base73\\runner.results.json",
+          "sha256": "4458cdc43153d5944236032b5cea8d1a0b7c809f7227b17ca309186665b3d4da",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_pv_base73\\sim\\results.json",
+          "sha256": "4458cdc43153d5944236032b5cea8d1a0b7c809f7227b17ca309186665b3d4da",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

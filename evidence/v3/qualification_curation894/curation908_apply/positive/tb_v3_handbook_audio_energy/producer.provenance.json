@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_handbook_audio_energy\\sim\\tb_v3_handbook_audio_energy",
+  "native_log_sha256": "2ba33bc1d1211ca1852979a20cc99b24982311182f038c13576336e99ddaef33",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_handbook_audio_energy",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_handbook_audio_energy\\sim\\tb_v3_handbook_audio_energy",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_handbook_audio_energy",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 11003,
+        "elapsed_s": 48.969,
+        "suite": "handbook_audio_energy",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_handbook_audio_energy\\sim\\tb_v3_handbook_audio_energy"
+      },
+      "metadata_sha256": "c664e94da5a9c2252a44f49fb0a18699664fd5787cc736f563956a1dda9df534",
+      "normal_completion": true,
+      "input_count": 37,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_audio_energy",
+        "suite": "handbook_audio_energy",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/handbook_audio_energy_sim.json",
+        "current_manifest_sha256": "799934f78e2b06acd5c07f481a6cea47ab51b2f2eda2dae16a84587da44e6850",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "2ba33bc1d1211ca1852979a20cc99b24982311182f038c13576336e99ddaef33"
+    },
+    "elapsed_s": 49.203
+  }
+}

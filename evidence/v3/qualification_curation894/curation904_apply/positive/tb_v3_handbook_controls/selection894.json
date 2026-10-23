@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_handbook_controls",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_handbook_controls",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\positive\\tb_v3_handbook_controls",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_handbook_controls",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 685,
+        "elapsed_s": 6.687,
+        "suite": "handbook",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_handbook_controls\\sim\\tb_v3_handbook_controls"
+      },
+      "metadata_sha256": "e842ed16cac1688cf482e318f146a521944facf0ed51dfbbf513f996a0a3589b",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_controls",
+        "suite": "handbook",
+        "ordered_analyzed_HDL": 7,
+        "manifest": "safevision/build/manifests/handbook_sim.json",
+        "current_manifest_sha256": "25ec72e6010492c51f0537f48ce3c6f4911b7f382c681df9c4fc5302d966aa68",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "07be8cdab4d22d41540dc6c8e32fb6f147806a768c68ccd5e52786d32277ba29"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\positive\\tb_v3_handbook_controls",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_handbook_controls",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 685,
+      "elapsed_s": 6.687,
+      "suite": "handbook",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_handbook_controls\\sim\\tb_v3_handbook_controls"
+    },
+    "metadata_sha256": "e842ed16cac1688cf482e318f146a521944facf0ed51dfbbf513f996a0a3589b",
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_controls",
+      "suite": "handbook",
+      "ordered_analyzed_HDL": 7,
+      "manifest": "safevision/build/manifests/handbook_sim.json",
+      "current_manifest_sha256": "25ec72e6010492c51f0537f48ce3c6f4911b7f382c681df9c4fc5302d966aa68",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "07be8cdab4d22d41540dc6c8e32fb6f147806a768c68ccd5e52786d32277ba29",
+    "sources_sha256": "f3a540d6d6115a51ac30057001b6d7cd67b0ac2fd086ada5ec4b227f7174bf06",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\positive\\tb_v3_handbook_controls\\runner.results.json",
+          "sha256": "9415ebf0b7a37a3ad5919f69f7a3c52992430c8018e465d210d05e31818a6a47",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_handbook_controls\\sim\\results.json",
+          "sha256": "9415ebf0b7a37a3ad5919f69f7a3c52992430c8018e465d210d05e31818a6a47",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

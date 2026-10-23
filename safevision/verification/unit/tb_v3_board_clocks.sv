@@ -9,12 +9,30 @@ module board_clock_case #(parameter HD=0,EXPECTED_HZ=25185185)(input clk,output 
  defparam dut.video.COMPACT_FONT_FILE="font8x16_compact.mem";
  defparam dut.video.STATUS_TEXT_FILE="v3_handbook_status_text.mem";
  task check(input bit ok,input string message);begin comparisons=comparisons+1;if(!ok)begin errors=errors+1;$display("[FAIL] HD=%0d %s",HD,message);end end endtask
+ realtime writer_edge=0;
+ always @(posedge dut.pll_sys100_clk)writer_edge=$realtime;
+ // A release on SYS50 would silently revive the old serializer mistake.
+ always @(posedge dut.cache_write_rst_n)begin #0.001;
+  if(rst_n)check($realtime-writer_edge<0.002,"cache reset releases only on its own WRITE100 rising edge");
+ end
+ task check_cache_clocks;realtime a,b;begin
+  check(dut.video.EXTERNAL_CACHE_WRITE==1,"production core explicitly selects external packed writer");
+  @(posedge dut.video.cache.write_clk);a=$realtime;
+  @(posedge dut.video.cache.write_clk);b=$realtime;
+  check(b-a>9.999&&b-a<10.001,"production packed writer really runs at 100MHz in BASE and HD");
+  @(posedge dut.sys_clk);a=$realtime;@(posedge dut.sys_clk);b=$realtime;
+  check(HD?(b-a>9.999&&b-a<10.001):(b-a>19.999&&b-a<20.001),"measured control clock remains BASE50 / HD100");
+  @(posedge dut.mem_clk);#0.001;
+  check(dut.pll_sys100_clk===1'b1&&$realtime-writer_edge<0.002,"MEM50 and WRITE100 rising edges are aligned phase-0 outputs");
+  check(dut.video.cache.write_rst_n===dut.cache_write_rst_n,"core propagates the independent writer reset to the physical cache");
+ end endtask
  always @(posedge clk)begin #1;
   if(!done&&(dut.media_common_rst_n===1'b0||dut.media_common_rst_n===1'b1))
    check(dut.audio.media_reset_any===!dut.media_common_rst_n,"audio raw media reset includes the canonical global/media epoch");
  end
  initial begin
   repeat(10)@(negedge clk);rst_n=1;wait(dut.pixel_rst_n);repeat(5)@(negedge dut.pixel_clk);
+  check_cache_clocks();
   check(dut.PIXEL_HZ==EXPECTED_HZ && dut.video.PIXEL_HZ==EXPECTED_HZ && dut.video.graphics.PIXEL_HZ==EXPECTED_HZ,"official PLL parameter propagated through board/core/HUD");
   check($bits(dut.video.graphics.second_count)==$clog2(EXPECTED_HZ/2),"bounded half-second physical counter width");
   force dut.video.frame_start=1'b0;
@@ -26,9 +44,11 @@ module board_clock_case #(parameter HD=0,EXPECTED_HZ=25185185)(input clk,output 
   wait(dut.control_common_rst_n);repeat(3)@(negedge clk);
   force dut.media_reset=1'b1;#1;
   check(dut.audio.media_reset_any&&!dut.media_common_rst_n,"media recovery asserts the complete canonical audio reset");
+  check(!dut.cache_write_rst_n&&!dut.video.cache.write_rst_n,"media recovery immediately asserts the WRITE100 reset epoch");
   repeat(5)@(negedge clk);release dut.media_reset;
   repeat(5)@(negedge clk);
   check(!dut.audio.media_reset_any&&dut.media_common_rst_n,"media release returns the same raw epoch in both clock profiles");
+  check(dut.cache_write_rst_n&&dut.video.cache.write_rst_n,"media recovery releases the dedicated cache writer after synchronization");
   rst_n=0;repeat(5)@(negedge clk);check(dut.video.graphics.fps==0 && dut.video.graphics.second_count==0,"global reset clears new interval");
   done=1;
  end

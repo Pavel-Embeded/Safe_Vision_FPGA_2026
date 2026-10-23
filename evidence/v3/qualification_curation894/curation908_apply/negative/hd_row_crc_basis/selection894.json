@@ -1,0 +1,111 @@
+{
+  "kind": "negative",
+  "name": "hd_row_crc_basis",
+  "record": {
+    "kind": "negative",
+    "name": "hd_row_crc_basis",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_row_crc_basis",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_row_crc_basis",
+        "target": "safevision/rtl/hd/v3_line_cache.v",
+        "suite": "hd_row_crc",
+        "top": "tb_v3_hd_row_crc_balance",
+        "patch": [
+          {
+            "before": "assign row_crc_next[0]=^{",
+            "after": "assign row_crc_next[0]=~^{"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_row_crc_basis\\sim\\tb_v3_hd_row_crc_balance",
+        "original_sha256": "f4f87f6fb77a1f4b4c65ec53471438eace8af55d3878cd2a423033186e590695",
+        "mutated_sha256": "3f6737c445ec8b33bf1050d19010e19e26352a3cbb1ef0f52aabfda0ac4c1564",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1000068
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svnegative318\\n\\hd_row_crc_basis\\sim\\tb_v3_hd_row_crc_balance"
+      },
+      "metadata_sha256": "3266b8665e5de10293b7fda2f8f69e3c049108925149053b0ef138189a4add9a",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_row_crc_balance",
+        "suite": "hd_row_crc",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_row_crc_sim.json",
+        "current_manifest_sha256": "58f1e9292320f77008ad31219bf3267398e5948dbed09c254c9f2390ffad816d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1000068
+      ],
+      "log_sha256": "39fdae9129791d810b6b676233febced3e7c48f3d06c8ad2bf046f501d8eb3e3"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_row_crc_basis",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_row_crc_basis",
+      "target": "safevision/rtl/hd/v3_line_cache.v",
+      "suite": "hd_row_crc",
+      "top": "tb_v3_hd_row_crc_balance",
+      "patch": [
+        {
+          "before": "assign row_crc_next[0]=^{",
+          "after": "assign row_crc_next[0]=~^{"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_row_crc_basis\\sim\\tb_v3_hd_row_crc_balance",
+      "original_sha256": "f4f87f6fb77a1f4b4c65ec53471438eace8af55d3878cd2a423033186e590695",
+      "mutated_sha256": "3f6737c445ec8b33bf1050d19010e19e26352a3cbb1ef0f52aabfda0ac4c1564",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1000068
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative318\\n\\hd_row_crc_basis\\sim\\tb_v3_hd_row_crc_balance"
+    },
+    "metadata_sha256": "3266b8665e5de10293b7fda2f8f69e3c049108925149053b0ef138189a4add9a",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_row_crc_balance",
+      "suite": "hd_row_crc",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_row_crc_sim.json",
+      "current_manifest_sha256": "58f1e9292320f77008ad31219bf3267398e5948dbed09c254c9f2390ffad816d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1000068
+    ],
+    "log_sha256": "39fdae9129791d810b6b676233febced3e7c48f3d06c8ad2bf046f501d8eb3e3",
+    "sources_sha256": "1c1ce5a57f0e255b41dd03c23be7b17db70875ddbc52316813b3c52575d946e8",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svnegative318\\n\\hd_row_crc_basis\\sim\\results.json",
+          "sha256": "5407acce1c9ad6bdb463b28652364008a0f567fa74d2684c3985312e32f33880",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

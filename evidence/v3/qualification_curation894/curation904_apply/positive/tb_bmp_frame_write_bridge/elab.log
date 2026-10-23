@@ -1,0 +1,17 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_bmp_frame_write_bridge -s tb_bmp_frame_write_bridge --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'start_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_bmp_frame_write_bridge.sv:10]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_address_gen
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer(GAP_TIMEOUT=32'b011...
+Compiling module work.bmp_frame_write_bridge(GAP_TIMEO...
+Compiling module work.tb_bmp_frame_write_bridge
+Built simulation snapshot tb_bmp_frame_write_bridge

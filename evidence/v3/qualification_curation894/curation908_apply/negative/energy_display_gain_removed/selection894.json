@@ -1,0 +1,109 @@
+{
+  "kind": "negative",
+  "name": "energy_display_gain_removed",
+  "record": {
+    "kind": "negative",
+    "name": "energy_display_gain_removed",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\energy_display_gain_removed",
+    "checked": {
+      "metadata": {
+        "mutation": "energy_display_gain_removed",
+        "target": "safevision/rtl/audio/audio_energy.v",
+        "suite": "handbook_energy",
+        "top": "tb_v3_handbook_energy",
+        "patch": [
+          {
+            "before": "{1'b0,raw}+{2'b0,raw[7:1]}",
+            "after": "{1'b0,raw}"
+          }
+        ],
+        "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f7\\negative\\energy_display_gain_removed",
+        "original_sha256": "19e10e7f5c454c831a3585af487af280c87c311ddeb6009f9d7fab64141e598e",
+        "mutated_sha256": "43c455c70d002df4c93a31abf554251da6ae8c0edad75e577f18543e245ff615",
+        "mutant_file": "mutant.v",
+        "detected": true,
+        "normal_completion": true,
+        "process_exit": 1,
+        "error_counts": [
+          102443
+        ],
+        "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/energy_display_gain_removed",
+        "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\energy_display_gain_removed",
+        "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\energy_display_gain_removed"
+      },
+      "metadata_sha256": "d1b61af8b7d5745056bb9f7bdd5f9d74a89682f6ce422e48ea130e1776570e48",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_energy",
+        "suite": "handbook_energy",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/handbook_energy_sim.json",
+        "current_manifest_sha256": "452fa93d990251bc502a9eeaea40c081cddddd6c1a87707a62fbee66271ef264",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        102443
+      ],
+      "log_sha256": "e0e7ec164b4bb62bc452901479746f1950beba94385ba457654857cd7c77ebdf"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\energy_display_gain_removed",
+  "checked": {
+    "metadata": {
+      "mutation": "energy_display_gain_removed",
+      "target": "safevision/rtl/audio/audio_energy.v",
+      "suite": "handbook_energy",
+      "top": "tb_v3_handbook_energy",
+      "patch": [
+        {
+          "before": "{1'b0,raw}+{2'b0,raw[7:1]}",
+          "after": "{1'b0,raw}"
+        }
+      ],
+      "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f7\\negative\\energy_display_gain_removed",
+      "original_sha256": "19e10e7f5c454c831a3585af487af280c87c311ddeb6009f9d7fab64141e598e",
+      "mutated_sha256": "43c455c70d002df4c93a31abf554251da6ae8c0edad75e577f18543e245ff615",
+      "mutant_file": "mutant.v",
+      "detected": true,
+      "normal_completion": true,
+      "process_exit": 1,
+      "error_counts": [
+        102443
+      ],
+      "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/energy_display_gain_removed",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\energy_display_gain_removed",
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\energy_display_gain_removed"
+    },
+    "metadata_sha256": "d1b61af8b7d5745056bb9f7bdd5f9d74a89682f6ce422e48ea130e1776570e48",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_energy",
+      "suite": "handbook_energy",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/handbook_energy_sim.json",
+      "current_manifest_sha256": "452fa93d990251bc502a9eeaea40c081cddddd6c1a87707a62fbee66271ef264",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      102443
+    ],
+    "log_sha256": "e0e7ec164b4bb62bc452901479746f1950beba94385ba457654857cd7c77ebdf",
+    "sources_sha256": "9e893c49c92d4f171d0bf870bcdedb31c83c4f4e676aaa80dc54d125df2576c0",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

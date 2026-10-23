@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "descriptor_numeric_payload_zero_hd",
+  "record": {
+    "kind": "negative",
+    "name": "descriptor_numeric_payload_zero_hd",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\descriptor_numeric_payload_zero_hd",
+    "checked": {
+      "metadata": {
+        "mutation": "descriptor_numeric_payload_zero_hd",
+        "target": "safevision/rtl/hd/v3_status_layers.v",
+        "suite": "hd_status_miter233",
+        "top": "tb_v3_hd_status_miter233",
+        "patch": [
+          {
+            "before": "decimal_word_q<=decimal_digits[decimal_source];",
+            "after": "decimal_word_q<=10'd0;"
+          }
+        ],
+        "original_sha256": "4065a5148957f6d77b15b1427bea7703bf2a5cddda5b6727f8c044c54717010c",
+        "mutated_sha256": "4f6c00fa22e848087d13353a94ccdb8db5bc527cef1e2183ced76b2af98012a5",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1443
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\descriptor_numeric_payload_zero_hd\\sim\\tb_v3_hd_status_miter233",
+        "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\descriptor_numeric_payload_zero_hd\\sim\\tb_v3_hd_status_miter233"
+      },
+      "metadata_sha256": "d35e00148db7ecfe3b7f62222ce57e3d8e655b621437497fccd4b4d46da036ae",
+      "normal_completion": true,
+      "input_count": 18,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_status_miter233",
+        "suite": "hd_status_miter233",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/hd_status_miter233_sim.json",
+        "current_manifest_sha256": "78003f6c53c9f0c6bb7241209e5a63116fa1d38a83f3c575f433e338fa26d74c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1443
+      ],
+      "log_sha256": "c39c5d54f26f6d113169aeffe4e02ba18c4ef155311d02af941ff593a5bc1a4e"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\descriptor_numeric_payload_zero_hd",
+  "checked": {
+    "metadata": {
+      "mutation": "descriptor_numeric_payload_zero_hd",
+      "target": "safevision/rtl/hd/v3_status_layers.v",
+      "suite": "hd_status_miter233",
+      "top": "tb_v3_hd_status_miter233",
+      "patch": [
+        {
+          "before": "decimal_word_q<=decimal_digits[decimal_source];",
+          "after": "decimal_word_q<=10'd0;"
+        }
+      ],
+      "original_sha256": "4065a5148957f6d77b15b1427bea7703bf2a5cddda5b6727f8c044c54717010c",
+      "mutated_sha256": "4f6c00fa22e848087d13353a94ccdb8db5bc527cef1e2183ced76b2af98012a5",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1443
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\descriptor_numeric_payload_zero_hd\\sim\\tb_v3_hd_status_miter233",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\descriptor_numeric_payload_zero_hd\\sim\\tb_v3_hd_status_miter233"
+    },
+    "metadata_sha256": "d35e00148db7ecfe3b7f62222ce57e3d8e655b621437497fccd4b4d46da036ae",
+    "input_count": 18,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_status_miter233",
+      "suite": "hd_status_miter233",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/hd_status_miter233_sim.json",
+      "current_manifest_sha256": "78003f6c53c9f0c6bb7241209e5a63116fa1d38a83f3c575f433e338fa26d74c",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1443
+    ],
+    "log_sha256": "c39c5d54f26f6d113169aeffe4e02ba18c4ef155311d02af941ff593a5bc1a4e",
+    "sources_sha256": "56e3e9d763959da1e44c4f1e9af072ac7ec721129a5ce5fe0209c960af8e29ce",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\negative\\descriptor_numeric_payload_zero_hd\\sim\\results.json",
+          "sha256": "b1fbf90b47fbbcfc61037dca75b2477e9256cbe778fde328a2f7596fd670b32b",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

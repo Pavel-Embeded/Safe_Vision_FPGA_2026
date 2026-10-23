@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "column_quotient_wrong_slice",
+  "record": {
+    "kind": "negative",
+    "name": "column_quotient_wrong_slice",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\column_quotient_wrong_slice",
+    "checked": {
+      "metadata": {
+        "mutation": "column_quotient_wrong_slice",
+        "target": "safevision/rtl/video/v3_status_layers.v",
+        "suite": "column_dsp_equivalence68",
+        "top": "tb_v3_column_equivalence67",
+        "patch": [
+          {
+            "before": "quotient=reciprocal_product[25:19]",
+            "after": "quotient=reciprocal_product[24:18]"
+          }
+        ],
+        "original_sha256": "b64c3351f196ace3e56cde256089c02175810cd2bdf63309e2cab8c7dadf75b7",
+        "mutated_sha256": "821e137174b92d00934429f19e126949031858edbbde4bb848fd138f8dc6f1d4",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1820313
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\column_quotient_wrong_slice\\sim\\tb_v3_column_equivalence67",
+        "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\column_quotient_wrong_slice\\sim\\tb_v3_column_equivalence67"
+      },
+      "metadata_sha256": "db5d0c721af3e0b9fdcfb317146c56abe396133b92485618a91b523b69e59942",
+      "normal_completion": true,
+      "input_count": 17,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_column_equivalence67",
+        "suite": "column_dsp_equivalence68",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/column_dsp_equivalence68_sim.json",
+        "current_manifest_sha256": "5f8332f1a8b1257b3feefc178337822c83e87c9b727e0aae8c906ba2de17078a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1820313
+      ],
+      "log_sha256": "8b16ded5c0ecc9467ae3b2fcd18170321d107760c654bdf0518f5ef94690beee"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\column_quotient_wrong_slice",
+  "checked": {
+    "metadata": {
+      "mutation": "column_quotient_wrong_slice",
+      "target": "safevision/rtl/video/v3_status_layers.v",
+      "suite": "column_dsp_equivalence68",
+      "top": "tb_v3_column_equivalence67",
+      "patch": [
+        {
+          "before": "quotient=reciprocal_product[25:19]",
+          "after": "quotient=reciprocal_product[24:18]"
+        }
+      ],
+      "original_sha256": "b64c3351f196ace3e56cde256089c02175810cd2bdf63309e2cab8c7dadf75b7",
+      "mutated_sha256": "821e137174b92d00934429f19e126949031858edbbde4bb848fd138f8dc6f1d4",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1820313
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\column_quotient_wrong_slice\\sim\\tb_v3_column_equivalence67",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\column_quotient_wrong_slice\\sim\\tb_v3_column_equivalence67"
+    },
+    "metadata_sha256": "db5d0c721af3e0b9fdcfb317146c56abe396133b92485618a91b523b69e59942",
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_column_equivalence67",
+      "suite": "column_dsp_equivalence68",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/column_dsp_equivalence68_sim.json",
+      "current_manifest_sha256": "5f8332f1a8b1257b3feefc178337822c83e87c9b727e0aae8c906ba2de17078a",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1820313
+    ],
+    "log_sha256": "8b16ded5c0ecc9467ae3b2fcd18170321d107760c654bdf0518f5ef94690beee",
+    "sources_sha256": "3ce64a9e3623eb5524ddb81144a4a91cff61a708e79e3f0f59c93af329289f49",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\negative\\column_quotient_wrong_slice\\sim\\results.json",
+          "sha256": "212ae9147c67ade9cfa1c20221b970fbc448e89e68c1c99bc5cee6a6f3a50b47",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

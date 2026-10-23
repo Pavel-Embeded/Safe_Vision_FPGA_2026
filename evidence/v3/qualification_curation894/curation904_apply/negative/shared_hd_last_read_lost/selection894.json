@@ -1,0 +1,115 @@
+{
+  "kind": "negative",
+  "name": "shared_hd_last_read_lost",
+  "record": {
+    "kind": "negative",
+    "name": "shared_hd_last_read_lost",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\shared_hd_last_read_lost",
+    "checked": {
+      "metadata": {
+        "mutation": "shared_hd_last_read_lost",
+        "target": "safevision/rtl/hd/sdram_app_adapter.v",
+        "suite": "adapter_prefix_hd385",
+        "top": "tb_v3_prefix_miter_hd_read64_385",
+        "patch": [
+          {
+            "before": "read_hold<=payload_q[31:0];",
+            "after": "read_hold<=32'd0;"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svnegative417\\n\\shared_hd_last_read_lost",
+        "original_sha256": "5a14d685f24dd91b37a6ca39716cd808b9d92420655bb8cb010c558b462e8f10",
+        "mutated_sha256": "c7b1e81061bf32f1a822f4bfefbd71808fc003a307fce5d87008a62ef36e5463",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          147235,
+          147235
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svnegative417\\n\\shared_hd_last_read_lost\\sim\\tb_v3_prefix_miter_hd_read64_385"
+      },
+      "metadata_sha256": "d1bdfed9817d15e17cbe289af69c2128045aadc9c756e2ba0c99350f15799a7a",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_prefix_miter_hd_read64_385",
+        "suite": "adapter_prefix_hd385",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/adapter_prefix_hd385_sim.json",
+        "current_manifest_sha256": "c99fec2902d71270a6f1acacae771e12fd3386fa108dab5f9b4803411cb47c01",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        147235,
+        147235
+      ],
+      "log_sha256": "38f2822bcfcf7ab222f0af04cbf1890b1849bbacff405de064ef821d63e35924"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\shared_hd_last_read_lost",
+  "checked": {
+    "metadata": {
+      "mutation": "shared_hd_last_read_lost",
+      "target": "safevision/rtl/hd/sdram_app_adapter.v",
+      "suite": "adapter_prefix_hd385",
+      "top": "tb_v3_prefix_miter_hd_read64_385",
+      "patch": [
+        {
+          "before": "read_hold<=payload_q[31:0];",
+          "after": "read_hold<=32'd0;"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative417\\n\\shared_hd_last_read_lost",
+      "original_sha256": "5a14d685f24dd91b37a6ca39716cd808b9d92420655bb8cb010c558b462e8f10",
+      "mutated_sha256": "c7b1e81061bf32f1a822f4bfefbd71808fc003a307fce5d87008a62ef36e5463",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        147235,
+        147235
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative417\\n\\shared_hd_last_read_lost\\sim\\tb_v3_prefix_miter_hd_read64_385"
+    },
+    "metadata_sha256": "d1bdfed9817d15e17cbe289af69c2128045aadc9c756e2ba0c99350f15799a7a",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_prefix_miter_hd_read64_385",
+      "suite": "adapter_prefix_hd385",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/adapter_prefix_hd385_sim.json",
+      "current_manifest_sha256": "c99fec2902d71270a6f1acacae771e12fd3386fa108dab5f9b4803411cb47c01",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      147235,
+      147235
+    ],
+    "log_sha256": "38f2822bcfcf7ab222f0af04cbf1890b1849bbacff405de064ef821d63e35924",
+    "sources_sha256": "e898dcaffb7a357273e9ab4f0fcf7c6d2040ee108876a718f6a5fc7190edf429",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svnegative417\\n\\shared_hd_last_read_lost\\sim\\results.json",
+          "sha256": "1e0ec067c3207abf087b31766ae17c507916792a37bf4f1e070bbbec472ffb17",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

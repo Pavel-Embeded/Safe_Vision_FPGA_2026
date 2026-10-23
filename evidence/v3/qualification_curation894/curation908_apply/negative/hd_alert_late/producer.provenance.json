@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_alert_late\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\hd_alert_late\\sim\\tb_v3_hd_supervisor_alert_equivalence\\case.json",
+  "original_metadata_sha256": "ac11743c62177881ecb08f32314e91a8158b5d3131bb134f1e29a15c1743d9e2",
+  "original_log_sha256": "f2221d1d2c695146cb8ed4ba71cc50edd2cc2527d9cb5492abeab66ce9c79a87",
+  "matrix_definition": {
+    "mutation": "hd_alert_late",
+    "target": "safevision/rtl/hd/v3_supervisor.v",
+    "suite": "hd_supervisor_alert",
+    "top": "tb_v3_hd_supervisor_alert_equivalence",
+    "patch": [
+      {
+        "before": "pending_alert<=pending_next;",
+        "after": "pending_alert<=pending;"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

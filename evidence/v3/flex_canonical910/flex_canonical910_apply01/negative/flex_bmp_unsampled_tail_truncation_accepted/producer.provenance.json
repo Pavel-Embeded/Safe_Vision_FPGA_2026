@@ -1,0 +1,69 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+  "native_log_sha256": "d20dfb5e1fb97d2b910e819ae8b752712b7a9596608b9214a88d2e5989e973f9",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "flex_bmp_unsampled_tail_truncation_accepted",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+    "checked": {
+      "metadata": {
+        "mutation": "flex_bmp_unsampled_tail_truncation_accepted",
+        "target": "safevision/rtl/media/v3_bmp_normalizer.v",
+        "suite": "flexible_bmp_bounds551",
+        "top": "tb_v3_flexible_bmp_bounds551",
+        "patch": [
+          {
+            "before": "if(last_row_byte && src_row==h-1'b1)state<=FINISH;",
+            "after": "if(1'b1)state<=FINISH;"
+          }
+        ],
+        "original_sha256": "8274d134d118a8af850ff61b0ddcb012330be3829f72babd6d1a2d8ef1427fc6",
+        "mutated_sha256": "fcb1518c1c6767e0705b831a82f6c2a904376316e66a859f6aab787bd06478ce",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          8
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py"
+      },
+      "metadata_sha256": "994bfbd8efe8f7bcc8b10f1e815ac7caa6e40472707b88369e9c383dd0bce721",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_flexible_bmp_bounds551",
+        "suite": "flexible_bmp_bounds551",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/flexible_bmp_bounds551_sim.json",
+        "current_manifest_sha256": "93539314f46753a67da7fc77fb12850b7565a03894c4128034aaa63cfbc5280e",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 2,
+        "generation_inputs": 13,
+        "generation_before_sha256": "8efcc6992b92b9827a6f34d018a131ba3396def37ded20e0d525181bd179d7ad",
+        "generation_after_sha256": "8efcc6992b92b9827a6f34d018a131ba3396def37ded20e0d525181bd179d7ad"
+      },
+      "error_counts": [
+        8
+      ],
+      "log_sha256": "d20dfb5e1fb97d2b910e819ae8b752712b7a9596608b9214a88d2e5989e973f9"
+    },
+    "elapsed_s": 21.563
+  }
+}

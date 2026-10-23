@@ -1,0 +1,139 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\packed\\negative\\top_disables_external_writer\\sim\\tb_v3_board_clocks",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "packed",
+    "kind": "negative",
+    "name": "top_disables_external_writer",
+    "row": {
+      "mutation": "top_disables_external_writer",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "top": "tb_v3_board_clocks",
+      "suite": "v3_board_clocks",
+      "patch": [
+        {
+          "before": ".EXTERNAL_CACHE_WRITE(1)",
+          "after": ".EXTERNAL_CACHE_WRITE(0)"
+        }
+      ],
+      "errors": [
+        3
+      ],
+      "legacy": false,
+      "comparisons": 219
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\packed_clock_261023\\top_disables_external_writer\\native\\tb_v3_board_clocks",
+    "packed": true,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "fresh_native_auxiliary_requalification",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\packed\\negative\\top_disables_external_writer\\sim\\tb_v3_board_clocks",
+    "checked": {
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_board_clocks",
+        "suite": "v3_board_clocks",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/v3_board_clocks_sim.json",
+        "current_manifest_sha256": "fe63c8c3a9aa6dd80aa689063283a2d7d93b86a776738cd0430e6933b00a455a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        3
+      ],
+      "metadata": {
+        "mutation": "top_disables_external_writer",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "top": "tb_v3_board_clocks",
+        "suite": "v3_board_clocks",
+        "patch": [
+          {
+            "before": ".EXTERNAL_CACHE_WRITE(1)",
+            "after": ".EXTERNAL_CACHE_WRITE(0)"
+          }
+        ],
+        "errors": [
+          3
+        ],
+        "legacy": false,
+        "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+        "mutated_sha256": "b6fe41479862b426594c5fc6f2afa9b323bffc22ab35db05acb73e04e0640244",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "detected": true,
+        "error_counts": [
+          3
+        ],
+        "original_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\packed\\negative\\top_disables_external_writer\\sim\\tb_v3_board_clocks"
+      },
+      "metadata_sha256": "6618abaf99bf61ed2d9d6eb209341754746ab8ade2fb7353cd2f39c52eee2501",
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\packed\\negative\\top_disables_external_writer\\sim\\results.json",
+            "sha256": "3aed5bd9cc832de6e35984e2f0f001e22283eb0588f093281fb028acef2060bc",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "log_sha256": "d238e7fa6c4181f6e3ccdfe7d14d85fbf60df6b88fbb68ab1d4e31d90f3e3f6b",
+      "normal_completion": true
+    },
+    "command": [
+      "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "D:\\Codex\\svflex537\\candidate883\\safevision\\tools\\run_v3_sim.py",
+      "--suite",
+      "v3_board_clocks",
+      "--top",
+      "tb_v3_board_clocks",
+      "--run-dir",
+      "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\packed\\negative\\top_disables_external_writer\\sim",
+      "--override-source",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v=D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\packed\\negative\\top_disables_external_writer\\inputs\\mutant.v"
+    ],
+    "actual_native_process_exit": 1,
+    "elapsed_s": 15.406,
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_board_clocks",
+        "suite": "v3_board_clocks",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/v3_board_clocks_sim.json",
+        "current_manifest_sha256": "fe63c8c3a9aa6dd80aa689063283a2d7d93b86a776738cd0430e6933b00a455a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\packed\\negative\\top_disables_external_writer\\sim\\results.json",
+            "sha256": "3aed5bd9cc832de6e35984e2f0f001e22283eb0588f093281fb028acef2060bc",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 120,
+      "normal_completion": true,
+      "error_counts": [
+        3
+      ],
+      "log_sha256": "d238e7fa6c4181f6e3ccdfe7d14d85fbf60df6b88fbb68ab1d4e31d90f3e3f6b",
+      "source_fingerprint_sha256": "91e4b777f2fc335561a583f0dc9bfc3dbfc3be87451541d02396d352c9c63c13"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\packed_clock_261023\\top_disables_external_writer\\native\\tb_v3_board_clocks"
+  },
+  "actual_execution_retained": true
+}

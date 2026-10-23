@@ -1,0 +1,134 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_progress_recovery561",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_progress_recovery561",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\positive\\tb_v3_progress_recovery561",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_progress_recovery561",
+        "status": "PASS",
+        "source_overrides": [],
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "checks": 4,
+        "data_comparisons": 4340,
+        "elapsed_s": 9.157,
+        "suite": "progress_recovery561",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\finalflex616\\positive\\tb_v3_progress_recovery561\\tb_v3_progress_recovery561",
+        "producer_manifest_sha256": "3d2b92a84c0159859b5aa6a9dae17819f40718c451f3555bcdcd2819bca9224e",
+        "parameter_only_revalidation": {
+          "original_execution_root": "D:\\Codex\\svflex537\\candidate616",
+          "original_execution_commit": "c2fe3817e81b884ba68f68e15639947c86378661",
+          "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+          "current_source_commit": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+          "original_producer_config": "D:\\Codex\\svflex537\\finalflex616\\producers.json",
+          "original_producer_config_sha256": "0c67f81737bcfc6a9ab408a92ca36a9e512528b668e459878715bd01a9018c3c",
+          "functional_native_execution_repeated": false
+        }
+      },
+      "metadata_sha256": "779dc157f6cc94f53c9c0f4b16c0d803e336822374a19574ab71bdd7cb378f1c",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_progress_recovery561",
+        "suite": "progress_recovery561",
+        "ordered_analyzed_HDL": 7,
+        "manifest": "safevision/build/manifests/progress_recovery561_sim.json",
+        "current_manifest_sha256": "3d2b92a84c0159859b5aa6a9dae17819f40718c451f3555bcdcd2819bca9224e",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 0,
+        "generation_inputs": 15,
+        "generation_before_sha256": "95512c4fa9ac5d13e4aa19c9217d5452c9e16afc5fab1b96803ed0ada5acf49d",
+        "generation_after_sha256": "95512c4fa9ac5d13e4aa19c9217d5452c9e16afc5fab1b96803ed0ada5acf49d"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "b986da658ec0097a6a681963c97c69b4a7590b30edec56bbcff4a1f126d17abe"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\positive\\tb_v3_progress_recovery561",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_progress_recovery561",
+      "status": "PASS",
+      "source_overrides": [],
+      "strict_generated_inputs": 1,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "checks": 4,
+      "data_comparisons": 4340,
+      "elapsed_s": 9.157,
+      "suite": "progress_recovery561",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\finalflex616\\positive\\tb_v3_progress_recovery561\\tb_v3_progress_recovery561",
+      "producer_manifest_sha256": "3d2b92a84c0159859b5aa6a9dae17819f40718c451f3555bcdcd2819bca9224e",
+      "parameter_only_revalidation": {
+        "original_execution_root": "D:\\Codex\\svflex537\\candidate616",
+        "original_execution_commit": "c2fe3817e81b884ba68f68e15639947c86378661",
+        "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+        "current_source_commit": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+        "original_producer_config": "D:\\Codex\\svflex537\\finalflex616\\producers.json",
+        "original_producer_config_sha256": "0c67f81737bcfc6a9ab408a92ca36a9e512528b668e459878715bd01a9018c3c",
+        "functional_native_execution_repeated": false
+      }
+    },
+    "metadata_sha256": "779dc157f6cc94f53c9c0f4b16c0d803e336822374a19574ab71bdd7cb378f1c",
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_progress_recovery561",
+      "suite": "progress_recovery561",
+      "ordered_analyzed_HDL": 7,
+      "manifest": "safevision/build/manifests/progress_recovery561_sim.json",
+      "current_manifest_sha256": "3d2b92a84c0159859b5aa6a9dae17819f40718c451f3555bcdcd2819bca9224e",
+      "binding": "actual_compiler_and_current_manifest",
+      "strict_generated_inputs_verified": true,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "generator_dependencies": 0,
+      "runtime_assets": 0,
+      "generation_inputs": 15,
+      "generation_before_sha256": "95512c4fa9ac5d13e4aa19c9217d5452c9e16afc5fab1b96803ed0ada5acf49d",
+      "generation_after_sha256": "95512c4fa9ac5d13e4aa19c9217d5452c9e16afc5fab1b96803ed0ada5acf49d"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "b986da658ec0097a6a681963c97c69b4a7590b30edec56bbcff4a1f126d17abe",
+    "sources_sha256": "95512c4fa9ac5d13e4aa19c9217d5452c9e16afc5fab1b96803ed0ada5acf49d",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\positive\\tb_v3_progress_recovery561\\runner.results.json",
+          "sha256": "b71c573d9a24010106a5af6db0ebbace3fbb357beea058fc77506e3d4b7479bd",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\finalflex616\\positive\\tb_v3_progress_recovery561\\results.json",
+          "sha256": "da57bd0d8c160051ef0c7c54140a646a46619cadc6e22d17cf387d1cc02d1372",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

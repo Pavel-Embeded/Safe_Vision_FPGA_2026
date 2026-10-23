@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_underflow_hex_displaced\\sim\\tb_v3_hd_hex_payload74",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\hd_underflow_hex_displaced\\sim\\tb_v3_hd_hex_payload74\\case.json",
+  "original_metadata_sha256": "ed1e6577e09980b89aa8c051269cbb1b89a882910e41796c59e2a50e37d18dd7",
+  "original_log_sha256": "9547c44c5c8107c0e95e441b264044ee506d38c6f4a793acc9b9df1d7979c0e0",
+  "matrix_definition": {
+    "mutation": "hd_underflow_hex_displaced",
+    "target": "safevision/rtl/hd/v3_status_layers.v",
+    "suite": "hd_hex_payload74",
+    "top": "tb_v3_hd_hex_payload74",
+    "patch": [
+      {
+        "before": "underflow_nibble=3'd0-index[2:0]",
+        "after": "underflow_nibble=3'd1-index[2:0]"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

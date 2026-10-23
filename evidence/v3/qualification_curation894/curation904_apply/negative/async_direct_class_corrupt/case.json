@@ -1,0 +1,24 @@
+{
+  "mutation": "async_direct_class_corrupt",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+  "suite": "diag_board",
+  "top": "tb_v3_diag_board",
+  "patch": [
+    {
+      "before": "if(diag_reply_valid)begin b_reply_fast<=0;",
+      "after": "if(diag_reply_valid)begin b_reply_fast<=1;"
+    }
+  ],
+  "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+  "mutated_sha256": "39ca6f4132333f97344451eff8cc08741fa71b63de14b5c5f26290807b8a5859",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    14
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\async_direct_class_corrupt\\sim\\tb_v3_diag_board",
+  "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\async_direct_class_corrupt\\sim\\tb_v3_diag_board"
+}

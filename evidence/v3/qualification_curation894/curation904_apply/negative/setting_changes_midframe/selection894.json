@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "setting_changes_midframe",
+  "record": {
+    "kind": "negative",
+    "name": "setting_changes_midframe",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\setting_changes_midframe",
+    "checked": {
+      "metadata": {
+        "mutation": "setting_changes_midframe",
+        "target": "safevision/rtl/video/v3_status_layers.v",
+        "suite": "volume_setting_base88",
+        "top": "tb_v3_volume_setting_base88",
+        "patch": [
+          {
+            "before": "else if(frame_start)level<=volume>100?7'd100:volume;",
+            "after": "else level<=volume>100?7'd100:volume;"
+          }
+        ],
+        "original_sha256": "b64c3351f196ace3e56cde256089c02175810cd2bdf63309e2cab8c7dadf75b7",
+        "mutated_sha256": "07fc7686b56a60d995893ef4ce0b110c5b2bcf0c4b85941b1bf8758665ea3f0b",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          80284
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\setting_changes_midframe\\sim\\tb_v3_volume_setting_base88",
+        "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\setting_changes_midframe\\sim\\tb_v3_volume_setting_base88"
+      },
+      "metadata_sha256": "e8f9ba29341401cdd1ec2b51eb01084fc78d905b9a9b83c9471ebb9aa46298ca",
+      "normal_completion": true,
+      "input_count": 17,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_volume_setting_base88",
+        "suite": "volume_setting_base88",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/volume_setting_base88_sim.json",
+        "current_manifest_sha256": "5b42c2cfb1c20fe8fd0ea2155de650f7756cfea54af57ab326ea7bd3cb2c6367",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        80284
+      ],
+      "log_sha256": "9710623cfd92d89ea32533dcc4bf2bbc42051fe75c3eef8e80d7c16b2d98ec48"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\setting_changes_midframe",
+  "checked": {
+    "metadata": {
+      "mutation": "setting_changes_midframe",
+      "target": "safevision/rtl/video/v3_status_layers.v",
+      "suite": "volume_setting_base88",
+      "top": "tb_v3_volume_setting_base88",
+      "patch": [
+        {
+          "before": "else if(frame_start)level<=volume>100?7'd100:volume;",
+          "after": "else level<=volume>100?7'd100:volume;"
+        }
+      ],
+      "original_sha256": "b64c3351f196ace3e56cde256089c02175810cd2bdf63309e2cab8c7dadf75b7",
+      "mutated_sha256": "07fc7686b56a60d995893ef4ce0b110c5b2bcf0c4b85941b1bf8758665ea3f0b",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        80284
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\setting_changes_midframe\\sim\\tb_v3_volume_setting_base88",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\setting_changes_midframe\\sim\\tb_v3_volume_setting_base88"
+    },
+    "metadata_sha256": "e8f9ba29341401cdd1ec2b51eb01084fc78d905b9a9b83c9471ebb9aa46298ca",
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_volume_setting_base88",
+      "suite": "volume_setting_base88",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/volume_setting_base88_sim.json",
+      "current_manifest_sha256": "5b42c2cfb1c20fe8fd0ea2155de650f7756cfea54af57ab326ea7bd3cb2c6367",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      80284
+    ],
+    "log_sha256": "9710623cfd92d89ea32533dcc4bf2bbc42051fe75c3eef8e80d7c16b2d98ec48",
+    "sources_sha256": "a8699c79267fa2743c65021d890b2bc9ce31e8c55836d85a481b113bf31961a0",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\negative\\setting_changes_midframe\\sim\\results.json",
+          "sha256": "84ef13634c33bb85a25dc7c4dd29a18d3c169075b23ad2a04de704810f69b061",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

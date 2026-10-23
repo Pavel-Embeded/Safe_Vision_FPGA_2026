@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "spi25_early_capture",
+  "top": "tb_v3_spi25_profile",
+  "suite": "spi25_profile",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "spi25_early_capture",
+    "target": "safevision/rtl/storage/spi_master.v",
+    "suite": "spi25_profile",
+    "top": "tb_v3_spi25_profile",
+    "patch": [
+      {
+        "before": "always @(negedge clk or negedge rst_n)\n            if (!rst_n) rx_sr <= 8'h00;\n            else if (sample_pending)",
+        "after": "always @(posedge clk or negedge rst_n)\n            if (!rst_n) rx_sr <= 8'h00;\n            else if (sample_now)"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "spi25_early_capture",
+    "target": "safevision/rtl/storage/spi_master.v",
+    "suite": "spi25_profile",
+    "top": "tb_v3_spi25_profile",
+    "patch": [
+      {
+        "before": "always @(negedge clk or negedge rst_n)\n            if (!rst_n) rx_sr <= 8'h00;\n            else if (sample_pending)",
+        "after": "always @(posedge clk or negedge rst_n)\n            if (!rst_n) rx_sr <= 8'h00;\n            else if (sample_now)"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_early_capture",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\spi25_early_capture",
+  "checked": {
+    "metadata": {
+      "mutation": "spi25_early_capture",
+      "target": "safevision/rtl/storage/spi_master.v",
+      "suite": "spi25_profile",
+      "top": "tb_v3_spi25_profile",
+      "patch": [
+        {
+          "before": "always @(negedge clk or negedge rst_n)\n            if (!rst_n) rx_sr <= 8'h00;\n            else if (sample_pending)",
+          "after": "always @(posedge clk or negedge rst_n)\n            if (!rst_n) rx_sr <= 8'h00;\n            else if (sample_now)"
+        }
+      ],
+      "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f11\\negative\\spi25_early_capture",
+      "original_sha256": "8567f354ad78e7652706169eae8a2f80081727cf62a9c32677bb6d970365f1e6",
+      "mutated_sha256": "72b3a1f0a680645042661ec51ebf7a07121ab02ea228db201074dd8c04756e48",
+      "mutant_file": "mutant.v",
+      "detected": true,
+      "normal_completion": true,
+      "process_exit": 1,
+      "error_counts": [
+        255,
+        255
+      ],
+      "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/spi25_early_capture",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\spi25_early_capture",
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\spi25_early_capture"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_spi25_profile",
+      "suite": "spi25_profile",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/spi25_profile_sim.json",
+      "current_manifest_sha256": "7ce48e1b6fa33144dcb629370ab75c25a3df68c5421c7ab408974ed8ab852921",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      255,
+      255
+    ],
+    "log_sha256": "4a8c4d5caddfe5ac44e2e2f0156c4dce382502cab0a60250ab9d6476fc2e2d23",
+    "metadata_sha256": "26dd23e1605e8d2fb64663cbad59659e95c5941f0b7616242d01fa9424d9e563",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_early_capture\\case.json",
+      "sha256": "26dd23e1605e8d2fb64663cbad59659e95c5941f0b7616242d01fa9424d9e563"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_early_capture\\sim.log",
+      "sha256": "4a8c4d5caddfe5ac44e2e2f0156c4dce382502cab0a60250ab9d6476fc2e2d23"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_early_capture\\sources.sha256.json",
+      "sha256": "39a5de140dc5aacca958e32e44f9a731d6a7c9cbfe63def4f1814345280a4368"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_early_capture\\original.producer.metadata.json",
+      "sha256": "26dd23e1605e8d2fb64663cbad59659e95c5941f0b7616242d01fa9424d9e563"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_early_capture\\producer.provenance.json",
+      "sha256": "2b1163163115bd11928671c0d39ff5a6cfba1f844f8ef8aa3062526195c37a56"
+    },
+    "sources.after.sha256.json": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_early_capture\\sources.after.sha256.json",
+      "sha256": "224ac82b274c9e25a52aa565b25873f123cf82e5d88fb678fb63a264e99f0c6f"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\spi25_early_capture\\mutant.v",
+      "sha256": "72b3a1f0a680645042661ec51ebf7a07121ab02ea228db201074dd8c04756e48"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

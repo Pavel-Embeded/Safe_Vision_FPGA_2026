@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_font8x16_rom",
+  "top": "tb_font8x16_rom",
+  "suite": "legacy_a",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_font8x16_rom",
+    "suite": "legacy_a",
+    "legacy": true
+  },
+  "effective_definition": {
+    "top": "tb_font8x16_rom",
+    "suite": "legacy_a",
+    "legacy": true
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_font8x16_rom",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_font8x16_rom",
+  "checked": {
+    "metadata": {
+      "top": "tb_font8x16_rom",
+      "suite": "legacy_a",
+      "accepted_native_runner": true,
+      "source_overrides": [],
+      "legacy": true,
+      "original_runner_result_sha256": "13d62754dbc590cb88b177b325de613a17031b5e0ae27f4b13d504f790d46fa1",
+      "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\read_fix_26101702\\regression\\system_legacy_a",
+      "native_fingerprint_sha256": "01f946cd48d947a488098ea470768811df3163beff3ef5533e36e20780550521",
+      "vector_replay_matches_actual_simulator_inputs": [],
+      "augmentation_scope": "Original native RTL fingerprints retained. Generated vectors are replayed and hashed during curation; no claim that their hashes were captured before the historical simulator run.",
+      "compiler_logs": [
+        "compile.rtl.log",
+        "compile.tb.log"
+      ],
+      "compiler_recovery_provenance": {
+        "producer_results_sha256": "13d62754dbc590cb88b177b325de613a17031b5e0ae27f4b13d504f790d46fa1",
+        "same_native_sim_log_sha256": "7ba92816eb528fe611910612b167be431a17e06a53b3137d917bf7709a49185e",
+        "logs": {
+          "compile.rtl.log": "3de4e83f2ec87666d81427d1602030172fb890442347925192665da805882ba1",
+          "compile.tb.log": "e1e31afe01d56c8b32c11152a4277a9b428bb16900c2fc45892583c9428898b4"
+        }
+      },
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_font8x16_rom"
+    },
+    "input_count": 27,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_font8x16_rom",
+      "suite": "legacy_a",
+      "ordered_analyzed_HDL": 13,
+      "additional_hashed_inputs": 4,
+      "binding": "historical_actual_compiler_graph_covered_by_current_input_hashes"
+    },
+    "normal_completion": true,
+    "error_counts": [],
+    "log_sha256": "7ba92816eb528fe611910612b167be431a17e06a53b3137d917bf7709a49185e",
+    "metadata_sha256": "7c85e895b05b788f8909fde57ed6eaeeb58759fc13d31eda5c8a628db7f6b568",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_font8x16_rom\\result.json",
+      "sha256": "7c85e895b05b788f8909fde57ed6eaeeb58759fc13d31eda5c8a628db7f6b568"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_font8x16_rom\\sim.log",
+      "sha256": "7ba92816eb528fe611910612b167be431a17e06a53b3137d917bf7709a49185e"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_font8x16_rom\\sources.sha256.json",
+      "sha256": "2b46d461cfbc75db7e298f1ae8d4d0d0f22f99d1de69d2f981db35cda259dea5"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_font8x16_rom\\original.producer.metadata.json",
+      "sha256": "7c85e895b05b788f8909fde57ed6eaeeb58759fc13d31eda5c8a628db7f6b568"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_font8x16_rom\\producer.provenance.json",
+      "sha256": "2cb860a710ec6759d04af1f3f7bec3eb086294842f4d1062a87e57fb9b8b2167"
+    },
+    "sources.after.sha256.json": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_font8x16_rom\\sources.after.sha256.json",
+      "sha256": "2b46d461cfbc75db7e298f1ae8d4d0d0f22f99d1de69d2f981db35cda259dea5"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

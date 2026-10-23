@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_priority_difference",
+  "top": "tb_v3_priority_difference",
+  "suite": "c",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_priority_difference",
+    "suite": "c",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_priority_difference",
+    "suite": "c",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_difference",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_priority_difference",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_priority_difference",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 600040,
+      "elapsed_s": 9.141,
+      "suite": "c",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_priority_difference\\sim\\tb_v3_priority_difference"
+    },
+    "input_count": 26,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_priority_difference",
+      "suite": "c",
+      "ordered_analyzed_HDL": 18,
+      "manifest": "safevision/build/manifests/c_sim.json",
+      "current_manifest_sha256": "6a00786194425f45495f385a6fd6f4dafe6e5f38c4a11f3a3270773a0b277cb7",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "46b0a7eff3888d8d913025cc0eda20160704bdb2a0030fe7994ac32092d3f0d8",
+    "metadata_sha256": "04c11bf0b4bc35b19e330daaaaad51bd83bbae377c570820647349bfe7750ba5",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_difference\\result.json",
+      "sha256": "04c11bf0b4bc35b19e330daaaaad51bd83bbae377c570820647349bfe7750ba5"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_difference\\sim.log",
+      "sha256": "46b0a7eff3888d8d913025cc0eda20160704bdb2a0030fe7994ac32092d3f0d8"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_difference\\sources.sha256.json",
+      "sha256": "ea9df69cad32ffc476202df15189c92caeeae2407d64c81913a2bf11a81a42d7"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_difference\\original.producer.metadata.json",
+      "sha256": "04c11bf0b4bc35b19e330daaaaad51bd83bbae377c570820647349bfe7750ba5"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_difference\\producer.provenance.json",
+      "sha256": "c414be53e5831fc41a8eb1c4e92882927f239ab55285591ba3b4ecfdefa327e6"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_priority_difference\\sources.prj",
+      "sha256": "ad2bf695f5e1197b49c987be8ce2898bcf52ec2da6808013e463c895a07f42da"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

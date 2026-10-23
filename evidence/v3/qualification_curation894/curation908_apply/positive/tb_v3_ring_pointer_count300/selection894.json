@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_ring_pointer_count300",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_ring_pointer_count300",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_ring_pointer_count300",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_ring_pointer_count300",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 4194304,
+        "elapsed_s": 11.781,
+        "suite": "ring_pointer_count300",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svfeatures297\\tests\\pointer300\\tb_v3_ring_pointer_count300"
+      },
+      "metadata_sha256": "415a35259e6ccf21f2013e2ff164a406cfa00f2959299fd5909dac0ec72ca7c8",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_ring_pointer_count300",
+        "suite": "ring_pointer_count300",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/ring_pointer_count300_sim.json",
+        "current_manifest_sha256": "f895adb20831b7a24943d03b1814622561904664825f457fbdb699a5c29fd677",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "1284fe6458b0a22095158a65002050b2d9041659011c97cebc92e00e8f49d713"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_ring_pointer_count300",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_ring_pointer_count300",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 4194304,
+      "elapsed_s": 11.781,
+      "suite": "ring_pointer_count300",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svfeatures297\\tests\\pointer300\\tb_v3_ring_pointer_count300"
+    },
+    "metadata_sha256": "415a35259e6ccf21f2013e2ff164a406cfa00f2959299fd5909dac0ec72ca7c8",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_ring_pointer_count300",
+      "suite": "ring_pointer_count300",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/ring_pointer_count300_sim.json",
+      "current_manifest_sha256": "f895adb20831b7a24943d03b1814622561904664825f457fbdb699a5c29fd677",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "1284fe6458b0a22095158a65002050b2d9041659011c97cebc92e00e8f49d713",
+    "sources_sha256": "692faa8c8b75dcd3861f0f6c087536c8c9deb40df58875de29fa7eaece32b1c3",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svfeatures297\\tests\\pointer300\\results.json",
+          "sha256": "80ee5ca4dfa591612a3d42a604da4ce458ab162f3818091048dfa86c0abc0c5f",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

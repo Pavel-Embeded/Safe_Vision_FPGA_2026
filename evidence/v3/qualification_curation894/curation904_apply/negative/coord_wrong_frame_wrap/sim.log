@@ -1,0 +1,36 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Sun Oct 18 18:46:16 2026
+# Process ID: 11036
+# Current directory: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/hb01/f11/negative/coord_wrong_frame_wrap/simulation/tb_v3_hd_coord_arith
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_hd_coord_arith/xsim_script.tcl}
+# Log file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/hb01/f11/negative/coord_wrong_frame_wrap/simulation/tb_v3_hd_coord_arith/sim.log
+# Journal file: D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/hb01/f11/negative/coord_wrong_frame_wrap/simulation/tb_v3_hd_coord_arith\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_hd_coord_arith/xsim_script.tcl
+# xsim {tb_v3_hd_coord_arith} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] raster coordinate delay got=65f2ec/65e2ed expected=65f2ed/65e2ed t=14045966000
+[FAIL] raster coordinate delay got=6602ec/65f2ec expected=6602ed/65f2ed t=14045976000
+[FAIL] raster coordinate delay got=6612ec/6602ec expected=6612ed/6602ed t=14045986000
+[FAIL] raster coordinate delay got=6622ec/6612ec expected=6622ed/6612ed t=14045996000
+[FAIL] raster coordinate delay got=6632ec/6622ec expected=6632ed/6622ed t=14046006000
+[FAIL] raster coordinate delay got=6642ec/6632ec expected=6642ed/6632ed t=14046016000
+[FAIL] raster coordinate delay got=6652ec/6642ec expected=6652ed/6642ed t=14046026000
+[FAIL] raster coordinate delay got=6662ec/6652ec expected=6662ed/6652ed t=14046036000
+[FAIL] raster coordinate delay got=6672ec/6662ec expected=6672ed/6662ed t=14046046000
+[FAIL] raster coordinate delay got=6682ec/6672ec expected=6682ed/6672ed t=14046056000
+[FAIL] raster coordinate delay got=6692ec/6682ec expected=6692ed/6682ed t=14046066000
+[FAIL] raster coordinate delay got=66a2ec/6692ec expected=66a2ed/6692ed t=14046076000
+[FAIL] raster coordinate delay got=66b2ec/66a2ec expected=66b2ed/66a2ed t=14046086000
+[FAIL] raster coordinate delay got=66c2ec/66b2ec expected=66c2ed/66b2ed t=14046096000
+[FAIL] raster coordinate delay got=66d2ec/66c2ec expected=66d2ed/66c2ed t=14046106000
+[PASS] arithmetic coordinate delay/reset/full rasters checks=5284524 errors=40
+PASS tb_v3_hd_coord_arith comparisons=5284524 errors=40
+$finish called at time : 26421462 ns : File "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_hd_coord_arith.sv" Line 26
+exit
+INFO: [Common 17-206] Exiting xsim at Sun Oct 18 18:46:24 2026...

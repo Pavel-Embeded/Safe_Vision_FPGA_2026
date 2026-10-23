@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "paired_hd_wrong_neighbor",
+  "top": "tb_v3_paired_rows_hd288",
+  "suite": "paired_rows_hd288",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "paired_hd_wrong_neighbor",
+    "target": "safevision/rtl/hd/v3_packed_row_store.v",
+    "suite": "paired_rows_hd288",
+    "top": "tb_v3_paired_rows_hd288",
+    "patch": [
+      {
+        "before": "wire[2:0] tile0={2'b0,rb0[0]},tile1={2'b0,rb1[0]};",
+        "after": "wire[2:0] tile0={2'b0,rb0[0]},tile1={2'b0,rb0[0]};"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "paired_hd_wrong_neighbor",
+    "target": "safevision/rtl/hd/v3_packed_row_store.v",
+    "suite": "paired_rows_hd288",
+    "top": "tb_v3_paired_rows_hd288",
+    "patch": [
+      {
+        "before": "wire[2:0] tile0={2'b0,rb0[0]},tile1={2'b0,rb1[0]};",
+        "after": "wire[2:0] tile0={2'b0,rb0[0]},tile1={2'b0,rb0[0]};"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\paired_hd_wrong_neighbor",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\paired_hd_wrong_neighbor",
+  "checked": {
+    "metadata": {
+      "mutation": "paired_hd_wrong_neighbor",
+      "target": "safevision/rtl/hd/v3_packed_row_store.v",
+      "suite": "paired_rows_hd288",
+      "top": "tb_v3_paired_rows_hd288",
+      "patch": [
+        {
+          "before": "wire[2:0] tile0={2'b0,rb0[0]},tile1={2'b0,rb1[0]};",
+          "after": "wire[2:0] tile0={2'b0,rb0[0]},tile1={2'b0,rb0[0]};"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative430\\n\\paired_hd_wrong_neighbor",
+      "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+      "mutated_sha256": "ff024628ce57721d6e2d018c569d5665fd9af76b7544a216371197103600c00c",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        4227044
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative430\\n\\paired_hd_wrong_neighbor\\sim\\tb_v3_paired_rows_hd288"
+    },
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_paired_rows_hd288",
+      "suite": "paired_rows_hd288",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/paired_rows_hd288_sim.json",
+      "current_manifest_sha256": "70925c2b7a84e1df0316fe6259952380380266d445342a5c35bd2ccf18a6a4a5",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      4227044
+    ],
+    "log_sha256": "43b782c0d89876a58bcba78f0f375d15bb9d90d52dd8e1edffbc4329b151cc3d",
+    "metadata_sha256": "e6bd73e4f5cefef42352fce3ee4f9f8d94854307e2613e5b9fff34cf645c25ff",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\paired_hd_wrong_neighbor\\case.json",
+      "sha256": "e6bd73e4f5cefef42352fce3ee4f9f8d94854307e2613e5b9fff34cf645c25ff"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\paired_hd_wrong_neighbor\\sim.log",
+      "sha256": "43b782c0d89876a58bcba78f0f375d15bb9d90d52dd8e1edffbc4329b151cc3d"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\paired_hd_wrong_neighbor\\sources.sha256.json",
+      "sha256": "5ff8d80db3282ca8d78db1bcd3d3abd73fec730b402fa17bba33a22903674687"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\paired_hd_wrong_neighbor\\original.producer.metadata.json",
+      "sha256": "e6bd73e4f5cefef42352fce3ee4f9f8d94854307e2613e5b9fff34cf645c25ff"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\paired_hd_wrong_neighbor\\producer.provenance.json",
+      "sha256": "f79f51cb0220ea173aa2fe2e91b8a7d7b9194038a50a15c493197e471b467618"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\paired_hd_wrong_neighbor\\sources.prj",
+      "sha256": "d8e1667ce4ad1a7ff63c6f40a770daa529a0c553718dc94fb74fd9115593fda7"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\paired_hd_wrong_neighbor\\mutant.v",
+      "sha256": "ff024628ce57721d6e2d018c569d5665fd9af76b7544a216371197103600c00c"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

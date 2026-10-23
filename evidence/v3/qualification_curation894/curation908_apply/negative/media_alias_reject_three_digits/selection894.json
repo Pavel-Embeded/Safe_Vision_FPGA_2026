@@ -1,0 +1,120 @@
+{
+  "kind": "negative",
+  "name": "media_alias_reject_three_digits",
+  "record": {
+    "kind": "negative",
+    "name": "media_alias_reject_three_digits",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\media_alias_reject_three_digits",
+    "checked": {
+      "metadata": {
+        "mutation": "media_alias_reject_three_digits",
+        "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+        "suite": "directory_alias510",
+        "top": "tb_v3_directory_alias510",
+        "patch": [
+          {
+            "before": "else if(sd_data!=8'h20)media_name_ok<=0;",
+            "after": "else media_name_ok<=0;",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "01efccf5349cf7fc843abd5b5fccc0dbcabf3c4b2291c9785a4cb14aea8c1a7a",
+        "mutated_sha256": "06ca72fd8cd5ad4014ebafbb4c195eddc8c580b578ad01589bddcdae1986b1c0",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          904
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\media_alias_reject_three_digits\\sim\\tb_v3_directory_alias510",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\media_alias_reject_three_digits\\sim\\tb_v3_directory_alias510"
+      },
+      "metadata_sha256": "f76e96d5b591b5e7b0fd2cd569f8cc210a15e8f4743a0e74d5cf6b50ec45890c",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_directory_alias510",
+        "suite": "directory_alias510",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/directory_alias510_sim.json",
+        "current_manifest_sha256": "5e8816fcca1c1f1e95b9c475917eac5d1c41c6f1f1fa9d6d2a8f43d7d1355237",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        904
+      ],
+      "log_sha256": "8beb30a8cbcfde60ff37d87943dd6b428ae3729eb30fb53ac87399b3c7b5fb49"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\media_alias_reject_three_digits",
+  "checked": {
+    "metadata": {
+      "mutation": "media_alias_reject_three_digits",
+      "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+      "suite": "directory_alias510",
+      "top": "tb_v3_directory_alias510",
+      "patch": [
+        {
+          "before": "else if(sd_data!=8'h20)media_name_ok<=0;",
+          "after": "else media_name_ok<=0;",
+          "occurrences": 1
+        }
+      ],
+      "original_sha256": "01efccf5349cf7fc843abd5b5fccc0dbcabf3c4b2291c9785a4cb14aea8c1a7a",
+      "mutated_sha256": "06ca72fd8cd5ad4014ebafbb4c195eddc8c580b578ad01589bddcdae1986b1c0",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        904
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\media_alias_reject_three_digits\\sim\\tb_v3_directory_alias510",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\media_alias_reject_three_digits\\sim\\tb_v3_directory_alias510"
+    },
+    "metadata_sha256": "f76e96d5b591b5e7b0fd2cd569f8cc210a15e8f4743a0e74d5cf6b50ec45890c",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_directory_alias510",
+      "suite": "directory_alias510",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/directory_alias510_sim.json",
+      "current_manifest_sha256": "5e8816fcca1c1f1e95b9c475917eac5d1c41c6f1f1fa9d6d2a8f43d7d1355237",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      904
+    ],
+    "log_sha256": "8beb30a8cbcfde60ff37d87943dd6b428ae3729eb30fb53ac87399b3c7b5fb49",
+    "sources_sha256": "2c9b08db478139df99a549ed17bbd0ccad1bf28a98104ec6a2a77248e6bfec19",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\media_alias_reject_three_digits\\runner.results.json",
+          "sha256": "a24d020f944e08c90a32459a7b48072ea5dd8bce68f354651567783b16030274",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\media_alias_reject_three_digits\\sim\\results.json",
+          "sha256": "a24d020f944e08c90a32459a7b48072ea5dd8bce68f354651567783b16030274",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

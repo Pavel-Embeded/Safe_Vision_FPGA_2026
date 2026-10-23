@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_handbook_energy",
+  "top": "tb_v3_handbook_energy",
+  "suite": "handbook_energy",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_handbook_energy",
+    "suite": "handbook_energy",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_handbook_energy",
+    "suite": "handbook_energy",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_energy",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_handbook_energy",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_handbook_energy",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 537816,
+      "elapsed_s": 7.344,
+      "suite": "handbook_energy",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_handbook_energy\\sim\\tb_v3_handbook_energy"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_energy",
+      "suite": "handbook_energy",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/handbook_energy_sim.json",
+      "current_manifest_sha256": "452fa93d990251bc502a9eeaea40c081cddddd6c1a87707a62fbee66271ef264",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "4ea31ded5839694df395b4663ba3cfc7bcde5ef4aa313ce5df8413c37402d88f",
+    "metadata_sha256": "bb9632d28af04738ff3a5a5e046150ce5f5e9658ca4292a8964b139e29c6683e",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_energy\\result.json",
+      "sha256": "bb9632d28af04738ff3a5a5e046150ce5f5e9658ca4292a8964b139e29c6683e"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_energy\\sim.log",
+      "sha256": "4ea31ded5839694df395b4663ba3cfc7bcde5ef4aa313ce5df8413c37402d88f"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_energy\\sources.sha256.json",
+      "sha256": "b4bc8ad84b84865cead86e791ac3660d42d2afec384051735f59417598e6d990"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_energy\\original.producer.metadata.json",
+      "sha256": "bb9632d28af04738ff3a5a5e046150ce5f5e9658ca4292a8964b139e29c6683e"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_energy\\producer.provenance.json",
+      "sha256": "d7d713ca10737ca96a6581c36d4530fb7ee6256f312e656419986cc73f9d96ae"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_handbook_energy\\sources.prj",
+      "sha256": "6ce137434b0175798aa43f49d6dc8c673f904f3d814b8ef8dcac3380d2d56631"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

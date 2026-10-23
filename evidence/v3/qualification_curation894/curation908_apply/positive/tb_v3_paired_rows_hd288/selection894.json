@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_paired_rows_hd288",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_paired_rows_hd288",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_paired_rows_hd288",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_paired_rows_hd288",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 2,
+        "data_comparisons": 8462384,
+        "elapsed_s": 42.719,
+        "suite": "paired_rows_hd288",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_paired_rows_hd288\\sim\\tb_v3_paired_rows_hd288"
+      },
+      "metadata_sha256": "3083b301f2679143e64627d21ed1ebb85656715a25ff3e8a3301a73512b027b0",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_paired_rows_hd288",
+        "suite": "paired_rows_hd288",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/paired_rows_hd288_sim.json",
+        "current_manifest_sha256": "70925c2b7a84e1df0316fe6259952380380266d445342a5c35bd2ccf18a6a4a5",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "1d831fccb9f62af23eaa49e6e1149dbb2aa2cef19acd5e82e0557cf458240ae0"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_paired_rows_hd288",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_paired_rows_hd288",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 8462384,
+      "elapsed_s": 42.719,
+      "suite": "paired_rows_hd288",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_paired_rows_hd288\\sim\\tb_v3_paired_rows_hd288"
+    },
+    "metadata_sha256": "3083b301f2679143e64627d21ed1ebb85656715a25ff3e8a3301a73512b027b0",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_paired_rows_hd288",
+      "suite": "paired_rows_hd288",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/paired_rows_hd288_sim.json",
+      "current_manifest_sha256": "70925c2b7a84e1df0316fe6259952380380266d445342a5c35bd2ccf18a6a4a5",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "1d831fccb9f62af23eaa49e6e1149dbb2aa2cef19acd5e82e0557cf458240ae0",
+    "sources_sha256": "6a5d83682b4632526c56c6cc02eed874246dfd08d81a3d419fd76577ec5b2e05",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq309\\p\\tb_v3_paired_rows_hd288\\sim\\results.json",
+          "sha256": "ac4aefb0eed1559d82ff97c6a66d89f7a26e1ab53948ed52a944d72b64a873ca",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

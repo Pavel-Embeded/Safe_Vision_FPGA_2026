@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_audio_sample_fifo\\sim\\tb_v3_audio_sample_fifo",
+  "native_log_sha256": "35864555721710baf7dc31f021071394e64dd915ff94e498c2e27e2a71f092ac",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_audio_sample_fifo",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_audio_sample_fifo\\sim\\tb_v3_audio_sample_fifo",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_audio_sample_fifo",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 470,
+        "elapsed_s": 7.985,
+        "suite": "audio_complete",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_audio_sample_fifo\\sim\\tb_v3_audio_sample_fifo"
+      },
+      "metadata_sha256": "ff783028417f2c14bdd4b2800d1b55b63500928445c54ee485745f0f997be1e2",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_sample_fifo",
+        "suite": "audio_complete",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/audio_complete_sim.json",
+        "current_manifest_sha256": "638e175768c16eaf39da482e3c314033db2a022a5885e58ea57aab3dfc4edb9f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "35864555721710baf7dc31f021071394e64dd915ff94e498c2e27e2a71f092ac"
+    },
+    "elapsed_s": 8.218
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\negative\\drop threshold carry33_to32",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\negative\\drop threshold carry33_to32\\case.json",
+  "original_metadata_sha256": "2d197978b6889315ffa8937ce2e90cb3360f8cdfb67c161a068f3dfa1020dd8f",
+  "original_log_sha256": "fd2a17a783563ab8c383451b91db9a014567ff40f8c94080b1ae7fc404383fd9",
+  "matrix_definition": {
+    "mutation": "drop threshold carry33_to32",
+    "target": "safevision/rtl/control/v3_supervisor.v",
+    "suite": "supervisor_threshold",
+    "top": "tb_v3_supervisor_threshold",
+    "patch": [
+      {
+        "before": " wire video_threshold=!video_limit[32] && ge_groups(video_gt,video_eq);\n wire audio_threshold=!audio_limit[32] && ge_groups(audio_gt,audio_eq);\n",
+        "after": " wire video_threshold=1'b1 && ge_groups(video_gt,video_eq);\n wire audio_threshold=1'b1 && ge_groups(audio_gt,audio_eq);\n"
+      }
+    ],
+    "required_marker": "[FAIL]"
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

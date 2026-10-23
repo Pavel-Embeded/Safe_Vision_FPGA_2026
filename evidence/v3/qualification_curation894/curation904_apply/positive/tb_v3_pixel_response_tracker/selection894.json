@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_pixel_response_tracker",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_pixel_response_tracker",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_pixel_response_tracker",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_pixel_response_tracker",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 10304,
+        "elapsed_s": 7.11,
+        "suite": "pixel_response_tracker",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_pixel_response_tracker\\sim\\tb_v3_pixel_response_tracker"
+      },
+      "metadata_sha256": "91fdb1a30673eed66354788439d72703af312fba62a09e69cfd2dc2993ce3c2b",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_pixel_response_tracker",
+        "suite": "pixel_response_tracker",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/pixel_response_tracker_sim.json",
+        "current_manifest_sha256": "a0628a1e7d65d64d35a421f228dcb55305979efef869942c9696aef9e2037429",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "49c5f88f6da4bae32b3d3e1509efbfb34bb3a11192a97f9f822ff02c93a971de"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_pixel_response_tracker",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_pixel_response_tracker",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 10304,
+      "elapsed_s": 7.11,
+      "suite": "pixel_response_tracker",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_pixel_response_tracker\\sim\\tb_v3_pixel_response_tracker"
+    },
+    "metadata_sha256": "91fdb1a30673eed66354788439d72703af312fba62a09e69cfd2dc2993ce3c2b",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_pixel_response_tracker",
+      "suite": "pixel_response_tracker",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/pixel_response_tracker_sim.json",
+      "current_manifest_sha256": "a0628a1e7d65d64d35a421f228dcb55305979efef869942c9696aef9e2037429",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "49c5f88f6da4bae32b3d3e1509efbfb34bb3a11192a97f9f822ff02c93a971de",
+    "sources_sha256": "a460d346ac87d94215c525a6a2595bf009c0ca220413e2f5cfe7eeea93da6fa5",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq74\\p\\tb_v3_pixel_response_tracker\\sim\\results.json",
+          "sha256": "3b7455b48a190684038f72e6266871bf57f73591c943fbfa00bc1b357cfd9058",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

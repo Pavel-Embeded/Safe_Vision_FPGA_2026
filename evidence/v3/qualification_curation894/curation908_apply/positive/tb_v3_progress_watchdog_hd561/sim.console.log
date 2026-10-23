@@ -1,0 +1,18 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_progress_watchdog_hd561/xsim_script.tcl
+# xsim {tb_v3_progress_watchdog_hd561} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] progress-aware supervisor HD1 HZ1000, boot/recovery inactivity and exact default equivalence
+[PASS] progress-aware supervisor HD1 HZ4000, boot/recovery inactivity and exact default equivalence
+[PASS] HD progress watchdog complete
+[TB] tb_v3_progress_watchdog_hd561 done errors=0 comparisons=11896
+$finish called at time : 49667 ns : File "D:/Codex/svflex537/candidate616/safevision/verification/unit/tb_v3_progress_watchdog561.sv" Line 293
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 16:53:09 2026...

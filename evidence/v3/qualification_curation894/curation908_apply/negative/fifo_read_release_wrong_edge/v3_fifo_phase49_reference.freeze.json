@@ -1,0 +1,17 @@
+{
+  "original_source_commit": "149fbfbb9a291d9e69f50732f5df89db34028c1d",
+  "original_path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v",
+  "original_sha256": "715cf67dcf788d2d8cece432851efc9450c33bd4259379b9c145a33524acd6e6",
+  "reference_path": "safevision/verification/models/v3_fifo_phase49_reference.sv",
+  "reference_sha256": "44c77e5f408485bb00e27ab4db2aea1e40ac0bfc328cf2c97ff62e4a55880440",
+  "namespace_only": [
+    [
+      "a_pixel_fifo_gray_sync",
+      "a_pixel_fifo_gray_phase49_reference"
+    ],
+    [
+      "a_pixel_fifo_ip",
+      "a_pixel_fifo_phase49_reference"
+    ]
+  ]
+}

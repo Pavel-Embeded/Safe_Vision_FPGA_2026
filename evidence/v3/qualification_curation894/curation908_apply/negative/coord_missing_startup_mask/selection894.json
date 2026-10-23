@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "coord_missing_startup_mask",
+  "record": {
+    "kind": "negative",
+    "name": "coord_missing_startup_mask",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\coord_missing_startup_mask",
+    "checked": {
+      "metadata": {
+        "mutation": "coord_missing_startup_mask",
+        "target": "safevision/rtl/video/v3_hd_coord_arith.v",
+        "suite": "hd_coord_arith",
+        "top": "tb_v3_hd_coord_arith",
+        "patch": [
+          {
+            "before": "(fill==5'd19)?{delayed_x,delayed_y}:24'd0",
+            "after": "{delayed_x,delayed_y}"
+          }
+        ],
+        "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f11\\negative\\coord_missing_startup_mask",
+        "original_sha256": "1f5afe73c8f5c886ba819e8840aff1fa655901adbdfa9f86d468051dbb59c9e6",
+        "mutated_sha256": "7870073a66c969f4cf84442a41ed4fde2a6e68e06a9e300674ab9ede262a389a",
+        "mutant_file": "mutant.v",
+        "detected": true,
+        "normal_completion": true,
+        "process_exit": 1,
+        "error_counts": [
+          2020,
+          2020
+        ],
+        "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/coord_missing_startup_mask",
+        "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\coord_missing_startup_mask",
+        "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\coord_missing_startup_mask"
+      },
+      "metadata_sha256": "f18a36af77069df5792192e31e33376ad21e76996b5633228a98d6c3b918a044",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_coord_arith",
+        "suite": "hd_coord_arith",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_coord_arith_sim.json",
+        "current_manifest_sha256": "5e34c6096f63f56b1b9a62222f3c4babbca536ac995fc2a41966cebb2301b846",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        2020,
+        2020
+      ],
+      "log_sha256": "af0ba2168d4dffef99512690796c05b35f630dad90ca4fabb6c694154f8246d0"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\coord_missing_startup_mask",
+  "checked": {
+    "metadata": {
+      "mutation": "coord_missing_startup_mask",
+      "target": "safevision/rtl/video/v3_hd_coord_arith.v",
+      "suite": "hd_coord_arith",
+      "top": "tb_v3_hd_coord_arith",
+      "patch": [
+        {
+          "before": "(fill==5'd19)?{delayed_x,delayed_y}:24'd0",
+          "after": "{delayed_x,delayed_y}"
+        }
+      ],
+      "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f11\\negative\\coord_missing_startup_mask",
+      "original_sha256": "1f5afe73c8f5c886ba819e8840aff1fa655901adbdfa9f86d468051dbb59c9e6",
+      "mutated_sha256": "7870073a66c969f4cf84442a41ed4fde2a6e68e06a9e300674ab9ede262a389a",
+      "mutant_file": "mutant.v",
+      "detected": true,
+      "normal_completion": true,
+      "process_exit": 1,
+      "error_counts": [
+        2020,
+        2020
+      ],
+      "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/coord_missing_startup_mask",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\coord_missing_startup_mask",
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\coord_missing_startup_mask"
+    },
+    "metadata_sha256": "f18a36af77069df5792192e31e33376ad21e76996b5633228a98d6c3b918a044",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_coord_arith",
+      "suite": "hd_coord_arith",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_coord_arith_sim.json",
+      "current_manifest_sha256": "5e34c6096f63f56b1b9a62222f3c4babbca536ac995fc2a41966cebb2301b846",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      2020,
+      2020
+    ],
+    "log_sha256": "af0ba2168d4dffef99512690796c05b35f630dad90ca4fabb6c694154f8246d0",
+    "sources_sha256": "ecff6509e40ec0cf98b5fc68ed53c9e08f81f775b10b674415a086cd29c55790",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

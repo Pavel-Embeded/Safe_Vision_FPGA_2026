@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_prefix_miter_read_alignment_short_385",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_prefix_miter_read_alignment_short_385\\result.json",
+  "original_metadata_sha256": "72a9285e5dd685ac0f14f16d079c2b53064c76993741fab6e96e99bee63ed690",
+  "original_log_sha256": "646807f0168ac417400b8cdf9f22544dbb7530bf371787438dda0f208b8c4c17",
+  "matrix_definition": {
+    "top": "tb_v3_prefix_miter_read_alignment_short_385",
+    "suite": "adapter_prefix_base385",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

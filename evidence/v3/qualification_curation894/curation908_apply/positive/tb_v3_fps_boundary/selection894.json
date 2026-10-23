@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_fps_boundary",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_fps_boundary",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_fps_boundary",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_fps_boundary",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 16396,
+        "elapsed_s": 9.938,
+        "suite": "video_v3_fps",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fps_boundary\\sim\\tb_v3_fps_boundary"
+      },
+      "metadata_sha256": "6e6cd820f05a85711c928f7c7f711a63a78960978c8fd6f7b979417408cf3f9b",
+      "normal_completion": true,
+      "input_count": 17,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_fps_boundary",
+        "suite": "video_v3_fps",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/video_v3_fps_sim.json",
+        "current_manifest_sha256": "66734072db3c8c0b72637b137494913cba28463eb614e2a36e8ca001409aa2ab",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "3bd345f37a767972b9689b28bb569be0575be10f831ad0e7b22bf50adf2b6620"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_fps_boundary",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_fps_boundary",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 16396,
+      "elapsed_s": 9.938,
+      "suite": "video_v3_fps",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fps_boundary\\sim\\tb_v3_fps_boundary"
+    },
+    "metadata_sha256": "6e6cd820f05a85711c928f7c7f711a63a78960978c8fd6f7b979417408cf3f9b",
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_fps_boundary",
+      "suite": "video_v3_fps",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/video_v3_fps_sim.json",
+      "current_manifest_sha256": "66734072db3c8c0b72637b137494913cba28463eb614e2a36e8ca001409aa2ab",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "3bd345f37a767972b9689b28bb569be0575be10f831ad0e7b22bf50adf2b6620",
+    "sources_sha256": "66f26ba48479fe979563f1bca69f6bb51c5f8885ab2d3e3d05415c4bab0e64a2",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_fps_boundary\\sim\\results.json",
+          "sha256": "588a18c50a7f97e837eb4e6a00e34935e145d7f107944f1b3311b47496e40dc0",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

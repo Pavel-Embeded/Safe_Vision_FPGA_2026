@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "observer_raw_alignment",
+  "top": "tb_v3_memory_path_observer",
+  "suite": "memory_path_observer",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "observer_raw_alignment",
+    "target": "safevision/rtl/memory/v3_memory_path_observer.v",
+    "suite": "memory_path_observer",
+    "top": "tb_v3_memory_path_observer",
+    "patch": [
+      {
+        "before": "READ_DATA_LEADS_VALID?previous_raw:physical_read_data",
+        "after": "physical_read_data"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "observer_raw_alignment",
+    "target": "safevision/rtl/memory/v3_memory_path_observer.v",
+    "suite": "memory_path_observer",
+    "top": "tb_v3_memory_path_observer",
+    "patch": [
+      {
+        "before": "READ_DATA_LEADS_VALID?previous_raw:physical_read_data",
+        "after": "physical_read_data"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\observer_raw_alignment",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\observer_raw_alignment",
+  "checked": {
+    "metadata": {
+      "mutation": "observer_raw_alignment",
+      "target": "safevision/rtl/memory/v3_memory_path_observer.v",
+      "suite": "memory_path_observer",
+      "top": "tb_v3_memory_path_observer",
+      "patch": [
+        {
+          "before": "READ_DATA_LEADS_VALID?previous_raw:physical_read_data",
+          "after": "physical_read_data"
+        }
+      ],
+      "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\memory_flags_26101718\\negative\\observer_raw_alignment",
+      "original_sha256": "e07a2f29248937ce6b4d2df7e542ed21abe81fa95236ad517bf13b1ab798ad0f",
+      "mutated_sha256": "db4e34d064a355befb5200ddb6f17f711e6ca0291e932b878fc06b3815044f2a",
+      "mutant_file": "mutant.v",
+      "detected": true,
+      "normal_completion": true,
+      "process_exit": 1,
+      "error_counts": [
+        34
+      ],
+      "changed_dependencies": [
+        "safevision/rtl/memory/v3_memory_path_observer.v",
+        "safevision/verification/unit/tb_v3_memory_path_observer.sv"
+      ],
+      "previous_evidence": "evidence/v3/memory_flags_26101718/current_gate/negative/observer_raw_alignment",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\observer_raw_alignment",
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\observer_raw_alignment"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_memory_path_observer",
+      "suite": "memory_path_observer",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/memory_path_observer_sim.json",
+      "current_manifest_sha256": "32c3449726c8f66c29421b46cd8eb5a64ebea65a95652dc278f7368b8b268aef",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      34
+    ],
+    "log_sha256": "1910039e686198010b325b4a38fd9a3a065756c3d1bc6656182e9c315475338f",
+    "metadata_sha256": "b44b9da382f65fa58f78dcabd1b4b2a58dd99ab352057eab69d9c24c09d5914d",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\observer_raw_alignment\\case.json",
+      "sha256": "b44b9da382f65fa58f78dcabd1b4b2a58dd99ab352057eab69d9c24c09d5914d"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\observer_raw_alignment\\sim.log",
+      "sha256": "1910039e686198010b325b4a38fd9a3a065756c3d1bc6656182e9c315475338f"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\observer_raw_alignment\\sources.sha256.json",
+      "sha256": "e2237b2cad84da41df71357f1837ba4918e10567b6c8a83de92427a52c593ed3"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\observer_raw_alignment\\original.producer.metadata.json",
+      "sha256": "b44b9da382f65fa58f78dcabd1b4b2a58dd99ab352057eab69d9c24c09d5914d"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\observer_raw_alignment\\producer.provenance.json",
+      "sha256": "30b8fa3b65ee04dba56d1093877a1c6943a5465cf81547b9275829959f46dd41"
+    },
+    "sources.after.sha256.json": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\observer_raw_alignment\\sources.after.sha256.json",
+      "sha256": "e2237b2cad84da41df71357f1837ba4918e10567b6c8a83de92427a52c593ed3"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\observer_raw_alignment\\mutant.v",
+      "sha256": "db4e34d064a355befb5200ddb6f17f711e6ca0291e932b878fc06b3815044f2a"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

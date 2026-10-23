@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "ring_read_moves_backwards",
+  "top": "tb_v3_ring_pointer_count300",
+  "suite": "ring_pointer_count300",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "ring_read_moves_backwards",
+    "target": "safevision/rtl/audio/v3_pcm_ring.v",
+    "suite": "ring_pointer_count300",
+    "top": "tb_v3_ring_pointer_count300",
+    "patch": [
+      {
+        "before": "rp[slot_index]<=rp[slot_index]+1'b1;",
+        "after": "rp[slot_index]<=rp[slot_index]-1'b1;"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "ring_read_moves_backwards",
+    "target": "safevision/rtl/audio/v3_pcm_ring.v",
+    "suite": "ring_pointer_count300",
+    "top": "tb_v3_ring_pointer_count300",
+    "patch": [
+      {
+        "before": "rp[slot_index]<=rp[slot_index]+1'b1;",
+        "after": "rp[slot_index]<=rp[slot_index]-1'b1;"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ring_read_moves_backwards",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\ring_read_moves_backwards",
+  "checked": {
+    "metadata": {
+      "mutation": "ring_read_moves_backwards",
+      "target": "safevision/rtl/audio/v3_pcm_ring.v",
+      "suite": "ring_pointer_count300",
+      "top": "tb_v3_ring_pointer_count300",
+      "patch": [
+        {
+          "before": "rp[slot_index]<=rp[slot_index]+1'b1;",
+          "after": "rp[slot_index]<=rp[slot_index]-1'b1;"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative430\\n\\ring_read_moves_backwards",
+      "original_sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8",
+      "mutated_sha256": "6de63e6cd26188ec3da0aa62a9b47544ff5413357e186e86cdb285d90da008b7",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        262144
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative430\\n\\ring_read_moves_backwards\\sim\\tb_v3_ring_pointer_count300"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_ring_pointer_count300",
+      "suite": "ring_pointer_count300",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/ring_pointer_count300_sim.json",
+      "current_manifest_sha256": "f895adb20831b7a24943d03b1814622561904664825f457fbdb699a5c29fd677",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      262144
+    ],
+    "log_sha256": "ff8c5aa34619da54bd7a2fe3a8b3defdd908519993a7b7c78bd79a564daa5630",
+    "metadata_sha256": "1f29450aa97dfbb5fbc3d65e34a3bde2fea85fdb7d2793fdbe4d3721996d8162",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ring_read_moves_backwards\\case.json",
+      "sha256": "1f29450aa97dfbb5fbc3d65e34a3bde2fea85fdb7d2793fdbe4d3721996d8162"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ring_read_moves_backwards\\sim.log",
+      "sha256": "ff8c5aa34619da54bd7a2fe3a8b3defdd908519993a7b7c78bd79a564daa5630"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ring_read_moves_backwards\\sources.sha256.json",
+      "sha256": "c02c12ecec868bba3b3030a7e5437b93bf40d4d4ff077a20a352a69ec3e90f76"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ring_read_moves_backwards\\original.producer.metadata.json",
+      "sha256": "1f29450aa97dfbb5fbc3d65e34a3bde2fea85fdb7d2793fdbe4d3721996d8162"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ring_read_moves_backwards\\producer.provenance.json",
+      "sha256": "131cf94600cfb3b2f2b0a4c1136ae575b2315c28adcd93e21b962066f3a7381f"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ring_read_moves_backwards\\sources.prj",
+      "sha256": "ec604a40ca76d1f86d71626fa4821dd77430de49c5e51c12c76e2281b5c07914"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\ring_read_moves_backwards\\mutant.v",
+      "sha256": "6de63e6cd26188ec3da0aa62a9b47544ff5413357e186e86cdb285d90da008b7"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

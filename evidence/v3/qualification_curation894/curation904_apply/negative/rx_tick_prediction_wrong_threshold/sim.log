@@ -1,0 +1,47 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Mon Oct 19 23:44:12 2026
+# Process ID: 18452
+# Current directory: D:/Codex/svnegative75/n/rx_tick_prediction_wrong_threshold/sim/tb_v3_uart_rx_equivalence
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_uart_rx_equivalence/xsim_script.tcl}
+# Log file: D:/Codex/svnegative75/n/rx_tick_prediction_wrong_threshold/sim/tb_v3_uart_rx_equivalence/sim.log
+# Journal file: D:/Codex/svnegative75/n/rx_tick_prediction_wrong_threshold/sim/tb_v3_uart_rx_equivalence\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_uart_rx_equivalence/xsim_script.tcl
+# xsim {tb_v3_uart_rx_equivalence} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] UART public bits/tick/acc differ rate=1 cycle=0
+[FAIL] UART public bits/tick/acc differ rate=1 cycle=1
+[FAIL] UART public bits/tick/acc differ rate=1 cycle=2
+[FAIL] UART public bits/tick/acc differ rate=1 cycle=3
+[FAIL] UART public bits/tick/acc differ rate=1 cycle=4
+[FAIL] UART public bits/tick/acc differ rate=1 cycle=5
+[FAIL] UART public bits/tick/acc differ rate=1 cycle=6
+[FAIL] UART public bits/tick/acc differ rate=1 cycle=7
+[FAIL] UART public bits/tick/acc differ rate=1 cycle=8
+[FAIL] UART public bits/tick/acc differ rate=2 cycle=48
+[FAIL] UART public bits/tick/acc differ rate=2 cycle=49
+[FAIL] UART public bits/tick/acc differ rate=2 cycle=69
+[FAIL] UART public bits/tick/acc differ rate=2 cycle=70
+[FAIL] UART public bits/tick/acc differ rate=2 cycle=90
+[FAIL] UART public bits/tick/acc differ rate=2 cycle=91
+[FAIL] UART public bits/tick/acc differ rate=2 cycle=140
+[FAIL] UART public bits/tick/acc differ rate=2 cycle=141
+[FAIL] UART public bits/tick/acc differ rate=2 cycle=161
+[FAIL] UART public bits/tick/acc differ rate=0 cycle=2982
+[FAIL] UART public bits/tick/acc differ rate=0 cycle=2983
+[FAIL] UART public bits/tick/acc differ rate=0 cycle=3199
+[FAIL] UART public bits/tick/acc differ rate=0 cycle=3200
+[FAIL] UART public bits/tick/acc differ rate=0 cycle=3416
+[FAIL] UART public bits/tick/acc differ rate=0 cycle=3417
+[FAIL] UART public bits/tick/acc differ rate=0 cycle=3633
+[FAIL] UART public bits/tick/acc differ rate=0 cycle=3634
+[FAIL] UART public bits/tick/acc differ rate=0 cycle=3850
+[TB] tb_v3_uart_rx_equivalence done errors=422505 comparisons=1350000
+$finish called at time : 1500041 ns : File "D:/Codex/svq74/source/safevision/verification/unit/tb_v3_uart_rx_equivalence.sv" Line 26
+exit
+INFO: [Common 17-206] Exiting xsim at Mon Oct 19 23:44:16 2026...

@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "ui_debounce_short",
+  "record": {
+    "kind": "negative",
+    "name": "ui_debounce_short",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\ui_debounce_short",
+    "checked": {
+      "metadata": {
+        "mutation": "ui_debounce_short",
+        "target": "safevision/rtl/control/v3_user_controls.v",
+        "suite": "ui_boundary409",
+        "top": "tb_v3_ui_boundary409",
+        "patch": [
+          {
+            "before": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV+1",
+            "after": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV"
+          }
+        ],
+        "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+        "mutated_sha256": "1b875da496f068f5f1d7616e9ed9cdd11e0d8786c4120e1b3f5c45dc9d7d8380",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          2
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_debounce_short\\sim\\tb_v3_ui_boundary409",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_debounce_short\\sim\\tb_v3_ui_boundary409"
+      },
+      "metadata_sha256": "dfe944f47ed7d83d0b2306f2ceaa7f28277795dc484aa5ed0a27242096c0d41f",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_ui_boundary409",
+        "suite": "ui_boundary409",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/ui_boundary409_sim.json",
+        "current_manifest_sha256": "ec3695091092ef3b968ca7511695a78e84957711cddaa3b463b2884ba5d8938e",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        2
+      ],
+      "log_sha256": "1a9eaeed09f801eafbbf05ca3f130e05bf8172ad22f064d749e4ea16691a023d"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\ui_debounce_short",
+  "checked": {
+    "metadata": {
+      "mutation": "ui_debounce_short",
+      "target": "safevision/rtl/control/v3_user_controls.v",
+      "suite": "ui_boundary409",
+      "top": "tb_v3_ui_boundary409",
+      "patch": [
+        {
+          "before": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV+1",
+          "after": "UI_DEBOUNCE=UI_DIV==1?DEBOUNCE:DEBOUNCE/UI_DIV"
+        }
+      ],
+      "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+      "mutated_sha256": "1b875da496f068f5f1d7616e9ed9cdd11e0d8786c4120e1b3f5c45dc9d7d8380",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        2
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_debounce_short\\sim\\tb_v3_ui_boundary409",
+      "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_debounce_short\\sim\\tb_v3_ui_boundary409"
+    },
+    "metadata_sha256": "dfe944f47ed7d83d0b2306f2ceaa7f28277795dc484aa5ed0a27242096c0d41f",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_ui_boundary409",
+      "suite": "ui_boundary409",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/ui_boundary409_sim.json",
+      "current_manifest_sha256": "ec3695091092ef3b968ca7511695a78e84957711cddaa3b463b2884ba5d8938e",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      2
+    ],
+    "log_sha256": "1a9eaeed09f801eafbbf05ca3f130e05bf8172ad22f064d749e4ea16691a023d",
+    "sources_sha256": "0dc5de270294813d32e95ee90b588e6ef722724d3af3b78735538616ea17f252",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\ui_debounce_short\\runner.results.json",
+          "sha256": "10e1f562459c11cd8b2b9441b199e341c9575a6ea6969fa20866eaaf3640aead",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_debounce_short\\sim\\results.json",
+          "sha256": "10e1f562459c11cd8b2b9441b199e341c9575a6ea6969fa20866eaaf3640aead",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

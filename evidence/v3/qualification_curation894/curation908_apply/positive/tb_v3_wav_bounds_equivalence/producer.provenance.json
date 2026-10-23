@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_bounds_equivalence\\sim\\tb_v3_wav_bounds_equivalence",
+  "native_log_sha256": "fb7ada6507c9b648e0e0aacd412f94d03f3378b57ee9c658a1f94318bf6c3a1b",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_wav_bounds_equivalence",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_bounds_equivalence\\sim\\tb_v3_wav_bounds_equivalence",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_wav_bounds_equivalence",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 1600196,
+        "elapsed_s": 12.375,
+        "suite": "wav_bounds_equivalence",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_bounds_equivalence\\sim\\tb_v3_wav_bounds_equivalence"
+      },
+      "metadata_sha256": "f9717f2eda544f4eb4d8842abd79f212b9c57ef0b69928a5ec088df76cba6389",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_bounds_equivalence",
+        "suite": "wav_bounds_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/wav_bounds_equivalence_sim.json",
+        "current_manifest_sha256": "3410f9005cb80635c804318c5a247a39e7ae10ed1f33ff6d4e718fbb404f684b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "fb7ada6507c9b648e0e0aacd412f94d03f3378b57ee9c658a1f94318bf6c3a1b"
+    },
+    "elapsed_s": 12.625
+  }
+}

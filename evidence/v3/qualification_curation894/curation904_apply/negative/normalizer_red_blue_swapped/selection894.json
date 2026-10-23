@@ -1,0 +1,178 @@
+{
+  "kind": "negative",
+  "name": "normalizer_red_blue_swapped",
+  "record": {
+    "kind": "negative",
+    "name": "normalizer_red_blue_swapped",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\normalizer_red_blue_swapped",
+    "checked": {
+      "metadata": {
+        "mutation": "normalizer_red_blue_swapped",
+        "target": "safevision/rtl/media/v3_bmp_normalizer.v",
+        "suite": "normalizer_miter203",
+        "top": "tb_v3_normalizer_miter203",
+        "patch": [
+          {
+            "before": "captured<={din[7:3],green[7:2],blue[7:3]};",
+            "after": "captured<={blue[7:3],green[7:2],din[7:3]};"
+          }
+        ],
+        "original_sha256": "8274d134d118a8af850ff61b0ddcb012330be3829f72babd6d1a2d8ef1427fc6",
+        "mutated_sha256": "7cda6939a5cc4a0b2f18945e9a9193e7eb9460d48c2c957f3500e0d3ae3f3ee1",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          973244,
+          1946489,
+          3099771,
+          4253048,
+          5510492,
+          6767895,
+          10435570,
+          14103274,
+          17783337,
+          21463384,
+          26212124,
+          33211744,
+          47256910,
+          47259551,
+          47261514,
+          47261514
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203"
+      },
+      "metadata_sha256": "5aa8f1134d98d76b59d5eb7c65f7e9b2c878c5a480fa6084214b753263820c30",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_normalizer_miter203",
+        "suite": "normalizer_miter203",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/normalizer_miter203_sim.json",
+        "current_manifest_sha256": "baf6a7f270e5556b7f213db87bf710732329fe5c58a459df2a0fc3ba76c9352a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        973244,
+        1946489,
+        3099771,
+        4253048,
+        5510492,
+        6767895,
+        10435570,
+        14103274,
+        17783337,
+        21463384,
+        26212124,
+        33211744,
+        47256910,
+        47259551,
+        47261514,
+        47261514
+      ],
+      "log_sha256": "96dc927a58e90d2d18903987f6e208b49c3668e19ce5b6a374bb32dc3b522571"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\normalizer_red_blue_swapped",
+  "checked": {
+    "metadata": {
+      "mutation": "normalizer_red_blue_swapped",
+      "target": "safevision/rtl/media/v3_bmp_normalizer.v",
+      "suite": "normalizer_miter203",
+      "top": "tb_v3_normalizer_miter203",
+      "patch": [
+        {
+          "before": "captured<={din[7:3],green[7:2],blue[7:3]};",
+          "after": "captured<={blue[7:3],green[7:2],din[7:3]};"
+        }
+      ],
+      "original_sha256": "8274d134d118a8af850ff61b0ddcb012330be3829f72babd6d1a2d8ef1427fc6",
+      "mutated_sha256": "7cda6939a5cc4a0b2f18945e9a9193e7eb9460d48c2c957f3500e0d3ae3f3ee1",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        973244,
+        1946489,
+        3099771,
+        4253048,
+        5510492,
+        6767895,
+        10435570,
+        14103274,
+        17783337,
+        21463384,
+        26212124,
+        33211744,
+        47256910,
+        47259551,
+        47261514,
+        47261514
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203"
+    },
+    "metadata_sha256": "5aa8f1134d98d76b59d5eb7c65f7e9b2c878c5a480fa6084214b753263820c30",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_normalizer_miter203",
+      "suite": "normalizer_miter203",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/normalizer_miter203_sim.json",
+      "current_manifest_sha256": "baf6a7f270e5556b7f213db87bf710732329fe5c58a459df2a0fc3ba76c9352a",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      973244,
+      1946489,
+      3099771,
+      4253048,
+      5510492,
+      6767895,
+      10435570,
+      14103274,
+      17783337,
+      21463384,
+      26212124,
+      33211744,
+      47256910,
+      47259551,
+      47261514,
+      47261514
+    ],
+    "log_sha256": "96dc927a58e90d2d18903987f6e208b49c3668e19ce5b6a374bb32dc3b522571",
+    "sources_sha256": "ab3b76e04356dffe17ba3696c8e9e545302c2e38ceb223a617c328627064a139",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\normalizer_red_blue_swapped\\runner.results.json",
+          "sha256": "c9189feef6eeaafa6c1987dac2d6ad3e9c0bb9134d01ee4254f01e967bd4b7b5",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\normalizer_red_blue_swapped\\sim\\results.json",
+          "sha256": "c9189feef6eeaafa6c1987dac2d6ad3e9c0bb9134d01ee4254f01e967bd4b7b5",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_multires193",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_multires193",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_multires193",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_multires193",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 14856005,
+        "elapsed_s": 156.984,
+        "suite": "multires193",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_multires193\\sim\\tb_v3_multires193"
+      },
+      "metadata_sha256": "763af37893450cdcde51baa54f9b860ffa57c06b2aa2bfddcc56ebdf3f832e94",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_multires193",
+        "suite": "multires193",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/multires193_sim.json",
+        "current_manifest_sha256": "f6073b0ac9fbd043aff599fbb67040599f8214da4f877fe66bb9290968d34a6c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "log_sha256": "9508f0c61b8bb5959867d7871b3d62c2c84cada717918d51ae0b1353a5928156"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_multires193",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_multires193",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 14856005,
+      "elapsed_s": 156.984,
+      "suite": "multires193",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_multires193\\sim\\tb_v3_multires193"
+    },
+    "metadata_sha256": "763af37893450cdcde51baa54f9b860ffa57c06b2aa2bfddcc56ebdf3f832e94",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_multires193",
+      "suite": "multires193",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/multires193_sim.json",
+      "current_manifest_sha256": "f6073b0ac9fbd043aff599fbb67040599f8214da4f877fe66bb9290968d34a6c",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "log_sha256": "9508f0c61b8bb5959867d7871b3d62c2c84cada717918d51ae0b1353a5928156",
+    "sources_sha256": "2b566cb84420537096b17c4ebde762ec74e3c76b12cdd5f02f29d869020e2a93",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_multires193\\runner.results.json",
+          "sha256": "9facca946233491468bfdd9f83a6cd9cc7319bff881f2c571089a0858baa5137",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_multires193\\sim\\results.json",
+          "sha256": "9facca946233491468bfdd9f83a6cd9cc7319bff881f2c571089a0858baa5137",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

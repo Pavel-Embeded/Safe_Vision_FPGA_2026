@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_uart_pipeline",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_uart_pipeline",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_uart_pipeline",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_uart_pipeline",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 3738716,
+        "elapsed_s": 13.281,
+        "suite": "hd_uart_pipeline",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq390\\p\\tb_v3_hd_uart_pipeline\\sim\\tb_v3_hd_uart_pipeline"
+      },
+      "metadata_sha256": "604b08a16c68a360c05acd74e6168563b9be3b187e5c1ff44acffd9e4f2d36c1",
+      "normal_completion": true,
+      "input_count": 17,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_uart_pipeline",
+        "suite": "hd_uart_pipeline",
+        "ordered_analyzed_HDL": 9,
+        "manifest": "safevision/build/manifests/hd_uart_pipeline_sim.json",
+        "current_manifest_sha256": "606d1cb2d7780926999beefdc99c5d56d9e69b055184a7a08162c890587cfd25",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "713eaa455cd942f1dec944a39e99a90933e846c90be80b2b67d6869a04e5291d"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_uart_pipeline",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_uart_pipeline",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 3738716,
+      "elapsed_s": 13.281,
+      "suite": "hd_uart_pipeline",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq390\\p\\tb_v3_hd_uart_pipeline\\sim\\tb_v3_hd_uart_pipeline"
+    },
+    "metadata_sha256": "604b08a16c68a360c05acd74e6168563b9be3b187e5c1ff44acffd9e4f2d36c1",
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_uart_pipeline",
+      "suite": "hd_uart_pipeline",
+      "ordered_analyzed_HDL": 9,
+      "manifest": "safevision/build/manifests/hd_uart_pipeline_sim.json",
+      "current_manifest_sha256": "606d1cb2d7780926999beefdc99c5d56d9e69b055184a7a08162c890587cfd25",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "713eaa455cd942f1dec944a39e99a90933e846c90be80b2b67d6869a04e5291d",
+    "sources_sha256": "b062c8d7066c9d5ee1a83a8c9a9d74d9093bc9857465f7f586adbcea68c23661",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq390\\p\\tb_v3_hd_uart_pipeline\\sim\\results.json",
+          "sha256": "790e4391734b053dc09e93c07b984d2bfe87ed9dc7bdd8f5a8fe53fc83987058",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

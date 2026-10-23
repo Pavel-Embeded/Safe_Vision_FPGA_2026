@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "odd_pad_lost",
+  "record": {
+    "kind": "negative",
+    "name": "odd_pad_lost",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\odd_pad_lost",
+    "checked": {
+      "metadata": {
+        "mutation": "odd_pad_lost",
+        "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+        "suite": "wav_bounds_equivalence",
+        "top": "tb_v3_wav_bounds_equivalence",
+        "patch": [
+          {
+            "before": "||(assembled[0]&&(&chunk_eq))",
+            "after": ""
+          }
+        ],
+        "original_sha256": "d0896f4bf0b7fcc77096f4459d2e4d6fa45adeaf667d02274740f27b08ab53b6",
+        "mutated_sha256": "54b806ad100e9cbce5b855e9a500ef8f983d9a26733b0e93cb7ccd4c8a766ae9",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1927
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\odd_pad_lost\\sim\\tb_v3_wav_bounds_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\odd_pad_lost\\sim\\tb_v3_wav_bounds_equivalence"
+      },
+      "metadata_sha256": "c465ba9c91b145e97de2ac413003540c787459ebb1d6193fcb3d09afbb534f6a",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_bounds_equivalence",
+        "suite": "wav_bounds_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/wav_bounds_equivalence_sim.json",
+        "current_manifest_sha256": "3410f9005cb80635c804318c5a247a39e7ae10ed1f33ff6d4e718fbb404f684b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1927
+      ],
+      "log_sha256": "73aa8b4f4ad9c62539742e6a868d344036a0d29a25755935224eec289125d9b2"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\odd_pad_lost",
+  "checked": {
+    "metadata": {
+      "mutation": "odd_pad_lost",
+      "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+      "suite": "wav_bounds_equivalence",
+      "top": "tb_v3_wav_bounds_equivalence",
+      "patch": [
+        {
+          "before": "||(assembled[0]&&(&chunk_eq))",
+          "after": ""
+        }
+      ],
+      "original_sha256": "d0896f4bf0b7fcc77096f4459d2e4d6fa45adeaf667d02274740f27b08ab53b6",
+      "mutated_sha256": "54b806ad100e9cbce5b855e9a500ef8f983d9a26733b0e93cb7ccd4c8a766ae9",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1927
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\odd_pad_lost\\sim\\tb_v3_wav_bounds_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\odd_pad_lost\\sim\\tb_v3_wav_bounds_equivalence"
+    },
+    "metadata_sha256": "c465ba9c91b145e97de2ac413003540c787459ebb1d6193fcb3d09afbb534f6a",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_wav_bounds_equivalence",
+      "suite": "wav_bounds_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/wav_bounds_equivalence_sim.json",
+      "current_manifest_sha256": "3410f9005cb80635c804318c5a247a39e7ae10ed1f33ff6d4e718fbb404f684b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1927
+    ],
+    "log_sha256": "73aa8b4f4ad9c62539742e6a868d344036a0d29a25755935224eec289125d9b2",
+    "sources_sha256": "acf50d6b49e1f83a6955664ebe4974e757d0b7c05c864163f42b9016b7565f1c",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\odd_pad_lost\\runner.results.json",
+          "sha256": "9b19e4c4ea17285f607eb844e76d84c8348c344e6d9f52bdf1ed8f1d96ff9864",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\odd_pad_lost\\sim\\results.json",
+          "sha256": "9b19e4c4ea17285f607eb844e76d84c8348c344e6d9f52bdf1ed8f1d96ff9864",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

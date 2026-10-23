@@ -1,0 +1,160 @@
+{
+  "kind": "negative",
+  "name": "flex_progress_base_load_progress_disabled",
+  "record": {
+    "kind": "negative",
+    "name": "flex_progress_base_load_progress_disabled",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\negative\\flex_progress_base_load_progress_disabled",
+    "checked": {
+      "metadata": {
+        "mutation": "flex_progress_base_load_progress_disabled",
+        "target": "safevision/rtl/control/v3_supervisor.v",
+        "suite": "progress_watchdog_base561",
+        "top": "tb_v3_progress_watchdog_base561",
+        "patch": [
+          {
+            "before": "wire load_progress=PROGRESSIVE_LOAD && (progress_heartbeat || mem_heartbeat);",
+            "after": "wire load_progress=1'b0;"
+          }
+        ],
+        "original_sha256": "09023498ac634ad775e0a8e911efffd7f4a113f6a470a59145ccee00c47c1eb8",
+        "mutated_sha256": "0fdacce9120de895dbdd6de9389bceb6e68bb7f0f7b8bd9d071056643fae610d",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "detected": true,
+        "native_stages_completed": true,
+        "tool_failure": false,
+        "source_unchanged": true,
+        "original_producer": "D:\\Codex\\svflex537\\finalflex616\\negative\\flex_progress_base_load_progress_disabled\\run\\tb_v3_progress_watchdog_base561",
+        "producer_folder": "D:\\Codex\\svflex537\\finalflex616\\negative\\flex_progress_base_load_progress_disabled\\run\\tb_v3_progress_watchdog_base561",
+        "error_counts": [
+          1551
+        ],
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "parameter_only_revalidation": {
+          "original_execution_root": "D:\\Codex\\svflex537\\candidate616",
+          "original_execution_commit": "c2fe3817e81b884ba68f68e15639947c86378661",
+          "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+          "current_source_commit": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+          "original_producer_config": "D:\\Codex\\svflex537\\finalflex616\\producers.json",
+          "original_producer_config_sha256": "0c67f81737bcfc6a9ab408a92ca36a9e512528b668e459878715bd01a9018c3c",
+          "functional_native_execution_repeated": false
+        }
+      },
+      "metadata_sha256": "a6e093dfb9b859d96a9dfe355347b69588059993adb06185429dd96c484f5807",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_progress_watchdog_base561",
+        "suite": "progress_watchdog_base561",
+        "ordered_analyzed_HDL": 7,
+        "manifest": "safevision/build/manifests/progress_watchdog_base561_sim.json",
+        "current_manifest_sha256": "fc0839ad653538f4ff9b49019a2b50b42274cfe09e2324acd4e19fd76a050b5f",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 0,
+        "generation_inputs": 15,
+        "generation_before_sha256": "162fbe51a865be754a3001acdbe70825ee9406e409f088cf0c5e2bc2c5572023",
+        "generation_after_sha256": "162fbe51a865be754a3001acdbe70825ee9406e409f088cf0c5e2bc2c5572023"
+      },
+      "error_counts": [
+        1551
+      ],
+      "log_sha256": "e066c282bb61c238e0ba1a60a701c8b6a590631bb4fb06ebc2173384feb2b3ac"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\negative\\flex_progress_base_load_progress_disabled",
+  "checked": {
+    "metadata": {
+      "mutation": "flex_progress_base_load_progress_disabled",
+      "target": "safevision/rtl/control/v3_supervisor.v",
+      "suite": "progress_watchdog_base561",
+      "top": "tb_v3_progress_watchdog_base561",
+      "patch": [
+        {
+          "before": "wire load_progress=PROGRESSIVE_LOAD && (progress_heartbeat || mem_heartbeat);",
+          "after": "wire load_progress=1'b0;"
+        }
+      ],
+      "original_sha256": "09023498ac634ad775e0a8e911efffd7f4a113f6a470a59145ccee00c47c1eb8",
+      "mutated_sha256": "0fdacce9120de895dbdd6de9389bceb6e68bb7f0f7b8bd9d071056643fae610d",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "detected": true,
+      "native_stages_completed": true,
+      "tool_failure": false,
+      "source_unchanged": true,
+      "original_producer": "D:\\Codex\\svflex537\\finalflex616\\negative\\flex_progress_base_load_progress_disabled\\run\\tb_v3_progress_watchdog_base561",
+      "producer_folder": "D:\\Codex\\svflex537\\finalflex616\\negative\\flex_progress_base_load_progress_disabled\\run\\tb_v3_progress_watchdog_base561",
+      "error_counts": [
+        1551
+      ],
+      "strict_generated_inputs": 1,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "parameter_only_revalidation": {
+        "original_execution_root": "D:\\Codex\\svflex537\\candidate616",
+        "original_execution_commit": "c2fe3817e81b884ba68f68e15639947c86378661",
+        "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+        "current_source_commit": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+        "original_producer_config": "D:\\Codex\\svflex537\\finalflex616\\producers.json",
+        "original_producer_config_sha256": "0c67f81737bcfc6a9ab408a92ca36a9e512528b668e459878715bd01a9018c3c",
+        "functional_native_execution_repeated": false
+      }
+    },
+    "metadata_sha256": "a6e093dfb9b859d96a9dfe355347b69588059993adb06185429dd96c484f5807",
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_progress_watchdog_base561",
+      "suite": "progress_watchdog_base561",
+      "ordered_analyzed_HDL": 7,
+      "manifest": "safevision/build/manifests/progress_watchdog_base561_sim.json",
+      "current_manifest_sha256": "fc0839ad653538f4ff9b49019a2b50b42274cfe09e2324acd4e19fd76a050b5f",
+      "binding": "actual_compiler_and_current_manifest",
+      "strict_generated_inputs_verified": true,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "generator_dependencies": 0,
+      "runtime_assets": 0,
+      "generation_inputs": 15,
+      "generation_before_sha256": "162fbe51a865be754a3001acdbe70825ee9406e409f088cf0c5e2bc2c5572023",
+      "generation_after_sha256": "162fbe51a865be754a3001acdbe70825ee9406e409f088cf0c5e2bc2c5572023"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1551
+    ],
+    "log_sha256": "e066c282bb61c238e0ba1a60a701c8b6a590631bb4fb06ebc2173384feb2b3ac",
+    "sources_sha256": "162fbe51a865be754a3001acdbe70825ee9406e409f088cf0c5e2bc2c5572023",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\negative\\flex_progress_base_load_progress_disabled\\runner.results.json",
+          "sha256": "1683ca4cd4444cfb7878988845b9d10f643b1e79ad98d39e6daafb2d68626f63",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\finalflex616\\negative\\flex_progress_base_load_progress_disabled\\run\\results.json",
+          "sha256": "1683ca4cd4444cfb7878988845b9d10f643b1e79ad98d39e6daafb2d68626f63",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

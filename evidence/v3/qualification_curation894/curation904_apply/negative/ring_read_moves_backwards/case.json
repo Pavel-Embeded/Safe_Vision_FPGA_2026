@@ -1,0 +1,23 @@
+{
+  "mutation": "ring_read_moves_backwards",
+  "target": "safevision/rtl/audio/v3_pcm_ring.v",
+  "suite": "ring_pointer_count300",
+  "top": "tb_v3_ring_pointer_count300",
+  "patch": [
+    {
+      "before": "rp[slot_index]<=rp[slot_index]+1'b1;",
+      "after": "rp[slot_index]<=rp[slot_index]-1'b1;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative430\\n\\ring_read_moves_backwards",
+  "original_sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8",
+  "mutated_sha256": "6de63e6cd26188ec3da0aa62a9b47544ff5413357e186e86cdb285d90da008b7",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    262144
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative430\\n\\ring_read_moves_backwards\\sim\\tb_v3_ring_pointer_count300"
+}

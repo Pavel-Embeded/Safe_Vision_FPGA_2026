@@ -1,0 +1,24 @@
+{
+  "mutation": "volume_column_gain_ignored",
+  "target": "safevision/rtl/hd/v3_status_layers.v",
+  "suite": "volume_columns_hd",
+  "top": "tb_v3_volume_columns_hd",
+  "patch": [
+    {
+      "before": "volume_q<=volume>100?7'd100:volume;",
+      "after": "volume_q<=7'd100;"
+    }
+  ],
+  "original_sha256": "4065a5148957f6d77b15b1427bea7703bf2a5cddda5b6727f8c044c54717010c",
+  "mutated_sha256": "3f318e5c7e2e666eb5f85ff3230a31040e2366a689f1d51d1f53e5dd9ef811f8",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    46310
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\volume_column_gain_ignored\\sim\\tb_v3_volume_columns_hd",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\volume_column_gain_ignored\\sim\\tb_v3_volume_columns_hd"
+}

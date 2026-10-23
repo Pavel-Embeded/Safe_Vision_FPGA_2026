@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "reject_carry_wrong_bit",
+  "top": "tb_v3_hd_reject_carry",
+  "suite": "hd_reject_carry",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "reject_carry_wrong_bit",
+    "target": "safevision/rtl/hd/v3_supervisor.v",
+    "suite": "hd_reject_carry",
+    "top": "tb_v3_hd_reject_carry",
+    "patch": [
+      {
+        "before": "rejected_rise=rejected_order_sum[16]",
+        "after": "rejected_rise=rejected_order_sum[15]"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "reject_carry_wrong_bit",
+    "target": "safevision/rtl/hd/v3_supervisor.v",
+    "suite": "hd_reject_carry",
+    "top": "tb_v3_hd_reject_carry",
+    "patch": [
+      {
+        "before": "rejected_rise=rejected_order_sum[16]",
+        "after": "rejected_rise=rejected_order_sum[15]"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_carry_wrong_bit",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\negative\\reject_carry_wrong_bit",
+  "checked": {
+    "metadata": {
+      "mutation": "reject_carry_wrong_bit",
+      "target": "safevision/rtl/hd/v3_supervisor.v",
+      "suite": "hd_reject_carry",
+      "top": "tb_v3_hd_reject_carry",
+      "patch": [
+        {
+          "before": "rejected_rise=rejected_order_sum[16]",
+          "after": "rejected_rise=rejected_order_sum[15]"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\reject_carry_wrong_bit\\sim\\tb_v3_hd_reject_carry",
+      "original_sha256": "2e7e07748fe4856576e9690cf237f6a34f4a18800ba1cc498891dec53698c0bd",
+      "mutated_sha256": "c9cd1fc74ba1b6c9f0cd475e96730a3f19088c5f67e9d938666a8c7a7896b599",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        622537
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\reject_carry_wrong_bit\\sim\\tb_v3_hd_reject_carry",
+      "return_code": 1
+    },
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_reject_carry",
+      "suite": "hd_reject_carry",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/hd_reject_carry_sim.json",
+      "current_manifest_sha256": "dc46bffc8ecd4f0cd3ced68e4136196b703144bdd99ee3a1e51c058c1daa74ff",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      622537
+    ],
+    "log_sha256": "b42bfe1e70edfee497df3bc2e13de4051ece00f5da50b2a107db7bf9c531e940",
+    "metadata_sha256": "ac80296e9137e7be5b1d1f278b203dc14447f79f81d29b6e8e34bdf5b775d040",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_carry_wrong_bit\\case.json",
+      "sha256": "ac80296e9137e7be5b1d1f278b203dc14447f79f81d29b6e8e34bdf5b775d040"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_carry_wrong_bit\\sim.log",
+      "sha256": "b42bfe1e70edfee497df3bc2e13de4051ece00f5da50b2a107db7bf9c531e940"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_carry_wrong_bit\\sources.sha256.json",
+      "sha256": "3232ea40bc184c2e4d8e0868810d822ac97cf122468a3022c9283b8adea8bc30"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_carry_wrong_bit\\original.producer.metadata.json",
+      "sha256": "ac80296e9137e7be5b1d1f278b203dc14447f79f81d29b6e8e34bdf5b775d040"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_carry_wrong_bit\\producer.provenance.json",
+      "sha256": "62a295e6dd994a72295dfb46fe8c08bb6c1b1c7aa0043d6cae335096199d19b3"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_carry_wrong_bit\\sources.prj",
+      "sha256": "2d29511fa8cfb201882152ae3872c7a34883170d77b8f9d771c4a696039b7817"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\reject_carry_wrong_bit\\mutant.v",
+      "sha256": "c9cd1fc74ba1b6c9f0cd475e96730a3f19088c5f67e9d938666a8c7a7896b599"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

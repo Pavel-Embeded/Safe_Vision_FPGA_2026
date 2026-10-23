@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "hud_green_channel_zeroed",
+  "record": {
+    "kind": "negative",
+    "name": "hud_green_channel_zeroed",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hud_green_channel_zeroed",
+    "checked": {
+      "metadata": {
+        "mutation": "hud_green_channel_zeroed",
+        "target": "safevision/rtl/video/v3_constant224_blend.v",
+        "suite": "hud_palette192",
+        "top": "tb_v3_hud_palette192",
+        "patch": [
+          {
+            "before": "g_kind={foreground[10]^foreground[9],foreground[10]}",
+            "after": "g_kind=2'd0"
+          }
+        ],
+        "original_sha256": "150b02018a20b19d8a32f85b97dc89da38ca36825ae4c050346f1f300078c153",
+        "mutated_sha256": "fb05c4f8e469b42f12d2bbdc9099694483351e891e60bbf60bae2ee2702a58c7",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          327678
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hud_green_channel_zeroed\\sim\\tb_v3_hud_palette192",
+        "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\hud_green_channel_zeroed\\sim\\tb_v3_hud_palette192"
+      },
+      "metadata_sha256": "3f6397b258002927d2047d494406472c098a4d6d9315134ebfaac593e1666472",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hud_palette192",
+        "suite": "hud_palette192",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/hud_palette192_sim.json",
+        "current_manifest_sha256": "6b0a2b1cfc274f78bbfadbbbb009211a43a7a8af6477b0a09df2d2e2050b8320",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        327678
+      ],
+      "log_sha256": "b22f20553aabc816d89b1070de9a5fca0404455abfb9d224146a91add9092497"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hud_green_channel_zeroed",
+  "checked": {
+    "metadata": {
+      "mutation": "hud_green_channel_zeroed",
+      "target": "safevision/rtl/video/v3_constant224_blend.v",
+      "suite": "hud_palette192",
+      "top": "tb_v3_hud_palette192",
+      "patch": [
+        {
+          "before": "g_kind={foreground[10]^foreground[9],foreground[10]}",
+          "after": "g_kind=2'd0"
+        }
+      ],
+      "original_sha256": "150b02018a20b19d8a32f85b97dc89da38ca36825ae4c050346f1f300078c153",
+      "mutated_sha256": "fb05c4f8e469b42f12d2bbdc9099694483351e891e60bbf60bae2ee2702a58c7",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        327678
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hud_green_channel_zeroed\\sim\\tb_v3_hud_palette192",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\hud_green_channel_zeroed\\sim\\tb_v3_hud_palette192"
+    },
+    "metadata_sha256": "3f6397b258002927d2047d494406472c098a4d6d9315134ebfaac593e1666472",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hud_palette192",
+      "suite": "hud_palette192",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/hud_palette192_sim.json",
+      "current_manifest_sha256": "6b0a2b1cfc274f78bbfadbbbb009211a43a7a8af6477b0a09df2d2e2050b8320",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      327678
+    ],
+    "log_sha256": "b22f20553aabc816d89b1070de9a5fca0404455abfb9d224146a91add9092497",
+    "sources_sha256": "297f424a6c74cd4b3a2416a2f8ddffa4a44cdb29e6f5ca996b25a3872e093f3d",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\negative\\hud_green_channel_zeroed\\sim\\results.json",
+          "sha256": "8c4819f90fa0b3eac27df034f21747406483863f648b794af76c45bf1d546913",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

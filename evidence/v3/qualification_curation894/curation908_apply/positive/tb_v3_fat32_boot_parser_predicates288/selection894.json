@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_fat32_boot_parser_predicates288",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_fat32_boot_parser_predicates288",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_arithmetic_261023\\positive\\tb_v3_fat32_boot_parser_predicates288",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_fat32_boot_parser_predicates288",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 7388549,
+        "elapsed_s": 16.625,
+        "suite": "fat32_boot_parser_predicates288",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_fat32_boot_parser_predicates288\\sim\\tb_v3_fat32_boot_parser_predicates288"
+      },
+      "metadata_sha256": "b5fbce073cb88ddef436c5f18bb2e5e88972ceee2f3ada821acca7476c837f2e",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_fat32_boot_parser_predicates288",
+        "suite": "fat32_boot_parser_predicates288",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/fat32_boot_parser_predicates288_sim.json",
+        "current_manifest_sha256": "4eca37c4650d49631e189f00135cae82ca5d47bf02b414deb336cc0616d53f93",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d18a906f44c56b91ee04e8a0c2f1d53f265a5268f7181ac974f0951a3620d1ef"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_arithmetic_261023\\positive\\tb_v3_fat32_boot_parser_predicates288",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_fat32_boot_parser_predicates288",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 7388549,
+      "elapsed_s": 16.625,
+      "suite": "fat32_boot_parser_predicates288",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_fat32_boot_parser_predicates288\\sim\\tb_v3_fat32_boot_parser_predicates288"
+    },
+    "metadata_sha256": "b5fbce073cb88ddef436c5f18bb2e5e88972ceee2f3ada821acca7476c837f2e",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_fat32_boot_parser_predicates288",
+      "suite": "fat32_boot_parser_predicates288",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/fat32_boot_parser_predicates288_sim.json",
+      "current_manifest_sha256": "4eca37c4650d49631e189f00135cae82ca5d47bf02b414deb336cc0616d53f93",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "d18a906f44c56b91ee04e8a0c2f1d53f265a5268f7181ac974f0951a3620d1ef",
+    "sources_sha256": "36b6457c5e581a0caae4c30f2cf5879b1d18b94080b51f15b58c0fc0e4f7a0c6",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_arithmetic_261023\\positive\\tb_v3_fat32_boot_parser_predicates288\\runner.results.json",
+          "sha256": "6aafd51cc708ae86e698185375c11458b67a49a915c902bcadff501961c2d37a",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_fat32_boot_parser_predicates288\\sim\\results.json",
+          "sha256": "6aafd51cc708ae86e698185375c11458b67a49a915c902bcadff501961c2d37a",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

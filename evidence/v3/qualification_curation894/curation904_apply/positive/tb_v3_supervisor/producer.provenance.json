@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "576_curated",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor\\result.json",
+  "original_metadata_sha256": "bde93a66610498201d8ec2d3b99f44f48a83af29ea52302e6d98464aecab1a8d",
+  "original_log_sha256": "6f34e1852e84b1e1581d3bbe327f06a8d1abb7c0ea5e69e333b85630847f5682",
+  "matrix_definition": {
+    "top": "tb_v3_supervisor",
+    "suite": "v3_board",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

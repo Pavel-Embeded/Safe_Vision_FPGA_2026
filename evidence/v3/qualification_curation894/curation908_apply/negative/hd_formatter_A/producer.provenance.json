@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_formatter_A",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_formatter_A\\case.json",
+  "original_metadata_sha256": "a2091609c00d3e1e0cc83beaff09823540c634f20709bd20e00e4d1497b54179",
+  "original_log_sha256": "293ed1eb476fd7650f884c5347e6b6cea909e975e01bfa86e9f141185d006a57",
+  "matrix_definition": {
+    "mutation": "hd_formatter_A",
+    "target": "safevision/rtl/hd/v3_uart_link.v",
+    "suite": "hd_formatter",
+    "top": "tb_v3_hd_uart_formatter_equivalence",
+    "patch": [
+      {
+        "before": "4'ha:hex=8'h41",
+        "after": "4'ha:hex=8'h42"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

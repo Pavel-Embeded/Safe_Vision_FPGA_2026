@@ -1,0 +1,10 @@
+{
+  "complete": true,
+  "accepted": true,
+  "focused_positive": 3,
+  "focused_expected_rejections": 24,
+  "bus_hfn_positive": 3,
+  "bus_hfn_expected_rejections": 14,
+  "current_native892_pending": true,
+  "hardware_verified": false
+}

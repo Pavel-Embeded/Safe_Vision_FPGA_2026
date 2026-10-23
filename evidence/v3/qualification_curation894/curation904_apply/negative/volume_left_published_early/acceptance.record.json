@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "volume_left_published_early",
+  "top": "tb_v3_volume_dsp_equivalence",
+  "suite": "volume_dsp_equivalence",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "volume_left_published_early",
+    "target": "safevision/rtl/audio/v3_audio_volume.v",
+    "suite": "volume_dsp_equivalence",
+    "top": "tb_v3_volume_dsp_equivalence",
+    "patch": [
+      {
+        "before": "if(count==36)",
+        "after": "if(count==35)"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "volume_left_published_early",
+    "target": "safevision/rtl/audio/v3_audio_volume.v",
+    "suite": "volume_dsp_equivalence",
+    "top": "tb_v3_volume_dsp_equivalence",
+    "patch": [
+      {
+        "before": "if(count==36)",
+        "after": "if(count==35)"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\volume_left_published_early",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\volume_left_published_early",
+  "checked": {
+    "metadata": {
+      "mutation": "volume_left_published_early",
+      "target": "safevision/rtl/audio/v3_audio_volume.v",
+      "suite": "volume_dsp_equivalence",
+      "top": "tb_v3_volume_dsp_equivalence",
+      "patch": [
+        {
+          "before": "if(count==36)",
+          "after": "if(count==35)"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative174\\n\\volume_left_published_early\\sim\\tb_v3_volume_dsp_equivalence",
+      "original_sha256": "62a8fc172b26b2cb7441989a39ebc0853d646c03c270ed3ee041d5a655be216c",
+      "mutated_sha256": "3ff976c9912c46cdb160049f4ac6be9dd6915d21e58569d0fb500811a6ae8d4a",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        25581
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative174\\n\\volume_left_published_early\\sim\\tb_v3_volume_dsp_equivalence"
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_volume_dsp_equivalence",
+      "suite": "volume_dsp_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/volume_dsp_equivalence_sim.json",
+      "current_manifest_sha256": "1b66d5459307a18fd2925a0ade51258c7191ae8b6c201e1c583067442cce5bc2",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      25581
+    ],
+    "log_sha256": "faa1f990a3edf43ebf0930630a3746a50c0a781e1aa6fb7f49f1dcd88834311e",
+    "metadata_sha256": "6f7e74495f4e5b1ee298f8890c0419eb5d094983fa2ab6e09cdb67cdde407a8d",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\volume_left_published_early\\case.json",
+      "sha256": "6f7e74495f4e5b1ee298f8890c0419eb5d094983fa2ab6e09cdb67cdde407a8d"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\volume_left_published_early\\sim.log",
+      "sha256": "faa1f990a3edf43ebf0930630a3746a50c0a781e1aa6fb7f49f1dcd88834311e"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\volume_left_published_early\\sources.sha256.json",
+      "sha256": "a11b700e03b9f847191aac8a97fa07d155d55f9a6ce8e26ccf5d836844caa3a4"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\volume_left_published_early\\original.producer.metadata.json",
+      "sha256": "6f7e74495f4e5b1ee298f8890c0419eb5d094983fa2ab6e09cdb67cdde407a8d"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\volume_left_published_early\\producer.provenance.json",
+      "sha256": "9e3839703920084fa9dbd3b41be6972bcf863428ecb92b5cad412242d899b02b"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\volume_left_published_early\\sources.prj",
+      "sha256": "16313d74dc7d5d584c48fc7770f900cd49497a9ba6b0bada8eb239e2e0111ffb"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\volume_left_published_early\\mutant.v",
+      "sha256": "3ff976c9912c46cdb160049f4ac6be9dd6915d21e58569d0fb500811a6ae8d4a"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

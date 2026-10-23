@@ -1,0 +1,120 @@
+{
+  "kind": "negative",
+  "name": "recovery_ack",
+  "record": {
+    "kind": "negative",
+    "name": "recovery_ack",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\recovery_ack",
+    "checked": {
+      "metadata": {
+        "mutation": "recovery_ack",
+        "target": "safevision/rtl/control/media_recovery_ctrl.v",
+        "suite": "v3",
+        "top": "tb_v3_recovery_events",
+        "patch": [
+          {
+            "before": "state<=IDLE;safe_latched<=0;attempts<=0;recovered<=1;",
+            "after": "state<=IDLE;safe_latched<=0;attempts<=0;recovered<=0;"
+          }
+        ],
+        "required_marker": "[FAIL]",
+        "original_sha256": "5952cc814bf6e6d5424e074d9ffc36e7ab5276a38b8ee7a6b866b41e22bd21dd",
+        "mutated_sha256": "05dc73db1fdfcdb6e905e0d9a5a63bb116acfccad0b8cd3e0d62031d8cd2bd05",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1000
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\recovery_ack\\sim\\tb_v3_recovery_events",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\recovery_ack\\sim\\tb_v3_recovery_events"
+      },
+      "metadata_sha256": "57ef77626dc61058fa83ab5f63720398f657824e7e7dfbe254734155b7e864e2",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_recovery_events",
+        "suite": "v3",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/v3_sim.json",
+        "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1000
+      ],
+      "log_sha256": "19926aff1baa58c9f5ceaa92c65561661d859e39b39fddf70d83d567dc1e6fa0"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\recovery_ack",
+  "checked": {
+    "metadata": {
+      "mutation": "recovery_ack",
+      "target": "safevision/rtl/control/media_recovery_ctrl.v",
+      "suite": "v3",
+      "top": "tb_v3_recovery_events",
+      "patch": [
+        {
+          "before": "state<=IDLE;safe_latched<=0;attempts<=0;recovered<=1;",
+          "after": "state<=IDLE;safe_latched<=0;attempts<=0;recovered<=0;"
+        }
+      ],
+      "required_marker": "[FAIL]",
+      "original_sha256": "5952cc814bf6e6d5424e074d9ffc36e7ab5276a38b8ee7a6b866b41e22bd21dd",
+      "mutated_sha256": "05dc73db1fdfcdb6e905e0d9a5a63bb116acfccad0b8cd3e0d62031d8cd2bd05",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1000
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\recovery_ack\\sim\\tb_v3_recovery_events",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\recovery_ack\\sim\\tb_v3_recovery_events"
+    },
+    "metadata_sha256": "57ef77626dc61058fa83ab5f63720398f657824e7e7dfbe254734155b7e864e2",
+    "input_count": 40,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_recovery_events",
+      "suite": "v3",
+      "ordered_analyzed_HDL": 28,
+      "manifest": "safevision/build/manifests/v3_sim.json",
+      "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1000
+    ],
+    "log_sha256": "19926aff1baa58c9f5ceaa92c65561661d859e39b39fddf70d83d567dc1e6fa0",
+    "sources_sha256": "eeb503c5feb34805cb0b8eea32d307d50efccc174560830f3013d5f7ccbe4220",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\recovery_ack\\runner.results.json",
+          "sha256": "8039891bbcea2fec5e63e782a2c4d15fc8974d5b5dd3c9b6d792fffdb89b4cd3",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\recovery_ack\\sim\\results.json",
+          "sha256": "8039891bbcea2fec5e63e782a2c4d15fc8974d5b5dd3c9b6d792fffdb89b4cd3",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "kind": "negative",
+  "name": "disabled_read_alignment",
+  "record": {
+    "kind": "negative",
+    "name": "disabled_read_alignment",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top",
+    "checked": {
+      "metadata": {
+        "mutation": "disabled_read_alignment",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "v3_board_top",
+        "top": "tb_v3_board_top",
+        "patch": [
+          {
+            "before": ".READ_DATA_LEADS_VALID(1)",
+            "after": ".READ_DATA_LEADS_VALID(0)"
+          }
+        ],
+        "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+        "mutated_sha256": "26aa30512e4731f3351d1a66500eee978980c853f65cf2869cd649bcf504a88e",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          60
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top",
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top"
+      },
+      "metadata_sha256": "fa5f17b7a052f54a33c71bbec8fd40aa3da270708c66a59b3492028bea2fa758",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_board_top",
+        "suite": "v3_board_top",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/v3_board_top_sim.json",
+        "current_manifest_sha256": "bae9f366767bcd3c9507135cd6fae840f6c7bdee1acf5a6b51ae17dcc9851d03",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        60
+      ],
+      "log_sha256": "91c55b15cb8185d23d36461c0aec3776fb31c3aea983e9df8d1ac9cd3b620dc4"
+    },
+    "elapsed_s": 15.891,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top",
+  "checked": {
+    "metadata": {
+      "mutation": "disabled_read_alignment",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "v3_board_top",
+      "top": "tb_v3_board_top",
+      "patch": [
+        {
+          "before": ".READ_DATA_LEADS_VALID(1)",
+          "after": ".READ_DATA_LEADS_VALID(0)"
+        }
+      ],
+      "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+      "mutated_sha256": "26aa30512e4731f3351d1a66500eee978980c853f65cf2869cd649bcf504a88e",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        60
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top",
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top"
+    },
+    "metadata_sha256": "fa5f17b7a052f54a33c71bbec8fd40aa3da270708c66a59b3492028bea2fa758",
+    "input_count": 120,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_board_top",
+      "suite": "v3_board_top",
+      "ordered_analyzed_HDL": 105,
+      "manifest": "safevision/build/manifests/v3_board_top_sim.json",
+      "current_manifest_sha256": "bae9f366767bcd3c9507135cd6fae840f6c7bdee1acf5a6b51ae17dcc9851d03",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      60
+    ],
+    "log_sha256": "91c55b15cb8185d23d36461c0aec3776fb31c3aea983e9df8d1ac9cd3b620dc4",
+    "sources_sha256": "3e4140e8201ae8091f23f128694d35599aee793791595979bac1ddb63b8bb6a3",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\negative\\disabled_read_alignment\\sim\\results.json",
+          "sha256": "e437bb614ad24697089e8fb2cd9704f36a406f9560ec7b00807dbecdc88012a0",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

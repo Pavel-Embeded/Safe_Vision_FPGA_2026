@@ -1,0 +1,6 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate852/safevision/rtl/video/v3_packed_row_store.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_packed_row_store
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate852/safevision/verification/unit/tb_v3_packed_clock_261023.sv" into library work
+INFO: [VRFC 10-311] analyzing module packed_clock_case_261023
+INFO: [VRFC 10-311] analyzing module tb_v3_packed_clock_positive_261023
+INFO: [VRFC 10-311] analyzing module tb_v3_packed_clock_negative_261023

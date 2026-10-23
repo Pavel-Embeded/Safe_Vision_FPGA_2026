@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_hd_stream_budget_2_lat4",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_hd_stream_budget_2_lat4\\result.json",
+  "original_metadata_sha256": "e9ee2773c2a1bfca3f712a585cc4c17a0456db5f2b6d82889002a6a537ada98b",
+  "original_log_sha256": "16bda2eec1083e25d753702149deb3d80a7bff5b972eef378ac0806111d7305b",
+  "matrix_definition": {
+    "top": "tb_v3_hd_stream_budget_2_lat4",
+    "suite": "hd_stream_budget",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

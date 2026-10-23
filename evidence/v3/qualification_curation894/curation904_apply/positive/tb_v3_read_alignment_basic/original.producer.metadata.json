@@ -1,0 +1,11 @@
+{
+  "top": "tb_v3_read_alignment_basic",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 20,
+  "elapsed_s": 7.875,
+  "suite": "read_alignment",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_read_alignment_basic\\sim\\tb_v3_read_alignment_basic"
+}

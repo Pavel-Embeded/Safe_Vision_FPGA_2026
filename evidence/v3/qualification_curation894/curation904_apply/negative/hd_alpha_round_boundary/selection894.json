@@ -1,0 +1,107 @@
+{
+  "kind": "negative",
+  "name": "hd_alpha_round_boundary",
+  "record": {
+    "kind": "negative",
+    "name": "hd_alpha_round_boundary",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_alpha_round_boundary",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_alpha_round_boundary",
+        "target": "safevision/rtl/hd/alpha_blend.v",
+        "suite": "hd_alpha",
+        "top": "tb_v3_hd_alpha_equivalence",
+        "patch": [
+          {
+            "before": "cr<=sr_next[7:0]>=~{2'b0,sr_next[13:8]};",
+            "after": "cr<=sr_next[7:0]>~{2'b0,sr_next[13:8]};"
+          }
+        ],
+        "original_sha256": "c5d6344b76ccc7be181a0e6d36adbb0de3af77837c4056916a179c7e8625f2b4",
+        "mutated_sha256": "b3d0522d8a035cd180fca54ee4ca99788f85097e9fe383846261b67dc91a84fd",
+        "mutant_file": "mutant.v",
+        "return_code": 1,
+        "normal_completion": true,
+        "detected": true,
+        "error_counts": [
+          4165
+        ],
+        "previous_evidence": "evidence/v3/handbook_26101901/gate15/negative/hd_alpha_round_boundary",
+        "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_alpha_round_boundary",
+        "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_alpha_round_boundary"
+      },
+      "metadata_sha256": "dd3314a6aba11ff4e2613e5e48719101dd045cfd63d2393f238e69b1a95d5740",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_alpha_equivalence",
+        "suite": "hd_alpha",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_alpha_sim.json",
+        "current_manifest_sha256": "ef2c038df3f12572beef9b204c193aa68571c799ce5d3a935b7097e7d2332765",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        4165
+      ],
+      "log_sha256": "adfff25c25f2ce38ebebee1f9d8df36e4d11cda067a26e4102548236bc39ad3e"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_alpha_round_boundary",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_alpha_round_boundary",
+      "target": "safevision/rtl/hd/alpha_blend.v",
+      "suite": "hd_alpha",
+      "top": "tb_v3_hd_alpha_equivalence",
+      "patch": [
+        {
+          "before": "cr<=sr_next[7:0]>=~{2'b0,sr_next[13:8]};",
+          "after": "cr<=sr_next[7:0]>~{2'b0,sr_next[13:8]};"
+        }
+      ],
+      "original_sha256": "c5d6344b76ccc7be181a0e6d36adbb0de3af77837c4056916a179c7e8625f2b4",
+      "mutated_sha256": "b3d0522d8a035cd180fca54ee4ca99788f85097e9fe383846261b67dc91a84fd",
+      "mutant_file": "mutant.v",
+      "return_code": 1,
+      "normal_completion": true,
+      "detected": true,
+      "error_counts": [
+        4165
+      ],
+      "previous_evidence": "evidence/v3/handbook_26101901/gate15/negative/hd_alpha_round_boundary",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_alpha_round_boundary",
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_alpha_round_boundary"
+    },
+    "metadata_sha256": "dd3314a6aba11ff4e2613e5e48719101dd045cfd63d2393f238e69b1a95d5740",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_alpha_equivalence",
+      "suite": "hd_alpha",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_alpha_sim.json",
+      "current_manifest_sha256": "ef2c038df3f12572beef9b204c193aa68571c799ce5d3a935b7097e7d2332765",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      4165
+    ],
+    "log_sha256": "adfff25c25f2ce38ebebee1f9d8df36e4d11cda067a26e4102548236bc39ad3e",
+    "sources_sha256": "5b55e58c745245d9df5927a3cd88beac200f81e8025a49f91cb012b76b3ba569",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

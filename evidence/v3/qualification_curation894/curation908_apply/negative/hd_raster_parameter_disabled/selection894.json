@@ -1,0 +1,114 @@
+{
+  "kind": "negative",
+  "name": "hd_raster_parameter_disabled",
+  "record": {
+    "kind": "negative",
+    "name": "hd_raster_parameter_disabled",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_raster_parameter_disabled",
+        "target": "safevision/rtl/hd/v3_video_display_core.v",
+        "suite": "setting_wave_control_hd198",
+        "top": "tb_v3_setting_wave_control_hd198",
+        "patch": [
+          {
+            "before": ".RASTER_PREDECODE(HD)",
+            "after": ".RASTER_PREDECODE(0)"
+          }
+        ],
+        "original_sha256": "2c4364d5e97a9381db2627fd3c9269e148154c2394de183aff06bc1da8d6ad61",
+        "mutated_sha256": "58e04e60801b4309b923407f9df923430a85d4cc71273a2317fedea5f02c627c",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198",
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198"
+      },
+      "metadata_sha256": "68378428dd1dce810f1f4d0010b8f68b602527d5ebd6950a7e064f89dd120634",
+      "normal_completion": true,
+      "input_count": 122,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_setting_wave_control_hd198",
+        "suite": "setting_wave_control_hd198",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/setting_wave_control_hd198_sim.json",
+        "current_manifest_sha256": "acdb4440a8d7579f071f089d31d070df05f5a0e1ffac6e8a515a2d64e9f85362",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1
+      ],
+      "log_sha256": "137f3315c0d7b69e4bdd3a12d19d49abd2f3f39950fef6efcc2f2a44b00c3ddb"
+    },
+    "elapsed_s": 13.703,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_raster_parameter_disabled",
+      "target": "safevision/rtl/hd/v3_video_display_core.v",
+      "suite": "setting_wave_control_hd198",
+      "top": "tb_v3_setting_wave_control_hd198",
+      "patch": [
+        {
+          "before": ".RASTER_PREDECODE(HD)",
+          "after": ".RASTER_PREDECODE(0)"
+        }
+      ],
+      "original_sha256": "2c4364d5e97a9381db2627fd3c9269e148154c2394de183aff06bc1da8d6ad61",
+      "mutated_sha256": "58e04e60801b4309b923407f9df923430a85d4cc71273a2317fedea5f02c627c",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198",
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198"
+    },
+    "metadata_sha256": "68378428dd1dce810f1f4d0010b8f68b602527d5ebd6950a7e064f89dd120634",
+    "input_count": 122,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_setting_wave_control_hd198",
+      "suite": "setting_wave_control_hd198",
+      "ordered_analyzed_HDL": 106,
+      "manifest": "safevision/build/manifests/setting_wave_control_hd198_sim.json",
+      "current_manifest_sha256": "acdb4440a8d7579f071f089d31d070df05f5a0e1ffac6e8a515a2d64e9f85362",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1
+    ],
+    "log_sha256": "137f3315c0d7b69e4bdd3a12d19d49abd2f3f39950fef6efcc2f2a44b00c3ddb",
+    "sources_sha256": "cee771d9d5741e1a00f2a6ce2efcdf022c1322d70f414a7c31a9d5fd3d9ebf3c",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\negative\\hd_raster_parameter_disabled\\sim\\results.json",
+          "sha256": "de10811f8cab85b6e6ad2beec85f93e138835dc8bb498e82ce92c2d6ec721729",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

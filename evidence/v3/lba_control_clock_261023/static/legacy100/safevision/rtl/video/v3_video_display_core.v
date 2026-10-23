@@ -8,7 +8,8 @@ module v3_video_display_core #(
  parameter FONT_FILE="font8x16.mem",
  parameter COMPACT_FONT_FILE="../../assets/fonts/font8x16_compact.mem",
  parameter STATUS_TEXT_FILE="../../assets/fonts/v3_status_text.mem",
- parameter integer PIXEL_HZ=HD?74250000:25175000
+ parameter integer PIXEL_HZ=HD?74250000:25175000,
+ parameter integer EXTERNAL_CACHE_WRITE=0
 )(
  input wire sys_clk,mem_clk,pixel_clk,sys_rst_n,mem_rst_n,pixel_rst_n,
  input wire[31:0] uptime_bcd,input wire wave_pcm_valid,input wire[23:0] wave_pcm_left,
@@ -23,7 +24,10 @@ module v3_video_display_core #(
  input wire rd_ack,rd_busy,input wire[31:0] rd_data,input wire rd_valid,
  output wire[31:0] lookup_addr,input wire[31:0] lookup_crc,input wire lookup_valid,
  output wire[11:0] raw_x,raw_y,output wire raw_de,raw_hs,raw_vs,frame_start,
- output wire[11:0] x,y,output reg[23:0] rgb,output wire hs,vs,de
+ output wire[11:0] x,y,output reg[23:0] rgb,output wire hs,vs,de,
+ // Packed storage needs WRITE100 even when BASE controls use SYS50.
+ // Appended optional ports preserve all legacy positional connections.
+ input wire cache_write_clk,cache_write_rst_n
 );
  localparam integer CFG_W=HANDBOOK_PROFILE?99:96,DESC_W=HANDBOOK_PROFILE?26:24;
  localparam HA=HD?1280:640,HF=HD?110:16,HS=HD?40:96,HB=HD?220:48;
@@ -163,7 +167,8 @@ module v3_video_display_core #(
  end
  v3_line_cache #(.TIMEOUT(MEM_TIMEOUT),.PACKED_ROWS(PACKED_CACHE),.HANDBOOK_PROFILE(HANDBOOK_PROFILE),.READ_PIPELINE(PACKED_CACHE)) cache(
   .mem_clk(mem_clk),.mem_rst_n(fetch_mem_rst_n),.pixel_clk(pixel_clk),.pixel_rst_n(fetch_pixel_rst_n),
-  .write_clk(sys_clk),.write_rst_n(sys_rst_n&&!media_reset),
+  .write_clk(EXTERNAL_CACHE_WRITE?cache_write_clk:sys_clk),
+  .write_rst_n(EXTERNAL_CACHE_WRITE?cache_write_rst_n:(sys_rst_n&&!media_reset)),
   .prepare_valid(raw_x==HA),.prepare_sy(prepared_source_row),
   .request_valid(row_pending),.request_ready(row_request_ready),.request_data(row_descriptor),
   .response_valid(response_valid),.response_ready(1'b1),.response_data(response_data),

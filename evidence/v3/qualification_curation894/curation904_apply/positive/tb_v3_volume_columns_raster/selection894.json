@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_volume_columns_raster",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_volume_columns_raster",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_columns_raster",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_volume_columns_raster",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 4989190,
+        "elapsed_s": 138.204,
+        "suite": "volume_columns_raster",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_raster\\sim\\tb_v3_volume_columns_raster"
+      },
+      "metadata_sha256": "217f0c7dd7d7c8cff52960f435e11d35b0d2349518bcbe5ba6ca339098d2c972",
+      "normal_completion": true,
+      "input_count": 17,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_volume_columns_raster",
+        "suite": "volume_columns_raster",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/volume_columns_raster_sim.json",
+        "current_manifest_sha256": "7bbd62c10b6484fb9e4d9b78253a3b18d7da56fcbac7a6f546430ec1c24276e6",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "3fbe9d70ab8dc8f1a3bfc543c0c207c0574a1ff550859cd2ff226ac15e6fd3cc"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_columns_raster",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_volume_columns_raster",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 4989190,
+      "elapsed_s": 138.204,
+      "suite": "volume_columns_raster",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_raster\\sim\\tb_v3_volume_columns_raster"
+    },
+    "metadata_sha256": "217f0c7dd7d7c8cff52960f435e11d35b0d2349518bcbe5ba6ca339098d2c972",
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_volume_columns_raster",
+      "suite": "volume_columns_raster",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/volume_columns_raster_sim.json",
+      "current_manifest_sha256": "7bbd62c10b6484fb9e4d9b78253a3b18d7da56fcbac7a6f546430ec1c24276e6",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "3fbe9d70ab8dc8f1a3bfc543c0c207c0574a1ff550859cd2ff226ac15e6fd3cc",
+    "sources_sha256": "8518d3fabf3dce3575391604714afe0335d63c9aa5103d1c6c11493a90996c3d",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_raster\\sim\\results.json",
+          "sha256": "651ca04dfe685927db856165ab36b9a954d30ebf0f5f53cf98ca0c6f31d3c6bd",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

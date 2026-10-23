@@ -1,0 +1,25 @@
+{
+  "mutation": "control_catalog_binding",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "control_catalog_equivalence",
+  "top": "tb_v3_control_catalog_equivalence",
+  "patch": [
+    {
+      "before": " localparam[6:0] CTRL_ID_BRIGHT=7'd5;\n",
+      "after": " localparam[6:0] CTRL_ID_BRIGHT=7'd127;\n"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+  "mutated_sha256": "03ef368ed9a4236af16e966a0f6512d7498603bacf9391c9f829a7ac8afbe340",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    226638
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_catalog_binding\\sim\\tb_v3_control_catalog_equivalence",
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_catalog_binding\\sim\\tb_v3_control_catalog_equivalence"
+}

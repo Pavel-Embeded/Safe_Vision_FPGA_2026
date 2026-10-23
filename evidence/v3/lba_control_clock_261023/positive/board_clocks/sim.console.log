@@ -10,7 +10,7 @@ Vivado Simulator 2018.3
 Time resolution is 1 ps
 run -all
 [PASS] both board PLL nominal frequencies, core/HUD parameter paths and seeded terminal-count boundaries
-[TB] tb_v3_board_clocks done errors=0 comparisons=195
-$finish called at time : 1902 ns : File "D:/Codex/svflex537/pipe805_root/safevision/verification/unit/tb_v3_board_clocks.sv" Line 43
+[TB] tb_v3_board_clocks done errors=0 comparisons=219
+$finish called at time : 1982 ns : File "D:/Codex/svflex537/candidate883/safevision/verification/unit/tb_v3_board_clocks.sv" Line 63
 exit
-INFO: [Common 17-206] Exiting xsim at Fri Oct 23 12:38:38 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 16:27:24 2026...

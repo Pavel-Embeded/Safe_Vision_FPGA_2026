@@ -1,0 +1,39 @@
+{
+  "mutation": "normalizer_red_blue_swapped",
+  "target": "safevision/rtl/media/v3_bmp_normalizer.v",
+  "suite": "normalizer_miter203",
+  "top": "tb_v3_normalizer_miter203",
+  "patch": [
+    {
+      "before": "captured<={din[7:3],green[7:2],blue[7:3]};",
+      "after": "captured<={blue[7:3],green[7:2],din[7:3]};"
+    }
+  ],
+  "original_sha256": "8274d134d118a8af850ff61b0ddcb012330be3829f72babd6d1a2d8ef1427fc6",
+  "mutated_sha256": "7cda6939a5cc4a0b2f18945e9a9193e7eb9460d48c2c957f3500e0d3ae3f3ee1",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    973244,
+    1946489,
+    3099771,
+    4253048,
+    5510492,
+    6767895,
+    10435570,
+    14103274,
+    17783337,
+    21463384,
+    26212124,
+    33211744,
+    47256910,
+    47259551,
+    47261514,
+    47261514
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203",
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203"
+}

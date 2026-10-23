@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "final618_native",
+  "action": "rerun",
+  "original_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\walker_equal_hop_allowed\\sim\\tb_v3_walker_loop_equivalence",
+  "original_metadata_file": "D:\\Codex\\svflex537\\original618\\negative\\walker_equal_hop_allowed\\sim\\tb_v3_walker_loop_equivalence\\case.json",
+  "original_metadata_sha256": "3ef521d9bdc17f37b702a2123e14cb8bf119f25968aee2b58c95059573e04c29",
+  "original_log_sha256": "107a9533013a50066a03840035c967d97084acca6af863604765964d9a9164e1",
+  "matrix_definition": {
+    "mutation": "walker_equal_hop_allowed",
+    "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+    "suite": "walker_loop_equivalence",
+    "top": "tb_v3_walker_loop_equivalence",
+    "patch": [
+      {
+        "before": "(gt[0]||eq[0])",
+        "after": "gt[0]"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

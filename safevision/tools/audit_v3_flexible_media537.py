@@ -160,8 +160,8 @@ def requirements(root,index,matrix):
  if str(root/'safevision/tools')not in sys.path:sys.path.insert(0,str(root/'safevision/tools'))
  from v3_sources import snapshot
  physical=snapshot(root);strict=strict_manifests(root)
- require(len(physical)==205 and matrix['physical_source_sha256']==physical,'FLEX requires the current explicit205 physical inputs')
- return dict(requirements_verified=True,expected_positive=303,expected_negative=221,expected_records=304,expected_physical=205,new_positive=13,new_negative=16,base_positive=290,base_negative=205,base_positive_definition_sha256=pos_digest,base_negative_definition_sha256=neg_digest,actual_base_negative_definition_sha256=actual_neg_digest,reviewed_counter_fault_model=counter_model,new_positive_tops=sorted(wanted_pos),new_mutations=sorted(wanted_neg),strict_native_inputs=strict)
+ require(len(physical)==206 and matrix['physical_source_sha256']==physical and 'safevision/tools/check_v3_native_clock_domains.py' in physical,'FLEX requires all206 explicit physical inputs, including native WRITE100 clock-domain verification')
+ return dict(requirements_verified=True,expected_positive=303,expected_negative=221,expected_records=304,expected_physical=206,new_positive=13,new_negative=16,base_positive=290,base_negative=205,base_positive_definition_sha256=pos_digest,base_negative_definition_sha256=neg_digest,actual_base_negative_definition_sha256=actual_neg_digest,reviewed_counter_fault_model=counter_model,new_positive_tops=sorted(wanted_pos),new_mutations=sorted(wanted_neg),strict_native_inputs=strict)
 
 def _strip_comments(text):
  return re.sub(r'("(?:\\.|[^"\\])*")|//[^\n]*|/\*[\s\S]*?\*/',lambda match:match.group(1)or' ',text)

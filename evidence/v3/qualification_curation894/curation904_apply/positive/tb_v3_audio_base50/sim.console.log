@@ -1,0 +1,19 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_audio_base50/xsim_script.tcl
+# xsim {tb_v3_audio_base50} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[INFO] generation=1 stereo_pairs=1200 underflows=0
+[INFO] generation=2 stereo_pairs=1200 underflows=0
+[PASS] stereo full-scale, 4-domain FIFO, 48k, target800pairs, generation switch, alarm mediareset, energy/CTS
+PASS tb_v3_audio_base50 errors=0 comparisons=2700 HDMI_pairs=5630 ACR=117 under=0 over=0
+$finish called at time : 117292750035 ps : File "D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_v3_audio_modes.sv" Line 92
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:01:07 . Memory (MB): peak = 219.676 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:37:58 2026...

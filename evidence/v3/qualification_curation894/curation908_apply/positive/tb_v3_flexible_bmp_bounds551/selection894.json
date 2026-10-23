@@ -1,0 +1,114 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_flexible_bmp_bounds551",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_flexible_bmp_bounds551",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\positive\\tb_v3_flexible_bmp_bounds551",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_flexible_bmp_bounds551",
+        "status": "PASS",
+        "source_overrides": [],
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "checks": 46,
+        "data_comparisons": 2105,
+        "elapsed_s": 19.0,
+        "suite": "flexible_bmp_bounds551",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_flexible_bmp_bounds551\\sim\\tb_v3_flexible_bmp_bounds551"
+      },
+      "metadata_sha256": "da053aafa2651dcc475327ca862c262832fb1b56f98cb3cddbf002a528d78119",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_flexible_bmp_bounds551",
+        "suite": "flexible_bmp_bounds551",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/flexible_bmp_bounds551_sim.json",
+        "current_manifest_sha256": "93539314f46753a67da7fc77fb12850b7565a03894c4128034aaa63cfbc5280e",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 2,
+        "generation_inputs": 13,
+        "generation_before_sha256": "bc5245de1232841f6dd05e1b099eca07634abde6637b3e1c69c20bc81bc74fdb",
+        "generation_after_sha256": "bc5245de1232841f6dd05e1b099eca07634abde6637b3e1c69c20bc81bc74fdb"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "1654409bfb1f8ca6225fefdae625689ac46e3ad7a927678f4bf420a94c8f5002"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\positive\\tb_v3_flexible_bmp_bounds551",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_flexible_bmp_bounds551",
+      "status": "PASS",
+      "source_overrides": [],
+      "strict_generated_inputs": 1,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "checks": 46,
+      "data_comparisons": 2105,
+      "elapsed_s": 19.0,
+      "suite": "flexible_bmp_bounds551",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_flexible_bmp_bounds551\\sim\\tb_v3_flexible_bmp_bounds551"
+    },
+    "metadata_sha256": "da053aafa2651dcc475327ca862c262832fb1b56f98cb3cddbf002a528d78119",
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_flexible_bmp_bounds551",
+      "suite": "flexible_bmp_bounds551",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/flexible_bmp_bounds551_sim.json",
+      "current_manifest_sha256": "93539314f46753a67da7fc77fb12850b7565a03894c4128034aaa63cfbc5280e",
+      "binding": "actual_compiler_and_current_manifest",
+      "strict_generated_inputs_verified": true,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "generator_dependencies": 0,
+      "runtime_assets": 2,
+      "generation_inputs": 13,
+      "generation_before_sha256": "bc5245de1232841f6dd05e1b099eca07634abde6637b3e1c69c20bc81bc74fdb",
+      "generation_after_sha256": "bc5245de1232841f6dd05e1b099eca07634abde6637b3e1c69c20bc81bc74fdb"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "1654409bfb1f8ca6225fefdae625689ac46e3ad7a927678f4bf420a94c8f5002",
+    "sources_sha256": "2cfb2e8beed3a53b76ddc2cd775187134380a0113932dfcd09fbb452f6d02189",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\positive\\tb_v3_flexible_bmp_bounds551\\runner.results.json",
+          "sha256": "7f539126a229676e665eaec5dbd2b5819843f0a1a89cf955d1c2154dc89a9c54",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_flexible_bmp_bounds551\\sim\\results.json",
+          "sha256": "7f539126a229676e665eaec5dbd2b5819843f0a1a89cf955d1c2154dc89a9c54",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

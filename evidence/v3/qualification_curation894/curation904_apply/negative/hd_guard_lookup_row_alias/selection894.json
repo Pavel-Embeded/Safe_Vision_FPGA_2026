@@ -1,0 +1,111 @@
+{
+  "kind": "negative",
+  "name": "hd_guard_lookup_row_alias",
+  "record": {
+    "kind": "negative",
+    "name": "hd_guard_lookup_row_alias",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_guard_lookup_row_alias",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_guard_lookup_row_alias",
+        "target": "safevision/rtl/hd/v3_row_integrity.v",
+        "suite": "hd_guard_3_128",
+        "top": "tb_v3_hd_guard_3_128",
+        "patch": [
+          {
+            "before": "query_ok?query_row:10'd0",
+            "after": "query_ok?10'd0:10'd0"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svnegative328\\n\\hd_guard_lookup_row_alias\\sim\\tb_v3_hd_guard_3_128",
+        "original_sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368",
+        "mutated_sha256": "e1dd04f3c05591123a2e126e394ceb9ab2fa12b4ecc24db537e80cc46b3e033b",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          2553
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svnegative328\\n\\hd_guard_lookup_row_alias\\sim\\tb_v3_hd_guard_3_128"
+      },
+      "metadata_sha256": "dbeff6fcdce4895fe84b7448323e685aa4fed8e684efe29f307fa141a384477d",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_guard_3_128",
+        "suite": "hd_guard_3_128",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_guard_3_128_sim.json",
+        "current_manifest_sha256": "6438f5f9bc3e47494c45578522140b157d7ef6793252a33b529e2d2d57f36ad0",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        2553
+      ],
+      "log_sha256": "bcf2696c2ab06952de3b4c4bc723dd1fd16051d2cf4243ff37a43a87eeef380c"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_guard_lookup_row_alias",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_guard_lookup_row_alias",
+      "target": "safevision/rtl/hd/v3_row_integrity.v",
+      "suite": "hd_guard_3_128",
+      "top": "tb_v3_hd_guard_3_128",
+      "patch": [
+        {
+          "before": "query_ok?query_row:10'd0",
+          "after": "query_ok?10'd0:10'd0"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative328\\n\\hd_guard_lookup_row_alias\\sim\\tb_v3_hd_guard_3_128",
+      "original_sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368",
+      "mutated_sha256": "e1dd04f3c05591123a2e126e394ceb9ab2fa12b4ecc24db537e80cc46b3e033b",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        2553
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative328\\n\\hd_guard_lookup_row_alias\\sim\\tb_v3_hd_guard_3_128"
+    },
+    "metadata_sha256": "dbeff6fcdce4895fe84b7448323e685aa4fed8e684efe29f307fa141a384477d",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_guard_3_128",
+      "suite": "hd_guard_3_128",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_guard_3_128_sim.json",
+      "current_manifest_sha256": "6438f5f9bc3e47494c45578522140b157d7ef6793252a33b529e2d2d57f36ad0",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      2553
+    ],
+    "log_sha256": "bcf2696c2ab06952de3b4c4bc723dd1fd16051d2cf4243ff37a43a87eeef380c",
+    "sources_sha256": "c00647a315d136e6ca20e155412d2854b055928f06c22e54e69289753eb1d798",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svnegative328\\n\\hd_guard_lookup_row_alias\\sim\\results.json",
+          "sha256": "04a239dc4300340bc51acf93be3e9b3ad830bde5ffcc71554efc30bc435519c1",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

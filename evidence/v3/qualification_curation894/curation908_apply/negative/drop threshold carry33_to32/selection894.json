@@ -1,0 +1,115 @@
+{
+  "kind": "negative",
+  "name": "drop threshold carry33_to32",
+  "record": {
+    "kind": "negative",
+    "name": "drop threshold carry33_to32",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\drop threshold carry33_to32",
+    "checked": {
+      "metadata": {
+        "mutation": "drop threshold carry33_to32",
+        "target": "safevision/rtl/control/v3_supervisor.v",
+        "suite": "supervisor_threshold",
+        "top": "tb_v3_supervisor_threshold",
+        "patch": [
+          {
+            "before": " wire video_threshold=!video_limit[32] && ge_groups(video_gt,video_eq);\n wire audio_threshold=!audio_limit[32] && ge_groups(audio_gt,audio_eq);\n",
+            "after": " wire video_threshold=1'b1 && ge_groups(video_gt,video_eq);\n wire audio_threshold=1'b1 && ge_groups(audio_gt,audio_eq);\n"
+          }
+        ],
+        "required_marker": "[FAIL]",
+        "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\drop threshold carry33_to32\\sim\\tb_v3_supervisor_threshold",
+        "original_sha256": "09023498ac634ad775e0a8e911efffd7f4a113f6a470a59145ccee00c47c1eb8",
+        "mutated_sha256": "95c43a96c6bde304389dbffc6de065d46a0eaf79f5f8fb1920759a924f0d762b",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          121
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\drop threshold carry33_to32\\sim\\tb_v3_supervisor_threshold",
+        "return_code": 1
+      },
+      "metadata_sha256": "2d197978b6889315ffa8937ce2e90cb3360f8cdfb67c161a068f3dfa1020dd8f",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_supervisor_threshold",
+        "suite": "supervisor_threshold",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/supervisor_threshold_sim.json",
+        "current_manifest_sha256": "fa273e8bcfcb7375c3f61503acda0ffffc644bbe6b5a58c3429265367147c8e3",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        121
+      ],
+      "log_sha256": "fd2a17a783563ab8c383451b91db9a014567ff40f8c94080b1ae7fc404383fd9"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\drop threshold carry33_to32",
+  "checked": {
+    "metadata": {
+      "mutation": "drop threshold carry33_to32",
+      "target": "safevision/rtl/control/v3_supervisor.v",
+      "suite": "supervisor_threshold",
+      "top": "tb_v3_supervisor_threshold",
+      "patch": [
+        {
+          "before": " wire video_threshold=!video_limit[32] && ge_groups(video_gt,video_eq);\n wire audio_threshold=!audio_limit[32] && ge_groups(audio_gt,audio_eq);\n",
+          "after": " wire video_threshold=1'b1 && ge_groups(video_gt,video_eq);\n wire audio_threshold=1'b1 && ge_groups(audio_gt,audio_eq);\n"
+        }
+      ],
+      "required_marker": "[FAIL]",
+      "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\drop threshold carry33_to32\\sim\\tb_v3_supervisor_threshold",
+      "original_sha256": "09023498ac634ad775e0a8e911efffd7f4a113f6a470a59145ccee00c47c1eb8",
+      "mutated_sha256": "95c43a96c6bde304389dbffc6de065d46a0eaf79f5f8fb1920759a924f0d762b",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        121
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\drop threshold carry33_to32\\sim\\tb_v3_supervisor_threshold",
+      "return_code": 1
+    },
+    "metadata_sha256": "2d197978b6889315ffa8937ce2e90cb3360f8cdfb67c161a068f3dfa1020dd8f",
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_supervisor_threshold",
+      "suite": "supervisor_threshold",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/supervisor_threshold_sim.json",
+      "current_manifest_sha256": "fa273e8bcfcb7375c3f61503acda0ffffc644bbe6b5a58c3429265367147c8e3",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      121
+    ],
+    "log_sha256": "fd2a17a783563ab8c383451b91db9a014567ff40f8c94080b1ae7fc404383fd9",
+    "sources_sha256": "7617c521cea90830ee1d4e50508a265587083d894715a29282e6b7dedb17a27e",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\regression576_stable\\negative\\drop threshold carry33_to32\\sim\\results.json",
+          "sha256": "b22fa88310a13bdff999cc52307ad5eb5e136d9188c73e710fb1be7fa72cc1cb",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

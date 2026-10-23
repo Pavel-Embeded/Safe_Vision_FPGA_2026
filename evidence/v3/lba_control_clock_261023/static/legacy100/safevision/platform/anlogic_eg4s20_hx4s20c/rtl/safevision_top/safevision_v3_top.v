@@ -18,9 +18,16 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  // BASE: 50MHz*17*4/(3*45); HD: 50MHz*1*89/(4*15).
  // These are configured nominal frequencies, not measured oscillator values.
  localparam integer PIXEL_HZ=HD?74166667:25185185;
+ // The handbook specifies100MHz as a recommendation, not a fixed media rate.
+ // BASE controls/UART/watchdogs share the real50MHz memory PLL output.
+ // Pixel/serial clocks,SD SPI,SDRAM phase and48k audio keep their old rates.
+ localparam integer SYS_HZ=100000000;
+ localparam integer RECOVERY_CYCLES=490000000;
+ wire pll_sys100_clk;
  wire sys_clk,mem_clk,mem_clk_sft,pixel_clk,serial_clk,audio_clk;
+ assign pll_sys100_clk=sys_clk;
  wire sys_lock,video_lock,audio_lock,ref_rst_n,common_rst_n,control_common_rst_n;
- wire sys_rst_n,mem_rst_n,pixel_rst_n,audio_rst_n,config_rst_n;
+ wire sys_rst_n,mem_rst_n,pixel_rst_n,audio_rst_n,config_rst_n,cache_write_rst_n;
  // Configuration retains user settings across KEY1/media reset. The six
  // configuration-initialized flops start a fresh epoch only when FPGA is
  // configured/powered; this is SRAM state, not nonvolatile user storage.
@@ -58,6 +65,10 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  reset_sync reset_media_ref(.clk(clk),.async_rst_n(media_common_rst_n),.rst_n(ref_media_rst_n));
  reset_sync #(.RELEASE_FALLING(1)) reset_media_mem(.clk(mem_clk),.async_rst_n(media_common_rst_n),.rst_n(mem_media_rst_n));
  reset_sync reset_media_sys(.clk(sys_clk),.async_rst_n(media_common_rst_n),.rst_n(sys_media_rst_n));
+ // The packed row serializer writes one16-bit half on each100MHz edge.
+ // It must remain twice MEM50, independently of the slower BASE control clock.
+ // Assert in the common media epoch; release synchronously in WRITE100.
+ reset_sync reset_cache_write(.clk(pll_sys100_clk),.async_rst_n(media_common_rst_n),.rst_n(cache_write_rst_n));
 
  wire sdr_init_done,sdr_ref_valid,sdr_busy,app_wr_en,app_rd_en,sdr_rd_en;
  wire[20:0] app_wr_addr,app_rd_addr;wire[3:0] app_wr_dm;wire[31:0] app_wr_din,sdr_rd_dout;
@@ -140,12 +151,27 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire verify_req,verify_ack,verify_busy,verify_valid;wire[31:0] verify_addr,verify_data;wire[15:0] verify_len;
  wire[31:0] lookup_addr,lookup_crc;wire lookup_valid;
  wire[31:0] guard_bad_addr,guard_expected,guard_actual,guard_words;wire[15:0] guard_rows;
+ // Observation-only pipeline: all source metadata/data and accepted flags
+ // share one MEM edge. Verification start follows the same source epoch.
+ // Read responses gain one edge; request/ack/busy retain their bus contract.
+ // This removes raw adapter/reset fanout from CRC and diagnostic enables.
+ reg guard_begin_q,guard_accept_q,guard_verify_q,guard_valid_q;
+ reg[1:0] guard_slot_q;reg guard_top_q;
+ reg[31:0] guard_write_addr_q,guard_write_data_q,guard_read_data_q;
+ always @(posedge mem_clk or negedge mem_media_rst_n)
+ if(!mem_media_rst_n)begin guard_begin_q<=0;guard_accept_q<=0;guard_verify_q<=0;guard_valid_q<=0;end
+ else begin guard_begin_q<=source_begin;guard_accept_q<=writer_accepted;
+  guard_verify_q<=verify_start;guard_valid_q<=verify_valid;end
+ always @(posedge mem_clk)begin
+  guard_slot_q<=source_slot;guard_top_q<=source_top_down;
+  guard_write_addr_q<=mem_addr;guard_write_data_q<=mem_wdata;guard_read_data_q<=verify_data;
+ end
  v3_row_integrity #(.TIMEOUT(50000000)) row_guard(.clk(mem_clk),.rst_n(mem_media_rst_n),
- .frame_begin(source_begin),.frame_slot(source_slot),.top_down(source_top_down),
- .accepted(writer_accepted),.write_addr(mem_addr),.write_data(mem_wdata),
- .verify_start(verify_start),.verify_allow(write_drained),.verify_done(guard_done),.verify_pass(guard_pass),
+ .frame_begin(guard_begin_q),.frame_slot(guard_slot_q),.top_down(guard_top_q),
+ .accepted(guard_accept_q),.write_addr(guard_write_addr_q),.write_data(guard_write_data_q),
+ .verify_start(guard_verify_q),.verify_allow(write_drained),.verify_done(guard_done),.verify_pass(guard_pass),
  .fault(guard_fault),.approved(approved),.rd_req(verify_req),.rd_addr(verify_addr),.rd_len(verify_len),
- .rd_ack(verify_ack),.rd_busy(verify_busy),.rd_valid(verify_valid),.rd_data(verify_data),
+ .rd_ack(verify_ack),.rd_busy(verify_busy),.rd_valid(guard_valid_q),.rd_data(guard_read_data_q),
  .lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),
  .bad_addr(guard_bad_addr),.bad_expected(guard_expected),.bad_actual(guard_actual),.source_words(guard_words),.checked_rows(guard_rows));
 
@@ -274,7 +300,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  energy,fault_code,audio_underflows,hud_latency};
  wire[11:0] raw_x,raw_y,out_x,out_y;wire raw_de,raw_hs,raw_vs;
  wire[23:0] rgb;wire out_hs,out_vs,out_de;
- v3_video_display_core #(.FLEX_SPECTRUM(1),.HD(HD),.HANDBOOK_PROFILE(1),.USER_FEATURES(1),.VOLUME_COLUMNS(0),.VOLUME_SETTING(0),.STATUS_TEXT_FILE("../../assets/fonts/v3_handbook_status_text.mem"),.PIXEL_HZ(PIXEL_HZ),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
+ v3_video_display_core #(.EXTERNAL_CACHE_WRITE(1),.FLEX_SPECTRUM(1),.HD(HD),.HANDBOOK_PROFILE(1),.USER_FEATURES(1),.VOLUME_COLUMNS(0),.VOLUME_SETTING(0),.STATUS_TEXT_FILE("../../assets/fonts/v3_handbook_status_text.mem"),.PIXEL_HZ(PIXEL_HZ),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
+ .cache_write_clk(pll_sys100_clk),.cache_write_rst_n(cache_write_rst_n),
  .sys_rst_n(sys_rst_n),.mem_rst_n(mem_rst_n),.pixel_rst_n(pixel_rst_n),.media_reset(media_reset),
  .uptime_bcd(boot_bcd_pixel),.wave_pcm_valid(pcm_valid),.wave_pcm_left(pcm_left),
  .cfg_valid(1'b1),.cfg_ready(cfg_ready),.cfg_data(cfg_data),.cache_valid(cache_sys),.next_request(next_request || auto_tick),
@@ -486,7 +513,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  (* keep="true" *) wire[31:0] b_diag_payload2=({32{b_diag_low[2]}} & {20'd0,ref_status_sys[203:192]});
  (* keep="true" *) wire[31:0] b_diag_payload3=({32{b_diag_low[3]}} & ref_status_sys[79:48]) |
   ({32{b_diag_low[4]}} & {18'd0,energy,volume});
- (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & 32'h26102237);
+ (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & 32'h26102301);
  (* keep="true" *) wire[31:0] b_diag_next1=b_diag_payload1 & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next2=b_diag_payload2 & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next3=b_diag_payload3 & {32{b_diag_payload_valid}};

@@ -1,0 +1,132 @@
+{
+  "kind": "negative",
+  "name": "flex_fft_palette",
+  "record": {
+    "kind": "negative",
+    "name": "flex_fft_palette",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\flex_fft_palette\\sim\\tb_v3_spectrum539",
+    "checked": {
+      "metadata": {
+        "mutation": "flex_fft_palette",
+        "target": "safevision/rtl/video/v3_audio_spectrum.v",
+        "suite": "spectrum539",
+        "top": "tb_v3_spectrum539",
+        "patch": [
+          {
+            "before": "16'h05bf;",
+            "after": "16'h031f;"
+          }
+        ],
+        "original_sha256": "53f6c0b91204e0967d9b16724860e12bde76a575a173b68a2af1fe79b0f8df2f",
+        "mutated_sha256": "37679708d0b8a8c7d73be3998c5fa3109e9192b17164b0ba6f4d82c6710297ba",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          418437
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\flex_fft_palette\\sim\\tb_v3_spectrum539",
+        "original_producer": "D:\\Codex\\svflex537\\qualification860\\negative\\flex_fft_palette\\sim\\tb_v3_spectrum539",
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py"
+      },
+      "metadata_sha256": "a5c7145f7c739238ec82ac9b90db2a390c9698c38b2c40c14000f51494e1a146",
+      "normal_completion": true,
+      "input_count": 18,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_spectrum539",
+        "suite": "spectrum539",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/spectrum539_sim.json",
+        "current_manifest_sha256": "960cce54ad83056d8b5a11602d376a6877409926fb7c05c9c3f1da0ae716f813",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 4,
+        "generation_inputs": 14,
+        "generation_before_sha256": "e35f47537dd7bcc1dd0677a9c415aa036a9c555ffc09acddfa31e9ed1a62a7c8",
+        "generation_after_sha256": "e35f47537dd7bcc1dd0677a9c415aa036a9c555ffc09acddfa31e9ed1a62a7c8"
+      },
+      "error_counts": [
+        418437
+      ],
+      "log_sha256": "e29e0bf0af3582a2a9203c8b21a37327e7c0cd87505b795444b60d5001957efe"
+    },
+    "elapsed_s": 24.844,
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification860\\negative\\flex_fft_palette\\sim\\tb_v3_spectrum539",
+  "checked": {
+    "metadata": {
+      "mutation": "flex_fft_palette",
+      "target": "safevision/rtl/video/v3_audio_spectrum.v",
+      "suite": "spectrum539",
+      "top": "tb_v3_spectrum539",
+      "patch": [
+        {
+          "before": "16'h05bf;",
+          "after": "16'h031f;"
+        }
+      ],
+      "original_sha256": "53f6c0b91204e0967d9b16724860e12bde76a575a173b68a2af1fe79b0f8df2f",
+      "mutated_sha256": "37679708d0b8a8c7d73be3998c5fa3109e9192b17164b0ba6f4d82c6710297ba",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        418437
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\flex_fft_palette\\sim\\tb_v3_spectrum539",
+      "original_producer": "D:\\Codex\\svflex537\\qualification860\\negative\\flex_fft_palette\\sim\\tb_v3_spectrum539",
+      "strict_generated_inputs": 1,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py"
+    },
+    "metadata_sha256": "a5c7145f7c739238ec82ac9b90db2a390c9698c38b2c40c14000f51494e1a146",
+    "input_count": 18,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_spectrum539",
+      "suite": "spectrum539",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/spectrum539_sim.json",
+      "current_manifest_sha256": "960cce54ad83056d8b5a11602d376a6877409926fb7c05c9c3f1da0ae716f813",
+      "binding": "actual_compiler_and_current_manifest",
+      "strict_generated_inputs_verified": true,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "generator_dependencies": 0,
+      "runtime_assets": 4,
+      "generation_inputs": 14,
+      "generation_before_sha256": "e35f47537dd7bcc1dd0677a9c415aa036a9c555ffc09acddfa31e9ed1a62a7c8",
+      "generation_after_sha256": "e35f47537dd7bcc1dd0677a9c415aa036a9c555ffc09acddfa31e9ed1a62a7c8"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      418437
+    ],
+    "log_sha256": "e29e0bf0af3582a2a9203c8b21a37327e7c0cd87505b795444b60d5001957efe",
+    "sources_sha256": "7b0185e1d758e83bd3ae7a9e8ef72ae27026c4f6bf80e23382a279edfbcd33a6",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification860\\negative\\flex_fft_palette\\sim\\results.json",
+          "sha256": "f4f47ad6df7eb4f53e19c3d3bd751fe0a22d2a5c0c4baa20b831fe66748467ae",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

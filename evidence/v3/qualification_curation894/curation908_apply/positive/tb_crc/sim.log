@@ -1,0 +1,35 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 13:27:46 2026
+# Process ID: 41412
+# Current directory: D:/Codex/svflex537/qualification811/positive/tb_crc/sim/tb_crc
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_crc/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/qualification811/positive/tb_crc/sim/tb_crc/sim.log
+# Journal file: D:/Codex/svflex537/qualification811/positive/tb_crc/sim/tb_crc\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_crc/xsim_script.tcl
+# xsim {tb_crc} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] CRC16 XMODEM(123456789)==0x31C3
+[PASS] C16 empty message == init 0x0000
+[PASS] CRC7 empty message == init 0x00
+[PASS] ian 4-stage cascade == byte-wise
+[PASS] 7(CMD0) == 0x4A (from algorithm)
+[PASS] nd-bit byte == SD_CRC_CMD0 macro
+[PASS] CMD0 frame byte 0 == 0x40
+[PASS] 7(CMD8) == 0x43 (from algorithm)
+[PASS] nd-bit byte == SD_CRC_CMD8 macro
+[PASS] CMD8 frame byte 0 == 0x48
+[PASS] CMD8 check pattern == 0xAA
+
+============================================
+  tb_crc : PASS=11 FAIL=0
+============================================
+[PASS] tb_crc all 11 checks passed
+$finish called at time : 29 ns : File "D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_crc.sv" Line 170
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:27:50 2026...

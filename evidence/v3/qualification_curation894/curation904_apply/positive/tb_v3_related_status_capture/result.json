@@ -1,0 +1,13 @@
+{
+  "top": "tb_v3_related_status_capture",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 4316,
+  "elapsed_s": 7.594,
+  "suite": "related_status_capture",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_related_status_capture\\sim\\tb_v3_related_status_capture"
+}

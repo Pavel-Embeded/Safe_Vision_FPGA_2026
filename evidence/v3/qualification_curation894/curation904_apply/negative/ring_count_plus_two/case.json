@@ -1,0 +1,23 @@
+{
+  "mutation": "ring_count_plus_two",
+  "target": "safevision/rtl/audio/v3_pcm_ring.v",
+  "suite": "ring_pointer_count300",
+  "top": "tb_v3_ring_pointer_count300",
+  "patch": [
+    {
+      "before": "occupancy=wp[slot_index]-rp[slot_index];",
+      "after": "occupancy=(wp[slot_index]-rp[slot_index])<<1;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative318\\n\\ring_count_plus_two\\sim\\tb_v3_ring_pointer_count300",
+  "original_sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8",
+  "mutated_sha256": "b44d57df67678125ad5f24d7b4827b461b6f20bc531720f12fd23049e384dfae",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    3670016
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative318\\n\\ring_count_plus_two\\sim\\tb_v3_ring_pointer_count300"
+}

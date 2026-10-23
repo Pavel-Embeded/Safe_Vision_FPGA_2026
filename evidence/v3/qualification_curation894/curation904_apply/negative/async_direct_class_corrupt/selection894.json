@@ -1,0 +1,114 @@
+{
+  "kind": "negative",
+  "name": "async_direct_class_corrupt",
+  "record": {
+    "kind": "negative",
+    "name": "async_direct_class_corrupt",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\async_direct_class_corrupt\\sim\\tb_v3_diag_board",
+    "checked": {
+      "metadata": {
+        "mutation": "async_direct_class_corrupt",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "diag_board",
+        "top": "tb_v3_diag_board",
+        "patch": [
+          {
+            "before": "if(diag_reply_valid)begin b_reply_fast<=0;",
+            "after": "if(diag_reply_valid)begin b_reply_fast<=1;"
+          }
+        ],
+        "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+        "mutated_sha256": "39ca6f4132333f97344451eff8cc08741fa71b63de14b5c5f26290807b8a5859",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          14
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\async_direct_class_corrupt\\sim\\tb_v3_diag_board",
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\async_direct_class_corrupt\\sim\\tb_v3_diag_board"
+      },
+      "metadata_sha256": "27e2491fe44a4f79ed2844bc204a07649bb737b80f890c5f616e52eccad588de",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_diag_board",
+        "suite": "diag_board",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/diag_board_sim.json",
+        "current_manifest_sha256": "f4b545bf36ae15576b92e6a1abd687961dbe7773b2ab28749c24688f64b3104f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        14
+      ],
+      "log_sha256": "5fa178b1bb8c4f883a79d08296ef112ab13672a85f0c139ec496728d31eae3f8"
+    },
+    "elapsed_s": 17.391,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\negative\\async_direct_class_corrupt\\sim\\tb_v3_diag_board",
+  "checked": {
+    "metadata": {
+      "mutation": "async_direct_class_corrupt",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "diag_board",
+      "top": "tb_v3_diag_board",
+      "patch": [
+        {
+          "before": "if(diag_reply_valid)begin b_reply_fast<=0;",
+          "after": "if(diag_reply_valid)begin b_reply_fast<=1;"
+        }
+      ],
+      "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+      "mutated_sha256": "39ca6f4132333f97344451eff8cc08741fa71b63de14b5c5f26290807b8a5859",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        14
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\async_direct_class_corrupt\\sim\\tb_v3_diag_board",
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\async_direct_class_corrupt\\sim\\tb_v3_diag_board"
+    },
+    "metadata_sha256": "27e2491fe44a4f79ed2844bc204a07649bb737b80f890c5f616e52eccad588de",
+    "input_count": 120,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_diag_board",
+      "suite": "diag_board",
+      "ordered_analyzed_HDL": 105,
+      "manifest": "safevision/build/manifests/diag_board_sim.json",
+      "current_manifest_sha256": "f4b545bf36ae15576b92e6a1abd687961dbe7773b2ab28749c24688f64b3104f",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      14
+    ],
+    "log_sha256": "5fa178b1bb8c4f883a79d08296ef112ab13672a85f0c139ec496728d31eae3f8",
+    "sources_sha256": "fe424d5566b7dd602175ff5e8f343ffbaf0cd442bf6579d5d527b71789c8f721",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\negative\\async_direct_class_corrupt\\sim\\results.json",
+          "sha256": "5df1b60dc128d46e95e72fe4af58bb3c28e9472c044e48c6767438a12dc3db41",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

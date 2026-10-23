@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_related_status_capture",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_related_status_capture",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_related_status_capture",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_related_status_capture",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 4316,
+        "elapsed_s": 7.594,
+        "suite": "related_status_capture",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_related_status_capture\\sim\\tb_v3_related_status_capture"
+      },
+      "metadata_sha256": "688361cd0cafc146b68a5133d6fae2af6bf2fa7dfc11220b47efb5480ac535fb",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_related_status_capture",
+        "suite": "related_status_capture",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/related_status_capture_sim.json",
+        "current_manifest_sha256": "655b55c33855cb5a45a82952b48d4896ac89877cc2d48fd3e145c937417533ac",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "2550134470d88abf3f20707d021bea685489ede131ff86930a521c960aca86cf"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_related_status_capture",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_related_status_capture",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 4316,
+      "elapsed_s": 7.594,
+      "suite": "related_status_capture",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_related_status_capture\\sim\\tb_v3_related_status_capture"
+    },
+    "metadata_sha256": "688361cd0cafc146b68a5133d6fae2af6bf2fa7dfc11220b47efb5480ac535fb",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_related_status_capture",
+      "suite": "related_status_capture",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/related_status_capture_sim.json",
+      "current_manifest_sha256": "655b55c33855cb5a45a82952b48d4896ac89877cc2d48fd3e145c937417533ac",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "2550134470d88abf3f20707d021bea685489ede131ff86930a521c960aca86cf",
+    "sources_sha256": "15b2c73339409fc17188d6a8dcc0ca2c9123eda80dfe98abe10351a428f217c8",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_related_status_capture\\runner.results.json",
+          "sha256": "5267c5b5a8c3986eca7a75b5a8adaa72c66d29c26e113e0b3a321f56211d5f87",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_related_status_capture\\sim\\results.json",
+          "sha256": "5267c5b5a8c3986eca7a75b5a8adaa72c66d29c26e113e0b3a321f56211d5f87",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "accepted": true,
+  "full_functional_audit_passed": true,
+  "new_HDL_executions": 0,
+  "native_selections_reused_with_full_revalidation": true,
+  "source_build_commit": "c6a6549871d97755708120d2a76239011cef94bb",
+  "hardware_verified": false,
+  "STA_approved": false,
+  "github_uploaded": false,
+  "command": [
+    "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "D:\\Codex\\svflex537\\candidate892\\safevision\\tools\\audit_v3_four_features.py",
+    "--repo",
+    "D:\\Codex\\svflex537\\candidate892",
+    "--source-repo",
+    "D:\\Codex\\svflex537\\candidate892",
+    "--manifest",
+    "evidence/v3/four_features_261020/acceptance.json",
+    "--output",
+    "D:\\Codex\\svflex537\\final912_audit\\independent.functional.audit.json"
+  ],
+  "native_process_exit": 0,
+  "positive": 303,
+  "negative": 221,
+  "physical_inputs": 206,
+  "proof_inputs": 41395,
+  "full_audit_sha256": "5495201b7bfd3ed0a3702ddfdec05f96699f2811bebb3f219d6a827ac1bb158e",
+  "acceptance_sha256": "40a634a4b0600f5ec06262a7b96dc6e443d6075896e8fb4d46201431b7f34962",
+  "matrix_sha256": "1adbc6858f198679a2decdf924795b934f39ed2e15868b0e1df091386c465333"
+}

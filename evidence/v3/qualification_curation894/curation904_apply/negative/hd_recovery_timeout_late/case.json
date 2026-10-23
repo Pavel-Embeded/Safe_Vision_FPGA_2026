@@ -1,0 +1,28 @@
+{
+  "mutation": "hd_recovery_timeout_late",
+  "top": "tb_v3_hd_recovery_counter_equivalence",
+  "target": "safevision/rtl/hd/media_recovery_ctrl.v",
+  "suite": "hd_recovery_counter",
+  "patch": [
+    {
+      "before": "wait_timer>=TIMEOUT_CYCLES-2",
+      "after": "wait_timer>=TIMEOUT_CYCLES-1"
+    }
+  ],
+  "original_sha256": "5952cc814bf6e6d5424e074d9ffc36e7ab5276a38b8ee7a6b866b41e22bd21dd",
+  "mutated_sha256": "66e9ba42c6c6aceb2d43712bd27a17764e7710c747d6524994f66c9511b0314a",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "detected": true,
+  "normal_completion": true,
+  "error_counts": [
+    491
+  ],
+  "log_sha256": "426747b6b3688e0a5865dd29e3ff2d4f52a5bae34517fd38e2a58d38d787f059",
+  "initial_checker_accepted": true,
+  "assessment": "Raw normal ending, named semantic failure, nonzero errors, no compile/runtime fatal; initial checker falsely required the literal closed bracket [FAIL]",
+  "previous_evidence": "evidence/v3/handbook_26101901/development41/negative/hd_recovery_timeout_late",
+  "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_recovery_timeout_late\\sim\\tb_v3_hd_recovery_counter_equivalence",
+  "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_recovery_timeout_late\\sim\\tb_v3_hd_recovery_counter_equivalence",
+  "return_code": 1
+}

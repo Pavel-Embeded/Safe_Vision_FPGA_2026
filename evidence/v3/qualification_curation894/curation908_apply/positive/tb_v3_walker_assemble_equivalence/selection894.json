@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_walker_assemble_equivalence",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_walker_assemble_equivalence",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_walker_assemble_equivalence",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_walker_assemble_equivalence",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 706560,
+        "elapsed_s": 12.25,
+        "suite": "walker_assemble_equivalence",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_walker_assemble_equivalence\\sim\\tb_v3_walker_assemble_equivalence"
+      },
+      "metadata_sha256": "cc4b81468fccac0ea717f222e8320606fc6ccd7805f5136462124fa9f4df3391",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_walker_assemble_equivalence",
+        "suite": "walker_assemble_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/walker_assemble_equivalence_sim.json",
+        "current_manifest_sha256": "667fa68e9ca2edb2b0f913f3488f7fd5a618bbbdb584e92a2c70b4903d1ed708",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "e138e7fa13edfbc857c8d1badb1849f398a1ed8333ab2117c92363938e40a3d2"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_walker_assemble_equivalence",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_walker_assemble_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 706560,
+      "elapsed_s": 12.25,
+      "suite": "walker_assemble_equivalence",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_walker_assemble_equivalence\\sim\\tb_v3_walker_assemble_equivalence"
+    },
+    "metadata_sha256": "cc4b81468fccac0ea717f222e8320606fc6ccd7805f5136462124fa9f4df3391",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_walker_assemble_equivalence",
+      "suite": "walker_assemble_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/walker_assemble_equivalence_sim.json",
+      "current_manifest_sha256": "667fa68e9ca2edb2b0f913f3488f7fd5a618bbbdb584e92a2c70b4903d1ed708",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "e138e7fa13edfbc857c8d1badb1849f398a1ed8333ab2117c92363938e40a3d2",
+    "sources_sha256": "8f12ebedab9f4834b5fba072bc2a96491583207907883e370e3f69b072fa86cb",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq74\\p\\tb_v3_walker_assemble_equivalence\\sim\\results.json",
+          "sha256": "088dde605f6be6d83ef5bf5ca3a582ceb3184d63011522cb661eabfae21119a8",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

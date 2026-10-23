@@ -1,0 +1,25 @@
+{
+  "mutation": "drop threshold carry33_to32",
+  "target": "safevision/rtl/control/v3_supervisor.v",
+  "suite": "supervisor_threshold",
+  "top": "tb_v3_supervisor_threshold",
+  "patch": [
+    {
+      "before": " wire video_threshold=!video_limit[32] && ge_groups(video_gt,video_eq);\n wire audio_threshold=!audio_limit[32] && ge_groups(audio_gt,audio_eq);\n",
+      "after": " wire video_threshold=1'b1 && ge_groups(video_gt,video_eq);\n wire audio_threshold=1'b1 && ge_groups(audio_gt,audio_eq);\n"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\drop threshold carry33_to32\\sim\\tb_v3_supervisor_threshold",
+  "original_sha256": "09023498ac634ad775e0a8e911efffd7f4a113f6a470a59145ccee00c47c1eb8",
+  "mutated_sha256": "95c43a96c6bde304389dbffc6de065d46a0eaf79f5f8fb1920759a924f0d762b",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    121
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\drop threshold carry33_to32\\sim\\tb_v3_supervisor_threshold",
+  "return_code": 1
+}

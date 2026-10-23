@@ -1,0 +1,26 @@
+{
+  "mutation": "flex_fft_peak_decay",
+  "target": "safevision/rtl/video/v3_audio_spectrum.v",
+  "suite": "spectrum539",
+  "top": "tb_v3_spectrum539",
+  "patch": [
+    {
+      "before": "previous_peak-7'd1",
+      "after": "previous_peak"
+    }
+  ],
+  "original_sha256": "53f6c0b91204e0967d9b16724860e12bde76a575a173b68a2af1fe79b0f8df2f",
+  "mutated_sha256": "352aee67382444f2e02ee948d8a070638238456af51aab11347030f16479fac0",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    433
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\flex_fft_peak_decay\\sim\\tb_v3_spectrum539",
+  "original_producer": "D:\\Codex\\svflex537\\qualification860\\negative\\flex_fft_peak_decay\\sim\\tb_v3_spectrum539",
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py"
+}

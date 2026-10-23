@@ -1,0 +1,94 @@
+{
+  "kind": "positive",
+  "name": "tb_mbr_parser",
+  "record": {
+    "kind": "positive",
+    "name": "tb_mbr_parser",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_mbr_parser",
+    "checked": {
+      "metadata": {
+        "top": "tb_mbr_parser",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 7,
+        "elapsed_s": 8.485,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_mbr_parser\\sim\\tb_mbr_parser"
+      },
+      "metadata_sha256": "4c2fae7fed4276df2ff0f7a010b2b1e731a416b0ec8d3a78fbaaf8e754f50da6",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_mbr_parser",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d96e0ded7bbc8a89e6338594c93ae398688647e4a5771bafefbf2f5080135bc9"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_mbr_parser",
+  "checked": {
+    "metadata": {
+      "top": "tb_mbr_parser",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 7,
+      "elapsed_s": 8.485,
+      "suite": "legacy_b_fourbeat",
+      "legacy": true,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_mbr_parser\\sim\\tb_mbr_parser"
+    },
+    "metadata_sha256": "4c2fae7fed4276df2ff0f7a010b2b1e731a416b0ec8d3a78fbaaf8e754f50da6",
+    "input_count": 83,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_mbr_parser",
+      "suite": "legacy_b_fourbeat",
+      "ordered_analyzed_HDL": 75,
+      "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+      "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "d96e0ded7bbc8a89e6338594c93ae398688647e4a5771bafefbf2f5080135bc9",
+    "sources_sha256": "659d3a49161b4244c3be6a418c515ae91f4668383135e974d5807da6d210a1e2",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_mbr_parser\\runner.results.json",
+          "sha256": "f8d5f681359aaf2a75eb1c99c4cff2b5ddaf78389be3519d49ed5980fe532828",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_mbr_parser\\sim\\results.json",
+          "sha256": "f8d5f681359aaf2a75eb1c99c4cff2b5ddaf78389be3519d49ed5980fe532828",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

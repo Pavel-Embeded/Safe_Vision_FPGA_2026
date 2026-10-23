@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_supervisor_comparator",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_supervisor_comparator",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor_comparator",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_supervisor_comparator",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 724608,
+        "elapsed_s": 8.297,
+        "suite": "supervisor_comparator",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_supervisor_comparator\\sim\\tb_v3_supervisor_comparator"
+      },
+      "metadata_sha256": "4f7bda8fba3663006190b779d71450183acb60b185a8fb05077cd68d6eac1130",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_supervisor_comparator",
+        "suite": "supervisor_comparator",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/supervisor_comparator_sim.json",
+        "current_manifest_sha256": "e404166391a6a897eb0b94665f897d810ca090c60bdd5eb6cf51ecbec9eac1e9",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "9377772f93bd3ba78369a3534d8ecae407f9503924f6e40594c049592292f61a"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor_comparator",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_supervisor_comparator",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 724608,
+      "elapsed_s": 8.297,
+      "suite": "supervisor_comparator",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_supervisor_comparator\\sim\\tb_v3_supervisor_comparator"
+    },
+    "metadata_sha256": "4f7bda8fba3663006190b779d71450183acb60b185a8fb05077cd68d6eac1130",
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_supervisor_comparator",
+      "suite": "supervisor_comparator",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/supervisor_comparator_sim.json",
+      "current_manifest_sha256": "e404166391a6a897eb0b94665f897d810ca090c60bdd5eb6cf51ecbec9eac1e9",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "9377772f93bd3ba78369a3534d8ecae407f9503924f6e40594c049592292f61a",
+    "sources_sha256": "54582337deabeb8d34390b54207d47afe0348663984ec9dc008934b862bd3917",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_supervisor_comparator\\sim\\results.json",
+          "sha256": "1d1e51839c48d2e5b3b6bad0ead00f9432e24cf8348837b2a5287a5a8d4d3384",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

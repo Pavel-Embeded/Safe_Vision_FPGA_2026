@@ -1,0 +1,92 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_board_clocks",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_board_clocks",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_board_clocks\\sim\\tb_v3_board_clocks",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_board_clocks",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 219,
+        "elapsed_s": 15.078,
+        "suite": "v3_board_clocks",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_board_clocks\\sim\\tb_v3_board_clocks"
+      },
+      "metadata_sha256": "cd41156be1c31c723da86f484c1fe919d2d5e6ddb9fdad6273fbc41d2528c5ad",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_board_clocks",
+        "suite": "v3_board_clocks",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/v3_board_clocks_sim.json",
+        "current_manifest_sha256": "fe63c8c3a9aa6dd80aa689063283a2d7d93b86a776738cd0430e6933b00a455a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "ab396f8176c1ffc59f66a83e2fcf6594db7a6e2548c9296f19d7415e5e28f118"
+    },
+    "elapsed_s": 15.328,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_board_clocks\\sim\\tb_v3_board_clocks",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_board_clocks",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 219,
+      "elapsed_s": 15.078,
+      "suite": "v3_board_clocks",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_board_clocks\\sim\\tb_v3_board_clocks"
+    },
+    "metadata_sha256": "cd41156be1c31c723da86f484c1fe919d2d5e6ddb9fdad6273fbc41d2528c5ad",
+    "input_count": 120,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_board_clocks",
+      "suite": "v3_board_clocks",
+      "ordered_analyzed_HDL": 105,
+      "manifest": "safevision/build/manifests/v3_board_clocks_sim.json",
+      "current_manifest_sha256": "fe63c8c3a9aa6dd80aa689063283a2d7d93b86a776738cd0430e6933b00a455a",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "ab396f8176c1ffc59f66a83e2fcf6594db7a6e2548c9296f19d7415e5e28f118",
+    "sources_sha256": "717f065819e70275ae3ed69ae83fd71f9f21e092819c7a808b38e295f0860f6b",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_board_clocks\\sim\\results.json",
+          "sha256": "a5f32365face449df24fb49d6c2422b622ab7476599d6d46c97ea822ad31e035",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "hd_hud_column_phase",
+  "top": "tb_v3_hd_status_raster_equivalence",
+  "suite": "hd_status_raster",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "hd_hud_column_phase",
+    "target": "safevision/rtl/hd/v3_status_layers.v",
+    "suite": "hd_status_raster",
+    "top": "tb_v3_hd_status_raster_equivalence",
+    "patch": [
+      {
+        "before": "normal_col2<=normal_col1;",
+        "after": "normal_col2<=raw_x[2:0];"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "hd_hud_column_phase",
+    "target": "safevision/rtl/hd/v3_status_layers.v",
+    "suite": "hd_status_raster",
+    "top": "tb_v3_hd_status_raster_equivalence",
+    "patch": [
+      {
+        "before": "normal_col2<=normal_col1;",
+        "after": "normal_col2<=raw_x[2:0];"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_hud_column_phase",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_hud_column_phase\\sim\\tb_v3_hd_status_raster_equivalence",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_hud_column_phase",
+      "target": "safevision/rtl/hd/v3_status_layers.v",
+      "suite": "hd_status_raster",
+      "top": "tb_v3_hd_status_raster_equivalence",
+      "patch": [
+        {
+          "before": "normal_col2<=normal_col1;",
+          "after": "normal_col2<=raw_x[2:0];"
+        }
+      ],
+      "original_sha256": "4065a5148957f6d77b15b1427bea7703bf2a5cddda5b6727f8c044c54717010c",
+      "mutated_sha256": "d22e3cbfdf61fb1efd504b7be1fa44277ba41a6d27ec29b6b1256778e7215c90",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        137850
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_hud_column_phase\\sim\\tb_v3_hd_status_raster_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\hd_hud_column_phase\\sim\\tb_v3_hd_status_raster_equivalence"
+    },
+    "input_count": 19,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_status_raster_equivalence",
+      "suite": "hd_status_raster",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/hd_status_raster_sim.json",
+      "current_manifest_sha256": "431661bff4a80753dc70214ca3c16ca356aa11bfcf654473aad7a4507255b8c4",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      137850
+    ],
+    "log_sha256": "c4b4528e34861dd022c8fb88075b0021091e9377daaba0b3750ac0c92897bb01",
+    "metadata_sha256": "a722504414f2363c0a374f4c7ba573ae2ddcc7b381450ecb50489bb2f6bd03db",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_hud_column_phase\\case.json",
+      "sha256": "a722504414f2363c0a374f4c7ba573ae2ddcc7b381450ecb50489bb2f6bd03db"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_hud_column_phase\\sim.log",
+      "sha256": "c4b4528e34861dd022c8fb88075b0021091e9377daaba0b3750ac0c92897bb01"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_hud_column_phase\\sources.sha256.json",
+      "sha256": "dbf6bc92f8e48af90f8b32cb1b3bd948d64b773dde54921c002523e62bda3b62"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_hud_column_phase\\original.producer.metadata.json",
+      "sha256": "a722504414f2363c0a374f4c7ba573ae2ddcc7b381450ecb50489bb2f6bd03db"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_hud_column_phase\\producer.provenance.json",
+      "sha256": "3b7e7b9f7582939a11eaed491bc4c3b290d4efe67c67a8c43747138970458701"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_hud_column_phase\\sources.prj",
+      "sha256": "641a9317958ecb7f4e79d9a1fc28d8fa4366230b998adc050ccf1a4f5b86ddf7"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\hd_hud_column_phase\\mutant.v",
+      "sha256": "d22e3cbfdf61fb1efd504b7be1fa44277ba41a6d27ec29b6b1256778e7215c90"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

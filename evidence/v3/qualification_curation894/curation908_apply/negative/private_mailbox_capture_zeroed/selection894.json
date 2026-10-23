@@ -1,0 +1,111 @@
+{
+  "kind": "negative",
+  "name": "private_mailbox_capture_zeroed",
+  "record": {
+    "kind": "negative",
+    "name": "private_mailbox_capture_zeroed",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\private_mailbox_capture_zeroed",
+    "checked": {
+      "metadata": {
+        "mutation": "private_mailbox_capture_zeroed",
+        "target": "safevision/rtl/video/video_cdc/video_cdc_mailbox.v",
+        "suite": "mailbox_miter228",
+        "top": "tb_v3_mailbox_miter228",
+        "patch": [
+          {
+            "before": "if(src_rst_n&&src_valid&&src_ready)payload<=src_data;",
+            "after": "if(src_rst_n&&src_valid&&src_ready)payload<=0;"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svnegative240\\n\\private_mailbox_capture_zeroed\\sim\\tb_v3_mailbox_miter228",
+        "original_sha256": "6e9fda76c6ee8decb8caf66eb52d255ecfe588ed2a64c87d61d39b15b188931a",
+        "mutated_sha256": "51bfab73a13eb3a7e3e849695c29cfb574eec4467681114bde569c2091fdb8c2",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          209114
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svnegative240\\n\\private_mailbox_capture_zeroed\\sim\\tb_v3_mailbox_miter228"
+      },
+      "metadata_sha256": "4f4375d7551b8c2e72743685000a7eba8cb6b10846a6137c5acb827754dd9b0a",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_mailbox_miter228",
+        "suite": "mailbox_miter228",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/mailbox_miter228_sim.json",
+        "current_manifest_sha256": "859ffccad3f5829543fb08f23fa67bbda67f4d645fbc8451ad3c5cf4c9a8fa24",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        209114
+      ],
+      "log_sha256": "af75a5a594d8b2b73c03d9e7fc91b5cde24d3c617fc94fdc8eea7da76212f788"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\private_mailbox_capture_zeroed",
+  "checked": {
+    "metadata": {
+      "mutation": "private_mailbox_capture_zeroed",
+      "target": "safevision/rtl/video/video_cdc/video_cdc_mailbox.v",
+      "suite": "mailbox_miter228",
+      "top": "tb_v3_mailbox_miter228",
+      "patch": [
+        {
+          "before": "if(src_rst_n&&src_valid&&src_ready)payload<=src_data;",
+          "after": "if(src_rst_n&&src_valid&&src_ready)payload<=0;"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative240\\n\\private_mailbox_capture_zeroed\\sim\\tb_v3_mailbox_miter228",
+      "original_sha256": "6e9fda76c6ee8decb8caf66eb52d255ecfe588ed2a64c87d61d39b15b188931a",
+      "mutated_sha256": "51bfab73a13eb3a7e3e849695c29cfb574eec4467681114bde569c2091fdb8c2",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        209114
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative240\\n\\private_mailbox_capture_zeroed\\sim\\tb_v3_mailbox_miter228"
+    },
+    "metadata_sha256": "4f4375d7551b8c2e72743685000a7eba8cb6b10846a6137c5acb827754dd9b0a",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_mailbox_miter228",
+      "suite": "mailbox_miter228",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/mailbox_miter228_sim.json",
+      "current_manifest_sha256": "859ffccad3f5829543fb08f23fa67bbda67f4d645fbc8451ad3c5cf4c9a8fa24",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      209114
+    ],
+    "log_sha256": "af75a5a594d8b2b73c03d9e7fc91b5cde24d3c617fc94fdc8eea7da76212f788",
+    "sources_sha256": "d71a9da8736ffa3d3487ba05ccbb7d58020ea8b4e528e120dfff59bcc619a52d",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svnegative240\\n\\private_mailbox_capture_zeroed\\sim\\results.json",
+          "sha256": "4ba11d865644dc8d12112ddf26a1873756c32453a00e30fe826d4da1f7f3f3d1",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

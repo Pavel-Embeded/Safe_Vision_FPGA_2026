@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "packed_mux_crosses_stream",
+  "top": "tb_v3_paired_rows_base288",
+  "suite": "paired_rows_base288",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "packed_mux_crosses_stream",
+    "target": "safevision/rtl/video/v3_packed_row_store.v",
+    "suite": "paired_rows_base288",
+    "top": "tb_v3_paired_rows_base288",
+    "patch": [
+      {
+        "before": "qa0=qa[tile0_q[0]]",
+        "after": "qa0=qb[tile0_q[0]]"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "packed_mux_crosses_stream",
+    "target": "safevision/rtl/video/v3_packed_row_store.v",
+    "suite": "paired_rows_base288",
+    "top": "tb_v3_paired_rows_base288",
+    "patch": [
+      {
+        "before": "qa0=qa[tile0_q[0]]",
+        "after": "qa0=qb[tile0_q[0]]"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\packed_mux_crosses_stream",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\packed_mux_crosses_stream",
+  "checked": {
+    "metadata": {
+      "mutation": "packed_mux_crosses_stream",
+      "target": "safevision/rtl/video/v3_packed_row_store.v",
+      "suite": "paired_rows_base288",
+      "top": "tb_v3_paired_rows_base288",
+      "patch": [
+        {
+          "before": "qa0=qa[tile0_q[0]]",
+          "after": "qa0=qb[tile0_q[0]]"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative318\\n\\packed_mux_crosses_stream\\sim\\tb_v3_paired_rows_base288",
+      "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+      "mutated_sha256": "5bcae4b9108892682c45c484c49eea3bfdb5dd08c1466ba6a7d0f88cd9077c4b",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        8462362
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative318\\n\\packed_mux_crosses_stream\\sim\\tb_v3_paired_rows_base288"
+    },
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_paired_rows_base288",
+      "suite": "paired_rows_base288",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/paired_rows_base288_sim.json",
+      "current_manifest_sha256": "ad556e5d2ba42d31e0804092789fcf78b6c799c542fa43c915c6a3b003ab9dd5",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      8462362
+    ],
+    "log_sha256": "80806aa1779c159c8ce81c8f5a18339aebcb93476531353db124f733ba015304",
+    "metadata_sha256": "645003a80c0bc71b780ef1f267b8934e72b26ca550436fe6250c4061513585b8",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\packed_mux_crosses_stream\\case.json",
+      "sha256": "645003a80c0bc71b780ef1f267b8934e72b26ca550436fe6250c4061513585b8"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\packed_mux_crosses_stream\\sim.log",
+      "sha256": "80806aa1779c159c8ce81c8f5a18339aebcb93476531353db124f733ba015304"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\packed_mux_crosses_stream\\sources.sha256.json",
+      "sha256": "b391f9f80c84ca2e2fd590200539296335dea46c014d6ef90ff0e431efa20ee8"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\packed_mux_crosses_stream\\original.producer.metadata.json",
+      "sha256": "645003a80c0bc71b780ef1f267b8934e72b26ca550436fe6250c4061513585b8"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\packed_mux_crosses_stream\\producer.provenance.json",
+      "sha256": "500306a6b4166583f3a4dd38cdf84dfa631a45606cda821554bb13c99f2fc88c"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\packed_mux_crosses_stream\\sources.prj",
+      "sha256": "f5c5da5017102e711e25676f85f44c2a3ad27b600c690fdf09a97361755a6a60"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\packed_mux_crosses_stream\\mutant.v",
+      "sha256": "5bcae4b9108892682c45c484c49eea3bfdb5dd08c1466ba6a7d0f88cd9077c4b"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

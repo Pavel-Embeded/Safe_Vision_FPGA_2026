@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "shared_crc_phase_inverted",
+  "record": {
+    "kind": "negative",
+    "name": "shared_crc_phase_inverted",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\shared_crc_phase_inverted",
+    "checked": {
+      "metadata": {
+        "mutation": "shared_crc_phase_inverted",
+        "target": "safevision/rtl/memory/v3_row_integrity.v",
+        "suite": "v3",
+        "top": "tb_v3_row_integrity",
+        "patch": [
+          {
+            "before": "crc_delta=capture?",
+            "after": "crc_delta=!capture?"
+          }
+        ],
+        "original_sha256": "ef3840a00b74e7940591e40f53aa68fcae9022a2dc192ed2ee5973cb9a2c0b66",
+        "mutated_sha256": "973cfdff036aa91afdde5a6556178e6efea73bf309ff00f557c68b8d17ddbe51",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          37
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\shared_crc_phase_inverted\\sim\\tb_v3_row_integrity",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\shared_crc_phase_inverted\\sim\\tb_v3_row_integrity"
+      },
+      "metadata_sha256": "cd655c5cc6731d23e43cc9259ceb96e0610bf9233ba9a7bd5fe41ae35644a77e",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_row_integrity",
+        "suite": "v3",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/v3_sim.json",
+        "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        37
+      ],
+      "log_sha256": "a0846c36cdcfe15a4e9105dabb43328de491932065a36b21fcb3edb6b9062958"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\shared_crc_phase_inverted",
+  "checked": {
+    "metadata": {
+      "mutation": "shared_crc_phase_inverted",
+      "target": "safevision/rtl/memory/v3_row_integrity.v",
+      "suite": "v3",
+      "top": "tb_v3_row_integrity",
+      "patch": [
+        {
+          "before": "crc_delta=capture?",
+          "after": "crc_delta=!capture?"
+        }
+      ],
+      "original_sha256": "ef3840a00b74e7940591e40f53aa68fcae9022a2dc192ed2ee5973cb9a2c0b66",
+      "mutated_sha256": "973cfdff036aa91afdde5a6556178e6efea73bf309ff00f557c68b8d17ddbe51",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        37
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\shared_crc_phase_inverted\\sim\\tb_v3_row_integrity",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\shared_crc_phase_inverted\\sim\\tb_v3_row_integrity"
+    },
+    "metadata_sha256": "cd655c5cc6731d23e43cc9259ceb96e0610bf9233ba9a7bd5fe41ae35644a77e",
+    "input_count": 40,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_row_integrity",
+      "suite": "v3",
+      "ordered_analyzed_HDL": 28,
+      "manifest": "safevision/build/manifests/v3_sim.json",
+      "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      37
+    ],
+    "log_sha256": "a0846c36cdcfe15a4e9105dabb43328de491932065a36b21fcb3edb6b9062958",
+    "sources_sha256": "387e2f3257f8fb7f7b0216ca103f09aa34975ea719ffcfe80c5d40ea4c1a18c9",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\shared_crc_phase_inverted\\runner.results.json",
+          "sha256": "25e911a57b2915bef5b4a4be65187b0c8fc35209b5a96c51b1fb454637d9b294",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\shared_crc_phase_inverted\\sim\\results.json",
+          "sha256": "25e911a57b2915bef5b4a4be65187b0c8fc35209b5a96c51b1fb454637d9b294",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

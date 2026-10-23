@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\uart_base_first_byte_wrong\\sim\\tb_v3_uart_rom_base357",
+  "native_log_sha256": "dd9e24c77ea9ce25551a548971f338d9ce9ab684e38037d52f37c5cc63d3de73",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "uart_base_first_byte_wrong",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\uart_base_first_byte_wrong\\sim\\tb_v3_uart_rom_base357",
+    "checked": {
+      "metadata": {
+        "mutation": "uart_base_first_byte_wrong",
+        "target": "safevision/rtl/control/v3_uart_link.v",
+        "suite": "uart_rom_base357",
+        "top": "tb_v3_uart_rom_base357",
+        "patch": [
+          {
+            "before": "data_q<=position==0?8'd36:",
+            "after": "data_q<=position==0?8'd35:"
+          }
+        ],
+        "original_sha256": "47906bd6a546bc8975ae87dbf2106613c8aa1d92630fb303e643715f85da9dcc",
+        "mutated_sha256": "74269a7bca814f53a9af2bdb74e3b9b2804c3b7fa03c74aa88ebf1bf7b8a2455",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          10476
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\uart_base_first_byte_wrong\\sim\\tb_v3_uart_rom_base357",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\uart_base_first_byte_wrong\\sim\\tb_v3_uart_rom_base357"
+      },
+      "metadata_sha256": "e0cd9ccd30c349ba915997ff6e175e518a17de289701d224b81ff322035a5165",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_uart_rom_base357",
+        "suite": "uart_rom_base357",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/uart_rom_base357_sim.json",
+        "current_manifest_sha256": "ee213e6f65af5535211d1293385d887538a1a0940c718c9528a5e806aa7f4014",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        10476
+      ],
+      "log_sha256": "dd9e24c77ea9ce25551a548971f338d9ce9ab684e38037d52f37c5cc63d3de73"
+    },
+    "elapsed_s": 10.813
+  }
+}

@@ -1,8 +1,9 @@
 `timescale 1ns/1ps
 module tb_v3_handbook_video_model #(parameter HD=0)();
  localparam HA=HD?1280:640,VA=HD?720:480,HT=HD?1650:800,VT=HD?750:525;
- reg sys=0,mem=0,pix=0,rst=0;
- always #5 sys=~sys;always #10 mem=~mem;
+ reg sys=0,mem=0,pix=0,rst=0,cache_write=1;
+ // BASE control is 50 MHz; the separate packed writer always remains 100 MHz.
+ always #(HD?5:10) sys=~sys;always #10 mem=~mem;always #5 cache_write=~cache_write;
  generate if(HD)always #6.734 pix=~pix;else always #19.86 pix=~pix;endgenerate
  reg media_reset=0,cfg_valid=0,next_request=0,safety=0;
  reg[98:0] cfg=0;wire cfg_ready;reg[3:0] slots=15;
@@ -14,7 +15,8 @@ module tb_v3_handbook_video_model #(parameter HD=0)();
  wire[11:0] raw_x,raw_y,x,y;wire raw_de,raw_hs,raw_vs,frame_start;
  wire[23:0] rgb;wire hs,vs,de;
  reg corrupt_crc=0,allow_audio=1;
- v3_video_display_core #(.HD(HD),.HANDBOOK_PROFILE(1),.PACKED_CACHE(1),.FONT_FILE("font8x16.mem"),.COMPACT_FONT_FILE("font8x16_compact.mem"),.STATUS_TEXT_FILE("v3_handbook_status_text.mem")) dut(
+ v3_video_display_core #(.HD(HD),.HANDBOOK_PROFILE(1),.PACKED_CACHE(1),.EXTERNAL_CACHE_WRITE(1),.FONT_FILE("font8x16.mem"),.COMPACT_FONT_FILE("font8x16_compact.mem"),.STATUS_TEXT_FILE("v3_handbook_status_text.mem")) dut(
+  .cache_write_clk(cache_write),.cache_write_rst_n(rst&&!media_reset),
   .sys_clk(sys),.mem_clk(mem),.pixel_clk(pix),.sys_rst_n(rst),.mem_rst_n(rst),.pixel_rst_n(rst),
   .media_reset(media_reset),.cfg_valid(cfg_valid),.cfg_ready(cfg_ready),.cfg_data(cfg),.cache_valid(slots),
   .next_request(next_request),.safety_active(safety),.media_ready(audio_ready),.media_ready_generation(audio_gen),

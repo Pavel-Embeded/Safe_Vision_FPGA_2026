@@ -1,0 +1,93 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_command_catalog",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_command_catalog",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_command_catalog",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_command_catalog",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 489242,
+        "elapsed_s": 18.844,
+        "suite": "hd_command_catalog",
+        "accepted_native_runner": true,
+        "producer": "Normally completed current production-source XSim; no runtime overrides",
+        "legacy": false,
+        "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_command_catalog"
+      },
+      "metadata_sha256": "0bc0140b0974284b9849f4bdc43acf09f30c035b41801b91d3f4e9090fc7a436",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_command_catalog",
+        "suite": "hd_command_catalog",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_command_catalog_sim.json",
+        "current_manifest_sha256": "23a12b68495cb41737d96d6be8f50781de1de2924b5b280a237bedc51011f56a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0,
+        0
+      ],
+      "log_sha256": "69fcd6d12e6c9adcf7f05532ed8dafcafe63500d9f56c8db573893738a7eb0e6"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_command_catalog",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_command_catalog",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 489242,
+      "elapsed_s": 18.844,
+      "suite": "hd_command_catalog",
+      "accepted_native_runner": true,
+      "producer": "Normally completed current production-source XSim; no runtime overrides",
+      "legacy": false,
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_command_catalog"
+    },
+    "metadata_sha256": "0bc0140b0974284b9849f4bdc43acf09f30c035b41801b91d3f4e9090fc7a436",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_command_catalog",
+      "suite": "hd_command_catalog",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_command_catalog_sim.json",
+      "current_manifest_sha256": "23a12b68495cb41737d96d6be8f50781de1de2924b5b280a237bedc51011f56a",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0
+    ],
+    "log_sha256": "69fcd6d12e6c9adcf7f05532ed8dafcafe63500d9f56c8db573893738a7eb0e6",
+    "sources_sha256": "e6ba89f58f765df5bc20c4ca8ca6df21b147cfe9b729cd88414ce938a237f061",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_command_catalog\\producer.results.json",
+          "sha256": "5daec55754505c4111757e848541c8e06e1b399ec481ea30a95b072f5dfc6258",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

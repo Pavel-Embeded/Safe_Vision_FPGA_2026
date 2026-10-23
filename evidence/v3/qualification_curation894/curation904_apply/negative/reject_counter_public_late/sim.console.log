@@ -1,0 +1,23 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_rejected_counter_boundary/xsim_script.tcl
+# xsim {tb_v3_rejected_counter_boundary} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] cycle-exact event and saturating counter equivalence to untouched parser
+[FAIL] independent saturated journal at original reject edge
+[FAIL] cycle-exact event and saturating counter equivalence to untouched parser
+[FAIL] independent saturated journal at original reject edge
+[FAIL] cycle-exact event and saturating counter equivalence to untouched parser
+[FAIL] independent saturated journal at original reject edge
+[FAIL] cycle-exact event and saturating counter equivalence to untouched parser
+[FAIL] independent saturated journal at original reject edge
+[TB] tb_v3_rejected_counter_boundary done comparisons=2591 errors=1004
+$finish called at time : 15640 ns : File "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_rejected_counter_boundary.sv" Line 36
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 09:15:06 2026...

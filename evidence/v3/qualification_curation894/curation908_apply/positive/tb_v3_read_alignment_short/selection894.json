@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_read_alignment_short",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_read_alignment_short",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_read_alignment_short",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_read_alignment_short",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 23,
+        "elapsed_s": 7.672,
+        "suite": "read_alignment",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_read_alignment_short\\sim\\tb_v3_read_alignment_short"
+      },
+      "metadata_sha256": "ca0643b62904c67095dc5464a376465509c7409ef84d4b2dd21ec8b763075ff4",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_read_alignment_short",
+        "suite": "read_alignment",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/read_alignment_sim.json",
+        "current_manifest_sha256": "878bf89b52475b60723a61d09c1cfc7b04972220f37610eed1c8faec56c2277d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0,
+        0
+      ],
+      "log_sha256": "ef2647e4939900a0f655bbae95c9e265afc4c96debbc16d7e48f8fbc999e726e"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_read_alignment_short",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_read_alignment_short",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 23,
+      "elapsed_s": 7.672,
+      "suite": "read_alignment",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_read_alignment_short\\sim\\tb_v3_read_alignment_short"
+    },
+    "metadata_sha256": "ca0643b62904c67095dc5464a376465509c7409ef84d4b2dd21ec8b763075ff4",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_read_alignment_short",
+      "suite": "read_alignment",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/read_alignment_sim.json",
+      "current_manifest_sha256": "878bf89b52475b60723a61d09c1cfc7b04972220f37610eed1c8faec56c2277d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0
+    ],
+    "log_sha256": "ef2647e4939900a0f655bbae95c9e265afc4c96debbc16d7e48f8fbc999e726e",
+    "sources_sha256": "eeff8676294a096cad3f0bbfa75e793c10912258c497ab7a7afed04038a085c3",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq416\\p\\tb_v3_read_alignment_short\\sim\\results.json",
+          "sha256": "d02047a5220079d663cdd648ea5735daead489b324837e68447d8ffc25a01862",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_audio_packet",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_audio_packet",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_hd_audio_packet",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_audio_packet",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 404,
+        "elapsed_s": 7.781,
+        "suite": "hd_audio_native",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_hd_audio_packet\\sim\\tb_v3_hd_audio_packet"
+      },
+      "metadata_sha256": "4c90bd0e1aa1de77f0f495030f55aebb5cb13a29678073aebde786f43a95cd28",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_audio_packet",
+        "suite": "hd_audio_native",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/hd_audio_native_sim.json",
+        "current_manifest_sha256": "5021a8653fa990141148177bc802edf55f524f867747a6a585fcccec6a6d5b2b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "8cc103ae3526a43724755ade425c0bfcd6c80f9f763f12429fff8b743e11b8e8"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_hd_audio_packet",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_audio_packet",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 404,
+      "elapsed_s": 7.781,
+      "suite": "hd_audio_native",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_hd_audio_packet\\sim\\tb_v3_hd_audio_packet"
+    },
+    "metadata_sha256": "4c90bd0e1aa1de77f0f495030f55aebb5cb13a29678073aebde786f43a95cd28",
+    "input_count": 42,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_audio_packet",
+      "suite": "hd_audio_native",
+      "ordered_analyzed_HDL": 30,
+      "manifest": "safevision/build/manifests/hd_audio_native_sim.json",
+      "current_manifest_sha256": "5021a8653fa990141148177bc802edf55f524f867747a6a585fcccec6a6d5b2b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "8cc103ae3526a43724755ade425c0bfcd6c80f9f763f12429fff8b743e11b8e8",
+    "sources_sha256": "3eb338458602f3fa9e2023fea32356a1a033087850879edc90203066957dcb25",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_hd_audio_packet\\runner.results.json",
+          "sha256": "b73d5ec43128a76ba555130ff0b362a4e4208fc370d6c772d73e38f3811f8848",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_hd_audio_packet\\sim\\results.json",
+          "sha256": "b73d5ec43128a76ba555130ff0b362a4e4208fc370d6c772d73e38f3811f8848",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

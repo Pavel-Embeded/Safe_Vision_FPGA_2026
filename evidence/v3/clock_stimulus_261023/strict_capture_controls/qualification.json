@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "stimulus_path": "safevision/verification/models/v3_memory_pll_clock_model.sv",
+  "source_matrix_path": "safevision/build/qualification/four_features_261020.json",
+  "original_repository_path": "safevision/verification/models/v3_memory_pll_clock_model.sv",
+  "original_source_commit": "c6a6549871d97755708120d2a76239011cef94bb",
+  "original_sha256": "d0ad18b9a432c74002cf87356d4a629783b110ec4d7dbbd8dfd3781e9986c6bd",
+  "current_sha256": "cd9669c84ba0798fbf2a840a2eadd2637a5a081b765f29c993ea177e8af8ea92",
+  "original_archive": "original/v3_memory_pll_clock_model.sv",
+  "transformations": [
+    {
+      "operation": "replace_exact_once",
+      "before": " reg sys=0,mem=0;always #5 sys=~sys;always #10 mem=~mem;\n",
+      "after": " reg sys=1,mem=0;always #5 sys=~sys;always #10 mem=~mem;\n"
+    },
+    {
+      "operation": "insert_exact_once_before",
+      "anchor": " reg sys=1,mem=0;always #5 sys=~sys;always #10 mem=~mem;\n",
+      "insert": " // Align the 100/50 MHz rising edges as the phase-0 production PLL does.\n"
+    },
+    {
+      "operation": "convert_all_LF_to_CRLF",
+      "reject_existing_CR": true
+    }
+  ],
+  "original_frozen_reference_count": 134,
+  "oracle_sha_or_inventory_rebased": false,
+  "required_board_clock_comparisons": 219,
+  "required_focused_positive": 3,
+  "required_focused_refusals": 24,
+  "required_bus_hfn_positive": 3,
+  "required_bus_hfn_refusals": 14,
+  "rationale": "Original sys=0 puts WRITE100 rising5ns away from MEM50. Current sys=1 models the phase0 rising-edge contract checked against real native PLL pin ownership. This is stimulus qualification, not an oracle edit."
+}

@@ -1,0 +1,20 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_hd_guard_decode/xsim_script.tcl
+# xsim {tb_v3_hd_guard_decode} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] exact lookup addr=00000500 q=1 idx= 169 expected=          1
+[FAIL] exact lookup addr=00000a00 q=1 idx= 338 expected=          2
+[FAIL] exact lookup addr=00000f00 q=1 idx= 507 expected=          3
+[FAIL] exact lookup addr=00001400 q=1 idx= 164 expected=          4
+[FAIL] exact lookup addr=00001900 q=1 idx= 333 expected=          5
+[TB] tb_v3_hd_guard_decode done errors=1888 comparisons=2721440
+$finish called at time : 2721440 ns : File "D:/Codex/svfeatures312/source/safevision/verification/unit/tb_v3_hd_guard_decode.sv" Line 16
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 14:52:37 2026...

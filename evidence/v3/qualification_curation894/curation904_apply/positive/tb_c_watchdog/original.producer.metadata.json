@@ -1,0 +1,12 @@
+{
+  "top": "tb_c_watchdog",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 14,
+  "elapsed_s": 8.843,
+  "suite": "c",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_c_watchdog\\sim\\tb_c_watchdog"
+}

@@ -1,0 +1,34 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 10:14:33 2026
+# Process ID: 30400
+# Current directory: D:/Codex/svflex537/qualification702/negative/hd_packed_row_alias/sim/tb_v3_hd_packed_rows
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_hd_packed_rows/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/qualification702/negative/hd_packed_row_alias/sim/tb_v3_hd_packed_rows/sim.log
+# Journal file: D:/Codex/svflex537/qualification702/negative/hd_packed_row_alias/sim/tb_v3_hd_packed_rows\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_hd_packed_rows/xsim_script.tcl
+# xsim {tb_v3_hd_packed_rows} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] packed decimation phase=0 mode=3 row=4 sx=0 want=90a490a4eb4beb4b got=000000007bef7bef
+[FAIL] packed decimation phase=0 mode=3 row=4 sx=4 want=93a093a0e84fe84f got=0304030478eb78eb
+[FAIL] packed decimation phase=0 mode=3 row=4 sx=8 want=96ac96aced43ed43 got=060806087de77de7
+[FAIL] packed decimation phase=0 mode=3 row=4 sx=12 want=99a899a8e247e247 got=090c090c72e372e3
+[FAIL] packed decimation phase=0 mode=3 row=4 sx=16 want=9cb49cb4e75be75b got=0c100c1077ff77ff
+[FAIL] packed decimation phase=0 mode=3 row=4 sx=20 want=9fb09fb0e45fe45f got=0f140f1474fb74fb
+[FAIL] packed decimation phase=0 mode=3 row=4 sx=24 want=82bc82bcf953f953 got=1218121869f769f7
+[FAIL] packed decimation phase=5 mode=3 row=4 sx=0 want=90a490a4eb4beb4b got=000000007bef7bef
+[FAIL] packed decimation phase=5 mode=3 row=4 sx=4 want=93a093a0e84fe84f got=0304030478eb78eb
+[FAIL] packed decimation phase=5 mode=3 row=4 sx=8 want=96ac96aced43ed43 got=060806087de77de7
+[FAIL] packed decimation phase=5 mode=3 row=4 sx=12 want=99a899a8e247e247 got=090c090c72e372e3
+[FAIL] packed decimation phase=5 mode=3 row=4 sx=16 want=9cb49cb4e75be75b got=0c100c1077ff77ff
+[FAIL] packed decimation phase=5 mode=3 row=4 sx=20 want=9fb09fb0e45fe45f got=0f140f1474fb74fb
+[FAIL] packed decimation phase=5 mode=3 row=4 sx=24 want=82bc82bcf953f953 got=1218121869f769f7
+[TB] tb_v3_hd_packed_rows done errors=28800 comparisons=769442
+$finish called at time : 6035765008 ps : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_hd_packed_rows.sv" Line 47
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:14:39 2026...

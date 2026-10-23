@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "ui_tick_fast",
+  "record": {
+    "kind": "negative",
+    "name": "ui_tick_fast",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\ui_tick_fast",
+    "checked": {
+      "metadata": {
+        "mutation": "ui_tick_fast",
+        "target": "safevision/rtl/control/v3_user_controls.v",
+        "suite": "ui_boundary409",
+        "top": "tb_v3_ui_boundary409",
+        "patch": [
+          {
+            "before": "ui_phase==UI_DIV-1",
+            "after": "ui_phase==UI_DIV-2"
+          }
+        ],
+        "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+        "mutated_sha256": "3cc3b930140a2d9632b9f7489b2577b43a996dcd89a305e32a225dfa4cac1e17",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          11
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_tick_fast\\sim\\tb_v3_ui_boundary409",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_tick_fast\\sim\\tb_v3_ui_boundary409"
+      },
+      "metadata_sha256": "8e28878aa250ac69d5add0239e027e63414690dd47db0adfa153e7510bb9d6f6",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_ui_boundary409",
+        "suite": "ui_boundary409",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/ui_boundary409_sim.json",
+        "current_manifest_sha256": "ec3695091092ef3b968ca7511695a78e84957711cddaa3b463b2884ba5d8938e",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        11
+      ],
+      "log_sha256": "b53faa31b1676671a6fb5798da1272f2108ed9f6b35a51cd37e862899db456c3"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\ui_tick_fast",
+  "checked": {
+    "metadata": {
+      "mutation": "ui_tick_fast",
+      "target": "safevision/rtl/control/v3_user_controls.v",
+      "suite": "ui_boundary409",
+      "top": "tb_v3_ui_boundary409",
+      "patch": [
+        {
+          "before": "ui_phase==UI_DIV-1",
+          "after": "ui_phase==UI_DIV-2"
+        }
+      ],
+      "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+      "mutated_sha256": "3cc3b930140a2d9632b9f7489b2577b43a996dcd89a305e32a225dfa4cac1e17",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        11
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_tick_fast\\sim\\tb_v3_ui_boundary409",
+      "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_tick_fast\\sim\\tb_v3_ui_boundary409"
+    },
+    "metadata_sha256": "8e28878aa250ac69d5add0239e027e63414690dd47db0adfa153e7510bb9d6f6",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_ui_boundary409",
+      "suite": "ui_boundary409",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/ui_boundary409_sim.json",
+      "current_manifest_sha256": "ec3695091092ef3b968ca7511695a78e84957711cddaa3b463b2884ba5d8938e",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      11
+    ],
+    "log_sha256": "b53faa31b1676671a6fb5798da1272f2108ed9f6b35a51cd37e862899db456c3",
+    "sources_sha256": "4ee85e9476895bc47fb2c5f8dee1acc52dc0e7d8ec287b64d07ad4ab8fde223b",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\ui_tick_fast\\runner.results.json",
+          "sha256": "eff3cdd9029b6e410b14993a4e8a527f7289c103b9ddc2b452b9902827c592cf",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification702\\negative\\ui_tick_fast\\sim\\results.json",
+          "sha256": "eff3cdd9029b6e410b14993a4e8a527f7289c103b9ddc2b452b9902827c592cf",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

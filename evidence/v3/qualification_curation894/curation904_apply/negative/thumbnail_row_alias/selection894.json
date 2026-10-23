@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "thumbnail_row_alias",
+  "record": {
+    "kind": "negative",
+    "name": "thumbnail_row_alias",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\thumbnail_row_alias",
+    "checked": {
+      "metadata": {
+        "mutation": "thumbnail_row_alias",
+        "target": "safevision/rtl/video/v3_packed_row_store.v",
+        "suite": "handbook",
+        "top": "tb_v3_handbook_packed",
+        "patch": [
+          {
+            "before": ":scale_select==2?source_row[2:1]:source_row[3:2];",
+            "after": ":scale_select==2?source_row[2:1]:source_row[1:0];"
+          }
+        ],
+        "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+        "mutated_sha256": "8ab9a7de14315bbba0e16260e826124d1df6a11b1e7d256ccba21f1850ec74db",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          28800
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\thumbnail_row_alias\\sim\\tb_v3_handbook_packed",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\thumbnail_row_alias\\sim\\tb_v3_handbook_packed"
+      },
+      "metadata_sha256": "4a83b22d69e398f462bcf4dd60edf353945660781a936c9bc98d5d1f6314b68f",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_packed",
+        "suite": "handbook",
+        "ordered_analyzed_HDL": 7,
+        "manifest": "safevision/build/manifests/handbook_sim.json",
+        "current_manifest_sha256": "25ec72e6010492c51f0537f48ce3c6f4911b7f382c681df9c4fc5302d966aa68",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        28800
+      ],
+      "log_sha256": "0d6757795d6ec3a8707d1b001ac3dc973ad7c24265b878e6e2414b39d2d7fd44"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\thumbnail_row_alias",
+  "checked": {
+    "metadata": {
+      "mutation": "thumbnail_row_alias",
+      "target": "safevision/rtl/video/v3_packed_row_store.v",
+      "suite": "handbook",
+      "top": "tb_v3_handbook_packed",
+      "patch": [
+        {
+          "before": ":scale_select==2?source_row[2:1]:source_row[3:2];",
+          "after": ":scale_select==2?source_row[2:1]:source_row[1:0];"
+        }
+      ],
+      "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+      "mutated_sha256": "8ab9a7de14315bbba0e16260e826124d1df6a11b1e7d256ccba21f1850ec74db",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        28800
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\thumbnail_row_alias\\sim\\tb_v3_handbook_packed",
+      "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\thumbnail_row_alias\\sim\\tb_v3_handbook_packed"
+    },
+    "metadata_sha256": "4a83b22d69e398f462bcf4dd60edf353945660781a936c9bc98d5d1f6314b68f",
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_packed",
+      "suite": "handbook",
+      "ordered_analyzed_HDL": 7,
+      "manifest": "safevision/build/manifests/handbook_sim.json",
+      "current_manifest_sha256": "25ec72e6010492c51f0537f48ce3c6f4911b7f382c681df9c4fc5302d966aa68",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      28800
+    ],
+    "log_sha256": "0d6757795d6ec3a8707d1b001ac3dc973ad7c24265b878e6e2414b39d2d7fd44",
+    "sources_sha256": "63b4e35d71ef9a434a34b7d736326a6a048cba5f6168b14fa605edd7fdf3f46d",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\thumbnail_row_alias\\runner.results.json",
+          "sha256": "13e183cfbff4f38923cf1093cd53b4060c8f8a8a2d4892882a71b1046947d6ab",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification702\\negative\\thumbnail_row_alias\\sim\\results.json",
+          "sha256": "13e183cfbff4f38923cf1093cd53b4060c8f8a8a2d4892882a71b1046947d6ab",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

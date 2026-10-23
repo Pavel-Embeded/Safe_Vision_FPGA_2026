@@ -1,0 +1,30 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_hd_status_miter233/xsim_script.tcl
+# xsim {tb_v3_hd_status_miter233} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] status descriptor HD=1 x=101 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=4aef3e988abb38d6aff1402d1
+[FAIL] status descriptor HD=1 x=105 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=2b4033e90a9dab87afd7d37c2
+[FAIL] status descriptor HD=1 x=109 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=2b4033e90a9dab87afd7d37c2
+[FAIL] status descriptor HD=1 x=110 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=2439178fdfd4799bfa9e01607
+[FAIL] status descriptor HD=1 x=111 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=2439178fdfd4799bfa9e01607
+[FAIL] status descriptor HD=1 x=112 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=2439178fdfd4799bfa9e01607
+[FAIL] status descriptor HD=1 x=182 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=26daf6497a6ea250df24daab2
+[FAIL] status descriptor HD=1 x=183 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=26daf6497a6ea250df24daab2
+[FAIL] status descriptor HD=1 x=184 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=26daf6497a6ea250df24daab2
+[FAIL] status descriptor HD=1 x=230 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=17728c7c995adf423c10a7b99
+[FAIL] status descriptor HD=1 x=231 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=17728c7c995adf423c10a7b99
+[FAIL] status descriptor HD=1 x=232 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=17728c7c995adf423c10a7b99
+[FAIL] status descriptor HD=1 x=238 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=5d4bcb58a039e058857398a31
+[FAIL] status descriptor HD=1 x=239 y=9 a=1086f80000001800000000 b=1086f800ffff18000000e0 cfg=5d4bcb58a039e058857398a31
+[TB] tb_v3_hd_status_miter233 done errors=8059 comparisons=3712510
+$finish called at time : 37125280 ns : File "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_hd_status_miter233.sv" Line 47
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:38 . Memory (MB): peak = 218.488 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 17:56:12 2026...

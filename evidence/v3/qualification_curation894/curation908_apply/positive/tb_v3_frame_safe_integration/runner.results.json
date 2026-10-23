@@ -1,0 +1,16 @@
+{
+  "suite": "frame_safe_integration",
+  "results": [
+    {
+      "top": "tb_v3_frame_safe_integration",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 60632,
+      "elapsed_s": 10.953
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

@@ -1,0 +1,94 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_energy_acr",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_energy_acr",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_energy_acr",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_energy_acr",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 4,
+        "elapsed_s": 7.671,
+        "suite": "v3",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_energy_acr\\sim\\tb_v3_energy_acr"
+      },
+      "metadata_sha256": "b103a4d7cd5ee5c534904231ffe3071db55a2c070aba5238c296511160587d19",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_energy_acr",
+        "suite": "v3",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/v3_sim.json",
+        "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "4b74e7d3297e0fbbc2dbe1bef9833aaa143b2f7d0f7edaee14cc3e13de41bb82"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_energy_acr",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_energy_acr",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 4,
+      "elapsed_s": 7.671,
+      "suite": "v3",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_energy_acr\\sim\\tb_v3_energy_acr"
+    },
+    "metadata_sha256": "b103a4d7cd5ee5c534904231ffe3071db55a2c070aba5238c296511160587d19",
+    "input_count": 40,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_energy_acr",
+      "suite": "v3",
+      "ordered_analyzed_HDL": 28,
+      "manifest": "safevision/build/manifests/v3_sim.json",
+      "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "4b74e7d3297e0fbbc2dbe1bef9833aaa143b2f7d0f7edaee14cc3e13de41bb82",
+    "sources_sha256": "05df899706ec03994edc64e3e45a9f50571f32c915e30ab17656178f2a8db677",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_energy_acr\\runner.results.json",
+          "sha256": "5d8269d01f9e054f0dc34ecddb3c71e588cf101b654505f7a4ae3d3a380a2991",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_energy_acr\\sim\\results.json",
+          "sha256": "5d8269d01f9e054f0dc34ecddb3c71e588cf101b654505f7a4ae3d3a380a2991",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

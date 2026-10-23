@@ -1,0 +1,24 @@
+{
+  "mutation": "uart_saturation_wrap",
+  "target": "safevision/rtl/control/v3_uart_link.v",
+  "suite": "drop_saturation280",
+  "top": "tb_v3_drop_saturation280",
+  "patch": [
+    {
+      "before": "wire[31:0] dropped_next=drop_sum[32]?32'hffffffff:drop_sum[31:0];",
+      "after": "wire[31:0] dropped_next=drop_sum[31:0];"
+    }
+  ],
+  "original_sha256": "47906bd6a546bc8975ae87dbf2106613c8aa1d92630fb303e643715f85da9dcc",
+  "mutated_sha256": "4bf3840509da97865d56eb7afcec739e63aaefa774a13d73a256127c85daa4c3",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    3
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\uart_saturation_wrap\\sim\\tb_v3_drop_saturation280",
+  "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\uart_saturation_wrap\\sim\\tb_v3_drop_saturation280"
+}

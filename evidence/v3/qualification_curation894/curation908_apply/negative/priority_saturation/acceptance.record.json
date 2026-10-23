@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "priority_saturation",
+  "top": "tb_v3_priority_difference",
+  "suite": "priority_difference",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "priority_saturation",
+    "target": "safevision/rtl/audio/audio_priority_arbiter.v",
+    "suite": "priority_difference",
+    "top": "tb_v3_priority_difference",
+    "patch": [
+      {
+        "before": "    wire [8:0] gain_up = ({1'b0,gain} + {1'b0,ramp_step} > 10'd256) ? 9'd256 : (gain + ramp_step);",
+        "after": "    wire [8:0] gain_up = (gain + ramp_step > 9'd256) ? 9'd256 : (gain + ramp_step);"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "priority_saturation",
+    "target": "safevision/rtl/audio/audio_priority_arbiter.v",
+    "suite": "priority_difference",
+    "top": "tb_v3_priority_difference",
+    "patch": [
+      {
+        "before": "    wire [8:0] gain_up = ({1'b0,gain} + {1'b0,ramp_step} > 10'd256) ? 9'd256 : (gain + ramp_step);",
+        "after": "    wire [8:0] gain_up = (gain + ramp_step > 9'd256) ? 9'd256 : (gain + ramp_step);"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\priority_saturation",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\priority_saturation\\sim\\tb_v3_priority_difference",
+  "checked": {
+    "metadata": {
+      "mutation": "priority_saturation",
+      "target": "safevision/rtl/audio/audio_priority_arbiter.v",
+      "suite": "priority_difference",
+      "top": "tb_v3_priority_difference",
+      "patch": [
+        {
+          "before": "    wire [8:0] gain_up = ({1'b0,gain} + {1'b0,ramp_step} > 10'd256) ? 9'd256 : (gain + ramp_step);",
+          "after": "    wire [8:0] gain_up = (gain + ramp_step > 9'd256) ? 9'd256 : (gain + ramp_step);"
+        }
+      ],
+      "original_sha256": "8f71762f08fed32641a2e5845ab679995eff46c54b3864a9fe8be5c057900764",
+      "mutated_sha256": "7f1929eeafa1ba95e97047ef874f2476fa7ce448ed222131a11ce9ae0afc7fcf",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        30425
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\priority_saturation\\sim\\tb_v3_priority_difference",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\priority_saturation\\sim\\tb_v3_priority_difference"
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_priority_difference",
+      "suite": "priority_difference",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/priority_difference_sim.json",
+      "current_manifest_sha256": "5d052a680463843aff007f44c9550ac7c46eec9dc37e3ce59dd10d52bd02eefc",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      30425
+    ],
+    "log_sha256": "38c0b4c3338f9273d78bd0b35d102a1015e0ba9e1b2168280885866f3f0cb9f3",
+    "metadata_sha256": "7aee6ff8a8240e25748d900a214cdabc5878c2a9b91f2db48023ba216f0587a3",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\priority_saturation\\case.json",
+      "sha256": "7aee6ff8a8240e25748d900a214cdabc5878c2a9b91f2db48023ba216f0587a3"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\priority_saturation\\sim.log",
+      "sha256": "38c0b4c3338f9273d78bd0b35d102a1015e0ba9e1b2168280885866f3f0cb9f3"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\priority_saturation\\sources.sha256.json",
+      "sha256": "a98a63d802bd96c744a65f8bf775257ab398e24e3ffc2928b62f3881b380f439"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\priority_saturation\\original.producer.metadata.json",
+      "sha256": "7aee6ff8a8240e25748d900a214cdabc5878c2a9b91f2db48023ba216f0587a3"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\priority_saturation\\producer.provenance.json",
+      "sha256": "46a4803b08674079fa6aa8e9db2923ead731e73718e5377c99330a049a2bce78"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\priority_saturation\\sources.prj",
+      "sha256": "200d2d139b43989ebd2bf1b6b2f3edf0ea3a4becc46cee4e5f8adedd5ed8890c"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\priority_saturation\\mutant.v",
+      "sha256": "7f1929eeafa1ba95e97047ef874f2476fa7ce448ed222131a11ce9ae0afc7fcf"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

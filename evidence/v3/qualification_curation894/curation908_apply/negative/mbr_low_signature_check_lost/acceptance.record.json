@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "mbr_low_signature_check_lost",
+  "top": "tb_v3_mbr_parser_predicates288",
+  "suite": "mbr_parser_predicates288",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "mutation": "mbr_low_signature_check_lost",
+    "target": "safevision/rtl/storage/mbr_parser.v",
+    "suite": "mbr_parser_predicates288",
+    "top": "tb_v3_mbr_parser_predicates288",
+    "patch": [
+      {
+        "before": "if(bcnt==511)hdr_sig_matches<=hdr_sig_matches&&(sd_data==8'haa);",
+        "after": "if(bcnt==511)hdr_sig_matches<=(sd_data==8'haa);"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "mbr_low_signature_check_lost",
+    "target": "safevision/rtl/storage/mbr_parser.v",
+    "suite": "mbr_parser_predicates288",
+    "top": "tb_v3_mbr_parser_predicates288",
+    "patch": [
+      {
+        "before": "if(bcnt==511)hdr_sig_matches<=hdr_sig_matches&&(sd_data==8'haa);",
+        "after": "if(bcnt==511)hdr_sig_matches<=(sd_data==8'haa);"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\mbr_low_signature_check_lost",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\mbr_low_signature_check_lost",
+  "checked": {
+    "metadata": {
+      "mutation": "mbr_low_signature_check_lost",
+      "target": "safevision/rtl/storage/mbr_parser.v",
+      "suite": "mbr_parser_predicates288",
+      "top": "tb_v3_mbr_parser_predicates288",
+      "patch": [
+        {
+          "before": "if(bcnt==511)hdr_sig_matches<=hdr_sig_matches&&(sd_data==8'haa);",
+          "after": "if(bcnt==511)hdr_sig_matches<=(sd_data==8'haa);"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative430\\n\\mbr_low_signature_check_lost",
+      "original_sha256": "86cf833b3c3c21e9b3cca029ba6d73244dc39037966286a0f27687f624614c6f",
+      "mutated_sha256": "37fec4718f5a058b1903c9379eb83c1820ac9fbed63e795aaf5161c29b4ec152",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1680
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative430\\n\\mbr_low_signature_check_lost\\sim\\tb_v3_mbr_parser_predicates288"
+    },
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_mbr_parser_predicates288",
+      "suite": "mbr_parser_predicates288",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/mbr_parser_predicates288_sim.json",
+      "current_manifest_sha256": "3bdef603e9ecfd64b581a8d698ccdcb924f5fd57320d04b74203d1cd8be9854b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1680
+    ],
+    "log_sha256": "276fc816f0f823c7597fed285c7ac3023e4306819b5431979c4b9720674e99d5",
+    "metadata_sha256": "117872e12b0f7397fffc2503ad2e08606e3f8dadf2c7960f18e78d4c0aceaf3c",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\mbr_low_signature_check_lost\\case.json",
+      "sha256": "117872e12b0f7397fffc2503ad2e08606e3f8dadf2c7960f18e78d4c0aceaf3c"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\mbr_low_signature_check_lost\\sim.log",
+      "sha256": "276fc816f0f823c7597fed285c7ac3023e4306819b5431979c4b9720674e99d5"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\mbr_low_signature_check_lost\\sources.sha256.json",
+      "sha256": "55858aa5d8842381bd247493e5d01b5965b744f7732affe602f733fcbfd42798"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\mbr_low_signature_check_lost\\original.producer.metadata.json",
+      "sha256": "117872e12b0f7397fffc2503ad2e08606e3f8dadf2c7960f18e78d4c0aceaf3c"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\mbr_low_signature_check_lost\\producer.provenance.json",
+      "sha256": "0df27d65b4d815754e67639c66faa62f31c1732df0052d5a51b774988382e5c9"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\mbr_low_signature_check_lost\\sources.prj",
+      "sha256": "e59a3bb3bed1dc7298c11a899d5490bef1f0cb17622f724692d7666abe9886b7"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\mbr_low_signature_check_lost\\mutant.v",
+      "sha256": "37fec4718f5a058b1903c9379eb83c1820ac9fbed63e795aaf5161c29b4ec152"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

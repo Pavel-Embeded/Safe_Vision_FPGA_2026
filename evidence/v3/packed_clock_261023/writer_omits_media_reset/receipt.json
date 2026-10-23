@@ -1,0 +1,16 @@
+{
+  "name": "writer_omits_media_reset",
+  "accepted": true,
+  "normally_finished": true,
+  "detections": 2,
+  "source": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+  "source_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+  "mutant_sha256": "76a7b5b9768c4a4d881bac85d1319190ad6775bee34fc84754e6eee8c87492b9",
+  "mutation": {
+    "old": ".async_rst_n(media_common_rst_n),.rst_n(cache_write_rst_n)",
+    "new": ".async_rst_n(control_common_rst_n),.rst_n(cache_write_rst_n)"
+  },
+  "process_exit": 1,
+  "capture": "writer_omits_media_reset/native/tb_v3_board_clocks",
+  "log_sha256": "41954bc54cf171f81d63e95b1ed3aaf8ff74714d9aa052765b6609ad2c7afee7"
+}

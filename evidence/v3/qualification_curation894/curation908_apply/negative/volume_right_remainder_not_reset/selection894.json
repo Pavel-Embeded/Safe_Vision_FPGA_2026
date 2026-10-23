@@ -1,0 +1,111 @@
+{
+  "kind": "negative",
+  "name": "volume_right_remainder_not_reset",
+  "record": {
+    "kind": "negative",
+    "name": "volume_right_remainder_not_reset",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\volume_right_remainder_not_reset",
+    "checked": {
+      "metadata": {
+        "mutation": "volume_right_remainder_not_reset",
+        "target": "safevision/rtl/audio/v3_audio_volume.v",
+        "suite": "volume_dsp_equivalence",
+        "top": "tb_v3_volume_dsp_equivalence",
+        "patch": [
+          {
+            "before": "if(count==36)begin left_out<=result;product<=multiplied[29:0];remainder<=0;divide_count<=0;",
+            "after": "if(count==36)begin left_out<=result;product<=multiplied[29:0];remainder<=1;divide_count<=0;"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svnegative174\\n\\volume_right_remainder_not_reset\\sim\\tb_v3_volume_dsp_equivalence",
+        "original_sha256": "62a8fc172b26b2cb7441989a39ebc0853d646c03c270ed3ee041d5a655be216c",
+        "mutated_sha256": "24c07ef923fede8e40407b6a10debef8fb490e6509bb921582a402a6be7fb755",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          2025566
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svnegative174\\n\\volume_right_remainder_not_reset\\sim\\tb_v3_volume_dsp_equivalence"
+      },
+      "metadata_sha256": "c90859f297fd23e184b4b67eaf4bb4b9d1bfb7dff5031a4bc9893772a8a8f059",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_volume_dsp_equivalence",
+        "suite": "volume_dsp_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/volume_dsp_equivalence_sim.json",
+        "current_manifest_sha256": "1b66d5459307a18fd2925a0ade51258c7191ae8b6c201e1c583067442cce5bc2",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        2025566
+      ],
+      "log_sha256": "c3911da62f45025c0d01af7cef41cf47aa9d43841dbc8e639fa580c6aa11338d"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\volume_right_remainder_not_reset",
+  "checked": {
+    "metadata": {
+      "mutation": "volume_right_remainder_not_reset",
+      "target": "safevision/rtl/audio/v3_audio_volume.v",
+      "suite": "volume_dsp_equivalence",
+      "top": "tb_v3_volume_dsp_equivalence",
+      "patch": [
+        {
+          "before": "if(count==36)begin left_out<=result;product<=multiplied[29:0];remainder<=0;divide_count<=0;",
+          "after": "if(count==36)begin left_out<=result;product<=multiplied[29:0];remainder<=1;divide_count<=0;"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative174\\n\\volume_right_remainder_not_reset\\sim\\tb_v3_volume_dsp_equivalence",
+      "original_sha256": "62a8fc172b26b2cb7441989a39ebc0853d646c03c270ed3ee041d5a655be216c",
+      "mutated_sha256": "24c07ef923fede8e40407b6a10debef8fb490e6509bb921582a402a6be7fb755",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        2025566
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative174\\n\\volume_right_remainder_not_reset\\sim\\tb_v3_volume_dsp_equivalence"
+    },
+    "metadata_sha256": "c90859f297fd23e184b4b67eaf4bb4b9d1bfb7dff5031a4bc9893772a8a8f059",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_volume_dsp_equivalence",
+      "suite": "volume_dsp_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/volume_dsp_equivalence_sim.json",
+      "current_manifest_sha256": "1b66d5459307a18fd2925a0ade51258c7191ae8b6c201e1c583067442cce5bc2",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      2025566
+    ],
+    "log_sha256": "c3911da62f45025c0d01af7cef41cf47aa9d43841dbc8e639fa580c6aa11338d",
+    "sources_sha256": "ab831504fa45b481908cae633b8c3a16a6253b300420ec56cf1ddb7707aa8156",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svnegative174\\n\\volume_right_remainder_not_reset\\sim\\results.json",
+          "sha256": "315f17eedee8136b4c62f86df35687257c75cdf6badd31718e7ce295abfae1c7",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

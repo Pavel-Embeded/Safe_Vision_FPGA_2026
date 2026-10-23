@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "wrong_file_bound",
+  "record": {
+    "kind": "negative",
+    "name": "wrong_file_bound",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\wrong_file_bound",
+    "checked": {
+      "metadata": {
+        "mutation": "wrong_file_bound",
+        "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+        "suite": "wav_bounds_equivalence",
+        "top": "tb_v3_wav_bounds_equivalence",
+        "patch": [
+          {
+            "before": "wire riff_oversize=(file_size<8)||greater_bytes(file_gt,file_eq);",
+            "after": "wire riff_oversize=(file_size<8)||greater_bytes(chunk_gt,chunk_eq);"
+          }
+        ],
+        "original_sha256": "d0896f4bf0b7fcc77096f4459d2e4d6fa45adeaf667d02274740f27b08ab53b6",
+        "mutated_sha256": "b1662f961cbbdf35ef3be5f830ca7bcfd398f86d12258ea777fef7f60ae1c10e",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          70399
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence"
+      },
+      "metadata_sha256": "a8943a6608cdef555fec5acfec768d6d5c0596ee2f67382696018166b84bd61b",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_bounds_equivalence",
+        "suite": "wav_bounds_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/wav_bounds_equivalence_sim.json",
+        "current_manifest_sha256": "3410f9005cb80635c804318c5a247a39e7ae10ed1f33ff6d4e718fbb404f684b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        70399
+      ],
+      "log_sha256": "43d028aabae835749d719cb689255f9d555be9b480e7264c11183791cb395be0"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\wrong_file_bound",
+  "checked": {
+    "metadata": {
+      "mutation": "wrong_file_bound",
+      "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+      "suite": "wav_bounds_equivalence",
+      "top": "tb_v3_wav_bounds_equivalence",
+      "patch": [
+        {
+          "before": "wire riff_oversize=(file_size<8)||greater_bytes(file_gt,file_eq);",
+          "after": "wire riff_oversize=(file_size<8)||greater_bytes(chunk_gt,chunk_eq);"
+        }
+      ],
+      "original_sha256": "d0896f4bf0b7fcc77096f4459d2e4d6fa45adeaf667d02274740f27b08ab53b6",
+      "mutated_sha256": "b1662f961cbbdf35ef3be5f830ca7bcfd398f86d12258ea777fef7f60ae1c10e",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        70399
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence"
+    },
+    "metadata_sha256": "a8943a6608cdef555fec5acfec768d6d5c0596ee2f67382696018166b84bd61b",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_wav_bounds_equivalence",
+      "suite": "wav_bounds_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/wav_bounds_equivalence_sim.json",
+      "current_manifest_sha256": "3410f9005cb80635c804318c5a247a39e7ae10ed1f33ff6d4e718fbb404f684b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      70399
+    ],
+    "log_sha256": "43d028aabae835749d719cb689255f9d555be9b480e7264c11183791cb395be0",
+    "sources_sha256": "5689736a0c9cb59b95ca7b2e961122c5ebd3599e1faf8db3607378d099444d14",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\wrong_file_bound\\runner.results.json",
+          "sha256": "b1675995b66bad18dae6d32a10359b1ea3608e53d63a3028ee12b2a75d915ea0",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\wrong_file_bound\\sim\\results.json",
+          "sha256": "b1675995b66bad18dae6d32a10359b1ea3608e53d63a3028ee12b2a75d915ea0",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

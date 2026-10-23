@@ -1,0 +1,25 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_packed_selector",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\negative\\hd_packed_selector\\case.json",
+  "original_metadata_sha256": "d15f635ac335f2adcb44b94891b45674d122a0c9377010640ef1afb67b74463f",
+  "original_log_sha256": "e5179de272e4f92b1e851f31973c2ccf2e9e2725a50dfb4ee4bc2005d386d109",
+  "matrix_definition": {
+    "mutation": "hd_packed_selector",
+    "target": "safevision/rtl/hd/v3_packed_row_store.v",
+    "suite": "paired_rows_hd288",
+    "top": "tb_v3_paired_rows_hd288",
+    "patch": [
+      {
+        "before": "qa0=qa[tile0_q[0]]",
+        "after": "qa0=qa[~tile0_q[0]]"
+      }
+    ]
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

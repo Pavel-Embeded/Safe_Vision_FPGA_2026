@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "fallback_commit_lost",
+  "record": {
+    "kind": "negative",
+    "name": "fallback_commit_lost",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\fallback_commit_lost",
+    "checked": {
+      "metadata": {
+        "mutation": "fallback_commit_lost",
+        "target": "safevision/rtl/storage/v3_wav_source.v",
+        "suite": "wav_fallback_equivalence55",
+        "top": "tb_v3_wav_fallback_equivalence55",
+        "patch": [
+          {
+            "before": "index_done<=1;fallback_initial_pending<=1;",
+            "after": "index_done<=1;fallback_initial_pending<=0;"
+          }
+        ],
+        "original_sha256": "8d7bd4d1c12267aa75144190c7ab6c3c4460c8fc9d72f6c61bad45c80336ad28",
+        "mutated_sha256": "2c0a9e29d383bda1e881a19fddd4506c6082f173ba699942efe8fb21cfae42eb",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          462
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\fallback_commit_lost\\sim\\tb_v3_wav_fallback_equivalence55",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\fallback_commit_lost\\sim\\tb_v3_wav_fallback_equivalence55"
+      },
+      "metadata_sha256": "c91825c19ed4987e7dc94f3c24ac15c3991bd4f61918c8e3ad520e8cb9408403",
+      "normal_completion": true,
+      "input_count": 43,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_fallback_equivalence55",
+        "suite": "wav_fallback_equivalence55",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/wav_fallback_equivalence55_sim.json",
+        "current_manifest_sha256": "3100738ee9ce2660126a2c310b5169fbb82d3917844fb80064c3e2128145b4ff",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        462
+      ],
+      "log_sha256": "4da8f8855dbc97a2cb4d01a7dab230196e65eb973524f50162e84557d399f5cd"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\fallback_commit_lost",
+  "checked": {
+    "metadata": {
+      "mutation": "fallback_commit_lost",
+      "target": "safevision/rtl/storage/v3_wav_source.v",
+      "suite": "wav_fallback_equivalence55",
+      "top": "tb_v3_wav_fallback_equivalence55",
+      "patch": [
+        {
+          "before": "index_done<=1;fallback_initial_pending<=1;",
+          "after": "index_done<=1;fallback_initial_pending<=0;"
+        }
+      ],
+      "original_sha256": "8d7bd4d1c12267aa75144190c7ab6c3c4460c8fc9d72f6c61bad45c80336ad28",
+      "mutated_sha256": "2c0a9e29d383bda1e881a19fddd4506c6082f173ba699942efe8fb21cfae42eb",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        462
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\fallback_commit_lost\\sim\\tb_v3_wav_fallback_equivalence55",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\fallback_commit_lost\\sim\\tb_v3_wav_fallback_equivalence55"
+    },
+    "metadata_sha256": "c91825c19ed4987e7dc94f3c24ac15c3991bd4f61918c8e3ad520e8cb9408403",
+    "input_count": 43,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_wav_fallback_equivalence55",
+      "suite": "wav_fallback_equivalence55",
+      "ordered_analyzed_HDL": 30,
+      "manifest": "safevision/build/manifests/wav_fallback_equivalence55_sim.json",
+      "current_manifest_sha256": "3100738ee9ce2660126a2c310b5169fbb82d3917844fb80064c3e2128145b4ff",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      462
+    ],
+    "log_sha256": "4da8f8855dbc97a2cb4d01a7dab230196e65eb973524f50162e84557d399f5cd",
+    "sources_sha256": "80ddf1240f7b5770bd45a2c2697354a34188948d0d687d7b50619fbdf9ba2011",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\fallback_commit_lost\\runner.results.json",
+          "sha256": "4cde36ce8ff1898b3d1ad80add187b941ff11a5937c81ff1122407b1f81c6404",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\fallback_commit_lost\\sim\\results.json",
+          "sha256": "4cde36ce8ff1898b3d1ad80add187b941ff11a5937c81ff1122407b1f81c6404",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

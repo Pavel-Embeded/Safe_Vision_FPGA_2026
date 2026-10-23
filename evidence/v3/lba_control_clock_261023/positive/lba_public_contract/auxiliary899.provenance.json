@@ -1,0 +1,62 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\lba_current892\\public_contract\\sim\\tb_v3_lba_pipeline747",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "lba",
+    "kind": "positive",
+    "name": "lba_public_contract",
+    "row": {
+      "top": "tb_v3_lba_pipeline747",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 28673,
+      "elapsed_s": 8.343,
+      "suite": "lba_pipeline747",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\lba790\\lba_public_contract\\sim\\tb_v3_lba_pipeline747",
+      "comparisons": 28673
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\lba_control_clock_261023\\positive\\lba_public_contract",
+    "packed": false,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "existing_current892_actual_native_capture",
+    "producer_folder": "D:\\Codex\\svflex537\\lba_current892\\public_contract\\sim\\tb_v3_lba_pipeline747",
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_lba_pipeline747",
+        "suite": "lba_pipeline747",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/lba_pipeline747_sim.json",
+        "current_manifest_sha256": "45d4888e177264946f34dcfc186e373449c57072eca8bdbba8ec6151a314320c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 0,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\lba_current892\\public_contract\\sim\\results.json",
+            "sha256": "a8367c4c467b49e060a4e3a7063bbe8cfb6bcba366ed438b59d958417e613e8e",
+            "basis": "native_runner_complete_PASS"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 38,
+      "normal_completion": true,
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "69f99705e149ab5092bfbf89332ef314315cddabc7e39c8e6bc971a547d82257",
+      "source_fingerprint_sha256": "93a9d00947fd5b349cfe52f47720d4bdc6815b672577cd3b55ba94e914c216a1"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\lba_control_clock_261023\\positive\\lba_public_contract"
+  },
+  "actual_execution_retained": true
+}

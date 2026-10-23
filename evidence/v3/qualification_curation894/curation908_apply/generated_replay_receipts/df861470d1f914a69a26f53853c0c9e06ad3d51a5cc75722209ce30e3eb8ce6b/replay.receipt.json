@@ -1,0 +1,71 @@
+{
+  "input_identity": "15cccd1b2d76f0a70dc43fd398068d5565a618ac57543713257da836e2eb99a8",
+  "command": [
+    "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "D:\\Codex\\svflex537\\candidate892\\safevision\\verification\\fixtures\\generate_shared_storage.py",
+    "--output",
+    "D:\\Codex\\svflex537\\curation908_apply\\generated_replay\\shared_storage_spi25\\tb_v3_shared_storage_spi25\\15cccd1b2d76f0a7"
+  ],
+  "cwd": "D:\\Codex\\svflex537\\candidate892",
+  "native_process_exit": 0,
+  "generator": "safevision/verification/fixtures/generate_shared_storage.py",
+  "generator_sha256": "f674c7058c5c2a545f4ff8bceeacdb5cf045e3f7e567c349cabdcdd0536eadb3",
+  "python_version": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+  "executable_sha256": "ceabb31054d429f57cb3825775677eeaf0db35fdabbc5ff6aef661c037154b00",
+  "parameters": [
+    "--output",
+    "<isolated directory>"
+  ],
+  "fixed_seed_values": [],
+  "replay_dependency_sha256": {
+    "safevision/verification/fixtures/generate_resident_card.py": "dae8c2b606d7c6dd025af84abf37c3e66bee2a09f3065ed501604690e5d6e040"
+  },
+  "dependencies_not_in_historical_capture": [
+    "safevision/verification/fixtures/generate_resident_card.py"
+  ],
+  "pillow_version": null,
+  "historical_tool_versions_not_invented": true,
+  "seed_contract": "exact captured native-runner command; no implicit random seed input",
+  "generated_assets": {
+    "expected0.mem": {
+      "sha256": "49c7ee07d93f9b4673bf14ba27a340012a6845f0f2072f0a019227216a8176be",
+      "size": 1536000
+    },
+    "expected1.mem": {
+      "sha256": "f3e836b01b5247d749d6ee8b0f24f2de1090e46a1b4274e5757d2c316e3662d0",
+      "size": 1536000
+    },
+    "expected2.mem": {
+      "sha256": "7e4166608424ca0d10eb3c26755026aa5e80eee653bc051f2d3fc95ce8b16af8",
+      "size": 1536000
+    },
+    "expected3.mem": {
+      "sha256": "88d42ab3587b4506a8cbd870e2d1244d6f870dd97ec79942e581b3fef0516c6d",
+      "size": 1536000
+    },
+    "fixture.json": {
+      "sha256": "b9a8fa2c0ff3c6820b4b22f805e896f5ad62931b5e2ca76047d35da329ebfa50",
+      "size": 173
+    },
+    "lifecycle_fixture.json": {
+      "sha256": "563a6fc4bab38ef08f6bae045191295ba296a6a1fba30619a0af4705776d86a5",
+      "size": 288
+    },
+    "lifecycle_pcm.mem": {
+      "sha256": "95e51cea664f0318509c90676c93e310a11650eab54af62a0c13b1aec2710caa",
+      "size": 240000
+    },
+    "resident_card.mem": {
+      "sha256": "f0ae4cfd241a4a9fb40aa010061917800ad21b4dbe7ea2ff695f557ab255e6f5",
+      "size": 16777216
+    }
+  },
+  "console_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "binding": "replay_verified_current_generated_assets",
+  "original_before_after_hashes_captured": false,
+  "scope": "Current deterministic replay equals retained actual runtime assets; not a newly executed HDL test"
+}

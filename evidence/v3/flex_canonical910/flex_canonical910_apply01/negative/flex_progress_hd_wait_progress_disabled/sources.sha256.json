@@ -1,0 +1,17 @@
+{
+  "safevision/rtl/hd/v3_supervisor.v": "2e7e07748fe4856576e9690cf237f6a34f4a18800ba1cc498891dec53698c0bd",
+  "safevision/rtl/hd/media_recovery_ctrl.v": "e10911c02cd3b6ae613192fb92791f31cf15be28740642fb066e836cda855a50",
+  "safevision/rtl/safety/fault_manager.v": "48ca28dbb0c1b5148200e01910bb8385aa6a342b4a10df58ffe39f441dfc2f21",
+  "safevision/verification/models/v3_supervisor_reference.sv": "d882fa5a68e7b9223cd557b15187ac4f4f4acf3e6a5c4e5eed00619d3f18b0a5",
+  "safevision/verification/models/v3_hd_supervisor_reference.sv": "29722ceee046287997de58f93dce371199c3b9740f9ddcbc1c3c7ac7a7bb0163",
+  "safevision/verification/models/v3_recovery_reset_reference.sv": "b7bafca1531e00a070811f8a479d5db7e845d6a149012a15c81c561cc413831d",
+  "safevision/verification/unit/tb_v3_progress_watchdog561.sv": "9026c2a65c0d25bb4bb7c99c44870fed8a0a2b62427f662c138223c37f0c5e41",
+  "safevision/rtl/include/crc32_word.vh": "17f9d826d1d26514a3bf1a8c6db95189ccd982c470112d1f5cdb8c9bcb89a36a",
+  "safevision/rtl/include/event_code_defs.vh": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2",
+  "safevision/rtl/include/fault_code_defs.vh": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e",
+  "safevision/rtl/include/pixel_format_defs.vh": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0",
+  "safevision/rtl/include/safevision_defs.vh": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5",
+  "safevision/rtl/include/video_mode_defs.vh": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997",
+  "safevision/tools/run_v3_sim_flexible.py": "c77469c3a60a9d9a023fb49fa7048a86204e7c122354333418b5935d85929e56",
+  "safevision/build/manifests/progress_recovery_hd561_sim.json": "0d828262f1accc8cd2609ed5892d575439f90bd3c97347100b09117bb9dbc441"
+}

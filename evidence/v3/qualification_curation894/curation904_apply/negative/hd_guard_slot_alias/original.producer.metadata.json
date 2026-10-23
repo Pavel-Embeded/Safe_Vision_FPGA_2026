@@ -1,0 +1,23 @@
+{
+  "mutation": "hd_guard_slot_alias",
+  "target": "safevision/rtl/hd/v3_row_integrity.v",
+  "suite": "hd_guard_3_128",
+  "top": "tb_v3_hd_guard_3_128",
+  "patch": [
+    {
+      "before": "{slot_q,source_row[INDEX_W-1:0]}",
+      "after": "{2'b00,source_row[INDEX_W-1:0]}"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svnegative318\\n\\hd_guard_slot_alias\\sim\\tb_v3_hd_guard_3_128",
+  "original_sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368",
+  "mutated_sha256": "22b8a2d9d0fd97774503e8d4c5235dc964917391fb87c9e64bc082ee3d71457f",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    11535
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svnegative318\\n\\hd_guard_slot_alias\\sim\\tb_v3_hd_guard_3_128"
+}

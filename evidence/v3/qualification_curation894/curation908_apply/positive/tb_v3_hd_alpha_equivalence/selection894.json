@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_alpha_equivalence",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_alpha_equivalence",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_alpha_equivalence",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_alpha_equivalence",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 1060899,
+        "elapsed_s": 10.062,
+        "suite": "hd_alpha",
+        "accepted_native_runner": true,
+        "producer": "Actual unchanged relative source fingerprints and normally completed native XSim",
+        "legacy": false,
+        "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_alpha_equivalence"
+      },
+      "metadata_sha256": "6e38acdda181ae3ecbba35cad8536c5b766c3b316122ac166ff9db72016c6449",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_alpha_equivalence",
+        "suite": "hd_alpha",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_alpha_sim.json",
+        "current_manifest_sha256": "ef2c038df3f12572beef9b204c193aa68571c799ce5d3a935b7097e7d2332765",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "be8ef44d91e81522f990bc1a24bb7cec3e1f74b7b241e1c6b0ea680a4aecfc60"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_alpha_equivalence",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_alpha_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 1060899,
+      "elapsed_s": 10.062,
+      "suite": "hd_alpha",
+      "accepted_native_runner": true,
+      "producer": "Actual unchanged relative source fingerprints and normally completed native XSim",
+      "legacy": false,
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_alpha_equivalence"
+    },
+    "metadata_sha256": "6e38acdda181ae3ecbba35cad8536c5b766c3b316122ac166ff9db72016c6449",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_alpha_equivalence",
+      "suite": "hd_alpha",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_alpha_sim.json",
+      "current_manifest_sha256": "ef2c038df3f12572beef9b204c193aa68571c799ce5d3a935b7097e7d2332765",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "be8ef44d91e81522f990bc1a24bb7cec3e1f74b7b241e1c6b0ea680a4aecfc60",
+    "sources_sha256": "cd326d93090d41ade34c9b7f4337c804f12fd40d9d6ef0964ae73d5671212ef1",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_alpha_equivalence\\producer.results.json",
+          "sha256": "406af7d26abb25d7a01ad195490fe59e979c7f2b450b37b779600d0530061f24",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

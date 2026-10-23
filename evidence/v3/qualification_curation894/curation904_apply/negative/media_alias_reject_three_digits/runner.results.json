@@ -1,0 +1,17 @@
+{
+  "suite": "directory_alias510",
+  "results": [
+    {
+      "top": "tb_v3_directory_alias510",
+      "status": "FAIL",
+      "source_overrides": [
+        "safevision/rtl/storage/fat32_directory_scanner.v"
+      ],
+      "error": "missing completion/checks or nonzero error: D:\\Codex\\svflex537\\qualification811\\negative\\media_alias_reject_three_digits\\sim\\tb_v3_directory_alias510\\sim.log",
+      "elapsed_s": 9.406
+    }
+  ],
+  "complete": false,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

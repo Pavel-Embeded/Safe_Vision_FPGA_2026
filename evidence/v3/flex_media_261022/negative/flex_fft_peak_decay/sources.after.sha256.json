@@ -1,5 +1,5 @@
 {
-  "safevision/rtl/video/v3_audio_spectrum.v": "1ff910f61ff626a06a56d4047d37f84b56c45c77da66b67a03327390c59789c7",
+  "safevision/rtl/video/v3_audio_spectrum.v": "352aee67382444f2e02ee948d8a070638238456af51aab11347030f16479fac0",
   "safevision/verification/unit/tb_v3_spectrum539.sv": "ea0d96b52cf565ad8b69a40980d7020c6ac6dfc331f3cb035b8ef5222436fcb9",
   "safevision/rtl/include/crc32_word.vh": "17f9d826d1d26514a3bf1a8c6db95189ccd982c470112d1f5cdb8c9bcb89a36a",
   "safevision/rtl/include/event_code_defs.vh": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2",

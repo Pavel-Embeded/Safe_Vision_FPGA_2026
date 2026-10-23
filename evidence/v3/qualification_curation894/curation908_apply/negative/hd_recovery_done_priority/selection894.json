@@ -1,0 +1,121 @@
+{
+  "kind": "negative",
+  "name": "hd_recovery_done_priority",
+  "record": {
+    "kind": "negative",
+    "name": "hd_recovery_done_priority",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_recovery_done_priority",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_recovery_done_priority",
+        "top": "tb_v3_hd_recovery_counter_equivalence",
+        "target": "safevision/rtl/hd/media_recovery_ctrl.v",
+        "suite": "hd_recovery_counter",
+        "patch": [
+          {
+            "before": "WAIT:if(failed||wait_expired)",
+            "after": "WAIT:if((failed||wait_expired)&&!done)"
+          }
+        ],
+        "original_sha256": "5952cc814bf6e6d5424e074d9ffc36e7ab5276a38b8ee7a6b866b41e22bd21dd",
+        "mutated_sha256": "71f25bf062d01551ae087832053ebb6457ddd214f9918c122c74b363abb642ce",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "detected": true,
+        "normal_completion": true,
+        "error_counts": [
+          257837
+        ],
+        "log_sha256": "937a87cc0b8adb4765c6b78c264b53da40ef1cf92e14291b32100f6dbaf7ec9a",
+        "initial_checker_accepted": true,
+        "assessment": "Raw normal ending, named semantic failure, nonzero errors, no compile/runtime fatal; initial checker falsely required the literal closed bracket [FAIL]",
+        "previous_evidence": "evidence/v3/handbook_26101901/development41/negative/hd_recovery_done_priority",
+        "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_recovery_done_priority\\sim\\tb_v3_hd_recovery_counter_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_recovery_done_priority\\sim\\tb_v3_hd_recovery_counter_equivalence",
+        "return_code": 1
+      },
+      "metadata_sha256": "af9a7ea9e6448937f90bf69dd846c2a3db795f5c54c60852b0f1e54d7aac6c5c",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_recovery_counter_equivalence",
+        "suite": "hd_recovery_counter",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_recovery_counter_sim.json",
+        "current_manifest_sha256": "b972f7a49e209a22af7e1c98e37e3ceaf74c320e662079f00e74200efd23a9e8",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        257837
+      ],
+      "log_sha256": "860a6a40086f51551bdbffb8208e50fe5cdca3c508b3186eaa96434f28d367df"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_recovery_done_priority",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_recovery_done_priority",
+      "top": "tb_v3_hd_recovery_counter_equivalence",
+      "target": "safevision/rtl/hd/media_recovery_ctrl.v",
+      "suite": "hd_recovery_counter",
+      "patch": [
+        {
+          "before": "WAIT:if(failed||wait_expired)",
+          "after": "WAIT:if((failed||wait_expired)&&!done)"
+        }
+      ],
+      "original_sha256": "5952cc814bf6e6d5424e074d9ffc36e7ab5276a38b8ee7a6b866b41e22bd21dd",
+      "mutated_sha256": "71f25bf062d01551ae087832053ebb6457ddd214f9918c122c74b363abb642ce",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "detected": true,
+      "normal_completion": true,
+      "error_counts": [
+        257837
+      ],
+      "log_sha256": "937a87cc0b8adb4765c6b78c264b53da40ef1cf92e14291b32100f6dbaf7ec9a",
+      "initial_checker_accepted": true,
+      "assessment": "Raw normal ending, named semantic failure, nonzero errors, no compile/runtime fatal; initial checker falsely required the literal closed bracket [FAIL]",
+      "previous_evidence": "evidence/v3/handbook_26101901/development41/negative/hd_recovery_done_priority",
+      "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_recovery_done_priority\\sim\\tb_v3_hd_recovery_counter_equivalence",
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_recovery_done_priority\\sim\\tb_v3_hd_recovery_counter_equivalence",
+      "return_code": 1
+    },
+    "metadata_sha256": "af9a7ea9e6448937f90bf69dd846c2a3db795f5c54c60852b0f1e54d7aac6c5c",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_recovery_counter_equivalence",
+      "suite": "hd_recovery_counter",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_recovery_counter_sim.json",
+      "current_manifest_sha256": "b972f7a49e209a22af7e1c98e37e3ceaf74c320e662079f00e74200efd23a9e8",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      257837
+    ],
+    "log_sha256": "860a6a40086f51551bdbffb8208e50fe5cdca3c508b3186eaa96434f28d367df",
+    "sources_sha256": "24a2bcd42baaaac636c60cc2195a6fa828909b6816dec969e0481c724b436ed0",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_recovery_done_priority\\sim\\results.json",
+          "sha256": "5a7f72fdf0c0c0d4ac5ac117a7d4f5f19e8e70cc300299a22c6bd69dc71564f1",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

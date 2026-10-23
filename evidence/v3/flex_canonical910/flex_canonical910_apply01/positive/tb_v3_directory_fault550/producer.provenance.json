@@ -1,0 +1,58 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_directory_fault550\\sim\\tb_v3_directory_fault550",
+  "native_log_sha256": "4b4e44db433d796b3a2ac91cedb81a44d45da2b9c0d34acadc5add1aa21b6f21",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_directory_fault550",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_directory_fault550\\sim\\tb_v3_directory_fault550",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_directory_fault550",
+        "status": "PASS",
+        "source_overrides": [],
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "checks": 1,
+        "data_comparisons": 2,
+        "elapsed_s": 18.594,
+        "suite": "directory_fault550",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_directory_fault550\\sim\\tb_v3_directory_fault550"
+      },
+      "metadata_sha256": "f68a36b1ab864e1b1259f05f963a501deace41f7a076b3de8afee8c0937a8498",
+      "normal_completion": true,
+      "input_count": 50,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_directory_fault550",
+        "suite": "directory_fault550",
+        "ordered_analyzed_HDL": 33,
+        "manifest": "safevision/build/manifests/directory_fault550_sim.json",
+        "current_manifest_sha256": "3839e4e40d752d6363c0180ce23582bcf80a4c0a32a1db9cad42b3256bd83a1e",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 8,
+        "generation_inputs": 42,
+        "generation_before_sha256": "4895a1f0f0ff3be0e89a84478c578cf9a02615d726243e418079e9fad7b60c03",
+        "generation_after_sha256": "4895a1f0f0ff3be0e89a84478c578cf9a02615d726243e418079e9fad7b60c03"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "4b4e44db433d796b3a2ac91cedb81a44d45da2b9c0d34acadc5add1aa21b6f21"
+    },
+    "elapsed_s": 18.922
+  }
+}

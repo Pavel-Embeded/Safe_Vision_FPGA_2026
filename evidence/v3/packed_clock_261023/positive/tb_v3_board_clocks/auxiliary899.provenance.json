@@ -1,0 +1,59 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_board_clocks\\sim\\tb_v3_board_clocks",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "packed",
+    "kind": "positive",
+    "name": "tb_v3_board_clocks",
+    "row": {
+      "top": "tb_v3_board_clocks",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 219,
+      "elapsed_s": 16.828,
+      "suite": "v3_board_clocks",
+      "legacy": false,
+      "comparisons": 219
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\packed_clock_261023\\positive\\tb_v3_board_clocks",
+    "packed": true,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "existing_qualification888_native_capture",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_board_clocks\\sim\\tb_v3_board_clocks",
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_board_clocks",
+        "suite": "v3_board_clocks",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/v3_board_clocks_sim.json",
+        "current_manifest_sha256": "fe63c8c3a9aa6dd80aa689063283a2d7d93b86a776738cd0430e6933b00a455a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 0,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_board_clocks\\sim\\results.json",
+            "sha256": "a5f32365face449df24fb49d6c2422b622ab7476599d6d46c97ea822ad31e035",
+            "basis": "native_runner_complete_PASS"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 120,
+      "normal_completion": true,
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "ab396f8176c1ffc59f66a83e2fcf6594db7a6e2548c9296f19d7415e5e28f118",
+      "source_fingerprint_sha256": "717f065819e70275ae3ed69ae83fd71f9f21e092819c7a808b38e295f0860f6b"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\packed_clock_261023\\positive\\tb_v3_board_clocks"
+  },
+  "actual_execution_retained": true
+}

@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_controls_pipeline_equivalence\\sim\\tb_v3_controls_pipeline_equivalence",
+  "native_log_sha256": "ab6206d44db037d363c7d2e801eeca5a7b83eb8d3e125d32120fdd5623b79af0",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_controls_pipeline_equivalence",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_controls_pipeline_equivalence\\sim\\tb_v3_controls_pipeline_equivalence",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_controls_pipeline_equivalence",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 599346,
+        "elapsed_s": 10.453,
+        "suite": "controls_pipeline_equivalence",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_controls_pipeline_equivalence\\sim\\tb_v3_controls_pipeline_equivalence"
+      },
+      "metadata_sha256": "08b705e2eed7b6a98941d71a7786fee8a4cc941c30715c228c3c5df664974a43",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_controls_pipeline_equivalence",
+        "suite": "controls_pipeline_equivalence",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/controls_pipeline_equivalence_sim.json",
+        "current_manifest_sha256": "7bbd39339b1e0f3ff35b233513814904b4cc8eec3986e45f373fb0f395155af2",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "ab6206d44db037d363c7d2e801eeca5a7b83eb8d3e125d32120fdd5623b79af0"
+    },
+    "elapsed_s": 10.641
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_prefix_miter_hd_read64_short_385",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_prefix_miter_hd_read64_short_385",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_prefix_miter_hd_read64_short_385",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_prefix_miter_hd_read64_short_385",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 23,
+        "data_comparisons": 32244,
+        "elapsed_s": 7.656,
+        "suite": "adapter_prefix_hd385",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svshared407\\hd\\sim\\tb_v3_prefix_miter_hd_read64_short_385"
+      },
+      "metadata_sha256": "17a44df3656067ea9f704d6af11d98e9bebb12ac62893221f9d2821d97559caf",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_prefix_miter_hd_read64_short_385",
+        "suite": "adapter_prefix_hd385",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/adapter_prefix_hd385_sim.json",
+        "current_manifest_sha256": "c99fec2902d71270a6f1acacae771e12fd3386fa108dab5f9b4803411cb47c01",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0,
+        0
+      ],
+      "log_sha256": "e1e8eb58820de0505d0c64d80b36b84a650e12564a62ad831ab8a4d7ee11dfa3"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_prefix_miter_hd_read64_short_385",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_prefix_miter_hd_read64_short_385",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 23,
+      "data_comparisons": 32244,
+      "elapsed_s": 7.656,
+      "suite": "adapter_prefix_hd385",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svshared407\\hd\\sim\\tb_v3_prefix_miter_hd_read64_short_385"
+    },
+    "metadata_sha256": "17a44df3656067ea9f704d6af11d98e9bebb12ac62893221f9d2821d97559caf",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_prefix_miter_hd_read64_short_385",
+      "suite": "adapter_prefix_hd385",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/adapter_prefix_hd385_sim.json",
+      "current_manifest_sha256": "c99fec2902d71270a6f1acacae771e12fd3386fa108dab5f9b4803411cb47c01",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0
+    ],
+    "log_sha256": "e1e8eb58820de0505d0c64d80b36b84a650e12564a62ad831ab8a4d7ee11dfa3",
+    "sources_sha256": "c897efe88fdd01f6ee4b077439f975c6e6f1ef6bfe455df0407e59172e9895f4",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svshared407\\hd\\sim\\results.json",
+          "sha256": "3c3aaabdad715d9c6246eb30af0336bf981f53b166e5db20c3c839246c2761aa",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

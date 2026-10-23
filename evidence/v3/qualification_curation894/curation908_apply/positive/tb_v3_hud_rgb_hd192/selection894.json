@@ -1,0 +1,92 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hud_rgb_hd192",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hud_rgb_hd192",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hud_rgb_hd192",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 2757,
+        "elapsed_s": 18.75,
+        "suite": "hud_rgb_hd192",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192"
+      },
+      "metadata_sha256": "ae76bee8d5c66023a86cc303559b9766c714b7fd3adc25115a8a3a49ac7e58f9",
+      "normal_completion": true,
+      "input_count": 121,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hud_rgb_hd192",
+        "suite": "hud_rgb_hd192",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/hud_rgb_hd192_sim.json",
+        "current_manifest_sha256": "969b81d611b5484b4ea5e5fd4b156201ee233f0d23de03103ebc33a25efaf631",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "a58f08d567f0c6de341f81a32383991096aff4c8a604acb3dbb8b7622e26457b"
+    },
+    "elapsed_s": 19.032,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hud_rgb_hd192",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2757,
+      "elapsed_s": 18.75,
+      "suite": "hud_rgb_hd192",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192"
+    },
+    "metadata_sha256": "ae76bee8d5c66023a86cc303559b9766c714b7fd3adc25115a8a3a49ac7e58f9",
+    "input_count": 121,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hud_rgb_hd192",
+      "suite": "hud_rgb_hd192",
+      "ordered_analyzed_HDL": 106,
+      "manifest": "safevision/build/manifests/hud_rgb_hd192_sim.json",
+      "current_manifest_sha256": "969b81d611b5484b4ea5e5fd4b156201ee233f0d23de03103ebc33a25efaf631",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "a58f08d567f0c6de341f81a32383991096aff4c8a604acb3dbb8b7622e26457b",
+    "sources_sha256": "454ad76a7feb77e3730c37e53a5ea281471c0a567b22f539c8a622b932e02557",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\positive\\tb_v3_hud_rgb_hd192\\sim\\results.json",
+          "sha256": "1a165d59908384217cd48d79d19008939b7d70987a1a21cae6fa3521d83a33b4",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

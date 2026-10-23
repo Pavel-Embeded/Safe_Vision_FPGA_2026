@@ -1,0 +1,114 @@
+{
+  "kind": "negative",
+  "name": "handbook_energy_profile_disabled",
+  "record": {
+    "kind": "negative",
+    "name": "handbook_energy_profile_disabled",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\handbook_energy_profile_disabled\\sim\\tb_v3_handbook_board",
+    "checked": {
+      "metadata": {
+        "mutation": "handbook_energy_profile_disabled",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "handbook_board",
+        "top": "tb_v3_handbook_board",
+        "patch": [
+          {
+            "before": ".HANDBOOK_PROFILE(1)) audio(",
+            "after": ".HANDBOOK_PROFILE(0)) audio("
+          }
+        ],
+        "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+        "mutated_sha256": "af3531f2423bdade34c3453b5be6406d8b2b8207caafb14d3109979bb0f71b1a",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\handbook_energy_profile_disabled\\sim\\tb_v3_handbook_board",
+        "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\handbook_energy_profile_disabled\\sim\\tb_v3_handbook_board"
+      },
+      "metadata_sha256": "77b725572cead1d5d6550ef18aaf606af05b48939cf2bfce3e74a5e56a2bd7b7",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_board",
+        "suite": "handbook_board",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/handbook_board_sim.json",
+        "current_manifest_sha256": "031ec3fecd51dc649eeafd7178e283c3f5fb4647ec7866072e63e9794398b738",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1
+      ],
+      "log_sha256": "09f760fd9138e4e9de698ad818814881b71fde55bbe42cf3c8a67626d13980f8"
+    },
+    "elapsed_s": 13.015,
+    "cohort": "D:\\Codex\\svflex537\\qualification888\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification888\\negative\\handbook_energy_profile_disabled\\sim\\tb_v3_handbook_board",
+  "checked": {
+    "metadata": {
+      "mutation": "handbook_energy_profile_disabled",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "handbook_board",
+      "top": "tb_v3_handbook_board",
+      "patch": [
+        {
+          "before": ".HANDBOOK_PROFILE(1)) audio(",
+          "after": ".HANDBOOK_PROFILE(0)) audio("
+        }
+      ],
+      "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+      "mutated_sha256": "af3531f2423bdade34c3453b5be6406d8b2b8207caafb14d3109979bb0f71b1a",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification888\\negative\\handbook_energy_profile_disabled\\sim\\tb_v3_handbook_board",
+      "original_producer": "D:\\Codex\\svflex537\\qualification888\\negative\\handbook_energy_profile_disabled\\sim\\tb_v3_handbook_board"
+    },
+    "metadata_sha256": "77b725572cead1d5d6550ef18aaf606af05b48939cf2bfce3e74a5e56a2bd7b7",
+    "input_count": 120,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_board",
+      "suite": "handbook_board",
+      "ordered_analyzed_HDL": 105,
+      "manifest": "safevision/build/manifests/handbook_board_sim.json",
+      "current_manifest_sha256": "031ec3fecd51dc649eeafd7178e283c3f5fb4647ec7866072e63e9794398b738",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1
+    ],
+    "log_sha256": "09f760fd9138e4e9de698ad818814881b71fde55bbe42cf3c8a67626d13980f8",
+    "sources_sha256": "ca3c4e5d3f1fc8d63b34540212e8b2c0e13de00eaeb80077340e1c55c16b8ecf",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification888\\negative\\handbook_energy_profile_disabled\\sim\\results.json",
+          "sha256": "1f72ef24d4ca9c7006abe82f4b6c16f9c446ff483e88e7528c5cbf103248bf88",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

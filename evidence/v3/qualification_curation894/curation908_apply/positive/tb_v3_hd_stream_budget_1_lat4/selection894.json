@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_stream_budget_1_lat4",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_stream_budget_1_lat4",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_stream_budget_1_lat4",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_stream_budget_1_lat4",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 2,
+        "data_comparisons": 5529600,
+        "elapsed_s": 23.172,
+        "suite": "hd_stream_budget",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_hd_stream_budget_1_lat4\\sim\\tb_v3_hd_stream_budget_1_lat4"
+      },
+      "metadata_sha256": "50885be871b33dc30331380edad83d92aa3d9b13dad2cef251f0e68e8a8badb1",
+      "normal_completion": true,
+      "input_count": 22,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_stream_budget_1_lat4",
+        "suite": "hd_stream_budget",
+        "ordered_analyzed_HDL": 14,
+        "manifest": "safevision/build/manifests/hd_stream_budget_sim.json",
+        "current_manifest_sha256": "cde27e4334b163fef5fe9dedf18b1635606ae48a71c6b017bf2c078f14ebecf7",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0,
+        0
+      ],
+      "log_sha256": "3b47250b358f851c3819763116aeac2dd261a33020e89e5831da5abf56abc8fd"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_stream_budget_1_lat4",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_stream_budget_1_lat4",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 2,
+      "data_comparisons": 5529600,
+      "elapsed_s": 23.172,
+      "suite": "hd_stream_budget",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_hd_stream_budget_1_lat4\\sim\\tb_v3_hd_stream_budget_1_lat4"
+    },
+    "metadata_sha256": "50885be871b33dc30331380edad83d92aa3d9b13dad2cef251f0e68e8a8badb1",
+    "input_count": 22,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_stream_budget_1_lat4",
+      "suite": "hd_stream_budget",
+      "ordered_analyzed_HDL": 14,
+      "manifest": "safevision/build/manifests/hd_stream_budget_sim.json",
+      "current_manifest_sha256": "cde27e4334b163fef5fe9dedf18b1635606ae48a71c6b017bf2c078f14ebecf7",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0,
+      0
+    ],
+    "log_sha256": "3b47250b358f851c3819763116aeac2dd261a33020e89e5831da5abf56abc8fd",
+    "sources_sha256": "1d130c097ed3fb168435cdc2a70adaa0853023476fdd623d0e3c1611bdf0a7a0",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq416\\p\\tb_v3_hd_stream_budget_1_lat4\\sim\\results.json",
+          "sha256": "d9d92f58715f44c18ddd94500b1b779f1b6f79fb9ce809ac2a4abb3d84599332",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

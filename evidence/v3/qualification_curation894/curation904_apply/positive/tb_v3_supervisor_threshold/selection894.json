@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_supervisor_threshold",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_supervisor_threshold",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor_threshold",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_supervisor_threshold",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 345455,
+        "elapsed_s": 9.469,
+        "suite": "supervisor_threshold",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_supervisor_threshold\\sim\\tb_v3_supervisor_threshold"
+      },
+      "metadata_sha256": "d52d6b3485caae90567546381887e8e727fb9b7c4140a2b973425c3b3b8c97a5",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_supervisor_threshold",
+        "suite": "supervisor_threshold",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/supervisor_threshold_sim.json",
+        "current_manifest_sha256": "fa273e8bcfcb7375c3f61503acda0ffffc644bbe6b5a58c3429265367147c8e3",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "da160d9b2bba7541336e3941c3a0d66ac438a1ab1e8fc22aaf6a94066e804b4b"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_supervisor_threshold",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_supervisor_threshold",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 345455,
+      "elapsed_s": 9.469,
+      "suite": "supervisor_threshold",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_supervisor_threshold\\sim\\tb_v3_supervisor_threshold"
+    },
+    "metadata_sha256": "d52d6b3485caae90567546381887e8e727fb9b7c4140a2b973425c3b3b8c97a5",
+    "input_count": 13,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_supervisor_threshold",
+      "suite": "supervisor_threshold",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/supervisor_threshold_sim.json",
+      "current_manifest_sha256": "fa273e8bcfcb7375c3f61503acda0ffffc644bbe6b5a58c3429265367147c8e3",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "da160d9b2bba7541336e3941c3a0d66ac438a1ab1e8fc22aaf6a94066e804b4b",
+    "sources_sha256": "bb0670344d58cb4f2af1e90461485d08fdd8ebaac7f066e7b5bd295cf41f9892",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\regression576_stable\\positive\\tb_v3_supervisor_threshold\\sim\\results.json",
+          "sha256": "15f35457d2a64d7b2e816fe9ee7713375f7838304c480f35ff03273bfb092eb4",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

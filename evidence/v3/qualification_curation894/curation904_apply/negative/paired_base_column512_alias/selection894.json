@@ -1,0 +1,111 @@
+{
+  "kind": "negative",
+  "name": "paired_base_column512_alias",
+  "record": {
+    "kind": "negative",
+    "name": "paired_base_column512_alias",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\paired_base_column512_alias",
+    "checked": {
+      "metadata": {
+        "mutation": "paired_base_column512_alias",
+        "target": "safevision/rtl/video/v3_packed_row_store.v",
+        "suite": "paired_rows_base288",
+        "top": "tb_v3_paired_rows_base288",
+        "patch": [
+          {
+            "before": "pixels[{write_position[11],write_position[9:0]}]",
+            "after": "pixels[{write_position[11],1'b0,write_position[8:0]}]"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svnegative430\\n\\paired_base_column512_alias",
+        "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+        "mutated_sha256": "b33c8b21a72028faa43c53ae7170dc382b1c264c86579475cab0a178963ef52f",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          11120664
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svnegative430\\n\\paired_base_column512_alias\\sim\\tb_v3_paired_rows_base288"
+      },
+      "metadata_sha256": "f1cbcc6675712acaa93f202565816eaf82c6c1f47d8aff791c4294f93b466296",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_paired_rows_base288",
+        "suite": "paired_rows_base288",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/paired_rows_base288_sim.json",
+        "current_manifest_sha256": "ad556e5d2ba42d31e0804092789fcf78b6c799c542fa43c915c6a3b003ab9dd5",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        11120664
+      ],
+      "log_sha256": "f92f88b249b49cf565c2ae64c41d85c0779851f00afd3ecffb00ae95fc737f3c"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\paired_base_column512_alias",
+  "checked": {
+    "metadata": {
+      "mutation": "paired_base_column512_alias",
+      "target": "safevision/rtl/video/v3_packed_row_store.v",
+      "suite": "paired_rows_base288",
+      "top": "tb_v3_paired_rows_base288",
+      "patch": [
+        {
+          "before": "pixels[{write_position[11],write_position[9:0]}]",
+          "after": "pixels[{write_position[11],1'b0,write_position[8:0]}]"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative430\\n\\paired_base_column512_alias",
+      "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+      "mutated_sha256": "b33c8b21a72028faa43c53ae7170dc382b1c264c86579475cab0a178963ef52f",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        11120664
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative430\\n\\paired_base_column512_alias\\sim\\tb_v3_paired_rows_base288"
+    },
+    "metadata_sha256": "f1cbcc6675712acaa93f202565816eaf82c6c1f47d8aff791c4294f93b466296",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_paired_rows_base288",
+      "suite": "paired_rows_base288",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/paired_rows_base288_sim.json",
+      "current_manifest_sha256": "ad556e5d2ba42d31e0804092789fcf78b6c799c542fa43c915c6a3b003ab9dd5",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      11120664
+    ],
+    "log_sha256": "f92f88b249b49cf565c2ae64c41d85c0779851f00afd3ecffb00ae95fc737f3c",
+    "sources_sha256": "a3ab9bda01355b7f9f633bfb26d28a43fc043d6b21c0d79d75553355755214d5",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svnegative430\\n\\paired_base_column512_alias\\sim\\results.json",
+          "sha256": "0645e3d6c1c3f482947f52e5f938facbe2b84f06c6db07408a1a51291b7d1534",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_hd_guard_256_128",
+  "top": "tb_v3_hd_guard_256_128",
+  "suite": "hd_guard_256_128",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_hd_guard_256_128",
+    "suite": "hd_guard_256_128",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_hd_guard_256_128",
+    "suite": "hd_guard_256_128",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_guard_256_128",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_hd_guard_256_128",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_guard_256_128",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1045,
+      "data_comparisons": 381766,
+      "elapsed_s": 11.437,
+      "suite": "hd_guard_256_128",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_hd_guard_256_128\\sim\\tb_v3_hd_guard_256_128"
+    },
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_guard_256_128",
+      "suite": "hd_guard_256_128",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_guard_256_128_sim.json",
+      "current_manifest_sha256": "4f32104f1137d8a61d3738c86bf2caccc426aa4ddb058944ca6f884c9c7efb7a",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "3bbe2b4308030b50dd3c9637d8a78217b7a2bb3e40b473a055869ff5887edd7c",
+    "metadata_sha256": "793729e853dc0524d38b0f10865b9fe7dda0b4b8cd6e74f0ceb1dec3214a5fae",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_guard_256_128\\result.json",
+      "sha256": "793729e853dc0524d38b0f10865b9fe7dda0b4b8cd6e74f0ceb1dec3214a5fae"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_guard_256_128\\sim.log",
+      "sha256": "3bbe2b4308030b50dd3c9637d8a78217b7a2bb3e40b473a055869ff5887edd7c"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_guard_256_128\\sources.sha256.json",
+      "sha256": "9aad62b190171cac3b0ccc9b4c61951ede774a428b0d8b6edd2c134b99b84d1f"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_guard_256_128\\original.producer.metadata.json",
+      "sha256": "793729e853dc0524d38b0f10865b9fe7dda0b4b8cd6e74f0ceb1dec3214a5fae"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_guard_256_128\\producer.provenance.json",
+      "sha256": "730ac3ab24bababba53e54a46da161d19b1900dc51864b25df179b47ba4f7149"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_hd_guard_256_128\\sources.prj",
+      "sha256": "24ea7f9551b880fb3e024516903bfe9dc867d0ea818d8415a335f97fb983b5a8"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

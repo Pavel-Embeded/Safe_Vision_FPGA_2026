@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_slot_partition_base249\\sim\\tb_v3_slot_partition_base249",
+  "native_log_sha256": "134ff5a0f250d13426727e8d6aa0973ce796054f66b74cbc9f2c2e6bdcbbaa46",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_slot_partition_base249",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_slot_partition_base249\\sim\\tb_v3_slot_partition_base249",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_slot_partition_base249",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 2196608,
+        "elapsed_s": 9.469,
+        "suite": "slot_partition_base249",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_slot_partition_base249\\sim\\tb_v3_slot_partition_base249"
+      },
+      "metadata_sha256": "6ee680709a2052625957824ed3fcca9adf0ffe503a64eeb7b30de99e51bc87b6",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_slot_partition_base249",
+        "suite": "slot_partition_base249",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/slot_partition_base249_sim.json",
+        "current_manifest_sha256": "c9604596d5b8f953647549d83d98fe3d5398c465ee8c918f801f74cd8c3b31b8",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "134ff5a0f250d13426727e8d6aa0973ce796054f66b74cbc9f2c2e6bdcbbaa46"
+    },
+    "elapsed_s": 9.688
+  }
+}

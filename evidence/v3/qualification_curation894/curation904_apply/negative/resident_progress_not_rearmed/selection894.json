@@ -1,0 +1,151 @@
+{
+  "kind": "negative",
+  "name": "resident_progress_not_rearmed",
+  "record": {
+    "kind": "negative",
+    "name": "resident_progress_not_rearmed",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\resident_progress_not_rearmed",
+    "checked": {
+      "metadata": {
+        "mutation": "resident_progress_not_rearmed",
+        "target": "safevision/rtl/storage/sd_bmp_player.v",
+        "suite": "mixed_card217",
+        "top": "tb_v3_mixed_card217",
+        "patch": [
+          {
+            "before": "if(RESIDENT_CACHE&&((fst_valid&&bp_ready)||(bpu_valid&&bpu_ready)))to_cnt<=0;",
+            "after": "if(1'b0)to_cnt<=0;"
+          }
+        ],
+        "original_sha256": "bf29f5516109c424e476984b80894e496f2a7d25989f386a1399bcc9707722de",
+        "mutated_sha256": "3dbf55b3010e0dc1445bf6c2e4481024786547a6e2c3c184cdd91a113eb08904",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          10
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217"
+      },
+      "metadata_sha256": "f7a3e25f95984607694f3e2324f634bf08608ba22a0e58f14455727312365d09",
+      "normal_completion": true,
+      "input_count": 61,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_mixed_card217",
+        "suite": "mixed_card217",
+        "ordered_analyzed_HDL": 52,
+        "manifest": "safevision/build/manifests/mixed_card217_sim.json",
+        "current_manifest_sha256": "8622258308aeb686d279140b869d3bb41d032212491f49365daec73f76e1b2c8",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        10
+      ],
+      "log_sha256": "d5a0989dade281d84321a2a6d8e3c64ef96c2b6b0e31b7eea3ba1550cf6bf6ed"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\resident_progress_not_rearmed",
+  "checked": {
+    "metadata": {
+      "mutation": "resident_progress_not_rearmed",
+      "target": "safevision/rtl/storage/sd_bmp_player.v",
+      "suite": "mixed_card217",
+      "top": "tb_v3_mixed_card217",
+      "patch": [
+        {
+          "before": "if(RESIDENT_CACHE&&((fst_valid&&bp_ready)||(bpu_valid&&bpu_ready)))to_cnt<=0;",
+          "after": "if(1'b0)to_cnt<=0;"
+        }
+      ],
+      "original_sha256": "bf29f5516109c424e476984b80894e496f2a7d25989f386a1399bcc9707722de",
+      "mutated_sha256": "3dbf55b3010e0dc1445bf6c2e4481024786547a6e2c3c184cdd91a113eb08904",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        10
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217"
+    },
+    "metadata_sha256": "f7a3e25f95984607694f3e2324f634bf08608ba22a0e58f14455727312365d09",
+    "input_count": 61,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_mixed_card217",
+      "suite": "mixed_card217",
+      "ordered_analyzed_HDL": 52,
+      "manifest": "safevision/build/manifests/mixed_card217_sim.json",
+      "current_manifest_sha256": "8622258308aeb686d279140b869d3bb41d032212491f49365daec73f76e1b2c8",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      10
+    ],
+    "log_sha256": "d5a0989dade281d84321a2a6d8e3c64ef96c2b6b0e31b7eea3ba1550cf6bf6ed",
+    "sources_sha256": "02c3541f836f0d491dace540d75d0dd2ef69b4020b0e162b7b4820ba4cfd74dd",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\resident_progress_not_rearmed\\runner.results.json",
+          "sha256": "6d04b5bb57edbbdc6397423cafd982fa614eac6ab6193e70e603ea1b27565be8",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\resident_progress_not_rearmed\\sim\\results.json",
+          "sha256": "6d04b5bb57edbbdc6397423cafd982fa614eac6ab6193e70e603ea1b27565be8",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": true,
+      "binding": "replay_verified_current_generated_assets",
+      "receipt": "D:\\Codex\\svflex537\\curation869_plan02\\generated_replay\\mixed_card217\\tb_v3_mixed_card217\\7275a4a768efbd53\\replay.receipt.json",
+      "receipt_sha256": "528cd8319044f6eeab360d101ef86115c0d42a205ebcc9360f38275b393dfc28",
+      "generated_assets": {
+        "expected0.mem": {
+          "sha256": "8077b796f6640e96e912f71df789f436edf542c0ea96be825767acc26ecae808",
+          "size": 1536000
+        },
+        "expected1.mem": {
+          "sha256": "d5681a49c6acca45d6587ac9b321e4673270a7af49188b645c5a69a2584633a8",
+          "size": 1536000
+        },
+        "expected2.mem": {
+          "sha256": "71f22ec6c8402576b4d23c3af61f417d5ad8d99c7d93267d35fcc30c068ae151",
+          "size": 1536000
+        },
+        "expected3.mem": {
+          "sha256": "25775e68dd343bc1755b670e82c244529531e491d6956b4e01ae685356fefdee",
+          "size": 1536000
+        },
+        "fixture.json": {
+          "sha256": "909c229e1c3b4ab2081a4e99b119ed9e75aeed1f03142227e2cd1ad4bcaca71b",
+          "size": 429
+        },
+        "payload_bytes.mem": {
+          "sha256": "4a5073c754fd7edb98dbdc429995d116deaad305338e7574dbcb271d30725357",
+          "size": 10
+        },
+        "resident_card.mem": {
+          "sha256": "405d9f3015c2395a1fb287f9279e7a6fe15ade721ff97ed1598495a30981b586",
+          "size": 16777216
+        }
+      }
+    }
+  }
+}

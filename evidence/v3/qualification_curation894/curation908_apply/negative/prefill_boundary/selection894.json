@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "prefill_boundary",
+  "record": {
+    "kind": "negative",
+    "name": "prefill_boundary",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\prefill_boundary",
+    "checked": {
+      "metadata": {
+        "mutation": "prefill_boundary",
+        "target": "safevision/rtl/audio/v3_audio_prefill_compare.v",
+        "suite": "audio_prefill_compare",
+        "top": "tb_v3_audio_prefill_compare",
+        "patch": [
+          {
+            "before": "  assign fill=(ring_level<LIMIT) && (queued_words<=max_words);",
+            "after": "  assign fill=(ring_level<LIMIT) && (queued_words<max_words);"
+          }
+        ],
+        "original_sha256": "c6fdef81233882954808bb887db65147fc4b387fc413d91ae836f77429b405f5",
+        "mutated_sha256": "21c5b17e4b8e11305f3272541bf74918cfd2a34032af2a771316d36f2095f5d0",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1654
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\prefill_boundary\\sim\\tb_v3_audio_prefill_compare",
+        "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\prefill_boundary\\sim\\tb_v3_audio_prefill_compare"
+      },
+      "metadata_sha256": "c08d0e3f8c62f28610de62f43dbd61b68c08574ee571cf1d1641c88c2fc35521",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_prefill_compare",
+        "suite": "audio_prefill_compare",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/audio_prefill_compare_sim.json",
+        "current_manifest_sha256": "a64fc60089f49fc250f1427e6802a039315d0e7ffde1e9c2eca03a666ec9fd49",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1654
+      ],
+      "log_sha256": "8c7d72a78051e4ccb52d44834b80e59af3cd899437fbc2d274f205f11d2b1bed"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\prefill_boundary",
+  "checked": {
+    "metadata": {
+      "mutation": "prefill_boundary",
+      "target": "safevision/rtl/audio/v3_audio_prefill_compare.v",
+      "suite": "audio_prefill_compare",
+      "top": "tb_v3_audio_prefill_compare",
+      "patch": [
+        {
+          "before": "  assign fill=(ring_level<LIMIT) && (queued_words<=max_words);",
+          "after": "  assign fill=(ring_level<LIMIT) && (queued_words<max_words);"
+        }
+      ],
+      "original_sha256": "c6fdef81233882954808bb887db65147fc4b387fc413d91ae836f77429b405f5",
+      "mutated_sha256": "21c5b17e4b8e11305f3272541bf74918cfd2a34032af2a771316d36f2095f5d0",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        1654
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\prefill_boundary\\sim\\tb_v3_audio_prefill_compare",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\prefill_boundary\\sim\\tb_v3_audio_prefill_compare"
+    },
+    "metadata_sha256": "c08d0e3f8c62f28610de62f43dbd61b68c08574ee571cf1d1641c88c2fc35521",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_audio_prefill_compare",
+      "suite": "audio_prefill_compare",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/audio_prefill_compare_sim.json",
+      "current_manifest_sha256": "a64fc60089f49fc250f1427e6802a039315d0e7ffde1e9c2eca03a666ec9fd49",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      1654
+    ],
+    "log_sha256": "8c7d72a78051e4ccb52d44834b80e59af3cd899437fbc2d274f205f11d2b1bed",
+    "sources_sha256": "ee1e226d20bca5d1b3b7221c0de2fe622326629229a1e529fe8228c4ba0784d2",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\negative\\prefill_boundary\\sim\\results.json",
+          "sha256": "a3d5730d71d4ad32b05c16c93f6f110ce0cb7aca95ad62d210b2199e314a8797",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

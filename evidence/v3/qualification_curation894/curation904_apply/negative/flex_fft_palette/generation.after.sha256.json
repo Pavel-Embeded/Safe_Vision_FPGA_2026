@@ -1,0 +1,16 @@
+{
+  "safevision/rtl/video/v3_audio_spectrum.v": "37679708d0b8a8c7d73be3998c5fa3109e9192b17164b0ba6f4d82c6710297ba",
+  "safevision/verification/unit/tb_v3_spectrum539.sv": "ea0d96b52cf565ad8b69a40980d7020c6ac6dfc331f3cb035b8ef5222436fcb9",
+  "safevision/rtl/include/crc32_word.vh": "17f9d826d1d26514a3bf1a8c6db95189ccd982c470112d1f5cdb8c9bcb89a36a",
+  "safevision/rtl/include/event_code_defs.vh": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2",
+  "safevision/rtl/include/fault_code_defs.vh": "74a771ae39cac07123d8881a61515d39b0a7545344bdfc171433b32d8edcb55e",
+  "safevision/rtl/include/pixel_format_defs.vh": "0b8c2719d4a403860e7d28aeaf9c34d81714ed92044560c3a4a99ab74e7c23a0",
+  "safevision/rtl/include/safevision_defs.vh": "0347e3cfb45a35045925edd1f02bf833e6ed5a422d3e30673a3e9e7dd1bd99a5",
+  "safevision/rtl/include/video_mode_defs.vh": "3066ac292faaef5c97550834ea904d2fd1d82bdef08caa6931edb53830fe5997",
+  "safevision/verification/assets/spectrum539/spectrum_expected539.mem": "91abb6a867a4a488739bd991ecc563067fc635a153c75687f3db5bcac1c35ae5",
+  "safevision/verification/assets/spectrum539/spectrum_peaks539.mem": "59ba5ef2f7ef92970265cc403470bd243fe360716b441bbf067cb97b7fb288c3",
+  "safevision/verification/assets/spectrum539/spectrum_samples539.mem": "9aa59853b97d4a46b9a7ce0a15b8c8f5db50789dab1dd717524b8809b9bb291f",
+  "safevision/assets/audio/v3_spectrum_twiddle.mem": "66e620e6e6b9f24486b06d350280fe225e639593e186212cfdccc3bb1b6c384a",
+  "safevision/tools/run_v3_sim_flexible.py": "c77469c3a60a9d9a023fb49fa7048a86204e7c122354333418b5935d85929e56",
+  "safevision/build/manifests/spectrum539_sim.json": "960cce54ad83056d8b5a11602d376a6877409926fb7c05c9c3f1da0ae716f813"
+}

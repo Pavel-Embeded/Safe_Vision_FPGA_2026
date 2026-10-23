@@ -1,0 +1,16 @@
+{
+  "suite": "directory_lba70",
+  "results": [
+    {
+      "top": "tb_v3_directory_lba70",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2359296,
+      "elapsed_s": 9.047
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "kind": "negative",
+  "name": "descriptor_numeric_payload_zero_base",
+  "top": "tb_v3_status_miter231",
+  "suite": "status_miter231",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "final618_native",
+  "action": "rerun",
+  "matrix_definition": {
+    "mutation": "descriptor_numeric_payload_zero_base",
+    "target": "safevision/rtl/video/v3_status_layers.v",
+    "suite": "status_miter231",
+    "top": "tb_v3_status_miter231",
+    "patch": [
+      {
+        "before": "decimal_word_q<=decimal_digits[decimal_source];",
+        "after": "decimal_word_q<=10'd0;"
+      }
+    ]
+  },
+  "effective_definition": {
+    "mutation": "descriptor_numeric_payload_zero_base",
+    "target": "safevision/rtl/video/v3_status_layers.v",
+    "suite": "status_miter231",
+    "top": "tb_v3_status_miter231",
+    "patch": [
+      {
+        "before": "decimal_word_q<=decimal_digits[decimal_source];",
+        "after": "decimal_word_q<=10'd0;"
+      }
+    ]
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\negative\\descriptor_numeric_payload_zero_base",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\descriptor_numeric_payload_zero_base\\sim\\tb_v3_status_miter231",
+  "checked": {
+    "metadata": {
+      "mutation": "descriptor_numeric_payload_zero_base",
+      "target": "safevision/rtl/video/v3_status_layers.v",
+      "suite": "status_miter231",
+      "top": "tb_v3_status_miter231",
+      "patch": [
+        {
+          "before": "decimal_word_q<=decimal_digits[decimal_source];",
+          "after": "decimal_word_q<=10'd0;"
+        }
+      ],
+      "original_sha256": "b64c3351f196ace3e56cde256089c02175810cd2bdf63309e2cab8c7dadf75b7",
+      "mutated_sha256": "dd74531788ccdb4598711ada872dcfe348e1621f148b5fe39a043da62469986a",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        2815
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\descriptor_numeric_payload_zero_base\\sim\\tb_v3_status_miter231",
+      "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\descriptor_numeric_payload_zero_base\\sim\\tb_v3_status_miter231"
+    },
+    "input_count": 18,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_status_miter231",
+      "suite": "status_miter231",
+      "ordered_analyzed_HDL": 5,
+      "manifest": "safevision/build/manifests/status_miter231_sim.json",
+      "current_manifest_sha256": "4d2f0ecda6be47ce7a1c70afd72718c2a4d2e7ac6cc5ca2cf066c99050fed148",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      2815
+    ],
+    "log_sha256": "5bad03abfd350d43e676b9e7caead9df0127389a46cc7d0dcb90db8d424f27ac",
+    "metadata_sha256": "c58a311a2afbfeffd77528e698e4baca0283687cb8af64f5d3fa97eea16960ed",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\descriptor_numeric_payload_zero_base\\case.json",
+      "sha256": "c58a311a2afbfeffd77528e698e4baca0283687cb8af64f5d3fa97eea16960ed"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\descriptor_numeric_payload_zero_base\\sim.log",
+      "sha256": "5bad03abfd350d43e676b9e7caead9df0127389a46cc7d0dcb90db8d424f27ac"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\descriptor_numeric_payload_zero_base\\sources.sha256.json",
+      "sha256": "f2aa89fed339162aab73f838a6034aca518e3cea1f71c48541c3512b727530b1"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\descriptor_numeric_payload_zero_base\\original.producer.metadata.json",
+      "sha256": "c58a311a2afbfeffd77528e698e4baca0283687cb8af64f5d3fa97eea16960ed"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\descriptor_numeric_payload_zero_base\\producer.provenance.json",
+      "sha256": "494582133506a179a8b076ca951b4a02ab271e8eddc2239843249548460494c2"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\descriptor_numeric_payload_zero_base\\sources.prj",
+      "sha256": "57a311d469c1de831fbba5fb9e56581a56102a7fa1d339758febcc14371e3f5d"
+    },
+    "exact_mutant": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\negative\\descriptor_numeric_payload_zero_base\\mutant.v",
+      "sha256": "dd74531788ccdb4598711ada872dcfe348e1621f148b5fe39a043da62469986a"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

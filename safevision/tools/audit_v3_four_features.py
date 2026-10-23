@@ -1,6 +1,6 @@
 """Audit the complete four-feature evidence matrix; this never approves STA."""
 from pathlib import Path
-import argparse,ast,hashlib,json,re,subprocess,sys
+import argparse,ast,hashlib,json,re,subprocess,sys,traceback
 
 def read(p):return json.loads(p.read_text(encoding='utf-8-sig'))
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
@@ -60,9 +60,17 @@ def audit(root,manifest,repository,inspect_incomplete=False):
   assert legacy_ports['accepted']
  committed=git_bytes(repository,matrix['source_build_commit'],matrix['frozen_reference_sha256'])
  protected={matrix_path.relative_to(root).as_posix():sha(matrix_path),within(root,manifest).relative_to(root).as_posix():sha(within(root,manifest))}
+ clock_stimulus=None
+ if index.get('clock_stimulus_qualification_schema')==1:
+  from audit_v3_clock_stimulus905 import audit as clock_stimulus_audit,TARGET as clock_stimulus_path
+  clock_stimulus=clock_stimulus_audit(root,repository,index,matrix)
+  assert clock_stimulus['accepted'] and not clock_stimulus['oracle_sha_or_inventory_rebased']
+  protected.update(clock_stimulus['proof_sha256'])
  for n,h in matrix['frozen_reference_sha256'].items():
-  assert sha(within(root,n))==h==hashlib.sha256(committed[n]).hexdigest(),'independent reference changed: '+n
-  protected[n]=h
+  reference_file=within(root,clock_stimulus['original_archive_relative']) if clock_stimulus is not None and n==clock_stimulus_path else within(root,n)
+  assert sha(reference_file)==h==hashlib.sha256(committed[n]).hexdigest(),'independent reference changed: '+n
+  protected[reference_file.relative_to(root).as_posix()]=h
+  if clock_stimulus is not None and n==clock_stimulus_path:protected[n]=sha(within(root,n))
  # The four new public-interface oracles also recover their exact old RTL,
  # with the declared module-name change as the sole transformation.
  for stem in ('v3_uart_link_control_reference353','v3_uart_link_hd_reference353','sdram_adapter_base_reference385','sdram_adapter_hd_reference385'):
@@ -208,6 +216,46 @@ def audit(root,manifest,repository,inspect_incomplete=False):
  pipeline=pipeline_audit(root,index,repository)
  assert pipeline['accepted']and not pipeline['release_ready']
  protected.update(pipeline['proof_sha256'])
+ # A legal SYS50 control clock must never silently become the packed writer
+ # clock. This production wiring/data/reset proof is mandatory in this version.
+ assert index.get('packed_clock_selftest')=='evidence/v3/packed_clock_261023'
+ from audit_v3_packed_clock_261023 import audit as packed_clock_audit
+ packed_folder=within(root,index['packed_clock_selftest'])
+ packed_clock=packed_clock_audit(root,packed_folder)
+ assert packed_clock['accepted']and not packed_clock['hardware_verified']and not packed_clock['STA_approved']
+ refusals=read(packed_folder/'auditor_refusals.json')
+ wanted_refusals={'incomplete','missing_negative','reduced_comparisons','wrong_ratio_no_detection','negative_exit_zero','weakened_mutation','missing_finish','fatal_is_not_detection'}
+ assert refusals['accepted']and len(refusals['audit_refusals'])==8
+ assert {r['name']for r in refusals['audit_refusals']}==wanted_refusals and all(r['rejected']for r in refusals['audit_refusals'])
+ clock_folder=packed_folder/'native_clock_gate_selftest'
+ clock_receipt=read(clock_folder/'receipt.json')
+ assert clock_receipt['accepted']and clock_receipt['complete']and clock_receipt['focused_positive']==3 and clock_receipt['focused_expected_rejections']==24
+ assert not clock_receipt['native852_timing_signed_off']and not clock_receipt['hardware_verified']
+ for n,h in clock_receipt['files'].items():assert sha(within(clock_folder,n))==h
+ for n in ('check_v3_clock_contract.py','check_v3_native_clock_domains.py','check_v3_native_clock_selftest.py'):
+  assert sha(clock_folder/'checker_sources'/n)==sha(root/'safevision/tools'/n)
+ focused=read(clock_folder/'focused.rerun.json')
+ assert focused['accepted']and focused['complete']and len(focused['results'])==27
+ assert sum(r['expected_reject']for r in focused['results'])==24
+ assert all(r['expected_reject']==r['rejected']for r in focused['results'])
+ # Replay the three unaltered native captures with today's checker. These
+ # establish clock ownership only; 852's negative STA is never reclassified.
+ from check_v3_native_clock_domains import check_texts as actual_clock_domains
+ for name,external,sys_output,accepted in [('native734',False,0,True),('native803',False,1,False),('native852',True,1,True)]:
+  native=clock_folder/name/'base'
+  try:c=actual_clock_domains(*[(native/n).read_text(encoding='utf-8')for n in('gate.netlist.v','route.netlist.v','route.clocks')],packed=True,external_reset=external,sys_output=sys_output)
+  except ValueError:assert not accepted,'valid physical clock capture rejected'
+  else:assert accepted and c['accepted'],'the actual former WRITE50 board fault was accepted'
+ from audit_v3_native_clock_archive_894 import audit as native_clock_archive_audit
+ native_clock_archive=native_clock_archive_audit(root,clock_folder)
+ assert native_clock_archive['accepted']and not native_clock_archive['hardware_verified']and not native_clock_archive['STA_signoff_by_this_audit']
+ for p in packed_folder.rglob('*'):
+  if p.is_file():protected[p.relative_to(root).as_posix()]=sha(p)
+ packed_index=read(packed_folder/'complete.json')
+ for item in packed_index['positive']+packed_index['normal_semantic_negatives']:
+  captured=read(packed_folder/item['capture']/'sources.sha256.json')
+  for n in captured:
+   if not n.startswith('generated:'):protected[n]=sha(within(root,n))
  for p in(root/'safevision/tools').rglob('*.py'):protected[p.relative_to(root).as_posix()]=sha(p)
  gui=[check_gui(root,m)for m in ('base','hd')]
  result=dict(accepted=bool(index['complete']and not missing_positive),profile=index['profile'],source_build_commit=matrix['source_build_commit'],required_positive_records_including_aliases=expected_records,positive_unique_tops=len(records),missing_positive=missing_positive,strict_normal_ending_mutants=expected_negative,physical_inputs=expected_physical,positive=records,negative=faults,source_sha256=hardware,proof_sha256=protected,gui_cli=gui,current_serial_division_proof=True,routed_sta_passed=False,bitstreams_verified=False,hardware_verified=False,release_ready=False)
@@ -216,12 +264,15 @@ def audit(root,manifest,repository,inspect_incomplete=False):
  result['wav_pipeline_auxiliary']={k:v for k,v in wav_pipeline.items()if k!='proof_sha256'}
  result['lba_control_clock_auxiliary']={k:v for k,v in lba_clock.items()if k!='proof_sha256'}
  result['pipeline_auxiliary']={k:v for k,v in pipeline.items()if k!='proof_sha256'}
+ result['packed_writer_clock_auxiliary']=packed_clock
+ result['native_clock_declaration_hfn_auxiliary']=native_clock_archive
+ if clock_stimulus is not None:result['clock_stimulus_qualification']={k:v for k,v in clock_stimulus.items()if k!='proof_sha256'}
  if legacy_ports is not None:result['legacy_ordered_ports']=legacy_ports
  return result
 
 def main():
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--source-repo',type=Path,required=True);ap.add_argument('--manifest',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);ap.add_argument('--inspect-incomplete',action='store_true',help='Audit available cases but return2 and never approve incomplete evidence');a=ap.parse_args()
  try:r=audit(a.repo.resolve(),a.manifest,a.source_repo.resolve(),a.inspect_incomplete);code=0 if r['accepted']else 2
- except Exception as e:r=dict(accepted=False,error=type(e).__name__+': '+str(e),release_ready=False);code=1
+ except Exception as e:r=dict(accepted=False,error=type(e).__name__+': '+str(e),error_traceback=traceback.format_exc(),release_ready=False);code=1
  a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(r,indent=2)+'\n');print('FOUR FEATURE EVIDENCE '+('PASS'if code==0 else 'INCOMPLETE'if code==2 else 'REJECTED: '+r['error']),flush=True);return code
 if __name__=='__main__':sys.exit(main())

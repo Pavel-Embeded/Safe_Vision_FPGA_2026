@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "credit_wrong_slice",
+  "record": {
+    "kind": "negative",
+    "name": "credit_wrong_slice",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\credit_wrong_slice",
+    "checked": {
+      "metadata": {
+        "mutation": "credit_wrong_slice",
+        "target": "safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v",
+        "suite": "ingress_credit",
+        "top": "tb_v3_ingress_credit",
+        "patch": [
+          {
+            "before": "pair_credit_product[19:11]",
+            "after": "pair_credit_product[20:12]"
+          }
+        ],
+        "original_sha256": "f1f2d07e4b31a5f5bccaa38d8ee06da84a05a1dc80ff30f89d0eee0cec824c62",
+        "mutated_sha256": "4409b45c2d9b722e4a4d10344e62bb7ba18c5fa9cfddf0759f48fa2eeeed365c",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          6136
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\credit_wrong_slice\\sim\\tb_v3_ingress_credit",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\credit_wrong_slice\\sim\\tb_v3_ingress_credit"
+      },
+      "metadata_sha256": "82854432c7b4e47156828fc15dc34c3037966f86c1f16c3e93310229d9ff362b",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_ingress_credit",
+        "suite": "ingress_credit",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/ingress_credit_sim.json",
+        "current_manifest_sha256": "5866c7532033b7bbc34f98a3cbbf258c2dbe1ed88b370ef160d4da55ce727256",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        6136
+      ],
+      "log_sha256": "9b41ef4b03c949c88b54d7da339836986b309a39676ae453cd13e0be2a4b41cc"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\credit_wrong_slice",
+  "checked": {
+    "metadata": {
+      "mutation": "credit_wrong_slice",
+      "target": "safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v",
+      "suite": "ingress_credit",
+      "top": "tb_v3_ingress_credit",
+      "patch": [
+        {
+          "before": "pair_credit_product[19:11]",
+          "after": "pair_credit_product[20:12]"
+        }
+      ],
+      "original_sha256": "f1f2d07e4b31a5f5bccaa38d8ee06da84a05a1dc80ff30f89d0eee0cec824c62",
+      "mutated_sha256": "4409b45c2d9b722e4a4d10344e62bb7ba18c5fa9cfddf0759f48fa2eeeed365c",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        6136
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\credit_wrong_slice\\sim\\tb_v3_ingress_credit",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\credit_wrong_slice\\sim\\tb_v3_ingress_credit"
+    },
+    "metadata_sha256": "82854432c7b4e47156828fc15dc34c3037966f86c1f16c3e93310229d9ff362b",
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_ingress_credit",
+      "suite": "ingress_credit",
+      "ordered_analyzed_HDL": 29,
+      "manifest": "safevision/build/manifests/ingress_credit_sim.json",
+      "current_manifest_sha256": "5866c7532033b7bbc34f98a3cbbf258c2dbe1ed88b370ef160d4da55ce727256",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      6136
+    ],
+    "log_sha256": "9b41ef4b03c949c88b54d7da339836986b309a39676ae453cd13e0be2a4b41cc",
+    "sources_sha256": "a7c63e7a8ea7e4af29d3a6b1072ceac7d05af46928f53bc6c68b0acdf1a9ca6e",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\credit_wrong_slice\\runner.results.json",
+          "sha256": "58d9c13950da4adcbcfcb007c22777cf3d9b1061bbc623422490093b420ec144",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\credit_wrong_slice\\sim\\results.json",
+          "sha256": "58d9c13950da4adcbcfcb007c22777cf3d9b1061bbc623422490093b420ec144",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

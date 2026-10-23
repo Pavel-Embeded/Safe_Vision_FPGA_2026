@@ -1,0 +1,29 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 15:13:37 2026
+# Process ID: 8976
+# Current directory: D:/Codex/svflex537/pipeline863/native/guard_valid_bypasses_stage/sim/tb_v3_guard_stage804
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_guard_stage804/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/pipeline863/native/guard_valid_bypasses_stage/sim/tb_v3_guard_stage804/sim.log
+# Journal file: D:/Codex/svflex537/pipeline863/native/guard_valid_bypasses_stage/sim/tb_v3_guard_stage804\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_guard_stage804/xsim_script.tcl
+# xsim {tb_v3_guard_stage804} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] independent delayed accepted-word and sticky-fault oracle
+[FAIL] independent complete CRC32 word oracle
+[FAIL] independent delayed accepted-word and sticky-fault oracle
+[FAIL] independent complete CRC32 word oracle
+[FAIL] independent delayed accepted-word and sticky-fault oracle
+[FAIL] independent complete CRC32 word oracle
+[FAIL] independent delayed accepted-word and sticky-fault oracle
+[FAIL] independent complete CRC32 word oracle
+[FAIL] independent delayed accepted-word and sticky-fault oracle
+[TB] tb_v3_guard_stage804 done errors=236 comparisons=1807
+$finish called at time : 10440 ns : File "D:/Codex/svflex537/pipeline863_root/safevision/verification/unit/tb_v3_guard_stage804.sv" Line 55
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 15:13:41 2026...

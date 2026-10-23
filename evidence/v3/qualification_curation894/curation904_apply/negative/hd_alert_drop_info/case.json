@@ -1,0 +1,24 @@
+{
+  "mutation": "hd_alert_drop_info",
+  "target": "safevision/rtl/hd/v3_supervisor.v",
+  "suite": "hd_supervisor_alert",
+  "top": "tb_v3_hd_supervisor_alert_equivalence",
+  "patch": [
+    {
+      "before": "pending_alert<=pending_next;",
+      "after": "pending_alert<=(pending & ~selection) | (new_events & 11'h3ff);"
+    }
+  ],
+  "original_sha256": "2e7e07748fe4856576e9690cf237f6a34f4a18800ba1cc498891dec53698c0bd",
+  "mutated_sha256": "33be60dedbc7f4ec20ace615581790bc02c822a289cc0895fd44eb42c69bada3",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    10876
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\original618\\negative\\hd_alert_drop_info\\sim\\tb_v3_hd_supervisor_alert_equivalence",
+  "original_producer": "D:\\Codex\\svflex537\\original618\\negative\\hd_alert_drop_info\\sim\\tb_v3_hd_supervisor_alert_equivalence"
+}

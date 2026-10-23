@@ -1,0 +1,13 @@
+{
+  "top": "tb_v3_hd_video_final",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 8,
+  "data_comparisons": 6451200,
+  "elapsed_s": 1913.875,
+  "suite": "hd_video_final",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svflex537\\hdcompat868_native\\positive\\tb_v3_hd_video_final\\sim\\tb_v3_hd_video_final"
+}

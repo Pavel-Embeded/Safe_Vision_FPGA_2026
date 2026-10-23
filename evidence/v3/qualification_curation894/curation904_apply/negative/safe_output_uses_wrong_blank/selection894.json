@@ -1,0 +1,114 @@
+{
+  "kind": "negative",
+  "name": "safe_output_uses_wrong_blank",
+  "record": {
+    "kind": "negative",
+    "name": "safe_output_uses_wrong_blank",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\safe_output_uses_wrong_blank\\sim\\tb_v3_frame_safe_integration",
+    "checked": {
+      "metadata": {
+        "mutation": "safe_output_uses_wrong_blank",
+        "target": "safevision/rtl/video/v3_frame_safe_select.v",
+        "suite": "frame_safe_integration",
+        "top": "tb_v3_frame_safe_integration",
+        "patch": [
+          {
+            "before": "if(output_vblank)output_selected<=raw_selected;",
+            "after": "if(raw_vblank)output_selected<=raw_selected;"
+          }
+        ],
+        "original_sha256": "2a15840e3d7f90557b3d84fe5acdb1803e9d242458f0d8cef71c8e1fbcdcd4be",
+        "mutated_sha256": "402cc10aee7479fa7866e96fb7bd510e0402c660bc44f00a09da92180e079079",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          725
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\safe_output_uses_wrong_blank\\sim\\tb_v3_frame_safe_integration",
+        "original_producer": "D:\\Codex\\svflex537\\qualification860\\negative\\safe_output_uses_wrong_blank\\sim\\tb_v3_frame_safe_integration"
+      },
+      "metadata_sha256": "116390c9aeb6454bb6959784c00b743fc1ee9482bac402c93e75d20405af5b9b",
+      "normal_completion": true,
+      "input_count": 36,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_frame_safe_integration",
+        "suite": "frame_safe_integration",
+        "ordered_analyzed_HDL": 22,
+        "manifest": "safevision/build/manifests/frame_safe_integration_sim.json",
+        "current_manifest_sha256": "8e925e485aa9fe6b10869ac21a7f987386105733959df4d388fb548d15d58abc",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        725
+      ],
+      "log_sha256": "a84777c48e174371b08baad76a90c93de67452c49d5635fd2825258b92ac22e7"
+    },
+    "elapsed_s": 9.922,
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification860\\negative\\safe_output_uses_wrong_blank\\sim\\tb_v3_frame_safe_integration",
+  "checked": {
+    "metadata": {
+      "mutation": "safe_output_uses_wrong_blank",
+      "target": "safevision/rtl/video/v3_frame_safe_select.v",
+      "suite": "frame_safe_integration",
+      "top": "tb_v3_frame_safe_integration",
+      "patch": [
+        {
+          "before": "if(output_vblank)output_selected<=raw_selected;",
+          "after": "if(raw_vblank)output_selected<=raw_selected;"
+        }
+      ],
+      "original_sha256": "2a15840e3d7f90557b3d84fe5acdb1803e9d242458f0d8cef71c8e1fbcdcd4be",
+      "mutated_sha256": "402cc10aee7479fa7866e96fb7bd510e0402c660bc44f00a09da92180e079079",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        725
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification860\\negative\\safe_output_uses_wrong_blank\\sim\\tb_v3_frame_safe_integration",
+      "original_producer": "D:\\Codex\\svflex537\\qualification860\\negative\\safe_output_uses_wrong_blank\\sim\\tb_v3_frame_safe_integration"
+    },
+    "metadata_sha256": "116390c9aeb6454bb6959784c00b743fc1ee9482bac402c93e75d20405af5b9b",
+    "input_count": 36,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_frame_safe_integration",
+      "suite": "frame_safe_integration",
+      "ordered_analyzed_HDL": 22,
+      "manifest": "safevision/build/manifests/frame_safe_integration_sim.json",
+      "current_manifest_sha256": "8e925e485aa9fe6b10869ac21a7f987386105733959df4d388fb548d15d58abc",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      725
+    ],
+    "log_sha256": "a84777c48e174371b08baad76a90c93de67452c49d5635fd2825258b92ac22e7",
+    "sources_sha256": "23c41b47c7509f5175a8132110ffc1dabd9e43fe8c3b7806548eb9f8d5ec75ef",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification860\\negative\\safe_output_uses_wrong_blank\\sim\\results.json",
+          "sha256": "010e9a5a5b259ad1e2e93b056e34fcb1088a8cb4542987ba95fe54b199883f70",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

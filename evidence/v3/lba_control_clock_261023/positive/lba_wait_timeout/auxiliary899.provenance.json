@@ -1,0 +1,62 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\lba_current892\\timeout\\sim\\tb_v3_lba_timeout759",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "lba",
+    "kind": "positive",
+    "name": "lba_wait_timeout",
+    "row": {
+      "top": "tb_v3_lba_timeout759",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 521,
+      "elapsed_s": 7.109,
+      "suite": "lba_timeout759",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svlba791\\tb_v3_lba_timeout759",
+      "comparisons": 521
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\lba_control_clock_261023\\positive\\lba_wait_timeout",
+    "packed": false,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "existing_current892_actual_native_capture",
+    "producer_folder": "D:\\Codex\\svflex537\\lba_current892\\timeout\\sim\\tb_v3_lba_timeout759",
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_lba_timeout759",
+        "suite": "lba_timeout759",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/lba_timeout759_sim.json",
+        "current_manifest_sha256": "c7839b5063fa8ab9f83c6822bc360d80d9f8d7eade5f8bab954db0b11a0ff837",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 0,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\lba_current892\\timeout\\sim\\results.json",
+            "sha256": "b973dbb98396ee7e7414e2542f80a3e15ca03ba5b6c019ebc96842e198bf044c",
+            "basis": "native_runner_complete_PASS"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 38,
+      "normal_completion": true,
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "ef73dac5856d9238f5969941d58930030a7e7ab545a44b74558da391a44d578e",
+      "source_fingerprint_sha256": "7c5318bd673bea46b70bf75a58d6ff7185ce7b88e3078d6c5f74e4b1f665dfba"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\lba_control_clock_261023\\positive\\lba_wait_timeout"
+  },
+  "actual_execution_retained": true
+}

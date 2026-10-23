@@ -1,0 +1,129 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_max_card241",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_max_card241",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_max_card241",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_max_card241",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 12,
+        "data_comparisons": 614400,
+        "elapsed_s": 2366.391,
+        "suite": "max_card241",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_max_card241\\sim\\tb_v3_max_card241"
+      },
+      "metadata_sha256": "f74384472eb9fdcfa35895fd8e34275c1f1d780d20be9d57125d007f622395ed",
+      "normal_completion": true,
+      "input_count": 61,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_max_card241",
+        "suite": "max_card241",
+        "ordered_analyzed_HDL": 52,
+        "manifest": "safevision/build/manifests/max_card241_sim.json",
+        "current_manifest_sha256": "64979d3a2735aaf08370a7826b3c194566e17a9a13a7222bbaf5a7c3bd7b1064",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "b68e3831695cdc100b607ec3da17eeff35086b113162c0c7d0f30b5b35e31da3"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_max_card241",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_max_card241",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 12,
+      "data_comparisons": 614400,
+      "elapsed_s": 2366.391,
+      "suite": "max_card241",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_max_card241\\sim\\tb_v3_max_card241"
+    },
+    "metadata_sha256": "f74384472eb9fdcfa35895fd8e34275c1f1d780d20be9d57125d007f622395ed",
+    "input_count": 61,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_max_card241",
+      "suite": "max_card241",
+      "ordered_analyzed_HDL": 52,
+      "manifest": "safevision/build/manifests/max_card241_sim.json",
+      "current_manifest_sha256": "64979d3a2735aaf08370a7826b3c194566e17a9a13a7222bbaf5a7c3bd7b1064",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "b68e3831695cdc100b607ec3da17eeff35086b113162c0c7d0f30b5b35e31da3",
+    "sources_sha256": "7328ee771c3e80ad3b9e902018be6104ca2d43c228446987365f0251034f118e",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_max_card241\\runner.results.json",
+          "sha256": "f09d57833277ae2775b63a4bef2addd7b30664f86b2d123b3184521d68d27c40",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_max_card241\\sim\\results.json",
+          "sha256": "f09d57833277ae2775b63a4bef2addd7b30664f86b2d123b3184521d68d27c40",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": true,
+      "binding": "replay_verified_current_generated_assets",
+      "receipt": "D:\\Codex\\svflex537\\curation869_plan02\\generated_replay\\max_card241\\tb_v3_max_card241\\9d8b587999670923\\replay.receipt.json",
+      "receipt_sha256": "0f5d3bc99f29d429b2b2fc21837250dc09e130fcca5d757b9008168a4c2ed880",
+      "generated_assets": {
+        "expected0.mem": {
+          "sha256": "4b622eab05eb1aa05ed4103d2eef96b3ddcf26d0ff349d9d2df3b9b4337c8551",
+          "size": 1536000
+        },
+        "expected1.mem": {
+          "sha256": "8b48133dd392a66ed42477de28e1801fafb4ee2ca346314bdc91f58b2482558d",
+          "size": 1536000
+        },
+        "expected2.mem": {
+          "sha256": "4a85d987fcb38b9e452ea371aaee144aa33203bec50ae7794404b3fba3764b36",
+          "size": 1536000
+        },
+        "expected3.mem": {
+          "sha256": "e0f09b759a383bc64441bd954d7478c474a37ad6c269c2d5ac0c86ae9bc940fa",
+          "size": 1536000
+        },
+        "fixture.json": {
+          "sha256": "2550579c340630bd8ff9b8f14018f07ed4f700576e7ab0dbbbca23711ad8d1cf",
+          "size": 429
+        },
+        "payload_bytes.mem": {
+          "sha256": "8380fca625cfb13abfb8a469a9a31084d4ac310957410fd5f2afe33faa6efe94",
+          "size": 10
+        },
+        "resident_card.mem": {
+          "sha256": "bd7c63796f907d2a569c3f8705e8643d6af51e7c7715489e0e8b35fcb84ff830",
+          "size": 33554432
+        }
+      }
+    }
+  }
+}

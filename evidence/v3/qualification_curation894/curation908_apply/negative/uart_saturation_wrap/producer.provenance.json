@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\uart_saturation_wrap\\sim\\tb_v3_drop_saturation280",
+  "native_log_sha256": "0ebe4b4d56d63cc9245d5de4d0c930e59e33fa1b3e649f5ed029602b963095de",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "uart_saturation_wrap",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\uart_saturation_wrap\\sim\\tb_v3_drop_saturation280",
+    "checked": {
+      "metadata": {
+        "mutation": "uart_saturation_wrap",
+        "target": "safevision/rtl/control/v3_uart_link.v",
+        "suite": "drop_saturation280",
+        "top": "tb_v3_drop_saturation280",
+        "patch": [
+          {
+            "before": "wire[31:0] dropped_next=drop_sum[32]?32'hffffffff:drop_sum[31:0];",
+            "after": "wire[31:0] dropped_next=drop_sum[31:0];"
+          }
+        ],
+        "original_sha256": "47906bd6a546bc8975ae87dbf2106613c8aa1d92630fb303e643715f85da9dcc",
+        "mutated_sha256": "4bf3840509da97865d56eb7afcec739e63aaefa774a13d73a256127c85daa4c3",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          3
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\uart_saturation_wrap\\sim\\tb_v3_drop_saturation280",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\uart_saturation_wrap\\sim\\tb_v3_drop_saturation280"
+      },
+      "metadata_sha256": "3a0c14897d14915a8da38c3eff8de7bcf27d43806ed4b46e40454262ef9ebbed",
+      "normal_completion": true,
+      "input_count": 16,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_drop_saturation280",
+        "suite": "drop_saturation280",
+        "ordered_analyzed_HDL": 7,
+        "manifest": "safevision/build/manifests/drop_saturation280_sim.json",
+        "current_manifest_sha256": "cc0ae5030861a8c2ae94c4b64ae370ad848f0241f4b77bf534544837df666fd1",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        3
+      ],
+      "log_sha256": "0ebe4b4d56d63cc9245d5de4d0c930e59e33fa1b3e649f5ed029602b963095de"
+    },
+    "elapsed_s": 7.641
+  }
+}

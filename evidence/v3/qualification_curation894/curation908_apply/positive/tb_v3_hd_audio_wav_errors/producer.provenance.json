@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_hd_audio_wav_errors\\sim\\tb_v3_hd_audio_wav_errors",
+  "native_log_sha256": "58ccd0aaceab796d6e4dbf6c8b55b3f591d337713bc9c12f72ed14f553050389",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_audio_wav_errors",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_hd_audio_wav_errors\\sim\\tb_v3_hd_audio_wav_errors",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_audio_wav_errors",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 300,
+        "elapsed_s": 8.75,
+        "suite": "hd_audio_native",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_hd_audio_wav_errors\\sim\\tb_v3_hd_audio_wav_errors"
+      },
+      "metadata_sha256": "57d394d804bdb85ef0b144bf545e74722f4b96b4a478142f2fd5ff1bc30d9310",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_audio_wav_errors",
+        "suite": "hd_audio_native",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/hd_audio_native_sim.json",
+        "current_manifest_sha256": "5021a8653fa990141148177bc802edf55f524f867747a6a585fcccec6a6d5b2b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "58ccd0aaceab796d6e4dbf6c8b55b3f591d337713bc9c12f72ed14f553050389"
+    },
+    "elapsed_s": 8.968
+  }
+}

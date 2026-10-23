@@ -1,0 +1,20 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_hd_acr_equivalence/xsim_script.tcl
+# xsim {tb_v3_hd_acr_equivalence} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] interval must saturate
+[FAIL] ACR cycle-exact mismatch a=10022f01800 b=10021f01800
+[FAIL] ACR cycle-exact mismatch a=00022f01800 b=00021f01800
+[FAIL] ACR cycle-exact mismatch a=00022f01800 b=00021f01800
+[FAIL] ACR cycle-exact mismatch a=00022f01800 b=00021f01800
+[TB] tb_v3_hd_acr_equivalence done errors=511 comparisons=1210606 valids=1652
+$finish called at time : 12106030 ns : File "D:/Codex/svneg56/source/safevision/verification/unit/tb_v3_hd_acr_equivalence.sv" Line 22
+exit
+INFO: [Common 17-206] Exiting xsim at Mon Oct 19 21:33:58 2026...

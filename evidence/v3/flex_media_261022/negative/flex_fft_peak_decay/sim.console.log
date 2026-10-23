@@ -21,7 +21,7 @@ run -all
 [FAIL] one-step peak hold and exact decay at frame commit case3 bin32
 [FAIL] one-step peak hold and exact decay at frame commit case3 bin32
 [TB] tb_v3_spectrum539 done, errors=433 comparisons=2466671
-$finish called at time : 245049720 ns : File "D:/Codex/svflex537/candidate616/safevision/verification/unit/tb_v3_spectrum539.sv" Line 230
-run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:15 . Memory (MB): peak = 219.648 ; gain = 0.000
+$finish called at time : 245049720 ns : File "D:/Codex/svflex537/candidate852/safevision/verification/unit/tb_v3_spectrum539.sv" Line 230
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:16 . Memory (MB): peak = 218.543 ; gain = 0.000
 exit
-INFO: [Common 17-206] Exiting xsim at Thu Oct 22 16:54:47 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 15:33:09 2026...

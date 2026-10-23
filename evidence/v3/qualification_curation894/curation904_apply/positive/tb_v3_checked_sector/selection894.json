@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_checked_sector",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_checked_sector",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_checked_sector",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_checked_sector",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 10,
+        "data_comparisons": 1024,
+        "elapsed_s": 9.297,
+        "suite": "v3",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_checked_sector\\sim\\tb_v3_checked_sector"
+      },
+      "metadata_sha256": "b8008796477f39e07d1ab0f419efdd64099ea0895971168851dc8a9fac0b6afc",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_checked_sector",
+        "suite": "v3",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/v3_sim.json",
+        "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "99bc90491378846557788f846ae1c25ef801b14bb77ccb6c79b1764e82fd4c44"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_checked_sector",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_checked_sector",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 10,
+      "data_comparisons": 1024,
+      "elapsed_s": 9.297,
+      "suite": "v3",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_checked_sector\\sim\\tb_v3_checked_sector"
+    },
+    "metadata_sha256": "b8008796477f39e07d1ab0f419efdd64099ea0895971168851dc8a9fac0b6afc",
+    "input_count": 40,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_checked_sector",
+      "suite": "v3",
+      "ordered_analyzed_HDL": 28,
+      "manifest": "safevision/build/manifests/v3_sim.json",
+      "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "99bc90491378846557788f846ae1c25ef801b14bb77ccb6c79b1764e82fd4c44",
+    "sources_sha256": "eaa2fbb6de217e70cd3062786782ea6443bde375740eb1bf9be8a4731f0ef936",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_checked_sector\\runner.results.json",
+          "sha256": "194391559064d4672179e533c1b11c53802f6674044c8c4c0f0803b29613139e",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_checked_sector\\sim\\results.json",
+          "sha256": "194391559064d4672179e533c1b11c53802f6674044c8c4c0f0803b29613139e",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

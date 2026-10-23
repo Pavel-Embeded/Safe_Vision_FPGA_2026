@@ -27,7 +27,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire sys_clk,mem_clk,mem_clk_sft,pixel_clk,serial_clk,audio_clk;
  assign sys_clk=HD?pll_sys100_clk:mem_clk;
  wire sys_lock,video_lock,audio_lock,ref_rst_n,common_rst_n,control_common_rst_n;
- wire sys_rst_n,mem_rst_n,pixel_rst_n,audio_rst_n,config_rst_n;
+ wire sys_rst_n,mem_rst_n,pixel_rst_n,audio_rst_n,config_rst_n,cache_write_rst_n;
  // Configuration retains user settings across KEY1/media reset. The six
  // configuration-initialized flops start a fresh epoch only when FPGA is
  // configured/powered; this is SRAM state, not nonvolatile user storage.
@@ -65,6 +65,10 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  reset_sync reset_media_ref(.clk(clk),.async_rst_n(media_common_rst_n),.rst_n(ref_media_rst_n));
  reset_sync #(.RELEASE_FALLING(1)) reset_media_mem(.clk(mem_clk),.async_rst_n(media_common_rst_n),.rst_n(mem_media_rst_n));
  reset_sync reset_media_sys(.clk(sys_clk),.async_rst_n(media_common_rst_n),.rst_n(sys_media_rst_n));
+ // The packed row serializer writes one16-bit half on each100MHz edge.
+ // It must remain twice MEM50, independently of the slower BASE control clock.
+ // Assert in the common media epoch; release synchronously in WRITE100.
+ reset_sync reset_cache_write(.clk(pll_sys100_clk),.async_rst_n(media_common_rst_n),.rst_n(cache_write_rst_n));
 
  wire sdr_init_done,sdr_ref_valid,sdr_busy,app_wr_en,app_rd_en,sdr_rd_en;
  wire[20:0] app_wr_addr,app_rd_addr;wire[3:0] app_wr_dm;wire[31:0] app_wr_din,sdr_rd_dout;
@@ -296,7 +300,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  energy,fault_code,audio_underflows,hud_latency};
  wire[11:0] raw_x,raw_y,out_x,out_y;wire raw_de,raw_hs,raw_vs;
  wire[23:0] rgb;wire out_hs,out_vs,out_de;
- v3_video_display_core #(.FLEX_SPECTRUM(1),.HD(HD),.HANDBOOK_PROFILE(1),.USER_FEATURES(1),.VOLUME_COLUMNS(0),.VOLUME_SETTING(0),.STATUS_TEXT_FILE("../../assets/fonts/v3_handbook_status_text.mem"),.PIXEL_HZ(PIXEL_HZ),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
+ v3_video_display_core #(.EXTERNAL_CACHE_WRITE(1),.FLEX_SPECTRUM(1),.HD(HD),.HANDBOOK_PROFILE(1),.USER_FEATURES(1),.VOLUME_COLUMNS(0),.VOLUME_SETTING(0),.STATUS_TEXT_FILE("../../assets/fonts/v3_handbook_status_text.mem"),.PIXEL_HZ(PIXEL_HZ),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
+ .cache_write_clk(pll_sys100_clk),.cache_write_rst_n(cache_write_rst_n),
  .sys_rst_n(sys_rst_n),.mem_rst_n(mem_rst_n),.pixel_rst_n(pixel_rst_n),.media_reset(media_reset),
  .uptime_bcd(boot_bcd_pixel),.wave_pcm_valid(pcm_valid),.wave_pcm_left(pcm_left),
  .cfg_valid(1'b1),.cfg_ready(cfg_ready),.cfg_data(cfg_data),.cache_valid(cache_sys),.next_request(next_request || auto_tick),
@@ -508,7 +513,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  (* keep="true" *) wire[31:0] b_diag_payload2=({32{b_diag_low[2]}} & {20'd0,ref_status_sys[203:192]});
  (* keep="true" *) wire[31:0] b_diag_payload3=({32{b_diag_low[3]}} & ref_status_sys[79:48]) |
   ({32{b_diag_low[4]}} & {18'd0,energy,volume});
- (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & 32'h26102237);
+ (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & 32'h26102301);
  (* keep="true" *) wire[31:0] b_diag_next1=b_diag_payload1 & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next2=b_diag_payload2 & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next3=b_diag_payload3 & {32{b_diag_payload_valid}};

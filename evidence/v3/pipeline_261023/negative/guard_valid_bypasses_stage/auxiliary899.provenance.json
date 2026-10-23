@@ -1,0 +1,142 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\negative\\guard_valid_bypasses_stage\\sim\\tb_v3_guard_stage804",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "pipeline",
+    "kind": "negative",
+    "name": "guard_valid_bypasses_stage",
+    "row": {
+      "mutation": "guard_valid_bypasses_stage",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+      "suite": "guard_stage804",
+      "top": "tb_v3_guard_stage804",
+      "patch": [
+        {
+          "before": ".accepted(guard_accept_q),.write_addr(guard_write_addr_q)",
+          "after": ".accepted(writer_accepted),.write_addr(guard_write_addr_q)"
+        }
+      ],
+      "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+      "mutated_sha256": "d2aa28a7c2998003f788fa0d7142b12ece158541c2804f813cf005df1c6d963e",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "detected": true,
+      "error_counts": [
+        236
+      ],
+      "original_producer": "D:\\Codex\\svflex537\\pipeline863\\native\\guard_valid_bypasses_stage\\sim\\tb_v3_guard_stage804",
+      "legacy": false
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\pipeline_261023\\negative\\guard_valid_bypasses_stage",
+    "packed": false,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "fresh_native_auxiliary_requalification",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\negative\\guard_valid_bypasses_stage\\sim\\tb_v3_guard_stage804",
+    "checked": {
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_guard_stage804",
+        "suite": "guard_stage804",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/guard_stage804_sim.json",
+        "current_manifest_sha256": "c692d2ac42460fa5df4422215c6190f7be28e3aa1837ce10dc3307f4f3b4c866",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        236
+      ],
+      "metadata": {
+        "mutation": "guard_valid_bypasses_stage",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "guard_stage804",
+        "top": "tb_v3_guard_stage804",
+        "patch": [
+          {
+            "before": ".accepted(guard_accept_q),.write_addr(guard_write_addr_q)",
+            "after": ".accepted(writer_accepted),.write_addr(guard_write_addr_q)"
+          }
+        ],
+        "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+        "mutated_sha256": "d2aa28a7c2998003f788fa0d7142b12ece158541c2804f813cf005df1c6d963e",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "detected": true,
+        "error_counts": [
+          236
+        ],
+        "original_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\negative\\guard_valid_bypasses_stage\\sim\\tb_v3_guard_stage804",
+        "legacy": false,
+        "return_code": 1
+      },
+      "metadata_sha256": "524d58867265ea7f1f6bbb95c84015a5d52e68a434e53846cc8899534718acbc",
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\negative\\guard_valid_bypasses_stage\\sim\\results.json",
+            "sha256": "07fdada588cccc4535e30903f96dfbc86deb8166058737f5c3e45614048dbdd9",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "log_sha256": "d27db241b5270137e08defb11595ff02db6d1058f658c69316a53f3b59033972",
+      "normal_completion": true
+    },
+    "command": [
+      "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "D:\\Codex\\svflex537\\candidate883\\safevision\\tools\\run_v3_sim.py",
+      "--suite",
+      "guard_stage804",
+      "--top",
+      "tb_v3_guard_stage804",
+      "--run-dir",
+      "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\negative\\guard_valid_bypasses_stage\\sim",
+      "--override-source",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v=D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\negative\\guard_valid_bypasses_stage\\inputs\\mutant.v"
+    ],
+    "actual_native_process_exit": 1,
+    "elapsed_s": 14.797,
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_guard_stage804",
+        "suite": "guard_stage804",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/guard_stage804_sim.json",
+        "current_manifest_sha256": "c692d2ac42460fa5df4422215c6190f7be28e3aa1837ce10dc3307f4f3b4c866",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 1,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\negative\\guard_valid_bypasses_stage\\sim\\results.json",
+            "sha256": "07fdada588cccc4535e30903f96dfbc86deb8166058737f5c3e45614048dbdd9",
+            "basis": "native_completed_semantic_failure"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 120,
+      "normal_completion": true,
+      "error_counts": [
+        236
+      ],
+      "log_sha256": "d27db241b5270137e08defb11595ff02db6d1058f658c69316a53f3b59033972",
+      "source_fingerprint_sha256": "66362f94de929f323e74fc138aba2ceef5fd3696aa19d359eb30ec094954fcdf"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\pipeline_261023\\negative\\guard_valid_bypasses_stage"
+  },
+  "actual_execution_retained": true
+}

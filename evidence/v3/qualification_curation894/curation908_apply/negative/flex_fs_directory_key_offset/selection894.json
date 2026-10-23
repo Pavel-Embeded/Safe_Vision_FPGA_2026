@@ -1,0 +1,136 @@
+{
+  "kind": "negative",
+  "name": "flex_fs_directory_key_offset",
+  "record": {
+    "kind": "negative",
+    "name": "flex_fs_directory_key_offset",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\negative\\flex_fs_directory_key_offset",
+    "checked": {
+      "metadata": {
+        "mutation": "flex_fs_directory_key_offset",
+        "target": "safevision/rtl/storage/v3_flexible_media_index.v",
+        "suite": "flexible540",
+        "top": "tb_v3_flexible540",
+        "patch": [
+          {
+            "before": "sel_key<=current_index+16'd1;",
+            "after": "sel_key<=current_index+16'd2;"
+          }
+        ],
+        "original_sha256": "22a62280a754fc90d91bd43b48b69c4ef4f5f1faf4684bb078d53965a7be933e",
+        "mutated_sha256": "b60ea80f0078959659b3ccb825256e063d501c27055c312d47a88b4f8fc7280c",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "detected": true,
+        "error_counts": [
+          15
+        ],
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "original_producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_directory_key_offset\\sim\\tb_v3_flexible540",
+        "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_directory_key_offset\\sim\\tb_v3_flexible540"
+      },
+      "metadata_sha256": "470e48d47c32750fcf0266ac9e93f0164107fa8a5466f383ef82beea15d59a6f",
+      "normal_completion": true,
+      "input_count": 19,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_flexible540",
+        "suite": "flexible540",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/flexible540_sim.json",
+        "current_manifest_sha256": "d46eddeb0337d9348e8079f516188e0226e99e27105a11a1d8d9ade6eec1a0c1",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 4,
+        "generation_inputs": 15,
+        "generation_before_sha256": "c034932ca81f38172b44126e858d2b762cd6b9bc99d6a86cadc9594ede1f7cdf",
+        "generation_after_sha256": "c034932ca81f38172b44126e858d2b762cd6b9bc99d6a86cadc9594ede1f7cdf"
+      },
+      "error_counts": [
+        15
+      ],
+      "log_sha256": "39ecb31df9513bd658bbb711890ba31333bfae02969bf5da5c472c48d08468c6"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\negative\\flex_fs_directory_key_offset",
+  "checked": {
+    "metadata": {
+      "mutation": "flex_fs_directory_key_offset",
+      "target": "safevision/rtl/storage/v3_flexible_media_index.v",
+      "suite": "flexible540",
+      "top": "tb_v3_flexible540",
+      "patch": [
+        {
+          "before": "sel_key<=current_index+16'd1;",
+          "after": "sel_key<=current_index+16'd2;"
+        }
+      ],
+      "original_sha256": "22a62280a754fc90d91bd43b48b69c4ef4f5f1faf4684bb078d53965a7be933e",
+      "mutated_sha256": "b60ea80f0078959659b3ccb825256e063d501c27055c312d47a88b4f8fc7280c",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "detected": true,
+      "error_counts": [
+        15
+      ],
+      "strict_generated_inputs": 1,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "original_producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_directory_key_offset\\sim\\tb_v3_flexible540",
+      "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_directory_key_offset\\sim\\tb_v3_flexible540"
+    },
+    "metadata_sha256": "470e48d47c32750fcf0266ac9e93f0164107fa8a5466f383ef82beea15d59a6f",
+    "input_count": 19,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_flexible540",
+      "suite": "flexible540",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/flexible540_sim.json",
+      "current_manifest_sha256": "d46eddeb0337d9348e8079f516188e0226e99e27105a11a1d8d9ade6eec1a0c1",
+      "binding": "actual_compiler_and_current_manifest",
+      "strict_generated_inputs_verified": true,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "generator_dependencies": 0,
+      "runtime_assets": 4,
+      "generation_inputs": 15,
+      "generation_before_sha256": "c034932ca81f38172b44126e858d2b762cd6b9bc99d6a86cadc9594ede1f7cdf",
+      "generation_after_sha256": "c034932ca81f38172b44126e858d2b762cd6b9bc99d6a86cadc9594ede1f7cdf"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      15
+    ],
+    "log_sha256": "39ecb31df9513bd658bbb711890ba31333bfae02969bf5da5c472c48d08468c6",
+    "sources_sha256": "a3200f29d3c721356474c831e2d08cd7a9b95fdd5e44617ca42aa2c712e03521",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\negative\\flex_fs_directory_key_offset\\runner.results.json",
+          "sha256": "bee8039684fc0660f787a6137693b256f8fa117b99d445b3058f08065f3036ae",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_directory_key_offset\\sim\\results.json",
+          "sha256": "bee8039684fc0660f787a6137693b256f8fa117b99d445b3058f08065f3036ae",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

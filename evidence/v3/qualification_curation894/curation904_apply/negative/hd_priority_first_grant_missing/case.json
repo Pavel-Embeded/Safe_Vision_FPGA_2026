@@ -1,0 +1,24 @@
+{
+  "mutation": "hd_priority_first_grant_missing",
+  "target": "safevision/rtl/hd/v3_supervisor.v",
+  "suite": "hd_priority_groups",
+  "top": "tb_v3_hd_priority_groups",
+  "patch": [
+    {
+      "before": "assign priority_next[0]=pending_next[0];",
+      "after": "assign priority_next[0]=1'b0;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_priority_first_grant_missing\\sim\\tb_v3_hd_priority_groups",
+  "original_sha256": "2e7e07748fe4856576e9690cf237f6a34f4a18800ba1cc498891dec53698c0bd",
+  "mutated_sha256": "d285860f172e082dd2e3678fc9f1658dd7827a8147a4164549844b5d335dd786",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    3072
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\hd_priority_first_grant_missing\\sim\\tb_v3_hd_priority_groups",
+  "return_code": 1
+}

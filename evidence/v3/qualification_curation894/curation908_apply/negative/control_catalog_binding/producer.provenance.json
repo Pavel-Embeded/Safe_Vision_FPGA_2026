@@ -1,0 +1,61 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_catalog_binding\\sim\\tb_v3_control_catalog_equivalence",
+  "native_log_sha256": "6f69f0badbaa84e554670fa058490668028471c28709878a3451d3ca623955ab",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "control_catalog_binding",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_catalog_binding\\sim\\tb_v3_control_catalog_equivalence",
+    "checked": {
+      "metadata": {
+        "mutation": "control_catalog_binding",
+        "target": "safevision/rtl/control/v3_user_controls.v",
+        "suite": "control_catalog_equivalence",
+        "top": "tb_v3_control_catalog_equivalence",
+        "patch": [
+          {
+            "before": " localparam[6:0] CTRL_ID_BRIGHT=7'd5;\n",
+            "after": " localparam[6:0] CTRL_ID_BRIGHT=7'd127;\n"
+          }
+        ],
+        "required_marker": "[FAIL]",
+        "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+        "mutated_sha256": "03ef368ed9a4236af16e966a0f6512d7498603bacf9391c9f829a7ac8afbe340",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          226638
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_catalog_binding\\sim\\tb_v3_control_catalog_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_catalog_binding\\sim\\tb_v3_control_catalog_equivalence"
+      },
+      "metadata_sha256": "1700856bea75d447c929df9cb941cc542bf29ad6caec8e7b64814ad7ad18737f",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_control_catalog_equivalence",
+        "suite": "control_catalog_equivalence",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/control_catalog_equivalence_sim.json",
+        "current_manifest_sha256": "4932c3b11cce37460ef026683ed84e8d11752a1b4c8f52054ab9977757f98fc7",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        226638
+      ],
+      "log_sha256": "6f69f0badbaa84e554670fa058490668028471c28709878a3451d3ca623955ab"
+    },
+    "elapsed_s": 17.063
+  }
+}

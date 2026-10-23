@@ -1,0 +1,22 @@
+{
+  "mutation": "lba_product_spc_lost",
+  "target": "safevision/rtl/storage/v3_shared_fs_service.v",
+  "suite": "lba_pipeline747",
+  "top": "tb_v3_lba_pipeline747",
+  "patch": [
+    {
+      "before": "product_q<=shared_cluster*sec_per_clus;",
+      "after": "product_q<=shared_cluster*8'd1;"
+    }
+  ],
+  "original_sha256": "4d5928d8e1a3adc40b10848dc8751d4777d964ce95d7cab137043094bf1fb480",
+  "mutated_sha256": "9989062466ed443ff1e2a9ea861b21bbd8935d71203f22bde3ad0fe644d42674",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "detected": true,
+  "error_counts": [
+    2047
+  ],
+  "original_producer": "D:\\Codex\\svflex537\\lba790\\lba_product_spc_lost\\sim\\tb_v3_lba_pipeline747"
+}

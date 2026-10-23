@@ -1,0 +1,134 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_progress_recovery_hd561",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_progress_recovery_hd561",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\positive\\tb_v3_progress_recovery_hd561",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_progress_recovery_hd561",
+        "status": "PASS",
+        "source_overrides": [],
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "checks": 4,
+        "data_comparisons": 4340,
+        "elapsed_s": 9.828,
+        "suite": "progress_recovery_hd561",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\finalflex616\\positive\\tb_v3_progress_recovery_hd561\\tb_v3_progress_recovery_hd561",
+        "producer_manifest_sha256": "0d828262f1accc8cd2609ed5892d575439f90bd3c97347100b09117bb9dbc441",
+        "parameter_only_revalidation": {
+          "original_execution_root": "D:\\Codex\\svflex537\\candidate616",
+          "original_execution_commit": "c2fe3817e81b884ba68f68e15639947c86378661",
+          "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+          "current_source_commit": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+          "original_producer_config": "D:\\Codex\\svflex537\\finalflex616\\producers.json",
+          "original_producer_config_sha256": "0c67f81737bcfc6a9ab408a92ca36a9e512528b668e459878715bd01a9018c3c",
+          "functional_native_execution_repeated": false
+        }
+      },
+      "metadata_sha256": "c4fdf3aeb96db240ce1954b10a6a5c858d8c214201890471f01de709397760a9",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_progress_recovery_hd561",
+        "suite": "progress_recovery_hd561",
+        "ordered_analyzed_HDL": 7,
+        "manifest": "safevision/build/manifests/progress_recovery_hd561_sim.json",
+        "current_manifest_sha256": "0d828262f1accc8cd2609ed5892d575439f90bd3c97347100b09117bb9dbc441",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 0,
+        "generation_inputs": 15,
+        "generation_before_sha256": "300d24921c100804a1074735cf616b66342e44593cc918c49b2ec7fcf225dd4f",
+        "generation_after_sha256": "300d24921c100804a1074735cf616b66342e44593cc918c49b2ec7fcf225dd4f"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "0e2ea55b10d0d199fe9ba2d11861067168a845f42b3dad7fd7c837c7838241eb"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\positive\\tb_v3_progress_recovery_hd561",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_progress_recovery_hd561",
+      "status": "PASS",
+      "source_overrides": [],
+      "strict_generated_inputs": 1,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "checks": 4,
+      "data_comparisons": 4340,
+      "elapsed_s": 9.828,
+      "suite": "progress_recovery_hd561",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\finalflex616\\positive\\tb_v3_progress_recovery_hd561\\tb_v3_progress_recovery_hd561",
+      "producer_manifest_sha256": "0d828262f1accc8cd2609ed5892d575439f90bd3c97347100b09117bb9dbc441",
+      "parameter_only_revalidation": {
+        "original_execution_root": "D:\\Codex\\svflex537\\candidate616",
+        "original_execution_commit": "c2fe3817e81b884ba68f68e15639947c86378661",
+        "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+        "current_source_commit": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+        "original_producer_config": "D:\\Codex\\svflex537\\finalflex616\\producers.json",
+        "original_producer_config_sha256": "0c67f81737bcfc6a9ab408a92ca36a9e512528b668e459878715bd01a9018c3c",
+        "functional_native_execution_repeated": false
+      }
+    },
+    "metadata_sha256": "c4fdf3aeb96db240ce1954b10a6a5c858d8c214201890471f01de709397760a9",
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_progress_recovery_hd561",
+      "suite": "progress_recovery_hd561",
+      "ordered_analyzed_HDL": 7,
+      "manifest": "safevision/build/manifests/progress_recovery_hd561_sim.json",
+      "current_manifest_sha256": "0d828262f1accc8cd2609ed5892d575439f90bd3c97347100b09117bb9dbc441",
+      "binding": "actual_compiler_and_current_manifest",
+      "strict_generated_inputs_verified": true,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "generator_dependencies": 0,
+      "runtime_assets": 0,
+      "generation_inputs": 15,
+      "generation_before_sha256": "300d24921c100804a1074735cf616b66342e44593cc918c49b2ec7fcf225dd4f",
+      "generation_after_sha256": "300d24921c100804a1074735cf616b66342e44593cc918c49b2ec7fcf225dd4f"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "0e2ea55b10d0d199fe9ba2d11861067168a845f42b3dad7fd7c837c7838241eb",
+    "sources_sha256": "300d24921c100804a1074735cf616b66342e44593cc918c49b2ec7fcf225dd4f",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\positive\\tb_v3_progress_recovery_hd561\\runner.results.json",
+          "sha256": "17c1164369df44bf607fc156bbd02df2da2adf4281b2b0d43996c7ecdc9474ad",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\finalflex616\\positive\\tb_v3_progress_recovery_hd561\\results.json",
+          "sha256": "5e86e716ef23527e7a96550a9a0cc1b40f15de9587221cdf14d523c68232a989",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

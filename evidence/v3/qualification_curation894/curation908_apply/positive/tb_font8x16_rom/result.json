@@ -1,0 +1,25 @@
+{
+  "top": "tb_font8x16_rom",
+  "suite": "legacy_a",
+  "accepted_native_runner": true,
+  "source_overrides": [],
+  "legacy": true,
+  "original_runner_result_sha256": "13d62754dbc590cb88b177b325de613a17031b5e0ae27f4b13d504f790d46fa1",
+  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\read_fix_26101702\\regression\\system_legacy_a",
+  "native_fingerprint_sha256": "01f946cd48d947a488098ea470768811df3163beff3ef5533e36e20780550521",
+  "vector_replay_matches_actual_simulator_inputs": [],
+  "augmentation_scope": "Original native RTL fingerprints retained. Generated vectors are replayed and hashed during curation; no claim that their hashes were captured before the historical simulator run.",
+  "compiler_logs": [
+    "compile.rtl.log",
+    "compile.tb.log"
+  ],
+  "compiler_recovery_provenance": {
+    "producer_results_sha256": "13d62754dbc590cb88b177b325de613a17031b5e0ae27f4b13d504f790d46fa1",
+    "same_native_sim_log_sha256": "7ba92816eb528fe611910612b167be431a17e06a53b3137d917bf7709a49185e",
+    "logs": {
+      "compile.rtl.log": "3de4e83f2ec87666d81427d1602030172fb890442347925192665da805882ba1",
+      "compile.tb.log": "e1e31afe01d56c8b32c11152a4277a9b428bb16900c2fc45892583c9428898b4"
+    }
+  },
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_font8x16_rom"
+}

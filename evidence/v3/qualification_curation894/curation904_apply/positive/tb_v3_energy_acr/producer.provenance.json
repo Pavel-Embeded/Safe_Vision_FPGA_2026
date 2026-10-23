@@ -1,0 +1,48 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_energy_acr\\sim\\tb_v3_energy_acr",
+  "native_log_sha256": "4b74e7d3297e0fbbc2dbe1bef9833aaa143b2f7d0f7edaee14cc3e13de41bb82",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_energy_acr",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_energy_acr\\sim\\tb_v3_energy_acr",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_energy_acr",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 4,
+        "elapsed_s": 7.671,
+        "suite": "v3",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_energy_acr\\sim\\tb_v3_energy_acr"
+      },
+      "metadata_sha256": "b103a4d7cd5ee5c534904231ffe3071db55a2c070aba5238c296511160587d19",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_energy_acr",
+        "suite": "v3",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/v3_sim.json",
+        "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "4b74e7d3297e0fbbc2dbe1bef9833aaa143b2f7d0f7edaee14cc3e13de41bb82"
+    },
+    "elapsed_s": 7.922
+  }
+}

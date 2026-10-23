@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_directory_lba70",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_directory_lba70",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_directory_lba70",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_directory_lba70",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 2359296,
+        "elapsed_s": 9.047,
+        "suite": "directory_lba70",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_directory_lba70\\sim\\tb_v3_directory_lba70"
+      },
+      "metadata_sha256": "a7863102db7cd290531760afd1316d323408c6d016f6123b3c3ae9122c8e7a1b",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_directory_lba70",
+        "suite": "directory_lba70",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/directory_lba70_sim.json",
+        "current_manifest_sha256": "84007c689985788e076d50b714fd8268828f382f5001e2ce39e1068714c710d3",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "8328aefc789167a73090feace0a02b4fa6b32fb5819ba96eaeaf53d7c05c7e30"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_directory_lba70",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_directory_lba70",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2359296,
+      "elapsed_s": 9.047,
+      "suite": "directory_lba70",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_directory_lba70\\sim\\tb_v3_directory_lba70"
+    },
+    "metadata_sha256": "a7863102db7cd290531760afd1316d323408c6d016f6123b3c3ae9122c8e7a1b",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_directory_lba70",
+      "suite": "directory_lba70",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/directory_lba70_sim.json",
+      "current_manifest_sha256": "84007c689985788e076d50b714fd8268828f382f5001e2ce39e1068714c710d3",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "8328aefc789167a73090feace0a02b4fa6b32fb5819ba96eaeaf53d7c05c7e30",
+    "sources_sha256": "b12d15645327982086e5705670ea591955071b7b0cf0c6bac3a14b6e884741ce",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_directory_lba70\\runner.results.json",
+          "sha256": "bc1d7e10148e22982b27971fea5fbea59641d98df4d14ac18c4db0f62ee046ca",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_directory_lba70\\sim\\results.json",
+          "sha256": "bc1d7e10148e22982b27971fea5fbea59641d98df4d14ac18c4db0f62ee046ca",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

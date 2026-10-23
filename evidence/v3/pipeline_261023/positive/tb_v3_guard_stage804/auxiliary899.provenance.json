@@ -1,0 +1,119 @@
+{
+  "source_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\positive\\tb_v3_guard_stage804\\sim\\tb_v3_guard_stage804",
+  "source_metadata_unchanged": true,
+  "record": {
+    "family": "pipeline",
+    "kind": "positive",
+    "name": "tb_v3_guard_stage804",
+    "row": {
+      "top": "tb_v3_guard_stage804",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 1807,
+      "elapsed_s": 14.609,
+      "suite": "guard_stage804",
+      "legacy": false,
+      "producer_process_exit": 0,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svflex537\\pipeline863\\native\\tb_v3_guard_stage804\\sim\\tb_v3_guard_stage804"
+    },
+    "prior_producer": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\pipeline_261023\\positive\\tb_v3_guard_stage804",
+    "packed": false,
+    "affected_by_FS": true,
+    "accepted": true,
+    "action": "fresh_native_auxiliary_requalification",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\positive\\tb_v3_guard_stage804\\sim\\tb_v3_guard_stage804",
+    "checked": {
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_guard_stage804",
+        "suite": "guard_stage804",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/guard_stage804_sim.json",
+        "current_manifest_sha256": "c692d2ac42460fa5df4422215c6190f7be28e3aa1837ce10dc3307f4f3b4c866",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "metadata": {
+        "top": "tb_v3_guard_stage804",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 1807,
+        "elapsed_s": 14.204,
+        "suite": "guard_stage804",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\positive\\tb_v3_guard_stage804\\sim\\tb_v3_guard_stage804"
+      },
+      "metadata_sha256": "7738f16a54c74bc951f1d46585acae3e725a2b757053e37b30c497b5d3f88d74",
+      "native_completion": {
+        "recorded_coordinator_exit": 0,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\positive\\tb_v3_guard_stage804\\sim\\results.json",
+            "sha256": "663edd0896670584ed042c8568378ca3859f865fdfdc390bd08e9eefb5deb8bf",
+            "basis": "native_runner_complete_PASS"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "log_sha256": "3a4c4c21f6ed74e7ab6e6f951a989c137ca8aaa527c215ed2bb8e09407cb8610",
+      "normal_completion": true
+    },
+    "command": [
+      "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "D:\\Codex\\svflex537\\candidate883\\safevision\\tools\\run_v3_sim.py",
+      "--suite",
+      "guard_stage804",
+      "--top",
+      "tb_v3_guard_stage804",
+      "--run-dir",
+      "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\positive\\tb_v3_guard_stage804\\sim"
+    ],
+    "actual_native_process_exit": 0,
+    "elapsed_s": 14.515,
+    "final_readback": {
+      "accepted": true,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_guard_stage804",
+        "suite": "guard_stage804",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/guard_stage804_sim.json",
+        "current_manifest_sha256": "c692d2ac42460fa5df4422215c6190f7be28e3aa1837ce10dc3307f4f3b4c866",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "native_completion": {
+        "recorded_coordinator_exit": 0,
+        "historical_not_reexecuted": false,
+        "receipts": [
+          {
+            "path": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\positive\\tb_v3_guard_stage804\\sim\\results.json",
+            "sha256": "663edd0896670584ed042c8568378ca3859f865fdfdc390bd08e9eefb5deb8bf",
+            "basis": "native_runner_complete_PASS"
+          }
+        ],
+        "basis": "recorded_native_process_exit"
+      },
+      "input_count": 120,
+      "normal_completion": true,
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "3a4c4c21f6ed74e7ab6e6f951a989c137ca8aaa527c215ed2bb8e09407cb8610",
+      "source_fingerprint_sha256": "c2159804a6ffde579fc612f6297a068d52b6806a4311a24f2336b135beecd6a5"
+    },
+    "destination": "D:\\Codex\\svflex537\\candidate892\\evidence\\v3\\pipeline_261023\\positive\\tb_v3_guard_stage804"
+  },
+  "actual_execution_retained": true
+}

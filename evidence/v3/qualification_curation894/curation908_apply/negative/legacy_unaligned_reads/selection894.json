@@ -1,0 +1,115 @@
+{
+  "kind": "negative",
+  "name": "legacy_unaligned_reads",
+  "record": {
+    "kind": "negative",
+    "name": "legacy_unaligned_reads",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\legacy_unaligned_reads",
+    "checked": {
+      "metadata": {
+        "mutation": "legacy_unaligned_reads",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v",
+        "suite": "read_alignment",
+        "top": "tb_v3_read_alignment",
+        "patch": [
+          {
+            "before": "App_rd_addr<={rfbase[20:2],2'b00}+rcmd_i;",
+            "after": "App_rd_addr<=rfbase[20:0]+rcmd_i;"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\svnegative417\\n\\legacy_unaligned_reads",
+        "original_sha256": "239c0ae596f246f1330f5e99e5dce2059584ed71fabbacbd82ae6ab8cd2bca60",
+        "mutated_sha256": "aa9c75ca6ecf7ee60187ab3c1cbd0c71c2c57296ff593b1760e57a1832b9c2e5",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          11,
+          11
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svnegative417\\n\\legacy_unaligned_reads\\sim\\tb_v3_read_alignment"
+      },
+      "metadata_sha256": "0f8e8b34d55242d645b70632ab9924825db1747a2c221c18867da27c442818a7",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_read_alignment",
+        "suite": "read_alignment",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/read_alignment_sim.json",
+        "current_manifest_sha256": "878bf89b52475b60723a61d09c1cfc7b04972220f37610eed1c8faec56c2277d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        11,
+        11
+      ],
+      "log_sha256": "23e4b7050117a2a5388285dd4ed5033f38874d3c9bb106a1bd2f34112e06d6af"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\legacy_unaligned_reads",
+  "checked": {
+    "metadata": {
+      "mutation": "legacy_unaligned_reads",
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v",
+      "suite": "read_alignment",
+      "top": "tb_v3_read_alignment",
+      "patch": [
+        {
+          "before": "App_rd_addr<={rfbase[20:2],2'b00}+rcmd_i;",
+          "after": "App_rd_addr<=rfbase[20:0]+rcmd_i;"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\svnegative417\\n\\legacy_unaligned_reads",
+      "original_sha256": "239c0ae596f246f1330f5e99e5dce2059584ed71fabbacbd82ae6ab8cd2bca60",
+      "mutated_sha256": "aa9c75ca6ecf7ee60187ab3c1cbd0c71c2c57296ff593b1760e57a1832b9c2e5",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        11,
+        11
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\svnegative417\\n\\legacy_unaligned_reads\\sim\\tb_v3_read_alignment"
+    },
+    "metadata_sha256": "0f8e8b34d55242d645b70632ab9924825db1747a2c221c18867da27c442818a7",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_read_alignment",
+      "suite": "read_alignment",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/read_alignment_sim.json",
+      "current_manifest_sha256": "878bf89b52475b60723a61d09c1cfc7b04972220f37610eed1c8faec56c2277d",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      11,
+      11
+    ],
+    "log_sha256": "23e4b7050117a2a5388285dd4ed5033f38874d3c9bb106a1bd2f34112e06d6af",
+    "sources_sha256": "d78ac56cb02f34fa3f013eb74d757ab349bfd1d8b770f187257e14c91b2d8455",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svnegative417\\n\\legacy_unaligned_reads\\sim\\results.json",
+          "sha256": "ee741ab9ced7ec30fe3879d77b4b0710174a2566537f24762c632a292c8ac504",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

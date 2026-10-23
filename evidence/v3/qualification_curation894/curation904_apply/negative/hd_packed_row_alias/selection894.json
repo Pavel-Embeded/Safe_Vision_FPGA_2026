@@ -1,0 +1,118 @@
+{
+  "kind": "negative",
+  "name": "hd_packed_row_alias",
+  "record": {
+    "kind": "negative",
+    "name": "hd_packed_row_alias",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\hd_packed_row_alias",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_packed_row_alias",
+        "target": "safevision/rtl/hd/v3_packed_row_store.v",
+        "suite": "hd_packed",
+        "top": "tb_v3_hd_packed_rows",
+        "patch": [
+          {
+            "before": ":source_row[3:2];",
+            "after": ":source_row[1:0];"
+          }
+        ],
+        "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+        "mutated_sha256": "8ab9a7de14315bbba0e16260e826124d1df6a11b1e7d256ccba21f1850ec74db",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          28800
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\hd_packed_row_alias\\sim\\tb_v3_hd_packed_rows",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\hd_packed_row_alias\\sim\\tb_v3_hd_packed_rows"
+      },
+      "metadata_sha256": "2b1a18e31e7d400472a7fddd724b5312343d940acd28588d33d44773a16b65dc",
+      "normal_completion": true,
+      "input_count": 15,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_packed_rows",
+        "suite": "hd_packed",
+        "ordered_analyzed_HDL": 7,
+        "manifest": "safevision/build/manifests/hd_packed_sim.json",
+        "current_manifest_sha256": "7f49b092a4dbc7f8d34a0e05d9faf042bad1c6da85a7ec531bcc7aa90047feb0",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        28800
+      ],
+      "log_sha256": "e89ff1297c0479610630238ae6f0f0aeaadb9f40ca62a3503cc5c74bb83fcfca"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\hd_packed_row_alias",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_packed_row_alias",
+      "target": "safevision/rtl/hd/v3_packed_row_store.v",
+      "suite": "hd_packed",
+      "top": "tb_v3_hd_packed_rows",
+      "patch": [
+        {
+          "before": ":source_row[3:2];",
+          "after": ":source_row[1:0];"
+        }
+      ],
+      "original_sha256": "0227162ba11c9868b66468f771fa5c2fb081ada2e668f2752c20085230813e21",
+      "mutated_sha256": "8ab9a7de14315bbba0e16260e826124d1df6a11b1e7d256ccba21f1850ec74db",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        28800
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\hd_packed_row_alias\\sim\\tb_v3_hd_packed_rows",
+      "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\hd_packed_row_alias\\sim\\tb_v3_hd_packed_rows"
+    },
+    "metadata_sha256": "2b1a18e31e7d400472a7fddd724b5312343d940acd28588d33d44773a16b65dc",
+    "input_count": 15,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_packed_rows",
+      "suite": "hd_packed",
+      "ordered_analyzed_HDL": 7,
+      "manifest": "safevision/build/manifests/hd_packed_sim.json",
+      "current_manifest_sha256": "7f49b092a4dbc7f8d34a0e05d9faf042bad1c6da85a7ec531bcc7aa90047feb0",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      28800
+    ],
+    "log_sha256": "e89ff1297c0479610630238ae6f0f0aeaadb9f40ca62a3503cc5c74bb83fcfca",
+    "sources_sha256": "bdeb49993c5b334cdf0ff96e22f1d27b13c864e8165863c2ef80c702edd0952a",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_crc_bmp_261023\\negative\\hd_packed_row_alias\\runner.results.json",
+          "sha256": "da3b7f17502c6ea4e5f4e67cb7c1628a18474b1998cb99560c97c3023b24fa27",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification702\\negative\\hd_packed_row_alias\\sim\\results.json",
+          "sha256": "da3b7f17502c6ea4e5f4e67cb7c1628a18474b1998cb99560c97c3023b24fa27",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

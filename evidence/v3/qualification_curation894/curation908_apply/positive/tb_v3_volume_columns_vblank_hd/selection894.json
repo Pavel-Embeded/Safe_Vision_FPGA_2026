@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_volume_columns_vblank_hd",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_volume_columns_vblank_hd",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_columns_vblank_hd",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_volume_columns_vblank_hd",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 6566752,
+        "elapsed_s": 100.453,
+        "suite": "volume_columns_vblank_hd",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_vblank_hd\\sim\\tb_v3_volume_columns_vblank_hd"
+      },
+      "metadata_sha256": "11fb1b51a6fb02a3781ff0b69f9847590be69631f8992c06bebad76b56121c31",
+      "normal_completion": true,
+      "input_count": 17,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_volume_columns_vblank_hd",
+        "suite": "volume_columns_vblank_hd",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/volume_columns_vblank_hd_sim.json",
+        "current_manifest_sha256": "90751c0ff61447f92990d0cd59bc9e752e37cd253a4377f84ca960d6677c9df0",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "a61d0c9b20707a2ebf0e61f001bc7d9923b13b28c2dd072d90772efae38d3d48"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_volume_columns_vblank_hd",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_volume_columns_vblank_hd",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 6566752,
+      "elapsed_s": 100.453,
+      "suite": "volume_columns_vblank_hd",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_vblank_hd\\sim\\tb_v3_volume_columns_vblank_hd"
+    },
+    "metadata_sha256": "11fb1b51a6fb02a3781ff0b69f9847590be69631f8992c06bebad76b56121c31",
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_volume_columns_vblank_hd",
+      "suite": "volume_columns_vblank_hd",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/volume_columns_vblank_hd_sim.json",
+      "current_manifest_sha256": "90751c0ff61447f92990d0cd59bc9e752e37cd253a4377f84ca960d6677c9df0",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "a61d0c9b20707a2ebf0e61f001bc7d9923b13b28c2dd072d90772efae38d3d48",
+    "sources_sha256": "e8de427176cad208ac2b4e8a1fb28984d75c762829d0e591a2bc0db78abcfd2b",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_volume_columns_vblank_hd\\sim\\results.json",
+          "sha256": "e51c8f40575ca67dbd30c32a1b2bafe50f9a2f0e34461c29c4289c5608b541cc",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

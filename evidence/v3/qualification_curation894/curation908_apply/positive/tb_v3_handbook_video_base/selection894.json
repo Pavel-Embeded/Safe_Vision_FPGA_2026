@@ -1,0 +1,92 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_handbook_video_base",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_handbook_video_base",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_handbook_video_base\\sim\\tb_v3_handbook_video_base",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_handbook_video_base",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 13,
+        "data_comparisons": 3686400,
+        "elapsed_s": 825.594,
+        "suite": "handbook_video",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_handbook_video_base\\sim\\tb_v3_handbook_video_base"
+      },
+      "metadata_sha256": "f6153af1daed8314730ab4c366385803a995a70d09446434e4963a1684163277",
+      "normal_completion": true,
+      "input_count": 35,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_video_base",
+        "suite": "handbook_video",
+        "ordered_analyzed_HDL": 21,
+        "manifest": "safevision/build/manifests/handbook_video_sim.json",
+        "current_manifest_sha256": "dd5137a00f54e5036579d4ca19c505ec6e58c392f00c7565bfcbf0b502a7e690",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "6cbe5a0d3481c1fd1c779fe565b222d57a674ac40f0e85470ae61a368b2b6e32"
+    },
+    "elapsed_s": 825.953,
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_handbook_video_base\\sim\\tb_v3_handbook_video_base",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_handbook_video_base",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 13,
+      "data_comparisons": 3686400,
+      "elapsed_s": 825.594,
+      "suite": "handbook_video",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_handbook_video_base\\sim\\tb_v3_handbook_video_base"
+    },
+    "metadata_sha256": "f6153af1daed8314730ab4c366385803a995a70d09446434e4963a1684163277",
+    "input_count": 35,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_video_base",
+      "suite": "handbook_video",
+      "ordered_analyzed_HDL": 21,
+      "manifest": "safevision/build/manifests/handbook_video_sim.json",
+      "current_manifest_sha256": "dd5137a00f54e5036579d4ca19c505ec6e58c392f00c7565bfcbf0b502a7e690",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "6cbe5a0d3481c1fd1c779fe565b222d57a674ac40f0e85470ae61a368b2b6e32",
+    "sources_sha256": "5a40a2fa647afc5253e5f37f6b36efc3465825a87492911dc8b236d13913ca7c",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": false,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\qualification860\\positive\\tb_v3_handbook_video_base\\sim\\results.json",
+          "sha256": "9396e866c931d1a73e26fe5e48cbc214257e4edb6a36ac65a3573cc159ce13c5",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

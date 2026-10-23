@@ -1,0 +1,18 @@
+{
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "original_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_slot_partition_hd249",
+  "original_metadata_file": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_slot_partition_hd249\\result.json",
+  "original_metadata_sha256": "53f30ab1e09bccfe9f60bb21340149b94ebea0a8c6ac6a9fdc3831755e24c5f8",
+  "original_log_sha256": "8ddbdfc047446f930cbb2334d57ea26f2ae0792c8aaf28602f306f9d1fa2ced2",
+  "matrix_definition": {
+    "top": "tb_v3_slot_partition_hd249",
+    "suite": "slot_partition_hd249",
+    "legacy": false
+  },
+  "normal_completion": true,
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "index_modified": false
+}

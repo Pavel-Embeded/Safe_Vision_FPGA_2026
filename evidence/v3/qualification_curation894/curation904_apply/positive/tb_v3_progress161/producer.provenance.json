@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_progress161\\sim\\tb_v3_progress161",
+  "native_log_sha256": "cabb08881877eac15db3a2c81a1fa706d5c63b56c30787fb0c4fcee0a8c358a5",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_progress161",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_progress161\\sim\\tb_v3_progress161",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_progress161",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 2000067,
+        "elapsed_s": 10.719,
+        "suite": "progress161",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_progress161\\sim\\tb_v3_progress161"
+      },
+      "metadata_sha256": "737f96c1c4b270faa580e46d1c74a9f476abfbc495d1531a010d395acb0c19ab",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_progress161",
+        "suite": "progress161",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/progress161_sim.json",
+        "current_manifest_sha256": "6e2fa9956102cd00e041e78792224acb2bd771c8adfdd7e79accf1db27dbecc4",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "cabb08881877eac15db3a2c81a1fa706d5c63b56c30787fb0c4fcee0a8c358a5"
+    },
+    "elapsed_s": 10.953
+  }
+}

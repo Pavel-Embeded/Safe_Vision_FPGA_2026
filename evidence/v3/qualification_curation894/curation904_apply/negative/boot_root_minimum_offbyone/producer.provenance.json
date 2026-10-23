@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\boot_root_minimum_offbyone\\sim\\tb_v3_boot_pipeline171",
+  "native_log_sha256": "5d6cd846f015fdd88f94bcd1f9fe2a6fb8ab17ba992d3e5bc605154bbf1e5f5a",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "boot_root_minimum_offbyone",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\boot_root_minimum_offbyone\\sim\\tb_v3_boot_pipeline171",
+    "checked": {
+      "metadata": {
+        "mutation": "boot_root_minimum_offbyone",
+        "target": "safevision/rtl/storage/fat32_boot_parser.v",
+        "suite": "boot_pipeline171",
+        "top": "tb_v3_boot_pipeline171",
+        "patch": [
+          {
+            "before": "w_rc>=32'd2",
+            "after": "w_rc>=32'd3"
+          }
+        ],
+        "original_sha256": "a31a26f3943a0c803d3fdf68ce94fafe84a816054128ee6e1edc219b1fa4d3a7",
+        "mutated_sha256": "f356dc32cfdca221d0920a2509adc5f6b7520ae5b33279acb192edc82715929d",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          70838
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\boot_root_minimum_offbyone\\sim\\tb_v3_boot_pipeline171",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\boot_root_minimum_offbyone\\sim\\tb_v3_boot_pipeline171"
+      },
+      "metadata_sha256": "121573dc34cdf162a4b972e29812369de625ff536fbc90a982958667da4f850a",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_boot_pipeline171",
+        "suite": "boot_pipeline171",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/boot_pipeline171_sim.json",
+        "current_manifest_sha256": "5f98c13644fdbec83a063a6bd10af80d124a73b5c06fa8e5e52af53dbcefc193",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        70838
+      ],
+      "log_sha256": "5d6cd846f015fdd88f94bcd1f9fe2a6fb8ab17ba992d3e5bc605154bbf1e5f5a"
+    },
+    "elapsed_s": 8.641
+  }
+}

@@ -9,8 +9,8 @@
       "after": "guard_write_data_q<=mem_addr;"
     }
   ],
-  "original_sha256": "7963af303daf08b0ab508a6aabc653497710788bcf1d760db815d013521fd033",
-  "mutated_sha256": "af3ba8d9ee782239106494e4a38e8218eef3745795c5d40a604a30b4f63946ce",
+  "original_sha256": "c5a5231a3370f51cec011e69ba36d925e3352ca29eb7d6de1f860f87b2bde86f",
+  "mutated_sha256": "19a6064264861e64565157332bfb54f63a4b41ba2ac24318d5fa4e6f2aecddac",
   "mutant_file": "mutant.v",
   "process_exit": 1,
   "normal_completion": true,
@@ -18,5 +18,7 @@
   "error_counts": [
     878
   ],
-  "original_producer": "D:\\Codex\\svflex537\\negative807\\guard_payload_misaligned\\sim\\tb_v3_guard_stage804"
+  "original_producer": "D:\\Codex\\svflex537\\qualification_aux889_retry02\\fresh\\pipeline\\negative\\guard_payload_misaligned\\sim\\tb_v3_guard_stage804",
+  "legacy": false,
+  "return_code": 1
 }

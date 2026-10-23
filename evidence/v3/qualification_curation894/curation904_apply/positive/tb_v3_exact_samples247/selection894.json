@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_exact_samples247",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_exact_samples247",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_exact_samples247",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_exact_samples247",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 3,
+        "data_comparisons": 111,
+        "elapsed_s": 7.656,
+        "suite": "exact_samples247",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svfeatures248\\tests\\exact_samples247\\tb_v3_exact_samples247"
+      },
+      "metadata_sha256": "9b8fe3005a48440861de60ba876f0744a11cb74fe550b1a35e8dc917e0e0b8e7",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_exact_samples247",
+        "suite": "exact_samples247",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/exact_samples247_sim.json",
+        "current_manifest_sha256": "a5b450181b60517114b1dd1f7292bc8721f24aed4b3ab0a525656b4333fb73cc",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d537134a3ce6766bbe727477be062e7e314e7b7bd15a2f5701ab3a1a8f17d97b"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_exact_samples247",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_exact_samples247",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 3,
+      "data_comparisons": 111,
+      "elapsed_s": 7.656,
+      "suite": "exact_samples247",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svfeatures248\\tests\\exact_samples247\\tb_v3_exact_samples247"
+    },
+    "metadata_sha256": "9b8fe3005a48440861de60ba876f0744a11cb74fe550b1a35e8dc917e0e0b8e7",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_exact_samples247",
+      "suite": "exact_samples247",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/exact_samples247_sim.json",
+      "current_manifest_sha256": "a5b450181b60517114b1dd1f7292bc8721f24aed4b3ab0a525656b4333fb73cc",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "d537134a3ce6766bbe727477be062e7e314e7b7bd15a2f5701ab3a1a8f17d97b",
+    "sources_sha256": "44306820af13e69567cbe2159b5f5143bced0d38afac855d698741445a40681b",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svfeatures248\\tests\\exact_samples247\\results.json",
+          "sha256": "c518d8cec9637ecfbd0bd0c275d5c50ff0529c9dba1563594ddda2c02a9d3598",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

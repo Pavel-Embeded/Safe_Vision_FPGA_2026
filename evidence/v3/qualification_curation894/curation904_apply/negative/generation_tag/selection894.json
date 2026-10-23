@@ -1,0 +1,128 @@
+{
+  "kind": "negative",
+  "name": "generation_tag",
+  "record": {
+    "kind": "negative",
+    "name": "generation_tag",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\generation_tag",
+    "checked": {
+      "metadata": {
+        "mutation": "generation_tag",
+        "target": "safevision/rtl/audio/v3_pcm_ring.v",
+        "suite": "audio_negative",
+        "top": "tb_v3_audio_negative_generation",
+        "patch": [
+          {
+            "before": "      if(reading&&rvalid)begin out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+            "after": "      if(reading&&rvalid)begin out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+          },
+          {
+            "before": "      out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+            "after": "      out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+          }
+        ],
+        "required_marker": "[FAIL AUDIO_GENERATION]",
+        "original_sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8",
+        "mutated_sha256": "d87ff16953cdd783ddbd3cb32c1d9c62da1fb1083342e7cf28b292be919c93ae",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          540
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\generation_tag\\sim\\tb_v3_audio_negative_generation",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\generation_tag\\sim\\tb_v3_audio_negative_generation"
+      },
+      "metadata_sha256": "2b96a9979916a0e0edce13230d02a7f52ecc09a7a5506ab676defac9b98bcacc",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_negative_generation",
+        "suite": "audio_negative",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/audio_negative_sim.json",
+        "current_manifest_sha256": "f38cf2e03d2a863c9b23e3e9b2025c637733c55d961b86535a88eb12d271e440",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        540
+      ],
+      "log_sha256": "a5044507b71398c329b08728f310e9bda778513dcbe964d00eca694659b9fb80"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\generation_tag",
+  "checked": {
+    "metadata": {
+      "mutation": "generation_tag",
+      "target": "safevision/rtl/audio/v3_pcm_ring.v",
+      "suite": "audio_negative",
+      "top": "tb_v3_audio_negative_generation",
+      "patch": [
+        {
+          "before": "      if(reading&&rvalid)begin out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+          "after": "      if(reading&&rvalid)begin out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+        },
+        {
+          "before": "      out_data<={generation,rdata};out_valid<=1;seen_data<=1;\n",
+          "after": "      out_data<={generation^8'h01,rdata};out_valid<=1;seen_data<=1;\n"
+        }
+      ],
+      "required_marker": "[FAIL AUDIO_GENERATION]",
+      "original_sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8",
+      "mutated_sha256": "d87ff16953cdd783ddbd3cb32c1d9c62da1fb1083342e7cf28b292be919c93ae",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "return_code": 1,
+      "normal_completion": true,
+      "error_counts": [
+        540
+      ],
+      "detected": true,
+      "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\generation_tag\\sim\\tb_v3_audio_negative_generation",
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\generation_tag\\sim\\tb_v3_audio_negative_generation"
+    },
+    "metadata_sha256": "2b96a9979916a0e0edce13230d02a7f52ecc09a7a5506ab676defac9b98bcacc",
+    "input_count": 40,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_audio_negative_generation",
+      "suite": "audio_negative",
+      "ordered_analyzed_HDL": 28,
+      "manifest": "safevision/build/manifests/audio_negative_sim.json",
+      "current_manifest_sha256": "f38cf2e03d2a863c9b23e3e9b2025c637733c55d961b86535a88eb12d271e440",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      540
+    ],
+    "log_sha256": "a5044507b71398c329b08728f310e9bda778513dcbe964d00eca694659b9fb80",
+    "sources_sha256": "49f5deaa209b84ddc16264a33821b3ea15b46dcfaf13ebc6f4c4ecf46b6a8ad9",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\negative\\generation_tag\\runner.results.json",
+          "sha256": "3953de2877ee364e90d7be1efb4883794650f84bf63d5571144637f5a8bbdf70",
+          "basis": "native_completed_semantic_failure"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\negative\\generation_tag\\sim\\results.json",
+          "sha256": "3953de2877ee364e90d7be1efb4883794650f84bf63d5571144637f5a8bbdf70",
+          "basis": "native_completed_semantic_failure"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

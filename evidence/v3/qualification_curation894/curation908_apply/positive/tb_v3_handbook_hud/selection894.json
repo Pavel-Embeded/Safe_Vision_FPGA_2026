@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_handbook_hud",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_handbook_hud",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_handbook_hud",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_handbook_hud",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 12800,
+        "elapsed_s": 7.125,
+        "suite": "handbook_hud",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_handbook_hud\\sim\\tb_v3_handbook_hud"
+      },
+      "metadata_sha256": "82a53ffea41d97fc124dcf7841d4cad9377c22feee80e0b2cabd37c20cec2cd0",
+      "normal_completion": true,
+      "input_count": 17,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_hud",
+        "suite": "handbook_hud",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/handbook_hud_sim.json",
+        "current_manifest_sha256": "a0c72d5d414d9ff3ef5bbb20a6925a0b89379dc7932ceda38d95f325ee7a3d7a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "6a8994369df32b1bab76040b718d3cce060a3faf8b65635ca543b9ec7e3e4179"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_handbook_hud",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_handbook_hud",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 12800,
+      "elapsed_s": 7.125,
+      "suite": "handbook_hud",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_handbook_hud\\sim\\tb_v3_handbook_hud"
+    },
+    "metadata_sha256": "82a53ffea41d97fc124dcf7841d4cad9377c22feee80e0b2cabd37c20cec2cd0",
+    "input_count": 17,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_handbook_hud",
+      "suite": "handbook_hud",
+      "ordered_analyzed_HDL": 4,
+      "manifest": "safevision/build/manifests/handbook_hud_sim.json",
+      "current_manifest_sha256": "a0c72d5d414d9ff3ef5bbb20a6925a0b89379dc7932ceda38d95f325ee7a3d7a",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "6a8994369df32b1bab76040b718d3cce060a3faf8b65635ca543b9ec7e3e4179",
+    "sources_sha256": "48f5f360e12b29f06983219b530b7a88f7073caaa17e70307a04033040500109",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\original618\\positive\\tb_v3_handbook_hud\\sim\\results.json",
+          "sha256": "f9e4d9cdfc68cbc28102e0f23b27a6f9d42b143e3339d605094baea5d7d61d8c",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

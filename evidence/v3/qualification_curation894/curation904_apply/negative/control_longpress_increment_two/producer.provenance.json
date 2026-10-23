@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_longpress_increment_two\\sim\\tb_v3_control_longpress55",
+  "native_log_sha256": "e34af91b53aefbe4e2d345646c67260f871f2d17ec2c4db1620dfcd9b8184915",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "control_longpress_increment_two",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_longpress_increment_two\\sim\\tb_v3_control_longpress55",
+    "checked": {
+      "metadata": {
+        "mutation": "control_longpress_increment_two",
+        "target": "safevision/rtl/control/v3_user_controls.v",
+        "suite": "control_longpress55",
+        "top": "tb_v3_control_longpress55",
+        "patch": [
+          {
+            "before": "next_n_hold=n_hold+1'b1",
+            "after": "next_n_hold=n_hold+2'd2"
+          }
+        ],
+        "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+        "mutated_sha256": "390527fc8d85dae63c07523b3c895139f6e04a6aa9c954bd14957f479fab319c",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          400
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_longpress_increment_two\\sim\\tb_v3_control_longpress55",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_longpress_increment_two\\sim\\tb_v3_control_longpress55"
+      },
+      "metadata_sha256": "ef8fea5b23376ed6516b02b822091c48bbd98a9a1d318db040e2f2931ff0246d",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_control_longpress55",
+        "suite": "control_longpress55",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/control_longpress55_sim.json",
+        "current_manifest_sha256": "4df1b8b744a305c2bd25275c39026f8b8e25d21fe4182306d41da8e901c80b37",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        400
+      ],
+      "log_sha256": "e34af91b53aefbe4e2d345646c67260f871f2d17ec2c4db1620dfcd9b8184915"
+    },
+    "elapsed_s": 9.688
+  }
+}

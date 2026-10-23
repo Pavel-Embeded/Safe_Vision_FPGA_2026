@@ -1,0 +1,113 @@
+{
+  "kind": "negative",
+  "name": "spi25_reversed_rx_bits",
+  "record": {
+    "kind": "negative",
+    "name": "spi25_reversed_rx_bits",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\spi25_reversed_rx_bits",
+    "checked": {
+      "metadata": {
+        "mutation": "spi25_reversed_rx_bits",
+        "target": "safevision/rtl/storage/spi_master.v",
+        "suite": "spi25_profile",
+        "top": "tb_v3_spi25_profile",
+        "patch": [
+          {
+            "before": "else if (sample_pending) rx_sr <= {rx_sr[6:0], miso};",
+            "after": "else if (sample_pending) rx_sr <= {miso, rx_sr[7:1]};"
+          }
+        ],
+        "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f11\\negative\\spi25_reversed_rx_bits",
+        "original_sha256": "8567f354ad78e7652706169eae8a2f80081727cf62a9c32677bb6d970365f1e6",
+        "mutated_sha256": "ace1ddb515f7a9247536581fd78e9e9966eef7d7b144b946ce206c39f03a2d24",
+        "mutant_file": "mutant.v",
+        "detected": true,
+        "normal_completion": true,
+        "process_exit": 1,
+        "error_counts": [
+          272,
+          272
+        ],
+        "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/spi25_reversed_rx_bits",
+        "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\spi25_reversed_rx_bits",
+        "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\spi25_reversed_rx_bits"
+      },
+      "metadata_sha256": "215c0113030efcb8a67f6a021d64d26f2f63821e44b79d28022300c3cfa74dc1",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_spi25_profile",
+        "suite": "spi25_profile",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/spi25_profile_sim.json",
+        "current_manifest_sha256": "7ce48e1b6fa33144dcb629370ab75c25a3df68c5421c7ab408974ed8ab852921",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        272,
+        272
+      ],
+      "log_sha256": "799dadffcfc2d062e5618ea4b97b1fe5daeff943a12b3ed96bc525932a2564dd"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\spi25_reversed_rx_bits",
+  "checked": {
+    "metadata": {
+      "mutation": "spi25_reversed_rx_bits",
+      "target": "safevision/rtl/storage/spi_master.v",
+      "suite": "spi25_profile",
+      "top": "tb_v3_spi25_profile",
+      "patch": [
+        {
+          "before": "else if (sample_pending) rx_sr <= {rx_sr[6:0], miso};",
+          "after": "else if (sample_pending) rx_sr <= {miso, rx_sr[7:1]};"
+        }
+      ],
+      "folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\hb01\\f11\\negative\\spi25_reversed_rx_bits",
+      "original_sha256": "8567f354ad78e7652706169eae8a2f80081727cf62a9c32677bb6d970365f1e6",
+      "mutated_sha256": "ace1ddb515f7a9247536581fd78e9e9966eef7d7b144b946ce206c39f03a2d24",
+      "mutant_file": "mutant.v",
+      "detected": true,
+      "normal_completion": true,
+      "process_exit": 1,
+      "error_counts": [
+        272,
+        272
+      ],
+      "previous_evidence": "evidence/v3/handbook_26101802/current_gate_11/negative/spi25_reversed_rx_bits",
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\spi25_reversed_rx_bits",
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\spi25_reversed_rx_bits"
+    },
+    "metadata_sha256": "215c0113030efcb8a67f6a021d64d26f2f63821e44b79d28022300c3cfa74dc1",
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_spi25_profile",
+      "suite": "spi25_profile",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/spi25_profile_sim.json",
+      "current_manifest_sha256": "7ce48e1b6fa33144dcb629370ab75c25a3df68c5421c7ab408974ed8ab852921",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      272,
+      272
+    ],
+    "log_sha256": "799dadffcfc2d062e5618ea4b97b1fe5daeff943a12b3ed96bc525932a2564dd",
+    "sources_sha256": "1c0110de1912652d6547e74756734cf4a3093028f2e2029a8af3868e9ec19e8f",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

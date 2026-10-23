@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_guard_2_64",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_guard_2_64",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_guard_2_64",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_guard_2_64",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 29,
+        "data_comparisons": 11785,
+        "elapsed_s": 9.109,
+        "suite": "hd_guard_2_64",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_hd_guard_2_64\\sim\\tb_v3_hd_guard_2_64"
+      },
+      "metadata_sha256": "46f5c8e16196180e4a20d037206ac848d9ec2a55f637cc30376183fdb82fc36c",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_guard_2_64",
+        "suite": "hd_guard_2_64",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_guard_2_64_sim.json",
+        "current_manifest_sha256": "abeeb30270db413d7932f7a24b710aaa06ac697d8de331f10dcbdee57491a260",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "c8cc85719141d31cc50c29896dfef55d58b4b65334f8c9baf5e3c503e9e1a643"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_guard_2_64",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_guard_2_64",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 29,
+      "data_comparisons": 11785,
+      "elapsed_s": 9.109,
+      "suite": "hd_guard_2_64",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_hd_guard_2_64\\sim\\tb_v3_hd_guard_2_64"
+    },
+    "metadata_sha256": "46f5c8e16196180e4a20d037206ac848d9ec2a55f637cc30376183fdb82fc36c",
+    "input_count": 12,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_guard_2_64",
+      "suite": "hd_guard_2_64",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_guard_2_64_sim.json",
+      "current_manifest_sha256": "abeeb30270db413d7932f7a24b710aaa06ac697d8de331f10dcbdee57491a260",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "c8cc85719141d31cc50c29896dfef55d58b4b65334f8c9baf5e3c503e9e1a643",
+    "sources_sha256": "6405a5c9672bb8dc806495ce27e599622f0e34972fa8d2dccabb5e5649897e3b",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq309\\p\\tb_v3_hd_guard_2_64\\sim\\results.json",
+          "sha256": "1ab1e62b328f139b5131c980cd9e095e3d4008ca6c4bac9073ece99cef980d41",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

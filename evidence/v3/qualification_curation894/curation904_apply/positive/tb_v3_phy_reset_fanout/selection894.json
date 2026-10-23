@@ -1,0 +1,89 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_phy_reset_fanout",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_phy_reset_fanout",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_phy_reset_fanout",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_phy_reset_fanout",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 403,
+        "elapsed_s": 8.5,
+        "suite": "phy_reset_fanout",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_phy_reset_fanout\\sim\\tb_v3_phy_reset_fanout"
+      },
+      "metadata_sha256": "4a0ef0364d1f7c392a98a5e33ca9bb12823cba023e21f497d09c5f7dd323f9f3",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_phy_reset_fanout",
+        "suite": "phy_reset_fanout",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/phy_reset_fanout_sim.json",
+        "current_manifest_sha256": "d10b055d3c5086a0bdf8483c5b5d2b2b0c2c40db1f76dd0961f80396e47ece61",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "beff4d41cbb9fabc1bce2075812a220af45cf26b2e1ea9aa7c68e9f0a14b126c"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_phy_reset_fanout",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_phy_reset_fanout",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 403,
+      "elapsed_s": 8.5,
+      "suite": "phy_reset_fanout",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq74\\p\\tb_v3_phy_reset_fanout\\sim\\tb_v3_phy_reset_fanout"
+    },
+    "metadata_sha256": "4a0ef0364d1f7c392a98a5e33ca9bb12823cba023e21f497d09c5f7dd323f9f3",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_phy_reset_fanout",
+      "suite": "phy_reset_fanout",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/phy_reset_fanout_sim.json",
+      "current_manifest_sha256": "d10b055d3c5086a0bdf8483c5b5d2b2b0c2c40db1f76dd0961f80396e47ece61",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "beff4d41cbb9fabc1bce2075812a220af45cf26b2e1ea9aa7c68e9f0a14b126c",
+    "sources_sha256": "becf52c561f28aaf0732aea1a0f642cf73fd6210a5d238b98131f2def849ac6a",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svq74\\p\\tb_v3_phy_reset_fanout\\sim\\results.json",
+          "sha256": "3be112ab274cc75ccd16967ca887f4b93b5ce71dad2f1925d57194adef2a958d",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

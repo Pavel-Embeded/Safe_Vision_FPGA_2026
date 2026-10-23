@@ -1,0 +1,23 @@
+{
+  "mutation": "hd_acr_carry_early",
+  "target": "safevision/rtl/hd/hdmi_acr.v",
+  "suite": "hd_acr_equivalence",
+  "top": "tb_v3_hd_acr_equivalence",
+  "patch": [
+    {
+      "before": "carry[0]<=clocks[3:0]==4'he;",
+      "after": "carry[0]<=clocks[3:0]==4'hd;"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_acr_carry_early",
+  "original_sha256": "3f9278440318b3a71f62d606d4b8ebb6657ee98523f0dd2ed39ecff34cefeb82",
+  "mutated_sha256": "700ccb67abcedf21e535236fb125d4b40e6992a13af521b633cbad60e4358f5e",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    511
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_acr_carry_early"
+}

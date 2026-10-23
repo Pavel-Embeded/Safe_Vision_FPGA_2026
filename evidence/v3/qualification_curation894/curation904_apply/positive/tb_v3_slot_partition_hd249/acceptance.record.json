@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "kind": "positive",
+  "name": "tb_v3_slot_partition_hd249",
+  "top": "tb_v3_slot_partition_hd249",
+  "suite": "slot_partition_hd249",
+  "accepted": true,
+  "source_commit_current": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
+  "current_source_root": "D:\\Codex\\svflex537\\candidate618",
+  "origin": "indexed",
+  "action": "current_revalidation",
+  "matrix_definition": {
+    "top": "tb_v3_slot_partition_hd249",
+    "suite": "slot_partition_hd249",
+    "legacy": false
+  },
+  "effective_definition": {
+    "top": "tb_v3_slot_partition_hd249",
+    "suite": "slot_partition_hd249",
+    "legacy": false
+  },
+  "curated_producer_folder": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_slot_partition_hd249",
+  "actual_producer_folder": "D:\\Codex\\svflex537\\source\\evidence\\v3\\four_features_261020\\positive\\tb_v3_slot_partition_hd249",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_slot_partition_hd249",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 2196608,
+      "elapsed_s": 9.594,
+      "suite": "slot_partition_hd249",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "original_producer": "D:\\Codex\\svq309\\p\\tb_v3_slot_partition_hd249\\sim\\tb_v3_slot_partition_hd249"
+    },
+    "input_count": 10,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_slot_partition_hd249",
+      "suite": "slot_partition_hd249",
+      "ordered_analyzed_HDL": 2,
+      "manifest": "safevision/build/manifests/slot_partition_hd249_sim.json",
+      "current_manifest_sha256": "ee078f5d55f7ed6e811e07e937ea917fce49d37dc4d5e6c20ffa3ed4140fc18a",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "8ddbdfc047446f930cbb2334d57ea26f2ae0792c8aaf28602f306f9d1fa2ced2",
+    "metadata_sha256": "53f30ab1e09bccfe9f60bb21340149b94ebea0a8c6ac6a9fdc3831755e24c5f8",
+    "current_source_and_input_hashes_verified": true,
+    "actual_analyzed_compiler_graph_verified": true
+  },
+  "files": {
+    "metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_slot_partition_hd249\\result.json",
+      "sha256": "53f30ab1e09bccfe9f60bb21340149b94ebea0a8c6ac6a9fdc3831755e24c5f8"
+    },
+    "native_log": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_slot_partition_hd249\\sim.log",
+      "sha256": "8ddbdfc047446f930cbb2334d57ea26f2ae0792c8aaf28602f306f9d1fa2ced2"
+    },
+    "source_fingerprints": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_slot_partition_hd249\\sources.sha256.json",
+      "sha256": "14a03d39ac1fcc9782cc71add63cb3b5689dd06ed8a7ee3b9c9e75f202a0e693"
+    },
+    "original_producer_metadata": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_slot_partition_hd249\\original.producer.metadata.json",
+      "sha256": "53f30ab1e09bccfe9f60bb21340149b94ebea0a8c6ac6a9fdc3831755e24c5f8"
+    },
+    "provenance": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_slot_partition_hd249\\producer.provenance.json",
+      "sha256": "736c97dadad47882cd432b0fd50f19a635bc50442aa452664e3d53fa1cb05408"
+    },
+    "sources.prj": {
+      "path": "D:\\Codex\\svflex537\\original618\\curated\\positive\\tb_v3_slot_partition_hd249\\sources.prj",
+      "sha256": "0e36b25413aeda132b447d5d98c71237105534d11bdd710fdd84387e06682a63"
+    }
+  },
+  "original_receipts_preserved": true,
+  "source_modified": false,
+  "acceptance_index_modified": false
+}

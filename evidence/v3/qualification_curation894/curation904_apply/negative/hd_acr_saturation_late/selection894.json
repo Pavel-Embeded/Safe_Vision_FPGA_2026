@@ -1,0 +1,105 @@
+{
+  "kind": "negative",
+  "name": "hd_acr_saturation_late",
+  "record": {
+    "kind": "negative",
+    "name": "hd_acr_saturation_late",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_acr_saturation_late",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_acr_saturation_late",
+        "target": "safevision/rtl/hd/hdmi_acr.v",
+        "suite": "hd_acr_equivalence",
+        "top": "tb_v3_hd_acr_equivalence",
+        "patch": [
+          {
+            "before": "full<=clocks==20'hffffe;",
+            "after": "full<=clocks==20'hfffff;"
+          }
+        ],
+        "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_acr_saturation_late",
+        "original_sha256": "3f9278440318b3a71f62d606d4b8ebb6657ee98523f0dd2ed39ecff34cefeb82",
+        "mutated_sha256": "15fb6b9aea982bec3cec0d6ca6a101c4da4f82271e2ead8f0337a1d4d8fa46ba",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "normal_completion": true,
+        "error_counts": [
+          4
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_acr_saturation_late"
+      },
+      "metadata_sha256": "abc90d0a0442afeebaaa56c8d2ce82001ab2d0ab0d4608d03367cef31d4737e7",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_acr_equivalence",
+        "suite": "hd_acr_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_acr_equivalence_sim.json",
+        "current_manifest_sha256": "cf6d75d4bac18ba73872814768acfda39b6ad4b66515ea2e5da8165999d2912b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        4
+      ],
+      "log_sha256": "8cdb7a6587d0f4d1353974c4218d0fe97fe05ad519f9fedb6ecd570542e02349"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\negative\\hd_acr_saturation_late",
+  "checked": {
+    "metadata": {
+      "mutation": "hd_acr_saturation_late",
+      "target": "safevision/rtl/hd/hdmi_acr.v",
+      "suite": "hd_acr_equivalence",
+      "top": "tb_v3_hd_acr_equivalence",
+      "patch": [
+        {
+          "before": "full<=clocks==20'hffffe;",
+          "after": "full<=clocks==20'hfffff;"
+        }
+      ],
+      "producer_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_acr_saturation_late",
+      "original_sha256": "3f9278440318b3a71f62d606d4b8ebb6657ee98523f0dd2ed39ecff34cefeb82",
+      "mutated_sha256": "15fb6b9aea982bec3cec0d6ca6a101c4da4f82271e2ead8f0337a1d4d8fa46ba",
+      "mutant_file": "mutant.v",
+      "process_exit": 1,
+      "normal_completion": true,
+      "error_counts": [
+        4
+      ],
+      "detected": true,
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\negative\\hd_acr_saturation_late"
+    },
+    "metadata_sha256": "abc90d0a0442afeebaaa56c8d2ce82001ab2d0ab0d4608d03367cef31d4737e7",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_acr_equivalence",
+      "suite": "hd_acr_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_acr_equivalence_sim.json",
+      "current_manifest_sha256": "cf6d75d4bac18ba73872814768acfda39b6ad4b66515ea2e5da8165999d2912b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      4
+    ],
+    "log_sha256": "8cdb7a6587d0f4d1353974c4218d0fe97fe05ad519f9fedb6ecd570542e02349",
+    "sources_sha256": "fe377545e1cd067381114c160989e5aad77025ac60ffafe3eb67d33c91dcba92",
+    "native_completion": {
+      "recorded_coordinator_exit": 1,
+      "historical_not_reexecuted": true,
+      "receipts": [],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

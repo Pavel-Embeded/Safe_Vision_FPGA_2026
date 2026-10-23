@@ -1,0 +1,91 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_hd_acr_equivalence",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_acr_equivalence",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_acr_equivalence",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_acr_equivalence",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 1210606,
+        "elapsed_s": 7.141,
+        "suite": "hd_acr_equivalence",
+        "accepted_native_runner": true,
+        "producer": "Normally completed frozen production-source XSim; no runtime overrides",
+        "legacy": false,
+        "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_acr_equivalence"
+      },
+      "metadata_sha256": "ed10e778a92cc43785ae39d5bc94cbd0c21bb8ae7b6d2c70104bb95bb8569cb2",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_acr_equivalence",
+        "suite": "hd_acr_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/hd_acr_equivalence_sim.json",
+        "current_manifest_sha256": "cf6d75d4bac18ba73872814768acfda39b6ad4b66515ea2e5da8165999d2912b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "3173f645a51096aed94e0e02f2975e77f540af09cbd994f545772c566e7bc851"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification\\positive\\tb_v3_hd_acr_equivalence",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_hd_acr_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 1210606,
+      "elapsed_s": 7.141,
+      "suite": "hd_acr_equivalence",
+      "accepted_native_runner": true,
+      "producer": "Normally completed frozen production-source XSim; no runtime overrides",
+      "legacy": false,
+      "original_producer": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_acr_equivalence"
+    },
+    "metadata_sha256": "ed10e778a92cc43785ae39d5bc94cbd0c21bb8ae7b6d2c70104bb95bb8569cb2",
+    "input_count": 11,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_hd_acr_equivalence",
+      "suite": "hd_acr_equivalence",
+      "ordered_analyzed_HDL": 3,
+      "manifest": "safevision/build/manifests/hd_acr_equivalence_sim.json",
+      "current_manifest_sha256": "cf6d75d4bac18ba73872814768acfda39b6ad4b66515ea2e5da8165999d2912b",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "3173f645a51096aed94e0e02f2975e77f540af09cbd994f545772c566e7bc851",
+    "sources_sha256": "b8d8049aaacaaa9a0d3b1a792fe44f368a8d9a108dcbe4a06adf5528ade5dcbe",
+    "native_completion": {
+      "recorded_coordinator_exit": null,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\handbook_26101901\\development58\\positive\\tb_v3_hd_acr_equivalence\\producer.results.json",
+          "sha256": "1dc6c5ca5ecb09340f4ad937ec4b1f39bd32ef03efd9066191f1df6d16198175",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "historical_native_wrapper_completion"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}

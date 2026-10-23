@@ -1,0 +1,24 @@
+{
+  "mutation": "combinational_recovery_reset",
+  "target": "safevision/rtl/control/media_recovery_ctrl.v",
+  "suite": "registered_recovery_reset",
+  "top": "tb_v3_registered_recovery_reset",
+  "patch": [
+    {
+      "before": "assign media_reset=media_reset_q;",
+      "after": "assign media_reset=(state==RESET);"
+    }
+  ],
+  "producer_folder": "D:\\Codex\\svflex537\\regression576_stable\\negative\\combinational_recovery_reset\\sim\\tb_v3_registered_recovery_reset",
+  "original_sha256": "5952cc814bf6e6d5424e074d9ffc36e7ab5276a38b8ee7a6b866b41e22bd21dd",
+  "mutated_sha256": "d69eeb0d51fa6db936f54841bfec35c3907b18b731fdb9ac05ef245353e5ab5a",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2
+  ],
+  "detected": true,
+  "original_producer": "D:\\Codex\\svflex537\\regression576_stable\\negative\\combinational_recovery_reset\\sim\\tb_v3_registered_recovery_reset",
+  "return_code": 1
+}

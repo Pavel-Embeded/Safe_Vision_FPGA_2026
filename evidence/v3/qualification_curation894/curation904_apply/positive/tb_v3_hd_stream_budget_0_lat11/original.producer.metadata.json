@@ -1,0 +1,12 @@
+{
+  "top": "tb_v3_hd_stream_budget_0_lat11",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 2,
+  "data_comparisons": 2457600,
+  "elapsed_s": 21.266,
+  "suite": "hd_stream_budget",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "original_producer": "D:\\Codex\\svq416\\p\\tb_v3_hd_stream_budget_0_lat11\\sim\\tb_v3_hd_stream_budget_0_lat11"
+}

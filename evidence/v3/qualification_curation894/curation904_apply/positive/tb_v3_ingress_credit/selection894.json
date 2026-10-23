@@ -1,0 +1,96 @@
+{
+  "kind": "positive",
+  "name": "tb_v3_ingress_credit",
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_ingress_credit",
+    "accepted": true,
+    "action": "unchanged_actual_capture_revalidated",
+    "producer_folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_ingress_credit",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_ingress_credit",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 6144,
+        "elapsed_s": 8.906,
+        "suite": "ingress_credit",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_ingress_credit\\sim\\tb_v3_ingress_credit"
+      },
+      "metadata_sha256": "eaa499f85e243bd0599cc360a195595196bcb5ac479fd7ac18b3e33d57423919",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_ingress_credit",
+        "suite": "ingress_credit",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/ingress_credit_sim.json",
+        "current_manifest_sha256": "5866c7532033b7bbc34f98a3cbbf258c2dbe1ed88b370ef160d4da55ce727256",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "19c90df3522dee0590e7051c373308fa928c485a9104d9bd62507eb71864b6af"
+    },
+    "cohort": "D:\\Codex\\svflex537\\qualification860\\complete.json"
+  },
+  "folder": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_ingress_credit",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_ingress_credit",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 6144,
+      "elapsed_s": 8.906,
+      "suite": "ingress_credit",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_ingress_credit\\sim\\tb_v3_ingress_credit"
+    },
+    "metadata_sha256": "eaa499f85e243bd0599cc360a195595196bcb5ac479fd7ac18b3e33d57423919",
+    "input_count": 41,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_ingress_credit",
+      "suite": "ingress_credit",
+      "ordered_analyzed_HDL": 29,
+      "manifest": "safevision/build/manifests/ingress_credit_sim.json",
+      "current_manifest_sha256": "5866c7532033b7bbc34f98a3cbbf258c2dbe1ed88b370ef160d4da55ce727256",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "normal_completion": true,
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "19c90df3522dee0590e7051c373308fa928c485a9104d9bd62507eb71864b6af",
+    "sources_sha256": "9b750f2b4c9fcfd13bcb233bc0b4d022510d6b1b0b4ddcbe39cb53e08cd627e9",
+    "native_completion": {
+      "recorded_coordinator_exit": 0,
+      "historical_not_reexecuted": true,
+      "receipts": [
+        {
+          "path": "D:\\Codex\\svflex537\\candidate852\\evidence\\v3\\flex_media_261022\\requalification_pipeline_261023\\positive\\tb_v3_ingress_credit\\runner.results.json",
+          "sha256": "98f2569b5ae8396f7c07db73ade22a2a8bd7b7beb6a8f8a5b27573bb3421a443",
+          "basis": "native_runner_complete_PASS"
+        },
+        {
+          "path": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_ingress_credit\\sim\\results.json",
+          "sha256": "98f2569b5ae8396f7c07db73ade22a2a8bd7b7beb6a8f8a5b27573bb3421a443",
+          "basis": "native_runner_complete_PASS"
+        }
+      ],
+      "basis": "recorded_native_process_exit"
+    },
+    "generated_assets": {
+      "required": false
+    }
+  }
+}
