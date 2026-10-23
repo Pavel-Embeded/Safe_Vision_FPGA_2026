@@ -1,9 +1,11 @@
 # 当前交付入口
 
-当前发布为 **BASE 640×480 / 26102004 / KEYFIX 5cff94e**。唯一当前状态见 [README](README.md) 和[发布说明](docs/releases/BASE_26102004/RELEASE.md)。
+**BASE 640×480 / 26102301 / 已验收同一位流。**
 
-位流 SHA-256：`394a0f8151142886c3c950e3ea7220727258eb97dc8f8c7f73c954e8ef04f42d`。
+- 位流：[SafeVision_BASE_6a957b0.bit](artifacts/releases/BASE_26102301_6a957b0/SafeVision_BASE_6a957b0.bit)
+- SHA-256：`95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e`
+- 批准源码：`6a957b0365adbc8d8b4069319d29c9fb63680428`
+- 物理构建：`c6a6549871d97755708120d2a76239011cef94bb`
+- [菜单详解](docs/releases/BASE_26102301/MENU_CN.md) · [使用恢复](docs/releases/BASE_26102301/OPERATIONS.md) · [验收](docs/releases/BASE_26102301/ACCEPTANCE.md)
 
-原始设计构建提交 `9c789eaddd514997c534602026ca14d20b03edbe`，冻结源码/证据批准提交 `5cff94eb70e800337e4617dbfa44349066f3d504`。GitHub main 的交付提交是对既有合格字节的整理，不冒充重新综合的设计提交。
-
-BASE 全角时序通过、实际 SRAM 编程成功、40 项 UART 配置测试通过，实体 KEY2+KEY3 菜单和亮度/对比度已获用户确认。当前 HD 未批准，多尺寸实卡显示待验。旧同 ID 位流可能有错误管脚，因此不能只凭 `26102004` 判断版本。
+Flash 已写入和独立校验，双份完整回读一致，从 Flash 重载的完整 UART 验收通过；真实完全断电启动仍待验。当前文档/交付提交只绑定既有合格字节，不改位流或冒充新的设计构建。旧版、HD 试验和失败候选保留在历史中，不用来代替当前版本。

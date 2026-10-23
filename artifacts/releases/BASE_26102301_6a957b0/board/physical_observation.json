@@ -1,0 +1,13 @@
+{
+  "source": "direct user reply in this task after board916 completed and defaults were restored",
+  "question_scope": "Current four pictures' aspect/direction, audible HDMI sound, and frequency-labelled spectrum on the actual display",
+  "exact_user_answer": "图片、声音和频谱均正常",
+  "firmware": "26102301",
+  "bit_sha256": "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
+  "physical_display_verified": true,
+  "physical_audio_verified": true,
+  "physical_spectrum_verified": true,
+  "serial_is_not_substituted_for_observation": true,
+  "scope_limit": "Current board, card, monitor and this observed run",
+  "github_uploaded": false
+}

@@ -101,3 +101,9 @@ __pycache__/
 !artifacts/releases/BASE_26102004_5cff94e/native/**/*.log
 !artifacts/board_validation/four_features_BASE_KEYFIX_5cff94e/**/*.log
 !/evidence/v3/**/*.log
+
+# Approved BASE 26102301 publication. Local history archives remain ignored.
+!/artifacts/releases/BASE_26102301_6a957b0/
+!artifacts/releases/BASE_26102301_6a957b0/**/*.bit
+!artifacts/releases/BASE_26102301_6a957b0/**/*.log
+!artifacts/releases/BASE_26102301_6a957b0/*.bit

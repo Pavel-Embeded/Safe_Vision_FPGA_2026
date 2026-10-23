@@ -1,0 +1,198 @@
+{
+  "accepted": true,
+  "scope": "Independent readback of closed actual SRAM/UART capture bytes; no new board test",
+  "firmware": "26102301",
+  "source_commit": "6a957b0365adbc8d8b4069319d29c9fb63680428",
+  "bit_sha256": "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
+  "total_validated_ack_frames": 5106,
+  "wav_fallback_masks": [
+    0
+  ],
+  "stages": {
+    "ready": {
+      "acks": 72,
+      "raw_receive_bytes": 1656,
+      "health_checks": 1,
+      "complete": {
+        "elapsed_ms": 14579,
+        "kind": "complete",
+        "physical_display_verified": false,
+        "utc": "2026-10-23T09:45:35.7158110Z",
+        "diagnostics": {
+          "0": 638591745,
+          "2": 1024,
+          "9": 480,
+          "3": 12761088,
+          "7": 0,
+          "4": 252,
+          "13": 0,
+          "10": 0,
+          "6": 0,
+          "14": 84050240,
+          "15": 10485761,
+          "11": 0,
+          "8": 153600,
+          "12": 0,
+          "1": 28921,
+          "5": 0
+        },
+        "configuration": {
+          "A:SCALER": 0,
+          "A:CONTRAST": 128,
+          "C:MENU": 0,
+          "A:BRTPC": 80,
+          "A:SCALESEL": 0,
+          "C:PERIOD": 5,
+          "C:VOL": 70,
+          "C:AUTO": 1
+        },
+        "physical_audio_verified": false,
+        "media": {
+          "GEN": 1,
+          "OVERFLOW": 0,
+          "SLOT": 0,
+          "IDLOW": 8192116,
+          "IDHIGH": 8323198,
+          "INTEGRITY": 0,
+          "WAVFALLBACK": 0,
+          "VUNDERFLOW": 0,
+          "UNDERFLOW": 0
+        },
+        "four_slots_ready": true,
+        "firmware": 638591745
+      },
+      "trace_sha256": "05a510bef7d9a6f4aca015ab24e40f7d5d91b32c6c5ebf5f33ec0143ea49390d",
+      "rx_sha256": "dc1363f78d6fe9f5305ee7622e199d2a7757384664ea3761b1521ec24f89791c"
+    },
+    "configuration": {
+      "acks": 540,
+      "raw_receive_bytes": 12420,
+      "health_checks": 42,
+      "complete": {
+        "configuration_cases": 40,
+        "utc": "2026-10-23T09:46:02.1483204Z",
+        "physical_audio_verified": false,
+        "kind": "complete",
+        "physical_display_verified": false,
+        "elapsed_ms": 26375,
+        "defaults_restored": true
+      },
+      "trace_sha256": "84020de5f070204548fd45047f6455c32cdd9d1e7296f95727a30448a8846ece",
+      "rx_sha256": "06ed07bf7a48ef5387875d0e611484f2c514f0d189075065b047a29d6899886b"
+    },
+    "geometries": {
+      "acks": 630,
+      "raw_receive_bytes": 14490,
+      "health_checks": 42,
+      "complete": {
+        "auto_commits": 32,
+        "kind": "complete",
+        "settings_restored": true,
+        "utc": "2026-10-23T09:49:02.2558844Z",
+        "manual_fade_commits": 32,
+        "physical_display_verified": false,
+        "elapsed_ms": 180060,
+        "combinations": 8,
+        "physical_audio_verified": false
+      },
+      "trace_sha256": "58ff86759165a0d99a88c112220966728dd884cba70c52e3bef64663cfc88702",
+      "rx_sha256": "9edb1d6641e49591538b63c624eaa360321a04f4fcacf1c8e9cb54cc19112904"
+    },
+    "periods": {
+      "acks": 2977,
+      "raw_receive_bytes": 68471,
+      "health_checks": 14,
+      "complete": {
+        "period_cases": 4,
+        "measured_intervals": 8,
+        "auto_commits": 12,
+        "kind": "complete",
+        "physical_display_verified": false,
+        "utc": "2026-10-23T09:51:37.9407015Z",
+        "settings_restored": true,
+        "elapsed_ms": 155641,
+        "physical_audio_verified": false
+      },
+      "trace_sha256": "1915bd95c709f5d090ac7c5aab9984e4ea8bcdf2b48c25b4be9e9e5ef12e864f",
+      "rx_sha256": "4b80d58d81b215a2b08f67ed87ed673a87fe0b56db0c5239cb671c247e5fe9fc",
+      "measured_intervals_ms": {
+        "2": [
+          2555,
+          2522
+        ],
+        "5": [
+          5485,
+          5634
+        ],
+        "10": [
+          10431,
+          10568
+        ],
+        "30": [
+          30605,
+          30468
+        ]
+      }
+    },
+    "recovery": {
+      "acks": 217,
+      "raw_receive_bytes": 4991,
+      "health_checks": 3,
+      "complete": {
+        "elapsed_ms": 31316,
+        "configuration_retained": true,
+        "kind": "complete",
+        "physical_display_verified": false,
+        "utc": "2026-10-23T09:52:09.3023122Z",
+        "media_keys_unchanged": true,
+        "media_keys": [
+          116,
+          125,
+          126,
+          127
+        ],
+        "physical_audio_verified": false,
+        "four_slots_ready": true,
+        "recovery_cycles": 2
+      },
+      "trace_sha256": "82a47e12768d11e5d7bf5c0827df5dc55f45ce1862fedb9a3bde10c796afd117",
+      "rx_sha256": "4172ca4833aece6d280040f615476d17d75a71125fa910ef2b527a74d1e3115a",
+      "actual_slot_keys": [
+        116,
+        125,
+        126,
+        127
+      ]
+    },
+    "monitor": {
+      "acks": 670,
+      "raw_receive_bytes": 15410,
+      "health_checks": 0,
+      "complete": {
+        "utc": "2026-10-23T09:53:19.7035272Z",
+        "kind": "complete",
+        "read_only": true,
+        "elapsed_ms": 70350
+      },
+      "trace_sha256": "20001d8055350faa85077f3413585279dedcac4f15164328849f91d30060ed18",
+      "rx_sha256": "e739b7c1dbe79de9117795412d7565e74db44a7997c673382a675430e2b2bfe7",
+      "carousel": {
+        "expected_step_ms": 5533.647,
+        "total_generation_delta": 13,
+        "observations": 32,
+        "accepted": true,
+        "minimum_observed_transitions": 10,
+        "unobserved_intermediate_commits": 0,
+        "expected_period_seconds": 5,
+        "observed_transitions": 13,
+        "actual_observation_ms": 70100
+      }
+    }
+  },
+  "physical_display_verified": false,
+  "physical_audio_verified": false,
+  "physical_spectrum_verified": false,
+  "flash_written": false,
+  "github_uploaded": false,
+  "reader_sha256": "a7ef090b4946e40b2813a87c12aebff3264a69c07f9bfc9bc9392dcfd3588b64"
+}

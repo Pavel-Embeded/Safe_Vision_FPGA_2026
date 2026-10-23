@@ -1,0 +1,20 @@
+{
+  "accepted": true,
+  "utc": "2026-10-23T12:57:54.784697+00:00",
+  "original_flash_capacity_bytes": 2097152,
+  "original_flash_sha256": "0241f34a8af7288067684f9146f16c4579cd77d433b07d225d341ab076ba3857",
+  "two_reads_identical": true,
+  "previous_successful_base_sha256": "f5cdfedd128199509f45e038397a650214ff3d3ada426fef3dcb835f9af8f5f9",
+  "new_base_sha256": "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
+  "payload_sha256": {
+    "SafeVision_BASE_6a957b0.bit": "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
+    "recovery/backup.verified.json": "9db1508d73773bf4bb52272b944d12d730572b2cff01c772c5f3a29085d7c2e4",
+    "recovery/original_flash_a.bin": "0241f34a8af7288067684f9146f16c4579cd77d433b07d225d341ab076ba3857",
+    "recovery/original_flash_b.bin": "0241f34a8af7288067684f9146f16c4579cd77d433b07d225d341ab076ba3857",
+    "recovery/read_before_flash.console.log": "66eeb462689263b2490363640b09dcc892d245ab482bfd8161793d69ea664682",
+    "recovery/read_before_flash.tcl": "1909187a715662b3022c2985c91e0901899a3b3e83e4152c3a85dfaa649813ce",
+    "recovery/SafeVision_BASE_34462ee.bit": "f5cdfedd128199509f45e038397a650214ff3d3ada426fef3dcb835f9af8f5f9"
+  },
+  "flash_written": false,
+  "github_uploaded": false
+}

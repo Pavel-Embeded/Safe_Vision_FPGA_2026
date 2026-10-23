@@ -1,0 +1,10 @@
+﻿{
+    "github_uploaded":  false,
+    "capture_command":  "\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -Command \"try { [Console]::OutputEncoding=[System.Text.Encoding]::UTF8 } catch {}\n\u0026 \u0027D:\\Codex\\svflash921\\wait_cold_and_test.ps1\u0027 -Port COM6 -WaitSeconds 1800\"",
+    "exact_user_reply":  "目前无法断电，稍后操作",
+    "utc":  "2026-10-23T13:08:52.1989516Z",
+    "physical_test_deferred_by_user":  true,
+    "cold_power_cycle_verified":  false,
+    "capture_process_id":  31808,
+    "stopped_while_only_waiting":  true
+}

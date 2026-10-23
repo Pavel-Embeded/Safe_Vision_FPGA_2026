@@ -1,0 +1,13 @@
+﻿{
+    "tool_sha256":  "513b024c8c1853825441939c9c51feb0156c2c6c2043f854a39e805c38064401",
+    "ended_utc":  "2026-10-23T13:01:44.2376801Z",
+    "bit_sha256":  "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
+    "started_utc":  "2026-10-23T13:00:29.8902332Z",
+    "process_exit":  0,
+    "backup_sha256":  "0241f34a8af7288067684f9146f16c4579cd77d433b07d225d341ab076ba3857",
+    "source_commit":  "6a957b0365adbc8d8b4069319d29c9fb63680428",
+    "console_sha256":  "e4801d03f7c4d92b55db423ba56d82f8db7bbf1d777504f04b41b6f6b024291b",
+    "flash_write_command_issued":  true,
+    "console_requires_independent_success_review":  true,
+    "github_uploaded":  false
+}

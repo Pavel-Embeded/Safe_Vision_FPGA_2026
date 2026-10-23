@@ -6200,3 +6200,8 @@ evidence/v3/handbook_26101802/research_01/** -text
 "/safevision/build/manifests/packed_readback_261023_sim.json" -text
 "/safevision/verification/unit/tb_v3_packed_clock_261023.sv" -text
 "/safevision/verification/unit/tb_v3_packed_readback_261023.sv" -text
+
+# Immutable bytes of the approved current BASE delivery.
+/artifacts/releases/BASE_26102301_6a957b0/** -text
+/artifacts/releases/BASE_26102301_6a957b0/**/*.bit binary
+/docs/releases/BASE_26102301/images/*.jpg binary

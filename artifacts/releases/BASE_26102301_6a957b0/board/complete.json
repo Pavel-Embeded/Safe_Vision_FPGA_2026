@@ -1,0 +1,12 @@
+{
+  "flash_written": false,
+  "utc": "2026-10-23T09:53:19.7120013Z",
+  "physical_audio_verified": false,
+  "accepted": true,
+  "bit_sha256": "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
+  "firmware": "26102301",
+  "source_commit": "6a957b0365adbc8d8b4069319d29c9fb63680428",
+  "physical_display_verified": false,
+  "github_uploaded": false,
+  "serial_tests_passed": true
+}

@@ -1,0 +1,12 @@
+﻿{
+    "accepted":  true,
+    "bit_sha256":  "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
+    "official_verify_spi_completed":  true,
+    "source_commit":  "6a957b0365adbc8d8b4069319d29c9fb63680428",
+    "github_uploaded":  false,
+    "console_sha256":  "e4801d03f7c4d92b55db423ba56d82f8db7bbf1d777504f04b41b6f6b024291b",
+    "old_flash_sha256":  "0241f34a8af7288067684f9146f16c4579cd77d433b07d225d341ab076ba3857",
+    "flash_written":  true,
+    "official_program_spi_completed":  true,
+    "cold_power_cycle_verified":  false
+}

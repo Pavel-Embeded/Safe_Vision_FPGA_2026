@@ -1,0 +1,12 @@
+{
+  "tools/program_flash.ps1": "d5392b144a7cc0557e48086dde9fb0019d38a306b89233fe8f67f84b688c2857",
+  "tools/verify_cold_boot.ps1": "48be10d0d4a2c73102f8961be0ac0ccd35581b72809ba18d1e8de5b75786625c",
+  "tools/run_uart_suite.ps1": "2ef4e46d5e166acb921279bfb22b37c8911567ecb82a38aea39495129faa2cb9",
+  "validation_tools/host_scripts.sha256.json": "bc9e329be39fcdbbbacd25aa2915df7ec06ef258f1d6e93a0d952902059b132d",
+  "validation_tools/host_scripts/board870_scripts/ready.ps1": "d7717afc44d5edd6c3b0045db332d3d5f18da14ab1a5e4a1b4b833295c5db216",
+  "validation_tools/host_scripts/board870_scripts/configuration.ps1": "3f0f67716ead235f8bc504bac59111a9144ed27469e84ab383ee66cd3afdbbfd",
+  "validation_tools/host_scripts/board870_scripts/geometries.ps1": "05ade7c0200dbe98c0abd37bcb5f6f9668affd93592bc174afdf925aa0434327",
+  "validation_tools/host_scripts/board870_scripts/periods.ps1": "a85e4574eab2c8d2cfacbc7cb050bad3040f0007b3102c81123d3beeb2783434",
+  "validation_tools/host_scripts/board870_scripts/recovery.ps1": "84e7a45fb4b8eb0ea7b09a85a860de3ce1884a1cb1936f9b4b16a5f88cbd7688",
+  "validation_tools/host_scripts/monitor_board_readonly.ps1": "c704cf5e5ef5e7a1b4a96ac8acb82c94f73f46a31e1b949d60498a23eae82e90"
+}
