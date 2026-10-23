@@ -97,7 +97,13 @@ always @(posedge clk or negedge rst_n)
 wire[31:0] file_lba_cluster;
 wire[31:0] shared_cluster=directory_lba_active?w_next_clus:file_lba_cluster;
 wire shared_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0);
-(* use_dsp=1 *) wire[31:0] shared_product=shared_cluster*sec_per_clus;
+// Select after the two exact modulo32-bit products. This removes the
+// scanner state decoder from the DSP input path; no request gains a cycle.
+// Keep separate products so area optimization cannot factor the selector
+// back in front of the multiplier. Capacity must be checked at full top.
+(* use_dsp=1,keep="true" *) wire[31:0] directory_product=w_next_clus*sec_per_clus;
+(* use_dsp=1,keep="true" *) wire[31:0] file_product=file_lba_cluster*sec_per_clus;
+wire[31:0] shared_product=directory_lba_active?directory_product:file_product;
 (* use_ripple=1 *) wire[31:0] shared_lba_bias=data_start_lba-(shared_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
 (* use_ripple=1 *) wire[31:0] shared_lba=shared_lba_bias+(shared_spc_legal?shared_product:32'd0);
 assign core_rsp={d_scan_done,d_dir_bad,d_err_code,d_err_detail,d_dbg_state,d_ent_name,d_ent_attr,d_ent_first_clus,d_ent_size,d_ent_index,d_ent_valid,d_sd_rd_addr,d_sd_rd_len,d_sd_rd_en,d_sd_data_ready,d_wk_cur_clus,d_wk_start,d_wk_rst_walk,f_busy,f_done,f_error,f_err_code,f_err_detail,f_bytes_rd,f_dbg_state,f_data,f_valid,f_sof,f_eof,f_idle_between_sectors,f_context_out,f_sd_rd_addr,f_sd_rd_len,f_sd_rd_en,f_sd_data_ready,f_wk_cur_clus,f_wk_start,f_wk_rst_walk,w_busy,w_done,w_next_clus,w_eoc,w_error,w_err_code,w_err_detail,w_hop_cnt,w_dbg_state,w_sd_rd_addr,w_sd_rd_len,w_sd_rd_en,w_sd_data_ready};
