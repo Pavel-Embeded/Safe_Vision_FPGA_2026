@@ -15,7 +15,7 @@ POSITIVE={
  'board_clocks':dict(suite='v3_board_clocks',top='tb_v3_board_clocks',comparisons=195),
 }
 NEGATIVE=[
- dict(mutation='lba_product_spc_lost',target=FS,suite='lba_pipeline747',top='tb_v3_lba_pipeline747',before='product_q<=shared_cluster*sec_per_clus;',after="product_q<=shared_cluster*8'd1;",errors=[2047]),
+ dict(mutation='lba_product_spc_lost',target=FS,suite='lba_pipeline747',top='tb_v3_lba_pipeline747',before='wire[7:0] product_factor=sec_per_clus;',after="wire[7:0] product_factor=8'd1;",errors=[2047]),
  dict(mutation='lba_file_valid_unqualified',target=FS,suite='lba_pipeline747',top='tb_v3_lba_pipeline747',before='.external_lba_valid(file_lba_valid)',after=".external_lba_valid(1'b1)",errors=[8184]),
  dict(mutation='lba_result_valid_lost',target=FS,suite='lba_pipeline747',top='tb_v3_lba_pipeline747',before='valid2<=valid1;',after="valid2<=1'b0;",errors=[4096]),
  dict(mutation='lba_owner_tag_inverted',target=FS,suite='lba_pipeline747',top='tb_v3_lba_pipeline747',before='assign file_lba_valid=valid2&&!owner2;',after='assign file_lba_valid=valid2&&owner2;',errors=[4096]),

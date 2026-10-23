@@ -4,7 +4,7 @@ set_param place pr_strategy 5
 set_param place post_place_opt medium
 set_param place hfn_opt_effort low
 
-set_param place seed 0
+set_param place seed 7
 
 # Routability comparison; actual BASE50 control and all media clocks retained.
 set_param route timing on

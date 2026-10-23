@@ -104,13 +104,19 @@ wire shared_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0)
 (* use_ripple=1 *) wire[31:0] shared_lba_bias=data_start_lba-(shared_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
 wire[31:0] shared_lba;
 generate if(FLEX_FILES)begin:registered_lba
- (* use_dsp=1 *) reg[31:0] product_q;
+ // Keep both products in REF registers: the owner MUX follows the DSPs.
+ // The sampled owner1 selects the same input epoch as bias_q/legal_q; valid
+ // and owner publication retain their original two-edge contract.
+ wire[7:0] product_factor=sec_per_clus;
+ (* use_dsp=1, keep="true" *) reg[31:0] directory_product_q,file_product_q;
  reg[31:0] bias_q,lba_q;reg legal_q;
  reg valid1,valid2,owner1,owner2;
+ wire[31:0] selected_product=owner1?directory_product_q:file_product_q;
  always @(posedge clk)begin
-  product_q<=shared_cluster*sec_per_clus;
+  directory_product_q<=directory_lba_cluster*product_factor;
+  file_product_q<=file_lba_cluster*product_factor;
   bias_q<=shared_lba_bias;legal_q<=shared_spc_legal;
-  lba_q<=bias_q+(legal_q?product_q:32'd0);
+  lba_q<=bias_q+(legal_q?selected_product:32'd0);
  end
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin valid1<=0;valid2<=0;owner1<=0;owner2<=0;end
