@@ -9,30 +9,18 @@
       "after": "1'b1"
     }
   ],
-  "original_sha256": "64717af3d95385754d37213196cc882b8ba51f4041669bc974268732dcaba217",
-  "mutated_sha256": "2e3cc8ec88c9f783153015eec862ad4dbf9fb03826250a0a68aa220d3019b786",
+  "original_sha256": "ac20c8d9014f5d0aa9e72f2e64138fd5bafa0d03ae32830da1efa10aef6e2dc7",
+  "mutated_sha256": "4f57712ed6dcea024ae3c7ee41314227537018337beb9064cbd5ac3f0832fdf3",
   "mutant_file": "mutant.v",
   "process_exit": 1,
   "return_code": 1,
   "normal_completion": true,
   "detected": true,
-  "native_stages_completed": true,
-  "tool_failure": false,
-  "source_unchanged": true,
-  "original_producer": "D:\\Codex\\svflex537\\finalflex616\\negative\\flex_fs_lfn_checksum_bypass\\run\\tb_v3_flexible540",
-  "producer_folder": "D:\\Codex\\svflex537\\finalflex616\\negative\\flex_fs_lfn_checksum_bypass\\run\\tb_v3_flexible540",
   "error_counts": [
     850
   ],
   "strict_generated_inputs": 1,
   "native_runner": "safevision/tools/run_v3_sim_flexible.py",
-  "parameter_only_revalidation": {
-    "original_execution_root": "D:\\Codex\\svflex537\\candidate616",
-    "original_execution_commit": "c2fe3817e81b884ba68f68e15639947c86378661",
-    "current_source_root": "D:\\Codex\\svflex537\\candidate618",
-    "current_source_commit": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
-    "original_producer_config": "D:\\Codex\\svflex537\\finalflex616\\producers.json",
-    "original_producer_config_sha256": "0c67f81737bcfc6a9ab408a92ca36a9e512528b668e459878715bd01a9018c3c",
-    "functional_native_execution_repeated": false
-  }
+  "original_producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_lfn_checksum_bypass\\sim\\tb_v3_flexible540",
+  "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_lfn_checksum_bypass\\sim\\tb_v3_flexible540"
 }

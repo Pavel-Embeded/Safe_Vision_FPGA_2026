@@ -11,6 +11,6 @@ Time resolution is 1 ps
 run -all
 [PASS] actual complete audio_system source elaborates both PREINDEXED0/AW10 and PREINDEXED1/AW9 with official TD FIFO geometry and unchanged credit ports
 [TB] tb_v3_audio_depth616 done comparisons=10 errors=0
-$finish called at time : 100 ns : File "D:/Codex/svflex537/candidate616/safevision/verification/unit/tb_v3_compact_ingress616.sv" Line 199
+$finish called at time : 100 ns : File "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_compact_ingress616.sv" Line 199
 exit
-INFO: [Common 17-206] Exiting xsim at Thu Oct 22 16:50:35 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 08:25:15 2026...

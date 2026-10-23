@@ -1,0 +1,221 @@
+{
+  "oracle": "Pillow BMP decode + independent rational floor resampling + struct PCM; FAT fields explicit little endian",
+  "images": [
+    {
+      "name": "A portrait.bmp",
+      "cluster": 8,
+      "size": 366,
+      "key": 15
+    },
+    {
+      "name": "AB emoji_😀.bmp",
+      "cluster": 9,
+      "size": 334,
+      "key": 18
+    },
+    {
+      "name": "SV001.BMP",
+      "cluster": 10,
+      "size": 306,
+      "key": 20
+    },
+    {
+      "name": "测试图片一.bmp",
+      "cluster": 11,
+      "size": 58,
+      "key": 22
+    },
+    {
+      "name": "测试图片二.bmp",
+      "cluster": 12,
+      "size": 234,
+      "key": 24
+    }
+  ],
+  "broken": {
+    "name": "000 broken picture.bmp",
+    "cluster": 4,
+    "size": 54,
+    "key": 3
+  },
+  "keys_hex": "001600140012000f",
+  "selected_audio_tracks": [
+    0,
+    3,
+    1,
+    2
+  ],
+  "pairing_contract": "full UTF16 stem only, otherwise directory ordinal; numeric SV001/SV0001 is not an exact stem",
+  "files": [
+    {
+      "name": "000 broken picture.bmp",
+      "cluster": 4,
+      "size": 54,
+      "key": 3
+    },
+    {
+      "name": "First unrelated.wav",
+      "cluster": 5,
+      "size": 2454,
+      "key": 6
+    },
+    {
+      "name": "Second unrelated.wav",
+      "cluster": 6,
+      "size": 2454,
+      "key": 9
+    },
+    {
+      "name": "Third unrelated.wav",
+      "cluster": 7,
+      "size": 2454,
+      "key": 12
+    },
+    {
+      "name": "A portrait.bmp",
+      "cluster": 8,
+      "size": 366,
+      "key": 15
+    },
+    {
+      "name": "AB emoji_😀.bmp",
+      "cluster": 9,
+      "size": 334,
+      "key": 18
+    },
+    {
+      "name": "SV001.BMP",
+      "cluster": 10,
+      "size": 306,
+      "key": 20
+    },
+    {
+      "name": "测试图片一.bmp",
+      "cluster": 11,
+      "size": 58,
+      "key": 22
+    },
+    {
+      "name": "测试图片二.bmp",
+      "cluster": 12,
+      "size": 234,
+      "key": 24
+    },
+    {
+      "name": "Z unused companion 00.wav",
+      "cluster": 13,
+      "size": 2454,
+      "key": 27
+    },
+    {
+      "name": "Z unused companion 01.wav",
+      "cluster": 14,
+      "size": 2454,
+      "key": 30
+    },
+    {
+      "name": "Z unused companion 02.wav",
+      "cluster": 15,
+      "size": 2454,
+      "key": 33
+    },
+    {
+      "name": "Z unused companion 03.wav",
+      "cluster": 16,
+      "size": 2454,
+      "key": 36
+    },
+    {
+      "name": "Z unused companion 04.wav",
+      "cluster": 17,
+      "size": 2454,
+      "key": 39
+    },
+    {
+      "name": "Z unused companion 05.wav",
+      "cluster": 18,
+      "size": 2454,
+      "key": 42
+    },
+    {
+      "name": "Z unused companion 06.wav",
+      "cluster": 19,
+      "size": 2454,
+      "key": 45
+    },
+    {
+      "name": "Z unused companion 07.wav",
+      "cluster": 20,
+      "size": 2454,
+      "key": 48
+    },
+    {
+      "name": "Z unused companion 08.wav",
+      "cluster": 21,
+      "size": 2454,
+      "key": 51
+    },
+    {
+      "name": "Z unused companion 09.wav",
+      "cluster": 22,
+      "size": 2454,
+      "key": 54
+    },
+    {
+      "name": "Z unused companion 10.wav",
+      "cluster": 23,
+      "size": 2454,
+      "key": 57
+    },
+    {
+      "name": "Z unused companion 11.wav",
+      "cluster": 24,
+      "size": 2454,
+      "key": 60
+    },
+    {
+      "name": "Z unused companion 12.wav",
+      "cluster": 25,
+      "size": 2454,
+      "key": 63
+    },
+    {
+      "name": "Z unused companion 13.wav",
+      "cluster": 26,
+      "size": 2454,
+      "key": 66
+    },
+    {
+      "name": "Z unused companion 14.wav",
+      "cluster": 27,
+      "size": 2454,
+      "key": 69
+    },
+    {
+      "name": "Z unused companion 15.wav",
+      "cluster": 28,
+      "size": 2454,
+      "key": 72
+    },
+    {
+      "name": "SV0001.WAV",
+      "cluster": 29,
+      "size": 2454,
+      "key": 74
+    },
+    {
+      "name": "a PORTRAIT.wav",
+      "cluster": 30,
+      "size": 2454,
+      "key": 77
+    },
+    {
+      "name": "测试图片一.WAV",
+      "cluster": 31,
+      "size": 2454,
+      "key": 79
+    }
+  ],
+  "entries": 79,
+  "PCM_per_track": 600
+}

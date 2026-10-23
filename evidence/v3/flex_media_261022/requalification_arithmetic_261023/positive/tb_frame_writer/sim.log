@@ -1,0 +1,56 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 09:08:09 2026
+# Process ID: 11396
+# Current directory: D:/Codex/svflex537/qualification666/positive/tb_frame_writer/sim/tb_frame_writer
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_frame_writer/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/qualification666/positive/tb_frame_writer/sim/tb_frame_writer/sim.log
+# Journal file: D:/Codex/svflex537/qualification666/positive/tb_frame_writer/sim/tb_frame_writer\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_frame_writer/xsim_script.tcl
+# xsim {tb_frame_writer} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] T0 SDRAM init_done
+[PASS] ÿÿÿæÿ  mem_error
+---- T1 æ­£å¸¸ä¸€å¸§å†™å…¥ ----
+[PASS] ÿÿÿåÿÿÿ…ÿÿÿ slot_valid[0]=0
+[PASS] T1 wr_donÿÿÿºÿÿÿŸ
+[PASS] T1 slot_valid[0ÿÿÿ½ÿÿÿ
+[PASS] T1 crc_oÿÿÿ€ÿÿÿ‡
+[PASS] T1 px_cnt=307200
+[PASS] T1 ÿÿÿåÿÿÿ”ÿÿÿ¯
+[PASS] Tÿÿÿ…ÿÿÿ–ÿÿÿæÿÿÿ½ÿÿÿ
+[PASS] T1ÿÿÿ½ÿÿ¥(0,0)
+[PASS] ÿÿÿæÿÿÿŸ¥(639,0)
+[PASS] ÿÿÿæÿÿÿŸ¥(0,479)
+[PASS] T1ÿÿÿ½ÿÿ¥(639,479)
+[PASS] T1ÿÿÿ½ÿÿ¥(320,240)
+[PASS] TÿÿÿŠÿÿÿ¥(100,50)
+---- T2 åƒç´ æ•°å°‘ä¸€ä¸ª ----
+[PASS] T2 ÿÿÿåÿÿÿ”ÿÿÿ¯
+[PASS] Tÿÿÿ»ÿÿÿ†ÿÿ DET_FS_SHORT
+[PASS] T2 ÿÿÿçÿ ERR_MEDIA_INVALID
+[PASS] T2 slot_valid[ÿÿÿæÿÿÿ½ÿÿÿ
+[PASS] T2 px_cnt=307199
+---- T3 åƒç´ æ•°å¤šä¸€ä¸ª ----
+[PASS] T3 ÿÿÿåÿÿÿ”ÿÿÿ¯
+[PASS] Tÿÿÿ»ÿÿÿ†ÿÿ DET_BMP_SIZE
+[PASS] T3 slot_valid[ÿÿÿæÿÿÿ½ÿÿÿ
+---- T4 slot_valid æ—¶åº ----
+[PASS] ÿÿÿªÿÿÿæÿÿÿ¸§+CRÿÿÿÿÿÿåÿÿÿ½ÿÿÿ
+---- T5 è¶Šç•Œå†™è¢«æ‹’ç» ----
+[PASS] T5ÿÿÿŠÿÿÿæÿÿÿŸÿÿÿ°ÿÿÿèÿÿÿ‹ÿÿÿ
+[PASS] T5ÿÿÿ†ÿÿÿçÿ DET_BMP_TRUNC
+[PASS] T5 slot_valid[ÿÿÿæÿÿÿ½ÿÿÿ
+[PASS] ÿÿÿ§ÿÿÿ„ slot_valid ÿÿÿèÿÿÿ¯ÿÿÿ…
+========================================
+  æ–­è¨€æ€»æ•° 28ï¼Œå¤±è´¥ 0
+ å…¨éƒ¨é€šè¿‡ (PASS)
+========================================
+$finish called at time : 11065312 ns : File "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_frame_writer.sv" Line 348
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 09:08:15 2026...

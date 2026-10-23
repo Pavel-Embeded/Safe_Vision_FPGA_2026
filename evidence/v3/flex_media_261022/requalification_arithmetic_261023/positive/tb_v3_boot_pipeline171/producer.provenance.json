@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_boot_pipeline171\\sim\\tb_v3_boot_pipeline171",
+  "native_log_sha256": "da2a0ce567ecb51d62fdad7bfee07748b1df8a95f216a2b24bc11e7d9ed19785",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_boot_pipeline171",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_boot_pipeline171\\sim\\tb_v3_boot_pipeline171",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_boot_pipeline171",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 1316642,
+        "elapsed_s": 8.516,
+        "suite": "boot_pipeline171",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_boot_pipeline171\\sim\\tb_v3_boot_pipeline171"
+      },
+      "metadata_sha256": "cd76e69cdb0637a6d1595ccaa33d1b0f5fd2aaedefd60b6c449e52e7d48a438b",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_boot_pipeline171",
+        "suite": "boot_pipeline171",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/boot_pipeline171_sim.json",
+        "current_manifest_sha256": "5f98c13644fdbec83a063a6bd10af80d124a73b5c06fa8e5e52af53dbcefc193",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "da2a0ce567ecb51d62fdad7bfee07748b1df8a95f216a2b24bc11e7d9ed19785"
+    },
+    "elapsed_s": 8.719
+  }
+}

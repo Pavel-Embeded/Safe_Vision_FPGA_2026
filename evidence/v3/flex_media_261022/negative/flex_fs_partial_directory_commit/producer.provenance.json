@@ -1,0 +1,83 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
+  "native_log_sha256": "59bc352aaebf9dda89d9d010567b95de2eabe9f8ccea36dd37f7fceba1730666",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "flex_fs_partial_directory_commit",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
+    "checked": {
+      "metadata": {
+        "mutation": "flex_fs_partial_directory_commit",
+        "target": "safevision/rtl/storage/sd_bmp_player.v",
+        "suite": "directory_fault550",
+        "top": "tb_v3_directory_fault550",
+        "patch": [
+          {
+            "before": "dir_bad||(FLEX_FILES&&dn_ec!=`ERR_NONE)",
+            "after": "dir_bad"
+          }
+        ],
+        "original_sha256": "bf29f5516109c424e476984b80894e496f2a7d25989f386a1399bcc9707722de",
+        "mutated_sha256": "70a7ccec521cc9bce6915301ddbdabc6dd72e43ff1d72d461fa126b6fe2166fd",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "detected": true,
+        "error_counts": [
+          2
+        ],
+        "strict_generated_inputs": 1,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "original_producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
+        "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550"
+      },
+      "metadata_sha256": "43c0025fd31a2110c8eb5994bf3fb0c7653dc868403636e867059d14bed10e7e",
+      "normal_completion": true,
+      "input_count": 50,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_directory_fault550",
+        "suite": "directory_fault550",
+        "ordered_analyzed_HDL": 33,
+        "manifest": "safevision/build/manifests/directory_fault550_sim.json",
+        "current_manifest_sha256": "3839e4e40d752d6363c0180ce23582bcf80a4c0a32a1db9cad42b3256bd83a1e",
+        "binding": "actual_compiler_and_current_manifest",
+        "strict_generated_inputs_verified": true,
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+        "generator_dependencies": 0,
+        "runtime_assets": 8,
+        "generation_inputs": 42,
+        "generation_before_sha256": "ab34c0d99e140a039eec5bf180a1b61ae4c7e33380889297ac9deed54d65dab8",
+        "generation_after_sha256": "ab34c0d99e140a039eec5bf180a1b61ae4c7e33380889297ac9deed54d65dab8"
+      },
+      "error_counts": [
+        2
+      ],
+      "log_sha256": "59bc352aaebf9dda89d9d010567b95de2eabe9f8ccea36dd37f7fceba1730666"
+    },
+    "elapsed_s": 17.344,
+    "prior_preflight_refusal": {
+      "kind": "negative",
+      "name": "flex_fs_partial_directory_commit",
+      "console": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\negative\\flex_fs_partial_directory_commit\\runner.console.log",
+        "sha256": "2e02729364475145ab8e334433c77cea5853fa379c00f0b2891ec67509870379"
+      },
+      "exception": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\negative\\flex_fs_partial_directory_commit\\exception.txt",
+        "sha256": "d2fd6a74da800c93e2a85c6c3e67e6570edf6d23848d14a5da2f0808756adb09"
+      },
+      "native_compiler_started": false,
+      "not_counted_as_pass": true
+    }
+  }
+}

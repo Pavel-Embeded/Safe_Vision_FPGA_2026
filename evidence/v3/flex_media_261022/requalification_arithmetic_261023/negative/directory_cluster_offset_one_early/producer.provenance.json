@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\directory_cluster_offset_one_early\\sim\\tb_v3_directory_lba70",
+  "native_log_sha256": "6315d52d4507e01bf64fee7798ea82b38b997a6e681265942bb26997ad554b03",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "directory_cluster_offset_one_early",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\directory_cluster_offset_one_early\\sim\\tb_v3_directory_lba70",
+    "checked": {
+      "metadata": {
+        "mutation": "directory_cluster_offset_one_early",
+        "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+        "suite": "directory_lba70",
+        "top": "tb_v3_directory_lba70",
+        "patch": [
+          {
+            "before": "cluster_sectors(wk_next_clus,sec_per_clus)",
+            "after": "cluster_sectors(wk_next_clus-1,sec_per_clus)"
+          }
+        ],
+        "original_sha256": "5de38d33c99bc4fd7c0dbc1e58901a66e6c8f84d5d889fada3a2aa4a2b3fdf69",
+        "mutated_sha256": "d9e88f6e611f755cb89a3436d1cdf19cef9259a3903da90db28f6d0bb2dc41fe",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          2105344
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\directory_cluster_offset_one_early\\sim\\tb_v3_directory_lba70",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\directory_cluster_offset_one_early\\sim\\tb_v3_directory_lba70"
+      },
+      "metadata_sha256": "3a191ad729256310a9ce3426794d81bf44283d796896fa8299d10eaf30494806",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_directory_lba70",
+        "suite": "directory_lba70",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/directory_lba70_sim.json",
+        "current_manifest_sha256": "84007c689985788e076d50b714fd8268828f382f5001e2ce39e1068714c710d3",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        2105344
+      ],
+      "log_sha256": "6315d52d4507e01bf64fee7798ea82b38b997a6e681265942bb26997ad554b03"
+    },
+    "elapsed_s": 7.906
+  }
+}

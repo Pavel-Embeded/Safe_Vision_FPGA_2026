@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_controls_period\\sim\\tb_v3_controls_period",
+  "native_log_sha256": "64b6a094bbad5bd94006b7c3133ac8b1f9c2cd2a09f819cf46f6e6a1ad444d9d",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_controls_period",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_controls_period\\sim\\tb_v3_controls_period",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_controls_period",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 3,
+        "data_comparisons": 3,
+        "elapsed_s": 6.781,
+        "suite": "v3",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_controls_period\\sim\\tb_v3_controls_period"
+      },
+      "metadata_sha256": "7b61d4b5e5ef436d1b5c600be8abffb57467a24172a7fb0f6fa009e7ecbe77f2",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_controls_period",
+        "suite": "v3",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/v3_sim.json",
+        "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "64b6a094bbad5bd94006b7c3133ac8b1f9c2cd2a09f819cf46f6e6a1ad444d9d"
+    },
+    "elapsed_s": 6.954
+  }
+}

@@ -1,0 +1,26 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_uart_formatter_equivalence/xsim_script.tcl
+# xsim {tb_v3_uart_formatter_equivalence} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] formatter packet=0000000000000 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=0000000000001 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=0000000000002 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=0000000000003 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=0000000000004 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=0000000000005 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=0000000000006 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=0000000000007 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=0000000000008 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=0000000000009 position=7 checksum=a5 got=31 expected=30
+[FAIL] formatter packet=000000000000a position=7 checksum=a5 got=31 expected=30
+[TB] tb_v3_uart_formatter_equivalence done errors=49156 comparisons=128672
+$finish called at time : 128672 ns : File "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_uart_formatter_equivalence.sv" Line 23
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 09:14:34 2026...

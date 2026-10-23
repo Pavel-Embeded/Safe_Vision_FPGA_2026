@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_handbook_board\\sim\\tb_v3_handbook_board",
+  "native_log_sha256": "5cb666e82b6a1ce4ec7e080b91e6f4833977074cd5640532dad89ce1271076fb",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_handbook_board",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_handbook_board\\sim\\tb_v3_handbook_board",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_handbook_board",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 59,
+        "elapsed_s": 11.953,
+        "suite": "handbook_board",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_handbook_board\\sim\\tb_v3_handbook_board"
+      },
+      "metadata_sha256": "53c6f02c5b871f51053a125671a4b833d82e72493f6f69e39bb36c867cc59e4e",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_board",
+        "suite": "handbook_board",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/handbook_board_sim.json",
+        "current_manifest_sha256": "031ec3fecd51dc649eeafd7178e283c3f5fb4647ec7866072e63e9794398b738",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "5cb666e82b6a1ce4ec7e080b91e6f4833977074cd5640532dad89ce1271076fb"
+    },
+    "elapsed_s": 12.187
+  }
+}

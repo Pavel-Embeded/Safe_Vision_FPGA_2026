@@ -1,0 +1,61 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_crc\\sim\\tb_crc",
+  "native_log_sha256": "2109a9fa4070d5485c1979ba5d9f7b60e5b905cffbcdbec4fc72dff152366112",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_crc",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_crc\\sim\\tb_crc",
+    "elapsed_s": 6.687,
+    "checked": {
+      "metadata": {
+        "top": "tb_crc",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 12,
+        "elapsed_s": 6.563,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_crc\\sim\\tb_crc"
+      },
+      "metadata_sha256": "23b8b92cdfc954d73ea878a2aa07df0db289fa66e9b5ef2f382c129b40398b16",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_crc",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [],
+      "log_sha256": "2109a9fa4070d5485c1979ba5d9f7b60e5b905cffbcdbec4fc72dff152366112"
+    },
+    "prior_validation_refusal": {
+      "kind": "positive",
+      "name": "tb_crc",
+      "reason": "Generic completion-marker mismatch after successful dedicated native legacy execution",
+      "exception": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_crc\\exception.txt",
+        "sha256": "accbecfbfe000f091f0cf64e0e30854deee299968ecb943c678a2b80ac3da6a4"
+      },
+      "console": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_crc\\runner.console.log",
+        "sha256": "3616b05e7b5e0e1e12a1387f0866670a80a80fc099fefe5e8285e2edfc1efb8b"
+      },
+      "normal_finish_source_bound": true,
+      "native_rerun_claimed": false
+    }
+  }
+}

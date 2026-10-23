@@ -1,0 +1,37 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 09:08:16 2026
+# Process ID: 7952
+# Current directory: D:/Codex/svflex537/qualification666/positive/tb_framebuffer_loopback_core/sim/tb_framebuffer_loopback_core
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_framebuffer_loopback_core/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/qualification666/positive/tb_framebuffer_loopback_core/sim/tb_framebuffer_loopback_core/sim.log
+# Journal file: D:/Codex/svflex537/qualification666/positive/tb_framebuffer_loopback_core/sim/tb_framebuffer_loopback_core\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_framebuffer_loopback_core/xsim_script.tcl
+# xsim {tb_framebuffer_loopback_core} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+---- å¸§ç¼“å­˜å›ç¯ç»“æœ ----
+  wr_px=307200 rd_px=307200 bad=0 err=00 rep_n=208
+  æ¢é’ˆå†™è®¿é—®æ•°=153636 Aé¦–å€=00001000 Bé¦–å€=00001035 å€¼é”™=0 Aæ®µåœ°å€é”™=0 Bæ®µåœ°å€é”™=0
+[PASS] ÿÿÿåÿÿÿÿÿÿšÿÿ‡ ok=1
+[PASS] T2 ÿÿÿéÿÿÿ¯ÿÿÿ
+[PASS] T3 ÿÿÿåÿÿÿƒÿÿÿ ÿÿ° = 307200
+[PASS] T4 ÿÿÿåÿÿÿƒÿÿÿ ÿÿ° = 307200
+[PASS] ÿÿÿéÿÿÿƒÿÿÿ ÿÿÿåÿÿÿ›ÿÿÿ™
+[PASS] 6 frame_writÿÿÿæÿÿÿ · CRÿÿÿ€ÿÿÿ‡
+[PASS] T7 slot_valiÿÿÿ½ÿÿÿ
+[PASS] ÿÿÿæÿÿÿ‘Š = 208 Byte
+[PASS] T9ÿÿÿ¥ÿÿÿåÿÿÿŠÿÿÿÿÿÿèÿÿÿ­ÿÿÿ®
+[PASS] ÿÿÿ™ÿÿ¼ ÿÿÿ­ÿÿÿ°ÿÿÿïÿˆ36 worÿÿÿ‰
+[PASS] ÿÿÿ¸ÿÿÿºÿÿÿæÿÿÿ¡ÿÿÿˆ32+4 worÿÿÿ‰
+========================================
+  æ–­è¨€æ€»æ•° 11ï¼Œå¤±è´¥ 0
+ å…¨éƒ¨é€šè¿‡ (PASS)
+========================================
+$finish called at time : 12625472 ns : File "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_framebuffer_loopback_core.sv" Line 211
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 09:08:22 2026...

@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_audio_packet\\sim\\tb_v3_audio_packet",
+  "native_log_sha256": "9c65f12db1bfe0f2a6509a8d56c28bfe4edac47a6a7baa50c6e537eb2a7683dc",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_audio_packet",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_audio_packet\\sim\\tb_v3_audio_packet",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_audio_packet",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 404,
+        "elapsed_s": 6.797,
+        "suite": "audio_complete",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_audio_packet\\sim\\tb_v3_audio_packet"
+      },
+      "metadata_sha256": "d285e98cfd52227268a1b226c72e20ddb25ccb09c233e0aaa57999e23f8e4ed8",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_packet",
+        "suite": "audio_complete",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/audio_complete_sim.json",
+        "current_manifest_sha256": "638e175768c16eaf39da482e3c314033db2a022a5885e58ea57aab3dfc4edb9f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "9c65f12db1bfe0f2a6509a8d56c28bfe4edac47a6a7baa50c6e537eb2a7683dc"
+    },
+    "elapsed_s": 7.015
+  }
+}

@@ -3,8 +3,8 @@ Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
 Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_v3_ingress_credit616 -s tb_v3_ingress_credit616 --mt off --timescale 1ns/1ps --log elab.log 
 Turned off multi-threading.
 Starting static elaboration
-WARNING: [VRFC 10-3645] port 'wr_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate616/safevision/verification/unit/tb_v3_compact_ingress616.sv:6]
-WARNING: [VRFC 10-3645] port 'wr_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate616/safevision/verification/unit/tb_v3_compact_ingress616.sv:7]
+WARNING: [VRFC 10-3645] port 'wr_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_compact_ingress616.sv:6]
+WARNING: [VRFC 10-3645] port 'wr_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_compact_ingress616.sv:7]
 Completed static elaboration
 Starting simulation data flow analysis
 Completed simulation data flow analysis

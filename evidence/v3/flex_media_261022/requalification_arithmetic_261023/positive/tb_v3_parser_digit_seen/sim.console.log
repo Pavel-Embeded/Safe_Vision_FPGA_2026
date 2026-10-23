@@ -1,0 +1,16 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_parser_digit_seen/xsim_script.tcl
+# xsim {tb_v3_parser_digit_seen} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] leading-zero signed grammar and exact 32-character body boundary
+[TB] tb_v3_parser_digit_seen done errors=0 comparisons=32
+$finish called at time : 7810 ns : File "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_parser_digit_seen.sv" Line 58
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 09:11:12 2026...

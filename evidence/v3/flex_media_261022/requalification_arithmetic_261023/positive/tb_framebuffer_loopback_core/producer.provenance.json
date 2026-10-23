@@ -1,0 +1,61 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_framebuffer_loopback_core\\sim\\tb_framebuffer_loopback_core",
+  "native_log_sha256": "09fa99520da66650c727b8e480f8610f349e333c80c06310fa9f648d0ebf01aa",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_framebuffer_loopback_core",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_framebuffer_loopback_core\\sim\\tb_framebuffer_loopback_core",
+    "elapsed_s": 11.078,
+    "checked": {
+      "metadata": {
+        "top": "tb_framebuffer_loopback_core",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 11,
+        "elapsed_s": 10.938,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_framebuffer_loopback_core\\sim\\tb_framebuffer_loopback_core"
+      },
+      "metadata_sha256": "11c0fe615f8331858f5416f973fd57091814e39333c2756931f0cc3e966f1151",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_framebuffer_loopback_core",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [],
+      "log_sha256": "09fa99520da66650c727b8e480f8610f349e333c80c06310fa9f648d0ebf01aa"
+    },
+    "prior_validation_refusal": {
+      "kind": "positive",
+      "name": "tb_framebuffer_loopback_core",
+      "reason": "Generic completion-marker mismatch after successful dedicated native legacy execution",
+      "exception": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_framebuffer_loopback_core\\exception.txt",
+        "sha256": "accbecfbfe000f091f0cf64e0e30854deee299968ecb943c678a2b80ac3da6a4"
+      },
+      "console": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_framebuffer_loopback_core\\runner.console.log",
+        "sha256": "a4bd7ae8547b104df7fe616394ba4e31469ce80f231f74f5a99f3f7638d563b6"
+      },
+      "normal_finish_source_bound": true,
+      "native_rerun_claimed": false
+    }
+  }
+}

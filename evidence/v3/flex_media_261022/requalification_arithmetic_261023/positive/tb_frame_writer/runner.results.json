@@ -1,0 +1,15 @@
+{
+  "suite": "legacy_b_fourbeat",
+  "results": [
+    {
+      "top": "tb_frame_writer",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 28,
+      "elapsed_s": 9.907
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

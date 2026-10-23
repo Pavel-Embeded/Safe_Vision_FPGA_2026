@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\single_candidate_slot_binding\\sim\\tb_v3_final_crc",
+  "native_log_sha256": "05e3ae5ba16bcbf52c2c5230d2465f4fd0307c568a8e3c6b551dd1705a940c83",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "single_candidate_slot_binding",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\single_candidate_slot_binding\\sim\\tb_v3_final_crc",
+    "checked": {
+      "metadata": {
+        "mutation": "single_candidate_slot_binding",
+        "target": "safevision/rtl/storage/sd_bmp_player.v",
+        "suite": "media_crc",
+        "top": "tb_v3_final_crc",
+        "patch": [
+          {
+            "before": ".sel_slot(RESIDENT_CACHE?2'd0:pick_slot)",
+            "after": ".sel_slot(RESIDENT_CACHE?2'd1:pick_slot)"
+          }
+        ],
+        "original_sha256": "bf29f5516109c424e476984b80894e496f2a7d25989f386a1399bcc9707722de",
+        "mutated_sha256": "4c7674c9955008382ef3cb6f3f7b4bf9af90419f0213f5da5965954e18c9ddf7",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          2
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\single_candidate_slot_binding\\sim\\tb_v3_final_crc",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\single_candidate_slot_binding\\sim\\tb_v3_final_crc"
+      },
+      "metadata_sha256": "8346220821ec34ab5829442e8c2079ba892424ac468e4449cb2fe83e15a3cc1c",
+      "normal_completion": true,
+      "input_count": 62,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_final_crc",
+        "suite": "media_crc",
+        "ordered_analyzed_HDL": 53,
+        "manifest": "safevision/build/manifests/media_crc_sim.json",
+        "current_manifest_sha256": "efc28546a1da8a0374875fbed1bb98403f4b95604a2c756392c73eed0f4306ad",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        2
+      ],
+      "log_sha256": "05e3ae5ba16bcbf52c2c5230d2465f4fd0307c568a8e3c6b551dd1705a940c83"
+    },
+    "elapsed_s": 12.219
+  }
+}

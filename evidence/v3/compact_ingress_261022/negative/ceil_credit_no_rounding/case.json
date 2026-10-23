@@ -18,14 +18,7 @@
     4092
   ],
   "tool_failure": false,
-  "original_producer": "D:\\Codex\\svflex537\\finalcompact616\\negative\\ceil_credit_no_rounding\\run\\tb_v3_ingress_credit616",
+  "original_producer": "D:\\Codex\\svflex537\\finalcompact667\\negative\\ceil_credit_no_rounding\\run\\tb_v3_ingress_credit616",
   "strict_generated_inputs": 1,
-  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
-  "parameter_only_revalidation": {
-    "original_execution_root": "D:\\Codex\\svflex537\\candidate616",
-    "original_execution_commit": "c2fe3817e81b884ba68f68e15639947c86378661",
-    "current_source_root": "D:\\Codex\\svflex537\\candidate618",
-    "current_source_commit": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
-    "functional_native_execution_repeated": false
-  }
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py"
 }

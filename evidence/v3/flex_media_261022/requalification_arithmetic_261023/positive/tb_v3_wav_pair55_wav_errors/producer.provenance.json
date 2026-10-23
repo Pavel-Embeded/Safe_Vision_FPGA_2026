@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_wav_pair55_wav_errors\\sim\\tb_v3_wav_pair55_wav_errors",
+  "native_log_sha256": "d1bee860e2a02e3de3af44ae7addf890930d93c104a4d50d3c79722a9071a297",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_wav_pair55_wav_errors",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_wav_pair55_wav_errors\\sim\\tb_v3_wav_pair55_wav_errors",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_wav_pair55_wav_errors",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 14911,
+        "elapsed_s": 8.157,
+        "suite": "wav_source_pair55",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_wav_pair55_wav_errors\\sim\\tb_v3_wav_pair55_wav_errors"
+      },
+      "metadata_sha256": "db4c09f1abfd6b747560f3bd80f8ab7a357a36c59444ba46501d539f9c8fc589",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_pair55_wav_errors",
+        "suite": "wav_source_pair55",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/wav_source_pair55_sim.json",
+        "current_manifest_sha256": "edb121fdc6819b42051ab6e7de73793c54786eb372cfcabf4a509e6579c0dafc",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d1bee860e2a02e3de3af44ae7addf890930d93c104a4d50d3c79722a9071a297"
+    },
+    "elapsed_s": 8.344
+  }
+}

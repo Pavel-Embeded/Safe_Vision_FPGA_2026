@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "D:\Codex\2026-10-15\github-plugin-github-openai-curated-remote\work\requalify_features666.py", line 99, in execute
+    wrapper=read(out/'sim/results.json');assert len(wrapper['results'])==1 and wrapper['suite']==suite
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Codex\2026-10-15\github-plugin-github-openai-curated-remote\work\requalify_features666.py", line 11, in <lambda>
+    read=lambda p:json.loads(p.read_text(encoding='utf-8-sig'))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\曲梓铭\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1027, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\曲梓铭\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_directory_fault550\\sim\\results.json'

@@ -1,0 +1,16 @@
+{
+  "suite": "setting_wave_board_base198",
+  "results": [
+    {
+      "top": "tb_v3_setting_wave_board_base198",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 23,
+      "elapsed_s": 395.547
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

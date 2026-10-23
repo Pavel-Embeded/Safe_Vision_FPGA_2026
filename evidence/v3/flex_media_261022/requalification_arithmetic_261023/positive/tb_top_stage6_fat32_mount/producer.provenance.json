@@ -1,0 +1,61 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_top_stage6_fat32_mount\\sim\\tb_top_stage6_fat32_mount",
+  "native_log_sha256": "8c8b875be79c997f2aa3e3916dc0c63481bcbb040c2a5c327234fad66e28350c",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_top_stage6_fat32_mount",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_top_stage6_fat32_mount\\sim\\tb_top_stage6_fat32_mount",
+    "elapsed_s": 17.75,
+    "checked": {
+      "metadata": {
+        "top": "tb_top_stage6_fat32_mount",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 26,
+        "elapsed_s": 17.625,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_top_stage6_fat32_mount\\sim\\tb_top_stage6_fat32_mount"
+      },
+      "metadata_sha256": "7ab07f294952ad0192fdfd618d4c8138aba2759fe57e66e2a255e7813d624755",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_top_stage6_fat32_mount",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [],
+      "log_sha256": "8c8b875be79c997f2aa3e3916dc0c63481bcbb040c2a5c327234fad66e28350c"
+    },
+    "prior_validation_refusal": {
+      "kind": "positive",
+      "name": "tb_top_stage6_fat32_mount",
+      "reason": "Generic completion-marker mismatch after successful dedicated native legacy execution",
+      "exception": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_top_stage6_fat32_mount\\exception.txt",
+        "sha256": "accbecfbfe000f091f0cf64e0e30854deee299968ecb943c678a2b80ac3da6a4"
+      },
+      "console": {
+        "path": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_top_stage6_fat32_mount\\runner.console.log",
+        "sha256": "2b5b838804eba755c16e8d2ce3e04ccc665966c5933a2688c4b0d6484b7c16fd"
+      },
+      "normal_finish_source_bound": true,
+      "native_rerun_claimed": false
+    }
+  }
+}

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\Codex\svflex537\candidate665\safevision\tools\run_v3_sim_flexible.py", line 104, in <module>
+    if __name__=='__main__':sys.exit(main())
+                                     ^^^^^^
+  File "D:\Codex\svflex537\candidate665\safevision\tools\run_v3_sim_flexible.py", line 50, in main
+    folder=base/top;folder.mkdir(exist_ok=False);start=time.monotonic()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\曲梓铭\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\pathlib.py", line 1311, in mkdir
+    os.mkdir(self, mode)
+FileExistsError: [WinError 183] 当文件已存在时，无法创建该文件。: 'D:\\Codex\\svflex537\\qualification666\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550'

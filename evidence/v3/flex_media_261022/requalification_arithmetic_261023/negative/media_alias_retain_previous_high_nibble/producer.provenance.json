@@ -1,0 +1,61 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\media_alias_retain_previous_high_nibble\\sim\\tb_v3_directory_alias510",
+  "native_log_sha256": "f30b49f1dd2b5c931f4f11168d462771b5c31774412533344a4fabdeb69077f0",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "media_alias_retain_previous_high_nibble",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\media_alias_retain_previous_high_nibble\\sim\\tb_v3_directory_alias510",
+    "checked": {
+      "metadata": {
+        "mutation": "media_alias_retain_previous_high_nibble",
+        "target": "safevision/rtl/storage/fat32_directory_scanner.v",
+        "suite": "directory_alias510",
+        "top": "tb_v3_directory_alias510",
+        "patch": [
+          {
+            "before": "media_wav<=0;media_digits<=0;end",
+            "after": "media_wav<=0;end",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "5de38d33c99bc4fd7c0dbc1e58901a66e6c8f84d5d889fada3a2aa4a2b3fdf69",
+        "mutated_sha256": "b4edd9ffb808ea9a5e72998074e43ab32099d45981c0b5ab90a670b7fe5289e1",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          936
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\media_alias_retain_previous_high_nibble\\sim\\tb_v3_directory_alias510",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\media_alias_retain_previous_high_nibble\\sim\\tb_v3_directory_alias510"
+      },
+      "metadata_sha256": "06208e86f8d178bf4f2d3db85141f6cc09983086392be62baa6fdb557f7f2315",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_directory_alias510",
+        "suite": "directory_alias510",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/directory_alias510_sim.json",
+        "current_manifest_sha256": "5e8816fcca1c1f1e95b9c475917eac5d1c41c6f1f1fa9d6d2a8f43d7d1355237",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        936
+      ],
+      "log_sha256": "f30b49f1dd2b5c931f4f11168d462771b5c31774412533344a4fabdeb69077f0"
+    },
+    "elapsed_s": 7.031
+  }
+}

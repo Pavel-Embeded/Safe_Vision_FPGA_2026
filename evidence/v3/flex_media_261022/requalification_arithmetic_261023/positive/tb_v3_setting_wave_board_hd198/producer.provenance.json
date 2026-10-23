@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_setting_wave_board_hd198\\sim\\tb_v3_setting_wave_board_hd198",
+  "native_log_sha256": "d0916d47cb31df15d80d25e424996ee5dbc3d9228bad92e38c3fca9c40474108",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_setting_wave_board_hd198",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_setting_wave_board_hd198\\sim\\tb_v3_setting_wave_board_hd198",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_setting_wave_board_hd198",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 23,
+        "elapsed_s": 682.953,
+        "suite": "setting_wave_board_hd198",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_setting_wave_board_hd198\\sim\\tb_v3_setting_wave_board_hd198"
+      },
+      "metadata_sha256": "49e636c01aff71ad3660e5cae0673ff9c9db32c5a74f6c3663db4fc95004a0e4",
+      "normal_completion": true,
+      "input_count": 121,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_setting_wave_board_hd198",
+        "suite": "setting_wave_board_hd198",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/setting_wave_board_hd198_sim.json",
+        "current_manifest_sha256": "121b4a6259ade9d270318757a4968cb735d6b57f8ca2497b37c2b620acf2b288",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d0916d47cb31df15d80d25e424996ee5dbc3d9228bad92e38c3fca9c40474108"
+    },
+    "elapsed_s": 683.203
+  }
+}

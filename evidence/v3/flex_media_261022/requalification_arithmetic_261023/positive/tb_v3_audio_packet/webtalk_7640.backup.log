@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Webtalk v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 09:08:52 2026
+# Process ID: 7640
+# Current directory: D:/Codex/svflex537/qualification666/positive/tb_v3_audio_packet/sim/tb_v3_audio_packet
+# Command line: wbtcv.exe -mode batch -source D:/Codex/svflex537/qualification666/positive/tb_v3_audio_packet/sim/tb_v3_audio_packet/xsim.dir/tb_v3_audio_packet/webtalk/xsim_webtalk.tcl -notrace
+# Log file: D:/Codex/svflex537/qualification666/positive/tb_v3_audio_packet/sim/tb_v3_audio_packet/webtalk.log
+# Journal file: D:/Codex/svflex537/qualification666/positive/tb_v3_audio_packet/sim/tb_v3_audio_packet\webtalk.jou
+#-----------------------------------------------------------
+source D:/Codex/svflex537/qualification666/positive/tb_v3_audio_packet/sim/tb_v3_audio_packet/xsim.dir/tb_v3_audio_packet/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Fri Oct 23 09:08:53 2026...

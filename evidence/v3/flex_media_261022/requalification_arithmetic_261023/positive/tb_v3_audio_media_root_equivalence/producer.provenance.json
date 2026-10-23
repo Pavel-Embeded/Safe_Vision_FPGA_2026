@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_audio_media_root_equivalence\\sim\\tb_v3_audio_media_root_equivalence",
+  "native_log_sha256": "7721eead790b5cbcf8803a2bdb9d9b432690e9b2361a31d2126a660a4ee3e5cb",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_audio_media_root_equivalence",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_audio_media_root_equivalence\\sim\\tb_v3_audio_media_root_equivalence",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_audio_media_root_equivalence",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 1039238,
+        "elapsed_s": 23.375,
+        "suite": "audio_media_root_equivalence",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_audio_media_root_equivalence\\sim\\tb_v3_audio_media_root_equivalence"
+      },
+      "metadata_sha256": "2abdcd26d87a0ee7c6fb5a5db957f45584ed4d86936530a6f6b5c63812d43dd4",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_media_root_equivalence",
+        "suite": "audio_media_root_equivalence",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/audio_media_root_equivalence_sim.json",
+        "current_manifest_sha256": "b5b82114427b89460f7e78e4479dce963e6aaaa3b182f88f2803d4592e2ca276",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "7721eead790b5cbcf8803a2bdb9d9b432690e9b2361a31d2126a660a4ee3e5cb"
+    },
+    "elapsed_s": 23.641
+  }
+}

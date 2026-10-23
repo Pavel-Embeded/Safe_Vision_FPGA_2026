@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_directory_compact\\sim\\tb_v3_directory_compact",
+  "native_log_sha256": "4c8828aeb658eb1d7de9aac2f36aff800f9fa0909bd52ad8f6fdec58942afea6",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_directory_compact",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_directory_compact\\sim\\tb_v3_directory_compact",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_directory_compact",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 68902,
+        "elapsed_s": 6.828,
+        "suite": "directory_compact",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_directory_compact\\sim\\tb_v3_directory_compact"
+      },
+      "metadata_sha256": "46498e6a926eaba5e44ff4142d2b80852d0811a382dc632b4075dd83adb80745",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_directory_compact",
+        "suite": "directory_compact",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/directory_compact_sim.json",
+        "current_manifest_sha256": "cc9d07ded9c3ffb77b72666ca8a06217aa48da9f0421be710c05a8c7e8333a2e",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "4c8828aeb658eb1d7de9aac2f36aff800f9fa0909bd52ad8f6fdec58942afea6"
+    },
+    "elapsed_s": 7.016
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "suite": "uart_formatter_equivalence",
+  "results": [
+    {
+      "top": "tb_v3_uart_formatter_equivalence",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 128672,
+      "elapsed_s": 6.906
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

@@ -11,7 +11,7 @@ Time resolution is 1 ps
 run -all
 [PASS] 65536 actual directory slots terminate before zero-reserved key wraps; every LBA independently checked
 [TB] tb_v3_directory_limit550 done errors=0 comparisons=4097
-$finish called at time : 42025640 ns : File "D:/Codex/svflex537/candidate616/safevision/verification/unit/tb_v3_directory_limit550.sv" Line 39
-run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 219.449 ; gain = 0.000
+$finish called at time : 42025640 ns : File "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_directory_limit550.sv" Line 39
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:05 . Memory (MB): peak = 219.387 ; gain = 0.000
 exit
-INFO: [Common 17-206] Exiting xsim at Thu Oct 22 16:51:55 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 08:55:12 2026...

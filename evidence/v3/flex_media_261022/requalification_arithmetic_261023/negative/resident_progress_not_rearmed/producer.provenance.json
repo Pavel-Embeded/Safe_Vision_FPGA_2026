@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217",
+  "native_log_sha256": "811fcce4ea6c3098c7c0c38ecaf168336175157ee91401cfd2e29c6f56bfd42f",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "resident_progress_not_rearmed",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217",
+    "checked": {
+      "metadata": {
+        "mutation": "resident_progress_not_rearmed",
+        "target": "safevision/rtl/storage/sd_bmp_player.v",
+        "suite": "mixed_card217",
+        "top": "tb_v3_mixed_card217",
+        "patch": [
+          {
+            "before": "if(RESIDENT_CACHE&&((fst_valid&&bp_ready)||(bpu_valid&&bpu_ready)))to_cnt<=0;",
+            "after": "if(1'b0)to_cnt<=0;"
+          }
+        ],
+        "original_sha256": "bf29f5516109c424e476984b80894e496f2a7d25989f386a1399bcc9707722de",
+        "mutated_sha256": "3dbf55b3010e0dc1445bf6c2e4481024786547a6e2c3c184cdd91a113eb08904",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          10
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\resident_progress_not_rearmed\\sim\\tb_v3_mixed_card217"
+      },
+      "metadata_sha256": "38fb6ad13b633f7a10beb926a3e8822437a6be4d6ef522906b3fca6fdab60b90",
+      "normal_completion": true,
+      "input_count": 61,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_mixed_card217",
+        "suite": "mixed_card217",
+        "ordered_analyzed_HDL": 52,
+        "manifest": "safevision/build/manifests/mixed_card217_sim.json",
+        "current_manifest_sha256": "8622258308aeb686d279140b869d3bb41d032212491f49365daec73f76e1b2c8",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        10
+      ],
+      "log_sha256": "811fcce4ea6c3098c7c0c38ecaf168336175157ee91401cfd2e29c6f56bfd42f"
+    },
+    "elapsed_s": 20.953
+  }
+}

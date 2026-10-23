@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_board_clocks\\sim\\tb_v3_board_clocks",
+  "native_log_sha256": "f0105c79c20cb544b680e7b67a14dbae2f3007632969d5abd265d89a53113ff8",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_board_clocks",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_board_clocks\\sim\\tb_v3_board_clocks",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_board_clocks",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 195,
+        "elapsed_s": 13.266,
+        "suite": "v3_board_clocks",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_board_clocks\\sim\\tb_v3_board_clocks"
+      },
+      "metadata_sha256": "377e457770cb49e792d805447d3dd6be1030abc373b3568004b4a925aacb69c9",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_board_clocks",
+        "suite": "v3_board_clocks",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/v3_board_clocks_sim.json",
+        "current_manifest_sha256": "fe63c8c3a9aa6dd80aa689063283a2d7d93b86a776738cd0430e6933b00a455a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "f0105c79c20cb544b680e7b67a14dbae2f3007632969d5abd265d89a53113ff8"
+    },
+    "elapsed_s": 13.515
+  }
+}

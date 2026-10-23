@@ -1,0 +1,16 @@
+{
+  "suite": "catalog_uart_link",
+  "results": [
+    {
+      "top": "tb_v3_uart_link_catalog",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 108,
+      "elapsed_s": 8.141
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 08:57:20 2026
+# Process ID: 19872
+# Current directory: D:/Codex/svflex537/strict677/negative/flex_fs_directory_key_offset/sim/tb_v3_flexible540
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_flexible540/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/strict677/negative/flex_fs_directory_key_offset/sim/tb_v3_flexible540/sim.log
+# Journal file: D:/Codex/svflex537/strict677/negative/flex_fs_directory_key_offset/sim/tb_v3_flexible540\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_flexible540/xsim_script.tcl
+run -all

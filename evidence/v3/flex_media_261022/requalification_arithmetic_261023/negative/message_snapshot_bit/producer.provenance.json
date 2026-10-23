@@ -1,0 +1,61 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\message_snapshot_bit\\sim\\tb_v3_uart_link_catalog",
+  "native_log_sha256": "0cb8d56ab5e7f7326fe9ac43a1a3273bccaed9eadc55cc6b3e12773b35df928b",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "message_snapshot_bit",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\message_snapshot_bit\\sim\\tb_v3_uart_link_catalog",
+    "checked": {
+      "metadata": {
+        "mutation": "message_snapshot_bit",
+        "target": "safevision/rtl/control/v3_uart_link.v",
+        "suite": "catalog_uart_link",
+        "top": "tb_v3_uart_link_catalog",
+        "patch": [
+          {
+            "before": "  assign packet=payload;\n  assign byte_stage=data_q;",
+            "after": "  assign packet=payload^49'd1;\n  assign byte_stage=data_q;"
+          }
+        ],
+        "required_marker": "[FAIL]",
+        "original_sha256": "47906bd6a546bc8975ae87dbf2106613c8aa1d92630fb303e643715f85da9dcc",
+        "mutated_sha256": "e1dfaa0e528b6204bae327323d6c246811ad709d3384e83ae87397a42354b791",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          108
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\message_snapshot_bit\\sim\\tb_v3_uart_link_catalog",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\message_snapshot_bit\\sim\\tb_v3_uart_link_catalog"
+      },
+      "metadata_sha256": "caf567a0295821eb9e56c3883d9baa68137010c11cc08d82e7188afe99dac58c",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_uart_link_catalog",
+        "suite": "catalog_uart_link",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/catalog_uart_link_sim.json",
+        "current_manifest_sha256": "a578bcb21c0100261b75edae55f345ffc1f0c6008d9f47eefae757cd3dae9aa3",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        108
+      ],
+      "log_sha256": "0cb8d56ab5e7f7326fe9ac43a1a3273bccaed9eadc55cc6b3e12773b35df928b"
+    },
+    "elapsed_s": 8.312
+  }
+}

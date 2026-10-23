@@ -1,0 +1,100 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Thu Oct 22 16:51:58 2026
+# Process ID: 40912
+# Current directory: D:/Codex/svflex537/finalflex616/positive/tb_v3_flexible_retry_fs550/tb_v3_flexible_retry_fs550
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_flexible_retry_fs550/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/finalflex616/positive/tb_v3_flexible_retry_fs550/tb_v3_flexible_retry_fs550/sim.log
+# Journal file: D:/Codex/svflex537/finalflex616/positive/tb_v3_flexible_retry_fs550/tb_v3_flexible_retry_fs550\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_flexible_retry_fs550/xsim_script.tcl
+# xsim {tb_v3_flexible_retry_fs550} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[EVENT] t=290000 pl=1 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=4646470000 pl=2 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5064490000 pl=3 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5482510000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=7581170000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=7581230000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=9678790000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=9678850000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=9678870000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=9678950000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=9679030000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=00/00 sk=00
+[EVENT] t=10088850000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=10088930000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=10089090000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=10098030000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=10098110000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=12197570000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=12197630000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295630000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295690000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295710000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295790000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295870000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=44969670000 pl=8 sink=4 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=48933530000 pl=8 sink=2 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=48933550000 pl=8 sink=0 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=48933630000 pl=9 sink=0 count=1 mr=0 active=0 kick=0 fd=0 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=48933650000 pl=4 sink=0 count=1 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=51032790000 pl=5 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=51032850000 pl=4 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53130410000 pl=5 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53130470000 pl=7 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53130490000 pl=6 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53130570000 pl=8 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53130650000 pl=8 sink=1 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=83794790000 pl=8 sink=4 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=87758630000 pl=8 sink=2 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=87758650000 pl=8 sink=0 count=1 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=87758730000 pl=9 sink=0 count=2 mr=0 active=0 kick=0 fd=1 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=87758750000 pl=4 sink=0 count=2 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=89857650000 pl=5 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=89857710000 pl=4 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91955310000 pl=5 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91955370000 pl=7 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91955390000 pl=6 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91955470000 pl=8 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91955550000 pl=8 sink=1 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=122642630000 pl=8 sink=4 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=126606490000 pl=8 sink=2 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=126606510000 pl=8 sink=0 count=2 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=126606590000 pl=9 sink=0 count=3 mr=0 active=0 kick=0 fd=0 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=126606610000 pl=4 sink=0 count=3 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=128705350000 pl=5 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=128705410000 pl=4 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130803210000 pl=5 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130803270000 pl=7 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130803290000 pl=6 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130803370000 pl=8 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130803450000 pl=8 sink=1 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=161490150000 pl=8 sink=4 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=165454010000 pl=8 sink=2 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=165454030000 pl=8 sink=0 count=3 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[STATUS] state=9 stage=7 ec=03/37 sink=0/00 count=4 keys=001600140012000f writes=614400
+[PASS]     four verified load completions, no partial cache publication
+[PASS]  lexicographic first BMP skipped without consuming resident slot
+[PASS]           bad directory key and exact signature failure retained
+[PASS] rogress counts actual arbitrary-name directory/FAT/media payload
+[PASS] e Unicode names sorted independently of physical directory order
+[PASS]                             exactly four complete frames written
+[PASS]       all four producer row CRCs match delayed physical readback
+[EVENT] t=165454110000 pl=9 sink=0 count=4 mr=0 active=0 kick=0 fd=1 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=165454130000 pl=7 sink=0 count=4 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=00/00 sk=00
+[PASS] ches independent Pillow decode and rational coordinate reference
+[PASS] ches independent Pillow decode and rational coordinate reference
+[PASS] ches independent Pillow decode and rational coordinate reference
+[PASS] ches independent Pillow decode and rational coordinate reference
+[PASS] nal descriptors reached real WAV reader and all four PCM streams
+[PASS]  handed over after full frames, old done cleared before WAV scan
+[PASS] oop with exact stereo PCM after arbitrary-name descriptor commit
+PASS tb_v3_flexible_retry_fs550 errors=0 comparisons=614400 PCM=4800
+$finish called at time : 185154330 ns : File "D:/Codex/svflex537/candidate616/safevision/verification/unit/tb_v3_flexible_retry_fs550.sv" Line 166
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:01:50 . Memory (MB): peak = 218.445 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 16:53:54 2026...

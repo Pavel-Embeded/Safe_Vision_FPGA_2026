@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_progress_states186\\sim\\tb_v3_progress_states186",
+  "native_log_sha256": "70243b3b36f39d4c80ad686405024667a5e2b5718685117eac10587cd14a8944",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_progress_states186",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_progress_states186\\sim\\tb_v3_progress_states186",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_progress_states186",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 16676,
+        "elapsed_s": 12.047,
+        "suite": "progress_states186",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_progress_states186\\sim\\tb_v3_progress_states186"
+      },
+      "metadata_sha256": "fcc66f558807043646f4302da5215e5136a2496f6b57816372787d19e2e37fdf",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_progress_states186",
+        "suite": "progress_states186",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/progress_states186_sim.json",
+        "current_manifest_sha256": "606380cd82d0f43d4639a29ac89bbe694dc15cca964be8eaa9d6ecb0de710422",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "70243b3b36f39d4c80ad686405024667a5e2b5718685117eac10587cd14a8944"
+    },
+    "elapsed_s": 12.25
+  }
+}

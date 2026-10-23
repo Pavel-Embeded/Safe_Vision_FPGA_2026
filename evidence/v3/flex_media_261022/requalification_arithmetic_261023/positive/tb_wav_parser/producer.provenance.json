@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_wav_parser\\sim\\tb_wav_parser",
+  "native_log_sha256": "ed65790e527891f23f4e302812bf53126515a38e548c863a736764530dd36a8a",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_wav_parser",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_wav_parser\\sim\\tb_wav_parser",
+    "checked": {
+      "metadata": {
+        "top": "tb_wav_parser",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 31,
+        "data_comparisons": 31,
+        "elapsed_s": 7.407,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_wav_parser\\sim\\tb_wav_parser"
+      },
+      "metadata_sha256": "b3994c9644ae661ca67937aa98c080845ac08307c98b2d9379ecd08f6915c17d",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_wav_parser",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "ed65790e527891f23f4e302812bf53126515a38e548c863a736764530dd36a8a"
+    },
+    "elapsed_s": 7.704
+  }
+}

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "D:\Codex\2026-10-15\github-plugin-github-openai-curated-remote\work\requalify_features666.py", line 111, in execute
+    record['checked']=validate(kind,row,folder)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Codex\2026-10-15\github-plugin-github-openai-curated-remote\work\requalify_features666.py", line 49, in validate
+    errors=normal(folder,row['top'],False,row['legacy']);count=sources(R,folder);g=graph(R,folder,meta)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Codex\2026-10-15\github-plugin-github-openai-curated-remote\work\requalify_features666.py", line 37, in normal
+    assert '$finish called'in log and re.search(r'PASS\s+'+re.escape(top)+r'\b|\[TB\]\s*'+re.escape(top)+r'\s+done',log)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

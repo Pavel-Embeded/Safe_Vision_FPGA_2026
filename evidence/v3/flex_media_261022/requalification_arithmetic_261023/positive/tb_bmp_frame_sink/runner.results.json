@@ -1,0 +1,15 @@
+{
+  "suite": "legacy_b_fourbeat",
+  "results": [
+    {
+      "top": "tb_bmp_frame_sink",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 29,
+      "elapsed_s": 37.719
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

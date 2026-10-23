@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\negative\\fallback_initial_mask_wrong\\sim\\tb_v3_wav_fallback_equivalence55",
+  "native_log_sha256": "a6bb8c2fdc6d4d022572eefe85f8feef3245349fa08cadb467127b6fcb241c04",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "fallback_initial_mask_wrong",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\fallback_initial_mask_wrong\\sim\\tb_v3_wav_fallback_equivalence55",
+    "checked": {
+      "metadata": {
+        "mutation": "fallback_initial_mask_wrong",
+        "target": "safevision/rtl/storage/v3_wav_source.v",
+        "suite": "wav_fallback_equivalence55",
+        "top": "tb_v3_wav_fallback_equivalence55",
+        "patch": [
+          {
+            "before": "fallback_initial_mask<=(dir_bad||scan_code!=0)?4'hf:~found;",
+            "after": "fallback_initial_mask<=(dir_bad||scan_code!=0)?4'hf:found;"
+          }
+        ],
+        "original_sha256": "8e281dc661ddb7d131b740183aaf2fa430d6820b2a7a691481f84505ff344165",
+        "mutated_sha256": "4f171003d3c7fd497b1e5e3ed705100cdc2686976cd2ba274cb6f94c06795b60",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          512
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\fallback_initial_mask_wrong\\sim\\tb_v3_wav_fallback_equivalence55",
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\fallback_initial_mask_wrong\\sim\\tb_v3_wav_fallback_equivalence55"
+      },
+      "metadata_sha256": "5ae6c18bc1e752f2d85e54143340d5dfa9856ac404d69d06eafbef81c71297c1",
+      "normal_completion": true,
+      "input_count": 43,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_fallback_equivalence55",
+        "suite": "wav_fallback_equivalence55",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/wav_fallback_equivalence55_sim.json",
+        "current_manifest_sha256": "3100738ee9ce2660126a2c310b5169fbb82d3917844fb80064c3e2128145b4ff",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        512
+      ],
+      "log_sha256": "a6bb8c2fdc6d4d022572eefe85f8feef3245349fa08cadb467127b6fcb241c04"
+    },
+    "elapsed_s": 8.766
+  }
+}

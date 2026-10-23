@@ -1,0 +1,220 @@
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base_mode.v" into library work
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/qualification666/negative/diag_high_bits_ignored/sim/tb_v3_diag_alias156/mutant.v" into library work
+INFO: [VRFC 10-311] analyzing module safevision_v3_top
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v" into library work
+INFO: [VRFC 10-311] analyzing module reset_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v" into library work
+INFO: [VRFC 10-311] analyzing module sdram_app_adapter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v" into library work
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_ip
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_gray_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v" into library work
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo_eram
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module a_pixel_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v" into library work
+INFO: [VRFC 10-311] analyzing module bmp_frame_sink
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/video_timing/video_timing.v" into library work
+INFO: [VRFC 10-311] analyzing module video_timing
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/video_cdc/video_cdc_mailbox.v" into library work
+INFO: [VRFC 10-311] analyzing module video_cdc_mailbox
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/video_cdc/video_level_sync.v" into library work
+INFO: [VRFC 10-311] analyzing module video_level_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/scaler/scaler_coords.v" into library work
+INFO: [VRFC 10-311] analyzing module scaler_coords
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/scaler/scaler_bilinear.v" into library work
+INFO: [VRFC 10-311] analyzing module scaler_bilinear
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/video_compositor/alpha_blend.v" into library work
+INFO: [VRFC 10-311] analyzing module alpha_blend
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/video_compositor/color_adjust.v" into library work
+INFO: [VRFC 10-311] analyzing module color_adjust
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/graphics_rom/font8x16_rom.v" into library work
+INFO: [VRFC 10-311] analyzing module font8x16_rom
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/osd_overlay/osd_text_layer.v" into library work
+INFO: [VRFC 10-311] analyzing module osd_text_layer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_status_layers.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_status_layers
+INFO: [VRFC 10-311] analyzing module v3_volume_column
+INFO: [VRFC 10-311] analyzing module v3_volume_setting_column
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_line_cache.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_line_cache
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_hd_coord_arith.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_hd_coord_arith
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_video_display_core.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_video_display_core
+INFO: [VRFC 10-311] analyzing module v3_frame_fade_blend
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_presentation_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_presentation_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/hdmi_output/hdmi_video_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module hdmi_video_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/memory/memory_arbiter.v" into library work
+INFO: [VRFC 10-311] analyzing module memory_arbiter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/memory/mem_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module mem_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/memory/frame_address_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_address_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/memory/frame_writer.v" into library work
+INFO: [VRFC 10-311] analyzing module frame_writer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/memory/v3_row_integrity.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_row_integrity
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/memory/v3_aux_mux.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_aux_mux
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v" into library work
+INFO: [VRFC 10-311] analyzing module bmp_frame_write_bridge
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/common/crc16_ccitt.v" into library work
+INFO: [VRFC 10-311] analyzing module crc16_ccitt
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/common/crc7.v" into library work
+INFO: [VRFC 10-311] analyzing module crc7
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/common/uart_tx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_tx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/common/uart_rx.v" into library work
+INFO: [VRFC 10-311] analyzing module uart_rx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/common/sync_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module sync_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/common/sv_async_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module sv_async_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/common/error_report.v" into library work
+INFO: [VRFC 10-311] analyzing module error_report
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/spi_master.v" into library work
+INFO: [VRFC 10-311] analyzing module spi_master
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/v3_spi_cs_guard.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_spi_cs_guard
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/sd_initializer.v" into library work
+INFO: [VRFC 10-311] analyzing module sd_initializer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/sd_sector_reader.v" into library work
+INFO: [VRFC 10-311] analyzing module sd_sector_reader
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/sd_checked_sector_reader.v" into library work
+INFO: [VRFC 10-311] analyzing module sd_checked_sector_reader
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/mbr_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module mbr_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/fat32_boot_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_boot_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/fat32_directory_scanner.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_directory_scanner
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/fat32_cluster_walker.v" into library work
+INFO: [VRFC 10-311] analyzing module fat32_cluster_walker
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/file_index.v" into library work
+INFO: [VRFC 10-311] analyzing module file_index
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/file_streamer.v" into library work
+INFO: [VRFC 10-311] analyzing module file_streamer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/sd_bmp_player.v" into library work
+INFO: [VRFC 10-311] analyzing module sd_bmp_player
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/v3_file_streamer.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_file_streamer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/v3_file_streamer_ctx.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_file_streamer_ctx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/v3_cluster_walker_ctx.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_cluster_walker_ctx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/v3_wav_source.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_wav_source
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/media/bmp_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module bmp_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/media/bmp_unpack.v" into library work
+INFO: [VRFC 10-311] analyzing module bmp_unpack
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/media/wav_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module wav_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/media/v3_wav_parser_ctx.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_wav_parser_ctx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/input_sync.v" into library work
+INFO: [VRFC 10-311] analyzing module input_sync
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/key_debounce.v" into library work
+INFO: [VRFC 10-311] analyzing module key_debounce
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/v3_command_parser.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_command_parser
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/v3_user_controls.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_user_controls
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/v3_uart_link.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_uart_link
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/media_recovery_ctrl.v" into library work
+INFO: [VRFC 10-311] analyzing module media_recovery_ctrl
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/v3_supervisor.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_supervisor
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/safety/fault_manager.v" into library work
+INFO: [VRFC 10-311] analyzing module fault_manager
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/alarm_tone_gen.v" into library work
+INFO: [VRFC 10-311] analyzing module alarm_tone_gen
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/audio_priority_arbiter.v" into library work
+INFO: [VRFC 10-311] analyzing module audio_priority_arbiter
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/v3_audio_priority_serial.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_audio_priority_serial
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/audio_energy.v" into library work
+INFO: [VRFC 10-311] analyzing module audio_energy
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/hdmi_acr.v" into library work
+INFO: [VRFC 10-311] analyzing module hdmi_acr
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/v3_pcm_ring.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_pcm_ring
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/v3_audio_system.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_audio_system
+INFO: [VRFC 10-311] analyzing module v3_audio_reset_release
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/v3_audio_volume.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_audio_volume
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/v3_pcm_packet_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_pcm_packet_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/verification/models/board_memory_contract_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module sv_system_pll
+INFO: [VRFC 10-311] analyzing module sdram
+INFO: [VRFC 10-311] analyzing module sv_board_memory_pll
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/verification/models/top_ip_stub.sv" into library work
+INFO: [VRFC 10-311] analyzing module sv_video_vga_pll
+INFO: [VRFC 10-311] analyzing module sv_video_hd_pll
+INFO: [VRFC 10-311] analyzing module hdmi_1_4b_transmitter_core_wrapper
+INFO: [VRFC 10-311] analyzing module hdmi_phy_wrapper
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/verification/models/v3_audio_pll_clock_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module sv_audio_pll
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/v3_pcm_ingress_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_pcm_ingress_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/verification/models/v3_memory_pll_clock_model.sv" into library work
+INFO: [VRFC 10-311] analyzing module sv_v3_memory_pll
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/v3_pcm_sample_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_pcm_sample_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_packed_row_store.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_packed_row_store
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_constant224_blend.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_constant224_blend
+INFO: [VRFC 10-311] analyzing module v3_hud_palette224
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/v3_shared_fs_service.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_shared_fs_service
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/v3_pcm_ingress_shared_fifo.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_pcm_ingress_shared_fifo
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/media/v3_wav_parser_compact_ctx.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_wav_parser_compact_ctx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/v3_file_streamer_compact_ctx.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_file_streamer_compact_ctx
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/v3_command_parser_catalog.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_command_parser_catalog
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/scaler/v3_scaler_bilinear_thirds.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_scaler_bilinear_thirds
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/audio/v3_audio_prefill_compare.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_audio_prefill_compare
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_phy_reset_fanout
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/hdmi/v3_hdmi_phy_wrapper.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_hdmi_phy_wrapper
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/v3_diag_query.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_diag_query
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_related_status_capture
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_mem_activity_tag.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_mem_activity_tag
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/memory/v3_memory_path_observer.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_memory_path_observer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/v3_response_timer.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_response_timer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/control/v3_pixel_response_tracker.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_pixel_response_tracker
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_frame_safe_select.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_frame_safe_select
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_pcm_waveform.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_pcm_waveform
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_boot_uptime.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_boot_uptime
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/media/v3_bmp_normalizer.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_bmp_normalizer
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/v3_fat_name_store.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_fat_name_store
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/storage/v3_flexible_media_index.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_flexible_media_index
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/rtl/video/v3_audio_spectrum.v" into library work
+INFO: [VRFC 10-311] analyzing module v3_audio_spectrum
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_diag_alias156.sv" into library work
+INFO: [VRFC 10-311] analyzing module tb_v3_diag_alias156

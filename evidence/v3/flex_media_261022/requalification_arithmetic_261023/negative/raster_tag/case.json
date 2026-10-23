@@ -1,0 +1,25 @@
+{
+  "mutation": "raster_tag",
+  "target": "safevision/rtl/video/scaler/scaler_coords.v",
+  "suite": "v3",
+  "top": "tb_v3_coords_fade",
+  "patch": [
+    {
+      "before": " end else if(HD)begin:hd_coords\n  wire inside_fit=de&&x>=160&&x<1120&&y<720;\n  wire inside_one=de&&x>=320&&x<960&&y>=120&&y<600;\n  wire[11:0] rel_x=fit?x-12'd160:x-12'd320;\n  wire[11:0] rel_y=fit?y:y-12'd120;\n  wire[19:0] mx=rel_x[9:0]*10'd683,my=rel_y[9:0]*10'd683;\n  reg[9:0] nx,ny,qx,qy;reg fit1,v1;\n  wire[10:0] rx={nx,1'b0}-({qx,1'b0}+{1'b0,qx});\n  wire[10:0] ry={ny,1'b0}-({qy,1'b0}+{1'b0,qy});\n  always @(posedge clk or negedge rst_n)begin\n   if(!rst_n)begin nx<=0;ny<=0;qx<=0;qy<=0;fit1<=0;v1<=0;\n    valid<=0;sx<=0;sy<=0;fx<=0;fy<=0;end\n   else begin\n    nx<=rel_x[9:0];ny<=rel_y[9:0];qx<=mx[19:10];qy<=my[19:10];\n    fit1<=fit;v1<=fit?inside_fit:inside_one;\n    sx<=fit1?qx:nx;sy<=fit1?qy:ny;\n    fx<=!fit1||rx==0?0:rx==1?8'd85:8'd170;\n    fy<=!fit1||ry==0?0:ry==1?8'd85:8'd170;valid<=v1;\n   end\n  end\n",
+      "after": " end else if(HD)begin:hd_coords\n  wire inside_fit=de&&x>=160&&x<1120&&y<720;\n  wire inside_one=de&&x>=320&&x<960&&y>=120&&y<600;\n  wire[11:0] rel_x=fit?x-12'd160:x-12'd320;\n  wire[11:0] rel_y=fit?y:y-12'd120;\n  wire[19:0] mx=rel_x[9:0]*10'd683,my=rel_y[9:0]*10'd683;\n  reg[9:0] nx,ny,qx,qy;reg fit1,v1;\n  wire[10:0] rx={nx,1'b0}-({qx,1'b0}+{1'b0,qx});\n  wire[10:0] ry={ny,1'b0}-({qy,1'b0}+{1'b0,qy});\n  always @(posedge clk or negedge rst_n)begin\n   if(!rst_n)begin nx<=0;ny<=0;qx<=0;qy<=0;fit1<=0;v1<=0;\n    valid<=0;sx<=0;sy<=0;fx<=0;fy<=0;end\n   else begin\n    nx<=rel_x[9:0];ny<=rel_y[9:0];qx<=mx[19:10];qy<=my[19:10];\n    fit1<=fit;v1<=fit?inside_fit:inside_one;\n    sx<=fit1?qx:nx;sy<=fit1?qy:ny;\n    fx<=!fit1||rx==0?0:rx==1?8'd85:8'd170;\n    fy<=!fit1||ry==0?0:ry==1?8'd85:8'd170;valid<=!v1;\n   end\n  end\n"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "original_sha256": "50a19b53062a4b8e9f6c4845a1d0a3947f26bd1a865db48e855315e82bd1e60e",
+  "mutated_sha256": "ef247a7592b43b7373a90ce78147e17a609a0b34216454eb7cbc2484f131fde3",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    691200
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification666\\negative\\raster_tag\\sim\\tb_v3_coords_fade",
+  "original_producer": "D:\\Codex\\svflex537\\qualification666\\negative\\raster_tag\\sim\\tb_v3_coords_fade"
+}

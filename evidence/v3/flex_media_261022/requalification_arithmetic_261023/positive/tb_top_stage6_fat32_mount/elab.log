@@ -1,0 +1,25 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_top_stage6_fat32_mount -s tb_top_stage6_fat32_mount --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v:799]
+WARNING: [VRFC 10-3645] port 'name_address' remains unconnected for this instance [D:/Codex/svflex537/candidate665/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/top_stage6_fat32_mount.v:887]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sd_spi_card_model(VOL_BASE=32'b0...
+Compiling module work.reset_sync_default
+Compiling module work.sd_initializer
+Compiling module work.mbr_parser
+Compiling module work.fat32_boot_parser
+Compiling module work.fat32_directory_scanner_default
+Compiling module work.fat32_cluster_walker
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader
+Compiling module work.spi_master(CLK_FREQ=50000000)
+Compiling module work.uart_tx(CLK_FREQ=50000000)
+Compiling module work.top_stage6_fat32_mount(POWERUP_C...
+Compiling module work.tb_top_stage6_fat32_mount
+Built simulation snapshot tb_top_stage6_fat32_mount

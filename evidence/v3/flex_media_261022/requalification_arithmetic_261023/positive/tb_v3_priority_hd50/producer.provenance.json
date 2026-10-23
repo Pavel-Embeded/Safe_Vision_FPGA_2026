@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate665",
+  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_priority_hd50\\sim\\tb_v3_priority_hd50",
+  "native_log_sha256": "30df86337705c5ecba02df939c2d32e39131d85e9e46cfa8e531ae54f4d72d3d",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_priority_hd50",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_priority_hd50\\sim\\tb_v3_priority_hd50",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_priority_hd50",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 2,
+        "data_comparisons": 2780,
+        "elapsed_s": 78.609,
+        "suite": "audio_priority_phase",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_priority_hd50\\sim\\tb_v3_priority_hd50"
+      },
+      "metadata_sha256": "2dfa518f8388cc772d23c67c506498372f3c5309e7a38c6f5189a32848952804",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_priority_hd50",
+        "suite": "audio_priority_phase",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/audio_priority_phase_sim.json",
+        "current_manifest_sha256": "dffc2d2a09ac3906a6e0c0eb150414d41a7a7ea6166484073a4e601a61ee9c0e",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "30df86337705c5ecba02df939c2d32e39131d85e9e46cfa8e531ae54f4d72d3d"
+    },
+    "elapsed_s": 78.859
+  }
+}
