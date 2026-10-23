@@ -12,7 +12,7 @@ module tb_v3_lba_dual883;
   .core_cmd(445'd0),.core_rsp(response),.name_address(8'd0),.name_data(),.name_length());
  reg valid_first=0,valid_second=0,owner_first=0,owner_second=0;
  reg[31:0] expected_first=0,expected_second=0;
- integer errors=0,comparisons=0,k,n,bins[0:255][0:1],reset_count=0;
+ integer errors=0,comparisons=0,k,n,coverage_count[0:255][0:1],reset_count=0;
  reg[31:0] random_state=32'h8c75a2d1;
  function[31:0] mathematical_lba(input[31:0] dc,fc,origin,input[7:0] factor,input bit selected);
   reg[63:0] wide;reg[31:0] cluster;begin
@@ -39,11 +39,11 @@ module tb_v3_lba_dual883;
    check(dut.file_lba_valid===(valid_second&&!owner_second),"file valid has exact two-edge latency and owner");
    check(dut.registered_lba.owner2===owner_second,"owner tag remains aligned even in idle input changes");
    if(valid_second)check(dut.shared_lba===expected_second,"independent64-bit modulo32 LBA for preceding sample");
-   if(request)bins[spc][owner]++;
+   if(request)coverage_count[spc][owner]++;
   end else check(!dut.directory_lba_valid&&!dut.file_lba_valid,"asynchronous epoch discards both pending valid tags");
  end
  initial begin
-  for(k=0;k<256;k++)begin bins[k][0]=0;bins[k][1]=0;end
+  for(k=0;k<256;k++)begin coverage_count[k][0]=0;coverage_count[k][1]=0;end
   force dut.directory_lba_cluster=directory_cluster;
   force dut.file_lba_cluster=file_cluster;
   force dut.directory_lba_active=owner;
@@ -67,7 +67,7 @@ module tb_v3_lba_dual883;
    @(negedge clk);
   end
   rst=1;request=0;repeat(4)@(negedge clk);
-  for(k=0;k<256;k++)for(n=0;n<2;n++)check(bins[k][n]>0,"every legal/illegal SPC exercised on each owner");
+  for(k=0;k<256;k++)for(n=0;n<2;n++)check(coverage_count[k][n]>0,"every legal/illegal SPC exercised on each owner");
   check(reset_count>100,"resets interrupt continuously interleaved outstanding pipeline requests");
   if(!errors)$display("[PASS] all256 SPCs,both owners,continuous/idle requests,full32-bit wraps and mid-pipeline reset");
   $display("[TB] tb_v3_lba_dual883 done errors=%0d comparisons=%0d",errors,comparisons);$finish;
