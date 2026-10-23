@@ -345,11 +345,13 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
             end
             // ------------------------------------------------------------------
             F_LBA:begin
+                if(!PIPELINED_LBA)mstate<=F_IDLE;else begin
                 local_to_cnt<=to_cnt+32'd1;
                 if(to_cnt==`SD_TO_DATA)begin
                     err_code<=`ERR_SD_IO;err_detail<=`DET_SD_TOKEN_TO;mstate<=F_ERR;
                 end else if(external_lba_valid)begin
                     cur_lba<=external_lba;local_to_cnt<=0;mstate<=F_SEC_REQ;
+                end
                 end
             end
             F_DONE: begin

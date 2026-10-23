@@ -39,6 +39,10 @@ module v3_row_integrity #(
  reg[ADDR_W-1:0] expected_addr;
  reg[TIMER_W-1:0] timer;
  reg[SOURCE_W-1:0] source_count;
+ // Exact unary view of source_count==0. It changes on the same accepted
+ // beat/reset/frame edge as the counter, removing a late wide zero detector
+ // from wanted-address selection and all sticky diagnostic enables.
+ reg source_first;
  assign source_words=source_count;
  wire[31:0] expected_crc;
  reg[COL_W-1:0] column;reg[ROW_W-1:0] verify_row,producer_row;
@@ -56,7 +60,7 @@ module v3_row_integrity #(
  end endfunction
  wire[1:0] source_slot=addr_slot(write_addr),query_slot=addr_slot(lookup_addr);
  wire[31:0] query_offset=lookup_addr-`SV_SLOT_BASE(query_slot);
- wire[31:0] wanted=(source_words==0)?base+(top_down?0:(ROWS-1)*ROW_WORDS*4):expected_addr;
+ wire[31:0] wanted=(source_first)?base+(top_down?0:(ROWS-1)*ROW_WORDS*4):expected_addr;
  wire source_beat=building && accepted && !fault && write_addr==wanted && source_slot==slot_q;
  wire signature_write=source_beat && column==ROW_WORDS-1;
  wire capture=rd_valid && (state==COLLECT || (state==REQUEST && rd_ack));
@@ -77,7 +81,7 @@ module v3_row_integrity #(
  // A valid source beat already matches wanted. Count physical raster rows
  // rather than dividing its address again; arbitrary source addresses retain
  // the full32-bit wanted/slot checks and can never write a signature.
- wire[9:0] source_row=(source_words==0)?(top_down?0:ROWS-1):producer_row;
+ wire[9:0] source_row=(source_first)?(top_down?0:ROWS-1):producer_row;
  wire[9:0] query_row;
  wire query_divisible;
  generate if(ODD==5 && OFFSET_BITS-LOW<=12)begin:exact_five
@@ -121,21 +125,21 @@ module v3_row_integrity #(
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin state<=IDLE;slot_q<=0;building<=0;complete<=0;dir<=0;
    source_crc<=32'hffffffff;verify_crc<=32'hffffffff;base<=0;expected_addr<=0;
-   timer<=0;column<=0;verify_row<=0;row_offset<=0;producer_row<=0;burst_count<=0;source_count<=0;
+   timer<=0;column<=0;verify_row<=0;row_offset<=0;producer_row<=0;burst_count<=0;source_count<=0;source_first<=1;
    verify_done<=0;verify_pass<=0;fault<=0;approved<=0;rd_req<=0;rd_addr<=0;
    lookup_valid<=0;bad_addr<=0;bad_expected<=0;bad_actual<=0;checked_rows<=0;end
   else begin
    lookup_valid<=!verifying && query_ok && approved[query_slot];
    if(frame_begin && !fault)begin
     slot_q<=frame_slot;base<=`SV_SLOT_BASE(frame_slot);building<=1;complete<=0;
-    approved[frame_slot]<=0;source_count<=0;column<=0;source_crc<=32'hffffffff;producer_row<=top_down?0:ROWS-1;
+    approved[frame_slot]<=0;source_count<=0;source_first<=1;column<=0;source_crc<=32'hffffffff;producer_row<=top_down?0:ROWS-1;
     expected_addr<=`SV_SLOT_BASE(frame_slot)+(top_down?0:(ROWS-1)*ROW_WORDS*4);
     dir<=top_down;verify_done<=0;verify_pass<=0;checked_rows<=0;state<=IDLE;rd_req<=0;
    end else if(building && accepted && !fault)begin
     if(!source_beat)begin fault<=1;building<=0;bad_addr<=write_addr;bad_expected<=wanted;bad_actual<=write_addr;end
     else begin
-     if(source_words==0)begin dir<=top_down;producer_row<=top_down?0:ROWS-1;end
-     source_count<=source_words+1'b1;
+     if(source_first)begin dir<=top_down;producer_row<=top_down?0:ROWS-1;end
+     source_count<=source_words+1'b1;source_first<=0;
      if(column==ROW_WORDS-1)begin
       column<=0;source_crc<=32'hffffffff;
       // No live source transaction follows the final word. Avoid computing an
@@ -187,6 +191,7 @@ module v3_row_integrity #(
  // synthesis translate_off
  always @(posedge clk)if(rst_n)begin
   if(source_beat && capture)$fatal(1,"guard phase contract violated");
+  if(source_first !== (source_words==0))$fatal(1,"unary source position invariant violated");
   if(source_words>FRAME_WORDS)$fatal(1,"source counter exceeded frame bound");
  end
  initial if(ROW_WORDS%BURST || ROW_WORDS<64 || BURST!=64 || ROWS<1 || ROWS>480 || TIMEOUT<2)

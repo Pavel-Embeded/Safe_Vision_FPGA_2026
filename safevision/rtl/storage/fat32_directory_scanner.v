@@ -433,11 +433,13 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0,
             end
             // ------------------------------------------------------------------
             D_LBA:begin
+                if(!PIPELINED_LBA)mstate<=D_IDLE;else begin
                 local_to_cnt<=to_cnt+32'd1;
                 if(to_cnt==`SD_TO_DATA)begin
                     dir_bad<=1;err_code<=`ERR_SD_IO;err_detail<=`DET_SD_TOKEN_TO;mstate<=D_ERR;
                 end else if(external_lba_valid)begin
                     cur_lba<=external_lba;local_to_cnt<=0;mstate<=D_SEC_REQ;
+                end
                 end
             end
             D_DONE: begin
