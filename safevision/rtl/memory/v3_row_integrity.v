@@ -24,7 +24,10 @@ module v3_row_integrity #(
  // removes slot*480 additions from the synchronous RAM lookup path.
  localparam integer SIGNATURE_ROW_W=(ROWS<2)?1:$clog2(ROWS);
  localparam integer SIGNATURE_ROWS=1<<SIGNATURE_ROW_W;
- reg[31:0] signatures[0:4*SIGNATURE_ROWS-1];
+ // Same65,536 signature bits and synchronous read/write contract, packed
+ // into two native32K macros instead of eight9K blocks. Both configurations
+ // consume eight9K-equivalent tiles; no signature or cache capacity is lost.
+ (* ram_style="bram_32k" *) reg[31:0] signatures[0:4*SIGNATURE_ROWS-1];
  reg[2:0] state;reg[1:0] slot_q;reg building,complete,dir;
  // Counts stop at frame/burst/deadline bounds; retain32-bit public ports.
  localparam integer FRAME_WORDS=ROWS*ROW_WORDS;
