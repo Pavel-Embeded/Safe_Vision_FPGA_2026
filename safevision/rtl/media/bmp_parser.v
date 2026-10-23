@@ -113,7 +113,20 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
     wire size_ok=VARIABLE_SIZE?(width_lo_r!=0&&width_lo_r<=(FLEX_PIXELS?16384:1920)&&width_hi_zero_r&&height_abs!=0&&height_abs<=(FLEX_PIXELS?16384:1080)&&height_hi_match_r):legacy_size_ok;
     wire[16:0] dynamic_w3=FLEX_PIXELS&&bpp_lo_r==32?({1'b0,width_lo_r}<<2):({1'b0,width_lo_r}<<1)+{1'b0,width_lo_r};
     wire[16:0] dynamic_stride=((dynamic_w3+17'd3)>>2)<<2;
-    wire[31:0] dynamic_bytes=dynamic_stride*height_abs;
+    // Height/sign and pixel format settle by header byte29. These private
+    // operands/product therefore settle by byte32 even with one byte per clk,
+    // well before the original byte53 result edge. No public latency changes.
+    // Keep malformed dimensions and modulo32-bit arithmetic exact as well;
+    // existing size predicates and33-bit extent comparisons remain unchanged.
+    reg[16:0] extent_stride_q;
+    reg[15:0] extent_height_q;
+    reg[31:0] dynamic_bytes_q;
+    always @(posedge clk)begin
+      extent_stride_q<=dynamic_stride;
+      extent_height_q<=height_abs;
+      dynamic_bytes_q<=extent_stride_q*extent_height_q;
+    end
+    wire[31:0] dynamic_bytes=dynamic_bytes_q;
     wire[31:0] required_bytes=VARIABLE_SIZE?dynamic_bytes:BMP_PIX_BYTES;
     // bfSize is consumed when the header publishes its check. Reuse its
     // private storage for the pixel countdown in the following transfer

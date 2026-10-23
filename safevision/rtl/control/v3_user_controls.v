@@ -116,6 +116,7 @@ module v3_user_controls #(parameter integer UI_TIMEBASE=0,CLK_HZ=100000000,DEBOU
  end endfunction
  wire[3:0] opcode_in=BOARD_CATALOG?decode_catalog(catalog_id):decode_name(command_name);
  wire[3:0] opcode;wire[15:0] operation;wire command_valid_eff,command_query_eff;
+ wire alpha_write_eff;
  // Register target-qualified one-hot operations on the original capture edge.
  wire[15:0] qualified_operation=(16'h1<<opcode_in)&(({16{command_target==8'd65}}&16'h183f)|({16{command_target==8'd67}}&16'h67c0));
  wire[6:0] bright_percent_eff;wire signed[8:0] percent_offset_eff;
@@ -125,6 +126,14 @@ module v3_user_controls #(parameter integer UI_TIMEBASE=0,CLK_HZ=100000000,DEBOU
  generate if(COMMAND_PIPELINE)begin:command_pipeline
   reg valid_q,query_q;reg[7:0] target_q;reg[3:0] opcode_q;
   reg[15:0] operation_q;
+  reg alpha_write_q;
+  // ALPHA is fully validated at the existing capture edge. The response
+  // decoder remains unchanged, while the configuration data mux receives
+  // one registered enable instead of the entire command-priority network.
+  always @(posedge clk or negedge rst_n)
+   if(!rst_n)alpha_write_q<=0;
+   else alpha_write_q<=command_valid&&!command_query&&qualified_operation[OP_ALPHA]&&value_byte_ok;
+  assign alpha_write_eff=alpha_write_q;
   reg target_a_q,target_c_q;
   reg[8:0] argument_q;
   always@(posedge clk or negedge rst_n)begin
@@ -146,6 +155,7 @@ end
   assign value_bright_qualified=(argument_q[8]==argument_q[7]);assign value_byte_qualified=!argument_q[8];
   assign value_bit_qualified=!(|argument_q[8:1]);assign value_volume_qualified=!argument_q[8]&&(argument_q[7:0]<=8'd100);
  end else begin:command_direct
+  assign alpha_write_eff=1'b0;
   assign opcode=opcode_in;assign operation=qualified_operation;assign bright_percent_eff=offset_to_percent(command_value[8:0]);assign percent_offset_eff=$signed({1'b0,command_value[6:0],1'b0})-9'sd100;assign command_valid_eff=command_valid;assign command_query_eff=command_query;
   assign target_a_eff=command_target==8'd65;assign target_c_eff=command_target==8'd67;
   assign command_target_eff=command_target;assign command_value_eff=command_value;
@@ -313,7 +323,7 @@ end
       brightness<=command_value_eff;brightness_pct<=bright_percent_eff;brightness_raw<=1;
      end else reply_code<=3;
      operation[OP_CONTRAST]:if(value_byte_qualified)contrast<=command_value_eff;else reply_code<=3;
-     operation[OP_ALPHA]:if(value_byte_qualified)osd_alpha<=command_value_eff;else reply_code<=3;
+     operation[OP_ALPHA]:if(value_byte_qualified)begin if(!COMMAND_PIPELINE)osd_alpha<=command_value_eff;end else reply_code<=3;
      operation[OP_SCALER]:if(value_bit_qualified)bilinear<=command_value_eff;else reply_code<=3;
      operation[OP_SCALE]:if(value_bit_qualified)begin fit<=command_value_eff;scale_select<=command_value_eff[1:0];end else reply_code<=3;
      operation[OP_FADE]:if(value_bit_qualified)fade_enabled<=command_value_eff;else reply_code<=3;
@@ -337,6 +347,8 @@ end
      default:reply_code<=3;
     endcase
    end
+   // Last assignment preserves UART-over-button priority on the same edge.
+   if(COMMAND_PIPELINE&&alpha_write_eff)osd_alpha<=command_value_eff[7:0];
   end
  end
 endmodule

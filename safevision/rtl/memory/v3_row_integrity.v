@@ -18,7 +18,13 @@ module v3_row_integrity #(
  output reg[15:0] checked_rows);
  `include "crc32_word.vh"
  localparam IDLE=0,RETIRE=1,REQUEST=2,COLLECT=3,CHECK=4,DONE=5;
- reg[31:0] signatures[0:4*ROWS-1];
+ // Separate resident slots into power-of-two banks. At480 rows this
+ // uses2048 words instead of1920, fitting the same eight9K RAM blocks.
+ // The unused32 rows per bank have no valid/public address. Concatenation
+ // removes slot*480 additions from the synchronous RAM lookup path.
+ localparam integer SIGNATURE_ROW_W=(ROWS<2)?1:$clog2(ROWS);
+ localparam integer SIGNATURE_ROWS=1<<SIGNATURE_ROW_W;
+ reg[31:0] signatures[0:4*SIGNATURE_ROWS-1];
  reg[2:0] state;reg[1:0] slot_q;reg building,complete,dir;
  // Counts stop at frame/burst/deadline bounds; retain32-bit public ports.
  localparam integer FRAME_WORDS=ROWS*ROW_WORDS;
@@ -69,13 +75,28 @@ module v3_row_integrity #(
  // rather than dividing its address again; arbitrary source addresses retain
  // the full32-bit wanted/slot checks and can never write a signature.
  wire[9:0] source_row=(source_words==0)?(top_down?0:ROWS-1):producer_row;
- wire[9:0] query_row=query_high/ODD;
- wire query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_high%ODD==0;
+ wire[9:0] query_row;
+ wire query_divisible;
+ generate if(ODD==5 && OFFSET_BITS-LOW<=12)begin:exact_five
+  // 5*3277 = 1 modulo4096. For an in-range row r<ROWS<=480,
+  // (5*r*3277) modulo4096 is exactly r. Conversely a result below
+  // ROWS cannot wrap5*r past4096, so it proves exact divisibility.
+  // The full32-bit offset and low alignment checks remain mandatory.
+  // This fuses quotient/remainder/range logic into one short DSP path;
+  // RAM read and lookup_valid retain their original single-edge latency.
+  (* dsp_style="yes" *) wire[11:0] inverse_row=query_high*12'd3277;
+  assign query_row=inverse_row[9:0];
+  assign query_divisible=inverse_row<ROWS;
+ end else begin:generic_divisor
+  assign query_row=query_high/ODD;
+  assign query_divisible=query_high%ODD==0;
+ end endgenerate
+ wire query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_divisible;
  // The write-enable includes source_slot==slot_q, so selecting slot_q
  // here is exactly equal on EVERY memory-write edge, including invalid
  // source-address cases (which never assert signature_write).
- wire[10:0] source_index=slot_q*ROWS+source_row;
- wire[10:0] query_index=query_ok?(query_slot*ROWS+query_row):0;
+ wire[10:0] source_index={slot_q,source_row[SIGNATURE_ROW_W-1:0]};
+ wire[10:0] query_index=query_ok?{query_slot,query_row[SIGNATURE_ROW_W-1:0]}:0;
  assign rd_len=BURST;
  // The same read port serves mutually exclusive preload verification and
  // display lookup. A second independent read inferred a 2048x32 distributed
@@ -86,7 +107,7 @@ module v3_row_integrity #(
  // lookup_valid is low. Truncation to11 bits remains at the same boundary.
  wire[1:0] signature_read_slot=verifying?slot_q:query_ok?query_slot:2'd0;
  wire[9:0] signature_read_row=verifying?verify_row:query_ok?query_row:10'd0;
- wire[10:0] signature_read_index=signature_read_slot*ROWS+signature_read_row;
+ wire[10:0] signature_read_index={signature_read_slot,signature_read_row[SIGNATURE_ROW_W-1:0]};
  reg[31:0] signature_read;
  assign expected_crc=signature_read;assign lookup_crc=signature_read;
  // No bulk reset: validity suppresses stale RAM after every reset epoch.
