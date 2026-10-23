@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_uart_rom_hd357\\sim\\tb_v3_uart_rom_hd357",
+  "native_log_sha256": "0c641cf5aa131713f614595ce835a9eb77ca05bc39627dc1d00df0570ac9ca15",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_uart_rom_hd357",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_uart_rom_hd357\\sim\\tb_v3_uart_rom_hd357",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_uart_rom_hd357",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 108,
+        "elapsed_s": 8.64,
+        "suite": "uart_rom_hd357",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_uart_rom_hd357\\sim\\tb_v3_uart_rom_hd357"
+      },
+      "metadata_sha256": "adaa0fc808fa2304c07dc6a023972c6043ba8ea240068637d98dab6841b1ad04",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_uart_rom_hd357",
+        "suite": "uart_rom_hd357",
+        "ordered_analyzed_HDL": 30,
+        "manifest": "safevision/build/manifests/uart_rom_hd357_sim.json",
+        "current_manifest_sha256": "b5aa1c093bf86dbdbe83e93decbc532eed1bcfeb6aaaefefc92bfd491724faa9",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "0c641cf5aa131713f614595ce835a9eb77ca05bc39627dc1d00df0570ac9ca15"
+    },
+    "elapsed_s": 8.828
+  }
+}

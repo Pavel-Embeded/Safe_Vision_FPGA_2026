@@ -6,20 +6,10 @@
   "native_runner": "safevision/tools/run_v3_sim_flexible.py",
   "checks": 8,
   "data_comparisons": 6876875,
-  "elapsed_s": 180.875,
+  "elapsed_s": 172.047,
   "suite": "flexible_bmp542",
   "legacy": false,
   "accepted_native_runner": true,
   "producer_process_exit": 0,
-  "original_producer": "D:\\Codex\\svflex537\\finalflex616\\positive\\tb_v3_flexible_bmp542\\tb_v3_flexible_bmp542",
-  "producer_manifest_sha256": "4262fcf8df869a7b4f963acc0ee04073cf1c6e9477e1fd7d21755809a221483e",
-  "parameter_only_revalidation": {
-    "original_execution_root": "D:\\Codex\\svflex537\\candidate616",
-    "original_execution_commit": "c2fe3817e81b884ba68f68e15639947c86378661",
-    "current_source_root": "D:\\Codex\\svflex537\\candidate618",
-    "current_source_commit": "e29c0a7666427fdff484afd7fdfb901196b43fa0",
-    "original_producer_config": "D:\\Codex\\svflex537\\finalflex616\\producers.json",
-    "original_producer_config_sha256": "0c67f81737bcfc6a9ab408a92ca36a9e512528b668e459878715bd01a9018c3c",
-    "functional_native_execution_repeated": false
-  }
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_flexible_bmp542\\sim\\tb_v3_flexible_bmp542"
 }

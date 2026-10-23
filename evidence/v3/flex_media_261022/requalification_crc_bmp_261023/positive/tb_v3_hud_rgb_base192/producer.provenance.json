@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_hud_rgb_base192\\sim\\tb_v3_hud_rgb_base192",
+  "native_log_sha256": "f46559b962f961b289625cd551ae79a47a698b90812fd9c1671c2a15b9d07e79",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hud_rgb_base192",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_hud_rgb_base192\\sim\\tb_v3_hud_rgb_base192",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hud_rgb_base192",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 2730,
+        "elapsed_s": 13.89,
+        "suite": "hud_rgb_base192",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_hud_rgb_base192\\sim\\tb_v3_hud_rgb_base192"
+      },
+      "metadata_sha256": "1ab0fd729bc7ec58f9cd1b454cd87459659497b70574c2535627d016ee073d5a",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hud_rgb_base192",
+        "suite": "hud_rgb_base192",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/hud_rgb_base192_sim.json",
+        "current_manifest_sha256": "2e846102e91f6b0719d86507bb430e6ef1655e525aa06f32401f18d972bc1b18",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "f46559b962f961b289625cd551ae79a47a698b90812fd9c1671c2a15b9d07e79"
+    },
+    "elapsed_s": 14.156
+  }
+}

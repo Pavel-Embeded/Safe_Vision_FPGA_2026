@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\negative\\service_owner_inverted\\sim\\tb_v3_service_owner_equivalence",
+  "native_log_sha256": "110378a267a8d55230e467d03c4a01295496a825cef5b89dd54c002df1e3d8ed",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "service_owner_inverted",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\service_owner_inverted\\sim\\tb_v3_service_owner_equivalence",
+    "checked": {
+      "metadata": {
+        "mutation": "service_owner_inverted",
+        "target": "safevision/rtl/storage/sd_bmp_player.v",
+        "suite": "service_owner_equivalence",
+        "top": "tb_v3_service_owner_equivalence",
+        "patch": [
+          {
+            "before": "assign selected_core_cmd=service_owner_q?external_core_cmd:local_core_cmd;",
+            "after": "assign selected_core_cmd=!service_owner_q?external_core_cmd:local_core_cmd;"
+          }
+        ],
+        "original_sha256": "bf29f5516109c424e476984b80894e496f2a7d25989f386a1399bcc9707722de",
+        "mutated_sha256": "0f6e88b7631a0d65c07324be8802bf6b87a7c878a1b61eb31a2fcecd584fa9a0",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          471401
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\service_owner_inverted\\sim\\tb_v3_service_owner_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\service_owner_inverted\\sim\\tb_v3_service_owner_equivalence"
+      },
+      "metadata_sha256": "82815c94134a5a761a32eb449bd0004cbcc63d4075c274b66a3baf657ca1a1b8",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_service_owner_equivalence",
+        "suite": "service_owner_equivalence",
+        "ordered_analyzed_HDL": 34,
+        "manifest": "safevision/build/manifests/service_owner_equivalence_sim.json",
+        "current_manifest_sha256": "6263d3e93bcb167650117c0854f04fcb40c943c965102af2f9df15e87aba3ede",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        471401
+      ],
+      "log_sha256": "110378a267a8d55230e467d03c4a01295496a825cef5b89dd54c002df1e3d8ed"
+    },
+    "elapsed_s": 14.578
+  }
+}

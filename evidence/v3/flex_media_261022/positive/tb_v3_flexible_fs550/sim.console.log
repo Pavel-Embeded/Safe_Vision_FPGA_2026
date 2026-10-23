@@ -89,7 +89,7 @@ run -all
 [PASS]  handed over after full frames, old done cleared before WAV scan
 [PASS] oop with exact stereo PCM after arbitrary-name descriptor commit
 PASS tb_v3_flexible_fs550 errors=0 comparisons=614400 PCM=4800
-$finish called at time : 182628770 ns : File "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_flexible_fs550.sv" Line 166
-run: Time (s): cpu = 00:00:00 ; elapsed = 00:01:44 . Memory (MB): peak = 219.750 ; gain = 0.000
+$finish called at time : 182628770 ns : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_flexible_fs550.sv" Line 166
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:01:40 . Memory (MB): peak = 219.578 ; gain = 0.000
 exit
-INFO: [Common 17-206] Exiting xsim at Fri Oct 23 08:57:16 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 09:50:54 2026...

@@ -7,7 +7,7 @@
       "source_overrides": [],
       "checks": 90,
       "data_comparisons": 89,
-      "elapsed_s": 18.312
+      "elapsed_s": 14.125
     }
   ],
   "complete": true,

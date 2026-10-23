@@ -1,0 +1,64 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_normalizer_miter203\\sim\\tb_v3_normalizer_miter203",
+  "native_log_sha256": "4347308fb9d77b089aa7cfe7e9abada6afa496cf9fb21ef185b404043413a604",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_normalizer_miter203",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_normalizer_miter203\\sim\\tb_v3_normalizer_miter203",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_normalizer_miter203",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 64403817,
+        "elapsed_s": 138.937,
+        "suite": "normalizer_miter203",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_normalizer_miter203\\sim\\tb_v3_normalizer_miter203"
+      },
+      "metadata_sha256": "4d94d4c20c30a0d92a9c4638ec97d8c55086bf08227d1230c645d1a966af3436",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_normalizer_miter203",
+        "suite": "normalizer_miter203",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/normalizer_miter203_sim.json",
+        "current_manifest_sha256": "baf6a7f270e5556b7f213db87bf710732329fe5c58a459df2a0fc3ba76c9352a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "log_sha256": "4347308fb9d77b089aa7cfe7e9abada6afa496cf9fb21ef185b404043413a604"
+    },
+    "elapsed_s": 139.171
+  }
+}

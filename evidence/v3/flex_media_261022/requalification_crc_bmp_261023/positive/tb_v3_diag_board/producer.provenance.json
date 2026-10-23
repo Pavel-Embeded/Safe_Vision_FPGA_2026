@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_diag_board\\sim\\tb_v3_diag_board",
+  "native_log_sha256": "876446eb4f416ff1346f83a7ecbe095a2c5d3210ebea6f39a21409c114a526bd",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_diag_board",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_diag_board\\sim\\tb_v3_diag_board",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_diag_board",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 78,
+        "elapsed_s": 11.937,
+        "suite": "diag_board",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_diag_board\\sim\\tb_v3_diag_board"
+      },
+      "metadata_sha256": "cf40e47a3d99bcbfcb4c04075f57fa40d0f54b778d27ed7938d0ba1abc75eb64",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_diag_board",
+        "suite": "diag_board",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/diag_board_sim.json",
+        "current_manifest_sha256": "f4b545bf36ae15576b92e6a1abd687961dbe7773b2ab28749c24688f64b3104f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "876446eb4f416ff1346f83a7ecbe095a2c5d3210ebea6f39a21409c114a526bd"
+    },
+    "elapsed_s": 12.14
+  }
+}

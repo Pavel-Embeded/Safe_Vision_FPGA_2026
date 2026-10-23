@@ -1,0 +1,24 @@
+{
+  "mutation": "latency_tick_wrong",
+  "target": "safevision/rtl/control/v3_response_timer.v",
+  "suite": "handbook",
+  "top": "tb_v3_response_timer",
+  "patch": [
+    {
+      "before": "localparam integer TICKS=CLK_HZ/1000>0?CLK_HZ/1000:1;",
+      "after": "localparam integer TICKS=CLK_HZ/2000>0?CLK_HZ/2000:1;"
+    }
+  ],
+  "original_sha256": "4d06c58da050262af0eb45771191a7ca5834eaefa33acf55dd6cc0101f99bc5e",
+  "mutated_sha256": "3bf9c976d4e9a6be7fb325c82ded4f7142752a0e82d1595319eeea5cd7417dc5",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    37
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\latency_tick_wrong\\sim\\tb_v3_response_timer",
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\latency_tick_wrong\\sim\\tb_v3_response_timer"
+}

@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_uart_link_catalog\\sim\\tb_v3_uart_link_catalog",
+  "native_log_sha256": "72eff69e899c4b389e72fd189179e0eeefa269caecb69a95237019d187d374db",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_uart_link_catalog",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_uart_link_catalog\\sim\\tb_v3_uart_link_catalog",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_uart_link_catalog",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 108,
+        "elapsed_s": 8.281,
+        "suite": "catalog_uart_link",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_uart_link_catalog\\sim\\tb_v3_uart_link_catalog"
+      },
+      "metadata_sha256": "f77b899f45a06e8cb806c85c16ec5aa4b4b13a50cd2ce757a572883b9e4f15bc",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_uart_link_catalog",
+        "suite": "catalog_uart_link",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/catalog_uart_link_sim.json",
+        "current_manifest_sha256": "a578bcb21c0100261b75edae55f345ffc1f0c6008d9f47eefae757cd3dae9aa3",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "72eff69e899c4b389e72fd189179e0eeefa269caecb69a95237019d187d374db"
+    },
+    "elapsed_s": 8.485
+  }
+}

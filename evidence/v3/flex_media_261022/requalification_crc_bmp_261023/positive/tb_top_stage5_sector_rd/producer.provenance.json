@@ -1,0 +1,46 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_top_stage5_sector_rd\\sim\\tb_top_stage5_sector_rd",
+  "native_log_sha256": "6a0267bb3f7ab23a129d07becb9ff0303752c1cf7358bc0b0c26328099df73f8",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_top_stage5_sector_rd",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_top_stage5_sector_rd\\sim\\tb_top_stage5_sector_rd",
+    "checked": {
+      "metadata": {
+        "top": "tb_top_stage5_sector_rd",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 5,
+        "elapsed_s": 13.141,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_top_stage5_sector_rd\\sim\\tb_top_stage5_sector_rd"
+      },
+      "metadata_sha256": "38a619be8acceb1b191f1ca0cf0a5cc7adcd6abbe7a12cbe7c86e34248f1d413",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_top_stage5_sector_rd",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [],
+      "log_sha256": "6a0267bb3f7ab23a129d07becb9ff0303752c1cf7358bc0b0c26328099df73f8"
+    },
+    "elapsed_s": 13.375
+  }
+}

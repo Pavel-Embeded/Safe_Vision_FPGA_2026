@@ -1,0 +1,46 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_sd_initializer\\sim\\tb_sd_initializer",
+  "native_log_sha256": "c08489c62b9a2f14b490c8b3520545c3f39d72d4c9e2d6a7e5a52477f7c4745e",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_sd_initializer",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_sd_initializer\\sim\\tb_sd_initializer",
+    "checked": {
+      "metadata": {
+        "top": "tb_sd_initializer",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 20,
+        "elapsed_s": 12.156,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_sd_initializer\\sim\\tb_sd_initializer"
+      },
+      "metadata_sha256": "eb21bd71c869de766d0fe2cbb7f3a27cac10b90b2c8553b1105989b0821cf2ff",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_sd_initializer",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [],
+      "log_sha256": "c08489c62b9a2f14b490c8b3520545c3f39d72d4c9e2d6a7e5a52477f7c4745e"
+    },
+    "elapsed_s": 12.375
+  }
+}

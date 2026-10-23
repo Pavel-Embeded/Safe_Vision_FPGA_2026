@@ -1,0 +1,24 @@
+{
+  "mutation": "diag_high_bits_ignored",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+  "suite": "diag_alias156",
+  "top": "tb_v3_diag_alias156",
+  "patch": [
+    {
+      "before": "b_diag_payload_valid=!cmd_query && b_diag_small;",
+      "after": "b_diag_payload_valid=!cmd_query;"
+    }
+  ],
+  "original_sha256": "624cb7e28b9039d87deab6fb5a19ea8912f27f9a45850c590abf4e89a0123447",
+  "mutated_sha256": "e2ce0eff41a2c9e25b35633d6410d65e2d25734005c2926bb6b954e368962cb7",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    140
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\diag_high_bits_ignored\\sim\\tb_v3_diag_alias156",
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\diag_high_bits_ignored\\sim\\tb_v3_diag_alias156"
+}

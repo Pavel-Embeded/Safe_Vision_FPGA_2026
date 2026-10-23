@@ -1,0 +1,23 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_top_sdram_loopback/xsim_script.tcl
+# xsim {tb_top_sdram_loopback} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] ÿÿÿåÿÿÿÿÿÿ½ 190 Bytÿÿÿˆÿÿÿ½ÿÿÿ‰
+[PASS] ÿÿÿ®ÿÿˆ190 BÿÿÿïÿŒ3 ÿÿÿåÿÿÿ¿ÿÿÿ‰
+[PASS] ÿˆRND=00000003/00000003 PAT=ÿÿÿ‰
+[PASS] T3 led = ÿÿÿˆÿÿÿåÿÿÿ€ÿÿÿ‰
+[PASS] ÿÿÿ³ÿÿÿ¥ÿÿÿéÿÿÿÿÿÿªÿÿ‘ ÿÿÿ½ÿÿÿ‰
+[PASS] ÿÿÿ« BAD=000ÿÿÿ¸ BAÿÿÿåÿÿÿ½ÿÿÿ‰
+[PASS] ÿÿÿ½ÿÿÿ¡ÿÿÿ°ÿÿ€ ÿÿÿæÿÿÿåÿÿÿ™ÿÿÿ‰
+[PASS] T6 led ÿÿÿïÿÿÿ•ÿÿÿ®ÿÿÿäÿÿÿ‡ÿÿÿ‰
+[TB] tb_top_sdram_loopback done, errors=0 (rx_n=380, led=3)
+$finish called at time : 33276740 ns : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_top_sdram_loopback.sv" Line 226
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:09:48 2026...

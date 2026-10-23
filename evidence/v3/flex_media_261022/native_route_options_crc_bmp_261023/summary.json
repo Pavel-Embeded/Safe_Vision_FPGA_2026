@@ -1,0 +1,128 @@
+{
+  "accepted": true,
+  "scope": "native route parameter acknowledgement only",
+  "functional_approval": false,
+  "routed_STA_approval": false,
+  "bitgen_performed": false,
+  "github_uploaded": false,
+  "records": [
+    {
+      "mode": "base",
+      "name": "actual_native_ack",
+      "accepted": true,
+      "process_exit": 0,
+      "source_database_sha256_unchanged": "f200a048266dc790191701870a24b77d6fe22efbe4147f8d50ae1768ef9b314d",
+      "values": [
+        {
+          "stage": "route",
+          "parameter": "effort",
+          "actual": "routability",
+          "report_sha256": "18f55b71c7209ec05e6a48325955b0c170c2fcd2c264518d2b01b12819f9b835",
+          "native_report": "route.params"
+        },
+        {
+          "stage": "route",
+          "parameter": "timing",
+          "actual": "off",
+          "report_sha256": "18f55b71c7209ec05e6a48325955b0c170c2fcd2c264518d2b01b12819f9b835",
+          "native_report": "route.params"
+        },
+        {
+          "stage": "route",
+          "parameter": "fix_hold",
+          "actual": "on",
+          "report_sha256": "18f55b71c7209ec05e6a48325955b0c170c2fcd2c264518d2b01b12819f9b835",
+          "native_report": "route.params"
+        },
+        {
+          "stage": "route",
+          "parameter": "post_route_opt",
+          "actual": "ultra",
+          "report_sha256": "551a67a00dc5b00d4972e6d9a107cbbc38f968eb70fd549044f62dca6233f95b",
+          "native_report": "route.hidden.params"
+        }
+      ]
+    },
+    {
+      "mode": "base",
+      "name": "wrong_hidden_value",
+      "accepted": true,
+      "rejected": true,
+      "error": "ValueError: native parameter acknowledgement mismatch: route/post_route_opt"
+    },
+    {
+      "mode": "base",
+      "name": "missing_hidden_value",
+      "accepted": true,
+      "rejected": true,
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: 'D:\\\\Codex\\\\svflex537\\\\native_route_ack708\\\\missing_hidden_value\\\\base\\\\route.hidden.params'"
+    },
+    {
+      "mode": "base",
+      "name": "wrong_ordinary_value",
+      "accepted": true,
+      "rejected": true,
+      "error": "ValueError: native parameter acknowledgement mismatch: route/timing"
+    },
+    {
+      "mode": "hd",
+      "name": "actual_native_ack",
+      "accepted": true,
+      "process_exit": 0,
+      "source_database_sha256_unchanged": "f0db1620820637f13d0b345a425b0f729b97467b54534bd6c513e19299eec76b",
+      "values": [
+        {
+          "stage": "route",
+          "parameter": "effort",
+          "actual": "normal",
+          "report_sha256": "14fda33752825b691aff4548bbbef8c5cde3185aa56e287e5d1f142505addd25",
+          "native_report": "route.params"
+        },
+        {
+          "stage": "route",
+          "parameter": "timing",
+          "actual": "off",
+          "report_sha256": "14fda33752825b691aff4548bbbef8c5cde3185aa56e287e5d1f142505addd25",
+          "native_report": "route.params"
+        },
+        {
+          "stage": "route",
+          "parameter": "fix_hold",
+          "actual": "on",
+          "report_sha256": "14fda33752825b691aff4548bbbef8c5cde3185aa56e287e5d1f142505addd25",
+          "native_report": "route.params"
+        },
+        {
+          "stage": "route",
+          "parameter": "post_route_opt",
+          "actual": "ultra",
+          "report_sha256": "551a67a00dc5b00d4972e6d9a107cbbc38f968eb70fd549044f62dca6233f95b",
+          "native_report": "route.hidden.params"
+        }
+      ]
+    },
+    {
+      "mode": "hd",
+      "name": "wrong_hidden_value",
+      "accepted": true,
+      "rejected": true,
+      "error": "ValueError: native parameter acknowledgement mismatch: route/post_route_opt"
+    },
+    {
+      "mode": "hd",
+      "name": "missing_hidden_value",
+      "accepted": true,
+      "rejected": true,
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: 'D:\\\\Codex\\\\svflex537\\\\native_route_ack708\\\\missing_hidden_value\\\\hd\\\\route.hidden.params'"
+    },
+    {
+      "mode": "hd",
+      "name": "wrong_ordinary_value",
+      "accepted": true,
+      "rejected": true,
+      "error": "ValueError: native parameter acknowledgement mismatch: route/timing"
+    }
+  ],
+  "checker_sha256": "4874571c8ade90c55bdaaf17476c68ff7e70f1a04c42a494589993d410386f99",
+  "test_sha256": "ea5b864e060a95581fe151c633a2cd18ed2ee3a7ed6ce2c79bd4f1b9af55ba42"
+}

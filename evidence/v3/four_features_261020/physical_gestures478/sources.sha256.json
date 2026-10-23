@@ -1,7 +1,7 @@
 {
   "safevision/rtl/control/input_sync.v": "52685d179e60745bccc15a46debb84283fc18d61c051a0ffa0a8a546689f06ad",
   "safevision/rtl/control/key_debounce.v": "d6a2f747a10c8da9243bf324a4797e55a24c1e527316182761da527b9ada1caa",
-  "safevision/rtl/control/v3_user_controls.v": "9529124e42bbb905702a42f937d590784a33c36a4b5537f01c9b437656d36ac5",
+  "safevision/rtl/control/v3_user_controls.v": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
   "safevision/verification/unit/tb_v3_key_gestures478.sv": "b1e04544b39aa4aad5755649980cb93ba6cc8a9471a798262754d1a4b5cad84e",
   "safevision/rtl/include/crc32_word.vh": "17f9d826d1d26514a3bf1a8c6db95189ccd982c470112d1f5cdb8c9bcb89a36a",
   "safevision/rtl/include/event_code_defs.vh": "cfbebc82daecc43d154340114741250e371248ee3e6b568d36205098c436e5c2",

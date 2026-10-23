@@ -1,18 +1,18 @@
 {
   "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
-  "execution_root": "D:\\Codex\\svflex537\\candidate665",
-  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
-  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
   "profile_changes": {},
-  "producer": "D:\\Codex\\svflex537\\strict677\\positive\\tb_v3_directory_fault550\\sim\\tb_v3_directory_fault550",
-  "native_log_sha256": "1f9c2f5532970807bb1b351f60dc4d860ba53539fe04faf1c1b7ff5aec597322",
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_directory_fault550\\sim\\tb_v3_directory_fault550",
+  "native_log_sha256": "6b6792d88b111e5bc7f33f521b69390e931b16d75956cb683ec2ea1fdfdf0b59",
   "original_metadata_preserved": true,
   "record": {
     "kind": "positive",
     "name": "tb_v3_directory_fault550",
     "accepted": true,
     "action": "fresh_native_execution",
-    "producer_folder": "D:\\Codex\\svflex537\\strict677\\positive\\tb_v3_directory_fault550\\sim\\tb_v3_directory_fault550",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_directory_fault550\\sim\\tb_v3_directory_fault550",
     "checked": {
       "metadata": {
         "top": "tb_v3_directory_fault550",
@@ -22,14 +22,14 @@
         "native_runner": "safevision/tools/run_v3_sim_flexible.py",
         "checks": 1,
         "data_comparisons": 2,
-        "elapsed_s": 14.922,
+        "elapsed_s": 14.953,
         "suite": "directory_fault550",
         "legacy": false,
         "accepted_native_runner": true,
         "producer_process_exit": 0,
-        "original_producer": "D:\\Codex\\svflex537\\strict677\\positive\\tb_v3_directory_fault550\\sim\\tb_v3_directory_fault550"
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_directory_fault550\\sim\\tb_v3_directory_fault550"
       },
-      "metadata_sha256": "4c0d27517d33d0b0cb1e5402306b940b04af94af27b7e0b8d470f1bd3b8a4a2d",
+      "metadata_sha256": "266cad7f92bffb6dec9952cd3ac6a676f8c5bf3caf3cac4fed26c2cae1c3a5a2",
       "normal_completion": true,
       "input_count": 50,
       "compiler_graph": {
@@ -45,28 +45,14 @@
         "generator_dependencies": 0,
         "runtime_assets": 8,
         "generation_inputs": 42,
-        "generation_before_sha256": "709017d801aa50d9effe61c78850efeaa4a48e2710602603d380b061bfc972ad",
-        "generation_after_sha256": "709017d801aa50d9effe61c78850efeaa4a48e2710602603d380b061bfc972ad"
+        "generation_before_sha256": "e26cf9b519a424cb665a91359159820e935405a7429652869e50bdadc2020a32",
+        "generation_after_sha256": "e26cf9b519a424cb665a91359159820e935405a7429652869e50bdadc2020a32"
       },
       "error_counts": [
         0
       ],
-      "log_sha256": "1f9c2f5532970807bb1b351f60dc4d860ba53539fe04faf1c1b7ff5aec597322"
+      "log_sha256": "6b6792d88b111e5bc7f33f521b69390e931b16d75956cb683ec2ea1fdfdf0b59"
     },
-    "elapsed_s": 15.204,
-    "prior_preflight_refusal": {
-      "kind": "positive",
-      "name": "tb_v3_directory_fault550",
-      "console": {
-        "path": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_directory_fault550\\runner.console.log",
-        "sha256": "b69bb25463c41612fec011939b206303e8c93a25a3d2667ca1dcea8ced9de8c7"
-      },
-      "exception": {
-        "path": "D:\\Codex\\svflex537\\qualification666\\positive\\tb_v3_directory_fault550\\exception.txt",
-        "sha256": "bd794eaab4a77bbba1538ac0f7efcae2404075d27c3f4b75b3af5ee1fc9cdde7"
-      },
-      "native_compiler_started": false,
-      "not_counted_as_pass": true
-    }
+    "elapsed_s": 15.219
   }
 }

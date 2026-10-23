@@ -1,0 +1,30 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 10:14:03 2026
+# Process ID: 30656
+# Current directory: D:/Codex/svflex537/qualification702/negative/control_write_binding/sim/tb_v3_control_decode_equivalence
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_control_decode_equivalence/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/qualification702/negative/control_write_binding/sim/tb_v3_control_decode_equivalence/sim.log
+# Journal file: D:/Codex/svflex537/qualification702/negative/control_write_binding/sim/tb_v3_control_decode_equivalence\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_control_decode_equivalence/xsim_script.tcl
+# xsim {tb_v3_control_decode_equivalence} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] controls differ cycle=393241 name=    CONTRAST value=2 valid=1 query=0 bright=002/002 contrast=80/02 reply=10000000000/10000000000 state=0005c0a0/0001c0a0
+[FAIL] controls differ cycle=393242 name=       ALPHA value=2 valid=1 query=0 bright=002/002 contrast=80/02 reply=10000000000/10000000000 state=0005c0a0/0005c0a0
+[FAIL] controls differ cycle=393243 name=      SCALER value=2 valid=1 query=1 bright=002/002 contrast=80/02 reply=10000000001/10000000001 state=0005c0a0/0005c0a0
+[FAIL] controls differ cycle=393244 name=       SCALE value=2 valid=1 query=0 bright=002/002 contrast=80/02 reply=10300000000/10300000000 state=0005c0a0/0005c0a0
+[FAIL] controls differ cycle=393245 name=        FADE value=2 valid=1 query=0 bright=002/002 contrast=80/02 reply=10300000000/10300000000 state=0005c0a0/0005c0a0
+[FAIL] controls differ cycle=393246 name=         VOL value=2 valid=1 query=0 bright=002/002 contrast=80/02 reply=10000000000/10000000000 state=0005c120/0005c120
+[FAIL] controls differ cycle=393247 name=      PERIOD value=2 valid=1 query=0 bright=002/002 contrast=80/02 reply=10000000000/10000000000 state=0005c100/0005c100
+[FAIL] controls differ cycle=393248 name=        AUTO value=2 valid=1 query=1 bright=002/002 contrast=80/02 reply=10000000000/10000000000 state=0005c100/0005c100
+[FAIL] controls differ cycle=393249 name=        NEXT value=2 valid=1 query=0 bright=002/002 contrast=80/02 reply=10300000000/10300000000 state=0005c100/0005c100
+[TB] tb_v3_control_decode_equivalence done errors=215232 comparisons=5000000
+$finish called at time : 10000045001 ps : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_control_decode_equivalence.sv" Line 94
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 219.781 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:14:13 2026...

@@ -1,0 +1,46 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_fat32_boot_parser\\sim\\tb_fat32_boot_parser",
+  "native_log_sha256": "8cac9334a38ff4de017c971b3ddd54ced894a73d760d23bf455576d24fabaf0f",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_fat32_boot_parser",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_fat32_boot_parser\\sim\\tb_fat32_boot_parser",
+    "checked": {
+      "metadata": {
+        "top": "tb_fat32_boot_parser",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 26,
+        "elapsed_s": 7.734,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_fat32_boot_parser\\sim\\tb_fat32_boot_parser"
+      },
+      "metadata_sha256": "31f404d5094005eb0f0e7e504b0f7ca4f0adfa30dedde69cfb04bf01a7c59f6c",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_fat32_boot_parser",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [],
+      "log_sha256": "8cac9334a38ff4de017c971b3ddd54ced894a73d760d23bf455576d24fabaf0f"
+    },
+    "elapsed_s": 7.938
+  }
+}

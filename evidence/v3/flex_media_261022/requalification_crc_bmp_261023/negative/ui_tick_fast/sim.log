@@ -1,0 +1,52 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 10:15:46 2026
+# Process ID: 19616
+# Current directory: D:/Codex/svflex537/qualification702/negative/ui_tick_fast/sim/tb_v3_ui_boundary409
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_v3_ui_boundary409/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/qualification702/negative/ui_tick_fast/sim/tb_v3_ui_boundary409/sim.log
+# Journal file: D:/Codex/svflex537/qualification702/negative/ui_tick_fast/sim/tb_v3_ui_boundary409\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_v3_ui_boundary409/xsim_script.tcl
+# xsim {tb_v3_ui_boundary409} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS]        shared tick and conservative minimum debounce/hold limits
+[PASS]                                          cold boot full defaults
+[PASS]                                     UART period set acknowledged
+[FAIL]  initial autoplay period never early; <=2ms startup quantization cycle198104
+[FAIL]                  subsequent autoplay periods exact in SYS cycles cycle396104
+[PASS]                                     UART period set acknowledged
+[FAIL]  initial autoplay period never early; <=2ms startup quantization cycle891203
+[FAIL]                  subsequent autoplay periods exact in SYS cycles cycle1386203
+[PASS]                                     UART period set acknowledged
+[FAIL]  initial autoplay period never early; <=2ms startup quantization cycle2376302
+[FAIL]                  subsequent autoplay periods exact in SYS cycles cycle3366302
+[PASS]                                     UART period set acknowledged
+[FAIL]  initial autoplay period never early; <=2ms startup quantization cycle6336401
+[FAIL]                  subsequent autoplay periods exact in SYS cycles cycle9306401
+[PASS]                                            short bounce rejected
+[PASS]                            19.5ms pulse never meets20ms debounce
+[PASS]                 subthreshold pulse leaves no press or menu event
+[FAIL]      chord requires >=20ms debounce and >=2s hold, no early menu cycle9514104
+[PASS]                                held chord toggles menu only once
+[PASS]               physical KEY2 raises visible brightness by5percent
+[PASS]               physical KEY3 lowers visible brightness by5percent
+[FAIL]               KEY2 long press selects next field only after >=1s cycle9636963
+[PASS]                            held long press does not repeat field
+[PASS]                                      physical contrast increase8
+[PASS]                                      physical contrast decrease8
+[FAIL]                                 KEY3 long press exits after >=1s cycle9759822
+[PASS]                       long exit does not leak an autoplay toggle
+[PASS]                     emergency remains independent of menu/timers
+[PASS]                                      emergency release debounced
+[PASS]                 UART retains full brightness parameter semantics
+[PASS]        warm reset retains nondefault display/audio configuration
+[TB] tb_v3_ui_boundary409 done errors=11 comparisons=31
+$finish called at time : 97665320 ns : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_ui_boundary409.sv" Line 61
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:14 . Memory (MB): peak = 218.070 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:16:03 2026...

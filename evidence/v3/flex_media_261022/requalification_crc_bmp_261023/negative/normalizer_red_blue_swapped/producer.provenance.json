@@ -1,0 +1,90 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203",
+  "native_log_sha256": "f3cee4c1e1141cedc49606d1359b2d41a1ad4469b594641a5c6efaf314b43a2a",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "normalizer_red_blue_swapped",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203",
+    "checked": {
+      "metadata": {
+        "mutation": "normalizer_red_blue_swapped",
+        "target": "safevision/rtl/media/v3_bmp_normalizer.v",
+        "suite": "normalizer_miter203",
+        "top": "tb_v3_normalizer_miter203",
+        "patch": [
+          {
+            "before": "captured<={din[7:3],green[7:2],blue[7:3]};",
+            "after": "captured<={blue[7:3],green[7:2],din[7:3]};"
+          }
+        ],
+        "original_sha256": "e6f54c5914f9d7247ce9fcbba87c90a3ba1653cd293298223d4bad4e894bc23d",
+        "mutated_sha256": "a1ea7379f1174e9ca2f1b3d6a10a309a78e3c76f42c2f99732e97e803bd402dd",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          973244,
+          1946489,
+          3099771,
+          4253048,
+          5510492,
+          6767895,
+          10435570,
+          14103274,
+          17783337,
+          21463384,
+          26212124,
+          33211744,
+          47256910,
+          47259551,
+          47261514,
+          47261514
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\normalizer_red_blue_swapped\\sim\\tb_v3_normalizer_miter203"
+      },
+      "metadata_sha256": "ebbc3dfe7c6bf6203674d290d6845d8f54981bb229f82a2e599731ad7b32895a",
+      "normal_completion": true,
+      "input_count": 12,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_normalizer_miter203",
+        "suite": "normalizer_miter203",
+        "ordered_analyzed_HDL": 4,
+        "manifest": "safevision/build/manifests/normalizer_miter203_sim.json",
+        "current_manifest_sha256": "baf6a7f270e5556b7f213db87bf710732329fe5c58a459df2a0fc3ba76c9352a",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        973244,
+        1946489,
+        3099771,
+        4253048,
+        5510492,
+        6767895,
+        10435570,
+        14103274,
+        17783337,
+        21463384,
+        26212124,
+        33211744,
+        47256910,
+        47259551,
+        47261514,
+        47261514
+      ],
+      "log_sha256": "f3cee4c1e1141cedc49606d1359b2d41a1ad4469b594641a5c6efaf314b43a2a"
+    },
+    "elapsed_s": 137.0
+  }
+}

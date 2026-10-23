@@ -1,0 +1,12 @@
+{
+  "top": "tb_sd_sector_reader",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 13,
+  "elapsed_s": 7.422,
+  "suite": "legacy_b_fourbeat",
+  "legacy": true,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_sd_sector_reader\\sim\\tb_sd_sector_reader"
+}

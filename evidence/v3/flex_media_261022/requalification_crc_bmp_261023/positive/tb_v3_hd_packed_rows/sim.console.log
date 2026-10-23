@@ -1,0 +1,17 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_hd_packed_rows/xsim_script.tcl
+# xsim {tb_v3_hd_packed_rows} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] every half/quarter output pixel, two streams, physical bank wrap, phase=0
+[PASS] every half/quarter output pixel, two streams, physical bank wrap, phase=5
+[TB] tb_v3_hd_packed_rows done errors=0 comparisons=769442
+$finish called at time : 6035765008 ps : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_hd_packed_rows.sv" Line 47
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:11:18 2026...

@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_feature_board_base198\\sim\\tb_v3_feature_board_base198",
+  "native_log_sha256": "188c12fc6686276bbf2d3d7f28ab49474fa49d9d7921b1cf5c6ce75e17640609",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_feature_board_base198",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_feature_board_base198\\sim\\tb_v3_feature_board_base198",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_feature_board_base198",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 142854,
+        "elapsed_s": 195.953,
+        "suite": "feature_board_base198",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_feature_board_base198\\sim\\tb_v3_feature_board_base198"
+      },
+      "metadata_sha256": "88bdd82d00e673b4be7f7c88216d3d32c90ae2ecaf9929e64c041ab44f0017f8",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_feature_board_base198",
+        "suite": "feature_board_base198",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/feature_board_base198_sim.json",
+        "current_manifest_sha256": "ba39d808f666daabb8f72a2b706f755c984f9a002a650e67e48f2ac964175472",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "188c12fc6686276bbf2d3d7f28ab49474fa49d9d7921b1cf5c6ce75e17640609"
+    },
+    "elapsed_s": 196.171
+  }
+}

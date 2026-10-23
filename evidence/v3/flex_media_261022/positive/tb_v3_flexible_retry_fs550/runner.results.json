@@ -9,7 +9,7 @@
       "native_runner": "safevision/tools/run_v3_sim_flexible.py",
       "checks": 14,
       "data_comparisons": 614400,
-      "elapsed_s": 116.625
+      "elapsed_s": 112.782
     }
   ],
   "complete": true,

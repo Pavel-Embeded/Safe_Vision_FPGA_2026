@@ -1,0 +1,20 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_framebuffer_loopback_core -s tb_framebuffer_loopback_core --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.frame_address_gen(FRAME_WIDTH=10...
+Compiling module work.crc16_ccitt
+Compiling module work.frame_writer(GAP_TIMEOUT=32'b010...
+Compiling module work.mem_read_burst
+Compiling module work.video_read_dma(PIX_DEPTH=128,LOW...
+Compiling module work.sync_fifo(DEPTH=128,ALMOST_FULL_...
+Compiling module work.mem_ctrl
+Compiling module work.framebuffer_loopback_core_defaul...
+Compiling module work.frame_memory_model_default
+Compiling module work.tb_framebuffer_loopback_core
+Built simulation snapshot tb_framebuffer_loopback_core

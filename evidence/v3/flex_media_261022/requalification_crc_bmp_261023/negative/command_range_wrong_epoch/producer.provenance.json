@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\negative\\command_range_wrong_epoch\\sim\\tb_v3_controls_pipeline_equivalence",
+  "native_log_sha256": "6ec4a1c9ab77aa7cd78b8abb7869db9bab5c9e416192fa93fc8c0818982f0118",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "command_range_wrong_epoch",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\command_range_wrong_epoch\\sim\\tb_v3_controls_pipeline_equivalence",
+    "checked": {
+      "metadata": {
+        "mutation": "command_range_wrong_epoch",
+        "target": "safevision/rtl/control/v3_user_controls.v",
+        "suite": "controls_pipeline_equivalence",
+        "top": "tb_v3_controls_pipeline_equivalence",
+        "patch": [
+          {
+            "before": "assign value_bright_qualified=(argument_q[8]==argument_q[7]);",
+            "after": "assign value_bright_qualified=value_bright_ok;"
+          }
+        ],
+        "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+        "mutated_sha256": "7f37c1d13037d669c864d98880ac38b067e5736a05509bbcf78b8217bf003585",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          140431
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\command_range_wrong_epoch\\sim\\tb_v3_controls_pipeline_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\command_range_wrong_epoch\\sim\\tb_v3_controls_pipeline_equivalence"
+      },
+      "metadata_sha256": "634e98e5307706dd8553c349fd547785b3a64ffb8cc1c50f40f95791e24af2a6",
+      "normal_completion": true,
+      "input_count": 13,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_controls_pipeline_equivalence",
+        "suite": "controls_pipeline_equivalence",
+        "ordered_analyzed_HDL": 5,
+        "manifest": "safevision/build/manifests/controls_pipeline_equivalence_sim.json",
+        "current_manifest_sha256": "7bbd39339b1e0f3ff35b233513814904b4cc8eec3986e45f373fb0f395155af2",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        140431
+      ],
+      "log_sha256": "6ec4a1c9ab77aa7cd78b8abb7869db9bab5c9e416192fa93fc8c0818982f0118"
+    },
+    "elapsed_s": 14.625
+  }
+}

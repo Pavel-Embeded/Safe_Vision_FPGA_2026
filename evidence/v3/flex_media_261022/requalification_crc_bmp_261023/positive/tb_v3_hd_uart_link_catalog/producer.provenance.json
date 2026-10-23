@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_hd_uart_link_catalog\\sim\\tb_v3_hd_uart_link_catalog",
+  "native_log_sha256": "3737a06db436eefad8c0951c6c3ec33dc360349292ce4172e2699de8458e01a1",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hd_uart_link_catalog",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_hd_uart_link_catalog\\sim\\tb_v3_hd_uart_link_catalog",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hd_uart_link_catalog",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 108,
+        "elapsed_s": 7.968,
+        "suite": "hd_uart_catalog",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_hd_uart_link_catalog\\sim\\tb_v3_hd_uart_link_catalog"
+      },
+      "metadata_sha256": "061476707afe3e77937aea5dc92d99b53ff0cdbac0b34f7bb7a78a73250297ac",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hd_uart_link_catalog",
+        "suite": "hd_uart_catalog",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/hd_uart_catalog_sim.json",
+        "current_manifest_sha256": "0d1c1e9a6d47b572c1caf5d0202ab0c389ffe7ef7ae2cd6c8d90c92df6e1685d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "3737a06db436eefad8c0951c6c3ec33dc360349292ce4172e2699de8458e01a1"
+    },
+    "elapsed_s": 8.172
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "mutation": "control_write_binding",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "control_decode_equivalence",
+  "top": "tb_v3_control_decode_equivalence",
+  "patch": [
+    {
+      "before": "operation[OP_CONTRAST]:if(value_byte_qualified)contrast<=command_value_eff;else reply_code<=3;",
+      "after": "operation[OP_CONTRAST]:if(value_byte_qualified)osd_alpha<=command_value_eff;else reply_code<=3;"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+  "mutated_sha256": "6063c66e48ab9edd729edf9f5ed19d1ad69a4acb7845ee8e47825891524edb4b",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    215232
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\control_write_binding\\sim\\tb_v3_control_decode_equivalence",
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\control_write_binding\\sim\\tb_v3_control_decode_equivalence"
+}

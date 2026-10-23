@@ -1,0 +1,15 @@
+{
+  "suite": "legacy_b_fourbeat",
+  "results": [
+    {
+      "top": "tb_sdr_pat_gen",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 22,
+      "elapsed_s": 11.0
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

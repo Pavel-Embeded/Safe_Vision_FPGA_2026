@@ -1,0 +1,25 @@
+{
+  "mutation": "recovery_ack",
+  "target": "safevision/rtl/control/media_recovery_ctrl.v",
+  "suite": "v3",
+  "top": "tb_v3_recovery_events",
+  "patch": [
+    {
+      "before": "state<=IDLE;safe_latched<=0;attempts<=0;recovered<=1;",
+      "after": "state<=IDLE;safe_latched<=0;attempts<=0;recovered<=0;"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "original_sha256": "5952cc814bf6e6d5424e074d9ffc36e7ab5276a38b8ee7a6b866b41e22bd21dd",
+  "mutated_sha256": "05dc73db1fdfcdb6e905e0d9a5a63bb116acfccad0b8cd3e0d62031d8cd2bd05",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1000
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\recovery_ack\\sim\\tb_v3_recovery_events",
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\recovery_ack\\sim\\tb_v3_recovery_events"
+}

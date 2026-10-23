@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192",
+  "native_log_sha256": "93d484404e8ff6cec5b133ad19ee80546cec3963e9cd3c70e6fd7907e778cca5",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hud_rgb_hd192",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hud_rgb_hd192",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 2757,
+        "elapsed_s": 11.937,
+        "suite": "hud_rgb_hd192",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192"
+      },
+      "metadata_sha256": "36e7e79778f65a5f671c6d310abb2f6fd1a4a531e744ab1a747cfc05525105b4",
+      "normal_completion": true,
+      "input_count": 121,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hud_rgb_hd192",
+        "suite": "hud_rgb_hd192",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/hud_rgb_hd192_sim.json",
+        "current_manifest_sha256": "969b81d611b5484b4ea5e5fd4b156201ee233f0d23de03103ebc33a25efaf631",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "93d484404e8ff6cec5b133ad19ee80546cec3963e9cd3c70e6fd7907e778cca5"
+    },
+    "elapsed_s": 12.156
+  }
+}

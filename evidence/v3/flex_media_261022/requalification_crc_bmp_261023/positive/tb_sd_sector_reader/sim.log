@@ -1,0 +1,46 @@
+#-----------------------------------------------------------
+# xsim v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 10:09:21 2026
+# Process ID: 13152
+# Current directory: D:/Codex/svflex537/qualification702/positive/tb_sd_sector_reader/sim/tb_sd_sector_reader
+# Command line: xsim.exe -log sim.log -mode tcl -source {xsim.dir/tb_sd_sector_reader/xsim_script.tcl}
+# Log file: D:/Codex/svflex537/qualification702/positive/tb_sd_sector_reader/sim/tb_sd_sector_reader/sim.log
+# Journal file: D:/Codex/svflex537/qualification702/positive/tb_sd_sector_reader/sim/tb_sd_sector_reader\xsim.jou
+#-----------------------------------------------------------
+source xsim.dir/tb_sd_sector_reader/xsim_script.tcl
+# xsim {tb_sd_sector_reader} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+
+==== T1: SD åˆå§‹åŒ–åºåˆ— ====
+[PASS] T1.1 init_donÿÿÿ‹ÿÿÿ˜
+[PASS] T1.ÿÿÿ—ÿÿÿÿÿÿåÿÿÿ”ÿÿÿ¯
+[PASS] T1.ÿÿÿ¯ÿÿÿ«ÿÿº SDHC (CCS=1)
+[PASS] T1.4ÿÿÿ¡ÿÿÿåÿÿÿ”ÿÿÿ°ÿÿÿæÿÿÿ‘ÿÿÿ¤
+       err_code=0x00 err_detail=0x00 retry=0
+
+==== T2~T4: CMD17 è¯» LBA=1000 ====
+[PASS]  = LBA 1ÿÿÿïÿÿÿ­ÿÿÿ‚ÿÿÿæÿÿÿ¡ÿÿÿ‰
+[PASS] ÿÿÿÿÿÿ§ÿÿÿåÿÿÿšÿÿÿ½ÿÿÿæÿ¯ CMD17
+[PASS] T3.1ÿÿÿ¶ÿÿ° 512 Byte
+[PASS] T3ÿÿÿæÿÿÿ¶ÿÿÿ¶
+[PASS] T4.1 CRC16 ÿÿÿåÿÿÿ€ÿÿÿ‡
+[PASS] 3 512 Byÿÿÿéÿÿÿ­ÿÿÿ‚ÿÿÿåÿÿÿ¸ÿÿÿ´
+
+==== T5: è¿ç»­å¤šæ¬¡è¯» ====
+[PASS] ÿÿÿéÿÿÿˆÿÿÿŸÿÿ” LBA ÿÿÿæÿÿÿ­ÿÿÿ®
+
+==== T6: CMD18 æœªå®ç°æ—¶çš„æ‹’ç»è¡Œä¸º ====
+[PASS] en=2ÿÿÿ«ÿÿÿçÿÿÿ¹ÿÿÿ™ÿÿÿéÿÿÿ¯ÿÿÿ
+[PASS] ÿÿÿ—ÿÿÿÿÿÿçÿÿÿ»ÿÿÿ•ÿÿÿæÿÿÿ­ÿÿÿ‚
+
+============================================
+ å…¨éƒ¨é€šè¿‡ (PASS)
+============================================
+
+$finish called at time : 1981255 ns : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_sd_sector_reader.sv" Line 354
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:09:24 2026...

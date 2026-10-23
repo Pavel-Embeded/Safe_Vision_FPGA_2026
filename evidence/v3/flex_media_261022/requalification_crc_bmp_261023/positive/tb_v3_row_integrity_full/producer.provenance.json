@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_row_integrity_full\\sim\\tb_v3_row_integrity_full",
+  "native_log_sha256": "3a171dc84e2629dd0c8eab1b47ca1705935a8030fb6c022aabd12cb0a8e528ce",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_row_integrity_full",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_row_integrity_full\\sim\\tb_v3_row_integrity_full",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_row_integrity_full",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1941,
+        "data_comparisons": 1920,
+        "elapsed_s": 13.547,
+        "suite": "row_integrity_full",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_row_integrity_full\\sim\\tb_v3_row_integrity_full"
+      },
+      "metadata_sha256": "0f8aa4f02e921fd94d129804bd0f1f067d679cab940cd19b14a18a1db0889d92",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_row_integrity_full",
+        "suite": "row_integrity_full",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/row_integrity_full_sim.json",
+        "current_manifest_sha256": "6de0ec351eec1342a4d0ff4d5785cf4e3afd6344781587592a715ce673ab82ef",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "3a171dc84e2629dd0c8eab1b47ca1705935a8030fb6c022aabd12cb0a8e528ce"
+    },
+    "elapsed_s": 13.734
+  }
+}

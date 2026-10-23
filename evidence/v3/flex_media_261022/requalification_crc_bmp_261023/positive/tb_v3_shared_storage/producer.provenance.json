@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage",
+  "native_log_sha256": "7bd7e710dcccd3b209c31477056fe18799096c8731fb0ed5dd3b68360d3cbc6f",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_shared_storage",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_shared_storage",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 14,
+        "data_comparisons": 614400,
+        "elapsed_s": 1786.797,
+        "suite": "shared_storage",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage"
+      },
+      "metadata_sha256": "945cbafe33f9370cba5e5e0db69951a28a3fcfe4e5d9f28a6e9bdd0d215ccb29",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_shared_storage",
+        "suite": "shared_storage",
+        "ordered_analyzed_HDL": 33,
+        "manifest": "safevision/build/manifests/shared_storage_sim.json",
+        "current_manifest_sha256": "98a2df2852c4bee95064d052d24117a78edd804102f2a7deb998dcc0d20b7521",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "7bd7e710dcccd3b209c31477056fe18799096c8731fb0ed5dd3b68360d3cbc6f"
+    },
+    "elapsed_s": 1789.984
+  }
+}

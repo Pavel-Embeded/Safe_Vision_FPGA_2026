@@ -1,0 +1,62 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_flexible_bmp_bounds551/xsim_script.tcl
+# xsim {tb_v3_flexible_bmp_bounds551} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] BOUNDS551 header case0 detail00
+[PASS] BOUNDS551 header case1 detail00
+[PASS] BOUNDS551 header case2 detail00
+[PASS] BOUNDS551 header case3 detail00
+[PASS] BOUNDS551 header case4 detail00
+[PASS] BOUNDS551 header case5 detail00
+[PASS] BOUNDS551 header case6 detail00
+[PASS] BOUNDS551 header case7 detail39
+[PASS] BOUNDS551 header case8 detail39
+[PASS] BOUNDS551 header case9 detail39
+[PASS] BOUNDS551 header case10 detail39
+[PASS] BOUNDS551 header case11 detail39
+[PASS] BOUNDS551 header case12 detail39
+[PASS] BOUNDS551 header case13 detail39
+[PASS] BOUNDS551 header case14 detail39
+[PASS] BOUNDS551 header case15 detail3a
+[PASS] BOUNDS551 header case16 detail3a
+[PASS] BOUNDS551 header case17 detail3a
+[PASS] BOUNDS551 header case18 detail3a
+[PASS] BOUNDS551 header case19 detail3a
+[PASS] BOUNDS551 header case20 detail3a
+[PASS] BOUNDS551 header case21 detail3a
+[PASS] BOUNDS551 header case22 detail3a
+[PASS] BOUNDS551 header case23 detail37
+[PASS] BOUNDS551 header case24 detail38
+[PASS] BOUNDS551 header case25 detail38
+[PASS] BOUNDS551 header case26 detail38
+[PASS] BOUNDS551 header case27 detail3b
+[PASS] BOUNDS551 header case28 detail38
+[PASS] BOUNDS551 header case29 detail3b
+[PASS] BOUNDS551 header case30 detail3b
+[PASS] BOUNDS551 header case31 detail3b
+[PASS] BOUNDS551 header case32 detail3b
+[PASS] BOUNDS551 header case33 detail3b
+[PASS] BOUNDS551 header case34 detail3b
+[PASS] BOUNDS551 header case35 detail3b
+[PASS] BOUNDS551 header case36 detail3b
+[PASS] BOUNDS551 header case37 detail3b
+[PASS] BOUNDS551 tail 24bpp rows1000 omit0 expected_error0 output_pixels307200
+[PASS] BOUNDS551 tail 32bpp rows1000 omit0 expected_error0 output_pixels307200
+[PASS] BOUNDS551 tail 24bpp rows999 omit0 expected_error1 output_pixels307200
+[PASS] BOUNDS551 tail 32bpp rows999 omit0 expected_error1 output_pixels307200
+[PASS] BOUNDS551 tail 24bpp rows1000 omit1 expected_error1 output_pixels307200
+[PASS] BOUNDS551 tail 32bpp rows1000 omit1 expected_error1 output_pixels307200
+[PASS] BOUNDS551 tail 24bpp rows998 omit0 expected_error1 output_pixels306560
+[PASS] BOUNDS551 tail 32bpp rows998 omit0 expected_error1 output_pixels306560
+[TB] tb_v3_flexible_bmp_bounds551 done, errors=0 comparisons=2105
+$finish called at time : 74681350 ns : File "D:/Codex/svflex537/candidate616/safevision/verification/unit/tb_v3_flexible_bmp_bounds551.sv" Line 58
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:09 . Memory (MB): peak = 218.520 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct 22 16:52:17 2026...

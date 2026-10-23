@@ -1,0 +1,18 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_bmp_bounds/xsim_script.tcl
+# xsim {tb_v3_bmp_bounds} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] 32bit file fields checked against independent 64bit extent oracle offset=fffffff0 file_size=000e1036 got_bad=0 expected_bad=1
+[FAIL] 32bit file fields checked against independent 64bit extent oracle offset=ffffffff file_size=ffffffff got_bad=0 expected_bad=1
+[FAIL] 32bit file fields checked against independent 64bit extent oracle offset=fff1f000 file_size=ffffffff got_bad=0 expected_bad=1
+[TB] tb_v3_bmp_bounds done comparisons=668 errors=3
+$finish called at time : 182900 ns : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_bmp_bounds.sv" Line 49
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:13:33 2026...

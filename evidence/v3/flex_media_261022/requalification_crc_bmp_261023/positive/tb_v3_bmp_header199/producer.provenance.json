@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_bmp_header199\\sim\\tb_v3_bmp_header199",
+  "native_log_sha256": "7e573effaa38ef2baa12e2f20afc30c8fdddf3b741f1db535b3bad5ff9bc1185",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_bmp_header199",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_bmp_header199\\sim\\tb_v3_bmp_header199",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_bmp_header199",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 108,
+        "elapsed_s": 6.906,
+        "suite": "bmp_header199",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_bmp_header199\\sim\\tb_v3_bmp_header199"
+      },
+      "metadata_sha256": "59c0517f75ad806d2f8b2dd51df8a166a6325eb7a5f4f0c26b24c0bbb82ef1c6",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_bmp_header199",
+        "suite": "bmp_header199",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/bmp_header199_sim.json",
+        "current_manifest_sha256": "9cc224f179b0c81fbc5d9121043bad1838bb7c84fd7b9302c5c93b09c95b1659",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "7e573effaa38ef2baa12e2f20afc30c8fdddf3b741f1db535b3bad5ff9bc1185"
+    },
+    "elapsed_s": 7.094
+  }
+}

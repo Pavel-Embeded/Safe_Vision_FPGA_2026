@@ -1,0 +1,46 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate698",
+  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_bmp_frame_write_bridge\\sim\\tb_bmp_frame_write_bridge",
+  "native_log_sha256": "4185610a795fdddb78c0cee8cbfef4247d77894d6b5a2bcd28eeb05022e14001",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_bmp_frame_write_bridge",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_bmp_frame_write_bridge\\sim\\tb_bmp_frame_write_bridge",
+    "checked": {
+      "metadata": {
+        "top": "tb_bmp_frame_write_bridge",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 2,
+        "elapsed_s": 9.031,
+        "suite": "legacy_b_fourbeat",
+        "legacy": true,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_bmp_frame_write_bridge\\sim\\tb_bmp_frame_write_bridge"
+      },
+      "metadata_sha256": "752e862149306b9d3048e0a080dba207cf88c18b27c2e605da28baae3f3b3a83",
+      "normal_completion": true,
+      "input_count": 83,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_bmp_frame_write_bridge",
+        "suite": "legacy_b_fourbeat",
+        "ordered_analyzed_HDL": 75,
+        "manifest": "safevision/build/manifests/legacy_b_fourbeat_sim.json",
+        "current_manifest_sha256": "2bbad4c0a715a0b8f9027f4454e63bcccd40bc63fc532b153bdb638b6f3a190f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [],
+      "log_sha256": "4185610a795fdddb78c0cee8cbfef4247d77894d6b5a2bcd28eeb05022e14001"
+    },
+    "elapsed_s": 9.281
+  }
+}

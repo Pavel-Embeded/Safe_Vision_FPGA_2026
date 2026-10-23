@@ -1,0 +1,25 @@
+{
+  "mutation": "alpha_front",
+  "target": "safevision/rtl/video/video_compositor/alpha_blend.v",
+  "suite": "v3",
+  "top": "tb_v3_math",
+  "patch": [
+    {
+      "before": "   pr<=dr*$signed({1'b0,alpha});pg<=dg*$signed({1'b0,alpha});pb<=db*$signed({1'b0,alpha});\n",
+      "after": "   pr<=-dr*$signed({1'b0,alpha});pg<=dg*$signed({1'b0,alpha});pb<=db*$signed({1'b0,alpha});\n"
+    }
+  ],
+  "required_marker": "[FAIL]",
+  "original_sha256": "c5d6344b76ccc7be181a0e6d36adbb0de3af77837c4056916a179c7e8625f2b4",
+  "mutated_sha256": "2cffe8ba52a0d1c23da0264e5cd38df191fb21d9fcf8681b1379f29c69fd6b54",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2716
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\alpha_front\\sim\\tb_v3_math",
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\alpha_front\\sim\\tb_v3_math"
+}

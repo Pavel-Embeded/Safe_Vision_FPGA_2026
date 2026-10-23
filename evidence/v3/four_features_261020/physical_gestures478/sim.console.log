@@ -100,7 +100,7 @@ run -all
 [PASS]        warm reset retains nondefault display/audio configuration
 [PASS] real tick-enabled2/5/10/30s autoplay, bounce/chord/brightness/contrast/long exit/emergency/reset
 [TB] tb_v3_key_gestures478 done errors=0 comparisons=89
-$finish called at time : 43104450 ns : File "D:/Codex/svkeyfix476/source/safevision/verification/unit/tb_v3_key_gestures478.sv" Line 76
-run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 218.762 ; gain = 0.000
+$finish called at time : 43104450 ns : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_key_gestures478.sv" Line 76
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:06 . Memory (MB): peak = 219.305 ; gain = 0.000
 exit
-INFO: [Common 17-206] Exiting xsim at Tue Oct 20 20:01:55 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:36:00 2026...

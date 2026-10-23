@@ -1,0 +1,111 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_mixed_card217/xsim_script.tcl
+# xsim {tb_v3_mixed_card217} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[EVENT] t=338000 pl=1 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=4646513000 pl=2 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5064538000 pl=3 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5482563000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900738000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900863000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900888000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5900963000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=5901063000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=00/00 sk=00
+[EVENT] t=6310863000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=6310963000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=6311163000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=6320038000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6320113000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738313000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738413000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738438000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738513000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=6738613000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7148413000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7148513000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7148713000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7157613000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7157688000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7575863000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7575988000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7576013000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7576088000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7576188000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7985988000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7986088000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7986288000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=7995163000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=7995238000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413413000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413538000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413563000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413638000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8413738000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8823538000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8823638000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8823838000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=8832713000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=8832813000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9250988000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9251113000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9251213000 pl=8 sink=0 count=0 mr=1 active=1 kick=1 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=9251288000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=47479288000 pl=8 sink=4 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=52434113000 pl=8 sink=2 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=52434138000 pl=8 sink=0 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=52434213000 pl=4 sink=0 count=1 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=52852413000 pl=5 sink=0 count=1 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=52852513000 pl=7 sink=0 count=1 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=52852538000 pl=6 sink=0 count=1 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=52852613000 pl=8 sink=0 count=1 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=52852713000 pl=8 sink=1 count=1 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=276819288000 pl=8 sink=4 count=1 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=281774113000 pl=8 sink=2 count=1 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=281774138000 pl=8 sink=0 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=281774213000 pl=4 sink=0 count=2 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=282192413000 pl=5 sink=0 count=2 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=282192513000 pl=7 sink=0 count=2 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=282192538000 pl=6 sink=0 count=2 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=282192613000 pl=8 sink=0 count=2 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=282192713000 pl=8 sink=1 count=2 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[PROGRESS] state=8 caches=2 rejected=4
+[EVENT] t=1107406888000 pl=8 sink=4 count=2 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=1112362313000 pl=8 sink=2 count=2 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=1112362338000 pl=8 sink=0 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=1112362413000 pl=4 sink=0 count=3 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1112780613000 pl=5 sink=0 count=3 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1112780713000 pl=7 sink=0 count=3 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1112780738000 pl=6 sink=0 count=3 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1112780813000 pl=8 sink=0 count=3 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=1112780913000 pl=8 sink=1 count=3 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[PROGRESS] state=8 caches=3 rejected=4
+[PROGRESS] state=8 caches=3 rejected=4
+[EVENT] t=2383659088000 pl=8 sink=4 count=3 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=2388614513000 pl=8 sink=2 count=3 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=2388614538000 pl=8 sink=0 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[STATUS] state=9 stage=7 ec=03/37 sink=0/00 count=4 keys=0008000700060005 writes=614400
+[PASS]     four verified load completions, no partial cache publication
+[PASS]     four broken early candidates skipped and directory rescanned
+[PASS] le ID and precise signature error retained after successful load
+[PASS] hdog progress counts actual consumed directory/FAT/media payload
+[PASS]                   first four LEGAL numeric IDs selected in order
+[PASS]                             exactly four complete frames written
+[PASS]       all four producer row CRCs match delayed physical readback
+[EVENT] t=2388614613000 pl=7 sink=0 count=4 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
+[PASS]  normalized raster matches independent Pillow/rational reference
+[PASS]  normalized raster matches independent Pillow/rational reference
+[PASS]  normalized raster matches independent Pillow/rational reference
+[PASS]  normalized raster matches independent Pillow/rational reference
+[PASS]    resident playback never reloads SD despite next/auto requests
+PASS tb_v3_mixed_card217 errors=0 comparisons=614400
+$finish called at time : 2389116200 ns : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_mixed_card217.sv" Line 129
+run: Time (s): cpu = 00:00:01 ; elapsed = 00:13:35 . Memory (MB): peak = 219.758 ; gain = 0.000
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 09:47:29 2026...

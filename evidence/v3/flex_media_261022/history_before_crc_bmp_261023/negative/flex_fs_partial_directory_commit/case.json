@@ -1,0 +1,26 @@
+{
+  "mutation": "flex_fs_partial_directory_commit",
+  "target": "safevision/rtl/storage/sd_bmp_player.v",
+  "suite": "directory_fault550",
+  "top": "tb_v3_directory_fault550",
+  "patch": [
+    {
+      "before": "dir_bad||(FLEX_FILES&&dn_ec!=`ERR_NONE)",
+      "after": "dir_bad"
+    }
+  ],
+  "original_sha256": "bf29f5516109c424e476984b80894e496f2a7d25989f386a1399bcc9707722de",
+  "mutated_sha256": "70a7ccec521cc9bce6915301ddbdabc6dd72e43ff1d72d461fa126b6fe2166fd",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "detected": true,
+  "error_counts": [
+    2
+  ],
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "original_producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
+  "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550"
+}

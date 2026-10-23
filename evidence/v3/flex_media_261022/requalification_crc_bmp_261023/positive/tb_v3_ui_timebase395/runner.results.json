@@ -1,0 +1,16 @@
+{
+  "suite": "ui_timebase395",
+  "results": [
+    {
+      "top": "tb_v3_ui_timebase395",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 30,
+      "data_comparisons": 29,
+      "elapsed_s": 20.5
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}
