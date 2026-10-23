@@ -24,23 +24,33 @@ module v3_fat_name_store(
  wire[4:0] order=prefix[84:80];
  wire fragment_last=prefix[86];
  wire entry_order_ok=order!=0&&order<=20&&(prefix[87:80]&8'ha0)==0;
- function[15:0] fold;input[15:0] c;begin fold=c>=16'h61&&c<=16'h7a ? c-16'h20 : c;end endfunction
+ function[15:0] fold;input[15:0] c;begin fold={c[15:6],c[5]&&!(c[15:7]==0&&c[6:5]==2'b11&&c[4:0]>=1&&c[4:0]<=26),c[4:0]};end endfunction
  wire streamed_high=byte_valid&&is_lfn&&(
   byte_offset==15||byte_offset==17||byte_offset==19||byte_offset==21||
   byte_offset==23||byte_offset==25||byte_offset==29||byte_offset==31);
  wire write_character=(busy&&flush_lfn)||streamed_high;
- wire[15:0] char_data=busy?{prefix[71:64],prefix[79:72]}:{data,char_low};
+ reg[15:0] head_character;
+ always@*case(flush_left)
+  5:head_character={prefix[71:64],prefix[79:72]};
+  4:head_character={prefix[55:48],prefix[63:56]};
+  3:head_character={prefix[39:32],prefix[47:40]};
+  2:head_character={prefix[23:16],prefix[31:24]};
+  default:head_character={prefix[7:0],prefix[15:8]};
+ endcase
+ wire[15:0] char_data=busy?head_character:{data,char_low};
  wire alias_flush=busy&&!flush_lfn;
  wire alias_write=(byte_valid&&byte_offset<=10)||alias_flush;
- wire[3:0] tail_index=base_length+(alias_flush?4'd1:byte_offset==8?4'd0:byte_offset[3:0]-4'd7);
+ wire[3:0] tail_index=base_length+(alias_flush?4'd1:{2'd0,byte_offset[0]|byte_offset[1],byte_offset[1]});
  wire[3:0] alias_index=!alias_flush&&byte_offset<8?byte_offset[3:0]:tail_index;
  wire[15:0] alias_data=alias_flush?{8'd0,char_low}:byte_offset==8?16'h002e:{8'd0,data};
  assign name_length=lfn_valid?lfn_length:{5'd0,base_length}+(extension_length!=0?{7'd0,extension_length}+9'd1:9'd0);
  assign read_data=ram_read;
+ wire lfn_ram_write=write_character&&char_address<256;
+ wire[8:0] write_address=lfn_ram_write?{1'b0,char_address[7:0]}:{1'b1,4'd0,alias_index};
+ wire[15:0] write_data=lfn_ram_write?char_data:alias_data;
  always @(posedge clk)begin
   ram_read<=name_ram[{!lfn_valid,read_address}];
-  if(write_character&&char_address<256)name_ram[{1'b0,char_address[7:0]}]<=fold(char_data);
-  else if(alias_write)name_ram[{1'b1,4'd0,alias_index}]<=fold(alias_data);
+  if(lfn_ram_write||alias_write)name_ram[write_address]<=fold(write_data);
  end
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
@@ -56,7 +66,7 @@ module v3_fat_name_store(
    end
    if(busy)begin
     if(flush_lfn)begin
-     prefix<={prefix[87:80],prefix[63:0],16'd0};
+     // Prefix remains one byte-shift register; select one of its five words.
      flush_left<=flush_left-1'b1;
      if(flush_left==1)busy<=0;
     end else busy<=0;

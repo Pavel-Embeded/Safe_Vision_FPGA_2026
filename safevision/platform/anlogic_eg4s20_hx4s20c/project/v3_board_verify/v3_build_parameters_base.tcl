@@ -7,10 +7,13 @@ set_param place hfn_opt_effort low
 set_param place seed 1
 
 # Target measured SYS100 watchdog route using documented setup-margin mode.
-set_param route timing greedy
+set_param route timing off
 
 # Measured capacity profile; original clocks, I/O and STA gates retained.
 set_param rtl min_ripple_len 32
 
 # Measured EG4 packing strategy; clocks and full STA limits stay unchanged.
 set_param place opt_timing off
+
+# Actual clocks/IO remain exact; optimize timing after congestion closure.
+set_param route post_route_opt ultra

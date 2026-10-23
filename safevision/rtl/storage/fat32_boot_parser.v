@@ -141,15 +141,40 @@ module fat32_boot_parser (
     // ★ log2(spc)：供 total_clus 的移位使用（见 M_EVAL 里的注释）。
     //   只有走到"全部合法"那一支时才会用到它，而那一支已经被 spc_ok 保证
     //   spc 是 2 的幂（1..128），所以一个优先编码器就够了，不需要通用除法。
-    (* dsp_style="yes" *) wire[39:0] boot_root_product=w_rc*spc;
     wire [2:0] w_log2_spc = spc_log;
-    wire[31:0] payload_sectors=(w_ts32 - ({16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32)));
-    wire[7:0] reciprocal_spc=8'd128>>spc_log;
-    (* dsp_style="yes" *) wire[39:0] clus_product=payload_sectors*reciprocal_spc;
+    wire[31:0] base_value={16'd0,w_rsvd}+(nfat==8'd2 ? (w_fs32<<1):w_fs32);
+    reg[31:0] staged_base,staged_payload;
+    reg[7:0] staged_spc;
+    reg[7:0] staged_inverse_spc;
+    reg[25:0] root_low_product;
+    reg[21:0] root_high_product;
+    reg[39:0] staged_root_product;
+    reg[25:0] count_low_product;
+    reg[21:0] count_high_product;
+    reg[39:0] staged_clus_product;
+    (* dsp_style="yes" *) wire[25:0] root_low=w_rc[17:0]*staged_spc;
+    (* dsp_style="yes" *) wire[21:0] root_high=w_rc[31:18]*staged_spc;
+    (* dsp_style="yes" *) wire[25:0] count_low=staged_payload[17:0]*staged_inverse_spc;
+    (* dsp_style="yes" *) wire[21:0] count_high=staged_payload[31:18]*staged_inverse_spc;
+    // Every BPB operand settles by byte47; M_EVAL follows byte511.
+    // Private stages are fully overwritten before publication and require no
+    // reset. Each DSP partial product precedes a separate addition stage.
+    // Cluster count uses the same exact modulo40-bit product as before;
+    // its two DSP partial products are also registered before addition.
+    // The public outputs still change on the original M_EVAL edge.
+    always @(posedge clk)begin
+      staged_base<=base_value;
+      staged_payload<=w_ts32-staged_base;
+      staged_spc<=spc;staged_inverse_spc<=8'd128>>spc_log;
+      root_low_product<=root_low;
+      root_high_product<=root_high;
+      staged_root_product<={root_high_product,18'd0}+{14'd0,root_low_product};
+      count_low_product<=count_low;count_high_product<=count_high;
+      staged_clus_product<={count_high_product,18'd0}+{14'd0,count_low_product};
+    end
     wire nfat_ok = (nfat == 8'd1) || (nfat == 8'd2);
-    // BPB fields stop changing after byte47; only these five predicates
-    // need staging before evaluation following byte511. Keep address math
-    // directly from the settled fields, without192 unnecessary data registers.
+    // These five predicate flags retain reset. The private arithmetic stages
+    // above deliberately avoid adding reset fanout to settled BPB operands.
     reg [4:0] bpb_checks_q;
     always @(posedge clk or negedge rst_n) begin
         if(!rst_n)bpb_checks_q<=0;
@@ -261,9 +286,9 @@ module fat32_boot_parser (
                     num_fats       <= nfat;
                     fat_start_lba  <= {16'd0, w_rsvd};
                     root_clus      <= w_rc;
-                    data_start_lba <= {16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32);
-                    root_dir_lba   <= {16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32)
-                                      + (boot_root_product[31:0]-{23'd0,spc,1'b0});
+                    data_start_lba <= staged_base;
+                    root_dir_lba   <= staged_base
+                                      + (staged_root_product[31:0]-{23'd0,spc,1'b0});
                     total_sec      <= w_ts32;
                     // ★ 这里绝对不能用 `/ spc`。
                     //   Verilog 的除法运算符会被综合器实现成【组合除法阵列】：
@@ -274,7 +299,7 @@ module fat32_boot_parser (
                     //   改用移位：本分支已由 spc_ok 保证 spc 是 2 的幂（1..128），
                     //   所以 `X / spc` 与 `X >> log2(spc)` 对无符号数是【逐值等价】的。
                     //   ⇒ 行为与原来完全一致（既有 TB 断言逐字不变），只是不再有除法器。
-                    total_clus     <= clus_product[38:7];
+                    total_clus     <= staged_clus_product[38:7];
                     mstate         <= M_DONE;
                 end
             end

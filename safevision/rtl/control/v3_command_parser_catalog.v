@@ -113,7 +113,14 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
   default:;endcase end
  // The previous number must be <1,000,000 before another digit is accepted;
  // hence the largest legal result is 9,999,999 and fits exactly in 24 bits.
- wire[23:0] decimal_next=number*24'd10+{20'd0,rx_data[3:0]};
+ // Exact modulo24-bit decimal multiply-add. Carry-save compression leaves
+ // one local ripple addition, avoiding two cascaded18-bit DSP multipliers.
+ wire[23:0] decimal_a={number[20:0],3'b000};
+ wire[23:0] decimal_b={number[22:0],1'b0};
+ wire[23:0] decimal_c={20'd0,rx_data[3:0]};
+ (* keep="true" *) wire[23:0] decimal_sum=decimal_a^decimal_b^decimal_c;
+ (* keep="true" *) wire[23:0] decimal_carry=((decimal_a&decimal_b)|(decimal_a&decimal_c)|(decimal_b&decimal_c))<<1;
+ (* keep="true",use_ripple=1 *) wire[23:0] decimal_next=decimal_sum+decimal_carry;
  function [4:0] hex;
  input[7:0] c;begin
  if(c>=48&&c<=57)hex=c-48;else if(c>=65&&c<=70)hex=c-55;else hex=31;end endfunction
