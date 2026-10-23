@@ -26,7 +26,7 @@ def check(root):
  control_ids={name:int(value) for name,value in re.findall(r"localparam\[6:0\] CTRL_ID_([A-Z]+)=7'd(\d+);",controls)}
  if control_ids:
   if len(control_ids)!=15 or any(value!=ordered.index(name)+1 or controls.count('CTRL_ID_'+name+':decode_catalog=OP_'+name+';')!=1 for name,value in control_ids.items()):raise ValueError('control catalog ID differs from exact name catalog')
-  if not any(signature in top_text for signature in ['v3_user_controls #(.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(', 'v3_user_controls #(.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(', 'v3_user_controls #(.CLK_HZ(SYS_HZ),.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(']) or '.catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66)' not in top_text:raise ValueError('board controls must consume the exact parser catalog ID')
+  if not any(signature in top_text for signature in ['v3_user_controls #(.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(', 'v3_user_controls #(.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(', 'v3_user_controls #(.CLK_HZ(SYS_HZ),.DEBOUNCE(SYS_HZ/50),.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(']) or '.catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66)' not in top_text:raise ValueError('board controls must consume the exact parser catalog ID')
  if bindings and any(value!=ordered.index(name)+1 for name,value in bindings.items()):raise ValueError('board numeric query ID differs from exact name catalog')
  for index,name in enumerate(ordered):
   if not 1<=len(name)<=12:raise ValueError('invalid command length')
@@ -47,7 +47,7 @@ def check(root):
    'localparam integer SYS_HZ=HD?100000000:50000000;',
    'assign sys_clk=HD?pll_sys100_clk:mem_clk;',
    '.clk0_out(pll_sys100_clk),.clk1_out(mem_clk),.clk2_out(mem_clk_sft));',
-   'v3_user_controls #(.CLK_HZ(SYS_HZ),.UI_TIMEBASE(1),',
+   'v3_user_controls #(.CLK_HZ(SYS_HZ),.DEBOUNCE(SYS_HZ/50),.UI_TIMEBASE(1),',
    'v3_supervisor #(.CLK_HZ(SYS_HZ),.PROGRESSIVE_LOAD(1),',
    'localparam integer RECOVERY_CYCLES=SYS_HZ/10*49;',
    '.RECOVER_CYCLES(RECOVERY_CYCLES)',

@@ -241,7 +241,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire cmd_valid,cmd_query;wire[7:0] cmd_target;wire[95:0] cmd_name;wire signed[31:0] cmd_value;
  wire[6:0] brightness_pct;wire brightness_raw;wire[1:0] scale_select;
  wire transition_busy,frame_commit;wire[1:0] active_slot;wire[7:0] generation;
- v3_user_controls #(.CLK_HZ(SYS_HZ),.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(.clk(sys_clk),.rst_n(sys_rst_n),.next_async(btn_next),.auto_async(btn_auto),.emergency_async(btn_emergency),
+ v3_user_controls #(.CLK_HZ(SYS_HZ),.DEBOUNCE(SYS_HZ/50),.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(.clk(sys_clk),.rst_n(sys_rst_n),.next_async(btn_next),.auto_async(btn_auto),.emergency_async(btn_emergency),
  .catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66),.command_target(cmd_target),.command_name(cmd_name),.command_value(cmd_value),.command_query(cmd_query),
  .cached(cached),.system_safe(safe_active),.transition_busy(transition_busy || recovery_busy || safe_active || !cached),.frame_commit(frame_commit),.next_request(next_request),.auto_enabled(auto_enabled),
  .safety(manual_safe),.recover_request(recover_request),.reply_valid(controls_reply),.reply_code(controls_reply_code),.reply_value(controls_reply_value),
