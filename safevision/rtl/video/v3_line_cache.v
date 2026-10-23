@@ -3,7 +3,7 @@
 // split into even/odd pixel banks; each bank has one memory write port and one
 // synchronous pixel read port. A row is published only after its producer CRC
 // matches the complete landed row. Five bounded bursts permit SDRAM refresh.
-module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_PROFILE=0)(
+module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_PROFILE=0,READ_PIPELINE=0)(
  input wire mem_clk,mem_rst_n,pixel_clk,pixel_rst_n,
  input wire write_clk,write_rst_n,prepare_valid,input wire[9:0] prepare_sy,
  input wire request_valid,output wire request_ready,input wire[(HANDBOOK_PROFILE?26:24)-1:0] request_data,
@@ -17,6 +17,19 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
  output reg[31:0] lookup_addr,input wire[31:0] lookup_crc,input wire lookup_valid,
  output reg fault,output wire dma_busy,output wire dma_progress
 );
+ // Optional production response stage. All consumers (CRC, row store,
+ // counters and progress) use the same delayed word/valid pair. Default0
+ // preserves every legacy cycle. No request/ack/busy edge is delayed.
+ wire cache_rvalid;wire[31:0] cache_rdata;
+ generate if(READ_PIPELINE)begin:response_stage
+  reg valid_q;reg[31:0] data_q;
+  always @(posedge mem_clk or negedge mem_rst_n)
+   if(!mem_rst_n)valid_q<=0;else valid_q<=rd_valid;
+  always @(posedge mem_clk)data_q<=rd_data;
+  assign cache_rvalid=valid_q;assign cache_rdata=data_q;
+ end else begin:response_direct
+  assign cache_rvalid=rd_valid;assign cache_rdata=rd_data;
+ end endgenerate
  `include "crc32_word.vh"
  localparam integer DESC_W=HANDBOOK_PROFILE?26:24;
  wire[DESC_W-1:0] cmd;wire cmd_valid;wire cmd_ready;
@@ -55,14 +68,14 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
  assign cmd_ready=state==IDLE && !reply_pending && !fault;
  assign rd_len=16'd64;
  assign dma_busy=state!=IDLE;
- assign dma_progress=state==READ && rd_valid;
- wire writing=state==READ && rd_valid;
+ assign dma_progress=state==READ && cache_rvalid;
+ wire writing=state==READ && cache_rvalid;
  // Invertible T: T(crc^last_word)==~row_crc iff
  // crc^last_word==inverse32(~row_crc). Prepare during320 row beats.
  reg[5:0] expected_steps;
  wire[31:0] inverse_unpoly=expected^(expected[31]?32'hedb88320:32'd0);
  wire[31:0] inverse_step={inverse_unpoly[30:0],expected[31]};
- wire final_crc_mismatch=(crc^rd_data)!=expected;
+ wire final_crc_mismatch=(crc^cache_rdata)!=expected;
  wire packed_row_done,packed_serializer_fault,packed_pixel_fault;
  reg row_store_done;
  (* async_reg="true" *) reg pixel_fault_meta,pixel_fault_sync;
@@ -113,8 +126,8 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
       rd_req<=1;state<=READ;burst_count<=0;end
     READ:begin
      if(rd_ack)rd_req<=0;
-     if(rd_valid)begin
-      crc<=crc32_word(crc,rd_data);word_column<=word_column+1'b1;
+     if(cache_rvalid)begin
+      crc<=crc32_word(crc,cache_rdata);word_column<=word_column+1'b1;
       if(burst_count==63)begin burst_count<=0;state<=RETIRE;
        if(word_column==319)begin
         if(final_crc_mismatch)begin fault<=1;tag_valid[bank]<=0;end
@@ -192,7 +205,7 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
  generate if(PACKED_ROWS)begin:packed_data
   v3_packed_row_store #(.HANDBOOK_PROFILE(HANDBOOK_PROFILE)) store(.mem_clk(mem_clk),.mem_rst_n(mem_rst_n),
    .write_clk(write_clk),.write_rst_n(write_rst_n),.pixel_clk(pixel_clk),.pixel_rst_n(pixel_rst_n),
-   .word_valid(writing),.word_bank(bank),.word_column(word_column),.word_data(rd_data),
+   .word_valid(writing),.word_bank(bank),.word_column(word_column),.word_data(cache_rdata),
    .row_done(packed_row_done),.serializer_fault(packed_serializer_fault),
    .coord_valid(coord_valid),.sx(sx),.sy(sy),.scale_select(scale_select),.prepare_valid(prepare_valid),.prepare_sy(prepare_sy),
    .a00(a00),.a10(a10),.a01(a01),.a11(a11),.b00(b00),.b10(b10),.b01(b01),.b11(b11),.pixel_fault(packed_pixel_fault));
@@ -202,7 +215,7 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
   (* ram_style="block" *) reg[15:0] even_pixels[0:319],odd_pixels[0:319];
   reg[15:0] eq,oq;
   always @(posedge mem_clk)if(writing&&bank==g)begin
-   even_pixels[word_column]<=rd_data[15:0];odd_pixels[word_column]<=rd_data[31:16];
+   even_pixels[word_column]<=cache_rdata[15:0];odd_pixels[word_column]<=cache_rdata[31:16];
   end
   always @(posedge pixel_clk)begin eq<=even_pixels[even_address];oq<=odd_pixels[odd_address];end
   assign even_q[g]=eq;assign odd_q[g]=oq;

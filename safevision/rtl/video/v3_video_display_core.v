@@ -161,7 +161,7 @@ module v3_video_display_core #(
    if(frame_start&&!initialized)enabled<=0;
   end
  end
- v3_line_cache #(.TIMEOUT(MEM_TIMEOUT),.PACKED_ROWS(PACKED_CACHE),.HANDBOOK_PROFILE(HANDBOOK_PROFILE)) cache(
+ v3_line_cache #(.TIMEOUT(MEM_TIMEOUT),.PACKED_ROWS(PACKED_CACHE),.HANDBOOK_PROFILE(HANDBOOK_PROFILE),.READ_PIPELINE(PACKED_CACHE)) cache(
   .mem_clk(mem_clk),.mem_rst_n(fetch_mem_rst_n),.pixel_clk(pixel_clk),.pixel_rst_n(fetch_pixel_rst_n),
   .write_clk(sys_clk),.write_rst_n(sys_rst_n&&!media_reset),
   .prepare_valid(raw_x==HA),.prepare_sy(prepared_source_row),

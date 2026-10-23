@@ -16,7 +16,8 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
  output wire[9:0] x,y,output wire img_sof,img_eof,
  output reg done,error,output reg[7:0] err_code,err_detail,output wire[3:0] dbg_state,input wire[7:0] bpp);
  localparam IDLE=0,GEOM=1,SETUP=2,YADV=3,READ=4,STORE=5,XADV=6,ROWEND=7,
-  EWAIT=8,EPUSH=9,EHOLD=10,DRAIN=11,FINISH=12,FAILED=13;
+  EWAIT=8,EPUSH=9,EHOLD=10,DRAIN=11,FINISH=12,FAILED=13,GEOM_DECIDE=14;
+ reg geometry_ge_q;
  localparam SB=FLEX_PIXELS?15:11,XB=FLEX_PIXELS?15:12;
  // Complete aspect-fit domain1..16384: ceil(W/dw)<=68 and
  // ceil(H/dh)<=51, including the clamped one-pixel minor dimension.
@@ -81,7 +82,13 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
       store_x<=0;out_x<=0;out_row<=0;phase<=0;after_row<=0;eof_seen<=0;have_row<=0;state<=GEOM;
      end
     end
-    GEOM:if(geometry_scratch>=geometry_divisor)begin {y_error,x_error}<=geometry_scratch-geometry_divisor;store_x<=store_x+1'b1;end
+    // Geometry is private until SETUP. Split wide compare from dimension
+    // selection in FLEX mode; at most640 extra REF edges per image, with
+    // identical integer division, aspect fit and output pixel order.
+    GEOM:if(FLEX_PIXELS)begin geometry_ge_q<=geometry_scratch>=geometry_divisor;state<=GEOM_DECIDE;end
+     else if(geometry_scratch>=geometry_divisor)begin {y_error,x_error}<=geometry_scratch-geometry_divisor;store_x<=store_x+1'b1;end
+     else begin dw<=wide?10'd640:store_x==0?10'd1:store_x;dh<=wide?(store_x==0?10'd1:store_x):10'd480;state<=SETUP;end
+    GEOM_DECIDE:if(geometry_ge_q)begin {y_error,x_error}<=geometry_scratch-geometry_divisor;store_x<=store_x+1'b1;state<=GEOM;end
      else begin dw<=wide?10'd640:store_x==0?10'd1:store_x;dh<=wide?(store_x==0?10'd1:store_x):10'd480;state<=SETUP;end
     SETUP:begin x_error<=((10'd640-dw)>>1)+dw;skip_x<=0;store_x<=0;
      if(FLEX_PIXELS)src_row<=0;

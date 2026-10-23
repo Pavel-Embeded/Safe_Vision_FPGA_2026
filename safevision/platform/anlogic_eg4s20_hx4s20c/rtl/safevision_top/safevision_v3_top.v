@@ -147,12 +147,27 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire verify_req,verify_ack,verify_busy,verify_valid;wire[31:0] verify_addr,verify_data;wire[15:0] verify_len;
  wire[31:0] lookup_addr,lookup_crc;wire lookup_valid;
  wire[31:0] guard_bad_addr,guard_expected,guard_actual,guard_words;wire[15:0] guard_rows;
+ // Observation-only pipeline: all source metadata/data and accepted flags
+ // share one MEM edge. Verification start follows the same source epoch.
+ // Read responses gain one edge; request/ack/busy retain their bus contract.
+ // This removes raw adapter/reset fanout from CRC and diagnostic enables.
+ reg guard_begin_q,guard_accept_q,guard_verify_q,guard_valid_q;
+ reg[1:0] guard_slot_q;reg guard_top_q;
+ reg[31:0] guard_write_addr_q,guard_write_data_q,guard_read_data_q;
+ always @(posedge mem_clk or negedge mem_media_rst_n)
+ if(!mem_media_rst_n)begin guard_begin_q<=0;guard_accept_q<=0;guard_verify_q<=0;guard_valid_q<=0;end
+ else begin guard_begin_q<=source_begin;guard_accept_q<=writer_accepted;
+  guard_verify_q<=verify_start;guard_valid_q<=verify_valid;end
+ always @(posedge mem_clk)begin
+  guard_slot_q<=source_slot;guard_top_q<=source_top_down;
+  guard_write_addr_q<=mem_addr;guard_write_data_q<=mem_wdata;guard_read_data_q<=verify_data;
+ end
  v3_row_integrity #(.TIMEOUT(50000000)) row_guard(.clk(mem_clk),.rst_n(mem_media_rst_n),
- .frame_begin(source_begin),.frame_slot(source_slot),.top_down(source_top_down),
- .accepted(writer_accepted),.write_addr(mem_addr),.write_data(mem_wdata),
- .verify_start(verify_start),.verify_allow(write_drained),.verify_done(guard_done),.verify_pass(guard_pass),
+ .frame_begin(guard_begin_q),.frame_slot(guard_slot_q),.top_down(guard_top_q),
+ .accepted(guard_accept_q),.write_addr(guard_write_addr_q),.write_data(guard_write_data_q),
+ .verify_start(guard_verify_q),.verify_allow(write_drained),.verify_done(guard_done),.verify_pass(guard_pass),
  .fault(guard_fault),.approved(approved),.rd_req(verify_req),.rd_addr(verify_addr),.rd_len(verify_len),
- .rd_ack(verify_ack),.rd_busy(verify_busy),.rd_valid(verify_valid),.rd_data(verify_data),
+ .rd_ack(verify_ack),.rd_busy(verify_busy),.rd_valid(guard_valid_q),.rd_data(guard_read_data_q),
  .lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),
  .bad_addr(guard_bad_addr),.bad_expected(guard_expected),.bad_actual(guard_actual),.source_words(guard_words),.checked_rows(guard_rows));
 
