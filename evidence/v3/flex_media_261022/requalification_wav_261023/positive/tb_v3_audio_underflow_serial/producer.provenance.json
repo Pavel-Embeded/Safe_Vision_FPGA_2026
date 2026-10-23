@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate734",
+  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_audio_underflow_serial\\sim\\tb_v3_audio_underflow_serial",
+  "native_log_sha256": "d1d7915e51833290a704e333df401069893c2cdd8ea770d6c7ec819efca50ffd",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_audio_underflow_serial",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_audio_underflow_serial\\sim\\tb_v3_audio_underflow_serial",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_audio_underflow_serial",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 1548,
+        "elapsed_s": 8.781,
+        "suite": "audio_priority_underflow",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_audio_underflow_serial\\sim\\tb_v3_audio_underflow_serial"
+      },
+      "metadata_sha256": "8b5bf32831ed45a7e4e3528d01b3bf38806163c36ef26b07d8262904a6466f01",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_underflow_serial",
+        "suite": "audio_priority_underflow",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/audio_priority_underflow_sim.json",
+        "current_manifest_sha256": "902c6dc65d931c981f1f67509ae07797f952c0598a83516c093911cdcec7428d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "d1d7915e51833290a704e333df401069893c2cdd8ea770d6c7ec819efca50ffd"
+    },
+    "elapsed_s": 8.953
+  }
+}

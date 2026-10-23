@@ -1,0 +1,16 @@
+{
+  "suite": "sample_credit",
+  "results": [
+    {
+      "top": "tb_v3_sample_credit",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 1,
+      "data_comparisons": 4096,
+      "elapsed_s": 7.234
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

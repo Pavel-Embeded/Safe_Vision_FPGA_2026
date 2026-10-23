@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate734",
+  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_pv_hd73\\sim\\tb_v3_pv_hd73",
+  "native_log_sha256": "cae91f4ab9fbbd3b97140d8eb1b55167a870279df49590e93a5c221fe6ce2ffe",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_pv_hd73",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_pv_hd73\\sim\\tb_v3_pv_hd73",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_pv_hd73",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 2,
+        "data_comparisons": 2908,
+        "elapsed_s": 90.25,
+        "suite": "audio_priority_volume",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_pv_hd73\\sim\\tb_v3_pv_hd73"
+      },
+      "metadata_sha256": "d1e0cd94113e53a237ec793d7c3263c0f1abb7bc3aad799047913427ea02b34e",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_pv_hd73",
+        "suite": "audio_priority_volume",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/audio_priority_volume_sim.json",
+        "current_manifest_sha256": "3247c97b1b4aaf21fc9a17586c7e2b3fe0340dfe33de1ed858e8b26e6809800c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "cae91f4ab9fbbd3b97140d8eb1b55167a870279df49590e93a5c221fe6ce2ffe"
+    },
+    "elapsed_s": 90.453
+  }
+}

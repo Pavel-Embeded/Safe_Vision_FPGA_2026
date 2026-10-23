@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 11:11:51 2026
+# Process ID: 3800
+# Current directory: D:/Codex/svflex537/qualification739/negative/service_owner_inverted/sim/tb_v3_service_owner_equivalence
+# Command line: wbtcv.exe -mode batch -source D:/Codex/svflex537/qualification739/negative/service_owner_inverted/sim/tb_v3_service_owner_equivalence/xsim.dir/tb_v3_service_owner_equivalence/webtalk/xsim_webtalk.tcl -notrace
+# Log file: D:/Codex/svflex537/qualification739/negative/service_owner_inverted/sim/tb_v3_service_owner_equivalence/webtalk.log
+# Journal file: D:/Codex/svflex537/qualification739/negative/service_owner_inverted/sim/tb_v3_service_owner_equivalence\webtalk.jou
+#-----------------------------------------------------------
+source D:/Codex/svflex537/qualification739/negative/service_owner_inverted/sim/tb_v3_service_owner_equivalence/xsim.dir/tb_v3_service_owner_equivalence/webtalk/xsim_webtalk.tcl -notrace

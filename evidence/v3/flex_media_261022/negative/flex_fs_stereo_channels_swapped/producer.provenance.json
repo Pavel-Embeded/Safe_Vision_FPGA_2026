@@ -1,18 +1,18 @@
 {
   "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
-  "execution_root": "D:\\Codex\\svflex537\\candidate665",
-  "execution_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
-  "current_build_commit": "32c7fcd3a134ced1a54efe2949af539204cc451b",
+  "execution_root": "D:\\Codex\\svflex537\\candidate734",
+  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
   "profile_changes": {},
-  "producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
-  "native_log_sha256": "669784c62e53684c61581c593fe11b8e6480769f6cb5c6c2182d3e0c2a6d7e83",
+  "producer": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
+  "native_log_sha256": "00c03995b3e6e1fccc8a998830df246fca0e8f43afe5386eb628858f349eab61",
   "original_metadata_preserved": true,
   "record": {
     "kind": "negative",
     "name": "flex_fs_stereo_channels_swapped",
     "accepted": true,
     "action": "fresh_native_execution",
-    "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
     "checked": {
       "metadata": {
         "mutation": "flex_fs_stereo_channels_swapped",
@@ -25,22 +25,22 @@
             "after": "{96'd0,sample[15:0],sample[31:16]}"
           }
         ],
-        "original_sha256": "8e281dc661ddb7d131b740183aaf2fa430d6820b2a7a691481f84505ff344165",
-        "mutated_sha256": "3624163aec89c977b8b909e6b852bedb05e2166c541cc19e0638e37b7a079c74",
+        "original_sha256": "8d7bd4d1c12267aa75144190c7ab6c3c4460c8fc9d72f6c61bad45c80336ad28",
+        "mutated_sha256": "5bf4b09924014fc4ff707151d010d9c057be786ee14ee8c6f68a0a19ccca4108",
         "mutant_file": "mutant.v",
         "process_exit": 1,
         "return_code": 1,
         "normal_completion": true,
-        "detected": true,
         "error_counts": [
           4800
         ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
+        "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
         "strict_generated_inputs": 1,
-        "native_runner": "safevision/tools/run_v3_sim_flexible.py",
-        "original_producer": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
-        "producer_folder": "D:\\Codex\\svflex537\\strict677\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550"
+        "native_runner": "safevision/tools/run_v3_sim_flexible.py"
       },
-      "metadata_sha256": "9510031c59a8ebf13f6094f9a43093245793d6d646ed22170324f0928cd4930c",
+      "metadata_sha256": "a28c9ac1394667a3a43b57f3b9555a593f308c2d455d43c0345e1fd9e19e6a20",
       "normal_completion": true,
       "input_count": 41,
       "compiler_graph": {
@@ -56,28 +56,14 @@
         "generator_dependencies": 0,
         "runtime_assets": 3,
         "generation_inputs": 38,
-        "generation_before_sha256": "e07ca591639363aad1eb44fa4081256a1b6a59fcecbc1584b361cc192177bfe1",
-        "generation_after_sha256": "e07ca591639363aad1eb44fa4081256a1b6a59fcecbc1584b361cc192177bfe1"
+        "generation_before_sha256": "3e261fdbb58d101cd53cd58bc2a485e083d5de1328d81bb8098f78379b1ceddd",
+        "generation_after_sha256": "3e261fdbb58d101cd53cd58bc2a485e083d5de1328d81bb8098f78379b1ceddd"
       },
       "error_counts": [
         4800
       ],
-      "log_sha256": "669784c62e53684c61581c593fe11b8e6480769f6cb5c6c2182d3e0c2a6d7e83"
+      "log_sha256": "00c03995b3e6e1fccc8a998830df246fca0e8f43afe5386eb628858f349eab61"
     },
-    "elapsed_s": 8.5,
-    "prior_preflight_refusal": {
-      "kind": "negative",
-      "name": "flex_fs_stereo_channels_swapped",
-      "console": {
-        "path": "D:\\Codex\\svflex537\\qualification666\\negative\\flex_fs_stereo_channels_swapped\\runner.console.log",
-        "sha256": "1c1a9b057c6647f533757b232b6c0c8eb72739e42c6bb161726a8ebb9e790695"
-      },
-      "exception": {
-        "path": "D:\\Codex\\svflex537\\qualification666\\negative\\flex_fs_stereo_channels_swapped\\exception.txt",
-        "sha256": "39267315e78a456525b5acb6025298d8008012d48a33c285cfc373c71677bf09"
-      },
-      "native_compiler_started": false,
-      "not_counted_as_pass": true
-    }
+    "elapsed_s": 8.453
   }
 }

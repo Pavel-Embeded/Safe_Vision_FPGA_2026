@@ -4,7 +4,7 @@
 // Four independent byte/parser/cluster contexts pause only BETWEEN sectors.
 // Shared SD ownership is held to rd_done/error; FIFO room reserves a full sector.
 // Missing/invalid WAV sets fallback[slot], never blocks a media-ready decision.
-module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0,PREINDEXED=0)(input wire clk,rst_n,mounted,cache_ready,
+module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0,PREINDEXED=0,PIPELINED_WAV_BOUNDS=PREINDEXED)(input wire clk,rst_n,mounted,cache_ready,
  input wire [63:0] cache_keys,input wire [7:0] sec_per_clus,
  input wire [31:0] fat_start_lba,data_start_lba,root_dir_lba,root_clus,total_clus,
  input wire [3:0] slot_fill,sector_room,
@@ -20,7 +20,7 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0,PREINDEXED=0)(input 
  input wire media_descriptor_found);
  // One shared file/parser/walker execution kernel. Only immutable sector-boundary
  // contexts are saved. A 16bit single-port context RAM avoids four arithmetic FSMs.
- localparam FS_BITS=136,WP_BITS=111,CTX_BITS=FS_BITS+WP_BITS+32;
+ localparam FS_BITS=136,WP_CORE_BITS=111,WP_BOUND_BITS=34,WP_BITS=WP_CORE_BITS+(PIPELINED_WAV_BOUNDS?WP_BOUND_BITS:0),CTX_BITS=FS_BITS+WP_BITS+32;
  localparam CTX_WORDS=(CTX_BITS+15)/16,CTX_PAD=CTX_WORDS*16;
  localparam Q_SCAN=0,Q_CHOOSE=1,Q_RESET=2,Q_START=3,Q_RUN=4,Q_SAVE0=5,Q_SAVE=6,
             Q_LOAD1=7,Q_LOAD2=8,Q_APPLY=9,Q_DESC1=10,Q_DESC2=11;
@@ -49,6 +49,12 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0,PREINDEXED=0)(input 
  wire kernel_rst_n=rst_n&&kernel_release_q;
  wire start=state==Q_START,load_context=(state==Q_LOAD2||state==Q_SAVE);
  wire [FS_BITS-1:0] fs_context;wire [WP_BITS-1:0] wp_context;
+ wire[110:0] wp_core_context;wire[33:0] wp_bound_context;
+ generate if(PIPELINED_WAV_BOUNDS)begin:extended_parser_context
+  assign wp_context={wp_bound_context,wp_core_context};
+ end else begin:legacy_parser_context
+  assign wp_context=wp_core_context;
+ end endgenerate
  reg [CTX_PAD-CTX_BITS-1:0] context_padding;
 wire [15:0] context_q;
  wire [7:0] context_address=active*CTX_WORDS+context_index;
@@ -74,7 +80,8 @@ wire [15:0] context_q;
  assign media_descriptor_ready=PREINDEXED&&!retry_mode&&state==Q_SCAN&&descriptor_pending==0&&!index_done;
  wire preindexed_capture=media_descriptor_valid&&media_descriptor_ready;
  wire[3:0] preindexed_mask=4'b1<<media_descriptor_slot;
- // Contexts occupy words 0..71; four descriptors occupy 128..143.
+ // Contexts occupy words0..71 in legacy mode,0..79 with bytewise bounds;
+ // four immutable descriptors remain at128..143 in the same256x16 RAM.
  wire[7:0] ram_address=descriptor_write?{4'b1000,descriptor_slot,context_index[1:0]}:
   state==Q_DESC1?{4'b1000,active,context_index[1:0]}:context_address;
  wire [2:0] en,ready,dr,dv,dl,done,toerr,crcerr;
@@ -361,8 +368,9 @@ v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rs
  .sd_rd_addr(legacy_fs_sd_rd_addr),.sd_rd_len(legacy_fs_sd_rd_len),.sd_rd_en(legacy_fs_sd_rd_en),.sd_rd_ready(ready[1]),
  .sd_data(data),.sd_data_valid(dv[1]),.sd_data_ready(legacy_fs_sd_data_ready),.sd_data_last(dl[1]),.sd_rd_done(done[1]),
  .sd_timeout_err(toerr[1]),.sd_crc16_err(crcerr[1]),.sd_err_code(err_code),.sd_err_detail(err_detail));
- v3_wav_parser_compact_ctx wp(.clk(clk),.rst_n(kernel_rst_n),.context_load(load_context),.context_enable(run_kernel),
- .context_in(next_context[WP_BITS-1:0]),.context_out(wp_context),.start(start),.first_clus(track_descriptor[31:0]),
+ v3_wav_parser_compact_ctx #(.PIPELINED_BOUNDS(PIPELINED_WAV_BOUNDS)) wp(.clk(clk),.rst_n(kernel_rst_n),.context_load(load_context),.context_enable(run_kernel),
+ .context_in(next_context[WP_CORE_BITS-1:0]),.context_out(wp_core_context),
+ .bound_context_in(next_context[WP_CORE_BITS+:WP_BOUND_BITS]),.bound_context_out(wp_bound_context),.start(start),.first_clus(track_descriptor[31:0]),
  .file_size(track_descriptor[63:32]),.track_id({6'd0,active}),.din(bytes_data),.din_valid(fvalid&&!waverr&&run_kernel),
  .din_ready(parser_ready),.din_eof(fend),.sample(sample),.pcm_valid(sample_valid),
  .pcm_ready(pcm_ready[active]&&run_kernel),.wav_error(waverr));

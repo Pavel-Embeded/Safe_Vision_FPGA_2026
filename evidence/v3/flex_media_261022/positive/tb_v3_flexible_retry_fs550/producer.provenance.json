@@ -1,18 +1,18 @@
 {
   "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
-  "execution_root": "D:\\Codex\\svflex537\\candidate698",
-  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
-  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "execution_root": "D:\\Codex\\svflex537\\candidate734",
+  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
   "profile_changes": {},
-  "producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_flexible_retry_fs550\\sim\\tb_v3_flexible_retry_fs550",
-  "native_log_sha256": "efde6da5d50a99fc7b9463ac9e61b4592a0527ceb2edd6c6b4ba76896dd4f2fc",
+  "producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_flexible_retry_fs550\\sim\\tb_v3_flexible_retry_fs550",
+  "native_log_sha256": "3917e366c036005cb6ff2d93dddd7bffd1775dd3d32bdf65b2c3d34fc2dce936",
   "original_metadata_preserved": true,
   "record": {
     "kind": "positive",
     "name": "tb_v3_flexible_retry_fs550",
     "accepted": true,
     "action": "fresh_native_execution",
-    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_flexible_retry_fs550\\sim\\tb_v3_flexible_retry_fs550",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_flexible_retry_fs550\\sim\\tb_v3_flexible_retry_fs550",
     "checked": {
       "metadata": {
         "top": "tb_v3_flexible_retry_fs550",
@@ -22,14 +22,14 @@
         "native_runner": "safevision/tools/run_v3_sim_flexible.py",
         "checks": 14,
         "data_comparisons": 614400,
-        "elapsed_s": 112.782,
+        "elapsed_s": 113.984,
         "suite": "flexible_retry_fs550",
         "legacy": false,
         "accepted_native_runner": true,
         "producer_process_exit": 0,
-        "original_producer": "D:\\Codex\\svflex537\\qualification702\\positive\\tb_v3_flexible_retry_fs550\\sim\\tb_v3_flexible_retry_fs550"
+        "original_producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_flexible_retry_fs550\\sim\\tb_v3_flexible_retry_fs550"
       },
-      "metadata_sha256": "50e17c042e5d98352ec48d868b2e5b8e266bd5ee0753b2540f04d6f4614b3ec6",
+      "metadata_sha256": "c30952092db6b273813f037f3ae8d3252477f2aaeed54aa1d54483c7203ba342",
       "normal_completion": true,
       "input_count": 51,
       "compiler_graph": {
@@ -45,14 +45,14 @@
         "generator_dependencies": 1,
         "runtime_assets": 8,
         "generation_inputs": 43,
-        "generation_before_sha256": "a237052fbc1bf726c1fe711e51f621edf6335ce2268d018affc6525786d44262",
-        "generation_after_sha256": "a237052fbc1bf726c1fe711e51f621edf6335ce2268d018affc6525786d44262"
+        "generation_before_sha256": "59fd211029d5921a795f0f5c49922c9781555d68bd05a6caa2fc683fe8a65249",
+        "generation_after_sha256": "59fd211029d5921a795f0f5c49922c9781555d68bd05a6caa2fc683fe8a65249"
       },
       "error_counts": [
         0
       ],
-      "log_sha256": "efde6da5d50a99fc7b9463ac9e61b4592a0527ceb2edd6c6b4ba76896dd4f2fc"
+      "log_sha256": "3917e366c036005cb6ff2d93dddd7bffd1775dd3d32bdf65b2c3d34fc2dce936"
     },
-    "elapsed_s": 113.047
+    "elapsed_s": 114.36
   }
 }

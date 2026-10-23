@@ -3,7 +3,7 @@
   "profile": "four_features_261020",
   "complete": true,
   "matrix": "safevision/build/qualification/four_features_261020.json",
-  "source_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "source_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
   "positive_tests": [
     {
       "top": "tb_a_basics",
@@ -296,50 +296,50 @@
       "top": "tb_v3_audio_base50",
       "suite": "audio_modes",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_base50",
-      "result_sha256": "46171441d501a60d3698bdf484883f88f7f78b5752389e60f4a2e1a391a38a80"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_base50",
+      "result_sha256": "76deea09d7ac6d24d8889dea12de5ff7ecc0dea82fb2f8495cc7b8bb21278724"
     },
     {
       "top": "tb_v3_audio_context",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_context",
-      "result_sha256": "7ed48cd5a81e460c9c874d9b4180a3357325c1d9d799d25d4f07b1e191996865"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_context",
+      "result_sha256": "075f3c78319cde8e7ffc165bdb23a072aa0c2301af359faf9278a20ae1ce2327"
     },
     {
       "top": "tb_v3_audio_context_loop",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_context_loop",
-      "result_sha256": "0e386fdbc5118c3607a73644f00ef795193da13e7f95d4ba042112ba70ba3f88"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_context_loop",
+      "result_sha256": "7190f589fb98ab24bc14e38ead334df45e19d9b3fcaf20f80f57ed14bea200a0"
     },
     {
       "top": "tb_v3_audio_hd50",
       "suite": "audio_modes",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_hd50",
-      "result_sha256": "21bfb0986481fd5f0e11c6ea9623297e937d64aee1586696ab297012950181f7"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_hd50",
+      "result_sha256": "bc07daabe0bcad2bcf568d38f029bf950f4645f08974d6ca4103eed108133193"
     },
     {
       "top": "tb_v3_audio_ingress",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_ingress",
-      "result_sha256": "31812fc01fe7096b5221883a195dd50d685d5dcd57769cad2d239c29d6969e4b"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_ingress",
+      "result_sha256": "a1f9c73b65aee5143c250d42e92e826b21276e5a42b94bb17aa92f535a0142b2"
     },
     {
       "top": "tb_v3_audio_media_root_equivalence",
       "suite": "audio_media_root_equivalence",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_media_root_equivalence",
-      "result_sha256": "2abdcd26d87a0ee7c6fb5a5db957f45584ed4d86936530a6f6b5c63812d43dd4"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_media_root_equivalence",
+      "result_sha256": "82b2ec9db188538616b86ce20c8d51b4ee591b004c217a2a142c8b6224c22d2d"
     },
     {
       "top": "tb_v3_audio_packet",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_packet",
-      "result_sha256": "d285e98cfd52227268a1b226c72e20ddb25ccb09c233e0aaa57999e23f8e4ed8"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_packet",
+      "result_sha256": "fde21cc557e8fa52f4850624db7e067dbd76b51f7dba11d95305c4e794de9324"
     },
     {
       "top": "tb_v3_audio_prefill_compare",
@@ -352,57 +352,57 @@
       "top": "tb_v3_audio_ring",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_ring",
-      "result_sha256": "4eb214283dae0d5719264c408f24133359c2453c4d2436fbbd03e9b6cdaae32b"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_ring",
+      "result_sha256": "06e378d7083921ebfba6ed347df2b5ff3dee855b274b2818d63921e4e5f53e11"
     },
     {
       "top": "tb_v3_audio_sample_fifo",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_sample_fifo",
-      "result_sha256": "98a1631a52acbe8f278b042f5f63880eebd6a2ac7c6dc259f053bdab0ba31398"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_sample_fifo",
+      "result_sha256": "bc4b08d5b22d83016a9c03d64e5d89d9221b1f70d34d81d24c3b48c2a9580ede"
     },
     {
       "top": "tb_v3_audio_system",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_system",
-      "result_sha256": "3822764c0436e36ef9aa6d3e22237097c139bd807f7c52187a6589eea646d82e"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_system",
+      "result_sha256": "4b2fa1ac7d93503ab1b3e0b2ba254baafc3238320f0a925db83fe0717e970b8b"
     },
     {
       "top": "tb_v3_audio_underflow",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_underflow",
-      "result_sha256": "43871b76a444fc66694754609f0554f6b460616e1aeabcd4a12a6bab8515d6d5"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_underflow",
+      "result_sha256": "a2058ba4d49cad41d552b9e40feb36fcf7224aa1d642b2aacbe86460a191146b"
     },
     {
       "top": "tb_v3_audio_underflow_serial",
       "suite": "audio_priority_underflow",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_underflow_serial",
-      "result_sha256": "67573f56f33930c34483ff741a418204d6760c9b302c1a16366d783bb4d4cd44"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_underflow_serial",
+      "result_sha256": "8b5bf32831ed45a7e4e3528d01b3bf38806163c36ef26b07d8262904a6466f01"
     },
     {
       "top": "tb_v3_audio_volume",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_volume",
-      "result_sha256": "fb928b791d69f42fab8b7594e1bbda81f09bc9f437ffcc7cbefb4aec3e320a89"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_volume",
+      "result_sha256": "376da341ac8e29cfe35acd0332fced153818c0ba6e697729a96057568fe1590b"
     },
     {
       "top": "tb_v3_audio_wav",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_wav",
-      "result_sha256": "7268abf52dc5eedaee2f92299bc1c8e3c97c14caa7dae052e7c4d837ba5a2a97"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_wav",
+      "result_sha256": "3e5267aab62d03bf4d484f3da80cf04f983c8ce2e01606bf89c2cfd64524fb18"
     },
     {
       "top": "tb_v3_audio_wav_errors",
       "suite": "audio_complete",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_audio_wav_errors",
-      "result_sha256": "eea13bc1588bb730123560cfc86b1b8e98ae5f4d3bd3d5893f39ba904f8a24db"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_audio_wav_errors",
+      "result_sha256": "c0ba23f56d4c6e95cd263e75362c49fb743334fc67069607bcf42b579a65323f"
     },
     {
       "top": "tb_v3_aux_mux",
@@ -450,22 +450,22 @@
       "top": "tb_v3_board_clocks",
       "suite": "v3_board_clocks",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_board_clocks",
-      "result_sha256": "3709dd822baa0b681bc199e7239a42f3dc32b6325bd7b4ae985a88e853d7df5c"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_board_clocks",
+      "result_sha256": "3559bed277795edb576ed11e552fc70c786a74f1048accb9a03ae2b7f5a0b4a3"
     },
     {
       "top": "tb_v3_board_query_catalog",
       "suite": "board_query_catalog",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_board_query_catalog",
-      "result_sha256": "32c3d80aa08dbb5cfea28e7c2d81905017245ac26cf02918b93e677865a2b54a"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_board_query_catalog",
+      "result_sha256": "a86e980858ad90294050b99462bb337abb8f3dc9b2ab117ea78812b33f7d5bd1"
     },
     {
       "top": "tb_v3_board_top",
       "suite": "v3_board_top",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_board_top",
-      "result_sha256": "5fbce4b62605e252d8d7f27e4173d8a868cf58066151392fb905baebbea05bc1"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_board_top",
+      "result_sha256": "7ec05d6af75488a38357d1744efa40fb857bbeb190c892abbb04de63f61cd630"
     },
     {
       "top": "tb_v3_boot_budget218",
@@ -583,8 +583,8 @@
       "top": "tb_v3_coordinate_base210",
       "suite": "coordinate_base210",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_coordinate_base210",
-      "result_sha256": "d3e2794b26f5c650cbd3ce017eafa7d58bb400f933513ae6d14862b14de91cc9"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_coordinate_base210",
+      "result_sha256": "fc74504c63927107b9ffa0c45a9831fb3f7b37c89640b9c45a44a7783784fe41"
     },
     {
       "top": "tb_v3_coords_fade",
@@ -597,15 +597,15 @@
       "top": "tb_v3_diag_alias156",
       "suite": "diag_alias156",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_diag_alias156",
-      "result_sha256": "4c3c2915ba34755491c69a9f1ee33e923dcd067ad16aba1af6e549505823caee"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_diag_alias156",
+      "result_sha256": "03e46fa9a9f4dbffc4db74f56e0f34f73b474f201304db7857fe42598d9010e5"
     },
     {
       "top": "tb_v3_diag_board",
       "suite": "diag_board",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_diag_board",
-      "result_sha256": "cf40e47a3d99bcbfcb4c04075f57fa40d0f54b778d27ed7938d0ba1abc75eb64"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_diag_board",
+      "result_sha256": "ae4ab63b81ce4364bae18b820b0914bb3bfe531e09bdab18afaf32419fad2aaa"
     },
     {
       "top": "tb_v3_directory_compact",
@@ -681,15 +681,15 @@
       "top": "tb_v3_feature_board_base198",
       "suite": "feature_board_base198",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_feature_board_base198",
-      "result_sha256": "88bdd82d00e673b4be7f7c88216d3d32c90ae2ecaf9929e64c041ab44f0017f8"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_feature_board_base198",
+      "result_sha256": "405da0edd5536dac70269e421e115ac1907ca8d9a55b1e2cec6f7df962035f9a"
     },
     {
       "top": "tb_v3_feature_board_hd198",
       "suite": "feature_board_hd198",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_feature_board_hd198",
-      "result_sha256": "2f888771fedeaf834df7636a064c25c9e8ba71f85a1be9f4b5a97ba99db7856f"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_feature_board_hd198",
+      "result_sha256": "9fc0a7c8c0397e360ac8ad528d3bf54effbf521c27af16547c65d2db556fd7ab"
     },
     {
       "top": "tb_v3_fifo_phase50",
@@ -744,15 +744,15 @@
       "top": "tb_v3_handbook_audio_energy",
       "suite": "handbook_audio_energy",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_handbook_audio_energy",
-      "result_sha256": "3512ad8bf28f6e34ebe9fc694fe2c9dd5ab3668cdc763ececa72fbefcb305cee"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_handbook_audio_energy",
+      "result_sha256": "0b42e5b59e16c6b6505ffdb51dcdfaeed8ae7d8027f48dcb18202f0e2a108bf9"
     },
     {
       "top": "tb_v3_handbook_board",
       "suite": "handbook_board",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_handbook_board",
-      "result_sha256": "2fb6b99364b978a88ffcccdc5e6e890fa7cbc838fa6713811e018b8777c21120"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_handbook_board",
+      "result_sha256": "b5fe333a5aceecc63aaf394d9dc9915e802c2ac000eaf4dc1080d1b789d1a690"
     },
     {
       "top": "tb_v3_handbook_cfg_atomic",
@@ -828,78 +828,78 @@
       "top": "tb_v3_hd_audio_context",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_context",
-      "result_sha256": "5bd4ee80cb3374f633a104c9f0f6cc3535cb2a44e671ed6aa35edc4f91c46082"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_context",
+      "result_sha256": "8b5ebb921cafc5d1dc3b9e81b154b1b91420d2abc669ae244866038c73cb72b8"
     },
     {
       "top": "tb_v3_hd_audio_context_loop",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_context_loop",
-      "result_sha256": "c55246ac34714ffeec622994957465a55da0698c2547268002cbe2057cd3a694"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_context_loop",
+      "result_sha256": "5f4ecf3cf08497aab33ca54bb81c525435bf28ba71fc8f384dc3e70de0998528"
     },
     {
       "top": "tb_v3_hd_audio_ingress",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_ingress",
-      "result_sha256": "7fe5f8f50c3998a1529e2a80ca13a6ac5bac1160fc3ae3a6b742a4b2f1b90231"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_ingress",
+      "result_sha256": "e8f2e084c347a33c4f00a2a974710efef4e8703bfe70a94a7ac47dfa84c42fff"
     },
     {
       "top": "tb_v3_hd_audio_packet",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_packet",
-      "result_sha256": "cfcd9b7d46ac21dfc1299d74b0785c0933207bae10dd7902ddc69611ad5e0e96"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_packet",
+      "result_sha256": "0f413261f3cf6459f551ae372689efe401774b8e2b278729dc1790c71417bfac"
     },
     {
       "top": "tb_v3_hd_audio_ring",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_ring",
-      "result_sha256": "f30749d18f434db2029807db8b386b5eb616456222a76fcbcd20b8151183ab5d"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_ring",
+      "result_sha256": "cbd0904637b182307863dfba258883180fe145833d6706fcd12f5e0d9f485deb"
     },
     {
       "top": "tb_v3_hd_audio_sample_fifo",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_sample_fifo",
-      "result_sha256": "6f7eb7724579be159db6c60df8a8e959138a22af8e0b729a4a54a206cf03afd6"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_sample_fifo",
+      "result_sha256": "bc9950654e2831cd3533ca4268b3246424272913e5b62ff7e7456624e1a149c7"
     },
     {
       "top": "tb_v3_hd_audio_system",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_system",
-      "result_sha256": "218c51e4d15ab40ea09ce4855a69c75e57331d1fe491cde61e3d796764504582"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_system",
+      "result_sha256": "2f3b7e66e952fdf886749f6e17e3ec3ad5eafe2edb9bdddce27627d34fc87477"
     },
     {
       "top": "tb_v3_hd_audio_underflow",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_underflow",
-      "result_sha256": "28c2add4a4b5253cf69f57a2e4f32dd4951365b30d0176b92138ad834adc68b2"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_underflow",
+      "result_sha256": "73c0729bdc724783d17151a217d7bdc912bce03d621bf6e6d54eb0e182e36cd8"
     },
     {
       "top": "tb_v3_hd_audio_volume",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_volume",
-      "result_sha256": "82464b4082999051c414ebeae0c6cb20aa28165c247c92364021679bb2b8402c"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_volume",
+      "result_sha256": "9fae914fc4a5da41b8ada03c5497208131ef7df67dae3e7ceab9a62870f3731f"
     },
     {
       "top": "tb_v3_hd_audio_wav",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_wav",
-      "result_sha256": "9b580e3321aa1c3f7b23566989fe6935a29956af3d371573475dd562b73db0a5"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_wav",
+      "result_sha256": "7cfaddb1c21f802a23228c08d52c599689d990d2f2132e7fbbe60d7779f26aa1"
     },
     {
       "top": "tb_v3_hd_audio_wav_errors",
       "suite": "hd_audio_native",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_hd_audio_wav_errors",
-      "result_sha256": "49c2f65e5d250fadf0fff8c485dad90f2d160b8bfc721af2867126033aaab4be"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_audio_wav_errors",
+      "result_sha256": "d719fd8871c65f5b76e850d3e2659242dbda4aafc935a551cba93ab7f66339ea"
     },
     {
       "top": "tb_v3_hd_cache_miter264",
@@ -982,8 +982,8 @@
       "top": "tb_v3_hd_handbook_board",
       "suite": "hd_board",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_hd_handbook_board",
-      "result_sha256": "74e21a7e762ad85cdbb98e7a0bbd31e7e82efe19e4236d0f7d10bcb2d5982296"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hd_handbook_board",
+      "result_sha256": "105b6ad6d589e26e356a06b9c6b5fe7665e860b29b7c4e113b47c724c682570a"
     },
     {
       "top": "tb_v3_hd_handbook_video",
@@ -1192,22 +1192,22 @@
       "top": "tb_v3_hud_rgb_base192",
       "suite": "hud_rgb_base192",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_hud_rgb_base192",
-      "result_sha256": "1ab0fd729bc7ec58f9cd1b454cd87459659497b70574c2535627d016ee073d5a"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hud_rgb_base192",
+      "result_sha256": "a933213250d7c96d06bac69e3a42954e100f6096de022599f4b582a36d551285"
     },
     {
       "top": "tb_v3_hud_rgb_hd192",
       "suite": "hud_rgb_hd192",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_hud_rgb_hd192",
-      "result_sha256": "36e7e79778f65a5f671c6d310abb2f6fd1a4a531e744ab1a747cfc05525105b4"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_hud_rgb_hd192",
+      "result_sha256": "454b0e69c304041eaf0fcf0a2b1b1a9da29c1aae3fab158152c00f6e2bf6af7d"
     },
     {
       "top": "tb_v3_ingress_credit",
       "suite": "ingress_credit",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_ingress_credit",
-      "result_sha256": "a8f7219b6b33bc70b1a83e3c2abe087f6a75b0e369d981b33046fd84893f7531"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_ingress_credit",
+      "result_sha256": "06e408dd5cf3a7dc4ef594ccbf801e229fff82faa59ca1df1af16fdce11c4bdc"
     },
     {
       "top": "tb_v3_keys_osd194",
@@ -1451,8 +1451,8 @@
       "top": "tb_v3_priority_base50",
       "suite": "audio_priority_phase",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_priority_base50",
-      "result_sha256": "6a6de81d338717c530602d4fdd1243462d18ed4ddbc661a850daae48785a5b74"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_priority_base50",
+      "result_sha256": "e697632d32a20bbf0db67b87b0725b6a661ac95a784be43d6e2e8d8ebaff0d41"
     },
     {
       "top": "tb_v3_priority_difference",
@@ -1465,8 +1465,8 @@
       "top": "tb_v3_priority_hd50",
       "suite": "audio_priority_phase",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_priority_hd50",
-      "result_sha256": "2dfa518f8388cc772d23c67c506498372f3c5309e7a38c6f5189a32848952804"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_priority_hd50",
+      "result_sha256": "32d20e6ac20c8f6ab47de0a637c52e59a52c4f505d6eeb4ba28946118dd4fdfb"
     },
     {
       "top": "tb_v3_priority_serial",
@@ -1500,43 +1500,43 @@
       "top": "tb_v3_progress_states186",
       "suite": "progress_states186",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_progress_states186",
-      "result_sha256": "e4d0ed9fd46052ef0160b7fd2f3a25435ce68be6f6eb0b6035258f6db742fedb"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_progress_states186",
+      "result_sha256": "3f9c0ffb52a6ee49bf739f7f1baf3a76b01cbbe54977782a3871db23bce1d7b9"
     },
     {
       "top": "tb_v3_progress_top176",
       "suite": "progress_top176",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_progress_top176",
-      "result_sha256": "b824a37df1dc71d4c1d79fac87781a37024f5a456fb437150ceb5202526e2158"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_progress_top176",
+      "result_sha256": "e3dfe0e5e53e6bca84f54c6797af7d0e80e30649ccb48919ef0fae02d65ef576"
     },
     {
       "top": "tb_v3_pv_base37",
       "suite": "audio_priority_volume",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_pv_base37",
-      "result_sha256": "2f2b6445f1fe4caf7032f4ae93fd17bdf2e6343693483362818076ad25952785"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_pv_base37",
+      "result_sha256": "425f2888e04475e787084726c2fa013e7d514779d61ac6bab622e2d5ffdafed3"
     },
     {
       "top": "tb_v3_pv_base73",
       "suite": "audio_priority_volume",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_pv_base73",
-      "result_sha256": "92a5a32b2dd3d91d34fe7c02df1df19150d74138e9c714c750652fa61036664a"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_pv_base73",
+      "result_sha256": "fb304000d22c1d9b3fe4dd2340fb386462d562e780867065541ffc9baaa998b3"
     },
     {
       "top": "tb_v3_pv_hd37",
       "suite": "audio_priority_volume",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_pv_hd37",
-      "result_sha256": "7df38d64e1c5ca1e935fe77de2fe2efc2300148a97ddf55892fd797925b812fc"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_pv_hd37",
+      "result_sha256": "a87d8ceca0e7ba2906620348b726e1afe181bf12fad7d592bdcbb1f646b19f04"
     },
     {
       "top": "tb_v3_pv_hd73",
       "suite": "audio_priority_volume",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_pv_hd73",
-      "result_sha256": "49b96bc1ae43806c132afc02173a0d7b42d5477461a77a3d7baa1b339f4afdce"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_pv_hd73",
+      "result_sha256": "d1e0cd94113e53a237ec793d7c3263c0f1abb7bc3aad799047913427ea02b34e"
     },
     {
       "top": "tb_v3_read_alignment",
@@ -1584,8 +1584,8 @@
       "top": "tb_v3_registered_wav_reset",
       "suite": "registered_wav_reset",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_registered_wav_reset",
-      "result_sha256": "077c5f66cb5283b4df2e9f10d2674e20ddfdbca4d617b0dfd2b483cc72d154ed"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_registered_wav_reset",
+      "result_sha256": "d47348f31e8c92e1827dbdc390b2c241ae06c3e4c940b7d4fbbf8df9387772d8"
     },
     {
       "top": "tb_v3_rejected_counter_boundary",
@@ -1647,50 +1647,50 @@
       "top": "tb_v3_sample_credit",
       "suite": "sample_credit",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_sample_credit",
-      "result_sha256": "2ab1572a50d60bf5d7eaea8356457c330d6d9e2bd33cd6458dc1ff8e1c466871"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_sample_credit",
+      "result_sha256": "e28f22e9f4c22c75c42e29716edab3c04f81071a41892b59b18bc7648d691d29"
     },
     {
       "top": "tb_v3_service_owner_equivalence",
       "suite": "service_owner_equivalence",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_service_owner_equivalence",
-      "result_sha256": "09f76525936cc12f3d87c9558c7d278fc7f175bebb39f1878324b7b355fab895"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_service_owner_equivalence",
+      "result_sha256": "e31a8b4514bd58a9a435bd2f585ade17ac32e49dce787d6550878f6e1d534a8c"
     },
     {
       "top": "tb_v3_setting_wave_board_base198",
       "suite": "setting_wave_board_base198",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_setting_wave_board_base198",
-      "result_sha256": "e1cb3a3d0b2c97e39a2d2ddc75c7a16f45e33cbaafd95dfc8d5d99df6613c614"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_setting_wave_board_base198",
+      "result_sha256": "fa2bb7e22f2355905b0e0cf2ac446bb146e6e00d2f723e2beb07196d60341530"
     },
     {
       "top": "tb_v3_setting_wave_board_hd198",
       "suite": "setting_wave_board_hd198",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_setting_wave_board_hd198",
-      "result_sha256": "9964ca9e6bd6488d037613a05872f5b7c97503c86e5552e2b9d407500e1e1f1c"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_setting_wave_board_hd198",
+      "result_sha256": "f2b5143fbf41ea91ff2ce6b230528fcee4bafa3a3e69439a03b630d6dbb4f53f"
     },
     {
       "top": "tb_v3_setting_wave_control_hd198",
       "suite": "setting_wave_control_hd198",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_setting_wave_control_hd198",
-      "result_sha256": "035e49978a002fbba6464fa0646afce0f7f8b7ce323595f119dacb06c9a8debd"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_setting_wave_control_hd198",
+      "result_sha256": "c7771b4453360f9672a2120cd1ad6821f34af955d0b32d0fc5c98783ab021b41"
     },
     {
       "top": "tb_v3_shared_storage",
       "suite": "shared_storage",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_shared_storage",
-      "result_sha256": "945cbafe33f9370cba5e5e0db69951a28a3fcfe4e5d9f28a6e9bdd0d215ccb29"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_shared_storage",
+      "result_sha256": "d79b0b06d4bac0f4c596dd17229dde9b75049dd3a3df4b3603e9869e82ea2c62"
     },
     {
       "top": "tb_v3_shared_storage_spi25",
       "suite": "shared_storage_spi25",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/positive/tb_v3_shared_storage_spi25",
-      "result_sha256": "646937a47ade035baab868f37ffec5fb1cd40be7fe88a948ca6270b52df97576"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_shared_storage_spi25",
+      "result_sha256": "8ee66c4dd86d9f75f0515b81a4c018c3a7915be45858475fe71f50af958ea930"
     },
     {
       "top": "tb_v3_slot_partition_base249",
@@ -1983,29 +1983,29 @@
       "top": "tb_v3_wav_bounds_equivalence",
       "suite": "wav_bounds_equivalence",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification/positive/tb_v3_wav_bounds_equivalence",
-      "result_sha256": "dcc2a7ef94f054369f0c5d5045ce9f0e833a22d67a1e9f4a663ff0b6cc2ae281"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_wav_bounds_equivalence",
+      "result_sha256": "2c7ce5d843e2c79d111cdbec68eb886542933ca5b8b92f435f83f90d6948e1e6"
     },
     {
       "top": "tb_v3_wav_fallback_equivalence55",
       "suite": "wav_fallback_equivalence55",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_wav_fallback_equivalence55",
-      "result_sha256": "715f491f896a30bcbfc28a9610581eed710e090f4dbd9203f18d679e6853711d"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_wav_fallback_equivalence55",
+      "result_sha256": "0e5b50d8e787e4c309e3a3d51bea74994205011c90e37e8f48798b4cf3202a72"
     },
     {
       "top": "tb_v3_wav_pair55_context",
       "suite": "wav_source_pair55",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_wav_pair55_context",
-      "result_sha256": "28a53c1852e6b577867b633e3ea3b64e69ece3ab6602ce50703e34cf33359323"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_wav_pair55_context",
+      "result_sha256": "9e332b0241ab751408003d1fe2de91a43ee3a58ed5e9a2ffdc5e770e6d82f348"
     },
     {
       "top": "tb_v3_wav_pair55_wav_errors",
       "suite": "wav_source_pair55",
       "legacy": false,
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/positive/tb_v3_wav_pair55_wav_errors",
-      "result_sha256": "db4c09f1abfd6b747560f3bd80f8ab7a357a36c59444ba46501d539f9c8fc589"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/positive/tb_v3_wav_pair55_wav_errors",
+      "result_sha256": "11bf757954712d95c0ff889e0d007d8cce0166e93e4b003879f974907e0d0706"
     },
     {
       "top": "tb_v3_waveform193",
@@ -2054,28 +2054,28 @@
       "suite": "directory_fault550",
       "legacy": false,
       "evidence": "evidence/v3/flex_media_261022/positive/tb_v3_directory_fault550",
-      "result_sha256": "266cad7f92bffb6dec9952cd3ac6a676f8c5bf3caf3cac4fed26c2cae1c3a5a2"
+      "result_sha256": "0486e4554af1d0b9c1fce606c46f005c744465874a87cd2812379c5915a03ce9"
     },
     {
       "top": "tb_v3_wav_retry550",
       "suite": "wav_retry550",
       "legacy": false,
       "evidence": "evidence/v3/flex_media_261022/positive/tb_v3_wav_retry550",
-      "result_sha256": "54f888f1208fe55fb920cf389f2991fb3504e8c0a8048a03be1a721ac56d11e4"
+      "result_sha256": "fb657e0e16143fd3314cbfe91abcd3b507fba3918a906488e8e658111955c743"
     },
     {
       "top": "tb_v3_flexible_fs550",
       "suite": "flexible_fs550",
       "legacy": false,
       "evidence": "evidence/v3/flex_media_261022/positive/tb_v3_flexible_fs550",
-      "result_sha256": "ce1c422036d442a544ded3ef7e550537780a8f7bbd17e657618d9f211e5c4ea5"
+      "result_sha256": "0e952c62c29bb393f96da8c2c000bce74466cba74b6f9750bdb1424af03d1e2d"
     },
     {
       "top": "tb_v3_flexible_retry_fs550",
       "suite": "flexible_retry_fs550",
       "legacy": false,
       "evidence": "evidence/v3/flex_media_261022/positive/tb_v3_flexible_retry_fs550",
-      "result_sha256": "50e17c042e5d98352ec48d868b2e5b8e266bd5ee0753b2540f04d6f4614b3ec6"
+      "result_sha256": "c30952092db6b273813f037f3ae8d3252477f2aaeed54aa1d54483c7203ba342"
     },
     {
       "top": "tb_v3_flexible_bmp542",
@@ -2142,7 +2142,7 @@
     },
     {
       "mutation": "async_direct_class_corrupt",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/async_direct_class_corrupt"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/async_direct_class_corrupt"
     },
     {
       "mutation": "autoplay_cycle_increment_two",
@@ -2166,7 +2166,7 @@
     },
     {
       "mutation": "board_query_binding",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/board_query_binding"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/board_query_binding"
     },
     {
       "mutation": "boot_millisecond_override_ignored_base",
@@ -2190,7 +2190,7 @@
     },
     {
       "mutation": "canonical_media_reset_bypass",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/canonical_media_reset_bypass"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/canonical_media_reset_bypass"
     },
     {
       "mutation": "cfg_commits_midframe",
@@ -2218,7 +2218,7 @@
     },
     {
       "mutation": "combinational_kernel_reset",
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/negative/combinational_kernel_reset"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/combinational_kernel_reset"
     },
     {
       "mutation": "combinational_recovery_reset",
@@ -2234,15 +2234,15 @@
     },
     {
       "mutation": "container_bound",
-      "evidence": "evidence/v3/flex_media_261022/requalification/negative/container_bound"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/container_bound"
     },
     {
       "mutation": "container_extension",
-      "evidence": "evidence/v3/flex_media_261022/requalification/negative/container_extension"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/container_extension"
     },
     {
       "mutation": "container_stereo",
-      "evidence": "evidence/v3/flex_media_261022/requalification/negative/container_stereo"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/container_stereo"
     },
     {
       "mutation": "control_catalog_binding",
@@ -2278,15 +2278,15 @@
     },
     {
       "mutation": "credit_bias_lost",
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/negative/credit_bias_lost"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/credit_bias_lost"
     },
     {
       "mutation": "credit_wrong_slice",
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/negative/credit_wrong_slice"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/credit_wrong_slice"
     },
     {
       "mutation": "default_auto_disabled",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/default_auto_disabled"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/default_auto_disabled"
     },
     {
       "mutation": "descriptor_ninth_bit_lost_hd",
@@ -2302,11 +2302,11 @@
     },
     {
       "mutation": "diag_high_bits_ignored",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/diag_high_bits_ignored"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/diag_high_bits_ignored"
     },
     {
       "mutation": "diag_query_class_misroute",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/diag_query_class_misroute"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/diag_query_class_misroute"
     },
     {
       "mutation": "directory_bias_wrong_cluster",
@@ -2318,7 +2318,7 @@
     },
     {
       "mutation": "disabled_read_alignment",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/disabled_read_alignment"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/disabled_read_alignment"
     },
     {
       "mutation": "drop threshold carry33_to32",
@@ -2330,7 +2330,7 @@
     },
     {
       "mutation": "energy_post_volume_tap",
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/negative/energy_post_volume_tap"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/energy_post_volume_tap"
     },
     {
       "mutation": "energy_release_wrong_rounding",
@@ -2342,11 +2342,11 @@
     },
     {
       "mutation": "erase_hop_context",
-      "evidence": "evidence/v3/flex_media_261022/requalification/negative/erase_hop_context"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/erase_hop_context"
     },
     {
       "mutation": "event_timestamp_lost",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/event_timestamp_lost"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/event_timestamp_lost"
     },
     {
       "mutation": "fade_product_gate_reversed",
@@ -2354,15 +2354,15 @@
     },
     {
       "mutation": "fallback_commit_lost",
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/negative/fallback_commit_lost"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/fallback_commit_lost"
     },
     {
       "mutation": "fallback_initial_mask_wrong",
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/negative/fallback_initial_mask_wrong"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/fallback_initial_mask_wrong"
     },
     {
       "mutation": "fast_diag_bank_corrupt",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/fast_diag_bank_corrupt"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/fast_diag_bank_corrupt"
     },
     {
       "mutation": "fat_last_entry_selection",
@@ -2386,11 +2386,11 @@
     },
     {
       "mutation": "generation_tag",
-      "evidence": "evidence/v3/flex_media_261022/requalification/negative/generation_tag"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/generation_tag"
     },
     {
       "mutation": "handbook_energy_profile_disabled",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/handbook_energy_profile_disabled"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/handbook_energy_profile_disabled"
     },
     {
       "mutation": "hd_acr_carry_early",
@@ -2510,7 +2510,7 @@
     },
     {
       "mutation": "hd_raster_parameter_disabled",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/hd_raster_parameter_disabled"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/hd_raster_parameter_disabled"
     },
     {
       "mutation": "hd_read64_capacity_regression",
@@ -2574,7 +2574,7 @@
     },
     {
       "mutation": "media_active_exclusion_corrupt",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/media_active_exclusion_corrupt"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/media_active_exclusion_corrupt"
     },
     {
       "mutation": "mem_activity_frozen",
@@ -2598,7 +2598,7 @@
     },
     {
       "mutation": "odd_pad_lost",
-      "evidence": "evidence/v3/flex_media_261022/requalification/negative/odd_pad_lost"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/odd_pad_lost"
     },
     {
       "mutation": "packed_mux_crosses_stream",
@@ -2666,11 +2666,11 @@
     },
     {
       "mutation": "progress_equality_reversed",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/progress_equality_reversed"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/progress_equality_reversed"
     },
     {
       "mutation": "query_parallel_group_removed",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/query_parallel_group_removed"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/query_parallel_group_removed"
     },
     {
       "mutation": "raster_tag",
@@ -2766,7 +2766,7 @@
     },
     {
       "mutation": "service_owner_inverted",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/service_owner_inverted"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/service_owner_inverted"
     },
     {
       "mutation": "setting_changes_midframe",
@@ -2778,7 +2778,7 @@
     },
     {
       "mutation": "setting_diag_energy_wrong",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/setting_diag_energy_wrong"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/setting_diag_energy_wrong"
     },
     {
       "mutation": "setting_rgb_wrong",
@@ -2818,7 +2818,7 @@
     },
     {
       "mutation": "swap_stereo",
-      "evidence": "evidence/v3/flex_media_261022/requalification/negative/swap_stereo"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/swap_stereo"
     },
     {
       "mutation": "thumbnail_row_alias",
@@ -2918,7 +2918,7 @@
     },
     {
       "mutation": "wav_picker_priority",
-      "evidence": "evidence/v3/flex_media_261022/requalification_arithmetic_261023/negative/wav_picker_priority"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/wav_picker_priority"
     },
     {
       "mutation": "waveform_previous_sample_lost",
@@ -2926,11 +2926,11 @@
     },
     {
       "mutation": "waveform_top_disabled",
-      "evidence": "evidence/v3/flex_media_261022/requalification_crc_bmp_261023/negative/waveform_top_disabled"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/waveform_top_disabled"
     },
     {
       "mutation": "wrong_file_bound",
-      "evidence": "evidence/v3/flex_media_261022/requalification/negative/wrong_file_bound"
+      "evidence": "evidence/v3/flex_media_261022/requalification_wav_261023/negative/wrong_file_bound"
     },
     {
       "mutation": "wrong_write_preload",
@@ -3017,7 +3017,7 @@
   "new_bit_generated": false,
   "hardware_verified": false,
   "requalification_basis": "Actual compiler order, independent references, normal endings and every captured before/after source/asset/generator byte must still match current files. No pass copied without rechecking.",
-  "native_route_option_selftest": "evidence/v3/flex_media_261022/native_route_options_crc_bmp_261023",
+  "native_route_option_selftest": "evidence/v3/flex_media_261022/native_route_options_wav_261023",
   "physical_key_selftest": "evidence/v3/four_features_261020/physical_key477b",
   "physical_gesture_selftest": "evidence/v3/four_features_261020/physical_gestures478",
   "key_requalification_basis": "All functional HDL/SDC bytes unchanged; replay all288 actual compiler graphs/202 semantic mutations against current inputs. Independently add vendorPDF physical-pin identity,11 rejected pin corruptions, old real PAD rejection and89 actual XSim gesture comparisons. New native timing/pads remain mandatory.",
@@ -4326,6 +4326,20 @@
     "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
     "profile_only_changes": {},
     "producer_receipt_sha256": "0c99d21a4a1dc9e845977fc612e4e1a9feb85bc19354f693de244f70b2c60318",
+    "scope": "Functional only; no STA, bitstream or board approval"
+  },
+  "wav_bounds_pipeline_selftest": "evidence/v3/wav_pipeline_261023",
+  "wav_bounds_requalification": {
+    "complete": true,
+    "positive": 303,
+    "negative": 221,
+    "fresh_native_executions": 99,
+    "unchanged_actual_captures_revalidated": 425,
+    "actual_execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+    "actual_execution_root": "D:\\Codex\\svflex537\\candidate734",
+    "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+    "profile_only_changes": {},
+    "producer_receipt_sha256": "1b90ae9d55483bca96eac84b1912ecda2cbdcc7c8b6c2408f44d10dd8a399ddf",
     "scope": "Functional only; no STA, bitstream or board approval"
   }
 }

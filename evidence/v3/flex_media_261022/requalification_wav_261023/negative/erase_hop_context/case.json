@@ -1,0 +1,25 @@
+{
+  "mutation": "erase_hop_context",
+  "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+  "suite": "audio_negative",
+  "top": "tb_v3_audio_negative_hop",
+  "patch": [
+    {
+      "before": "        end else if(context_load)begin hop_cnt<=context_hop;\n",
+      "after": "        end else if(context_load)begin hop_cnt<=0;\n"
+    }
+  ],
+  "required_marker": "[FAIL AUDIO_HOP_CONTEXT]",
+  "original_sha256": "023d744b37004f6673e85cd750202e408c5567f04be5b7d186ad5c473f7049e2",
+  "mutated_sha256": "153a694804ed1ad1a6226e6fc3ef7a23d124789b9b524989edf1679549292fe4",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop",
+  "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop"
+}

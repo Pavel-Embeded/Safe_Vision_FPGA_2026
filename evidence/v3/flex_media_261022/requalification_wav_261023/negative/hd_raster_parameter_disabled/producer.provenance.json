@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate734",
+  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification739\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198",
+  "native_log_sha256": "ce4e09f8cf260e5b52c55c645cda543028cf399cf338daddc90d0902c46e4edd",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "hd_raster_parameter_disabled",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198",
+    "checked": {
+      "metadata": {
+        "mutation": "hd_raster_parameter_disabled",
+        "target": "safevision/rtl/hd/v3_video_display_core.v",
+        "suite": "setting_wave_control_hd198",
+        "top": "tb_v3_setting_wave_control_hd198",
+        "patch": [
+          {
+            "before": ".RASTER_PREDECODE(HD)",
+            "after": ".RASTER_PREDECODE(0)"
+          }
+        ],
+        "original_sha256": "7b004785f527b7ddb5e551585300bcc7787354741b8fcd03a4b2243ad1b5643f",
+        "mutated_sha256": "e68e06dccf95637afc60aa048e0f1787059eb5b851a5da87fd898159b6431ace",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198",
+        "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\hd_raster_parameter_disabled\\sim\\tb_v3_setting_wave_control_hd198"
+      },
+      "metadata_sha256": "f0f07c073c82c86d098b3b98ebbfe95acb0e9d5bed54c0e557a1c9d7992127df",
+      "normal_completion": true,
+      "input_count": 122,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_setting_wave_control_hd198",
+        "suite": "setting_wave_control_hd198",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/setting_wave_control_hd198_sim.json",
+        "current_manifest_sha256": "acdb4440a8d7579f071f089d31d070df05f5a0e1ffac6e8a515a2d64e9f85362",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1
+      ],
+      "log_sha256": "ce4e09f8cf260e5b52c55c645cda543028cf399cf338daddc90d0902c46e4edd"
+    },
+    "elapsed_s": 17.047
+  }
+}

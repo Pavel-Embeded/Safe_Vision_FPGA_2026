@@ -1,0 +1,59 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_v3_pv_hd37 -s tb_v3_pv_hd37 --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3091] actual bit length 265 differs from formal bit length 136 for port 'context_out' [D:/Codex/svflex537/candidate734/safevision/rtl/storage/v3_wav_source.v:362]
+WARNING: [VRFC 10-3645] port 'external_service_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/verification/unit/tb_v3_audio_priority_volume.sv:19]
+WARNING: [VRFC 10-3645] port 'found' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_audio_system.v:72]
+WARNING: [VRFC 10-3645] port 'src_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_audio_system.v:83]
+WARNING: [VRFC 10-3645] port 'src_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_audio_system.v:86]
+WARNING: [VRFC 10-3645] port 'src_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_audio_system.v:107]
+WARNING: [VRFC 10-3645] port 'src_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_audio_system.v:118]
+WARNING: [VRFC 10-3645] port 'gain' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_audio_system.v:154]
+WARNING: [VRFC 10-3645] port 'busy' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_audio_system.v:159]
+WARNING: [VRFC 10-3645] port 'src_ready' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_audio_system.v:174]
+WARNING: [VRFC 10-3645] port 'err_detail' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/storage/v3_wav_source.v:288]
+WARNING: [VRFC 10-3645] port 'external_timeout_count' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/storage/v3_wav_source.v:322]
+WARNING: [VRFC 10-3645] port 'err_code' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/storage/v3_wav_source.v:361]
+WARNING: [VRFC 10-3645] port 'rd_level' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_pcm_sample_fifo.v:20]
+WARNING: [VRFC 10-3645] port 'rd_level' remains unconnected for this instance [D:/Codex/svflex537/candidate734/safevision/rtl/audio/v3_pcm_packet_fifo.v:13]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.v3_audio_reset_release
+Compiling module work.video_cdc_mailbox(WIDTH=64)
+Compiling module work.a_pixel_fifo_gray_sync(ADDR_WIDT...
+Compiling module work.a_pixel_fifo_eram(DATAWIDTH_A=16...
+Compiling module work.a_pixel_fifo_ip(DATA_WIDTH_W=16,...
+Compiling module work.sv_async_fifo(WIDTH=16,AW=10)
+Compiling module work.v3_pcm_ingress_shared_fifo
+Compiling module work.v3_audio_prefill_compare_default
+Compiling module work.a_pixel_fifo_eram(MODE="SP",DATA...
+Compiling module work.fat32_directory_scanner_default
+Compiling module work.v3_cluster_walker_ctx
+Compiling module work.v3_file_streamer_compact_ctx
+Compiling module work.v3_wav_parser_compact_ctx_defaul...
+Compiling module work.v3_wav_source_default
+Compiling module work.video_cdc_mailbox(WIDTH=5)
+Compiling module work.video_cdc_mailbox(WIDTH=10)
+Compiling module work.v3_pcm_ring_default
+Compiling module work.v3_pcm_sample_fifo
+Compiling module work.video_cdc_mailbox(WIDTH=4)
+Compiling module work.video_cdc_mailbox(WIDTH=18)
+Compiling module work.alarm_tone_gen
+Compiling module work.v3_audio_priority_serial_default
+Compiling module work.v3_audio_volume
+Compiling module work.a_pixel_fifo_gray_sync(ADDR_WIDT...
+Compiling module work.a_pixel_fifo_eram(DATAWIDTH_A=16...
+Compiling module work.a_pixel_fifo_ip(DATA_WIDTH_W=16,...
+Compiling module work.sv_async_fifo(WIDTH=16,AW=8)
+Compiling module work.v3_pcm_packet_fifo
+Compiling module work.hdmi_acr
+Compiling module work.audio_energy
+Compiling module work.video_cdc_mailbox(WIDTH=71)
+Compiling module work.v3_audio_system_default
+Compiling module work.v3_audio_priority_volume_scenari...
+Compiling module work.tb_v3_pv_hd37
+Built simulation snapshot tb_v3_pv_hd37

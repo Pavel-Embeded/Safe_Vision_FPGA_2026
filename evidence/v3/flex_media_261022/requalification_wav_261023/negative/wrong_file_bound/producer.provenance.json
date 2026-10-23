@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate734",
+  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification739\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence",
+  "native_log_sha256": "53bd11f73e7c22d20fb4f74491498ba31f0c6d7fbae04c33712911a634ceceba",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "wrong_file_bound",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence",
+    "checked": {
+      "metadata": {
+        "mutation": "wrong_file_bound",
+        "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+        "suite": "wav_bounds_equivalence",
+        "top": "tb_v3_wav_bounds_equivalence",
+        "patch": [
+          {
+            "before": "wire riff_oversize=(file_size<8)||greater_bytes(file_gt,file_eq);",
+            "after": "wire riff_oversize=(file_size<8)||greater_bytes(chunk_gt,chunk_eq);"
+          }
+        ],
+        "original_sha256": "72b39db61b0d0906e114d73a9dc3f4c998a709f6125c888a5bac3a885f0e91b8",
+        "mutated_sha256": "b783417c1f5e1e391f0f66a9465b803c1bf92018e2f8e2b663a66193d4c72257",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          70399
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence",
+        "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence"
+      },
+      "metadata_sha256": "67bbf6d955d9dbcb66ca9ceb9c9f35a79efec61386ff3b440ecd14b1382ab91e",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_wav_bounds_equivalence",
+        "suite": "wav_bounds_equivalence",
+        "ordered_analyzed_HDL": 3,
+        "manifest": "safevision/build/manifests/wav_bounds_equivalence_sim.json",
+        "current_manifest_sha256": "3410f9005cb80635c804318c5a247a39e7ae10ed1f33ff6d4e718fbb404f684b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        70399
+      ],
+      "log_sha256": "53bd11f73e7c22d20fb4f74491498ba31f0c6d7fbae04c33712911a634ceceba"
+    },
+    "elapsed_s": 11.297
+  }
+}

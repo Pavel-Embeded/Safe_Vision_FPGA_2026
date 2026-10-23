@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate734",
+  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage",
+  "native_log_sha256": "b3a410261a192a4a81e1c2084c26ec27b29338d2ca8ac12bf0269a744f4b14c2",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_shared_storage",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_shared_storage",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 14,
+        "data_comparisons": 614400,
+        "elapsed_s": 1807.578,
+        "suite": "shared_storage",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage"
+      },
+      "metadata_sha256": "d79b0b06d4bac0f4c596dd17229dde9b75049dd3a3df4b3603e9869e82ea2c62",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_shared_storage",
+        "suite": "shared_storage",
+        "ordered_analyzed_HDL": 33,
+        "manifest": "safevision/build/manifests/shared_storage_sim.json",
+        "current_manifest_sha256": "98a2df2852c4bee95064d052d24117a78edd804102f2a7deb998dcc0d20b7521",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "b3a410261a192a4a81e1c2084c26ec27b29338d2ca8ac12bf0269a744f4b14c2"
+    },
+    "elapsed_s": 1810.563
+  }
+}

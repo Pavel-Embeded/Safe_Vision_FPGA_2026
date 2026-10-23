@@ -1,0 +1,58 @@
+{
+  "tracks": [
+    {
+      "slot": 0,
+      "cluster": 10,
+      "size": 67282,
+      "second_JUNK_size": 65535,
+      "size_field_offsets": [
+        510,
+        511,
+        512,
+        513
+      ],
+      "PCM": 300
+    },
+    {
+      "slot": 1,
+      "cluster": 210,
+      "size": 67794,
+      "second_JUNK_size": 66047,
+      "size_field_offsets": [
+        510,
+        511,
+        512,
+        513
+      ],
+      "PCM": 300
+    },
+    {
+      "slot": 2,
+      "cluster": 410,
+      "size": 68306,
+      "second_JUNK_size": 66559,
+      "size_field_offsets": [
+        510,
+        511,
+        512,
+        513
+      ],
+      "PCM": 300
+    },
+    {
+      "slot": 3,
+      "cluster": 610,
+      "size": 68818,
+      "second_JUNK_size": 67071,
+      "size_field_offsets": [
+        510,
+        511,
+        512,
+        513
+      ],
+      "PCM": 300
+    }
+  ],
+  "independent_oracle": "Python struct RIFF plus signed exact L=slot*1024+n+1 R=-L",
+  "no_TF_or_board_access": true
+}

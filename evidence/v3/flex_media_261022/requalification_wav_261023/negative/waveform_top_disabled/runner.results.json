@@ -1,0 +1,17 @@
+{
+  "suite": "feature_board_hd198",
+  "results": [
+    {
+      "top": "tb_v3_feature_board_hd198",
+      "status": "FAIL",
+      "source_overrides": [
+        "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v"
+      ],
+      "error": "missing completion/checks or nonzero error: D:\\Codex\\svflex537\\qualification739\\negative\\waveform_top_disabled\\sim\\tb_v3_feature_board_hd198\\sim.log",
+      "elapsed_s": 297.391
+    }
+  ],
+  "complete": false,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

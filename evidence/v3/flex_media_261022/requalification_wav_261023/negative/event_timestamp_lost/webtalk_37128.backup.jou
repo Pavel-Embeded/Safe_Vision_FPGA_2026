@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Webtalk v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 11:11:08 2026
+# Process ID: 37128
+# Current directory: D:/Codex/svflex537/qualification739/negative/event_timestamp_lost/sim/tb_v3_diag_board
+# Command line: wbtcv.exe -mode batch -source D:/Codex/svflex537/qualification739/negative/event_timestamp_lost/sim/tb_v3_diag_board/xsim.dir/tb_v3_diag_board/webtalk/xsim_webtalk.tcl -notrace
+# Log file: D:/Codex/svflex537/qualification739/negative/event_timestamp_lost/sim/tb_v3_diag_board/webtalk.log
+# Journal file: D:/Codex/svflex537/qualification739/negative/event_timestamp_lost/sim/tb_v3_diag_board\webtalk.jou
+#-----------------------------------------------------------
+source D:/Codex/svflex537/qualification739/negative/event_timestamp_lost/sim/tb_v3_diag_board/xsim.dir/tb_v3_diag_board/webtalk/xsim_webtalk.tcl -notrace

@@ -1,0 +1,24 @@
+{
+  "mutation": "combinational_kernel_reset",
+  "target": "safevision/rtl/storage/v3_wav_source.v",
+  "suite": "registered_wav_reset",
+  "top": "tb_v3_registered_wav_reset",
+  "patch": [
+    {
+      "before": "wire kernel_rst_n=rst_n&&kernel_release_q;",
+      "after": "wire kernel_rst_n=rst_n&&state!=Q_RESET;"
+    }
+  ],
+  "original_sha256": "8d7bd4d1c12267aa75144190c7ab6c3c4460c8fc9d72f6c61bad45c80336ad28",
+  "mutated_sha256": "8cf57500a3639b83e4581d9afeca158fffa6e036008e16eb05996be755ecbda9",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    39
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\combinational_kernel_reset\\sim\\tb_v3_registered_wav_reset",
+  "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\combinational_kernel_reset\\sim\\tb_v3_registered_wav_reset"
+}

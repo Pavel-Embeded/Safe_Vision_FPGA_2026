@@ -11,6 +11,6 @@ Time resolution is 1 ps
 run -all
 [PASS] descriptor acceptance, corrupted WAV rescan, exact stereo PCM across fragmented clusters/EOF loop, finite all-bad ROM fallback
 [TB] tb_v3_wav_retry550 done errors=0 comparisons=4807
-$finish called at time : 1927020 ns : File "D:/Codex/svflex537/candidate665/safevision/verification/unit/tb_v3_wav_retry550.sv" Line 58
+$finish called at time : 1928920 ns : File "D:/Codex/svflex537/candidate734/safevision/verification/unit/tb_v3_wav_retry550.sv" Line 58
 exit
-INFO: [Common 17-206] Exiting xsim at Fri Oct 23 08:55:21 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 11:09:52 2026...

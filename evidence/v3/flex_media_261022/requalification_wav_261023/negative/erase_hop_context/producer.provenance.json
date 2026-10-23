@@ -1,0 +1,61 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate734",
+  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification739\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop",
+  "native_log_sha256": "a2a8f2bef546ce3d2d18fa4a8c8b4807ba2c60c963d928c1288f8f06181edf28",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "erase_hop_context",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop",
+    "checked": {
+      "metadata": {
+        "mutation": "erase_hop_context",
+        "target": "safevision/rtl/storage/v3_cluster_walker_ctx.v",
+        "suite": "audio_negative",
+        "top": "tb_v3_audio_negative_hop",
+        "patch": [
+          {
+            "before": "        end else if(context_load)begin hop_cnt<=context_hop;\n",
+            "after": "        end else if(context_load)begin hop_cnt<=0;\n"
+          }
+        ],
+        "required_marker": "[FAIL AUDIO_HOP_CONTEXT]",
+        "original_sha256": "023d744b37004f6673e85cd750202e408c5567f04be5b7d186ad5c473f7049e2",
+        "mutated_sha256": "153a694804ed1ad1a6226e6fc3ef7a23d124789b9b524989edf1679549292fe4",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop",
+        "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\erase_hop_context\\sim\\tb_v3_audio_negative_hop"
+      },
+      "metadata_sha256": "155ad3d68b35e3d59c5c89577832e9b9f1bb4a69f052d66bac44288e331f7b55",
+      "normal_completion": true,
+      "input_count": 41,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_audio_negative_hop",
+        "suite": "audio_negative",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/audio_negative_sim.json",
+        "current_manifest_sha256": "f38cf2e03d2a863c9b23e3e9b2025c637733c55d961b86535a88eb12d271e440",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1
+      ],
+      "log_sha256": "a2a8f2bef546ce3d2d18fa4a8c8b4807ba2c60c963d928c1288f8f06181edf28"
+    },
+    "elapsed_s": 17.796
+  }
+}

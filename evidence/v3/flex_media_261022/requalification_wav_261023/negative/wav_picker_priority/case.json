@@ -1,0 +1,24 @@
+{
+  "mutation": "wav_picker_priority",
+  "target": "safevision/rtl/storage/v3_wav_source.v",
+  "suite": "registered_wav_reset",
+  "top": "tb_v3_registered_wav_reset",
+  "patch": [
+    {
+      "before": "wire[1:0] chosen={winner[2]|winner[3],winner[1]|winner[3]};",
+      "after": "wire[1:0] chosen={winner[2]|winner[3],winner[1]};"
+    }
+  ],
+  "original_sha256": "8d7bd4d1c12267aa75144190c7ab6c3c4460c8fc9d72f6c61bad45c80336ad28",
+  "mutated_sha256": "0e00f24e5dce28dca378ca4bdafeb213c30c6178f3250c3a348e34de8990d4f6",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1988359
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\wav_picker_priority\\sim\\tb_v3_registered_wav_reset",
+  "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\wav_picker_priority\\sim\\tb_v3_registered_wav_reset"
+}
