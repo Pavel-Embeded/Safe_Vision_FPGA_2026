@@ -4,9 +4,9 @@ set_param place pr_strategy 5
 set_param place post_place_opt medium
 set_param place hfn_opt_effort low
 
-set_param place seed 13
+set_param place seed 7
 
-# Target measured SYS100 watchdog route using documented setup-margin mode.
+# Routability comparison; actual BASE50 control and all media clocks retained.
 set_param route timing off
 
 # Measured capacity profile; original clocks, I/O and STA gates retained.
@@ -17,3 +17,6 @@ set_param place opt_timing off
 
 # Actual clocks/IO remain exact; optimize timing after congestion closure.
 set_param route post_route_opt ultra
+
+# Pack small control sets to reduce physical control/routing pressure.
+set_param rtl min_control_set 2
