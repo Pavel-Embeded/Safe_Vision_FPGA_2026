@@ -43,6 +43,16 @@ def bits(text):
 class Native:
     def __init__(self, text):
         text = clean(text)
+        # TD may emit a whole declared bus at a physical Q port, for example
+        # .q(\\reset_cache_write/release_pipe ). Resolve that real declaration;
+        # a bare bus is not one scalar Q and its two FFs remain independent.
+        self.widths = {}
+        for declaration in re.finditer(r'^\s*(?:wire|input|output|inout)\s*\[(\d+):(\d+)\]\s+(\\?[^\s;]+)\s*;', text, re.M):
+            name = net(declaration[3])
+            span = (int(declaration[1]), int(declaration[2]))
+            if name in self.widths and self.widths[name] != span:
+                raise ValueError('conflicting actual native bus declarations: ' + name)
+            self.widths[name] = span
         self.cells = []
         self.parent = {}
         pattern = r'^\s{2}(EG_[A-Z0-9_]+|AL_MAP_SEQ)\s*(?:#\((.*?)\)\s*)?(\\?[^\s()]+)\s*\((.*?)\);'
@@ -50,12 +60,16 @@ class Native:
             ports = dict(re.findall(r'\.([A-Za-z_0-9]+)\(\s*([^()]*)\)', m[4]))
             self.cells.append(dict(kind=m[1], name=net(m[3]), params=m[2] or '', ports=ports))
         for m in re.finditer(r'^\s{2}buf\s+\\?[^\s()]+\s*\(([^();]+)\);', text, re.M):
-            pair = bits(m[1])
+            pair = m[1].split(',')
             if len(pair) != 2:
                 raise ValueError('unsupported native buf syntax')
-            self.union(*pair)
+            left, right = self.expand(pair[0]), self.expand(pair[1])
+            if not left or len(left) != len(right):
+                raise ValueError('unequal-width actual native buf ports')
+            for a, b in zip(left, right):
+                self.union(a, b)
         for m in re.finditer(r'^\s*assign\s+([^=;]+)=([^;]+);', text, re.M):
-            left, right = bits(m[1]), bits(m[2])
+            left, right = self.expand(m[1]), self.expand(m[2])
             # Do not turn expressions, constants or unequal-width assignments
             # into aliases. Such clock drivers will remain unresolved below.
             if len(left) == len(right) and all(re.fullmatch(r'[A-Za-z_$][A-Za-z_0-9/$.[\]:-]*', x) for x in left + right):
@@ -78,12 +92,24 @@ class Native:
                     'CLKC0_ENABLE': '"ENABLE"', 'CLKC1_ENABLE': '"ENABLE"'}
         if any(params.get(k) != value for k, value in expected.items()):
             raise ValueError('actual system PLL is not the phase-related MEM50/WRITE100 profile')
-        outs = bits(self.pll['ports'].get('clkc', ''))
+        outs = self.expand(self.pll['ports'].get('clkc', ''))
         if len(outs) != 5:
             raise ValueError('system PLL requires five explicit clkc output positions')
         self.outputs = {i: self.find(n) for i, n in enumerate(reversed(outs))}
         if self.outputs[0] == self.outputs[1]:
             raise ValueError('WRITE100 and MEM50 PLL outputs are aliased')
+
+    def expand(self, text):
+        """Expand explicit slices and bare buses from their actual declarations."""
+        result = []
+        for name in bits(text):
+            if name in self.widths:
+                high, low = self.widths[name]
+                step = -1 if high >= low else 1
+                result.extend(name + '[' + str(i) + ']' for i in range(high, low + step, step))
+            else:
+                result.append(name)
+        return result
 
     def find(self, name):
         self.parent.setdefault(name, name)
@@ -111,7 +137,7 @@ class Native:
         canonical = self.find(name)
         found = []
         for c in self.cells:
-            qs = bits(c['ports'].get('q', ''))
+            qs = self.expand(c['ports'].get('q', ''))
             for position, output in enumerate(reversed(qs)):
                 if self.find(output) == canonical:
                     if c['kind'] not in ('AL_MAP_SEQ', 'EG_PHY_LSLICE', 'EG_PHY_MSLICE') or not re.search(r'\.DFFMODE\("FF"\)', c['params']):
@@ -122,6 +148,48 @@ class Native:
         if len(found) != 1:
             raise ValueError('expected FF Q driver missing/duplicated: ' + name + ' count=' + str(len(found)))
         return found[0]
+
+    def reset_drivers(self, name, text):
+        """Bind every TD high-fanout SYS-reset replica, including its D/SR.
+
+        A logical Q may disappear only when actual, precisely named stage-1
+        replicas replace it. No representative replica substitutes for others.
+        """
+        if name != 'reset_sys/release_pipe[1]':
+            c, position = self.ff_driver(name)
+            return [(name, c, position)]
+        replicas = sorted(set(re.findall(re.escape(name) + r'_dup_\d+\b', clean(text))))
+        rows = []
+        for actual in [name] + replicas:
+            try:
+                c, position = self.ff_driver(actual)
+            except ValueError as error:
+                absent = 'expected FF Q driver missing/duplicated: ' + name + ' count=0'
+                if actual == name and replicas and str(error) == absent:
+                    continue
+                raise
+            if replicas:
+                first, _ = self.ff_driver('reset_sys/release_pipe[0]')
+                params = dict(re.findall(r'\.([A-Za-z_0-9]+)\(([^()]*)\)', c['params']))
+                required = {'CEMUX': '"1"', 'CLKMUX': '"CLK"', 'DFFMODE': '"FF"',
+                            'SRMODE': '"ASYNC"', 'SRMUX': '"INV"'}
+                if c['kind'] == 'AL_MAP_SEQ':
+                    required['REGSET'] = '"RESET"'
+                    data = list(reversed(self.expand(c['ports'].get('d', ''))))
+                else:
+                    required['REG' + str(position) + '_SD'] = '"MI"'
+                    required['REG' + str(position) + '_REGSET'] = '"RESET"'
+                    data = list(reversed(self.expand(c['ports'].get('mi', ''))))
+                if any(params.get(k) != v for k, v in required.items()):
+                    raise ValueError('SYS reset replica is not an unconditional asynchronous-reset FF: ' + actual)
+                if len(data) <= position or self.find(data[position]) != self.find('reset_sys/release_pipe[0]'):
+                    raise ValueError('SYS reset replica D is not the actual preceding release stage: ' + actual)
+                if not c['ports'].get('sr') or self.find(net(c['ports']['sr'])) != self.find(net(first['ports'].get('sr', ''))):
+                    raise ValueError('SYS reset replica SR differs from the actual preceding release stage: ' + actual)
+            rows.append((actual, c, position))
+        if not rows:
+            raise ValueError('SYS reset has neither its original Q nor actual validated replicas')
+        return rows
 
 
 def clock_tree(text):
@@ -195,8 +263,9 @@ def check_texts(gate, route, clock_xml, *, packed=True, external_reset=False, sy
         parsed = Native(text)
         rows = []
         pin_bindings = set()
-        for name, output in expected:
-            c, q_bit = parsed.ff_driver(name)
+        expanded_expected = [(name, output, actual, c, q_bit) for name, output in expected
+                             for actual, c, q_bit in parsed.reset_drivers(name, text)]
+        for name, output, actual, c, q_bit in expanded_expected:
             origin = parsed.origin(c['ports']['clk'])
             if origin != {output}:
                 raise ValueError(stage + ' wrong clock ownership for ' + name + ': PLL outputs ' + repr(sorted(origin)))
@@ -208,7 +277,7 @@ def check_texts(gate, route, clock_xml, *, packed=True, external_reset=False, sy
             clock_name = PLL + '.clkc[' + str(output) + ']'
             if stage == 'route' and owners.get(actual_pin) != {clock_name}:
                 raise ValueError('routed XML endpoint clock ownership differs for ' + actual_pin + ': ' + repr(sorted(owners.get(actual_pin, set()))))
-            rows.append(dict(signal=name, cell=c['name'], q_bit=q_bit, clock_pin=actual_pin, pll_output=output))
+            rows.append(dict(signal=name, actual_signal=actual, cell=c['name'], q_bit=q_bit, clock_pin=actual_pin, pll_output=output))
         rams = [c for c in parsed.cells if c['name'].startswith(PREFIX) and c['kind'] in ('EG_PHY_BRAM', 'EG_PHY_BRAM32K')]
         if len(rams) != 4 or any(c['kind'] != 'EG_PHY_BRAM32K' for c in rams):
             raise ValueError(stage + ' packed cache must have exactly four native BRAM32K macros')
