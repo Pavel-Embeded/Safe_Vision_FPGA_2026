@@ -48,7 +48,7 @@ def check(root):
    'assign sys_clk=HD?pll_sys100_clk:mem_clk;',
    '.clk0_out(pll_sys100_clk),.clk1_out(mem_clk),.clk2_out(mem_clk_sft));',
    'v3_user_controls #(.CLK_HZ(SYS_HZ),.DEBOUNCE(SYS_HZ/50),.UI_TIMEBASE(1),',
-   'v3_supervisor #(.CLK_HZ(SYS_HZ),.PROGRESSIVE_LOAD(1),',
+   'v3_supervisor #(.CLK_HZ(SYS_HZ),.FRAME_CYCLES(SYS_HZ/10),.MEM_CYCLES(SYS_HZ/5),.PROGRESS_CYCLES(SYS_HZ/2),.PROGRESSIVE_LOAD(1),',
    'localparam integer RECOVERY_CYCLES=SYS_HZ/10*49;',
    '.RECOVER_CYCLES(RECOVERY_CYCLES)',
    'v3_response_timer #(.CLK_HZ(SYS_HZ)) response_timer(',

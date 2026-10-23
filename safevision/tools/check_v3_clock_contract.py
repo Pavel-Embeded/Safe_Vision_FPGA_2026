@@ -21,7 +21,7 @@ def supervisor_parameters(text):
   raise ValueError('unsupported supervisor parameter syntax')
  if len({key for key,value in pairs})!=len(pairs):raise ValueError('duplicate supervisor parameter')
  values=dict(pairs)
- if not set(values)<={'CLK_HZ','RECOVER_CYCLES','WINDOW_PIPELINE','BOOT_MS_OVERRIDE','PROGRESSIVE_LOAD'}:
+ if not set(values)<={'CLK_HZ','RECOVER_CYCLES','WINDOW_PIPELINE','BOOT_MS_OVERRIDE','PROGRESSIVE_LOAD','FRAME_CYCLES','MEM_CYCLES','PROGRESS_CYCLES'}:
   raise ValueError('unexpected supervisor recovery parameter')
  named=values.get('CLK_HZ')=='SYS_HZ'and values.get('RECOVER_CYCLES')=='RECOVERY_CYCLES'
  if named:
@@ -31,6 +31,9 @@ def supervisor_parameters(text):
                  'assignsys_clk=HD?pll_sys100_clk:mem_clk;',
                  '.clk0_out(pll_sys100_clk),.clk1_out(mem_clk),.clk2_out(mem_clk_sft));'):
    if compact.count(marker)!=1:raise ValueError('unsupported named actual clock/recovery plan: '+marker)
+  for key,expected in [('FRAME_CYCLES','SYS_HZ/10'),('MEM_CYCLES','SYS_HZ/5'),('PROGRESS_CYCLES','SYS_HZ/2')]:
+   if values.get(key)!=expected:raise ValueError('uncalibrated control watchdog: '+key)
+  if compact.count('.CLK_HZ(SYS_HZ),.DEBOUNCE(SYS_HZ/50),.UI_TIMEBASE(1)')!=1:raise ValueError('uncalibrated physical key debounce')
  elif 'CLK_HZ'in values or not re.fullmatch(r'\d+',values.get('RECOVER_CYCLES','')):
   raise ValueError('unexpected or unsupported supervisor recovery constant')
  if 'BOOT_MS_OVERRIDE'in values and values['BOOT_MS_OVERRIDE']!='60000':

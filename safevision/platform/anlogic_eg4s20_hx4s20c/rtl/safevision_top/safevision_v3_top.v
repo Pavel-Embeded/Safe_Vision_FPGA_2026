@@ -259,7 +259,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire err_push;wire[7:0] err_code;wire[3:0] err_src;wire[2:0] err_level;wire[31:0] err_ts;
  // SAFE is immediate; the4.9s recovery WAIT budget measures inactivity.
  // Valid large-file progress extends preload, never the frame/media watchdogs.
- v3_supervisor #(.CLK_HZ(SYS_HZ),.PROGRESSIVE_LOAD(1),.BOOT_MS_OVERRIDE(60000),.RECOVER_CYCLES(RECOVERY_CYCLES),.WINDOW_PIPELINE(HD)) supervisor(.clk(sys_clk),.rst_n(sys_rst_n),.manual_safe(manual_safe),.recover_request(recover_request),.cache_ready(cached),
+ v3_supervisor #(.CLK_HZ(SYS_HZ),.FRAME_CYCLES(SYS_HZ/10),.MEM_CYCLES(SYS_HZ/5),.PROGRESS_CYCLES(SYS_HZ/2),.PROGRESSIVE_LOAD(1),.BOOT_MS_OVERRIDE(60000),.RECOVER_CYCLES(RECOVERY_CYCLES),.WINDOW_PIPELINE(HD)) supervisor(.clk(sys_clk),.rst_n(sys_rst_n),.manual_safe(manual_safe),.recover_request(recover_request),.cache_ready(cached),
  .media_failed(ref_status_sys[15:12]==10 || mem_status_sys[7:0]!=0),
  .media_code((mem_status_sys[7:0]!=0)?mem_status_sys[7:0]:ref_status_sys[31:24]),
  .integrity_fault(mem_status_sys[11] || video_fault || presentation_fault),.bus_fault(mem_status_sys[10] || mem_status_sys[9]),.fatal(pll_loss_sys),
