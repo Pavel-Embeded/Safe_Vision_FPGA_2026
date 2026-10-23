@@ -130,6 +130,8 @@ def check(folder,repo):
   result['board_reference']=check_reference(repo,area)
   from check_v3_clock_contract import check as check_clock_contract
   result['configured_clock_contract']=check_clock_contract(repo)
+  from check_v3_native_clock_domains import check as check_native_clock_domains
+  result['native_packed_clock_ownership']=check_native_clock_domains(folder,repo)
   from v3_sources import native_parameters
   result['native_parameters']=native_parameters(repo,folder)
   files+=['rtl.params','gate.params','place.params','route.params']

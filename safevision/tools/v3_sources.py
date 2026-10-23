@@ -59,6 +59,7 @@ def scope(root):
  files.add(Path('safevision/tools/check_v3_volume_reciprocal.py'))
  files.add(Path('safevision/tools/check_v3_clock_contract.py'))
  files.add(Path('safevision/tools/check_v3_sample_netlist.py'))
+ files.add(Path('safevision/tools/check_v3_native_clock_domains.py'))
  return sorted(files,key=lambda p:p.as_posix())
 def snapshot(root):
  from v3_resource_policy import load

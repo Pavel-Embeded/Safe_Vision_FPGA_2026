@@ -73,6 +73,22 @@ def check(root):
  core=root/'safevision/rtl/video/v3_video_display_core.v'
  for p in [top,core]:
   if p.read_text(encoding='utf-8').count('.PIXEL_HZ(PIXEL_HZ)')!=1:raise ValueError('Clock parameter is not propagated once: '+str(p))
+ # Packed storage serializes one MEM50 word into two WRITE100 halfwords.
+ # The control SYS clock is mode dependent and is not a valid clock proxy.
+ # Check the declared production wiring here; mapped/routed pin ownership is
+ # independently mandatory in check_v3_native_clock_domains.
+ from check_v3_native_clock_domains import source_profile,clean
+ packed_profile=source_profile(root)
+ if packed_profile['external']:
+  if not packed_profile['packed']:raise ValueError('external packed-cache clock enabled without packed cache')
+  compact=re.sub(r'\s+','',clean(t))
+  for marker in ('.cache_write_clk(pll_sys100_clk),.cache_write_rst_n(cache_write_rst_n)',
+                 'reset_syncreset_cache_write(.clk(pll_sys100_clk),.async_rst_n(media_common_rst_n),.rst_n(cache_write_rst_n));'):
+   if compact.count(marker)!=1:raise ValueError('external WRITE100/reset production wiring differs: '+marker)
+  cc=re.sub(r'\s+','',clean(core.read_text(encoding='utf-8')))
+  for marker in ('.write_clk(EXTERNAL_CACHE_WRITE?cache_write_clk:sys_clk)',
+                 '.write_rst_n(EXTERNAL_CACHE_WRITE?cache_write_rst_n:(sys_rst_n&&!media_reset))'):
+   if cc.count(marker)!=1:raise ValueError('display cache does not select the explicit WRITE100/reset contract')
  # SPI25 is opt-in; the source, declared electrical profile and generated
  # clocks must agree before any physical build can be approved.
  budget_path=sdc.parent/'io_budget.json';sd=json.loads(budget_path.read_text(encoding='utf-8'))['sd']
@@ -136,7 +152,7 @@ def check(root):
     boot_budget_kind='no_progress'if progressive else'total_preload',
     total_recovery_duration_bounded_by_this_check=not progressive)
  else:spi_profile={'enabled':False,'profile':'legacy','native_edges_separately_required':True}
- return {'complete':True,'kind':'configured_nominal_clock_contract','clocks':clocks,'spi_profile':spi_profile,'board_reference_hz':float(ref_hz),
+ return {'complete':True,'kind':'configured_nominal_clock_contract','clocks':clocks,'spi_profile':spi_profile,'packed_cache_clock_profile':packed_profile,'board_reference_hz':float(ref_hz),
   'board_sdc_sha256':hashlib.sha256(sdc.read_bytes()).hexdigest(),
   'board_sha256':hashlib.sha256(top.read_bytes()).hexdigest(),'core_sha256':hashlib.sha256(core.read_bytes()).hexdigest(),
   'native_derived_clocks_verified_by_this_check':False,'hardware_verified':False}
