@@ -984,12 +984,12 @@
                     <post_place_opt>medium</post_place_opt>
                     <hfn_opt_effort>low</hfn_opt_effort>
                     <pr_strategy>5</pr_strategy>
-                    <seed>7</seed>
+                    <seed>0</seed>
                     <opt_timing>off</opt_timing>
                 </PlaceProperty>
                 <RouteProperty>
                     <effort>routability</effort>
-                    <timing>off</timing>
+                    <timing>on</timing>
                     <fix_hold>on</fix_hold>
                     <post_route_opt>ultra</post_route_opt>
                 </RouteProperty>
