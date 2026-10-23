@@ -18,7 +18,14 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  // BASE: 50MHz*17*4/(3*45); HD: 50MHz*1*89/(4*15).
  // These are configured nominal frequencies, not measured oscillator values.
  localparam integer PIXEL_HZ=HD?74166667:25185185;
+ // The handbook specifies100MHz as a recommendation, not a fixed media rate.
+ // BASE controls/UART/watchdogs share the real50MHz memory PLL output.
+ // Pixel/serial clocks,SD SPI,SDRAM phase and48k audio keep their old rates.
+ localparam integer SYS_HZ=HD?100000000:50000000;
+ localparam integer RECOVERY_CYCLES=SYS_HZ/10*49;
+ wire pll_sys100_clk;
  wire sys_clk,mem_clk,mem_clk_sft,pixel_clk,serial_clk,audio_clk;
+ assign sys_clk=HD?pll_sys100_clk:mem_clk;
  wire sys_lock,video_lock,audio_lock,ref_rst_n,common_rst_n,control_common_rst_n;
  wire sys_rst_n,mem_rst_n,pixel_rst_n,audio_rst_n,config_rst_n;
  // Configuration retains user settings across KEY1/media reset. The six
@@ -37,7 +44,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire ref_media_rst_n,mem_media_rst_n,sys_media_rst_n,media_reset;
  reset_sync reset_ref(.clk(clk),.async_rst_n(rst_n),.rst_n(ref_rst_n));
  sv_v3_memory_pll system_pll(.refclk(clk),.reset(1'b0),.extlock(sys_lock),
- .clk0_out(sys_clk),.clk1_out(mem_clk),.clk2_out(mem_clk_sft));
+ .clk0_out(pll_sys100_clk),.clk1_out(mem_clk),.clk2_out(mem_clk_sft));
  generate if(HD==0)begin:video_base
  sv_video_vga_pll video_pll(.refclk(clk),.reset(1'b0),.extlock(video_lock),
  .clk0_out(),.clk1_out(pixel_clk),.clk2_out(serial_clk));
@@ -234,7 +241,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire cmd_valid,cmd_query;wire[7:0] cmd_target;wire[95:0] cmd_name;wire signed[31:0] cmd_value;
  wire[6:0] brightness_pct;wire brightness_raw;wire[1:0] scale_select;
  wire transition_busy,frame_commit;wire[1:0] active_slot;wire[7:0] generation;
- v3_user_controls #(.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(.clk(sys_clk),.rst_n(sys_rst_n),.next_async(btn_next),.auto_async(btn_auto),.emergency_async(btn_emergency),
+ v3_user_controls #(.CLK_HZ(SYS_HZ),.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(.clk(sys_clk),.rst_n(sys_rst_n),.next_async(btn_next),.auto_async(btn_auto),.emergency_async(btn_emergency),
  .catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66),.command_target(cmd_target),.command_name(cmd_name),.command_value(cmd_value),.command_query(cmd_query),
  .cached(cached),.system_safe(safe_active),.transition_busy(transition_busy || recovery_busy || safe_active || !cached),.frame_commit(frame_commit),.next_request(next_request),.auto_enabled(auto_enabled),
  .safety(manual_safe),.recover_request(recover_request),.reply_valid(controls_reply),.reply_code(controls_reply_code),.reply_value(controls_reply_value),
@@ -252,7 +259,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire err_push;wire[7:0] err_code;wire[3:0] err_src;wire[2:0] err_level;wire[31:0] err_ts;
  // SAFE is immediate; the4.9s recovery WAIT budget measures inactivity.
  // Valid large-file progress extends preload, never the frame/media watchdogs.
- v3_supervisor #(.PROGRESSIVE_LOAD(1),.BOOT_MS_OVERRIDE(60000),.RECOVER_CYCLES(490000000),.WINDOW_PIPELINE(HD)) supervisor(.clk(sys_clk),.rst_n(sys_rst_n),.manual_safe(manual_safe),.recover_request(recover_request),.cache_ready(cached),
+ v3_supervisor #(.CLK_HZ(SYS_HZ),.PROGRESSIVE_LOAD(1),.BOOT_MS_OVERRIDE(60000),.RECOVER_CYCLES(RECOVERY_CYCLES),.WINDOW_PIPELINE(HD)) supervisor(.clk(sys_clk),.rst_n(sys_rst_n),.manual_safe(manual_safe),.recover_request(recover_request),.cache_ready(cached),
  .media_failed(ref_status_sys[15:12]==10 || mem_status_sys[7:0]!=0),
  .media_code((mem_status_sys[7:0]!=0)?mem_status_sys[7:0]:ref_status_sys[31:24]),
  .integrity_fault(mem_status_sys[11] || video_fault || presentation_fault),.bus_fault(mem_status_sys[10] || mem_status_sys[9]),.fatal(pll_loss_sys),
@@ -267,7 +274,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire[6:0] energy;wire wav_index_done,media_ready;wire[7:0] media_ready_generation;
  wire target_valid;wire[1:0] target_slot;wire[7:0] target_generation;
  wire request_accepted,response_started;wire[15:0] response_latency_ms;
- v3_response_timer response_timer(.clk(sys_clk),.rst_n(sys_rst_n),.start(request_accepted),
+ v3_response_timer #(.CLK_HZ(SYS_HZ)) response_timer(.clk(sys_clk),.rst_n(sys_rst_n),.start(request_accepted),
  .finish(response_started),.cancel(safe_active||media_reset),.latency_ms(response_latency_ms));
  wire[7:0] hud_latency=response_latency_ms>255?8'd255:response_latency_ms[7:0];
  wire cfg_ready;wire[98:0] cfg_data={brightness_raw,scale_select,auto_enabled,brightness[7:0],contrast,osd_alpha,bilinear,fit,fade_enable,volume,period_select,field,menu,
@@ -520,7 +527,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  end end end
  wire normal_uart_txd,fatal_uart_txd;
 
- v3_uart_link #(.BOARD_CATALOG(1)) uart(.clk(sys_clk),.rst_n(sys_rst_n),.rxd(uart_rxd),.txd(normal_uart_txd),
+ v3_uart_link #(.CLK_HZ(SYS_HZ),.BOARD_CATALOG(1)) uart(.clk(sys_clk),.rst_n(sys_rst_n),.rxd(uart_rxd),.txd(normal_uart_txd),
  .command_valid(cmd_valid),.command_target(cmd_target),.command_name(cmd_name),.command_value(cmd_value),.command_query(cmd_query),
  .catalog_id(cmd_catalog_id),
  .reply_valid(controls_reply || b_reply),.reply_code(b_reply?b_reply_code:controls_reply_code),.reply_value(b_reply?b_reply_value:controls_reply_value),

@@ -26,7 +26,7 @@ def check(root):
  control_ids={name:int(value) for name,value in re.findall(r"localparam\[6:0\] CTRL_ID_([A-Z]+)=7'd(\d+);",controls)}
  if control_ids:
   if len(control_ids)!=15 or any(value!=ordered.index(name)+1 or controls.count('CTRL_ID_'+name+':decode_catalog=OP_'+name+';')!=1 for name,value in control_ids.items()):raise ValueError('control catalog ID differs from exact name catalog')
-  if not any(signature in top_text for signature in ['v3_user_controls #(.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(', 'v3_user_controls #(.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(']) or '.catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66)' not in top_text:raise ValueError('board controls must consume the exact parser catalog ID')
+  if not any(signature in top_text for signature in ['v3_user_controls #(.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(', 'v3_user_controls #(.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(', 'v3_user_controls #(.CLK_HZ(SYS_HZ),.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1),.HANDBOOK_PROFILE(1),.DEFAULT_AUTO(1),.RETAIN_CONFIG(1)) controls(']) or '.catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66)' not in top_text:raise ValueError('board controls must consume the exact parser catalog ID')
  if bindings and any(value!=ordered.index(name)+1 for name,value in bindings.items()):raise ValueError('board numeric query ID differs from exact name catalog')
  for index,name in enumerate(ordered):
   if not 1<=len(name)<=12:raise ValueError('invalid command length')
@@ -38,7 +38,24 @@ def check(root):
  parser=(root/'safevision/rtl/control/v3_command_parser_catalog.v').read_text()
  decoded={int(i):bytes.fromhex(v).lstrip(b'\0').decode('ascii') for i,v in re.findall(r"7'd(\d+):catalog_name=96'h([0-9a-fA-F]{24})",parser)}
  if decoded!=dict(enumerate(ordered,1)):raise ValueError('catalog output decoder differs from ROM/consumers')
- if 'v3_uart_link #(.BOARD_CATALOG(1)) uart(' not in (root/TOP).read_text():raise ValueError('board must opt into verified command catalog')
+ if not any(signature in top_text for signature in ('v3_uart_link #(.BOARD_CATALOG(1)) uart(', 'v3_uart_link #(.CLK_HZ(SYS_HZ),.BOARD_CATALOG(1)) uart(')):raise ValueError('board must opt into verified command catalog')
+ # Recognize only the reviewed explicit clock plan, preserving every catalog
+ # flag/ID/ROM check above. A changed clock with old UART or timer constants
+ # must be rejected rather than silently accepted as an alternative spelling.
+ if '.CLK_HZ(SYS_HZ)'in top_text:
+  for marker in (
+   'localparam integer SYS_HZ=HD?100000000:50000000;',
+   'assign sys_clk=HD?pll_sys100_clk:mem_clk;',
+   '.clk0_out(pll_sys100_clk),.clk1_out(mem_clk),.clk2_out(mem_clk_sft));',
+   'v3_user_controls #(.CLK_HZ(SYS_HZ),.UI_TIMEBASE(1),',
+   'v3_supervisor #(.CLK_HZ(SYS_HZ),.PROGRESSIVE_LOAD(1),',
+   'localparam integer RECOVERY_CYCLES=SYS_HZ/10*49;',
+   '.RECOVER_CYCLES(RECOVERY_CYCLES)',
+   'v3_response_timer #(.CLK_HZ(SYS_HZ)) response_timer(',
+   'v3_uart_link #(.CLK_HZ(SYS_HZ),.BOARD_CATALOG(1)) uart(',
+  ):
+   if top_text.count(marker)!=1:raise ValueError('incomplete/mismatched actual board control clock plan: '+marker)
+
  return {'accepted':True,'commands':ordered,'exact_rom_bytes':len(actual),'rom_sha256':hashlib.sha256(actual).hexdigest(),'minimum_uart_divider':32,'minimum_catalog_name_spacing_edges':84}
 
 if __name__=='__main__':

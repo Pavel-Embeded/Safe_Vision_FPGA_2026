@@ -1,5 +1,6 @@
 // Board-only status capture between clocks with a common reference.
-// REF50 and MEM50 -> SYS100 are related clocks in sv_v3_memory_pll.
+// REF50 and MEM50 -> SYS50(BASE)/SYS100(HD) use the same reference PLL.
+// BASE control and memory use the same50MHz output; all real paths stay timed.
 // Every source field is launched by a REF/MEM register. Ordinary clocked
 // setup AND hold, including coincident edges, must pass native routed STA.
 // No synchronizer attribute, false path, or datapath-only waiver is permitted

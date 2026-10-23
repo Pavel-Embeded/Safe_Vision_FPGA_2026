@@ -21,8 +21,18 @@ def supervisor_parameters(text):
   raise ValueError('unsupported supervisor parameter syntax')
  if len({key for key,value in pairs})!=len(pairs):raise ValueError('duplicate supervisor parameter')
  values=dict(pairs)
- if not set(values)<={'RECOVER_CYCLES','WINDOW_PIPELINE','BOOT_MS_OVERRIDE','PROGRESSIVE_LOAD'} or not re.fullmatch(r'\d+',values.get('RECOVER_CYCLES','')):
-  raise ValueError('unexpected or nonliteral supervisor recovery parameter')
+ if not set(values)<={'CLK_HZ','RECOVER_CYCLES','WINDOW_PIPELINE','BOOT_MS_OVERRIDE','PROGRESSIVE_LOAD'}:
+  raise ValueError('unexpected supervisor recovery parameter')
+ named=values.get('CLK_HZ')=='SYS_HZ'and values.get('RECOVER_CYCLES')=='RECOVERY_CYCLES'
+ if named:
+  compact=re.sub(r'\s+','',text)
+  for marker in ('localparamintegerSYS_HZ=HD?100000000:50000000;',
+                 'localparamintegerRECOVERY_CYCLES=SYS_HZ/10*49;',
+                 'assignsys_clk=HD?pll_sys100_clk:mem_clk;',
+                 '.clk0_out(pll_sys100_clk),.clk1_out(mem_clk),.clk2_out(mem_clk_sft));'):
+   if compact.count(marker)!=1:raise ValueError('unsupported named actual clock/recovery plan: '+marker)
+ elif 'CLK_HZ'in values or not re.fullmatch(r'\d+',values.get('RECOVER_CYCLES','')):
+  raise ValueError('unexpected or unsupported supervisor recovery constant')
  if 'BOOT_MS_OVERRIDE'in values and values['BOOT_MS_OVERRIDE']!='60000':
   raise ValueError('variable-resolution board load budget must be60000ms')
  if 'WINDOW_PIPELINE'in values and values['WINDOW_PIPELINE']!='HD':
@@ -88,11 +98,26 @@ def check(root):
     if sdc_text.splitlines().count(cmd)!=1:raise ValueError('SPI literal receive-enable constraint differs')
   mp=ip/'sv_v3_memory_pll.v';mt=mp.read_text(encoding='utf-8')
   if Fraction(re.search(r'\.FIN\("([\d.]+)"\)',mt)[1])*1000000!=ref_hz:raise ValueError('memory PLL FIN differs from board reference')
-  vals={k:int(re.search(r'\.'+k+r'\((\d+)\)',mt)[1])for k in ['REFCLK_DIV','FBCLK_DIV']}
-  sys_hz=ref_hz*vals['FBCLK_DIV']/vals['REFCLK_DIV']
+  if '.FEEDBK_MODE("NORMAL")'not in mt or '.FEEDBK_PATH("CLKC0_EXT")'not in mt:raise ValueError('unsupported memory PLL feedback configuration')
+  vals={k:int(re.search(r'\.'+k+r'\((\d+)\)',mt)[1])for k in ['REFCLK_DIV','FBCLK_DIV','CLKC0_DIV','CLKC1_DIV','CLKC2_DIV']}
+  if min(vals.values())<1:raise ValueError('nonpositive memory PLL divider')
+  sys0_hz=ref_hz*vals['FBCLK_DIV']/vals['REFCLK_DIV']
+  mem_hz=sys0_hz*vals['CLKC0_DIV']/vals['CLKC1_DIV']
+  sdram_hz=sys0_hz*vals['CLKC0_DIV']/vals['CLKC2_DIV']
+  if mem_hz!=50000000 or sdram_hz!=mem_hz:raise ValueError('configured SDRAM/memory clock differs from50MHz media profile')
   supervisor=supervisor_parameters(t)
-  recovery_cycles=int(supervisor['RECOVER_CYCLES'])
-  if recovery_cycles!=sys_hz*49/10 or (recovery_cycles+130)>=sys_hz*5:raise ValueError('recovery wait/reset/settle deadline exceeds5s envelope')
+  if supervisor.get('CLK_HZ')=='SYS_HZ':
+   if sys0_hz!=100000000 or mem_hz!=50000000:raise ValueError('selected control clocks disagree with declared actual PLL outputs')
+   selected={'base':mem_hz,'hd':sys0_hz}
+   recovery_by_mode={mode:int(hz/10)*49 for mode,hz in selected.items()}
+  else:
+   if t.count('.clk0_out(sys_clk),.clk1_out(mem_clk),.clk2_out(mem_clk_sft));')!=1:raise ValueError('implicit supervisor must use the actual PLL output0')
+   selected={'base':sys0_hz,'hd':sys0_hz}
+   recovery_by_mode={mode:int(supervisor['RECOVER_CYCLES'])for mode in selected}
+  for mode,hz in selected.items():
+   rc=recovery_by_mode[mode]
+   if rc!=hz*49/10 or(rc+130)>=hz*5:raise ValueError('recovery wait/reset/settle deadline exceeds5s envelope: '+mode)
+  sys_hz=selected['base'];recovery_cycles=recovery_by_mode['base']
   spi_profile={'enabled':True,'fast_hz':25000000,'sample_edge':'falling_REF','hold_budget_ns':10,'native_edges_separately_required':True,'recovery_wait_seconds':float(Fraction(recovery_cycles,sys_hz)),'electrical_contract_sha256':hashlib.sha256(budget_path.read_bytes()).hexdigest()}
   progressive=supervisor.get('PROGRESSIVE_LOAD')=='1'
   if progressive:
@@ -101,7 +126,10 @@ def check(root):
     raw=(root/f'safevision/rtl/{mode}/v3_supervisor.v').read_text(encoding='utf-8')
     if raw.count('.PROGRESSIVE_WAIT(PROGRESSIVE_LOAD)')!=1 or raw.count('.progress(progress_heartbeat || mem_heartbeat)')!=1:
      raise ValueError('progressive recovery heartbeat is not propagated: '+mode)
-  spi_profile.update(recovery_budget_kind='no_progress'if progressive else'total_wait',
+  spi_profile.update(configured_control_hz={mode:float(hz)for mode,hz in selected.items()},
+    configured_memory_hz=float(mem_hz),configured_sdram_hz=float(sdram_hz),
+    recovery_cycles_by_mode=recovery_by_mode,
+    recovery_budget_kind='no_progress'if progressive else'total_wait',
     boot_budget_kind='no_progress'if progressive else'total_preload',
     total_recovery_duration_bounded_by_this_check=not progressive)
  else:spi_profile={'enabled':False,'profile':'legacy','native_edges_separately_required':True}

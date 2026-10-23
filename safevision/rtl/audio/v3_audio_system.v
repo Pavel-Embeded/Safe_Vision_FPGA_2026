@@ -1,5 +1,5 @@
 // V3 audio assembly. Clocks: REF=50MHz, production MEM=50MHz, AUDIO=12.288136MHz,
-// SYS=100MHz, PIXEL=25.2/74.25MHz. 48k cadence is AUDIO / 256 (~48000.531Hz).
+// SYS=50MHz(BASE)/100MHz(HD), PIXEL=25.2/74.25MHz. 48k cadence is AUDIO / 256 (~48000.531Hz).
 // Control/status cross via immutable bundled mailboxes; sample streams use the
 // vendor TD equal-width FWFT FIFO. media_reset resets source/rings/media FIFOs;
 // ROM tone, sample clock, priority ramp and HDMI packet cadence use global reset.
