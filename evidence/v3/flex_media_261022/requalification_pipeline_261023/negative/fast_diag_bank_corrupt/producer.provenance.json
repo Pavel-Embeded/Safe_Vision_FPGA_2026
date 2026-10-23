@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification830\\negative\\fast_diag_bank_corrupt\\sim\\tb_v3_diag_board",
+  "native_log_sha256": "dcebb6e8e4d55a0ca97f1e117b0a1b42864122a23a8f31b81b54f786c38b9dff",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "fast_diag_bank_corrupt",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification830\\negative\\fast_diag_bank_corrupt\\sim\\tb_v3_diag_board",
+    "checked": {
+      "metadata": {
+        "mutation": "fast_diag_bank_corrupt",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "diag_board",
+        "top": "tb_v3_diag_board",
+        "patch": [
+          {
+            "before": "b_diag_group1<=b_diag_next1;",
+            "after": "b_diag_group1<=b_diag_next1^32'd1;"
+          }
+        ],
+        "original_sha256": "7963af303daf08b0ab508a6aabc653497710788bcf1d760db815d013521fd033",
+        "mutated_sha256": "a4417734420a94097c9aa70e75cac899f12fcd6c5d82ba51102b141244729f73",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          1
+        ],
+        "detected": true,
+        "original_producer": "D:\\Codex\\svflex537\\qualification830\\negative\\fast_diag_bank_corrupt\\sim\\tb_v3_diag_board"
+      },
+      "metadata_sha256": "dfb6919d7f6d561f6f8b46cf28c55834d1fd0bc025313792d98cf71dc9d4f377",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_diag_board",
+        "suite": "diag_board",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/diag_board_sim.json",
+        "current_manifest_sha256": "f4b545bf36ae15576b92e6a1abd687961dbe7773b2ab28749c24688f64b3104f",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        1
+      ],
+      "log_sha256": "dcebb6e8e4d55a0ca97f1e117b0a1b42864122a23a8f31b81b54f786c38b9dff"
+    },
+    "elapsed_s": 17.093,
+    "diagnostic_fixture_consistency_repair": true
+  }
+}

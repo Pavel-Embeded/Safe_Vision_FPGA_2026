@@ -1,0 +1,24 @@
+{
+  "mutation": "odd_pad_lost",
+  "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+  "suite": "wav_bounds_equivalence",
+  "top": "tb_v3_wav_bounds_equivalence",
+  "patch": [
+    {
+      "before": "||(assembled[0]&&(&chunk_eq))",
+      "after": ""
+    }
+  ],
+  "original_sha256": "d0896f4bf0b7fcc77096f4459d2e4d6fa45adeaf667d02274740f27b08ab53b6",
+  "mutated_sha256": "54b806ad100e9cbce5b855e9a500ef8f983d9a26733b0e93cb7ccd4c8a766ae9",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    1927
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\odd_pad_lost\\sim\\tb_v3_wav_bounds_equivalence",
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\odd_pad_lost\\sim\\tb_v3_wav_bounds_equivalence"
+}

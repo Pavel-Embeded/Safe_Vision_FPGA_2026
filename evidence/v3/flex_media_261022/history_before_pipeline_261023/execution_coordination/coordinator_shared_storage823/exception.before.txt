@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "D:\Codex\svflex537\qualification811\coordinator_resume819\executed_coordinator.py", line 111, in execute
+    await_existing_runner(out)
+  File "D:\Codex\2026-10-15\github-plugin-github-openai-curated-remote\work\resume_qualification819.py", line 60, in await_existing_runner
+    assert len(match)<=1
+           ^^^^^^^^^^^^^
+AssertionError

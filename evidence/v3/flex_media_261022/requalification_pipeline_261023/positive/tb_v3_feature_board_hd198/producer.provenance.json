@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_feature_board_hd198\\sim\\tb_v3_feature_board_hd198",
+  "native_log_sha256": "692d36bdaadae2cdb6f3a485fd6abbe143e297195179d1761ddd1740e1397f16",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_feature_board_hd198",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_feature_board_hd198\\sim\\tb_v3_feature_board_hd198",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_feature_board_hd198",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 142854,
+        "elapsed_s": 464.281,
+        "suite": "feature_board_hd198",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_feature_board_hd198\\sim\\tb_v3_feature_board_hd198"
+      },
+      "metadata_sha256": "c6f3ff25880cad319e6115f33b36b3578c266be1af75c178c74665080960b668",
+      "normal_completion": true,
+      "input_count": 121,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_feature_board_hd198",
+        "suite": "feature_board_hd198",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/feature_board_hd198_sim.json",
+        "current_manifest_sha256": "e909d9a94161e65c71616972449fa08b1005c5c43e180ec2dbe392e358aa8669",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "692d36bdaadae2cdb6f3a485fd6abbe143e297195179d1761ddd1740e1397f16"
+    },
+    "elapsed_s": 464.625
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "mutation": "safe_graphics_live_flag",
+  "target": "safevision/rtl/video/v3_video_display_core.v",
+  "suite": "frame_safe_integration",
+  "top": "tb_v3_frame_safe_integration",
+  "patch": [
+    {
+      "before": ".safety_active(frame_safe_raw),",
+      "after": ".safety_active(safe_p2||media_p2||fault_p2||presentation_fault_p||!enabled),"
+    }
+  ],
+  "original_sha256": "f88105b154001ab3d36aa9077059e146aec9e7049d61794405652d9b7b12cbb2",
+  "mutated_sha256": "972f7b2dc2c75c11972f508ae43fda86ce5c3f9fe19fa73c2a4514a60eee810e",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    3069
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\safe_graphics_live_flag\\sim\\tb_v3_frame_safe_integration",
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\safe_graphics_live_flag\\sim\\tb_v3_frame_safe_integration"
+}

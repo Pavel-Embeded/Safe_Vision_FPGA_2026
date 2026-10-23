@@ -1,18 +1,18 @@
 {
   "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
-  "execution_root": "D:\\Codex\\svflex537\\candidate698",
-  "execution_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
-  "current_build_commit": "c085a24b7eec5a2c9d6f28df59a7385b55a1b303",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
   "profile_changes": {},
-  "producer": "D:\\Codex\\svflex537\\qualification702\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
-  "native_log_sha256": "0003f4b3fcf69846c3f86406709030b4bbd1de12ccedd0da6ce88badc4dcb1b9",
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+  "native_log_sha256": "d20dfb5e1fb97d2b910e819ae8b752712b7a9596608b9214a88d2e5989e973f9",
   "original_metadata_preserved": true,
   "record": {
     "kind": "negative",
     "name": "flex_bmp_unsampled_tail_truncation_accepted",
     "accepted": true,
     "action": "fresh_native_execution",
-    "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
     "checked": {
       "metadata": {
         "mutation": "flex_bmp_unsampled_tail_truncation_accepted",
@@ -25,8 +25,8 @@
             "after": "if(1'b1)state<=FINISH;"
           }
         ],
-        "original_sha256": "e6f54c5914f9d7247ce9fcbba87c90a3ba1653cd293298223d4bad4e894bc23d",
-        "mutated_sha256": "1196f7389aa5ecdfab166988349bd2c7e37d24069d80d7fca6b58718800ae243",
+        "original_sha256": "8274d134d118a8af850ff61b0ddcb012330be3829f72babd6d1a2d8ef1427fc6",
+        "mutated_sha256": "fcb1518c1c6767e0705b831a82f6c2a904376316e66a859f6aab787bd06478ce",
         "mutant_file": "mutant.v",
         "process_exit": 1,
         "return_code": 1,
@@ -35,12 +35,12 @@
           8
         ],
         "detected": true,
-        "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
-        "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
         "strict_generated_inputs": 1,
         "native_runner": "safevision/tools/run_v3_sim_flexible.py"
       },
-      "metadata_sha256": "5d1f30200ea8a84c48679cbbb030aad390210a6c5e5a18a9579b6d818654e3fc",
+      "metadata_sha256": "994bfbd8efe8f7bcc8b10f1e815ac7caa6e40472707b88369e9c383dd0bce721",
       "normal_completion": true,
       "input_count": 15,
       "compiler_graph": {
@@ -56,14 +56,14 @@
         "generator_dependencies": 0,
         "runtime_assets": 2,
         "generation_inputs": 13,
-        "generation_before_sha256": "3ee2f0dedbc2af8642087db8f329d8583b4a2f3b1c8254f41bfe9faeaed8fabd",
-        "generation_after_sha256": "3ee2f0dedbc2af8642087db8f329d8583b4a2f3b1c8254f41bfe9faeaed8fabd"
+        "generation_before_sha256": "8efcc6992b92b9827a6f34d018a131ba3396def37ded20e0d525181bd179d7ad",
+        "generation_after_sha256": "8efcc6992b92b9827a6f34d018a131ba3396def37ded20e0d525181bd179d7ad"
       },
       "error_counts": [
         8
       ],
-      "log_sha256": "0003f4b3fcf69846c3f86406709030b4bbd1de12ccedd0da6ce88badc4dcb1b9"
+      "log_sha256": "d20dfb5e1fb97d2b910e819ae8b752712b7a9596608b9214a88d2e5989e973f9"
     },
-    "elapsed_s": 15.235
+    "elapsed_s": 21.563
   }
 }

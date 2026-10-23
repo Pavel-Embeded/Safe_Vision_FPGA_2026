@@ -21,8 +21,9 @@ ARCHIVE='evidence/v3/flex_media_261022'
 TOP='safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v'
 # Reviewed original definitions, sorted by top/mutation then canonical JSON.
 # These hashes exclude source commits, physical fingerprints and evidence paths.
-# The sole previously reviewed adjustment is the complete FLEX width guard in
-# bmp_width_guard_bypassed, not a weakened prefix of that expression.
+# The existing digest includes the complete FLEX width guard. The exact
+# coherent counter-zero-flag extension is separately checked and documented
+# below; all205 original fault identities remain mandatory.
 BASE_POSITIVE_SHA256='0f5546944127f9eab173864409a2365d63c29a3ce2d75ed4442dc6db88fc15d6'
 BASE_NEGATIVE_SHA256='b46516f662e79eda723982bbe098527e3afc19653d3c5441495b76d162b85a70'
 
@@ -132,6 +133,27 @@ def requirements(root,index,matrix):
  baseline_pos=[r for r in matrix['positive']if r['top']not in wanted_pos]
  baseline_neg=[r for r in matrix['negative']if not r['mutation'].startswith('flex_')]
  require(len(baseline_pos)==290 and len(baseline_neg)==205,'historical matrix was removed or replaced')
+ # The counter-width fault still shortens SOURCE_W by exactly one bit.
+ # Its redundant zero flag must describe the same faulty wrapped counter,
+ # otherwise a new invariant aborts before the independent public oracle.
+ # Accept only this exact pair; canonicalize to the reviewed historical
+ # fault for the original205 hash. Main audit still verifies BOTH compiled
+ # patches, all source bytes, normal finish and actual nonzero HDL errors.
+ actual_neg_digest=definition_hash(baseline_neg,'mutation')
+ counter_old=_mutation('frame_counter_one_bit_short','safevision/rtl/memory/v3_row_integrity.v','v3','tb_v3_row_integrity','SOURCE_W=$clog2(FRAME_WORDS+1)','SOURCE_W=$clog2(FRAME_WORDS+1)-1')
+ counter_new=copy.deepcopy(counter_old)
+ counter_new['patch'].append(dict(before="source_count<=source_words+1'b1;source_first<=0;",after="source_count<=source_words+1'b1;source_first<=(source_words[SOURCE_W-1:0]=={SOURCE_W{1'b1}});"))
+ counter_row=neg['frame_counter_one_bit_short'];counter_model=None
+ counter_claim=index.get('pipeline_requalification',{}).get('counter_fault_requalification',{})
+ if _normalized_patch(counter_row)==counter_new:
+  require(counter_claim.get('complete')and counter_claim.get('normal_semantic_detection')and counter_claim.get('production_assertions_unchanged'),'coherent counter fault lacks mandatory current native proof')
+  rtl=(root/counter_old['target']).read_text(encoding='utf-8-sig')
+  require(rtl.count(counter_old['patch'][0]['before'])==1 and rtl.count(counter_new['patch'][1]['before'])==1,'counter production anchors changed')
+  require(rtl.count('if(source_first !== (source_words==0))$fatal(1,"unary source position invariant violated");')==1,'counter invariant was removed or weakened')
+  baseline_neg=[counter_old if r['mutation']==counter_old['mutation']else r for r in baseline_neg]
+  counter_model=dict(reviewed_exact_extension=True,original=counter_old,current=counter_new,production_assertions_unchanged=True,normal_native_detection_required_by_parent=True)
+ else:
+  require(not counter_claim.get('complete'),'qualified coherent counter fault definition missing or changed')
  pos_digest=definition_hash(baseline_pos,'top');neg_digest=definition_hash(baseline_neg,'mutation')
  require(pos_digest==BASE_POSITIVE_SHA256,'historical290 positive requirements changed')
  require(neg_digest==BASE_NEGATIVE_SHA256,'historical205 negative semantic definitions changed')
@@ -139,7 +161,7 @@ def requirements(root,index,matrix):
  from v3_sources import snapshot
  physical=snapshot(root);strict=strict_manifests(root)
  require(len(physical)==205 and matrix['physical_source_sha256']==physical,'FLEX requires the current explicit205 physical inputs')
- return dict(requirements_verified=True,expected_positive=303,expected_negative=221,expected_records=304,expected_physical=205,new_positive=13,new_negative=16,base_positive=290,base_negative=205,base_positive_definition_sha256=pos_digest,base_negative_definition_sha256=neg_digest,new_positive_tops=sorted(wanted_pos),new_mutations=sorted(wanted_neg),strict_native_inputs=strict)
+ return dict(requirements_verified=True,expected_positive=303,expected_negative=221,expected_records=304,expected_physical=205,new_positive=13,new_negative=16,base_positive=290,base_negative=205,base_positive_definition_sha256=pos_digest,base_negative_definition_sha256=neg_digest,actual_base_negative_definition_sha256=actual_neg_digest,reviewed_counter_fault_model=counter_model,new_positive_tops=sorted(wanted_pos),new_mutations=sorted(wanted_neg),strict_native_inputs=strict)
 
 def _strip_comments(text):
  return re.sub(r'("(?:\\.|[^"\\])*")|//[^\n]*|/\*[\s\S]*?\*/',lambda match:match.group(1)or' ',text)

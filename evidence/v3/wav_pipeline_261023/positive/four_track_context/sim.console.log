@@ -11,8 +11,8 @@ Time resolution is 1 ps
 run -all
 [TRACE] found=f fallback=0 received_mask=f
 [PASS] four distinct WAVs, split 32-bit odd-length fields, context RAM atomicity, exact stereo PCM, backpressure, EOF loops
-[TB] tb_v3_wav_context730 done errors=0 comparisons=2837229
-$finish called at time : 28316010 ns : File "D:/Codex/svflex537/wav736_testroot/safevision/verification/unit/tb_v3_wav_context730.sv" Line 56
-run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:18 . Memory (MB): peak = 218.699 ; gain = 0.000
+[TB] tb_v3_wav_context730 done errors=0 comparisons=2839979
+$finish called at time : 28343510 ns : File "D:/Codex/svflex537/aux788_root/safevision/verification/unit/tb_v3_wav_context730.sv" Line 56
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:21 . Memory (MB): peak = 218.020 ; gain = 0.000
 exit
-INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:40:09 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 12:18:14 2026...

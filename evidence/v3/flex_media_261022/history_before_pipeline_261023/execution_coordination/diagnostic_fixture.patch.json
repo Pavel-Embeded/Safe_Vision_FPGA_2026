@@ -1,0 +1,20 @@
+{
+  "physical205_unchanged": true,
+  "patches": [
+    {
+      "path": "safevision/verification/unit/tb_v3_diag_board.sv",
+      "before": "force dut.guard_words=32'h00025800;",
+      "after": "// This diagnostic-only injection forces the source count through its\n  // continuous output alias. Keep its redundant zero flag consistent; the\n  // live memory invariant remains enabled and all diagnostic checks remain.\n  force dut.row_guard.source_first=1'b0;\n  force dut.guard_words=32'h00025800;",
+      "original_sha256": "4bcd207096f7f3a83ed347e1bd8330d3b5755801b62108c03c67ea1fee840aed",
+      "new_sha256": "0a23b77136c188634f71817e846b4cac0dba9b0296b48c5c6d431a8623bf044c"
+    },
+    {
+      "path": "safevision/verification/unit/tb_v3_diag_alias156.sv",
+      "before": "force dut.guard_words=32'h00025800;",
+      "after": "// This diagnostic-only injection forces the source count through its\n  // continuous output alias. Keep its redundant zero flag consistent; the\n  // live memory invariant remains enabled and all diagnostic checks remain.\n  force dut.row_guard.source_first=1'b0;\n  force dut.guard_words=32'h00025800;",
+      "original_sha256": "b16418551d19463356889c44ee0bfda5008fa1fa425402b46b1775df1c8db793",
+      "new_sha256": "0fd6b2e4acfcf381031c012a8a5aecfb2b84c2789ca55c1595785f6db570e693"
+    }
+  ],
+  "reason": "Diagnostic force of source_words aliases internal source_count, so its redundant zero flag must be forced consistently; no RTL assertion removed"
+}

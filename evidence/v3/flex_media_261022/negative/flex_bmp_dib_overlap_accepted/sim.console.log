@@ -61,7 +61,7 @@ run -all
 [PASS] BOUNDS551 tail 24bpp rows998 omit0 expected_error1 output_pixels306560
 [PASS] BOUNDS551 tail 32bpp rows998 omit0 expected_error1 output_pixels306560
 [TB] tb_v3_flexible_bmp_bounds551 done, errors=5 comparisons=2105
-$finish called at time : 74681350 ns : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_flexible_bmp_bounds551.sv" Line 58
-run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:08 . Memory (MB): peak = 218.785 ; gain = 0.000
+$finish called at time : 74681450 ns : File "D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_v3_flexible_bmp_bounds551.sv" Line 58
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:00:11 . Memory (MB): peak = 218.184 ; gain = 0.000
 exit
-INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:16:19 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:37:14 2026...

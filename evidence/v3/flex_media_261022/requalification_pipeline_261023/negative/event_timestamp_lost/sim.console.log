@@ -1,0 +1,23 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_diag_board/xsim_script.tcl
+# xsim {tb_v3_diag_board} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=            10660000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=            10680000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=            10700000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=            10720000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=            10740000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=            10760000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=            10780000
+[FAIL] event source/code/original timestamp preserved in order selector=00000004 actual=38a64b19 t=            10800000
+[TB] tb_v3_diag_board done errors=8 comparisons=78
+$finish called at time : 10820 ns : File "D:/Codex/svflex537/diag830_root/safevision/verification/unit/tb_v3_diag_board.sv" Line 88
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:34:54 2026...

@@ -20,57 +20,57 @@ run -all
 [EVENT] t=9678870000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
 [EVENT] t=9678950000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=00/00 sk=00
 [EVENT] t=9679030000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=00/00 sk=00
-[EVENT] t=10088850000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
-[EVENT] t=10088930000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
-[EVENT] t=10089090000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
-[EVENT] t=10098030000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=10098110000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=12197570000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=12197630000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=14295630000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=14295690000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=14295710000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=14295790000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=14295870000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
-[EVENT] t=44969670000 pl=8 sink=4 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=48933530000 pl=8 sink=2 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=48933550000 pl=8 sink=0 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=48933630000 pl=9 sink=0 count=1 mr=0 active=0 kick=0 fd=0 pending=1 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=48933650000 pl=4 sink=0 count=1 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=51032790000 pl=5 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=51032850000 pl=4 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=53130410000 pl=5 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=53130470000 pl=7 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=53130490000 pl=6 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=53130570000 pl=8 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=53130650000 pl=8 sink=1 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
-[EVENT] t=83794790000 pl=8 sink=4 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=87758630000 pl=8 sink=2 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=87758650000 pl=8 sink=0 count=1 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=87758730000 pl=9 sink=0 count=2 mr=0 active=0 kick=0 fd=1 pending=1 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=87758750000 pl=4 sink=0 count=2 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=89857650000 pl=5 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=89857710000 pl=4 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=91955310000 pl=5 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=91955370000 pl=7 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=91955390000 pl=6 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=91955470000 pl=8 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=91955550000 pl=8 sink=1 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
-[EVENT] t=122642630000 pl=8 sink=4 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=126606490000 pl=8 sink=2 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=126606510000 pl=8 sink=0 count=2 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=126606590000 pl=9 sink=0 count=3 mr=0 active=0 kick=0 fd=0 pending=1 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=126606610000 pl=4 sink=0 count=3 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=128705350000 pl=5 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=128705410000 pl=4 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=130803210000 pl=5 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=130803270000 pl=7 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=130803290000 pl=6 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=130803370000 pl=8 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
-[EVENT] t=130803450000 pl=8 sink=1 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
-[EVENT] t=161490150000 pl=8 sink=4 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=165454010000 pl=8 sink=2 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=165454030000 pl=8 sink=0 count=3 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=10088910000 pl=12 sink=1 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=10088990000 pl=12 sink=3 count=0 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=10089150000 pl=12 sink=0 count=0 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=10098090000 pl=13 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=10098170000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=12197630000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=12197690000 pl=4 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295690000 pl=5 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295750000 pl=7 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295770000 pl=6 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295850000 pl=8 sink=0 count=0 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=14295930000 pl=8 sink=1 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=44974790000 pl=8 sink=4 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=48938650000 pl=8 sink=2 count=0 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=48938670000 pl=8 sink=0 count=0 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=48938750000 pl=9 sink=0 count=1 mr=0 active=0 kick=0 fd=0 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=48938770000 pl=4 sink=0 count=1 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=51037910000 pl=5 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=51037970000 pl=4 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53135530000 pl=5 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53135590000 pl=7 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53135610000 pl=6 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53135690000 pl=8 sink=0 count=1 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=53135770000 pl=8 sink=1 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=83807270000 pl=8 sink=4 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=87771130000 pl=8 sink=2 count=1 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=87771150000 pl=8 sink=0 count=1 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=87771230000 pl=9 sink=0 count=2 mr=0 active=0 kick=0 fd=1 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=87771250000 pl=4 sink=0 count=2 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=89870150000 pl=5 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=89870210000 pl=4 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91967810000 pl=5 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91967870000 pl=7 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91967890000 pl=6 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91967970000 pl=8 sink=0 count=2 mr=1 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=91968050000 pl=8 sink=1 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=122665350000 pl=8 sink=4 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=126629190000 pl=8 sink=2 count=2 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=126629210000 pl=8 sink=0 count=2 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=126629290000 pl=9 sink=0 count=3 mr=0 active=0 kick=0 fd=0 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=126629310000 pl=4 sink=0 count=3 mr=0 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=128728050000 pl=5 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=128728110000 pl=4 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130825910000 pl=5 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130825970000 pl=7 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130825990000 pl=6 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130826070000 pl=8 sink=0 count=3 mr=1 active=0 kick=0 fd=0 pending=0 done=0 fst=0 ec=03/37 sk=00
+[EVENT] t=130826150000 pl=8 sink=1 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=0 fst=1 ec=03/37 sk=00
+[EVENT] t=161521990000 pl=8 sink=4 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=165486310000 pl=8 sink=2 count=3 mr=0 active=1 kick=1 fd=0 pending=0 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=165486330000 pl=8 sink=0 count=3 mr=0 active=1 kick=1 fd=1 pending=0 done=1 fst=0 ec=03/37 sk=00
 [STATUS] state=9 stage=7 ec=03/37 sink=0/00 count=4 keys=001600140012000f writes=614400
 [PASS]     four verified load completions, no partial cache publication
 [PASS]  lexicographic first BMP skipped without consuming resident slot
@@ -79,8 +79,8 @@ run -all
 [PASS] e Unicode names sorted independently of physical directory order
 [PASS]                             exactly four complete frames written
 [PASS]       all four producer row CRCs match delayed physical readback
-[EVENT] t=165454110000 pl=9 sink=0 count=4 mr=0 active=0 kick=0 fd=1 pending=1 done=1 fst=0 ec=03/37 sk=00
-[EVENT] t=165454130000 pl=7 sink=0 count=4 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=00/00 sk=00
+[EVENT] t=165486410000 pl=9 sink=0 count=4 mr=0 active=0 kick=0 fd=1 pending=1 done=1 fst=0 ec=03/37 sk=00
+[EVENT] t=165486430000 pl=7 sink=0 count=4 mr=0 active=0 kick=0 fd=1 pending=0 done=0 fst=0 ec=00/00 sk=00
 [PASS] ches independent Pillow decode and rational coordinate reference
 [PASS] ches independent Pillow decode and rational coordinate reference
 [PASS] ches independent Pillow decode and rational coordinate reference
@@ -89,7 +89,7 @@ run -all
 [PASS]  handed over after full frames, old done cleared before WAV scan
 [PASS] oop with exact stereo PCM after arbitrary-name descriptor commit
 PASS tb_v3_flexible_retry_fs550 errors=0 comparisons=614400 PCM=4800
-$finish called at time : 185158570 ns : File "D:/Codex/svflex537/candidate734/safevision/verification/unit/tb_v3_flexible_retry_fs550.sv" Line 166
-run: Time (s): cpu = 00:00:00 ; elapsed = 00:01:43 . Memory (MB): peak = 218.254 ; gain = 0.000
+$finish called at time : 185191330 ns : File "D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_v3_flexible_retry_fs550.sv" Line 166
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:03:10 . Memory (MB): peak = 218.102 ; gain = 0.000
 exit
-INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:46:54 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:16:09 2026...

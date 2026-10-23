@@ -200,12 +200,22 @@ def audit(root,manifest,repository,inspect_incomplete=False):
  wav_pipeline=wav_pipeline_audit(root,index,repository)
  assert wav_pipeline['accepted']and not wav_pipeline['release_ready']
  protected.update(wav_pipeline['proof_sha256'])
+ from audit_v3_lba_clock788 import audit as lba_clock_audit
+ lba_clock=lba_clock_audit(root,index,repository)
+ assert lba_clock['accepted']and not lba_clock['release_ready']
+ protected.update(lba_clock['proof_sha256'])
+ from audit_v3_pipeline815 import audit as pipeline_audit
+ pipeline=pipeline_audit(root,index,repository)
+ assert pipeline['accepted']and not pipeline['release_ready']
+ protected.update(pipeline['proof_sha256'])
  for p in(root/'safevision/tools').rglob('*.py'):protected[p.relative_to(root).as_posix()]=sha(p)
  gui=[check_gui(root,m)for m in ('base','hd')]
  result=dict(accepted=bool(index['complete']and not missing_positive),profile=index['profile'],source_build_commit=matrix['source_build_commit'],required_positive_records_including_aliases=expected_records,positive_unique_tops=len(records),missing_positive=missing_positive,strict_normal_ending_mutants=expected_negative,physical_inputs=expected_physical,positive=records,negative=faults,source_sha256=hardware,proof_sha256=protected,gui_cli=gui,current_serial_division_proof=True,routed_sta_passed=False,bitstreams_verified=False,hardware_verified=False,release_ready=False)
  if flexible_extension:result['flexible_media_auxiliary']={k:v for k,v in flexible.items()if k!='proof_sha256'}
  result['compact_ingress_auxiliary']={k:v for k,v in compact_ingress.items()if k!='proof_sha256'}
  result['wav_pipeline_auxiliary']={k:v for k,v in wav_pipeline.items()if k!='proof_sha256'}
+ result['lba_control_clock_auxiliary']={k:v for k,v in lba_clock.items()if k!='proof_sha256'}
+ result['pipeline_auxiliary']={k:v for k,v in pipeline.items()if k!='proof_sha256'}
  if legacy_ports is not None:result['legacy_ordered_ports']=legacy_ports
  return result
 

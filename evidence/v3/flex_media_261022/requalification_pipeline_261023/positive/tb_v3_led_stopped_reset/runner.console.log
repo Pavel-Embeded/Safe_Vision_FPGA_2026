@@ -1,0 +1,2 @@
+PASS actual top/candidate/frozen original LED publication binding
+{"top": "tb_v3_led_stopped_reset", "status": "PASS", "source_overrides": [], "checks": 1, "data_comparisons": 215, "elapsed_s": 8.25}

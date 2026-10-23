@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_fat_geometry\\sim\\tb_v3_fat_geometry",
+  "native_log_sha256": "f9190464cdf5e7a0cd279ecc1e5a15c30698b7918181964090ab0d143bc45074",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_fat_geometry",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_fat_geometry\\sim\\tb_v3_fat_geometry",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_fat_geometry",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 6570,
+        "elapsed_s": 8.0,
+        "suite": "fat_geometry",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_fat_geometry\\sim\\tb_v3_fat_geometry"
+      },
+      "metadata_sha256": "cf644d3e49d6dfee7f19b34939909b8ee0488b4c23b09f6b22a4bbd708aa5ecf",
+      "normal_completion": true,
+      "input_count": 14,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_fat_geometry",
+        "suite": "fat_geometry",
+        "ordered_analyzed_HDL": 6,
+        "manifest": "safevision/build/manifests/fat_geometry_sim.json",
+        "current_manifest_sha256": "016fa27fdf3634a5f2828fe932a643bc861873580da74ead480ae3f1f66af84b",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "f9190464cdf5e7a0cd279ecc1e5a15c30698b7918181964090ab0d143bc45074"
+    },
+    "elapsed_s": 8.235
+  }
+}

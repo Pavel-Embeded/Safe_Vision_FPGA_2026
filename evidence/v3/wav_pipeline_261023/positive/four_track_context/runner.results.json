@@ -6,8 +6,8 @@
       "status": "PASS",
       "source_overrides": [],
       "checks": 1,
-      "data_comparisons": 2837229,
-      "elapsed_s": 29.844
+      "data_comparisons": 2839979,
+      "elapsed_s": 29.875
     }
   ],
   "complete": true,

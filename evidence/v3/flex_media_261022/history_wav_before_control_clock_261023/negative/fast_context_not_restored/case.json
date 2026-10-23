@@ -1,0 +1,22 @@
+{
+  "mutation": "fast_context_not_restored",
+  "target": "safevision/rtl/storage/v3_wav_source.v",
+  "suite": "wav_context730",
+  "top": "tb_v3_wav_context730",
+  "patch": [
+    {
+      "before": ".bound_context_in(next_context[WP_CORE_BITS+:WP_BOUND_BITS])",
+      "after": ".bound_context_in(34'd0)"
+    }
+  ],
+  "original_sha256": "8d7bd4d1c12267aa75144190c7ab6c3c4460c8fc9d72f6c61bad45c80336ad28",
+  "mutated_sha256": "7b50f6a1a53a0686ddfcbb826e30dd7cbec9a4a87e6c5b80a1f8631d83ef3d20",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "normal_completion": true,
+  "detected": true,
+  "error_counts": [
+    9
+  ],
+  "original_producer": "D:\\Codex\\svflex537\\wav736\\fast_context_not_restored\\sim\\tb_v3_wav_context730"
+}

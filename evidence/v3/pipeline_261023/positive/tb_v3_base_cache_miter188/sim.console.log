@@ -1,0 +1,19 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_base_cache_miter188/xsim_script.tcl
+# xsim {tb_v3_base_cache_miter188} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS] even/odd 8-neighbor packing, last column clamp and row reuse
+[PASS] intentionally corrupt CRC rejected before row publication
+[PASS] fetch reset flush and revalidation
+[TB] tb_v3_base_cache_miter188 done comparisons=30350 errors=0
+PASS tb_v3_base_cache_miter188
+$finish called at time : 131434212 ps : File "D:/Codex/svflex537/pipe805_root/safevision/verification/unit/tb_v3_base_cache_miter188.sv" Line 135
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 12:38:18 2026...

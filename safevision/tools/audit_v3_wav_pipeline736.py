@@ -9,7 +9,7 @@ ORIGIN='c085a24b7eec5a2c9d6f28df59a7385b55a1b303'
 REF_SHA='b5379d89a6ec3af2e97b79aa62b9fe16dd54790e599f11fda8fb3877580e608e'
 POSITIVE={
  'parser_bound_sweep':dict(top='tb_v3_wav_pipe724',suite='wav_pipe724',comparisons=1800866),
- 'four_track_context':dict(top='tb_v3_wav_context730',suite='wav_context730',comparisons=2837229),
+ 'four_track_context':dict(top='tb_v3_wav_context730',suite='wav_context730',comparisons=2839979),
 }
 NEGATIVE=[
  dict(mutation='fast_round_carry_lost',target=PARSER,patch=[dict(before='carry_q<=byte_sum[8];',after="carry_q<=1'b0;")],suite='wav_pipe724',top='tb_v3_wav_pipe724',errors=[9]),
@@ -18,7 +18,7 @@ NEGATIVE=[
  dict(mutation='fast_context_not_restored',target=SOURCE,patch=[dict(before='.bound_context_in(next_context[WP_CORE_BITS+:WP_BOUND_BITS])',after=".bound_context_in(34'd0)")],suite='wav_context730',top='tb_v3_wav_context730',errors=[9]),
 ]
 TESTS={
- 'safevision/verification/unit/tb_v3_wav_pipe724.sv':'93f4d2902979828221646c0e139c608af94c754cf599f0b73d8b438a0a9bf8ae',
+ 'safevision/verification/unit/tb_v3_wav_pipe724.sv':'0032e1cc7227f7425ea3849e8cb20b4e22f716782ff4e50fae358ed815286f12',
  # The context test and fixtures are bound by an independent authored inventory
  # plus actual compiler/input captures; a simulation figure is not hardware.
 }

@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_shared_storage_spi25\\sim\\tb_v3_shared_storage_spi25",
+  "native_log_sha256": "06dfc692eddf5c978ed14bfaf0d79689a7f9f5fcdd339e7f40c7184e970f4582",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_shared_storage_spi25",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_shared_storage_spi25\\sim\\tb_v3_shared_storage_spi25",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_shared_storage_spi25",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 14,
+        "data_comparisons": 614400,
+        "elapsed_s": 1608.875,
+        "suite": "shared_storage_spi25",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_shared_storage_spi25\\sim\\tb_v3_shared_storage_spi25"
+      },
+      "metadata_sha256": "0f19516093705f35b889d7032b4b0ccf1bbdcf35672615e144f605d8a685da74",
+      "normal_completion": true,
+      "input_count": 42,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_shared_storage_spi25",
+        "suite": "shared_storage_spi25",
+        "ordered_analyzed_HDL": 33,
+        "manifest": "safevision/build/manifests/shared_storage_spi25_sim.json",
+        "current_manifest_sha256": "3b1698744a9324f7ba8f734b314e6864aa257ac4a932c7d44197c90175a4db21",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "06dfc692eddf5c978ed14bfaf0d79689a7f9f5fcdd339e7f40c7184e970f4582"
+    },
+    "elapsed_s": 846.0
+  }
+}

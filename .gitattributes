@@ -15540,3 +15540,39 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/verification/unit/tb_v3_flexible_retry_fs550.sv -text
 
 /safevision/verification/unit/tb_v3_spectrum539.sv -text
+
+# Preserve exact newly simulated control-clock, address and WAV fixtures.
+/safevision/build/manifests/control_clock776_sim.json -text
+/safevision/build/manifests/lba_pipeline747_sim.json -text
+/safevision/build/manifests/lba_timeout759_sim.json -text
+/safevision/build/manifests/wav_context730_sim.json -text
+/safevision/build/manifests/wav_pipe724_sim.json -text
+/safevision/tools/audit_v3_lba_clock788.py -text
+/safevision/tools/audit_v3_wav_pipeline736.py -text
+/safevision/verification/fixtures/wav730.reference.json -text
+/safevision/verification/fixtures/wav730_disk.mem -text
+/safevision/verification/fixtures/wav730_pcm.mem -text
+/safevision/verification/unit/tb_v3_control_clock776.sv -text
+/safevision/verification/unit/tb_v3_lba_pipeline747.sv -text
+/safevision/verification/unit/tb_v3_lba_timeout759.sv -text
+/safevision/verification/unit/tb_v3_wav_context730.sv -text
+/safevision/verification/unit/tb_v3_wav_pipe724.sv -text
+
+# Byte-exact final pipeline/reference/native compiler proof inputs.
+/safevision/build/manifests/cache_pipe805_sim.json -text
+/safevision/build/manifests/guard_stage804_sim.json -text
+/safevision/build/manifests/normalizer_miter203_sim.json -text
+/safevision/tools/audit_v3_pipeline815.py -text
+/safevision/tools/run_v3_sim.py -text
+/safevision/tools/run_v3_sim_flexible.py -text
+/safevision/verification/models/top_ip_stub.sv -text
+/safevision/verification/models/v3_audio_pll_clock_model.sv -text
+/safevision/verification/models/v3_bmp_normalizer199_reference.sv -text
+/safevision/verification/models/v3_memory_pll_clock_model.sv -text
+/safevision/verification/unit/tb_v3_board_clocks.sv -text
+/safevision/verification/unit/tb_v3_cache_pipe805.sv -text
+/safevision/verification/unit/tb_v3_flexible_bmp542.sv -text
+/safevision/verification/unit/tb_v3_flexible_fs550.sv -text
+/safevision/verification/unit/tb_v3_guard_stage804.sv -text
+/safevision/verification/unit/tb_v3_handbook_video.sv -text
+/safevision/verification/unit/tb_v3_normalizer_miter203.sv -text

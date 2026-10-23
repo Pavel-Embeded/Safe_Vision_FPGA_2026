@@ -140,7 +140,18 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
                      (({1'b0,offbits_r} + {1'b0,required_bytes}) <= {1'b0,file_size}) &&
                      (!VARIABLE_SIZE || ({1'b0,offbits_r}+{1'b0,required_bytes}<={1'b0,bfsize_r}));
 
-    wire        check_ok = sig_ok && dib_ok && size_ok && fmt_ok && trunc_ok;
+    // Every required header field settles by byte33. Private validation
+    // flags settle on the following edge, before byte53 publishes the result.
+    // file_size is the immutable open-file descriptor throughout this header.
+    // Legacy mode preserves even the original unqualified combinational ABI.
+    reg[4:0] header_predicates_q;
+    always @(posedge clk) header_predicates_q<={sig_ok,dib_ok,size_ok,fmt_ok,trunc_ok};
+    wire final_sig=FLEX_PIXELS?header_predicates_q[4]:sig_ok;
+    wire final_dib=FLEX_PIXELS?header_predicates_q[3]:dib_ok;
+    wire final_size=FLEX_PIXELS?header_predicates_q[2]:size_ok;
+    wire final_fmt=FLEX_PIXELS?header_predicates_q[1]:fmt_ok;
+    wire final_trunc=FLEX_PIXELS?header_predicates_q[0]:trunc_ok;
+    wire        check_ok = final_sig && final_dib && final_size && final_fmt && final_trunc;
 
     assign ready = (mstate == H_HEAD) ||
                    (mstate == H_XFER && (!hdr_ok || !out_valid));
@@ -251,10 +262,10 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
                         check_error <= !check_ok;
                         if (!check_ok) begin
                             err_code <= `ERR_MEDIA_INVALID;
-                            if      (!sig_ok)   err_detail <= `DET_BMP_SIG;
-                            else if (!dib_ok)   err_detail <= `DET_BMP_DIB;
-                            else if (!size_ok)  err_detail <= `DET_BMP_SIZE;
-                            else if (!fmt_ok)   err_detail <= `DET_BMP_FMT;
+                            if      (!final_sig)   err_detail <= `DET_BMP_SIG;
+                            else if (!final_dib)   err_detail <= `DET_BMP_DIB;
+                            else if (!final_size)  err_detail <= `DET_BMP_SIZE;
+                            else if (!final_fmt)   err_detail <= `DET_BMP_FMT;
                             else                err_detail <= `DET_BMP_TRUNC;
                         end
                         // 头之后到像素开头之间可能还有调色板/填充，要丢掉

@@ -1,0 +1,13 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_v3_led_stopped_reset -s tb_v3_led_stopped_reset --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.v3_led_publication_candidate
+Compiling module work.v3_led_publication_reference
+Compiling module work.tb_v3_led_stopped_reset
+Built simulation snapshot tb_v3_led_stopped_reset

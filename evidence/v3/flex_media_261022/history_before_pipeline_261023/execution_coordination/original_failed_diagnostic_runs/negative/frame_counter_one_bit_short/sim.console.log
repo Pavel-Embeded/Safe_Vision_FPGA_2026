@@ -1,0 +1,17 @@
+
+****** xsim v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/tb_v3_row_integrity/xsim_script.tcl
+# xsim {tb_v3_row_integrity} -autoloadwcfg -runall
+Vivado Simulator 2018.3
+Time resolution is 1 ps
+run -all
+[PASS]                         slot invalidated before source overwrite
+Fatal: unary source position invariant violated
+Time: 10315 ns  Iteration: 0  Process: /tb_v3_row_integrity/dut/Always192_3  File: D:/Codex/svflex537/qualification811/negative/frame_counter_one_bit_short/sim/tb_v3_row_integrity/mutant.v
+$finish called at time : 10315 ns
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:35:55 2026...

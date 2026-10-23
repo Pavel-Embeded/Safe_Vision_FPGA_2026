@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_color\\sim\\tb_v3_color",
+  "native_log_sha256": "64b1de228e749d331a4db316c42199d68078f74092a60bfe4d13e6b34e523efd",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_color",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_color\\sim\\tb_v3_color",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_color",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 98304,
+        "elapsed_s": 7.922,
+        "suite": "v3",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_color\\sim\\tb_v3_color"
+      },
+      "metadata_sha256": "dee3ee532a923fa01efb7bb278ce83abc94775f40301cc0d66011383fce216c0",
+      "normal_completion": true,
+      "input_count": 40,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_color",
+        "suite": "v3",
+        "ordered_analyzed_HDL": 28,
+        "manifest": "safevision/build/manifests/v3_sim.json",
+        "current_manifest_sha256": "b56a18d86a6bdee0279b796c8a9314969ec4edf005fa257e04798db0d50eac30",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "64b1de228e749d331a4db316c42199d68078f74092a60bfe4d13e6b34e523efd"
+    },
+    "elapsed_s": 8.281
+  }
+}

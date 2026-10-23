@@ -1,18 +1,18 @@
 {
   "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
-  "execution_root": "D:\\Codex\\svflex537\\candidate734",
-  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
-  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
   "profile_changes": {},
-  "producer": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
-  "native_log_sha256": "00c03995b3e6e1fccc8a998830df246fca0e8f43afe5386eb628858f349eab61",
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
+  "native_log_sha256": "fdbed17008f27c7755abd58f1343e2eba77f3c8f4b10218bad7f7f25b57fa832",
   "original_metadata_preserved": true,
   "record": {
     "kind": "negative",
     "name": "flex_fs_stereo_channels_swapped",
     "accepted": true,
     "action": "fresh_native_execution",
-    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
     "checked": {
       "metadata": {
         "mutation": "flex_fs_stereo_channels_swapped",
@@ -35,12 +35,12 @@
           4800
         ],
         "detected": true,
-        "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
-        "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550",
         "strict_generated_inputs": 1,
         "native_runner": "safevision/tools/run_v3_sim_flexible.py"
       },
-      "metadata_sha256": "a28c9ac1394667a3a43b57f3b9555a593f308c2d455d43c0345e1fd9e19e6a20",
+      "metadata_sha256": "0b2fd3073ea8817843deb135018cad8ecafdd49c32757009836526242c59f72f",
       "normal_completion": true,
       "input_count": 41,
       "compiler_graph": {
@@ -56,14 +56,14 @@
         "generator_dependencies": 0,
         "runtime_assets": 3,
         "generation_inputs": 38,
-        "generation_before_sha256": "3e261fdbb58d101cd53cd58bc2a485e083d5de1328d81bb8098f78379b1ceddd",
-        "generation_after_sha256": "3e261fdbb58d101cd53cd58bc2a485e083d5de1328d81bb8098f78379b1ceddd"
+        "generation_before_sha256": "ddf8f27a5d51e5c0807f2afa2f0b62685f55fdb5c8ce6a4bce42e31e1cf6b18f",
+        "generation_after_sha256": "ddf8f27a5d51e5c0807f2afa2f0b62685f55fdb5c8ce6a4bce42e31e1cf6b18f"
       },
       "error_counts": [
         4800
       ],
-      "log_sha256": "00c03995b3e6e1fccc8a998830df246fca0e8f43afe5386eb628858f349eab61"
+      "log_sha256": "fdbed17008f27c7755abd58f1343e2eba77f3c8f4b10218bad7f7f25b57fa832"
     },
-    "elapsed_s": 8.453
+    "elapsed_s": 10.047
   }
 }

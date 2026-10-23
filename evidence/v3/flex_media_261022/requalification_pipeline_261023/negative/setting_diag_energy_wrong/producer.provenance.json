@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198",
+  "native_log_sha256": "868086b2a94a88b889bc48a4ccb903937d9ba09710fd4b96f94696d43ac3cad1",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "setting_diag_energy_wrong",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198",
+    "checked": {
+      "metadata": {
+        "mutation": "setting_diag_energy_wrong",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "setting_wave_control_hd198",
+        "top": "tb_v3_setting_wave_control_hd198",
+        "patch": [
+          {
+            "before": "{18'd0,energy,volume}",
+            "after": "{18'd0,7'd0,volume}"
+          }
+        ],
+        "original_sha256": "7963af303daf08b0ab508a6aabc653497710788bcf1d760db815d013521fd033",
+        "mutated_sha256": "2667e9548a97076099500f9462badf542fbff25e5d25b37f773c0510620b052c",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          3
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\setting_diag_energy_wrong\\sim\\tb_v3_setting_wave_control_hd198"
+      },
+      "metadata_sha256": "fe6c130dca9acea5dc803fee4b3b1972cca1ab78120fe6abbb79379c2594db1e",
+      "normal_completion": true,
+      "input_count": 122,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_setting_wave_control_hd198",
+        "suite": "setting_wave_control_hd198",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/setting_wave_control_hd198_sim.json",
+        "current_manifest_sha256": "acdb4440a8d7579f071f089d31d070df05f5a0e1ffac6e8a515a2d64e9f85362",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        3
+      ],
+      "log_sha256": "868086b2a94a88b889bc48a4ccb903937d9ba09710fd4b96f94696d43ac3cad1"
+    },
+    "elapsed_s": 17.984
+  }
+}

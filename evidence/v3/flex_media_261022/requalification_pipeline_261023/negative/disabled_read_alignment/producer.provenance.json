@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top",
+  "native_log_sha256": "3072670647206fc2404f78f124402148c6b4e4c6d7e6e9f8deef4b550606d83d",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "disabled_read_alignment",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top",
+    "checked": {
+      "metadata": {
+        "mutation": "disabled_read_alignment",
+        "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+        "suite": "v3_board_top",
+        "top": "tb_v3_board_top",
+        "patch": [
+          {
+            "before": ".READ_DATA_LEADS_VALID(1)",
+            "after": ".READ_DATA_LEADS_VALID(0)"
+          }
+        ],
+        "original_sha256": "7963af303daf08b0ab508a6aabc653497710788bcf1d760db815d013521fd033",
+        "mutated_sha256": "cca8b610f618824fa7078911fbf4206ffb2b60b4d4fe4c8fa5222380323a05b6",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          60
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\disabled_read_alignment\\sim\\tb_v3_board_top"
+      },
+      "metadata_sha256": "c9682ddf1e0a15ac7da3bc0d34232e56407f0d6d1e58c391a5dd08a0e29815ea",
+      "normal_completion": true,
+      "input_count": 120,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_board_top",
+        "suite": "v3_board_top",
+        "ordered_analyzed_HDL": 105,
+        "manifest": "safevision/build/manifests/v3_board_top_sim.json",
+        "current_manifest_sha256": "bae9f366767bcd3c9507135cd6fae840f6c7bdee1acf5a6b51ae17dcc9851d03",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        60
+      ],
+      "log_sha256": "3072670647206fc2404f78f124402148c6b4e4c6d7e6e9f8deef4b550606d83d"
+    },
+    "elapsed_s": 16.828
+  }
+}

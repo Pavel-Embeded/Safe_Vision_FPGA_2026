@@ -1,0 +1,26 @@
+{
+  "mutation": "flex_bmp_dib_overlap_accepted",
+  "target": "safevision/rtl/media/bmp_parser.v",
+  "suite": "flexible_bmp_bounds551",
+  "top": "tb_v3_flexible_bmp_bounds551",
+  "patch": [
+    {
+      "before": "wire dib_ok    = dib_ge40_r && (!FLEX_PIXELS || dib_within_offset_r);",
+      "after": "wire dib_ok    = dib_ge40_r;"
+    }
+  ],
+  "original_sha256": "27ba5202943ab5174847fd9d427a0d89fae886ea77473e60e63759050e69a3fb",
+  "mutated_sha256": "bd59680e3e37da1c2b4046698acac2f4a36cf9b3e60e9a2908af7726dc382a62",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    5
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\flex_bmp_dib_overlap_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\flex_bmp_dib_overlap_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py"
+}

@@ -1,18 +1,18 @@
 {
   "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
-  "execution_root": "D:\\Codex\\svflex537\\candidate734",
-  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
-  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
   "profile_changes": {},
-  "producer": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
-  "native_log_sha256": "73e2756925207927fd10d5712f372968e9d70f6b7c7a291b23b45e61162f1c69",
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
+  "native_log_sha256": "801739e9946c39af30411ed587afecd1f919c846427dd3c031053df8275174ee",
   "original_metadata_preserved": true,
   "record": {
     "kind": "negative",
     "name": "flex_fs_partial_directory_commit",
     "accepted": true,
     "action": "fresh_native_execution",
-    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
     "checked": {
       "metadata": {
         "mutation": "flex_fs_partial_directory_commit",
@@ -35,12 +35,12 @@
           2
         ],
         "detected": true,
-        "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
-        "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_partial_directory_commit\\sim\\tb_v3_directory_fault550",
         "strict_generated_inputs": 1,
         "native_runner": "safevision/tools/run_v3_sim_flexible.py"
       },
-      "metadata_sha256": "c2627a55e3cc7673c66d4d37ca38f7eecd4f6879935f6b84dc2bd90e19046359",
+      "metadata_sha256": "e0165a6cec45bb2ee1c7bae2d3c41eb62d5a2f38d2a8cabd292f3f6a3c236bcf",
       "normal_completion": true,
       "input_count": 50,
       "compiler_graph": {
@@ -56,14 +56,14 @@
         "generator_dependencies": 0,
         "runtime_assets": 8,
         "generation_inputs": 42,
-        "generation_before_sha256": "51079885a9a8b4028cede3f395b7c6c0cd232597b417954fd9397be208a74d59",
-        "generation_after_sha256": "51079885a9a8b4028cede3f395b7c6c0cd232597b417954fd9397be208a74d59"
+        "generation_before_sha256": "115d3fa40ecd1aaf20314b9db4bcf9f24dd3df01c81a53a1402ceda0bd0f6f84",
+        "generation_after_sha256": "115d3fa40ecd1aaf20314b9db4bcf9f24dd3df01c81a53a1402ceda0bd0f6f84"
       },
       "error_counts": [
         2
       ],
-      "log_sha256": "73e2756925207927fd10d5712f372968e9d70f6b7c7a291b23b45e61162f1c69"
+      "log_sha256": "801739e9946c39af30411ed587afecd1f919c846427dd3c031053df8275174ee"
     },
-    "elapsed_s": 22.5
+    "elapsed_s": 21.75
   }
 }

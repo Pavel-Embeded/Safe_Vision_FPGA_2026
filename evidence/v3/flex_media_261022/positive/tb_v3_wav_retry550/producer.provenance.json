@@ -1,18 +1,18 @@
 {
   "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
-  "execution_root": "D:\\Codex\\svflex537\\candidate734",
-  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
-  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
   "profile_changes": {},
-  "producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_wav_retry550\\sim\\tb_v3_wav_retry550",
-  "native_log_sha256": "7db9663adb792a5d24eb1d6fdcd227407c016040b051b0a61682c1d608a974e0",
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_retry550\\sim\\tb_v3_wav_retry550",
+  "native_log_sha256": "81b85f63bdecdee6e85d4c8bfbc6f51e24b02c629c13bba4899163fc94dcbf3b",
   "original_metadata_preserved": true,
   "record": {
     "kind": "positive",
     "name": "tb_v3_wav_retry550",
     "accepted": true,
     "action": "fresh_native_execution",
-    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_wav_retry550\\sim\\tb_v3_wav_retry550",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_retry550\\sim\\tb_v3_wav_retry550",
     "checked": {
       "metadata": {
         "top": "tb_v3_wav_retry550",
@@ -22,14 +22,14 @@
         "native_runner": "safevision/tools/run_v3_sim_flexible.py",
         "checks": 1,
         "data_comparisons": 4807,
-        "elapsed_s": 8.187,
+        "elapsed_s": 11.516,
         "suite": "wav_retry550",
         "legacy": false,
         "accepted_native_runner": true,
         "producer_process_exit": 0,
-        "original_producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_wav_retry550\\sim\\tb_v3_wav_retry550"
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_retry550\\sim\\tb_v3_wav_retry550"
       },
-      "metadata_sha256": "fb657e0e16143fd3314cbfe91abcd3b507fba3918a906488e8e658111955c743",
+      "metadata_sha256": "cd95413fa39d7682a258386ef5bbc124f2df0b8d35fb2c2acf9cc76bb4f824dd",
       "normal_completion": true,
       "input_count": 41,
       "compiler_graph": {
@@ -45,14 +45,14 @@
         "generator_dependencies": 0,
         "runtime_assets": 3,
         "generation_inputs": 38,
-        "generation_before_sha256": "ec52fa3f25394e3ef7e71ec1fdf629daf4c497a1208b7838832192faf5ab772b",
-        "generation_after_sha256": "ec52fa3f25394e3ef7e71ec1fdf629daf4c497a1208b7838832192faf5ab772b"
+        "generation_before_sha256": "dbd99f3c038e98c7320a8ecd5e7aa7d8e05ab34a41c3773e98d12b0bc229b83c",
+        "generation_after_sha256": "dbd99f3c038e98c7320a8ecd5e7aa7d8e05ab34a41c3773e98d12b0bc229b83c"
       },
       "error_counts": [
         0
       ],
-      "log_sha256": "7db9663adb792a5d24eb1d6fdcd227407c016040b051b0a61682c1d608a974e0"
+      "log_sha256": "81b85f63bdecdee6e85d4c8bfbc6f51e24b02c629c13bba4899163fc94dcbf3b"
     },
-    "elapsed_s": 8.375
+    "elapsed_s": 11.782
   }
 }

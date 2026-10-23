@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192",
+  "native_log_sha256": "48e54289c72bbfe134a955258a767d2b16c6cb79d1d13d176902a7f8b5bbea8b",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_hud_rgb_hd192",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_hud_rgb_hd192",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 2757,
+        "elapsed_s": 15.078,
+        "suite": "hud_rgb_hd192",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_hud_rgb_hd192\\sim\\tb_v3_hud_rgb_hd192"
+      },
+      "metadata_sha256": "988e8e53894730c930101fb99ba3684930b833b12cb00e003c7e06cc06e7bd86",
+      "normal_completion": true,
+      "input_count": 121,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_hud_rgb_hd192",
+        "suite": "hud_rgb_hd192",
+        "ordered_analyzed_HDL": 106,
+        "manifest": "safevision/build/manifests/hud_rgb_hd192_sim.json",
+        "current_manifest_sha256": "969b81d611b5484b4ea5e5fd4b156201ee233f0d23de03103ebc33a25efaf631",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "48e54289c72bbfe134a955258a767d2b16c6cb79d1d13d176902a7f8b5bbea8b"
+    },
+    "elapsed_s": 15.344
+  }
+}

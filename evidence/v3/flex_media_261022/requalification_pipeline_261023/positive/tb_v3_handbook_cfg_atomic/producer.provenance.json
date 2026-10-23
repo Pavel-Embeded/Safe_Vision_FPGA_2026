@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_handbook_cfg_atomic\\sim\\tb_v3_handbook_cfg_atomic",
+  "native_log_sha256": "e0b0897fc960ff0f8fc5e089b88e7e42b9494248b165269b2e9f53da3f073f13",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_handbook_cfg_atomic",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_handbook_cfg_atomic\\sim\\tb_v3_handbook_cfg_atomic",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_handbook_cfg_atomic",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1,
+        "data_comparisons": 3778,
+        "elapsed_s": 9.391,
+        "suite": "handbook_cfg_atomic",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_handbook_cfg_atomic\\sim\\tb_v3_handbook_cfg_atomic"
+      },
+      "metadata_sha256": "b4ad94c2c406a25a0063d110a464a8fe571e4312d5d0dc9d94726eee2f04778e",
+      "normal_completion": true,
+      "input_count": 35,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_cfg_atomic",
+        "suite": "handbook_cfg_atomic",
+        "ordered_analyzed_HDL": 21,
+        "manifest": "safevision/build/manifests/handbook_cfg_atomic_sim.json",
+        "current_manifest_sha256": "6d7dc8c108fa5181866dd5a940ce7b665d6dcdd6e3e28b54f4d4637b2b03e92c",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "e0b0897fc960ff0f8fc5e089b88e7e42b9494248b165269b2e9f53da3f073f13"
+    },
+    "elapsed_s": 9.656
+  }
+}

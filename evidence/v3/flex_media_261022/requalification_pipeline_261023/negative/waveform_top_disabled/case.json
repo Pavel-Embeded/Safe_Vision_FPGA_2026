@@ -1,0 +1,24 @@
+{
+  "mutation": "waveform_top_disabled",
+  "target": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v",
+  "suite": "feature_board_hd198",
+  "top": "tb_v3_feature_board_hd198",
+  "patch": [
+    {
+      "before": ".USER_FEATURES(1)",
+      "after": ".USER_FEATURES(0)"
+    }
+  ],
+  "original_sha256": "7963af303daf08b0ab508a6aabc653497710788bcf1d760db815d013521fd033",
+  "mutated_sha256": "6e371c0e6155d6dade07341c42913f106ab83c0afad04bab0f923889209ce51a",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    2
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\waveform_top_disabled\\sim\\tb_v3_feature_board_hd198",
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\waveform_top_disabled\\sim\\tb_v3_feature_board_hd198"
+}

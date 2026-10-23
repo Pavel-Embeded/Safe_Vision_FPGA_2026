@@ -41,6 +41,10 @@ module tb_v3_diag_board;
   force dut.sdr_init_done=1'b1;force dut.adapter_init=1'b1;force dut.guard_fault=1'b1;
   force dut.adapter_fault=1'b0;force dut.memory_error=1'b0;
   force dut.guard_bad_addr=32'h00123400;force dut.guard_expected=32'h01234567;force dut.guard_actual=32'h89abcdef;
+  // This diagnostic-only injection forces the source count through its
+  // continuous output alias. Keep its redundant zero flag consistent; the
+  // live memory invariant remains enabled and all diagnostic checks remain.
+  force dut.row_guard.source_first=1'b0;
   force dut.guard_words=32'h00025800;force dut.guard_rows=16'h17;
   force dut.diag_raw_first=32'h11223344;force dut.diag_raw_last=32'h55667788;
   force dut.diag_source_first=32'h13579bdf;force dut.diag_write_first=32'h2468ace0;

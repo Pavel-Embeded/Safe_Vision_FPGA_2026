@@ -6,10 +6,10 @@
   "native_runner": "safevision/tools/run_v3_sim_flexible.py",
   "checks": 1,
   "data_comparisons": 4807,
-  "elapsed_s": 8.187,
+  "elapsed_s": 11.516,
   "suite": "wav_retry550",
   "legacy": false,
   "accepted_native_runner": true,
   "producer_process_exit": 0,
-  "original_producer": "D:\\Codex\\svflex537\\qualification739\\positive\\tb_v3_wav_retry550\\sim\\tb_v3_wav_retry550"
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_wav_retry550\\sim\\tb_v3_wav_retry550"
 }

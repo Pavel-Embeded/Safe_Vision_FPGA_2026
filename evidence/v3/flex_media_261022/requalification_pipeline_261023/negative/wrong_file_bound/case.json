@@ -1,0 +1,24 @@
+{
+  "mutation": "wrong_file_bound",
+  "target": "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
+  "suite": "wav_bounds_equivalence",
+  "top": "tb_v3_wav_bounds_equivalence",
+  "patch": [
+    {
+      "before": "wire riff_oversize=(file_size<8)||greater_bytes(file_gt,file_eq);",
+      "after": "wire riff_oversize=(file_size<8)||greater_bytes(chunk_gt,chunk_eq);"
+    }
+  ],
+  "original_sha256": "d0896f4bf0b7fcc77096f4459d2e4d6fa45adeaf667d02274740f27b08ab53b6",
+  "mutated_sha256": "b1662f961cbbdf35ef3be5f830ca7bcfd398f86d12258ea777fef7f60ae1c10e",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    70399
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence",
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\wrong_file_bound\\sim\\tb_v3_wav_bounds_equivalence"
+}

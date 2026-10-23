@@ -6,9 +6,9 @@
   "native_runner": "safevision/tools/run_v3_sim_flexible.py",
   "checks": 1,
   "data_comparisons": 2099,
-  "elapsed_s": 8.812,
+  "elapsed_s": 7.656,
   "suite": "compact_ingress616",
-  "original_producer": "D:\\Codex\\svflex537\\finalcompact763\\positive\\tb_v3_ingress_compact616\\tb_v3_ingress_compact616",
+  "original_producer": "D:\\Codex\\svflex537\\finalcompact817\\positive\\tb_v3_ingress_compact616\\tb_v3_ingress_compact616",
   "producer_process_exit": 0,
   "accepted_native_runner": true
 }

@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_video_midfade_base\\sim\\tb_v3_video_midfade_base",
+  "native_log_sha256": "0dd12b52a20a999d0fd53b0bdb4678477ea17685aa417e3d739230d96320620f",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_video_midfade_base",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_video_midfade_base\\sim\\tb_v3_video_midfade_base",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_video_midfade_base",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 2,
+        "data_comparisons": 307200,
+        "elapsed_s": 226.719,
+        "suite": "video_v3_midfade",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_video_midfade_base\\sim\\tb_v3_video_midfade_base"
+      },
+      "metadata_sha256": "e5206c67ffc2cd85f956ee17fb1d3da1fc2c996327732ba991e455873a6fa38f",
+      "normal_completion": true,
+      "input_count": 34,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_video_midfade_base",
+        "suite": "video_v3_midfade",
+        "ordered_analyzed_HDL": 21,
+        "manifest": "safevision/build/manifests/video_v3_midfade_sim.json",
+        "current_manifest_sha256": "f2b376e612e21578176a8c336ab3258e8371a6da3788be789de6441f0e0388ae",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "0dd12b52a20a999d0fd53b0bdb4678477ea17685aa417e3d739230d96320620f"
+    },
+    "elapsed_s": 226.984
+  }
+}

@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Webtalk v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Fri Oct 23 13:34:56 2026
+# Process ID: 27088
+# Current directory: D:/Codex/svflex537/qualification811/positive/tb_v3_directory_alias510/sim/tb_v3_directory_alias510
+# Command line: wbtcv.exe -mode batch -source D:/Codex/svflex537/qualification811/positive/tb_v3_directory_alias510/sim/tb_v3_directory_alias510/xsim.dir/tb_v3_directory_alias510/webtalk/xsim_webtalk.tcl -notrace
+# Log file: D:/Codex/svflex537/qualification811/positive/tb_v3_directory_alias510/sim/tb_v3_directory_alias510/webtalk.log
+# Journal file: D:/Codex/svflex537/qualification811/positive/tb_v3_directory_alias510/sim/tb_v3_directory_alias510\webtalk.jou
+#-----------------------------------------------------------
+source D:/Codex/svflex537/qualification811/positive/tb_v3_directory_alias510/sim/tb_v3_directory_alias510/xsim.dir/tb_v3_directory_alias510/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Fri Oct 23 13:34:57 2026...

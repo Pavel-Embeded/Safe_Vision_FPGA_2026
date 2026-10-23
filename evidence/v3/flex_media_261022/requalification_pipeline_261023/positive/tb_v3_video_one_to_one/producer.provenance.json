@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_video_one_to_one\\sim\\tb_v3_video_one_to_one",
+  "native_log_sha256": "2bbfc7a1017d39cd62f0aaa206081aa9c9d03408aac81228790ed8fe2bd60693",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_video_one_to_one",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_video_one_to_one\\sim\\tb_v3_video_one_to_one",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_video_one_to_one",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 3,
+        "data_comparisons": 1843200,
+        "elapsed_s": 252.188,
+        "suite": "video_v3_one_to_one",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_video_one_to_one\\sim\\tb_v3_video_one_to_one"
+      },
+      "metadata_sha256": "5196342c40bfd48d75b40dcbe5c98f5eae2aca17f196c2d6a38fc911dd019116",
+      "normal_completion": true,
+      "input_count": 34,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_video_one_to_one",
+        "suite": "video_v3_one_to_one",
+        "ordered_analyzed_HDL": 21,
+        "manifest": "safevision/build/manifests/video_v3_one_to_one_sim.json",
+        "current_manifest_sha256": "4fe6e42e796aca0961b6841161f1473985cc4e2cb2e0353b9491663123f3ae03",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "2bbfc7a1017d39cd62f0aaa206081aa9c9d03408aac81228790ed8fe2bd60693"
+    },
+    "elapsed_s": 252.422
+  }
+}

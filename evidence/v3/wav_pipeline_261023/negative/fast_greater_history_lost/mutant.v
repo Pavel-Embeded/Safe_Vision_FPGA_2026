@@ -49,6 +49,10 @@ assign sample=word;
 assign din_ready=!pcm_valid&&(state==W_HDR||state==W_CHUNK||state==W_FMT||state==W_SKIP||
  state==W_PAD||state==W_END||state==W_DATA);
 assign context_out={pcm_valid,wav_error,state,index,word,riff_left,left,kind,pad,fmt_seen,data_seen};
+// Independent rejection classes are combined in parallel. A sequential
+// chain of blocking reject assignments previously synthesized an18-level
+// priority path. No error is delayed: PCM is still suppressed on the exact
+// invalid byte, and context save/restore remains exactly111 bits.
 // Mode1 compares one little-endian size byte on each accepted byte.
 // At index4 capture the settled limit. At index7 only an8-bit comparison
 // remains. Size/RIFF publication and PCM suppression retain their old edge.
@@ -81,6 +85,40 @@ end else begin:legacy_bounds
  assign fast_padded_overrun=1'b0;assign fast_riff_oversize=1'b0;
 end endgenerate
 reg reject_now,chunk_end_now;
+always @*begin
+ chunk_end_now=0;
+ case(state)
+  W_CHUNK:chunk_end_now=index==7&&kind!=K_FMT&&kind!=K_DATA&&assembled==0;
+  W_FMT:chunk_end_now=index==15&&left==1;
+  W_SKIP:chunk_end_now=left==1&&!pad;
+  W_DATA:chunk_end_now=left==1;
+  W_PAD:chunk_end_now=1;
+  default:;
+ endcase
+end
+wire reject_header=(index==3&&assembled!=32'h46464952)||
+ (index==7&&(assembled<4||riff_overflow||(file_size!=0&&(PIPELINED_BOUNDS?fast_riff_oversize:riff_oversize))))||
+ (index==11&&(assembled!=32'h45564157||riff_left<8))||din_eof;
+wire reject_chunk_format=index==7&&((kind==K_FMT&&assembled<16)||
+ (kind==K_DATA&&(!fmt_seen||assembled==0||assembled[1:0]!=0)));
+wire reject_format=(index==1&&assembled[31:16]!=16'd1)||
+ (index==3&&assembled[31:16]!=16'd2)||(index==7&&assembled!=32'd48000)||
+ (index==15&&assembled[31:16]!=16'd16);
+wire reject_tail=(riff_left==0)||
+ ((riff_left==1)&&(!chunk_end_now||!data_seen))||
+ ((riff_left!=1)&&chunk_end_now&&riff_left<9)||
+ (din_eof&&!(chunk_end_now&&riff_left==1));
+wire reject_body_state=(state==W_CHUNK&&reject_chunk_format)||
+ (state==W_FMT&&reject_format)||(state==W_DATA&&left==1&&index!=3)||
+ !(state==W_CHUNK||state==W_FMT||state==W_SKIP||state==W_DATA||state==W_PAD);
+always @*begin
+ reject_now=(state==W_HDR&&reject_header)||
+  (state!=W_HDR&&state!=W_END&&(reject_tail||reject_body_state));
+ if(state==W_CHUNK&&index==7)begin
+  if(PIPELINED_BOUNDS)begin if(fast_padded_overrun)reject_now=1;end
+  else begin if(padded_overrun)reject_now=1;end
+ end
+end
 always@(posedge clk or negedge rst_n)begin
  if(!rst_n)begin
   pcm_valid<=0;wav_error<=0;state<=W_IDLE;index<=0;word<=0;
@@ -93,21 +131,12 @@ always@(posedge clk or negedge rst_n)begin
    pcm_valid<=0;wav_error<=0;state<=W_HDR;index<=0;word<=0;
    riff_left<=0;left<=0;kind<=K_OTHER;pad<=0;fmt_seen<=0;data_seen<=0;
   end else if(din_valid&&din_ready)begin
-   reject_now=0;chunk_end_now=0;
    if(state==W_HDR)begin
     word<=assembled;
-    if(index==3&&assembled!=32'h46464952)reject_now=1;
-    if(index==7)begin
-     if(assembled<4||riff_overflow||(file_size!=0&&(PIPELINED_BOUNDS?fast_riff_oversize:riff_oversize)))reject_now=1;
-     riff_left<=assembled-4;
-    end
-    if(index==11)begin
-     if(assembled!=32'h45564157||riff_left<8)reject_now=1;
-     state<=W_CHUNK;index<=0;
-    end else index<=index+1'b1;
-    if(din_eof)reject_now=1;
+    if(index==7)riff_left<=assembled-4;
+    if(index==11)begin state<=W_CHUNK;index<=0;end
+    else index<=index+1'b1;
    end else if(state!=W_END)begin
-    if(riff_left==0)reject_now=1;
     riff_left<=riff_after_byte;
     case(state)
      W_CHUNK:begin
@@ -118,30 +147,19 @@ always@(posedge clk or negedge rst_n)begin
        else kind<=K_OTHER;
       end
       if(index==7)begin
-       if(PIPELINED_BOUNDS)begin if(fast_padded_overrun)reject_now=1;end
-       else begin if(padded_overrun)reject_now=1;end
        left<=assembled;pad<=assembled[0];index<=0;
-       if(kind==K_FMT)begin
-        if(assembled<16)reject_now=1;
-        fmt_seen<=0;state<=W_FMT;
-       end else if(kind==K_DATA)begin
-        if(!fmt_seen||assembled==0||assembled[1:0]!=0)reject_now=1;
-        data_seen<=1;state<=W_DATA;
-       end else if(assembled==0)begin chunk_end_now=1;state<=W_CHUNK;end
+       if(kind==K_FMT)begin fmt_seen<=0;state<=W_FMT;end
+       else if(kind==K_DATA)begin data_seen<=1;state<=W_DATA;end
+       else if(assembled==0)state<=W_CHUNK;
        else state<=W_SKIP;
       end else index<=index+1'b1;
      end
      W_FMT:begin
       left<=left-1'b1;
-      // A single assembly word is checked immediately after each field.
       if(index<8||index>=14)word<=assembled;
-      if(index==1&&assembled[31:16]!=16'd1)reject_now=1;
-      if(index==3&&assembled[31:16]!=16'd2)reject_now=1;
-      if(index==7&&assembled!=32'd48000)reject_now=1;
       if(index==15)begin
-       if(assembled[31:16]!=16'd16)reject_now=1;
        fmt_seen<=1;
-       if(left==1)begin chunk_end_now=1;state<=W_CHUNK;index<=0;end
+       if(left==1)begin state<=W_CHUNK;index<=0;end
        else state<=W_SKIP;
       end else index<=index+1'b1;
      end
@@ -149,27 +167,19 @@ always@(posedge clk or negedge rst_n)begin
       left<=left-1'b1;
       if(left==1)begin
        if(pad)state<=W_PAD;
-       else begin chunk_end_now=1;state<=W_CHUNK;index<=0;end
+       else begin state<=W_CHUNK;index<=0;end
       end
      end
      W_DATA:begin
       word<=assembled;left<=left-1'b1;index<=index+1'b1;
       if(index==3)begin pcm_valid<=1;index<=0;end
-      if(left==1)begin
-       if(index!=3)reject_now=1;
-       chunk_end_now=1;state<=W_CHUNK;index<=0;
-      end
+      if(left==1)begin state<=W_CHUNK;index<=0;end
      end
-     W_PAD:begin chunk_end_now=1;state<=W_CHUNK;index<=0;end
-     default:reject_now=1;
+     W_PAD:begin state<=W_CHUNK;index<=0;end
+     default:;
     endcase
-    if(riff_left==1)begin
-     if(!chunk_end_now||!data_seen)reject_now=1;
-     else state<=W_END;
-    end else if(chunk_end_now&&riff_left<9)reject_now=1;
-    if(din_eof&&!(chunk_end_now&&riff_left==1))reject_now=1;
+    if(riff_left==1&&chunk_end_now&&data_seen)state<=W_END;
    end
-   // Never publish a PCM pair on a byte already known to violate a bound.
    if(reject_now)begin wav_error<=1;pcm_valid<=0;state<=W_ERR;end
   end
  end

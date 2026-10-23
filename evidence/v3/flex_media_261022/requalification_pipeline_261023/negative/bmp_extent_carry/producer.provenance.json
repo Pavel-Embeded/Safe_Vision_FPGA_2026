@@ -1,0 +1,61 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\bmp_extent_carry\\sim\\tb_v3_bmp_bounds",
+  "native_log_sha256": "d34d775e27850ba8fe2745d012dab5dd9dbbd25e1c7f25e140e6ae32f934b0b6",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "bmp_extent_carry",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\bmp_extent_carry\\sim\\tb_v3_bmp_bounds",
+    "checked": {
+      "metadata": {
+        "mutation": "bmp_extent_carry",
+        "target": "safevision/rtl/media/bmp_parser.v",
+        "suite": "bmp_bounds",
+        "top": "tb_v3_bmp_bounds",
+        "patch": [
+          {
+            "before": "(({1'b0,offbits_r} + {1'b0,required_bytes}) <= {1'b0,file_size})",
+            "after": "((offbits_r + required_bytes) <= file_size)"
+          }
+        ],
+        "required_marker": "[FAIL]",
+        "original_sha256": "612fc193dbb9aecde2ffa6e03e9d09dae5a0a8b0d6d5bc2b660721b62d0f56d2",
+        "mutated_sha256": "b3aa1e84ed4a3048314ecee930031528ebc286e3be9ec5b08df2cab772bf9956",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          3
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\bmp_extent_carry\\sim\\tb_v3_bmp_bounds",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\bmp_extent_carry\\sim\\tb_v3_bmp_bounds"
+      },
+      "metadata_sha256": "cfe8eec827b78bda3111bdf8aa04e2cea5cd125288afe78d3bb23aae30dd39d1",
+      "normal_completion": true,
+      "input_count": 10,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_bmp_bounds",
+        "suite": "bmp_bounds",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/bmp_bounds_sim.json",
+        "current_manifest_sha256": "d529155bd55def668e3d84c58217a7bc4d567ae8a1f8bee2d69c0dd354b3020d",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        3
+      ],
+      "log_sha256": "d34d775e27850ba8fe2745d012dab5dd9dbbd25e1c7f25e140e6ae32f934b0b6"
+    },
+    "elapsed_s": 8.469
+  }
+}

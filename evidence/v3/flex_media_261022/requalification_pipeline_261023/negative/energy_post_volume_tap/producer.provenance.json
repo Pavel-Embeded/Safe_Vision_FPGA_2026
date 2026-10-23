@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\energy_post_volume_tap\\sim\\tb_v3_handbook_audio_energy",
+  "native_log_sha256": "8a7fd6cb2d09b22a9d5338009974b669b277b864ddd33d72702cd7912d5f176a",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "energy_post_volume_tap",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\energy_post_volume_tap\\sim\\tb_v3_handbook_audio_energy",
+    "checked": {
+      "metadata": {
+        "mutation": "energy_post_volume_tap",
+        "target": "safevision/rtl/audio/v3_audio_system.v",
+        "suite": "handbook_audio_energy",
+        "top": "tb_v3_handbook_audio_energy",
+        "patch": [
+          {
+            "before": "HANDBOOK_PROFILE?mix_valid:scaled_valid),\n .pcm_l(HANDBOOK_PROFILE?mix_l[23:8]:pcm_scaled[23:8]),.pcm_r(HANDBOOK_PROFILE?mix_r[23:8]:pcm_scaled[47:32]),",
+            "after": "scaled_valid),\n .pcm_l(pcm_scaled[23:8]),.pcm_r(pcm_scaled[47:32]),"
+          }
+        ],
+        "original_sha256": "0aa78c9795d649294479742214980b9ad99ee2dafc04f2c0def90f60e9220801",
+        "mutated_sha256": "c09fd5ca65744f8562a5741de4d74cb18b51e117e9e5cf7769ef0582ab60ecf2",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          4
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\energy_post_volume_tap\\sim\\tb_v3_handbook_audio_energy",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\energy_post_volume_tap\\sim\\tb_v3_handbook_audio_energy"
+      },
+      "metadata_sha256": "32d715f1eeec4fd1e57d04ae1d65d55b2bbe0c6699e7705434870299cc47264e",
+      "normal_completion": true,
+      "input_count": 37,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_handbook_audio_energy",
+        "suite": "handbook_audio_energy",
+        "ordered_analyzed_HDL": 29,
+        "manifest": "safevision/build/manifests/handbook_audio_energy_sim.json",
+        "current_manifest_sha256": "799934f78e2b06acd5c07f481a6cea47ab51b2f2eda2dae16a84587da44e6850",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        4
+      ],
+      "log_sha256": "8a7fd6cb2d09b22a9d5338009974b669b277b864ddd33d72702cd7912d5f176a"
+    },
+    "elapsed_s": 48.375
+  }
+}

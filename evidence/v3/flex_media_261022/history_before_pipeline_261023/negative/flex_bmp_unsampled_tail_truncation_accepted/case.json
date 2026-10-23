@@ -1,0 +1,26 @@
+{
+  "mutation": "flex_bmp_unsampled_tail_truncation_accepted",
+  "target": "safevision/rtl/media/v3_bmp_normalizer.v",
+  "suite": "flexible_bmp_bounds551",
+  "top": "tb_v3_flexible_bmp_bounds551",
+  "patch": [
+    {
+      "before": "if(last_row_byte && src_row==h-1'b1)state<=FINISH;",
+      "after": "if(1'b1)state<=FINISH;"
+    }
+  ],
+  "original_sha256": "e6f54c5914f9d7247ce9fcbba87c90a3ba1653cd293298223d4bad4e894bc23d",
+  "mutated_sha256": "1196f7389aa5ecdfab166988349bd2c7e37d24069d80d7fca6b58718800ae243",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    8
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification702\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+  "original_producer": "D:\\Codex\\svflex537\\qualification702\\negative\\flex_bmp_unsampled_tail_truncation_accepted\\sim\\tb_v3_flexible_bmp_bounds551",
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py"
+}

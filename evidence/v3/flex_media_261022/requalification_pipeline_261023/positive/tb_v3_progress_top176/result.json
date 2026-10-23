@@ -1,0 +1,13 @@
+{
+  "top": "tb_v3_progress_top176",
+  "status": "PASS",
+  "source_overrides": [],
+  "checks": 1,
+  "data_comparisons": 100148,
+  "elapsed_s": 18.234,
+  "suite": "progress_top176",
+  "legacy": false,
+  "accepted_native_runner": true,
+  "producer_process_exit": 0,
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_progress_top176\\sim\\tb_v3_progress_top176"
+}

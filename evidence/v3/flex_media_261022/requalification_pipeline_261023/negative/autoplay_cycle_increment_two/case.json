@@ -1,0 +1,24 @@
+{
+  "mutation": "autoplay_cycle_increment_two",
+  "target": "safevision/rtl/control/v3_user_controls.v",
+  "suite": "v3",
+  "top": "tb_v3_controls_period",
+  "patch": [
+    {
+      "before": "cycles_raw<=cycles+1'b1;",
+      "after": "cycles_raw<=cycles+2'd2;"
+    }
+  ],
+  "original_sha256": "19896225acd3d762e98c4e7e1794c64e316739a5abee01bfddbd661f109a25b3",
+  "mutated_sha256": "104f436ccbc30ff3950a9fe1e6b61608cb9785df038b2454f652d7715d4a4134",
+  "mutant_file": "mutant.v",
+  "process_exit": 1,
+  "return_code": 1,
+  "normal_completion": true,
+  "error_counts": [
+    3
+  ],
+  "detected": true,
+  "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\autoplay_cycle_increment_two\\sim\\tb_v3_controls_period",
+  "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\autoplay_cycle_increment_two\\sim\\tb_v3_controls_period"
+}

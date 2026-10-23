@@ -17,8 +17,8 @@ run -all
 [PASS] BMP542 case5 1x16384 32bpp top1 full_pixels=307200
 [PASS] BMP542 case6 1x1 24bpp top1 full_pixels=307200
 [PASS] BMP542 case7 17x13 32bpp top0 full_pixels=307200
-[TB] tb_v3_flexible_bmp542 done, errors=0 comparisons=6876875
-$finish called at time : 1160402010 ns : File "D:/Codex/svflex537/candidate698/safevision/verification/unit/tb_v3_flexible_bmp542.sv" Line 58
-run: Time (s): cpu = 00:00:00 ; elapsed = 00:02:45 . Memory (MB): peak = 219.621 ; gain = 0.000
+[TB] tb_v3_flexible_bmp542 done, errors=0 comparisons=6876935
+$finish called at time : 1160427090 ns : File "D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_v3_flexible_bmp542.sv" Line 58
+run: Time (s): cpu = 00:00:00 ; elapsed = 00:03:49 . Memory (MB): peak = 219.414 ; gain = 0.000
 exit
-INFO: [Common 17-206] Exiting xsim at Fri Oct 23 10:03:18 2026...
+INFO: [Common 17-206] Exiting xsim at Fri Oct 23 13:24:35 2026...

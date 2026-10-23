@@ -1,0 +1,60 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\safe_graphics_live_flag\\sim\\tb_v3_frame_safe_integration",
+  "native_log_sha256": "92eaa11414bdd41ee0e4a3440f9b64d814b739d82915b08946d0a44b32c4e22c",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "negative",
+    "name": "safe_graphics_live_flag",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\safe_graphics_live_flag\\sim\\tb_v3_frame_safe_integration",
+    "checked": {
+      "metadata": {
+        "mutation": "safe_graphics_live_flag",
+        "target": "safevision/rtl/video/v3_video_display_core.v",
+        "suite": "frame_safe_integration",
+        "top": "tb_v3_frame_safe_integration",
+        "patch": [
+          {
+            "before": ".safety_active(frame_safe_raw),",
+            "after": ".safety_active(safe_p2||media_p2||fault_p2||presentation_fault_p||!enabled),"
+          }
+        ],
+        "original_sha256": "f88105b154001ab3d36aa9077059e146aec9e7049d61794405652d9b7b12cbb2",
+        "mutated_sha256": "972f7b2dc2c75c11972f508ae43fda86ce5c3f9fe19fa73c2a4514a60eee810e",
+        "mutant_file": "mutant.v",
+        "process_exit": 1,
+        "return_code": 1,
+        "normal_completion": true,
+        "error_counts": [
+          3069
+        ],
+        "detected": true,
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\safe_graphics_live_flag\\sim\\tb_v3_frame_safe_integration",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\safe_graphics_live_flag\\sim\\tb_v3_frame_safe_integration"
+      },
+      "metadata_sha256": "fbbe5c9e007b1532521ee5f96afae73325172126a00e5709c1eaec98f612f572",
+      "normal_completion": true,
+      "input_count": 36,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_frame_safe_integration",
+        "suite": "frame_safe_integration",
+        "ordered_analyzed_HDL": 22,
+        "manifest": "safevision/build/manifests/frame_safe_integration_sim.json",
+        "current_manifest_sha256": "8e925e485aa9fe6b10869ac21a7f987386105733959df4d388fb548d15d58abc",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        3069
+      ],
+      "log_sha256": "92eaa11414bdd41ee0e4a3440f9b64d814b739d82915b08946d0a44b32c4e22c"
+    },
+    "elapsed_s": 11.562
+  }
+}

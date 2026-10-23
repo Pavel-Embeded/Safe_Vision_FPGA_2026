@@ -1,0 +1,21 @@
+{
+  "suite": "wav_retry550",
+  "results": [
+    {
+      "top": "tb_v3_wav_retry550",
+      "status": "FAIL",
+      "source_overrides": [
+        "safevision/rtl/storage/v3_wav_source.v"
+      ],
+      "strict_generated_inputs": 1,
+      "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+      "error": "missing completion/checks or nonzero HDL error: D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_stereo_channels_swapped\\sim\\tb_v3_wav_retry550\\sim.log",
+      "elapsed_s": 8.235
+    }
+  ],
+  "complete": false,
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

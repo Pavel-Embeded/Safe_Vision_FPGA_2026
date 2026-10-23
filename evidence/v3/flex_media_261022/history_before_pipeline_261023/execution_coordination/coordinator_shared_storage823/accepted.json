@@ -1,0 +1,49 @@
+{
+  "accepted": true,
+  "utc": "2026-10-23T05:40:22.906302+00:00",
+  "kind": "positive",
+  "name": "tb_v3_shared_storage",
+  "action": "fresh_native_execution",
+  "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage",
+  "checked": {
+    "metadata": {
+      "top": "tb_v3_shared_storage",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 14,
+      "data_comparisons": 614400,
+      "elapsed_s": 2422.828,
+      "suite": "shared_storage",
+      "legacy": false,
+      "accepted_native_runner": true,
+      "producer_process_exit": 0,
+      "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_shared_storage\\sim\\tb_v3_shared_storage"
+    },
+    "metadata_sha256": "baac22073766d9e5e5239a8c60ea02693eda3a0d9c55094f3f05c10871be397a",
+    "normal_completion": true,
+    "input_count": 42,
+    "compiler_graph": {
+      "accepted": true,
+      "top": "tb_v3_shared_storage",
+      "suite": "shared_storage",
+      "ordered_analyzed_HDL": 33,
+      "manifest": "safevision/build/manifests/shared_storage_sim.json",
+      "current_manifest_sha256": "98a2df2852c4bee95064d052d24117a78edd804102f2a7deb998dcc0d20b7521",
+      "binding": "actual_compiler_and_current_manifest"
+    },
+    "error_counts": [
+      0
+    ],
+    "log_sha256": "c3dee1e5a6d852d2390664759f8680820d4074abe04eb66ee4d9c561a655bde1"
+  },
+  "elapsed_s": 2422.828,
+  "coordinator_prefix_collision_corrected": true,
+  "native_runner_unchanged_and_normally_completed": true,
+  "actual_runner_owners": [
+    {
+      "ProcessId": 22480,
+      "CreationDate": "/Date(1792731597018)/",
+      "CommandLine": "C:\\Users\\\u66f2\u6893\u94ed\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe -X utf8 -B D:\\Codex\\svflex537\\candidate803\\safevision\\tools\\run_v3_sim.py --suite shared_storage --top tb_v3_shared_storage --run-dir D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_shared_storage\\sim"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "suite": "legacy_b_fourbeat",
+  "results": [
+    {
+      "top": "tb_sd_initializer",
+      "status": "PASS",
+      "source_overrides": [],
+      "checks": 20,
+      "elapsed_s": 9.328
+    }
+  ],
+  "complete": true,
+  "hardware_verified": false,
+  "encrypted_vendor_behavior_verified": false
+}

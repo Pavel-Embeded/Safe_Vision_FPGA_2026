@@ -1,18 +1,18 @@
 {
   "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
-  "execution_root": "D:\\Codex\\svflex537\\candidate734",
-  "execution_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
-  "current_build_commit": "299d001faccc800bb3f4ae3df1dd8120a5c383bf",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
   "profile_changes": {},
-  "producer": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_retry_cursor_stuck\\sim\\tb_v3_wav_retry550",
-  "native_log_sha256": "b6242d0eccd982d5aa5a1ef55334e2df3a179f058b6487215558a9aaa269864e",
+  "producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_retry_cursor_stuck\\sim\\tb_v3_wav_retry550",
+  "native_log_sha256": "714ec70a653ccecdd82e92b98a6caa5b05e5d4ce841300128f79dd5858b2ac03",
   "original_metadata_preserved": true,
   "record": {
     "kind": "negative",
     "name": "flex_fs_retry_cursor_stuck",
     "accepted": true,
     "action": "fresh_native_execution",
-    "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_retry_cursor_stuck\\sim\\tb_v3_wav_retry550",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_retry_cursor_stuck\\sim\\tb_v3_wav_retry550",
     "checked": {
       "metadata": {
         "mutation": "flex_fs_retry_cursor_stuck",
@@ -35,12 +35,12 @@
           3
         ],
         "detected": true,
-        "producer_folder": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_retry_cursor_stuck\\sim\\tb_v3_wav_retry550",
-        "original_producer": "D:\\Codex\\svflex537\\qualification739\\negative\\flex_fs_retry_cursor_stuck\\sim\\tb_v3_wav_retry550",
+        "producer_folder": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_retry_cursor_stuck\\sim\\tb_v3_wav_retry550",
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\negative\\flex_fs_retry_cursor_stuck\\sim\\tb_v3_wav_retry550",
         "strict_generated_inputs": 1,
         "native_runner": "safevision/tools/run_v3_sim_flexible.py"
       },
-      "metadata_sha256": "b8dedd5caa4be7d85cb719a6291a296bc760f48025cc91192a896a8da7507a3f",
+      "metadata_sha256": "3cb8cb9071bf18fb05c69da156fb46bb07403d7f0d6a9983aa7ce0499c402851",
       "normal_completion": true,
       "input_count": 41,
       "compiler_graph": {
@@ -56,14 +56,14 @@
         "generator_dependencies": 0,
         "runtime_assets": 3,
         "generation_inputs": 38,
-        "generation_before_sha256": "dac1c513ef0529701024ebb9b6ce4c81fb08181855f12185082d3b22e641a07e",
-        "generation_after_sha256": "dac1c513ef0529701024ebb9b6ce4c81fb08181855f12185082d3b22e641a07e"
+        "generation_before_sha256": "aaacf7040c0ee82be10ce13d9ed12cd1055929a4dae563a7c57bc8811d0ae104",
+        "generation_after_sha256": "aaacf7040c0ee82be10ce13d9ed12cd1055929a4dae563a7c57bc8811d0ae104"
       },
       "error_counts": [
         3
       ],
-      "log_sha256": "b6242d0eccd982d5aa5a1ef55334e2df3a179f058b6487215558a9aaa269864e"
+      "log_sha256": "714ec70a653ccecdd82e92b98a6caa5b05e5d4ce841300128f79dd5858b2ac03"
     },
-    "elapsed_s": 9.985
+    "elapsed_s": 12.75
   }
 }

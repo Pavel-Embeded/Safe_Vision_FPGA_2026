@@ -1,0 +1,49 @@
+{
+  "scope": "Actual fresh current-RTL execution; physical strategy revalidation only if recorded",
+  "execution_root": "D:\\Codex\\svflex537\\candidate803",
+  "execution_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "current_build_commit": "821535a2900eea9951a8c399a6a7f128bc25f852",
+  "profile_changes": {},
+  "producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_row_integrity_full\\sim\\tb_v3_row_integrity_full",
+  "native_log_sha256": "457888e894a12acb86a0b9c3afe64c7d1f0744bfacb06f0876700f60f66e2b2d",
+  "original_metadata_preserved": true,
+  "record": {
+    "kind": "positive",
+    "name": "tb_v3_row_integrity_full",
+    "accepted": true,
+    "action": "fresh_native_execution",
+    "producer_folder": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_row_integrity_full\\sim\\tb_v3_row_integrity_full",
+    "checked": {
+      "metadata": {
+        "top": "tb_v3_row_integrity_full",
+        "status": "PASS",
+        "source_overrides": [],
+        "checks": 1941,
+        "data_comparisons": 1920,
+        "elapsed_s": 14.515,
+        "suite": "row_integrity_full",
+        "legacy": false,
+        "accepted_native_runner": true,
+        "producer_process_exit": 0,
+        "original_producer": "D:\\Codex\\svflex537\\qualification811\\positive\\tb_v3_row_integrity_full\\sim\\tb_v3_row_integrity_full"
+      },
+      "metadata_sha256": "a8064c5483de6769762121017c6db78f2e61f2902adf099ce676441104d425c8",
+      "normal_completion": true,
+      "input_count": 11,
+      "compiler_graph": {
+        "accepted": true,
+        "top": "tb_v3_row_integrity_full",
+        "suite": "row_integrity_full",
+        "ordered_analyzed_HDL": 2,
+        "manifest": "safevision/build/manifests/row_integrity_full_sim.json",
+        "current_manifest_sha256": "6de0ec351eec1342a4d0ff4d5785cf4e3afd6344781587592a715ce673ab82ef",
+        "binding": "actual_compiler_and_current_manifest"
+      },
+      "error_counts": [
+        0
+      ],
+      "log_sha256": "457888e894a12acb86a0b9c3afe64c7d1f0744bfacb06f0876700f60f66e2b2d"
+    },
+    "elapsed_s": 14.797
+  }
+}

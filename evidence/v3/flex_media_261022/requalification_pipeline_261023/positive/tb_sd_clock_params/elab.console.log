@@ -1,0 +1,34 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe work.tb_sd_clock_params -s tb_sd_clock_params --mt off --timescale 1ns/1ps --log elab.log 
+Turned off multi-threading.
+Starting static elaboration
+WARNING: [VRFC 10-3645] port 'dbg_r1' remains unconnected for this instance [D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_sd_clock_params.sv:13]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.sd_initializer(CLK_DIV_INIT=16'b...
+Compiling module work.crc16_ccitt
+Compiling module work.sd_sector_reader(CLK_DIV_FAST=16...
+Compiling module work.spi_master(CLK_FREQ=50000000)
+Compiling module work.sd_spi_card_model
+Compiling module work.sd_clock_param_case(CLK_HZ=50000...
+Compiling module work.sd_initializer
+Compiling module work.sd_sector_reader
+Compiling module work.spi_master_default
+Compiling module work.sd_clock_param_case(CLK_HZ=10000...
+Compiling module work.sd_initializer(CLK_DIV_INIT=16'b...
+Compiling module work.sd_sector_reader(CLK_DIV_FAST=16...
+Compiling module work.spi_master(CLK_FREQ=125000000)
+Compiling module work.sd_clock_param_case_default
+Compiling module work.tb_sd_clock_params
+Built simulation snapshot tb_sd_clock_params
+
+****** Webtalk v2018.3 (64-bit)
+  **** SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+  **** IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+    ** Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+source D:/Codex/svflex537/qualification811/positive/tb_sd_clock_params/sim/tb_sd_clock_params/xsim.dir/tb_sd_clock_params/webtalk/xsim_webtalk.tcl -notrace
+INFO: [Common 17-206] Exiting Webtalk at Fri Oct 23 13:28:36 2026...
