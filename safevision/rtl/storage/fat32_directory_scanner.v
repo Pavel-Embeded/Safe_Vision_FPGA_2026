@@ -45,7 +45,7 @@
 // ============================================================================
 `include "safevision_defs.vh"
 
-module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0,EXTERNAL_LBA=0,EXTERNAL_TIMER=0) (
+module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0,EXTERNAL_LBA=0,EXTERNAL_TIMER=0,PIPELINED_LBA=0) (
     input  wire        clk,
     input  wire        rst_n,
 
@@ -106,7 +106,8 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0,
 ,
 
     input wire[31:0] external_lba,output wire lba_active,
-    input wire[31:0] external_timeout_count,output wire timeout_tick,timeout_reset);
+    input wire[31:0] external_timeout_count,output wire timeout_tick,timeout_reset,
+    input wire external_lba_valid,output wire lba_request,output wire[31:0] lba_cluster);
 
     // Mounted FAT32 contract: sectors/cluster is a power of two in 1..128.
     function [31:0] cluster_sectors;
@@ -136,11 +137,14 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0,
                      D_SEC_RECV = 3'd2,   // 收 512 Byte，边收边装配目录项
                      D_WALK     = 3'd3,   // 一个簇读完，交给 cluster_walker 查下一个簇
                      D_DONE     = 3'd5,
-                     D_ERR      = 3'd6;
+                     D_ERR      = 3'd6,
+                     D_LBA      = 3'd4;
 
     reg  [2:0]  mstate;
-    assign lba_active=(mstate==D_WALK);
+    assign lba_active=PIPELINED_LBA?(mstate==D_LBA):(mstate==D_WALK);
+    assign lba_request=PIPELINED_LBA&&(mstate==D_LBA);
     reg  [31:0] cur_clus;       // 正在遍历的簇号
+    assign lba_cluster=cur_clus;
     reg  [31:0] cur_lba;        // 正在遍历的扇区号
     reg  [7:0]  sec_in_clus;    // 本簇已经读了几个扇区
     reg  [8:0]  bcnt;           // 扇区内字节偏移 0..511
@@ -192,9 +196,9 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0,
     // ------------------------------------------------------------------------
     // 主状态机
     // ------------------------------------------------------------------------
-    assign timeout_tick=rst_n&&((mstate==D_SEC_REQ)||(mstate==D_SEC_RECV&&!wait_ent));
+    assign timeout_tick=rst_n&&((mstate==D_SEC_REQ)||(mstate==D_SEC_RECV&&!wait_ent)||(PIPELINED_LBA&&mstate==D_LBA));
     assign timeout_reset=rst_n&&(
-      (mstate==D_IDLE&&scan_en)||
+      (mstate==D_IDLE&&scan_en)||(PIPELINED_LBA&&mstate==D_LBA&&external_lba_valid)||
       (mstate==D_SEC_REQ&&to_cnt!=`SD_TO_DATA&&sd_rd_ready)||
       (mstate==D_SEC_RECV&&to_cnt!=`SD_TO_DATA&&!sd_timeout_err&&!sd_crc16_err&&sd_data_valid&&sd_data_ready&&bcnt==511&&!stop_pending&&((sec_in_clus+8'd1)<sec_per_clus))||
       (mstate==D_WALK&&wk_done&&!wk_eoc&&!wk_error));
@@ -420,14 +424,22 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0,FULL_NAMES=0,
                     end else begin
                         cur_clus    <= wk_next_clus;
                         wk_cur_clus <= wk_next_clus;
-                        cur_lba     <= directory_next_lba;
+                        if(!PIPELINED_LBA)cur_lba <= directory_next_lba;
                         sec_in_clus <= 8'd0;
                         local_to_cnt <= 32'd0;
-                        mstate      <= D_SEC_REQ;
+                        mstate <= PIPELINED_LBA?D_LBA:D_SEC_REQ;
                     end
                 end
             end
             // ------------------------------------------------------------------
+            D_LBA:begin
+                local_to_cnt<=to_cnt+32'd1;
+                if(to_cnt==`SD_TO_DATA)begin
+                    dir_bad<=1;err_code<=`ERR_SD_IO;err_detail<=`DET_SD_TOKEN_TO;mstate<=D_ERR;
+                end else if(external_lba_valid)begin
+                    cur_lba<=external_lba;local_to_cnt<=0;mstate<=D_SEC_REQ;
+                end
+            end
             D_DONE: begin
                 // 等最后一条目录项被下游取走再宣告结束
                 if (!wait_ent) begin

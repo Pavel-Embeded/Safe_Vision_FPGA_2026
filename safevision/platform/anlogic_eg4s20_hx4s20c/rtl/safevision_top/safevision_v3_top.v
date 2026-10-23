@@ -317,7 +317,12 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  reg event_push_pipe;reg[43:0] event_payload;
  always @(posedge sys_clk or negedge sys_rst_n)begin
   if(!sys_rst_n)begin event_push_pipe<=0;event_payload<=0;end
-  else begin event_push_pipe<=err_push;if(err_push)event_payload<={err_ts,err_code,err_src};end
+  else begin
+   event_push_pipe<=err_push;
+   // Only event_push_pipe qualifies this private payload at the queue.
+   // Capture continuously; remove a late priority-to44-bit enable mux.
+   event_payload<={err_ts,err_code,err_src};
+  end
  end
  error_report events(.clk(sys_clk),.rst_n(sys_rst_n),.err_push(event_push_pipe),.err_code(event_payload[11:4]),.err_src(event_payload[3:0]),.err_ts(event_payload[43:12]),
  .evt_type(evt_src),.evt_value(evt_value),.evt_valid(evt_valid),.evt_full(evt_full),.evt_ready(evt_ready),.evt_ts(evt_ts),.drop_cnt(evt_drops));

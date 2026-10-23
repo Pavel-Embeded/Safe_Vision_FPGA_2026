@@ -77,6 +77,10 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
    if(expected_steps!=0)begin expected<=inverse_step;expected_steps<=expected_steps-1'b1;end
    pixel_fault_meta<=packed_pixel_fault;pixel_fault_sync<=pixel_fault_meta;
    if(packed_row_done)row_store_done<=1;
+   // CRC is private while SELECT examines tags. Reset it on every SELECT
+   // edge so a long tag-hit mux cannot drive the32-bit CRC write enable.
+   // READ, final-word comparison and every published row remain unchanged.
+   if(state==SELECT)crc<=32'hffffffff;
    if(PACKED_ROWS&&(packed_serializer_fault||pixel_fault_sync))fault<=1;
    if(reply_pending&&reply_ready)reply_pending<=0;
    if(state!=IDLE && state!=REPLY)begin
@@ -99,7 +103,7 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
              tag_slot[wanted_bank]==wanted_slot)item<=item+1'b1;
      else begin
       bank<=wanted_bank;slot<=wanted_slot;row<=wanted_row;
-      tag_valid[wanted_bank]<=0;word_column<=0;burst_count<=0;crc<=32'hffffffff;row_store_done<=0;
+      tag_valid[wanted_bank]<=0;word_column<=0;burst_count<=0;row_store_done<=0;
       lookup_addr<=`SV_SLOT_BASE(wanted_slot)+wanted_row*32'd1280;state<=QUERY1;
      end
     QUERY1:state<=QUERY2;

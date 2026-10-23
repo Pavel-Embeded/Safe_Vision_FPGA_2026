@@ -94,22 +94,43 @@ always @(posedge clk or negedge rst_n)
  else if(|timeout_resets)shared_timeout<=0;
  else if(|timeout_ticks)shared_timeout<=shared_timeout+1'b1;
 
-wire[31:0] file_lba_cluster;
-wire[31:0] shared_cluster=directory_lba_active?w_next_clus:file_lba_cluster;
+// Requests are captured only after the caller has registered its cluster.
+// Two REF stages separate multiplication and LBA addition. Callers wait in
+// bounded LBA states; context save is still allowed only between SD sectors.
+wire[31:0] file_lba_cluster,directory_lba_cluster;
+wire file_lba_request,directory_lba_request,file_lba_valid,directory_lba_valid;
+wire[31:0] shared_cluster=directory_lba_active?directory_lba_cluster:file_lba_cluster;
 wire shared_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0);
-// Select after the two exact modulo32-bit products. This removes the
-// scanner state decoder from the DSP input path; no request gains a cycle.
-// Keep separate products so area optimization cannot factor the selector
-// back in front of the multiplier. Capacity must be checked at full top.
-(* use_dsp=1,keep="true" *) wire[31:0] directory_product=w_next_clus*sec_per_clus;
-(* use_dsp=1,keep="true" *) wire[31:0] file_product=file_lba_cluster*sec_per_clus;
-wire[31:0] shared_product=directory_lba_active?directory_product:file_product;
 (* use_ripple=1 *) wire[31:0] shared_lba_bias=data_start_lba-(shared_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
-(* use_ripple=1 *) wire[31:0] shared_lba=shared_lba_bias+(shared_spc_legal?shared_product:32'd0);
+wire[31:0] shared_lba;
+generate if(FLEX_FILES)begin:registered_lba
+ (* use_dsp=1 *) reg[31:0] product_q;
+ reg[31:0] bias_q,lba_q;reg legal_q;
+ reg valid1,valid2,owner1,owner2;
+ always @(posedge clk)begin
+  product_q<=shared_cluster*sec_per_clus;
+  bias_q<=shared_lba_bias;legal_q<=shared_spc_legal;
+  lba_q<=bias_q+(legal_q?product_q:32'd0);
+ end
+ always @(posedge clk or negedge rst_n)begin
+  if(!rst_n)begin valid1<=0;valid2<=0;owner1<=0;owner2<=0;end
+  else begin
+   valid1<=directory_lba_request||file_lba_request;valid2<=valid1;
+   owner1<=directory_lba_active;owner2<=owner1;
+  end
+ end
+ assign shared_lba=lba_q;
+ assign directory_lba_valid=valid2&&owner2;
+ assign file_lba_valid=valid2&&!owner2;
+end else begin:legacy_lba
+ assign shared_lba=32'd0;
+ assign directory_lba_valid=1'b0;assign file_lba_valid=1'b0;
+end endgenerate
 assign core_rsp={d_scan_done,d_dir_bad,d_err_code,d_err_detail,d_dbg_state,d_ent_name,d_ent_attr,d_ent_first_clus,d_ent_size,d_ent_index,d_ent_valid,d_sd_rd_addr,d_sd_rd_len,d_sd_rd_en,d_sd_data_ready,d_wk_cur_clus,d_wk_start,d_wk_rst_walk,f_busy,f_done,f_error,f_err_code,f_err_detail,f_bytes_rd,f_dbg_state,f_data,f_valid,f_sof,f_eof,f_idle_between_sectors,f_context_out,f_sd_rd_addr,f_sd_rd_len,f_sd_rd_en,f_sd_data_ready,f_wk_cur_clus,f_wk_start,f_wk_rst_walk,w_busy,w_done,w_next_clus,w_eoc,w_error,w_err_code,w_err_detail,w_hop_cnt,w_dbg_state,w_sd_rd_addr,w_sd_rd_len,w_sd_rd_en,w_sd_data_ready};
-fat32_directory_scanner #(.SV_MEDIA_ONLY(FLEX_FILES?0:1),.FULL_NAMES(FLEX_FILES),.EXTERNAL_LBA(FLEX_FILES),.EXTERNAL_TIMER(FLEX_FILES)) ds(.clk(clk),
+fat32_directory_scanner #(.SV_MEDIA_ONLY(FLEX_FILES?0:1),.FULL_NAMES(FLEX_FILES),.EXTERNAL_LBA(FLEX_FILES),.EXTERNAL_TIMER(FLEX_FILES),.PIPELINED_LBA(FLEX_FILES)) ds(.clk(clk),
  .external_timeout_count({32'd0,shared_timeout}),.timeout_tick(timeout_ticks[0]),.timeout_reset(timeout_resets[0]),
  .external_lba(shared_lba),.lba_active(directory_lba_active),
+ .external_lba_valid(directory_lba_valid),.lba_request(directory_lba_request),.lba_cluster(directory_lba_cluster),
  .name_address(name_address),.name_data(name_data),.name_length(name_length),
  .rst_n(rst_n),
  .sec_per_clus(sec_per_clus),
@@ -154,9 +175,10 @@ fat32_directory_scanner #(.SV_MEDIA_ONLY(FLEX_FILES?0:1),.FULL_NAMES(FLEX_FILES)
  .wk_rst_walk(d_wk_rst_walk));
 wire[135:0] compact_fs_context;
 assign f_context_out={129'd0,compact_fs_context};
-v3_file_streamer_compact_ctx #(.EXTERNAL_LBA(FLEX_FILES),.EXTERNAL_TIMER(FLEX_FILES),.DIRECT_REQUEST_ADDRESS(FLEX_FILES)) fs(.clk(clk),
+v3_file_streamer_compact_ctx #(.EXTERNAL_LBA(FLEX_FILES),.EXTERNAL_TIMER(FLEX_FILES),.DIRECT_REQUEST_ADDRESS(FLEX_FILES),.PIPELINED_LBA(FLEX_FILES)) fs(.clk(clk),
  .external_timeout_count({32'd0,shared_timeout}),.timeout_tick(timeout_ticks[1]),.timeout_reset(timeout_resets[1]),
  .external_lba(shared_lba),.lba_cluster(file_lba_cluster),
+ .external_lba_valid(file_lba_valid),.lba_request(file_lba_request),
  .rst_n(rst_n&&c_kernel_rst_n),
  .context_load(c_fs_load),
  .context_in(c_fs_context[135:0]),

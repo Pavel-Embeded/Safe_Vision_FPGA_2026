@@ -35,7 +35,7 @@
 
 // V3 derivative: freeze ONLY idle_between_sectors during intentional cache pause.
 // Native clk remains running; timeout protection stays enabled for every live transaction.
-module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_TIMER=0,DIRECT_REQUEST_ADDRESS=0) (
+module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_TIMER=0,DIRECT_REQUEST_ADDRESS=0,PIPELINED_LBA=0) (
     input wire context_load,
     input wire [135:0] context_in,
     output wire [135:0] context_out,
@@ -99,7 +99,8 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
 ,
 
     input wire[31:0] external_lba,output wire[31:0] lba_cluster,
-    input wire[31:0] external_timeout_count,output wire timeout_tick,timeout_reset);
+    input wire[31:0] external_timeout_count,output wire timeout_tick,timeout_reset,
+    input wire external_lba_valid,output wire lba_request);
 
     // Mounted FAT32 contract: sectors/cluster is a power of two in 1..128.
     function [31:0] cluster_sectors;
@@ -123,7 +124,8 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
                      F_SEC_RECV = 3'd2,
                      F_WALK     = 3'd3,
                      F_DONE     = 3'd4,
-                     F_ERR      = 3'd5;
+                     F_ERR      = 3'd5,
+                     F_LBA      = 3'd6;
 
     reg  [2:0]  mstate;
 
@@ -155,7 +157,8 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
     // (base-2*SPC). Move the subtract away from the selected cluster path.
     // Invalid SPC still maps to base because cluster_sectors returns zero.
     wire [31:0] cluster_argument=(mstate==F_IDLE)?first_clus:wk_next_clus;
-    assign lba_cluster=cluster_argument;
+    assign lba_cluster=PIPELINED_LBA?wk_cur_clus:cluster_argument;
+    assign lba_request=PIPELINED_LBA&&(mstate==F_LBA);
     wire cluster_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0);
     (* use_ripple=1 *) wire [31:0] cluster_lba_bias=data_start_lba-(cluster_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
     wire[31:0] cluster_offset=cluster_sectors(cluster_argument,sec_per_clus);
@@ -163,9 +166,9 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
     wire [31:0] next_count=cnt+32'd1;
     wire last_file_byte=next_count==fsize;
     wire timeout_enabled=rst_n&&stream_enable&&context_enable&&!context_load;
-    assign timeout_tick=timeout_enabled&&((mstate==F_SEC_REQ)||(mstate==F_SEC_RECV&&!valid));
+    assign timeout_tick=timeout_enabled&&((mstate==F_SEC_REQ)||(mstate==F_SEC_RECV&&!valid)||(PIPELINED_LBA&&mstate==F_LBA));
     assign timeout_reset=rst_n&&(context_load||(timeout_enabled&&(
-      (mstate==F_IDLE&&start)||
+      (mstate==F_IDLE&&start)||(PIPELINED_LBA&&mstate==F_LBA&&external_lba_valid)||
       (mstate==F_SEC_REQ&&to_cnt!=`SD_TO_DATA&&!valid&&sd_rd_ready)||
       (mstate==F_SEC_RECV&&to_cnt!=`SD_TO_DATA&&!sd_timeout_err&&!sd_crc16_err&&!valid&&sd_data_valid&&sd_data_ready&&bcnt==511&&!stop_pending&&!last_file_byte&&((sec_in_clus+8'd1)<sec_per_clus))||
       (mstate==F_WALK&&wk_done&&!wk_eoc&&!wk_error))));
@@ -238,7 +241,7 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
 
                     fsize        <= file_size;
 
-                    cur_lba      <= next_cluster_lba;
+                    if(!PIPELINED_LBA)cur_lba <= next_cluster_lba;
                     sec_in_clus  <= 8'd0;
                     bcnt         <= 9'd0;
                     stop_pending <= 1'b0;
@@ -249,7 +252,7 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
                         // 空文件：一个字节都不发，直接收工
                         mstate <= F_DONE;
                     end else begin
-                        mstate <= F_SEC_REQ;
+                        mstate <= PIPELINED_LBA?F_LBA:F_SEC_REQ;
                     end
                 end
             end
@@ -333,14 +336,22 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
                     end else begin
 
                         wk_cur_clus <= wk_next_clus;
-                        cur_lba     <= next_cluster_lba;
+                        if(!PIPELINED_LBA)cur_lba <= next_cluster_lba;
                         sec_in_clus <= 8'd0;
                         local_to_cnt <= 32'd0;
-                        mstate      <= F_SEC_REQ;
+                        mstate <= PIPELINED_LBA?F_LBA:F_SEC_REQ;
                     end
                 end
             end
             // ------------------------------------------------------------------
+            F_LBA:begin
+                local_to_cnt<=to_cnt+32'd1;
+                if(to_cnt==`SD_TO_DATA)begin
+                    err_code<=`ERR_SD_IO;err_detail<=`DET_SD_TOKEN_TO;mstate<=F_ERR;
+                end else if(external_lba_valid)begin
+                    cur_lba<=external_lba;local_to_cnt<=0;mstate<=F_SEC_REQ;
+                end
+            end
             F_DONE: begin
                 // 等最后一个字节被下游取走再宣告结束
                 if (!valid) begin
