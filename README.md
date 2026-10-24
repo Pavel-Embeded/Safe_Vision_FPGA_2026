@@ -47,3 +47,5 @@ artifacts/releases/         当前精简交付包及保留的成功历史包
 本轮交付未改动物理 RTL/约束/IP 和位流，不将文档提交冒充新的仿真或布局布线。HD 不在本次批准范围。芯片实际容量与原生时序通过是资源验收条件；厂商加密 IP 内部、其他卡/显示器兼容性及长期运行按各自证据单独验收。
 
 协作与验证要求见 [CONTRIBUTING](CONTRIBUTING.md)，变更记录见 [CHANGELOG](CHANGELOG.md)。历史入口仅作追溯，以本页及 SAFEVISION_CURRENT 为当前版本。
+
+GitHub 自动检查见 [Actions](https://github.com/Pavel-Embeded/Safe_Vision_FPGA_2026/actions/workflows/base-qualification.yml)。它验证当前源码/交付字节并重放原始功能、时序和串口证据，不能替代新的硬件测试；长路径故障与修复见 [CI 修复说明](docs/changes/CI_LONG_PATHS_261024.md)。
