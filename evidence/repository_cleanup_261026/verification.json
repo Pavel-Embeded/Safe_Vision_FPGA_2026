@@ -18,11 +18,11 @@
     {
       "script": "safevision/tools/test_repository_records.py",
       "passed": true,
-      "tests": 8,
+      "tests": 10,
       "raw_log": "evidence/repository_cleanup_261026/test_repository_records.py.log.gz"
     }
   ],
-  "repository_boundary_test_count": 24,
+  "repository_boundary_test_count": 26,
   "full_existing_evidence_replay": true,
   "positive_unique_tops": 303,
   "semantic_negative_controls": 221,

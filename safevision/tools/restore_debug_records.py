@@ -3,6 +3,13 @@ from pathlib import Path
 import argparse, json, subprocess, zipfile
 from audit_repository_records import ROOT, digest, read, require, safe_path
 
+def output_directory(requested):
+    requested = requested.absolute()
+    for path in [requested, *requested.parents]:
+        require(not path.is_symlink() and not (hasattr(path, 'is_junction') and path.is_junction()), 'Output resolves through a link')
+    # Windows short names can expand during resolve without being links.
+    return requested.resolve()
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--list', action='store_true')
@@ -18,8 +25,7 @@ def main():
         return
     require(bool(args.group) != args.duplicates, 'Choose --group or --duplicates')
     require(args.output is not None, '--output is required')
-    output = args.output.absolute()
-    require(output.resolve() == output, 'Output resolves through a link')
+    output = output_directory(args.output)
     require(not output.exists() or output.is_dir() and not any(output.iterdir()), 'Output must be empty')
     if args.duplicates:
         manifest = read(ROOT/'evidence/repository_cleanup_261026/duplicates.json')

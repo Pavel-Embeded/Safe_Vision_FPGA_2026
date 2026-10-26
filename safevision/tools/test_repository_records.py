@@ -60,6 +60,22 @@ class RecordsBoundary(unittest.TestCase):
             self.run_restore(True)
         self.assertEqual(p.read_bytes(),b'keep')
 
+    def test_normal_path_alias_can_be_canonicalized(self):
+        original = Path.resolve
+        alias = self.base/'SHORT~1'/'output'
+        def resolving(path, *args, **kwargs):
+            return self.output if path == alias else original(path, *args, **kwargs)
+        with patch.object(Path, 'resolve', resolving):
+            self.assertEqual(restore.output_directory(alias), self.output)
+
+    def test_output_link_parent_is_rejected(self):
+        original = Path.is_symlink
+        def linked(path):
+            return path == self.output.parent or original(path)
+        with patch.object(Path, 'is_symlink', linked):
+            with self.assertRaisesRegex(ValueError, 'through a link'):
+                restore.output_directory(self.output)
+
     def test_absolute_and_windows_escape_paths(self):
         for name in ['../outside','/absolute','C:/drive',r'safe\..\outside']:
             with self.assertRaises(ValueError,msg=name):

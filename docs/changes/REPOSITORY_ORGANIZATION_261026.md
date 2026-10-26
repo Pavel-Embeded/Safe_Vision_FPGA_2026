@@ -21,3 +21,5 @@
 此前仅在本地的调试日志和诊断源收录到 `evidence/debug_history/archives`，索引保留来源路径与 SHA-256。旧工作区、检查点和本地原件保持原位。本次没有删除独有调试记录。
 
 校验命令、清理数量和验证结果随 [整理收据](../../evidence/repository_cleanup_261026/organization.json) 更新。GitHub 自动检查继续复核当前功能、时序、输入和已录制串口证据。
+
+首次云端检查发现恢复工具拒绝正常 Windows 路径规范化，原因和修正见 [路径兼容记录](CI_WINDOWS_PATH_261026.md)。失败日志保留，修正后重新执行检查。

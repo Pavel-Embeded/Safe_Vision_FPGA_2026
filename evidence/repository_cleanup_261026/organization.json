@@ -43,12 +43,19 @@
     "safevision/platform/anlogic_eg4s20_hx4s20c/ip/README.md",
     "safevision/assets/fonts/README.md",
     "docs/debug/SDRAM_261017.md",
-    ".github/PULL_REQUEST_TEMPLATE.md"
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    "docs/changes/CI_WINDOWS_PATH_261026.md"
   ],
   "verification_record": "evidence/repository_cleanup_261026/verification.json",
   "first_audit_rejected_retained_document_change": true,
   "distinct_historical_files_kept": [
     "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/tools/host/README.md",
     "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/tools/host/README.md"
-  ]
+  ],
+  "first_cloud_run": {
+    "id": 40313312660,
+    "conclusion": "failure",
+    "job_id": 121539589596,
+    "reason": "Restoration rejected a normalized Windows output path"
+  }
 }
