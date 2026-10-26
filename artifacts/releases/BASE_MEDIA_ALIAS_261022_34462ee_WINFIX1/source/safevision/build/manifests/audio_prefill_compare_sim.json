@@ -1,8 +1,0 @@
-{
-  "sources": [
-    "safevision/rtl/audio/v3_audio_prefill_compare.v"
-  ],
-  "tops": [
-    "tb_v3_audio_prefill_compare"
-  ]
-}

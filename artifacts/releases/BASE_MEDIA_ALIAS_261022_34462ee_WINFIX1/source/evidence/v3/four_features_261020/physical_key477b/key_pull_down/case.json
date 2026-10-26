@@ -1,8 +1,0 @@
-{
-  "name": "key_pull_down",
-  "positive": false,
-  "accepted": true,
-  "rejected": true,
-  "issue": "KEY3 must retain its active-low pull-up",
-  "result": null
-}

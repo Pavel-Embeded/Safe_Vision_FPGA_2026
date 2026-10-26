@@ -1,0 +1,15 @@
+{
+  "accepted": true,
+  "firmware": "26102301",
+  "fresh_HDL_simulation_performed": false,
+  "fresh_TD_build_performed": false,
+  "hardware_test_performed": false,
+  "github_write_performed": false,
+  "physical_inputs": 206,
+  "positive_unique_tops": 303,
+  "semantic_negative_controls": 221,
+  "source_build_commit": "c6a6549871d97755708120d2a76239011cef94bb",
+  "bit_sha256": "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
+  "timing_reported_paths": 3320,
+  "validated_ack_frames": 5016
+}

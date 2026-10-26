@@ -1,9 +1,0 @@
-{
-  "sources": [
-    "safevision/rtl/hd/alpha_blend.v",
-    "safevision/verification/models/v3_hd_alpha_reference.v"
-  ],
-  "tops": [
-    "tb_v3_hd_alpha_equivalence"
-  ]
-}

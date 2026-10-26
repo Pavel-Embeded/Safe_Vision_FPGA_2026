@@ -1,9 +1,0 @@
-{
-  "sources": [
-    "safevision/rtl/hd/v3_video_display_core.v",
-    "safevision/verification/models/v3_fade_reference151.v"
-  ],
-  "tops": [
-    "tb_v3_fade_gate151"
-  ]
-}

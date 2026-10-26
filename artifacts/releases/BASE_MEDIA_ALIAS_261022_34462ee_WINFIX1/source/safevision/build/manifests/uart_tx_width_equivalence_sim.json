@@ -1,9 +1,0 @@
-{
-  "sources": [
-    "safevision/rtl/common/uart_tx.v",
-    "safevision/verification/models/v3_uart_tx_reference.sv"
-  ],
-  "tops": [
-    "tb_v3_uart_tx_width_equivalence"
-  ]
-}

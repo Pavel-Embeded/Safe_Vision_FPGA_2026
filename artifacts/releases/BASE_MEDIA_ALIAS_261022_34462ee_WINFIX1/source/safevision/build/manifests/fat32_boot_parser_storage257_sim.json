@@ -1,9 +1,0 @@
-{
-  "sources": [
-    "safevision/rtl/storage/fat32_boot_parser.v",
-    "safevision/verification/models/fat32_boot_parser255_reference.sv"
-  ],
-  "tops": [
-    "tb_v3_fat32_boot_parser_storage257"
-  ]
-}

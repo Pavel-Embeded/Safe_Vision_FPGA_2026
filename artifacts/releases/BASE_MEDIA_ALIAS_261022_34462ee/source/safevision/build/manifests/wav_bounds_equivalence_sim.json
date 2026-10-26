@@ -1,6 +1,0 @@
-{
- "sources":["safevision/rtl/media/v3_wav_parser_compact_ctx.v","safevision/verification/models/v3_wav_bounds_reference.sv"],
- "tops":["tb_v3_wav_bounds_equivalence"],
- "test_sources":{"tb_v3_wav_bounds_equivalence":["safevision/verification/unit/tb_v3_wav_bounds_equivalence.sv"]},
- "timeouts":{"tb_v3_wav_bounds_equivalence":900}
-}

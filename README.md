@@ -1,51 +1,40 @@
 # SafeVision FPGA 2026
 
-面向康芯 HX4S20C / 安路 EG4S20BG256 的 FPGA HDMI 多媒体与应急终端。
+SafeVision 是基于康芯 HX4S20C、安路 EG4S20BG256 的视听信息发布终端原型。当前稳定版本为 BASE 26102301，HDMI 输出 640×480。核心媒体处理和控制由 FPGA 完成。
 
-**当前稳定交付：BASE 640×480，固件 26102301。** 任意名称/不同尺寸 BMP 等比例读取、四图轮播、自动配音、真实音频频谱、秒级运行时间及实体菜单集成于同一位流；图片、声音、频谱和实体菜单已获用户反馈。Flash 已固化并完成重载后的完整串口验收，真实完全断电重启待验。
+系统读取 FAT32 根目录中的 BMP 和 WAV，按名称选择前四张有效图片，等比例适配并装载到 SDRAM。播放链支持自动配音、32 帧渐变、实体菜单、运行时间和 512 点 FFT / 32 频段频谱。用户已确认图片、声音、频谱和菜单正常，并于 2026-10-25 反馈真实掉电重启正常。
 
-| 从这里开始 | 内容 |
+| 入口 | 内容 |
 | --- | --- |
-| [当前版本](SAFEVISION_CURRENT.md) | 唯一推荐下载、SHA-256、源码与构建身份 |
-| [版本交付](docs/releases/BASE_26102301/RELEASE.md) | 模块职责、资料入口与交付范围 |
-| [实物菜单详解](docs/releases/BASE_26102301/MENU_CN.md) | 八项参数、按键、状态含义及真实照片 |
-| [使用与恢复](docs/releases/BASE_26102301/OPERATIONS.md) | 媒体规则、Flash、旧版恢复和构建入口 |
-| [分层验收](docs/releases/BASE_26102301/ACCEPTANCE.md) | 仿真、布局布线、位流、串口、实体效果与待验边界 |
-| [媒体与频谱架构](docs/architecture/flexible-media-and-spectrum.md) | 名称排序、BMP/WAV、缓存、跨域和 FFT |
+| [当前版本](SAFEVISION_CURRENT.md) | 位流、源码身份和验收状态 |
+| [项目结构](docs/PROJECT_STRUCTURE.md) | 目录用途、当前资料与历史资料的边界 |
+| [模块手册](docs/modules/README.md) | 接口、时钟、复位、握手和测试入口 |
+| [调试记录](docs/debug/README.md) | 故障时间线、逐次记录和原始日志 |
+| [赛题对应](docs/requirements/official_problem1.md) | 四类基础要求、五类扩展要求及证据 |
+| [操作与恢复](docs/releases/BASE_26102301/OPERATIONS.md) | TF 卡准备、按键、Flash 和旧版恢复 |
+| [菜单说明](docs/releases/BASE_26102301/MENU_CN.md) | 八项参数、状态数字与实物照片 |
+| [验收记录](docs/releases/BASE_26102301/ACCEPTANCE.md) | 离线测试、时序、实板和冷启动记录 |
 
-## 快速使用
+## 使用
 
-1. 取当前 [BASE 位流](artifacts/releases/BASE_26102301_6a957b0/SafeVision_BASE_6a957b0.bit)，先核对 [release.index.json](artifacts/releases/BASE_26102301_6a957b0/release.index.json) 的 SHA-256。
-2. FAT32 根目录放至少四张合法 BMP；中文/长名与不同长宽比均支持，按名称字典顺序取前四张有效图，等比例居中并补黑边。音频优先同名 WAV，再按目录候选回退。
-3. 默认 5 秒自动轮播，音量 70。KEY2 换图、KEY3 切换自动；KEY2+KEY3 同时长按约 2 秒进菜单，按 [菜单说明](docs/releases/BASE_26102301/MENU_CN.md) 调参。
-4. 仓库根目录执行 `node safevision/tools/verify_base_release.mjs`，离线核对本次交付与 206 个生产输入。
+1. 下载 [SafeVision_BASE_6a957b0.bit](artifacts/releases/BASE_26102301_6a957b0/SafeVision_BASE_6a957b0.bit)，按 [当前版本](SAFEVISION_CURRENT.md) 核对 SHA-256。
+2. TF 卡使用 FAT32，根目录放至少四张合法的 24 位或 32 位 BI_RGB BMP。支持中文长文件名；超过四张时按确定的名称字典顺序选图。
+3. 默认每张稳定停留 5 秒。KEY2 手动换图，KEY3 切换自动播放；KEY2+KEY3 同时长按约 2 秒进入菜单。按键细节见 [菜单说明](docs/releases/BASE_26102301/MENU_CN.md)。
+4. 在仓库根目录运行 `node safevision/tools/verify_base_release.mjs`，核对原始发布包和 206 个生产输入；运行 `python -B safevision/tools/audit_repository_records.py`，核对后续实物反馈、调试归档及去重清单。
 
-## 项目结构
+## 已有验证
 
-```text
-safevision/rtl/              存储、视频、音频、控制与安全实现
-safevision/platform/         生产顶层、板级管脚、时钟、厂商 IP 与 TD 工程
-safevision/build/manifests/  显式综合和仿真文件清单
-safevision/verification/     单元、链路、整机、独立模型与负控
-safevision/tools/            构建、审计、发布和只读交付验证器
-docs/                       架构、接口、缺陷修正、使用与版本说明
-evidence/v3/                绑定输入的原始测试证据与历史
-artifacts/releases/         当前精简交付包及保留的成功历史包
-```
-
-## 验收摘要
-
-| 项目 | BASE 26102301 |
+| 项目 | 结果 |
 | --- | --- |
-| 既有离线功能 | 303 个独立正向 top、304 条含别名记录、221 项语义负控 |
-| 原生 Slow/Fast 最小裕量 | setup +0.195 ns；hold +0.030 ns；recovery +3.767 ns；removal +0.038 ns |
-| 芯片资源 | LUT 18749/19600；REG 13875/19600；等效 RAM 63/64；DSP 29/29 |
-| Flash 重载后 UART | 40 项配置、八缩放组合、四周期、两次恢复、持续轮播；5016 帧 ACK 独立复核通过 |
-| 实体效果 | 图片/声音/频谱及菜单用户反馈保留 |
-| 真实完全断电启动 | 待用户方便后执行，未标通过 |
+| 离线功能 | 303 个独立正向 top、304 条含别名记录、221 项语义负控 |
+| 原生 Slow/Fast 时序最小裕量 | setup +0.195 ns；hold +0.030 ns；recovery +3.767 ns；removal +0.038 ns |
+| 资源 | LUT 18749/19600；REG 13875/19600；等效 RAM 63/64；DSP 29/29 |
+| Flash | 写入、独立校验、完整回读及重载后的串口验收通过 |
+| 串口 | 原始记录中的 5016 帧 ACK 独立核对通过 |
+| 实物 | 用户确认图像、声音、频谱、实体菜单和真实掉电重启正常 |
 
-本轮交付未改动物理 RTL/约束/IP 和位流，不将文档提交冒充新的仿真或布局布线。HD 不在本次批准范围。芯片实际容量与原生时序通过是资源验收条件；厂商加密 IP 内部、其他卡/显示器兼容性及长期运行按各自证据单独验收。
+冷启动依据为 [用户实物反馈](evidence/board/cold_boot_261025_user_report.json)，测试次数和现场串口日志未提供。2026-10-23 冻结包保留当时的待验状态，后续状态以 [验收更新](evidence/board/acceptance_updates.json) 为准。
 
-协作与验证要求见 [CONTRIBUTING](CONTRIBUTING.md)，变更记录见 [CHANGELOG](CHANGELOG.md)。历史入口仅作追溯，以本页及 SAFEVISION_CURRENT 为当前版本。
+当前批准范围为 BASE。长期运行、多 TF 卡和多显示器兼容性继续按具体测试记录验收。自动感光、图片内容自动亮度和主峰频率数字显示尚未进入当前位流。厂商加密 IP 的接口验证、原生时序与实际板测分别记录。
 
-GitHub 自动检查见 [Actions](https://github.com/Pavel-Embeded/Safe_Vision_FPGA_2026/actions/workflows/base-qualification.yml)。它验证当前源码/交付字节并重放原始功能、时序和串口证据，不能替代新的硬件测试；长路径故障与修复见 [CI 修复说明](docs/changes/CI_LONG_PATHS_261024.md)。
+开发要求见 [CONTRIBUTING](CONTRIBUTING.md)，依赖来源见 [第三方说明](THIRD_PARTY_NOTICES.md)。[GitHub Actions](https://github.com/Pavel-Embeded/Safe_Vision_FPGA_2026/actions/workflows/base-qualification.yml) 复核源码及已有证据，不执行实体板卡测试。

@@ -1,5 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative209/n/hud_green_channel_zeroed/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_constant224_blend
-INFO: [VRFC 10-311] analyzing module v3_hud_palette224
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq202/source/safevision/verification/unit/tb_v3_hud_palette192.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_hud_palette192

@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svmultires510/source/safevision/rtl/storage/fat32_directory_scanner.v" into library work
-INFO: [VRFC 10-311] analyzing module fat32_directory_scanner
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svmultires510/source/safevision/verification/unit/tb_v3_directory_lba70.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_directory_lba70

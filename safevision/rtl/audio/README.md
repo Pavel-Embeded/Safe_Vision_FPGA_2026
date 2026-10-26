@@ -1,7 +1,5 @@
-# rtl/audio
+# 音频链
 
-负责人：C。**当前仅建立目录与命名计划，未提供功能 RTL。**
+当前生产入口为 `v3_audio_system`，连接 WAV 描述符、PCM 队列与 SDRAM 环缓存、48 kHz 调度、音量、报警和 HDMI PCM/ACR。
 
-建议 `audio_scheduler.v`、`audio_priority_arbiter.v`、`alarm_tone_gen.v`。WAV/PCM 源由 B 提供；HDMI 数据岛/ACR 由板级 HDMI 适配与 A/C 联合验收。
-
-新增文件前先更新 `docs/architecture/module_registry.md`，跨人端口先更新 `docs/interface_spec.md`，并在 `verification/` 放对应测试。
+接口、时钟、复位和测试入口见 [生产模块手册](../../../docs/modules/README.md)。当前验收见 [BASE 26102301](../../../docs/releases/BASE_26102301/ACCEPTANCE.md)。本目录同时保留部分早期实现，生产选择以显式源清单为准。

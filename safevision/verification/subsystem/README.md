@@ -1,5 +1,5 @@
-# subsystem
+# 子系统验证
 
-跨模块测试：SD→帧缓存、固定帧→Pixel FIFO→视频、PCM→HDMI 包装，以及随机反压/复位重收敛。
+跨模块测试包含媒体装载、帧缓存、PCM 和显示服务。实际测试源分布于 verification 的单元与整机测试文件，按显式清单和当前资格矩阵选择。
 
-当前仅有目录说明，测试需后续实现。
+执行与证据入口见 [模块手册](../../../docs/modules/README.md)、[调试索引](../../../docs/debug/README.md) 及 [当前验收](../../../docs/releases/BASE_26102301/ACCEPTANCE.md)。

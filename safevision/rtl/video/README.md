@@ -1,7 +1,5 @@
-# rtl/video
+# 视频显示
 
-负责人：A。**当前仅建立目录与命名计划，未提供功能 RTL。**
+当前生产链包含行预取、坐标缩放、颜色调整、双源 Fade、四层合成、HUD、运行时间、FFT 频谱及 SAFE 输出。像素和同步标签保持固定延迟。
 
-模块文件夹：`video_timing/`、`pattern_generator/`、`graphics_rom/`、`osd_overlay/`、`video_pipeline/`、`frame_reader/`、`video_compositor/`、`safe_scene_gen/`、`emergency_mux/`、`video_cdc/`。各目录 README 定义用途；当前都尚无功能 RTL。固定速率 HDMI、前置预取、de/pixel_valid 区分、流水线对齐。
-
-新增文件前先更新 `docs/architecture/module_registry.md`，跨人端口先更新 `docs/interface_spec.md`，并在 `verification/` 放对应测试。
+接口、时钟、复位和测试入口见 [生产模块手册](../../../docs/modules/README.md)。当前验收见 [BASE 26102301](../../../docs/releases/BASE_26102301/ACCEPTANCE.md)。本目录同时保留部分早期实现，生产选择以显式源清单为准。

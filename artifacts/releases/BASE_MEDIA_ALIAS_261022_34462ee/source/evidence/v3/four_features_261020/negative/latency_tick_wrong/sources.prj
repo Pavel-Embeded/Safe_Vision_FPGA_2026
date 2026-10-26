@@ -1,7 +1,0 @@
-"D:/Codex/svfeatures413/source/safevision/rtl/control/input_sync.v"
-"D:/Codex/svfeatures413/source/safevision/rtl/control/key_debounce.v"
-"D:/Codex/svfeatures413/source/safevision/rtl/control/v3_user_controls.v"
-"D:/Codex/svnegative417/n/latency_tick_wrong/mutant.v"
-"D:/Codex/svfeatures413/source/safevision/rtl/video/scaler/scaler_coords.v"
-"D:/Codex/svfeatures413/source/safevision/rtl/video/v3_packed_row_store.v"
-"D:/Codex/svfeatures413/source/safevision/verification/unit/tb_v3_response_timer.sv"

@@ -1,6 +1,0 @@
-{
-  "target": "safevision/rtl/storage/fat32_directory_scanner.v",
-  "before_sha256": "2d11afa38df1a3cc48f12a8ad4e79ad5aff673ef9fe7f97f74ac3fc18f6f764e",
-  "after_sha256": "7d5696e3004c3010be530f1ef349e3eb5505a456b6dd49bc2891a8cc8d813e63",
-  "scope": "Normalize SV001..SV999 BMP/WAV to the existing numeric key in compact production scanner; preserve all four-digit names and generic raw mode; no image/audio/clock/reset feature changes."
-}

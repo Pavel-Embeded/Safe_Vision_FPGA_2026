@@ -1,8 +1,0 @@
-{
-  "sources": [
-    "safevision/rtl/control/v3_command_parser.v"
-  ],
-  "tops": [
-    "tb_v3_parser_digit_seen"
-  ]
-}

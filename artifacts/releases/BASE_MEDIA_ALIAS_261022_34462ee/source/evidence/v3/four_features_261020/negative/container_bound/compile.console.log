@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svn41r/container_bound/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_wav_parser_compact_ctx
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq41/source/safevision/verification/unit/tb_v3_audio_negative_container.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_audio_negative_container

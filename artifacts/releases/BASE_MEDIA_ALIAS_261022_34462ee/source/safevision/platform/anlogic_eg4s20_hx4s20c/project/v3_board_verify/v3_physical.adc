@@ -1,2 +1,0 @@
-# Keep the board-verified SDRAM output-enable site; allow unconstrained PHY placement.
-set_inst_assignment {memory_ip/u2_ram/u2_wrrd/sdr_t_reg} {location = x19y31z1;}

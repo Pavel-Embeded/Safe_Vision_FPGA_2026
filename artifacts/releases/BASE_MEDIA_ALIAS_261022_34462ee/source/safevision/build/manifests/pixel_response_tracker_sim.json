@@ -1,8 +1,0 @@
-{
-  "sources": [
-    "safevision/rtl/control/v3_pixel_response_tracker.v"
-  ],
-  "tops": [
-    "tb_v3_pixel_response_tracker"
-  ]
-}

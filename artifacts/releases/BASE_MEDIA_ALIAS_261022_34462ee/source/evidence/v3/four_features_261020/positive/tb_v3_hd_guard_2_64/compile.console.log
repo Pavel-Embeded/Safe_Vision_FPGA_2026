@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq309/source/safevision/rtl/hd/v3_row_integrity.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_row_integrity
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq309/source/safevision/verification/models/v3_hd_guard_reference.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_hd_guard_reference
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq309/source/safevision/verification/unit/tb_v3_hd_guard_2_64.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_hd_guard_2_64

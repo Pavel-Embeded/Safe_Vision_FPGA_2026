@@ -1,9 +1,0 @@
-{
-  "original_source_commit": "de6bcf56b314bd527c3913e0448d0c214ca1b5a4",
-  "original_source": "safevision/rtl/media/v3_bmp_normalizer.v",
-  "original": "safevision/verification/models/v3_bmp_normalizer199.original.txt",
-  "original_sha256": "9a78f1b2816a1613b8e75eee11459b9819cd74166d9134760cfe93cbcc2b6a55",
-  "reference": "safevision/verification/models/v3_bmp_normalizer199_reference.sv",
-  "reference_sha256": "2e39ad0a5404b0c5acaf5fbf44632658df8c1e8d0732eec097e64ae232769383",
-  "transformation": "module identifier only; no behavior or expected values edited"
-}

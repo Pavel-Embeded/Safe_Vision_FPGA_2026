@@ -1,7 +1,5 @@
-# rtl/control
+# 控制链
 
-负责人：C。**当前仅建立目录与命名计划，未提供功能 RTL。**
+当前生产控制包含实体按键与菜单、UART 命令/回执、轮播计时、响应计时、错误监测及恢复。配置在媒体复位期间按当前顶层约定保留。
 
-建议 `input_sync.v`、`key_debounce.v`、`playback_fsm.v`、`control_event_queue.v`。按键/UART/模式事件统一编码；跨域按接口规范。
-
-新增文件前先更新 `docs/architecture/module_registry.md`，跨人端口先更新 `docs/interface_spec.md`，并在 `verification/` 放对应测试。
+接口、时钟、复位和测试入口见 [生产模块手册](../../../docs/modules/README.md)。当前验收见 [BASE 26102301](../../../docs/releases/BASE_26102301/ACCEPTANCE.md)。本目录同时保留部分早期实现，生产选择以显式源清单为准。

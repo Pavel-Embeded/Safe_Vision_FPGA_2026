@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures297/source/safevision/rtl/audio/v3_pcm_ring.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_pcm_ring
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures297/source/safevision/verification/unit/tb_v3_ring_pointer_count300.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_ring_pointer_count300

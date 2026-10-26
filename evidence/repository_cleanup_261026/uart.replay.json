@@ -1,0 +1,14 @@
+{
+  "accepted": true,
+  "validated_ack_frames": 5016,
+  "stages": {
+    "ready": 46,
+    "configuration": 540,
+    "geometries": 630,
+    "periods": 2938,
+    "recovery": 214,
+    "monitor": 648
+  },
+  "scope": "Replay existing recorded UART bytes; no live board test",
+  "hardware_test_performed": false
+}

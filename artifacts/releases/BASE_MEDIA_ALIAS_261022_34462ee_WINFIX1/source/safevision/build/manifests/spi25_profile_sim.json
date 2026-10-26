@@ -1,9 +1,0 @@
-{
-  "defines": [],
-  "sources": [
-    "safevision/rtl/storage/spi_master.v"
-  ],
-  "tops": [
-    "tb_v3_spi25_profile"
-  ]
-}
