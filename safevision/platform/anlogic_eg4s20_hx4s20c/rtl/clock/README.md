@@ -1,6 +1,6 @@
 # Clock / Reset / Video Timing 子系统
 
-本目录使用 Verilog-2001，安路 IP 在平台 `ip/pll/`，可移植扫描在 `safevision/rtl/video/video_timing/`。完整说明见仓库 `docs/clock_video_implementation.md` 和 `docs/clock_video_change_log.md`。
+模块使用 Verilog-2001。安路 IP 位于平台 `ip/pll/`，可移植扫描模块位于 `safevision/rtl/video/video_timing/`。时钟设计与修改记录见 `docs/clock_video_implementation.md`、`docs/clock_video_change_log.md`。
 
 | 模块 | 用途 |
 |---|---|

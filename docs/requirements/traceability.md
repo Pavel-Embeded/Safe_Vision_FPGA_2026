@@ -1,4 +1,4 @@
-> ⚠️ 本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（**历史提交全部保留**）；取回方式与收敛清单见 [仓库收敛说明](../仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
+> 注意：本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（历史提交全部保留）；取回方式与收敛清单见 [仓库收敛说明](../仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
 
 # 需求 → 模块 → 测试 → 证据
 
@@ -6,8 +6,8 @@
 
 | ID | 目标 | 现有/规划模块 | 计划测试与证据 | 状态 |
 |---|---|---|---|---|
-| B01 | 本地媒体读取、四图识别 | `storage/*`（含新增 `mbr_parser` 卷基址）、`media/bmp_*`、`file_index` 现有；板级 `top_stage5_sector_rd` 现有 | TC-B01-01..03、TC-B-TOP；`evidence/{sim,board}` | **阶段 1–5 已上板实测通过**（M-9：512/512 逐字节一致，`evidence/board` 条目 M-9-PASS）；阶段 6–7 的板级验证与"四图识别"仍待做（`mbr_parser` 单测已过，板级顶层待写） |
-| B02 | SDRAM 缓存、HDMI 稳定显示 | `memory/*` 现有（新增 `framebuffer_loopback_core` + `mem_read_burst` 做阶段 10 帧缓存回环）；`video/*`、板级 HDMI 规划 | TC-B02-01..02；报告/板级/水位 | **阶段 10 帧缓存回环核心已仿真通过**（整帧写→整帧读回→逐像素零错，`tb_framebuffer_loopback_core` 11 项）；板级 `top_stage10_framebuffer` **已上板验收通过（2026-10-03）**：整帧 307200 像素逐像素零错（`BAD=000000`）、三个地址斜坡探针全对；定位用的根因（适配器读预取地址未每拍自增）已修，`sdram_app_adapter` 另有 7 项单元 TB 覆盖；**仅余自研组时序 −0.992 ns 待收**；HDMI 稳定显示未整机集成 |
+| B01 | 本地媒体读取、四图识别 | `storage/*`（含新增 `mbr_parser` 卷基址）、`media/bmp_*`、`file_index` 现有；板级 `top_stage5_sector_rd` 现有 | TC-B01-01..03、TC-B-TOP；`evidence/{sim,board}` | 阶段 1 至 5 已上板实测通过（M-9：512/512 逐字节一致，`evidence/board` 条目 M-9-PASS）；阶段 6 至 7 的板级验证与"四图识别"仍待做（`mbr_parser` 单测已过，板级顶层待写） |
+| B02 | SDRAM 缓存、HDMI 稳定显示 | `memory/*` 现有（新增 `framebuffer_loopback_core` + `mem_read_burst` 做阶段 10 帧缓存回环）；`video/*`、板级 HDMI 规划 | TC-B02-01..02；报告/板级/水位 | 阶段 10 帧缓存回环核心已仿真通过（整帧写→整帧读回→逐像素零错，`tb_framebuffer_loopback_core` 11 项）；板级 `top_stage10_framebuffer` 已上板验收通过（2026-10-03）：整帧 307200 像素逐像素零错（`BAD=000000`）、三个地址斜坡探针全对；定位用的根因（适配器读预取地址未每拍自增）已修，`sdram_app_adapter` 另有 7 项单元 TB 覆盖；仅余自研组时序 −0.992 ns 待收；HDMI 稳定显示未整机集成 |
 | B03 | 按键/自动切换 | `frame_swap_*` 现有；`control/playback_fsm` 规划 | TC-B03-01..02；事件日志/录像 | 未整机集成 |
 | B04 | HDMI 音频 | `media/wav_parser` 现有；PCM 环/调度/HDMI 音频规划 | TC-B04-01..02；两台设备录音/录像 | 未整机集成 |
 | E01 | 高级转场/画面组织 | 视频转场规划 | TC-E01-01；水位/录像 | 计划 |
@@ -27,7 +27,7 @@
 | E02 | 音画联动 | `audio_scheduler`（`track_id` 随 generation 透传） | `tb_c_audio` | 同上（50，FAIL=0） |
 | E04 | 鲁棒性与恢复 | `safety/{watchdog,fault_manager,emergency_fsm}` | `tb_c_watchdog` / `tb_c_fault_manager` / `tb_c_emergency_fsm` | 同上（14+12+23，FAIL=0） |
 
-**证据**：`evidence/sim/run_c_sim_20261014.log`（入口 `tools/run_c_sim.ps1`，汇总 `C-chain TOTAL PASS=154 FAIL=0`，SHA-256 `BC6C2AF5…25DE5`）。需先设 `MGLS_LICENSE_FILE` 指向本机许可证文件。**边界**：未上板、未 STA。
+证据：`evidence/sim/run_c_sim_20261014.log`（入口 `tools/run_c_sim.ps1`，汇总 `C-chain TOTAL PASS=154 FAIL=0`，SHA-256 `BC6C2AF5…25DE5`）。需先设 `MGLS_LICENSE_FILE` 指向本机许可证文件。边界：未上板、未 STA。
 
 ## A Clock / Video Timing 发布补充（2026-10-02）
 
@@ -38,6 +38,6 @@
 Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内部 STA 的实际 A 输入与本提交一致，但 TD 健康告警仍开放（runner 返回 2）。尚未完成 A 产品顶层、完整 HDMI/Frame Reader/OSD/应急链与 A 板级验证。旧 `clock_video_20261002` 是过滤前工作树历史记录，不能把其中 B 默认超时变更或全工作树文件计数当成本提交内容。当前范围与新回归见 [A发布核对](../A_PUSH_SCOPE_20261002.md)。
 
 
-## A 阶段 1–9 需求落地（2026-10-04）
+## A 阶段 1 至 9 需求落地（2026-10-04）
 
-手册 §6.1–6.9：基础四模块→`common/a_*.v`；测试图/一像素框/坐标文字→`pattern_generator.v` + `osd_coordinate_text.v`；片上字库/OSD→`font8x16_rom.v` + `.mem` + `osd_overlay.v`；四级流水→OSD 与既有 `video_pipeline` 同拍接线。状态文字可用于后续 B03/E03 观测，但 C 控制/UART 配置接入尚未完成；字体 ROM 是后续 E01 的基础，未宣称完整应急安全场景完成。已执行 TB、内部 STA 与尚缺上板验收见 [阶段对应表](../A_stages1_9.md)。
+手册 §6.1 至 6.9：基础四模块→`common/a_*.v`；测试图/一像素框/坐标文字→`pattern_generator.v` + `osd_coordinate_text.v`；片上字库/OSD→`font8x16_rom.v` + `.mem` + `osd_overlay.v`；四级流水→OSD 与既有 `video_pipeline` 同拍接线。状态文字可用于后续 B03/E03 观测，但 C 控制/UART 配置接入尚未完成；字体 ROM 是后续 E01 的基础，未宣称完整应急安全场景完成。已执行 TB、内部 STA 与尚缺上板验收见 [阶段对应表](../A_stages1_9.md)。

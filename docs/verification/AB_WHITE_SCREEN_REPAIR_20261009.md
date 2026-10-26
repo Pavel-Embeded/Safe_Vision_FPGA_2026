@@ -1,4 +1,4 @@
-> ⚠️ 本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（**历史提交全部保留**）；取回方式与收敛清单见 [仓库收敛说明](../仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
+> 注意：本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（历史提交全部保留）；取回方式与收敛清单见 [仓库收敛说明](../仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
 
 # SafeVision A/B 白屏修复与验证记录（2026-10-09）
 
@@ -36,7 +36,7 @@ KEY1/A2、KEY2/B2、KEY3/B1、KEY4/C1；CONFIG1 不参与图片播放模式选�
 | 旧“片上回落图”仍依赖 SDRAM | 它先写入 SDRAM 再由 DMA 显示，存储出问题时回落也失败 | 接入 BRAM 字体/几何应急图形；启动、卡故障、存储故障和 KEY3 显示完整安全画面，HDMI 扫描持续 |
 | 产品 SD 外层初始化仅 200 ms | 慢卡可以尚未完成 ACMD41 就被播放器终止；规范允许卡初始化到 1 s | 外层上限改为 2 s；继续保留重试及回落完成后的槽所有权交接 |
 | SDRAM 返回丢失导致 adapter 永久等待 | 原 H_WAIT 没有响应超时出口 | 新增 READ_TIMEOUT=4096 拍（50 MHz 时约 81.92 us），故障锁存并禁止继续读写，只能通过共同复位重建事务周期 |
-| 板级把仲裁 grant 当成写入接受 | 双图完整测试第 2 张图有少量字/像素错误，CRC、帧发布、欠载检查却正常；首张图无积压时掩盖了错误 | sink 与回落 writer 的 wr_ready 改接 prod_wr_busy && mem_req && mem_wr && mem_ready；数据保持到 adapter 真正接受，物理排空仍由 write_idle 单独保证 |
+| 板级把仲裁 grant 当成写入接受 | 双图完整测试第 2 张图有少量字/像素错误，CRC、帧发布、欠载检查却正常；首张图无积压时掩盖了错误 | sink 与回落 writer 的 wr_ready 改接 prod_wr_busy && mem_req && mem_wr && mem_ready；数据保持到 adapter 接受，物理排空仍由 write_idle 单独保证 |
 | 降频后的 720p 带宽不足 | 初始 50 MHz 试验每帧欠载，120 ms 时 U=6、无完整正常帧 | 完整读缓存可在物理静默期内输出；物理命令仍等待至少 16 拍。DMA 边接收边拆像素，FIFO 使用 AW12/8190 个有效像素、256-word 逻辑突发，预取水位 7662 |
 | FIFO 原始异步复位约束依赖物理寄存器名字 | TD 打包后 SR 引脚改名，旧匹配变空，BASE recovery 最差 -3.815 ns | 保留原始 fifo_reset 网名并验证集合非空；只将该原始异步断言到 SR 的路径排除，域内同步释放、正常数据和 Gray 指针继续计时 |
 | 字体与 HDL 路径易漂移 | 旧 GUI 不含真实显示依赖；字体相对运行目录读取 | 准备脚本复制官方 IP 与 font8x16.mem；GUI 路径相对工程，CLI/GUI 共用 board_sources.list |
@@ -64,8 +64,8 @@ SD 供电或接触、错误分区/文件格式、卡内容损坏、现场 IP 安
 | 验证 | 结果 | 覆盖边界 |
 | --- | --- | --- |
 | 原 B 单元与集成套件 | 28 项通过，668 条 PASS 记录 | SD、FAT32、BMP/WAV、帧写入、内存、PCM 等已有 B 合同；不是 HDMI 音频上板证明 |
-| A 阶段 11–15 | 9 项通过 | 合成/OSD、独立字体与像素记分板、BASE/HD 完整帧、饥饿/恢复、原子槽切换、复位重启 |
-| A 阶段 16–20 | 6 项通过 | 应急图形/控制、HDMI 队列与插拔、完整 BASE/HD 光栅及反压恢复 |
+| A 阶段 11 至 15 | 9 项通过 | 合成/OSD、独立字体与像素记分板、BASE/HD 完整帧、饥饿/恢复、原子槽切换、复位重启 |
+| A 阶段 16 至 20 | 6 项通过 | 应急图形/控制、HDMI 队列与插拔、完整 BASE/HD 光栅及反压恢复 |
 | A 系统 720p 联调 | 3 次请求/ACK/提交；1,843,200 正常像素一致；完整应急光栅通过 | 即时应急、退出恢复、OSD/调试字段与正常图像共同运行 |
 | 50 MHz BASE 显示 | 3 帧、921,600 图片像素一致，U/O=0 | 实际 adapter + 流式 DMA + 官方 FIFO + 扫描，SD 加载用预置存储隔离 |
 | 50 MHz 720p 显示 | 3 帧、921,600 图片像素一致，U/O=0 | 640×480 图片居中；1280×720 其余像素为黑；每个 SOF/EOL 核对 |
@@ -88,7 +88,7 @@ SD 供电或接触、错误分区/文件格式、卡内容损坏、现场 IP 安
 
 ## 5. 最终布局布线与文件身份
 
-工具：实际安装的 TD 6.2.168.116，器件 EG4S20BG256；正常严格门禁，没有使用
+工具：实际安装的 TD 6.2.168.116，器件 EG4S20BG256；正常验收检查，没有使用
 `-ExperimentalSdramBitgen`。发布快照包含 RTL、公开 IP、字体、ADC/SDC、Tcl、共享 `.list`
 和检查脚本；构建前后逐文件哈希一致。
 
@@ -105,7 +105,7 @@ SD 供电或接触、错误分区/文件格式、卡内容损坏、现场 IP 安
 
 ## 6. 使用与复现
 
-本地同步目录为 `D:\Safe_Vision_FPGA_2026`。打开真正的图片工程：
+本地同步目录为 `D:\Safe_Vision_FPGA_2026`。打开图片工程：
 `safevision\platform\anlogic_eg4s20_hx4s20c\project\safevision.al`。
 先运行准备脚本，再重新打开新 GUI 工程，避免旧窗口沿用回环顶层。第一轮上板建议选 BASE，再验 720p。
 本轮下载文件在交付目录的 `BASE/safevision_top.bit`、`720p/safevision_top.bit`；
@@ -128,7 +128,7 @@ XSim 临时运行目录必须为 ASCII 路径；脚本默认 build/out 目录可
 若系统没有 python 命令，TD 脚本会使用 Codex 的已安装 Python，或传入 `-Python <exe>`。
 上述脚本不自动下载板卡。
 
-测试卡：FAT32 分区，根目录放四张 `SV0001.BMP`–`SV0004.BMP`，640×480、24 位、BI_RGB 无压缩。
+测试卡：FAT32 分区，根目录放四张 `SV0001.BMP`：`SV0004.BMP`，640×480、24 位、BI_RGB 无压缩。
 交付的四张 BMP 已逐字节读回核对并附 manifest.json；Pillow 标准解码器独立检查了 12 个颜色采样点。
 不要把 PNG/JPEG 改扩展名当 BMP；不要用 32 位、压缩 BMP 或 exFAT 卡测试这一条已实现的链路。
 本轮没有格式化或写入用户 SD 卡。

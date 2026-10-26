@@ -1,6 +1,6 @@
 # BASE 26102004 / KEYFIX 5cff94e 发布说明
 
-交付日期：2026-10-21（Asia/Shanghai）。发布范围：已经验证的 BASE；不授予当前 HD 发布资格。
+2026-10-21（Asia/Shanghai）交付已验证的 BASE。该次发布不包含 HD 资格。
 
 ## 精确版本
 

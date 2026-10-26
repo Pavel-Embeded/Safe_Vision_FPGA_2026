@@ -1,6 +1,8 @@
+> 历史阶段记录，版本、参数与结论按原记录日期理解。当前 BASE 的模块和验收状态见仓库首页。
+
 # 仓库清点与基线
 
-通过 GitHub 插件读回确认：`Pavel-Embeded/Safe_Vision_FPGA_2026` 为私有仓库，默认 main，当前账号具有读写权限。实施基线为 `98fb43beaa12bf903186ec73f6dc64e00d9259c7`，其上一提交 `0234402` 是原本地目录的 HEAD。
+当时通过 GitHub 插件读回确认，`Pavel-Embeded/Safe_Vision_FPGA_2026` 为私有仓库，默认分支 main，连接账号可读写。实施从 `98fb43beaa12bf903186ec73f6dc64e00d9259c7` 开始，原本地 HEAD 为其上一提交 `0234402`。
 
 该基线共有 461 个跟踪文件：docs 42、evidence 44、safevision 369，另有 README、Git 配置与 GitHub 模板。平台无关业务 RTL 有 78 个 `.v` 文件，单元测试有 100 个 `.sv`，tools 有 45 个文件。这是基线的清点数字，新增 V3 文件另计。
 

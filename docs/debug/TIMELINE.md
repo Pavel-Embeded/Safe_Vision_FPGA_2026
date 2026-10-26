@@ -1,6 +1,6 @@
 # 调试时间线
 
-日期按已有记录和本次用户反馈填写。旧诊断固件用于隔离问题，当前下载统一从 [SAFEVISION_CURRENT](../../SAFEVISION_CURRENT.md) 获取。
+时间线使用已有记录日期和此次用户反馈。诊断固件只用于隔离对应问题，当前下载文件见 [SAFEVISION_CURRENT](../../SAFEVISION_CURRENT.md)。
 
 | 阶段 | 现象与检查 | 修正或结论 | 原始入口 |
 | --- | --- | --- | --- |

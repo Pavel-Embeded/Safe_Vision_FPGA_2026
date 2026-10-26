@@ -1,8 +1,10 @@
+> 历史阶段记录，版本、参数与结论按原记录日期理解。当前 BASE 的模块和验收状态见仓库首页。
+
 # 系统与模块契约
 
 ## 时钟与数据流
 
-V3 独立 50MHz / +8ns 内存 PLL 采用厂商原语模板参数化，附 IPC；官方模型和原生 derive_clocks 分别验频率/相位，不能称作已由 GUI 自动生成。旧工程的 40MHz 配置保留。
+V3 使用独立 50MHz / +8ns 内存 PLL，按厂商原语模板设置参数并附 IPC。官方模型验证频率与相位，原生 derive_clocks 作独立核对；该配置未通过 GUI 自动生成。旧工程仍保留 40MHz 配置。
 
 REF 50 MHz 负责 SD SPI/FAT/BMP/WAV；SYS 100 MHz 负责按键、UART、配置与故障；V3 MEM 50 MHz 负责 SDRAM 仲裁、缓存校验、行预取、PCM 环；PIX 为 BASE 约 25.175 MHz / HD 74.25 MHz；AUDIO 约 12.288 MHz，以 256 分频送 48 kHz 采样。HDMI 串化时钟来自模式对应的官方 PLL。
 
@@ -49,7 +51,7 @@ flowchart LR
 | `audio_energy/hdmi_acr` | AUDIO / PIX | 1024 样本能量；N=6144，CTS 根据 48 样本窗口实测像素时钟计数 | energy_acr/system |
 | `control/v3_user_controls` | SYS / global | 配置单一写入者；去抖、释放动作、组合长按、UART 原子提交；转场忙时 NEXT 返回忙 | controls/uart_link |
 | `control/v3_supervisor` | SYS / global | 原因及毫秒时间戳、故障等级、心跳超时；有限复位/释放/重扫/验证，最多 3 次失败恢复尝试 | supervisor/C/recovery |
-| `memory/v3_aux_mux` | MEM / media | 校验与音频共用辅助端口；owner 保留到事务真正完成，读回应不得串轨 | aux mux |
+| `memory/v3_aux_mux` | MEM / media | 校验与音频共用辅助端口；owner 保留到事务完成，读回应不得串轨 | aux mux |
 | 板级 `safevision_v3_top` | 全部 | 只装配、复位分域、CDC、遥测、引脚与官方 IP；遗留顶层可独立构建 | board integration / TD |
 
 ## 提交、时钟域与复位

@@ -1,6 +1,6 @@
 # 当前交付入口
 
-当前发布为 **BASE 640×480 / 26102004 / KEYFIX 5cff94e**。唯一当前状态见 [README](README.md) 和[发布说明](docs/releases/BASE_26102004/RELEASE.md)。
+当前发布为 BASE 640×480 / 26102004 / KEYFIX 5cff94e。唯一当前状态见 [README](README.md) 和[发布说明](docs/releases/BASE_26102004/RELEASE.md)。
 
 位流 SHA-256：`394a0f8151142886c3c950e3ea7220727258eb97dc8f8c7f73c954e8ef04f42d`。
 

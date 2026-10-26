@@ -2,7 +2,7 @@
 
 ## 实际故障
 
-提交 `2c9c639be0ce6b227e1f087741c53dc670a631e8` 的 [Actions 运行 39972735653](https://github.com/Pavel-Embeded/Safe_Vision_FPGA_2026/actions/runs/39972735653) 在 `actions/checkout` 阶段失败。日志明确报告 `Filename too long`，Git 返回 128。此时只展开约 2% 的文件，Python 安装、功能证据重放与时序检查都尚未执行，不能把该红叉解释为 FPGA 逻辑或时序失败。
+提交 `2c9c639be0ce6b227e1f087741c53dc670a631e8` 的 [Actions 运行 39972735653](https://github.com/Pavel-Embeded/Safe_Vision_FPGA_2026/actions/runs/39972735653) 停在 `actions/checkout`。Git 报 `Filename too long`，退出码为 128，只展开了约 2% 的文件。Python 安装、功能证据重放和时序检查均未开始，这次红叉来自检出文件失败。
 
 `failure` 是这次自动任务的失败结论。提交上传成功、仓库文件同步、自动检查通过、真实硬件通过分别记录；其中一项成功不能代替另一项。
 

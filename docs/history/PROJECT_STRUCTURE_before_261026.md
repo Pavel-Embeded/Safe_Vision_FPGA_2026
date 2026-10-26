@@ -1,6 +1,6 @@
 # 项目目录与文件归属
 
-本页是仓库目录导航。`[现有]` 表示盘点时已存在；`[规划]` 表示只确定落点，未实现 RTL/IP；`[骨架]` 表示已建目录但只含 README/占位说明，没有任何功能代码。2026-09-30 新增 A 的逐模块文件夹，只有板级 `rtl/clock/` 含复位 RTL；2026-10-02 板级层再落地 B 的 bring-up 顶层与引脚/时序约束。手册 V2.0 的第 2、6–12、17 章决定三条链、接口先行、分层测试和交付证据；目录粒度、板级适配层、评审模板是本项目的工程化补充。
+本页是仓库目录导航。`[现有]` 表示盘点时已存在；`[规划]` 表示只确定落点，未实现 RTL/IP；`[骨架]` 表示已建目录但只含 README/占位说明，没有任何功能代码。2026-09-30 新增 A 的逐模块文件夹，只有板级 `rtl/clock/` 含复位 RTL；2026-10-02 板级层再落地 B 的 bring-up 顶层与引脚/时序约束。手册 V2.0 的第 2、6 至 12、17 章决定三条链、接口先行、分层测试和交付证据；目录粒度、板级适配层、评审模板是本项目的工程化补充。
 
 ```text
 <仓库根>/
@@ -74,18 +74,18 @@
 | `safevision/rtl/video/` | `video_timing/`、`pattern_generator/`、`graphics_rom/`、`osd_overlay/`、`video_pipeline/`、`frame_reader/`、`video_compositor/`、`safe_scene_gen/`、`emergency_mux/`、`video_cdc/` | 均仅 README；B 已有的 `rtl/memory/frame_swap_cdc.v` 不移动 |
 | `safevision/rtl/top/` | `safevision_core/` | 仅 README |
 | `safevision/platform/anlogic_eg4s20_hx4s20c/rtl/` | `clock/`、`pixel_fifo/`、`hdmi/`、`chipwatcher/`、`safevision_top/` | `clock/reset_sync.v`、`clock/clock_reset_ctrl.v`（A）与 `top_stage5_sector_rd.v`、`top_stage6_fat32_mount.v`、`top_sdram_loopback.v`（B 的 bring-up 顶层）为功能 RTL；其余仅 README |
-| `safevision/platform/anlogic_eg4s20_hx4s20c/ip/` | `sdram/`、`pll/`、`pixel_fifo/`、`graphics_bram/`、`hdmi/` | `sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）与 `pll/`（`sv_system_pll`、`sv_video_*_pll`、`sv_audio_pll`）为**厂商提供的 IP**（非本项目代码，版权与来源见各自 `README.md`）；其余仅 README |
+| `safevision/platform/anlogic_eg4s20_hx4s20c/ip/` | `sdram/`、`pll/`、`pixel_fifo/`、`graphics_bram/`、`hdmi/` | `sdram/`（应用级 `sdram.v` + `global_def.v` + 3 个安路加密 `sdr_*.enc.v` + `sdram.ipc`）与 `pll/`（`sv_system_pll`、`sv_video_*_pll`、`sv_audio_pll`）为厂商提供的 IP（非本项目代码，版权与来源见各自 `README.md`）；其余仅 README |
 
 模块文件在相应文件夹内；新增端口先更新 `docs/interface_spec.md` 和 `docs/architecture/module_registry.md`，再更新显式文件表。板级时钟由官方 TD PLL IP 产生，现有 `clock/` Verilog 只实现复位许可和分域释放。
 
 每个待实现目录的 README 列出用途与边界。`module_registry.md` 登记 B 链 29 个 `.v`、板级 bring-up 顶层（`top_stage5_sector_rd.v` / `top_stage6_fat32_mount.v` / `top_sdram_loopback.v`）、厂商 IP（`ip/sdram/`、`ip/pll/`）与 A clock 的 2 个 `.v`，以及 4 个 `.vh`；目录存在不代表功能已实现或验证。目录的依赖关系和接口规则见 [系统架构](architecture/system_design.md)。
 
-> ★ **B 链三份文档暂时留在 `docs/` 根目录，不要搬进任何子目录**：
+> B 链三份文档暂时留在 `docs/` 根目录，不要搬进任何子目录：
 > `docs/interface_spec.md`、`docs/B链-待办与硬件验证清单.md`、`docs/B链-原理讲解-入门版.md`。
 > 它们被项目规则、`README.md`、`docs/architecture/module_registry.md` 等多处按此路径引用，
 > 搬动会打断引用，且它们本身就是 B 链的交付物。
 
-树上标 `[规划]` / `[骨架]` 的 A 视频、顶层及 IP 目录目前只有 README；`platform/.../rtl/` 已有面向综合的复位 RTL（A，已仿真通过）与板级 bring-up 顶层（B，已仿真通过，未上板），但**尚未通过 TD 综合或上板**。C 目录、build、assets、verification 的规划目录和 evidence 仍是骨架。本项目自定原则是先建落点和命名计划，不生成假 RTL。
+树上标 `[规划]` / `[骨架]` 的 A 视频、顶层及 IP 目录目前只有 README；`platform/.../rtl/` 已有面向综合的复位 RTL（A，已仿真通过）与板级 bring-up 顶层（B，已仿真通过，未上板），但尚未通过 TD 综合或上板。C 目录、build、assets、verification 的规划目录和 evidence 仍是骨架。本项目自定原则是先建落点和命名计划，不生成假 RTL。
 
 
 ## A Clock / Video Timing 发布补充（2026-10-02）
@@ -97,6 +97,6 @@
 Clock/Timing 官方模型及整数/规格范围审计通过；归档 BASE/HD 内部 STA 的实际 A 输入与本提交一致，但 TD 健康告警仍开放（runner 返回 2）。尚未完成 A 产品顶层、完整 HDMI/Frame Reader/OSD/应急链与 A 板级验证。旧 `clock_video_20261002` 是过滤前工作树历史记录，不能把其中 B 默认超时变更或全工作树文件计数当成本提交内容。当前范围与新回归见 [A发布核对](A_PUSH_SCOPE_20261002.md)。
 
 
-## A 阶段 1–9 文件补充（2026-10-04）
+## A 阶段 1 至 9 文件补充（2026-10-04）
 
-`rtl/common/a_*.v` 为 A 基础练习；`rtl/video/pattern_generator/`、`graphics_rom/`、`osd_overlay/` 已从占位目录扩展为功能 RTL；字库位于 `safevision/assets/fonts/font8x16.mem`。5 个新 TB 在 `verification/unit/`，入口为 `tools/run_a_stage1_9_sim.ps1`；`tools/check_font_bram_init.py` 校验 TD ROM 初始化。独立内部 STA 工程在 `platform/anlogic_eg4s20_hx4s20c/project/a_graphics_verify/`；默认生成内容只进 `build/out`。原产品顶层和队友路径不变。文件/时钟/延迟/验证边界见 [A 阶段 1–9](A_stages1_9.md)。
+`rtl/common/a_*.v` 为 A 基础练习；`rtl/video/pattern_generator/`、`graphics_rom/`、`osd_overlay/` 已从占位目录扩展为功能 RTL；字库位于 `safevision/assets/fonts/font8x16.mem`。5 个新 TB 在 `verification/unit/`，入口为 `tools/run_a_stage1_9_sim.ps1`；`tools/check_font_bram_init.py` 校验 TD ROM 初始化。独立内部 STA 工程在 `platform/anlogic_eg4s20_hx4s20c/project/a_graphics_verify/`；默认生成内容只进 `build/out`。原产品顶层和队友路径不变。文件/时钟/延迟/验证边界见 [A 阶段 1 至 9](A_stages1_9.md)。

@@ -1,6 +1,6 @@
 # 生产模块手册
 
-适用版本为 BASE 26102301。生产入口是 `safevision_v3_top`，206 个实际输入的指纹见 [发布索引](../../artifacts/releases/BASE_26102301_6a957b0/release.index.json)。测试与综合使用显式文件清单，行为模型只用于仿真。
+此手册对应 BASE 26102301，生产入口为 `safevision_v3_top`。[发布索引](../../artifacts/releases/BASE_26102301_6a957b0/release.index.json) 记录 206 个实际输入的指纹。测试与综合各用显式文件清单，行为模型只参加仿真。
 
 ## 时钟与复位
 

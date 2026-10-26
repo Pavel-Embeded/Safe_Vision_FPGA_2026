@@ -1,12 +1,14 @@
-> ⚠️ 本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（**历史提交全部保留**）；取回方式与收敛清单见 [仓库收敛说明](仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
+> 历史阶段记录，版本、参数与结论按原记录日期理解。当前 BASE 的模块和验收状态见仓库首页。
+
+> 注意：本文写于 2026-10-11 仓库收敛之前。文中提到的 `evidence/ab_multiround_*`、`releases/ab_multiround_*`、`top_stage10_framebuffer`、`safevision_loopback.al`、`prepare_board_project.*` 等文件已在收敛中删除（历史提交全部保留）；取回方式与收敛清单见 [仓库收敛说明](仓库收敛说明_20261011.md仓库收敛说明_20261011.md)。
 
 # B链 · SDRAM接口与PLL时序核查（合并历史与当前修正）
 
 核查日期：2026-10-04；基准：A `d6f40a6`，并保留 B 的前期现场核查及 soak 证据；TD 6.2.168116 / EG4S20BG256。
 
-> **阅读口径**：本文前半部分保留 B 原始核查假设作为历史记录；A `d6f40a6` 后续拿到 wrapper 内反馈连通与新 STA 证据，修正了 C0 悬空、5 ns 解释和 SDRAM 源/端路径归属。遇到前后矛盾，以本页靠后的 **§7.2 当前修正**及 A 最新提交证据为准。B 的 report20/10–60 分钟 soak 属合并前构建；不作为当前集成版验收。
+> 阅读口径：本文前半部分保留 B 原始核查假设作为历史记录；A `d6f40a6` 后续拿到 wrapper 内反馈连通与新 STA 证据，修正了 C0 悬空、5 ns 解释和 SDRAM 源/端路径归属。遇到前后矛盾，以本页靠后的 §7.2 当前修正及 A 最新提交证据为准。B 的 report20/10 至 60 分钟 soak 属合并前构建；不作为当前集成版验收。
 
-**[纠正] PLL 反馈不悬空，USR-6135 和 PHY-5079 已在当前接法的最终构建中消失。发现并修复了回环图案漏检高位地址的 RTL 错误，以及报告选择路径的 fabric 时序问题。SDRAM 数据路径 setup 最坏仍为 −6.826 ns，整板时序未闭合。**
+[纠正] PLL 反馈不悬空，USR-6135 和 PHY-5079 已在当前接法的最终构建中消失。发现并修复了回环图案漏检高位地址的 RTL 错误，以及报告选择路径的 fabric 时序问题。SDRAM 数据路径 setup 最坏仍为 −6.826 ns，整板时序未闭合。
 
 本文件对收到的同名核查稿作证据复核。稿件中的任务安排、所有权建议和“满足两项即可豁免”不是已批准的约束或验收规则。历史 UART / STA 记录保留；当前状态以对应源码和最终构建为准，不上传完整报告、波形、数据库或位流。
 
@@ -51,7 +53,7 @@
 
 原 `rpt_idx → 宽报告选择器 → UART shifter` 路径余量很薄。先加入 8 bit 字节缓存及 valid 标记，在 UART 忙时预取并保持；只有 `valid && ready` 才推进报告索引。后续 Routed STA 仍发现 BAD0 数据经宽报告选择器到字节缓存的 `−0.094 ns` setup，因此再次切分：先按倒计数索引选择报告行并寄存整行/行内位置，下一拍仅在寄存行内选择一个字节，再送入字节缓存。190 Byte 字段内容、MSB→LSB 输出顺序及 UART ready/valid 推进协议保持不变；本次切分后的 C1→C1 setup 为 `+0.113 ns`，但全局 SDRAM DQ 负裕量仍未关闭。
 
-在 A `d6f40a6` 的 71 Byte 基线中，保留顶层端口、默认 4096 word、地址步长、读写命令节奏、初始化/刷新配置、125 MHz/180°、115200 8N1 和原报告格式。进入 REPORT 后第二个内存上升沿接受首字节，较原来增加一拍；正常接收的数据序列不变。初始化/读等待超时仍终止于 LED 错误态，**该基线 RTL 没有 UART `ERR=01/02` 错误行**；这里纠正说明，不增加新报文字段。A+B 当前集成版的 190 Byte 报告与两级 selector 以 §7.2 为准。
+在 A `d6f40a6` 的 71 Byte 基线中，保留顶层端口、默认 4096 word、地址步长、读写命令节奏、初始化/刷新配置、125 MHz/180°、115200 8N1 和原报告格式。进入 REPORT 后第二个内存上升沿接受首字节，较原来增加一拍；正常接收的数据序列不变。初始化/读等待超时仍终止于 LED 错误态，该基线 RTL 没有 UART `ERR=01/02` 错误行；这里纠正说明，不增加新报文字段。A+B 当前集成版的 190 Byte 报告与两级 selector 以 §7.2 为准。
 
 回环参数使用边界：当前四位十六进制报告和 16 bit BAD 计数应限制 `1 ≤ TEST_WORDS ≤ 65535`；地址不得超出 21 bit，`BURST_N ≥ 1`、`BURST_GAP ≥ 0`、两者之和不超过 256。它不是全容量逐字测试顶层；不能直接设 2M word 后把截断/回绕计数当成验收。
 
@@ -61,7 +63,7 @@
 
 ## 3. [A d6f40a6 构建基线] 仿真与最终构建
 
-> **版本范围**：本节仿真与 TD 数值描述 A `d6f40a6` 原提交构建，尤其 71 Byte 报文及 +0.541/+0.723 ns fabric setup；不描述本地 A+B 合并版。合并版重新构建结果只记于 §7.2，旧报告不得拼接为合并版验收。
+> 版本范围：本节仿真与 TD 数值描述 A `d6f40a6` 原提交构建，尤其 71 Byte 报文及 +0.541/+0.723 ns fabric setup；不描述本地 A+B 合并版。合并版重新构建结果只记于 §7.2，旧报告不得拼接为合并版验收。
 
 入口：[run_sdram_loopback_sim.ps1](../safevision/tools/run_sdram_loopback_sim.ps1)；TB：[tb_sdram_loopback.sv](../safevision/verification/unit/tb_sdram_loopback.sv)。
 
@@ -77,22 +79,22 @@
 | 初始化不完成 | 不发读写，有限时间进入 ERR=01/LED=1 |
 | 原图案负对照 | 从基准提交提取旧 RTL；TB 必须以 `ADDRESS_ALIAS_ESCAPED` 失败，证明旧检查器确实漏报 |
 
-**模型边界**：使用官方 TD PLL 功能模型；因其锁定计数需复位初值，TB 给模型一次初始 reset 脉冲。真实顶层 PLL reset 仍接原常量，未改变产品接法；此仿真不证明芯片上电 AC。TB 的同名 `sdram` 模块仅替代应用侧接口，保持按序延迟返回，不模拟加密控制器、实际 DQ、CAS/刷新、亚稳或 PVT。只按专用脚本编译该 TB，不能把其模拟模块加入 TD 产品源表。
+模型边界：使用官方 TD PLL 功能模型；因其锁定计数需复位初值，TB 给模型一次初始 reset 脉冲。真实顶层 PLL reset 仍接原常量，未改变产品接法；此仿真不证明芯片上电 AC。TB 的同名 `sdram` 模块仅替代应用侧接口，保持按序延迟返回，不模拟加密控制器、实际 DQ、CAS/刷新、亚稳或 PVT。只按专用脚本编译该 TB，不能把其模拟模块加入 TD 产品源表。
 
 当前完整默认顶层用原 ADC/SDC 与 56 个共享源文件完成 TD 分析、综合、布局布线、`check_design` 和位流生成；未烧录。默认和稀疏配置的最终数据库又在独立 TD 进程中重新导入并重建原 SDC，时序数值一致，4 个时钟及 50/100/125/125 MHz 频率均核对。最终 setup/hold 数值如下：
 
 | 路径范围 | Setup WNS / TNS（ns） | Hold WNS / TNS（ns） |
 |---|---:|---:|
 | 默认 4096 word，自研 C1→C1 | +0.541 / 0 | +0.137 / 0 |
-| 默认整板，包括 SDRAM | **−6.826 / −296.440** | +0.137 / 0 |
+| 默认整板，包括 SDRAM | −6.826 / −296.440 | +0.137 / 0 |
 | 1024 word / ADDR_SHIFT=11，自研 C1→C1 | +0.723 / 0 | +0.062 / 0 |
-| 稀疏配置整板，包括 SDRAM | **−6.826 / −299.435** | +0.062 / 0 |
+| 稀疏配置整板，包括 SDRAM | −6.826 / −299.435 | +0.062 / 0 |
 
 全局负裕量仍包含 32 个读数据、32 个写输出/三态端点；读最坏 −6.826 ns，写最坏默认 −2.746 ns、稀疏 −2.973 ns。原有时序约束、四个 PLL 的参数/连线、加密控制器和 B/C 产品 RTL 未改；布局变化使旧 SDRAM TNS 和 hold 数值略有变化，不能承诺物理报告逐字不变。USR-6135、PHY-5079 未再出现，C0 反馈路由可追踪到全局 mesh / PLL.fbclk。无 no-clock、无无效约束，但仍有 dummy 节点、I/O delay 缺项及硬核相关异常项；未宣称所有健康检查清零。
 
 ## 4. [保留并纠正] SDRAM 的实质风险
 
-125 MHz 周期为 8 ns，180° 相位给相邻有效边沿约 4 ns 名义间隔。读路径包含 `input (hard ip) 5.000 ns`、输入 PAD/寄存器等延时，**还要算发往 SDRAM 的时钟输出延时和采样时钟偏斜**。−6.826 ns 必须按最终 Arrival / Required 完整路径解释，不能只做 `5>4` 比较。
+125 MHz 周期为 8 ns，180° 相位给相邻有效边沿约 4 ns 名义间隔。读路径包含 `input (hard ip) 5.000 ns`、输入 PAD/寄存器等延时，还要算发往 SDRAM 的时钟输出延时和采样时钟偏斜。−6.826 ns 必须按最终 Arrival / Required 完整路径解释，不能只做 `5>4` 比较。
 
 该违例不会必然阻止编译或生成位流，但意味着当前模型下不能证明 SDRAM 数据可靠性。若实际采样窗口不足，可出现读回位错、帧缓存花屏和依赖内存的媒体异常。ROM 测试图等不读 SDRAM 的数据路径不直接经过该 DQ 读写路径。
 
@@ -123,12 +125,12 @@ B 旧 soak 与 A `d6f40a6` 的变更都已进入本地集成分支；合并版�
 
 ## 7.2 [A/B 集成版复核] 回环、TD Routed STA 与发布边界
 
-**仿真证据范围**：B ModelSim 全回归 **588 PASS/0 FAIL** 与此前 A/B 合并应用层六场景结果属于 UART selector 两级切分之前的基线。selector 修改后，已使用本机 ModelSim SE-64 10.7 通过专用入口 `run_sdram_loopback_sim.ps1` 重跑当前集成 RTL：编译 **0 error / 0 warning**，六个回环/故障场景全部 PASS，覆盖 21-bit 签名及 190 Byte UART 报告。独立索引对照亦有 190/190 个索引及倒序 UART 字节流顺序通过；该对照是补充映射核验，不替代上述 HDL 仿真。所有模型均不模拟加密 SDRAM 控制器、真实 DQ/刷新/CAS 或 AC。
+仿真证据范围：B ModelSim 全回归 588 PASS/0 FAIL 与此前 A/B 合并应用层六场景结果属于 UART selector 两级切分之前的基线。selector 修改后，已使用本机 ModelSim SE-64 10.7 通过专用入口 `run_sdram_loopback_sim.ps1` 重跑当前集成 RTL：编译 0 error / 0 warning，六个回环/故障场景全部 PASS，覆盖 21-bit 签名及 190 Byte UART 报告。独立索引对照亦有 190/190 个索引及倒序 UART 字节流顺序通过；该对照是补充映射核验，不替代上述 HDL 仿真。所有模型均不模拟加密 SDRAM 控制器、真实 DQ/刷新/CAS 或 AC。
 
-**当前集成源码已重新 TD 综合/布局/布线**（TD 6.2.168116 / EG4S20BG256，2026-10-04）：从当前 `safevision.al` 解析 61 个 Verilog 源，实际 elaborate `top_sdram_loopback`、`sdr_pat_gen`、`sdram` 与 `sv_system_pll`；`check_design` 通过，无 `HDL-8007` / black-box 报错。布线数据库在独立 TD 进程重新导入并重建 `timing.sdc` 后复核；运行脚本、控制台和完整报告留在被忽略的 `safevision/build/out/`。本次未生成位流、未烧板。
+当前集成源码已重新 TD 综合/布局/布线（TD 6.2.168116 / EG4S20BG256，2026-10-04）：从当前 `safevision.al` 解析 61 个 Verilog 源，实际 elaborate `top_sdram_loopback`、`sdr_pat_gen`、`sdram` 与 `sv_system_pll`；`check_design` 通过，无 `HDL-8007` / black-box 报错。布线数据库在独立 TD 进程重新导入并重建 `timing.sdc` 后复核；运行脚本、控制台和完整报告留在被忽略的 `safevision/build/out/`。本次未生成位流、未烧板。
 
-**UART selector 修复与最新 STA**：旧 `rpt_idx → 190 Byte 宽选择 → 字节缓存` 改为两级：先按倒计数索引选一行并寄存整行/行内位置，再从寄存行中选择单字节；190 Byte 字段、顺序及 UART `valid/ready` 推进协议保持不变。最新独立 postroute 报告 `safevision/build/out/td_integrated_sdram_uartfix_20261004/postroute.final.timing` 显示 C1→C1 自研组 `SWNS=+0.113 ns`、`STNS=0`、setup 违例端点 `0/2517`，Fmax `126.791 MHz`；原 `bad0_act_reg[2] → rpt_byte_q_reg[4]` 违例已消失，当前该组最差路径变为 `err_code_reg[0] → mux...`。这只说明该自研 setup 组转正，**不代表整板 STA 通过**。
+UART selector 修复与最新 STA：旧 `rpt_idx → 190 Byte 宽选择 → 字节缓存` 改为两级：先按倒计数索引选一行并寄存整行/行内位置，再从寄存行中选择单字节；190 Byte 字段、顺序及 UART `valid/ready` 推进协议保持不变。最新独立 postroute 报告 `safevision/build/out/td_integrated_sdram_uartfix_20261004/postroute.final.timing` 显示 C1→C1 自研组 `SWNS=+0.113 ns`、`STNS=0`、setup 违例端点 `0/2517`，Fmax `126.791 MHz`；原 `bad0_act_reg[2] → rpt_byte_q_reg[4]` 违例已消失，当前该组最差路径变为 `err_code_reg[0] → mux...`。这只说明该自研 setup 组转正，不代表整板 STA 通过。
 
 全局 setup 仍为 `SWNS=−6.826 ns / STNS=−298.211 ns`；hold `HWNS=+0.030 ns / HTNS=0`，无 hold 违例。另有 C1→C2 组 `SWNS=−2.859 ns`（32/48 setup 端点违例）。负裕量仍来自 SDRAM DQ / 接口路径；本轮未改 SDRAM RTL、IP、时钟或约束，也未加 false path。`check_design` PASS 不等于全局 STA 或全部 `check_timing` 告警通过，完整报告仅留本地忽略目录。
 
-**结论/下一步**：本轮 RTL 修复、ModelSim 专用应用层回归和 routed STA 已完成；在 10 分钟 soak 前，必须针对当前 RTL 生成并确认匹配的位流。TD GUI 与板级操作由用户执行。随后采集本版 190 Byte 报告，核对 `RND`、`W=R=CAP`、`BAD=0000`、`TOT`、无错 `BAD0` 哨兵及 `DONE`。只有新构建的板级结果完成核对后再讨论 push；本轮未提交或 push。SDRAM DQ −6.826 ns 按用户本次范围暂不作为 RTL 修复目标，但仍如实记录为全局 STA 未闭合。B 旧 soak 与 A 原提交 STA 只对各自构建有效。
+结论/下一步：本轮 RTL 修复、ModelSim 专用应用层回归和 routed STA 已完成；在 10 分钟 soak 前，必须针对当前 RTL 生成并确认匹配的位流。TD GUI 与板级操作由用户执行。随后采集本版 190 Byte 报告，核对 `RND`、`W=R=CAP`、`BAD=0000`、`TOT`、无错 `BAD0` 哨兵及 `DONE`。只有新构建的板级结果完成核对后再讨论 push；本轮未提交或 push。SDRAM DQ −6.826 ns 按用户本次范围暂不作为 RTL 修复目标，但仍如实记录为全局 STA 未闭合。B 旧 soak 与 A 原提交 STA 只对各自构建有效。

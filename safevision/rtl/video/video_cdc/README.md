@@ -1,4 +1,4 @@
-# video_cdc（A 阶段11–15）
+# video_cdc（A 阶段11 至 15）
 
 video_level_sync：稳定单bit两级；video_cdc_mailbox：valid/ready请求确认、整组payload保持到ACK；帧事件沿用B frame_swap_cdc。每域独立复位同步释放，TD载荷/Gray传播约束另有界。
 

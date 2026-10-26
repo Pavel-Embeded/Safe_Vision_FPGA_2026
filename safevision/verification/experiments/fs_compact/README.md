@@ -1,6 +1,6 @@
 # 文件流136bit上下文实验
 
-本目录保存隔离的候选文件，不参加生产综合清单。`v3_file_streamer_compact_ctx`仅在`F_SEC_REQ && !valid`的扇区边界保存上下文；父模块必须在SAVE/LOAD期间禁止SD请求和消费。持久字段为当前簇、当前LBA、簇内扇区、已发字节、文件长度，共136bit。LOAD重建空闲命令、无效字节和零超时状态，`bytes_rd`反映恢复后的当前轨计数。
+候选文件单独保存在此，不参加生产综合。`v3_file_streamer_compact_ctx` 仅在 `F_SEC_REQ && !valid` 的扇区边界保存上下文，父模块在 SAVE/LOAD 期间禁止 SD 请求和消费。持久状态为当前簇、当前 LBA、簇内扇区、已发字节和文件长度，共 136bit。LOAD 重建空闲命令、无效字节和零超时状态，`bytes_rd` 返回恢复后的当前轨计数。
 
 在仓库根运行：
 

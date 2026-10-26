@@ -2,7 +2,7 @@
 
 ## 工具与环境
 
-完整原始路径复核使用Windows、Git、Python3.11+、pypdf。原生构建需要已安装并合法配置的 **TD V6.2.168116**，实际工具路径曾为 `D:/Anlogic/TD_6.2.1_Engineer_6.2.168.116`。实际仿真使用XSim/Vivado2018.3。仓库不分发TD、许可证、驱动或厂商安装包。
+完整原始路径复核使用Windows、Git、Python3.11+、pypdf。原生构建需要已安装并合法配置的 TD V6.2.168116，实际工具路径曾为 `D:/Anlogic/TD_6.2.1_Engineer_6.2.168.116`。实际仿真使用XSim/Vivado2018.3。仓库不分发TD、许可证、驱动或厂商安装包。
 
 所有运行目录用纯英文、仓库外、全新目录。不要把临时输出放进源码目录，也不要用 `python -O` 关闭验证断言。厂商加密IP位于平台层，源清单和内容指纹固定；仿真模型只进入仿真清单。
 
@@ -23,7 +23,7 @@ python -B safevision/tools/verify_base_delivery.py --run-dir D:/sv_runs/base_ver
 
 ## 重新综合与布局布线
 
-完成上述完整复核后，使用输出的**冻结源**，该目录的Git指向隔离审计对象库。下面路径与首次输出一致：
+完成上述完整复核后，使用输出的冻结源，该目录的Git指向隔离审计对象库。下面路径与首次输出一致：
 
 ```powershell
 $src = 'D:/sv_runs/base_verify_01/qualification/source'

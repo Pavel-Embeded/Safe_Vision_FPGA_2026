@@ -1,6 +1,8 @@
+> 历史阶段记录，版本、参数与结论按原记录日期理解。当前 BASE 的模块和验收状态见仓库首页。
+
 # BASE 实体按键管脚修复与验收记录
 
-此记录对应 four_features_BASE_KEYFIX_5cff94e，功能ID26102004。ID保留是因为本次没有修改任何功能RTL；精确版本由提交和位流SHA区分。
+记录版本为 four_features_BASE_KEYFIX_5cff94e，功能 ID 为 26102004。此次未修改功能 RTL，因此保留 ID；具体版本通过提交和位流 SHA 区分。
 
 ## 故障原因
 

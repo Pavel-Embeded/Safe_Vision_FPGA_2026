@@ -1,4 +1,4 @@
-# Exact thirds scaler candidates — isolated, not production acceptance
+# Exact thirds scaler candidates: isolated experiments
 
 The production coordinate generator produces only Q8 fractions 0, 85 and 170, even during blanking. For channel values 0..63, its rounded Q8 interpolation is exactly `(2*A+B+1)/3` at fraction85 and `(A+2*B+1)/3` at fraction170. All divisions in this document are integer floor divisions. The general scaler interface remains unchanged in production.
 

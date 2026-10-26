@@ -1,3 +1,5 @@
+> 历史阶段记录，版本、参数与结论按原记录日期理解。当前 BASE 的模块和验收状态见仓库首页。
+
 # Clock / Video Timing：本次 A 变更清单
 
 日期：2026-10-02。目标：`Pavel-Embeded/Safe_Vision_FPGA_2026` 的 `main`。父提交：`7c5bee1a7a30b8d168da8fb17747a79e3065ca9d`。
@@ -8,7 +10,7 @@
 
 ## 2. 推送了什么
 
-本次相对最新远程树：**15个修改、156个新增，共171个路径；删除/重命名0**。
+本次相对最新远程树：15个修改、156个新增，共171个路径；删除/重命名0。
 
 - A逻辑：`video_timing.v`、`video_mode_defs.vh`、`clock_gen.v`、`clock_video_subsystem.v`，以及`reset_sync.v`加固。
 - 官方IP：system/VGA/HD/audio四组`.v/.ipc`；每档例化三个PLL。
@@ -25,7 +27,7 @@
 | `docs/B链-原理讲解-入门版.md` | 完整保留最新远程版本 |
 | `docs/B链-待办与硬件验证清单.md` | 完整保留最新远程版本及上板记录 |
 
-其他B/C的storage/media/memory/control/safety/audio/common、原B单元测试、`run_sim.ps1`、B bring-up顶层/约束/工程、板测脚本和board/reports证据也都保留最新远程blob。已逐文件验证**131个非本次范围的原文件内容/模式不变**。源码文件“出现在已有仓库中”不等于本次提交又修改它；实际变更名单如下。
+其他B/C的storage/media/memory/control/safety/audio/common、原B单元测试、`run_sim.ps1`、B bring-up顶层/约束/工程、板测脚本和board/reports证据也都保留最新远程blob。已逐文件验证131个非本次范围的原文件内容/模式不变。源码文件“出现在已有仓库中”不等于本次提交又修改它；实际变更名单如下。
 
 原项目工作区此前的B修改仍留在本地，未撤销、未上传；本次使用独立发布副本，避免将它们混进提交。
 

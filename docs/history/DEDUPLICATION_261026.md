@@ -1,6 +1,6 @@
 # 旧交付包重复副本清理与恢复
 
-本次清理 14688 份重复文件，逻辑大小合计 549393778 字节。它们来自 `BASE_MEDIA_ALIAS_261022_34462ee` 与 `BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1` 的 `source/` 子树，每份都有相同 Git blob、大小及 SHA-256 的保留路径。
+2026-10-26 删除重复文件 14688 份，合计 549393778 字节，均位于 `BASE_MEDIA_ALIAS_261022_34462ee` 和 `BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1` 的 `source/` 子树。每份删除文件都有保留路径，Git blob、大小和 SHA-256 均一致。
 
 清理前逐文件比对主项目原件与保留副本。后续说明文档修改后再次比对，已产生差异的历史文件继续保留。另将待清理文件保存为本地 ZIP 并解压核对每份 SHA-256。备份为 `D:/Safe_Vision_FPGA_2026/artifacts/archive/repository_cleanup_261026/duplicate_payloads.zip`，SHA-256 为 `ce1f36318bbca5f2c0b2494dfd7686032cf00e6b3fd764677bf1e8f9bee2411d`。
 

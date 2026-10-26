@@ -1,6 +1,6 @@
 # 使用、下载与恢复
 
-当前唯一推荐下载文件为 [SafeVision_BASE_6a957b0.bit](../../../artifacts/releases/BASE_26102301_6a957b0/SafeVision_BASE_6a957b0.bit)，SHA-256：`95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e`。
+下载使用 [SafeVision_BASE_6a957b0.bit](../../../artifacts/releases/BASE_26102301_6a957b0/SafeVision_BASE_6a957b0.bit)。其 SHA-256 为 `95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e`。
 
 ## 图片与音频
 

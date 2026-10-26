@@ -1,6 +1,8 @@
+> 历史阶段记录，版本、参数与结论按原记录日期理解。当前 BASE 的模块和验收状态见仓库首页。
+
 # SafeVision V3 实施与验收入口
 
-当前离线验收与两份位流见 [9d40698 交付报告](release_9d40698.md)。两模式已完成清洁重建、完整时序门禁和位流生成；实体板卡验收待验。[113 项检查点](timing_closure_checkpoint_113.md)保留开发过程。历史验收目录不能替代当前源码的测试与时序报告。
+[9d40698 交付报告](release_9d40698.md) 记录当时的离线验收和两份位流。BASE/HD 均完成清洁重建、完整时序检查与位流生成，实体板卡仍待验收。[113 项检查点](timing_closure_checkpoint_113.md) 保留此前过程。这些历史结果只对应其自身源码。
 
 本次从 GitHub main `98fb43beaa12bf903186ec73f6dc64e00d9259c7` 开始，增加 V3 顶层 `safevision_v3_top`，保留队友 `safevision_top`。队友工程继续使用原来的40 MHz配置；V3完整双图HD并发压力在40 MHz下未通过，独立使用MEM/SDRAM 50 MHz、SYS100 MHz及+8 ns SDRAM移相配置。4096行刷新和FAST_READ/PREFETCH_READ保留，专用PLL的模板、参数及来源单独登记。新增功能的验证不能继承旧位流的板测结论。
 

@@ -1,6 +1,6 @@
 # 验证策略与联调顺序
 
-五层：单元 → 子系统 → 静态综合/STA/CDC → 板级 → 系统长稳/故障注入。上一层不过，不上调完成状态。`unit/` 与 `models/` 有 B 文件；`subsystem/`、`system/`、`board/` 当前为测试落点。
+验证分为单元、子系统、静态综合/STA/CDC、板级，以及系统长时间运行和故障注入五层。完成状态按实际通过的层次登记。早期 B 文件位于 `unit/` 与 `models/`，`subsystem/`、`system/`、`board/` 当时用于预留测试位置。
 
 联调每次只增加一个变量：I0 三链独立运行；I1 彩条 HDMI；I2 固定帧 SDRAM→Frame Reader；I3 像素对齐/帧切换；I4 SD→RAW→SDRAM；I5 FAT 枚举；I6 文件流；I7 BMP 上屏；I8 OSD；I9 应急画面/恢复；I10 HDMI 音频；最后扩展转场。每级登记基线提交、输入素材、通过判据、原始证据与回退点。
 

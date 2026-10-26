@@ -38,7 +38,7 @@
 
 Runner 的结构门限包括：8 个精确命名时钟、单一 `board_clk_50` 根组、BASE 55 / HD 59 个完整叶时钟端、每个派生时钟的固定叶端基线、频率轮廓、Routed 时序、setup / hold / recovery / removal 四类、SWNS / STNS / HWNS / HTNS 非负、`no clock(0)`。若修改验证顶层而改变叶端数量，必须先复核网表和时钟树，再更新基线。视频/audio C0 反馈没有业务寄存器，叶端为 0 是预期结果。
 
-2026-10-02 实际两档完整执行返回 **2**，保留三条 `USR-6135` 和 `clock definition(4)`，未把正 WNS 写成全面通过。
+2026-10-02 实际两档完整执行返回 2，保留三条 `USR-6135` 和 `clock definition(4)`，未把正 WNS 写成全面通过。
 
 ## 4. 手工复现
 
@@ -74,7 +74,7 @@ EG4 器件不支持 `report_clock_utilization`；脚本保存 `place.clock_utili
 
 ## 6. 当前已验证结果与开放项
 
-BASE / HD 均完成综合、布局布线、双角 STA，8 时钟及全叶端保持，`no_clock=0`。setup / hold / recovery / removal 最差余量分别为 BASE **5.627 / 0.266 / 6.482 / 0.147 ns**，HD **0.619 / 0.264 / 1.221 / 0.159 ns**；总 STNS / HTNS 为 0。
+BASE / HD 均完成综合、布局布线、双角 STA，8 时钟及全叶端保持，`no_clock=0`。setup / hold / recovery / removal 最差余量分别为 BASE 5.627 / 0.266 / 6.482 / 0.147 ns，HD 0.619 / 0.264 / 1.221 / 0.159 ns；总 STNS / HTNS 为 0。
 
 健康检查仍列 4 个 local clock 和 4 个未接 master 的 generated clock。只读同一 routed DB 的报告顺序实验中，`report_clock_summary` 前后该数字从 0 变为 4，而全部时钟及余量保持，支持工具状态或报告逻辑缺陷的推断。保留实际默认顺序的 4 项，不选择输出 0 的顺序宣告修复。
 
@@ -84,7 +84,7 @@ BASE / HD 均完成综合、布局布线、双角 STA，8 时钟及全叶端保�
 
 `verify_clock.sdc` 仅定义 50 MHz 参考时钟并 `derive_clocks`，未添加 false path、异步时钟组、multicycle 或整体复位豁免。所有时钟同根相关；检查顶层没有业务数据跨域连接，所以交叉关系报告为 `NOPATH`，不等于整机 CDC/TMDS 已验收。
 
-`verify_pin.adc` 只确认 `board_clk=R7`。复位与四请求共 5 个外部输入无 input delay，17 个探针输出无 output delay。STA coverage BASE **94.68%**、HD **94.64%**；这不是 100% 的整机约束覆盖。最差 setup 终点可能是 PAD 内部输出寄存器数据脚，该内部路径已分析，外部 PAD 到板外设备的预算仍缺失。
+`verify_pin.adc` 只确认 `board_clk=R7`。复位与四请求共 5 个外部输入无 input delay，17 个探针输出无 output delay。STA coverage BASE 94.68%、HD 94.64%；这不是 100% 的整机约束覆盖。最差 setup 终点可能是 PAD 内部输出寄存器数据脚，该内部路径已分析，外部 PAD 到板外设备的预算仍缺失。
 
 此工程未执行 bitgen/下载，也没有 HDMI 编码、差分输出、外部接收端、真实 PCB 复位及锁定/失锁硬件验证。现有官方 PLL 文档允许已用 VCO 范围，但提供资料没有给出 HD 370.833333 MHz 的独立 GCLK/PLL 输出 AC 上限，因此不能仅凭正 STA 宣称其电气与工作条件全部保证。
 

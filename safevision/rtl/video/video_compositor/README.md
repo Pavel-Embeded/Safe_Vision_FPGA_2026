@@ -1,4 +1,4 @@
-# video_compositor（A 阶段11–15）
+# video_compositor（A 阶段11 至 15）
 
 video_layer_delay将RGB与透明mask同拍延迟；video_compositor按各层上游延迟补齐至最大值，Emergency > OSD > Normal，另寄存1拍；RGB与全部扫描标签一致，扫描不能被ready/valid暂停。
 

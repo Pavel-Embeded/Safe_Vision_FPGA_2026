@@ -1,6 +1,6 @@
 # 验证证据
 
-当前稳定版本的分层结论见 [BASE 26102301 验收](../docs/releases/BASE_26102301/ACCEPTANCE.md)。[调试目录](../docs/debug/README.md) 按阶段和记录组提供原始入口。
+[BASE 26102301 验收](../docs/releases/BASE_26102301/ACCEPTANCE.md) 记录当前稳定版各层结论，原始输出可从 [调试目录](../docs/debug/README.md) 按阶段和记录组查找。
 
 | 目录 | 内容 |
 | --- | --- |

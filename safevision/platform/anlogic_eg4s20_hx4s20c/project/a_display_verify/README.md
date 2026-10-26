@@ -1,4 +1,4 @@
-# A 阶段 11–15 TD 验证工程
+# A 阶段 11 至 15 TD 验证工程
 
 入口：`base.tcl` / `hd.tcl`，器件 EG4S20BG256，TD 6.2.168116。推荐运行仓库 `safevision/tools/run_a_display_sta.ps1`，它检查最终 setup/hold、三域时钟、有效约束和 CDC 约束健康，而不是只看 TD 的退出码。
 
