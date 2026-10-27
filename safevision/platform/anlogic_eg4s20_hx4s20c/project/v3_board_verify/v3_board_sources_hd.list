@@ -1,3 +1,4 @@
+platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/ticker_enable.v
 platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/@mode_define@
 platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v
 platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v
@@ -110,3 +111,4 @@ rtl/video/v3_audio_spectrum.v
 rtl/video/v3_pcm_waveform.v
 rtl/video/v3_boot_uptime.v
 rtl/media/v3_bmp_normalizer.v
+rtl/video/v3_scrolling_ticker.v

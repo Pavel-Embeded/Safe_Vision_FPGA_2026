@@ -8,7 +8,11 @@
 `ifndef SAFEVISION_BOARD_HD
 `define SAFEVISION_BOARD_HD 0
 `endif
-module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
+`ifndef SAFEVISION_TICKER_ENABLE
+`define SAFEVISION_TICKER_ENABLE 0
+`endif
+module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
+ parameter integer TICKER_ENABLE=`SAFEVISION_TICKER_ENABLE)(
  input wire clk,rst_n,btn_next,btn_auto,btn_emergency,uart_rxd,
  output reg uart_txd,output reg[3:0] led,
  output wire sd_ncs,sd_dclk,sd_mosi,input wire sd_miso,
@@ -313,6 +317,28 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  .lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),
  .raw_x(raw_x),.raw_y(raw_y),.raw_de(raw_de),.raw_hs(raw_hs),.raw_vs(raw_vs),.frame_start(raw_fs),
  .rgb(rgb),.hs(out_hs),.vs(out_vs),.de(out_de),.x(out_x),.y(out_y));
+ // The ticker runs in parallel with the existing21-clock video path.
+ // It owns only its small bottom strip; the media/safety pipeline is intact.
+ wire ticker_panel,ticker_text,ticker_edge;wire[63:0] ticker_status_sys;
+ generate if(TICKER_ENABLE)begin:scrolling
+  wire[11:0] position;wire[15:0] frames,loops;
+  v3_scrolling_ticker #(.WIDTH(HD?1280:640),.HEIGHT(HD?720:480),
+   .PIXEL_LATENCY(21),.MESSAGE_CHARS(21),.FRAMES_PER_PIXEL(2)) ticker(
+   .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(raw_fs),
+   .x(raw_x),.y(raw_y),.de(raw_de),.panel_pixel(ticker_panel),
+   .text_pixel(ticker_text),.edge_pixel(ticker_edge),
+   .position(position),.frames(frames),.loops(loops));
+  video_cdc_mailbox #(.WIDTH(64)) status_mailbox(
+   .src_clk(pixel_clk),.src_rst_n(pixel_rst_n),
+   .src_data({loops,frames,16'h544b,4'h1,position}),.src_valid(1'b1),.src_ready(),
+   .dst_clk(sys_clk),.dst_rst_n(sys_rst_n),.dst_data(ticker_status_sys),
+   .dst_valid(),.dst_ready(1'b1));
+ end else begin:no_scrolling
+  assign ticker_panel=0;assign ticker_text=0;assign ticker_edge=0;
+  assign ticker_status_sys=0;
+ end endgenerate
+ wire[23:0] rendered_rgb=ticker_panel?
+  (ticker_text?24'hf4fff4:ticker_edge?24'h3e8290:24'h0c171b):rgb;
  reg audio_commit_valid;reg[1:0] audio_commit_slot;reg[7:0] audio_commit_gen;wire audio_commit_ready;
  always @(posedge sys_clk or negedge sys_rst_n)begin
  if(!sys_rst_n)begin audio_commit_valid<=0;audio_commit_slot<=0;audio_commit_gen<=0;end
@@ -513,12 +539,19 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  (* keep="true" *) wire[31:0] b_diag_payload2=({32{b_diag_low[2]}} & {20'd0,ref_status_sys[203:192]});
  (* keep="true" *) wire[31:0] b_diag_payload3=({32{b_diag_low[3]}} & ref_status_sys[79:48]) |
   ({32{b_diag_low[4]}} & {18'd0,energy,volume});
- (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & 32'h26102301);
+ (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & (TICKER_ENABLE?32'h26102801:32'h26102301));
  (* keep="true" *) wire[31:0] b_diag_next1=b_diag_payload1 & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next2=b_diag_payload2 & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next3=b_diag_payload3 & {32{b_diag_payload_valid}};
+ wire[31:0] b_diag_next4=TICKER_ENABLE&&!cmd_query&&b_diag_small?
+  (cmd_value[6:0]==7'd101 ? ticker_status_sys[31:0]:
+   cmd_value[6:0]==7'd102 ? ticker_status_sys[63:32]:32'd0):32'd0;
+ reg[31:0] b_diag_group4;
+ always @(posedge sys_clk or negedge sys_rst_n)
+  if(!sys_rst_n)b_diag_group4<=0;
+  else if(cmd_valid&&cmd_target==66)b_diag_group4<=b_diag_next4;
  reg[31:0] b_diag_group0,b_diag_group1,b_diag_group2,b_diag_group3;
- wire[31:0] b_diag_data=b_diag_group0 | b_diag_group1 | b_diag_group2 | b_diag_group3;
+ wire[31:0] b_diag_data=b_diag_group0 | b_diag_group1 | b_diag_group2 | b_diag_group3 | b_diag_group4;
  // Capture every selected group on the ORIGINAL acceptance edge. The OR
  // moves after those registers; UART consumes at the same following edge.
  // No selector setup assumption, stale live counter or extra reply cycle.
@@ -536,7 +569,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  b_diag_group0<=b_diag_next0;b_diag_group1<=b_diag_next1;b_diag_group2<=b_diag_next2;b_diag_group3<=b_diag_next3;
  b_query_group0<=b_query_next0;b_query_group1<=b_query_next1;b_query_group2<=b_query_next2;b_query_group3<=b_query_next3;b_query_group4<=b_query_next4;
  if(b_diag_selected)begin
-  if(cmd_query || cmd_value==0 || cmd_value==1 || cmd_value==2 || cmd_value==3 || cmd_value==100)begin end
+  if(cmd_query || cmd_value==0 || cmd_value==1 || cmd_value==2 || cmd_value==3 || cmd_value==100 || (TICKER_ENABLE&&(cmd_value==101||cmd_value==102)))begin end
   else if(diag_mem_range)begin
    if(sys_media_rst_n && diag_request_ready)b_reply<=0;else b_reply_code<=4;
   end else b_reply_code<=3;
@@ -609,7 +642,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire[23:0] axis_data;wire axis_valid,axis_user,axis_last,axis_ready,resync,overflow;
  wire[31:0] dropped_frames;wire[4:0] queue_level;
  hdmi_video_bridge #(.HD(HD),.QUEUE_AW(4)) hdmi_queue(.clk(pixel_clk),.rst_n(pixel_rst_n),
- .rgb(rgb),.de(out_de),.x(out_x),.y(out_y),.axis_valid(axis_valid),.axis_user(axis_user),
+ .rgb(rendered_rgb),.de(out_de),.x(out_x),.y(out_y),.axis_valid(axis_valid),.axis_user(axis_user),
  .axis_last(axis_last),.axis_data(axis_data),.axis_ready(axis_ready),.resync(resync),
  .overflow_sticky(overflow),.dropped_frames(dropped_frames),.queue_level(queue_level));
  video_cdc_mailbox #(.WIDTH(32)) hdmi_status_mailbox(.src_clk(pixel_clk),.src_rst_n(pixel_rst_n),

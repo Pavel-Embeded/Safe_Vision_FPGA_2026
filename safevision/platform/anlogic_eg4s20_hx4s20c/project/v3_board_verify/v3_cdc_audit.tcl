@@ -7,6 +7,8 @@ proc v3_expect_objects {label objects} {
 }
 v3_expect_objects {first_stage_synchronizers} [get_regs {*req_meta *ack_meta frame_heartbeat_sync/meta pll_loss_sync/meta locks_meta* video/media_m1 video/media_p1 video/safe_p1 video/fault_s1 video/fault_p1 video/present_s1 video/cache/pixel_fault_meta video/cache/*store/done_meta video/cache/*store/fault_meta}]
 v3_expect_objects {asynchronous_reset_roots} [get_nets {control_common_rst_n config_common_rst_n media_common_rst_n tx_reset}]
+v3_expect_objects {scrolling/status_mailbox.payload} [get_regs {scrolling/status_mailbox/payload*}]
+v3_expect_objects {scrolling/status_mailbox.capture} [get_regs {scrolling/status_mailbox/dst_data*}]
 v3_expect_objects {uptime_to_pixel.payload} [get_regs {uptime_to_pixel/payload*}]
 v3_expect_objects {uptime_to_pixel.capture} [get_regs {uptime_to_pixel/dst_data*}]
 v3_expect_objects {hdmi_status_mailbox.payload} [get_regs {hdmi_status_mailbox/payload*}]

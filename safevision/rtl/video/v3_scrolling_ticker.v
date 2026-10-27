@@ -1,0 +1,68 @@
+// Fixed Chinese bitmap strip. Position changes only on frame_start; media
+// resets never enter this module. Three one-bit tags retain the production
+// 21-clock raw-raster contract without delaying the existing video stream.
+module v3_scrolling_ticker #(
+ parameter integer WIDTH=640,HEIGHT=480,MESSAGE_CHARS=21,
+ parameter integer FRAMES_PER_PIXEL=2,PIXEL_LATENCY=21,
+ parameter BITMAP_FILE="../../assets/fonts/v3_ticker16.mem"
+)(
+ input wire clk,rst_n,frame_start,
+ input wire[11:0] x,y,input wire de,
+ output wire panel_pixel,text_pixel,edge_pixel,
+ output reg[11:0] position,
+ output reg[15:0] frames,loops
+);
+ localparam integer VIEW_LEFT=120,VIEW_RIGHT=WIDTH-8;
+ localparam integer VIEW_WIDTH=WIDTH-128,TEXT_WIDTH=MESSAGE_CHARS*16;
+ localparam integer PERIOD=VIEW_WIDTH+TEXT_WIDTH;
+ localparam integer STEP_W=FRAMES_PER_PIXEL>1?$clog2(FRAMES_PER_PIXEL):1;
+ reg[STEP_W-1:0] frame_divider;
+ // No pixel, line, FIFO or SD event may advance the scroll phase.
+ always @(posedge clk or negedge rst_n)begin
+  if(!rst_n)begin position<=0;frame_divider<=0;frames<=0;loops<=0;end
+  else if(frame_start)begin
+   frames<=frames+1'b1;
+   if(frame_divider==FRAMES_PER_PIXEL-1)begin
+    frame_divider<=0;
+    if(position==PERIOD-1)begin position<=0;loops<=loops+1'b1;end
+    else position<=position+1'b1;
+   end else frame_divider<=frame_divider+1'b1;
+  end
+ end
+
+ wire[12:0] translated={1'b0,x}+{1'b0,position};
+ wire[12:0] source_x=translated-VIEW_RIGHT;
+ wire box=de&&x>=VIEW_LEFT&&x<VIEW_RIGHT&&y>=HEIGHT-24&&y<HEIGHT-4;
+ wire glyph_valid=box&&y>=HEIGHT-22&&y<HEIGHT-6&&
+  translated>=VIEW_RIGHT&&translated<VIEW_RIGHT+TEXT_WIDTH;
+ wire border=box&&(y==HEIGHT-24);
+ wire[3:0] glyph_row=y-(HEIGHT-22);
+ (* ram_style="block" *) reg[15:0] bitmap_rom[0:511];
+ initial $readmemh(BITMAP_FILE,bitmap_rom);
+ reg[8:0] address1;reg[3:0] column1,column2;
+ reg valid1,valid2,dot3;
+ reg[15:0] row2;
+ // RAM output has no reset so TD can infer one physical RAM9K tile.
+ always @(posedge clk)row2<=bitmap_rom[address1];
+ always @(posedge clk or negedge rst_n)begin
+  if(!rst_n)begin address1<=0;column1<=0;column2<=0;valid1<=0;valid2<=0;dot3<=0;end
+  else begin
+   address1<={source_x[8:4],glyph_row};column1<=source_x[3:0];
+   valid1<=glyph_valid;valid2<=valid1;column2<=column1;
+   dot3<=valid2&&row2[15-column2];
+  end
+ end
+ reg[PIXEL_LATENCY-1:0] panel_pipe,edge_pipe;
+ reg[PIXEL_LATENCY-4:0] text_pipe;
+ always @(posedge clk or negedge rst_n)begin
+  if(!rst_n)begin panel_pipe<=0;edge_pipe<=0;text_pipe<=0;end
+  else begin
+   panel_pipe<={panel_pipe[PIXEL_LATENCY-2:0],box};
+   edge_pipe<={edge_pipe[PIXEL_LATENCY-2:0],border};
+   text_pipe<={text_pipe[PIXEL_LATENCY-5:0],dot3};
+  end
+ end
+ assign panel_pixel=panel_pipe[PIXEL_LATENCY-1];
+ assign edge_pixel=edge_pipe[PIXEL_LATENCY-1];
+ assign text_pixel=text_pipe[PIXEL_LATENCY-4];
+endmodule
