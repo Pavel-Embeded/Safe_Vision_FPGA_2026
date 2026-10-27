@@ -4,7 +4,7 @@ from pathlib import Path
 def check_roms(text,root):
  mapped=[]
  for m in re.finditer(r'EG_PHY_BRAM\s*#\((.*?)\)\s+(\\[^\s]+|[\w$]+)\s*\(',text,re.S):
-  if not any(prefix in m[2] for prefix in ('video/graphics/','uart/g_catalog/parser/','uart/g_catalog$parser/','scrolling/ticker/')):continue
+  if not any(prefix in m[2] for prefix in ('video/graphics/','uart/g_catalog/parser/','uart/g_catalog$parser/','scrolling/ticker/','scrolling$ticker/')):continue
   blocks={int(k,16):int(v,16).to_bytes(32,'little') for k,v in re.findall(r'\.INIT_([0-9A-Fa-f]{2})\(256\s*\x27h([0-9A-Fa-f]{64})\)',m[1])}
   parity={int(k,16):int(v,16).to_bytes(32,'little') for k,v in re.findall(r'\.INITP_([0-9A-Fa-f]{2})\(256\s*\x27h([0-9A-Fa-f]{64})\)',m[1])}
   widths=re.findall(r'\.DATA_WIDTH_[AB]\("([0-9]+)"\)',m[1])
@@ -63,7 +63,7 @@ def check_roms(text,root):
   if len(values)!=512 or any(v<0 or v>65535 for v in values) or any(values[336:]):raise ValueError('invalid ticker ROM size, width or zero padding')
   expected=b''.join(bytes((v&255,(v>>9)&255))for v in values)
   parity=sum(((v>>8)&1)<<(2*i)for i,v in enumerate(values)).to_bytes(128,'little')
-  matches=[n for n,data,p,widths in mapped if 'scrolling/ticker/'in n and data==expected and p==parity and widths==['18','18']]
+  matches=[n for n,data,p,widths in mapped if 'scrolling/ticker/'in n.replace('$','/') and data==expected and p==parity and widths==['18','18']]
   if len(matches)!=1:raise ValueError('mapped ticker ROM missing/corrupt/duplicated')
   result.append(dict(asset=asset.name,mapped_instance=matches[0],bytes_compared=1024,parity_bits_compared=1024,logical_bits=8192,zero_padding_words=176,payload_sha256=hashlib.sha256(expected+parity).hexdigest()))
  return result
