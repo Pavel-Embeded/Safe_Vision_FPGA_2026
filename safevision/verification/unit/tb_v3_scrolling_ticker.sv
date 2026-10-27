@@ -31,11 +31,11 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
   for(i=20;i>0;i=i-1)begin qp[i]=qp[i-1];qt[i]=qt[i-1];qe[i]=qe[i-1];end
   qp[0]=want_panel;qt[0]=want_text;qe[0]=want_edge;
   if(start_frame)begin
-   model_frames=(model_frames+1)&65535;
+   model_frames=(model_frames+1)&255;
    model_divider++;
    if(model_divider==STEP)begin
     model_divider=0;model_position++;
-    if(model_position==PERIOD)begin model_position=0;model_loops=(model_loops+1)&65535;end
+    if(model_position==PERIOD)begin model_position=0;model_loops=(model_loops+1)&255;end
    end
   end
   ck(panel===qp[20],"panel clips and retains the21-clock raster tag");
@@ -75,9 +75,9 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
   $display("[PASS] all scroll positions, character columns, rows, borders and disabled DE samples");
   // Counter boundary injection changes only verification state, followed by
   // ordinary public frame pulses. It is not a long-running hardware claim.
-  @(negedge clk);fs=0;dut.frames=16'hffff;model_frames=65535;
+  @(negedge clk);fs=0;dut.frame_count=8'hff;model_frames=255;
   tick(0,HEIGHT,0,1);
-  ck(frames==0,"16-bit frame counter wraps without losing a frame");
+  ck(frames==0,"modulo256 frame counter wraps without losing a frame");
   reset_async;
   repeat(32)tick(200,HEIGHT-20,1,0);
   ck(position==0&&frames==0,"no pixel or line activity advances the scroll phase");
