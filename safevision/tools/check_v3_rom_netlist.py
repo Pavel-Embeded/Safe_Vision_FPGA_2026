@@ -94,7 +94,7 @@ def check_roms(text,root):
   if ('.MESSAGE_CHARS(32)'if packed_ticker else'.MESSAGE_CHARS(16)')not in top or any('scrolling/ticker/'in n.replace('$','/')for n,_,_,_ in mapped):raise ValueError('shared ticker production selection or memory inference differs')
   if packed_ticker:
    if spectrum_instance is None or packed_proof is None:raise ValueError('packed font requires the verified physical FFT RAM')
-   result.append(dict(asset='v3_spectrum_ticker32.mem',mapped_instance=spectrum_instance,bytes_compared=1024,parity_bits_compared=1024,logical_bits=8192,stored_font_bits=packed_proof['font_payload_words']*9,decoded_bit_comparisons=8192,all_pixels_preserved=True,shared_coefficient_memory=True,immutable_word_start=384,immutable_word_count=packed_proof['font_payload_words'],unused_zero_words=640-packed_proof['font_payload_words']))
+   result.append(dict(asset='v3_spectrum_ticker32.mem',mapped_instance=spectrum_instance,bytes_compared=1024,parity_bits_compared=1024,logical_bits=8192,stored_font_bits=packed_proof['font_payload_words']*packed_proof['font_word_bits'],physical_ram_word_bits=9,font_payload_word_bits=packed_proof['font_word_bits'],decoded_bit_comparisons=8192,all_pixels_preserved=True,shared_coefficient_memory=True,immutable_word_start=384,immutable_word_count=packed_proof['font_payload_words'],unused_zero_words=640-packed_proof['font_payload_words']))
    result[-2].update(layout='shared_dp9_coefficient_display_lossless32',unused_zero_words=640-packed_proof['font_payload_words'])
   else:result.append(dict(asset='v3_ticker_shared16.mem',mapped_instance=spectrum_instance,bytes_compared=512,parity_bits_compared=512,logical_bits=4096,shared_coefficient_memory=True,immutable_word_start=384,immutable_word_count=512))
  return result
