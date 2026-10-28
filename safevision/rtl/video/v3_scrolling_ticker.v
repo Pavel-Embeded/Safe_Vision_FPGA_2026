@@ -9,12 +9,15 @@ module v3_scrolling_ticker #(
  input wire clk,rst_n,frame_start,
  input wire[11:0] x,y,input wire de,
  output wire panel_pixel,text_pixel,edge_pixel,
- output reg[11:0] position,
+ output wire[11:0] position,
  output wire[15:0] frames,loops
 );
  localparam integer VIEW_LEFT=120,VIEW_RIGHT=WIDTH-8;
  localparam integer VIEW_WIDTH=WIDTH-128,TEXT_WIDTH=MESSAGE_CHARS*16;
  localparam integer PERIOD=VIEW_WIDTH+TEXT_WIDTH;
+ localparam integer POSITION_W=$clog2(PERIOD);
+ reg[POSITION_W-1:0] phase;
+ assign position={{(12-POSITION_W){1'b0}},phase};
  localparam integer STEP_W=FRAMES_PER_PIXEL>1?$clog2(FRAMES_PER_PIXEL):1;
  reg[STEP_W-1:0] frame_divider;
  // Modulo256 diagnostic counts are sufficient for cadence/loop witnesses.
@@ -23,13 +26,13 @@ module v3_scrolling_ticker #(
  assign frames={8'd0,frame_count};assign loops={8'd0,loop_count};
  // No pixel, line, FIFO or SD event may advance the scroll phase.
  always @(posedge clk or negedge rst_n)begin
-  if(!rst_n)begin position<=0;frame_divider<=0;frame_count<=0;loop_count<=0;end
+  if(!rst_n)begin phase<=0;frame_divider<=0;frame_count<=0;loop_count<=0;end
   else if(frame_start)begin
    frame_count<=frame_count+1'b1;
    if(frame_divider==FRAMES_PER_PIXEL-1)begin
     frame_divider<=0;
-    if(position==PERIOD-1)begin position<=0;loop_count<=loop_count+1'b1;end
-    else position<=position+1'b1;
+    if(position==PERIOD-1)begin phase<=0;loop_count<=loop_count+1'b1;end
+    else phase<=phase+1'b1;
    end else frame_divider<=frame_divider+1'b1;
   end
  end
