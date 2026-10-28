@@ -21,13 +21,13 @@ def fixture():
  def ticker():
   # ACK is four ms after the initial fixture time. The phase is measured
   # from that same monotonic clock, including across the modulo768 wrap.
-  t=now+4;position=int(t*.0299823633)%768
+  t=now+4;position=int(t*.0299823633)%1024
   transaction('B:DIAG=101',0x544B1000|position)
   if ticks:
-   before=ticks[-1];dt=t-before['sample_ms'];expected=int(dt*.0299823633)%768
-   actual=(position-before['position'])%768
-   emit('ticker_rate',interval_ms=dt,expected_pixels=expected,actual_pixels=actual,position_error=(actual-expected+384)%768-384)
-  sample=dict(position=position,sample_ms=t,period_pixels=768);ticks.append(sample);emit('ticker',**sample)
+   before=ticks[-1];dt=t-before['sample_ms'];expected=int(dt*.0299823633)%1024
+   actual=(position-before['position'])%1024
+   emit('ticker_rate',interval_ms=dt,expected_pixels=expected,actual_pixels=actual,position_error=(actual-expected+512)%1024-512)
+  sample=dict(position=position,sample_ms=t,period_pixels=1024);ticks.append(sample);emit('ticker',**sample)
  emit('opened',baud=115200,expected_id='26102801')
  transaction('B:DIAG=0',0x26102801);health();ticker()
  transaction('C:AUTO=0',0);transaction('B:SLOT?',0);transaction('B:GEN?',254)
@@ -80,7 +80,7 @@ class UartControls(unittest.TestCase):
    rows[index-1].update(hex=(frame+'\r\n').encode().hex(),text=frame+'\r\n')
    e.update(frame=frame,value=new_value)
  def test_round_trip(self):
-  result=self.check();self.assertTrue(result['accepted']);self.assertFalse(result['physical_display_verified'])
+  result=self.check();self.assertTrue(result['accepted']);self.assertFalse(result['physical_display_verified']);self.assertEqual(result['period_pixels'],1024)
  def test_unclosed_capture(self):
   with self.assertRaisesRegex(ValueError,'open/close'):self.check(self.events[:-1])
  def test_raw_rewrite(self):

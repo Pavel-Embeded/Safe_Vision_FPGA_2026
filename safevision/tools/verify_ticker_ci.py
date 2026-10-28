@@ -46,6 +46,7 @@ def offline(root,release,out):
  archive=safe(root,index['evidence_archive']);require(sha(archive)==index['evidence_archive_sha256'],'evidence archive changed')
  unpack(archive,out/'proof');proof=out/'proof'
  functional=audit(root,proof/'regression',proof/'ticker',proof/'board',proof/'controls')
+ require(index.get('production_profile')==functional['production_profile']and read(release/'functional.audit.json')['production_profile']==functional['production_profile'],'release production profile differs from current local32 proof')
  native=replay(root,proof/'native')
  require(native['gate']['sta']['negative_path_count']==0,'native replay contains negative paths')
  return dict(accepted=True,index=index,functional=functional,native=native,bit_sha256=index['bit_sha256'],fresh_TD_build_performed=False,hardware_test_performed=False)
@@ -67,6 +68,7 @@ def verify(root,out):
  require('BW_TICKER_SRAM_FAILED'not in text and'Unknown cable'not in text and'USB device open error'not in text,'programming log reports cable or download failure')
  require(not re.search(r'(?im)\bERROR\b',text),'programming log contains an error')
  uart=audit_uart(release/'board/regression')
+ require(uart['period_pixels']==index['production_profile']['period_pixels'],'UART cadence profile differs from the approved bitstream')
  supplementary=replay_supplementary(root,release/'board',out/'supplementary')
  physical=read(release/'board/physical_acceptance.json')
  require(physical['firmware_id']=='26102801'and physical['bit_sha256']==index['bit_sha256'],'physical observation has wrong image identity')

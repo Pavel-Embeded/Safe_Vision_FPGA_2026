@@ -6,4 +6,4 @@
 
 厂商加密IP内部没有直接仿真；外部接口模型、网表检查、STA与实际板卡结果分开记录，不能把模型的通过当成内部实现证明。
 
-滚动字幕使用 Noto Sans SC Medium 的位图子集。正式配置包含 16 个字格，子集名为 SafeVisionSharedTicker16；原有 32 字测试子集 SafeVisionTicker16 保留在接口回归中。字体来源为 `notofonts/noto-cjk`，采用 SIL Open Font License 1.1，版权为 © 2014-2021 Adobe。许可证保存在 `safevision/assets/fonts/OFL-NotoSansSC.txt`。原字体提交、文件校验值及生成参数分别保存在同目录的 `v3_spectrum_ticker.provenance.json` 和 `v3_ticker16.provenance.json`。
+滚动字幕的正式配置使用 Noto Sans SC Medium 的 32 字位图子集 SafeVisionTicker16，保存在独立字库中。字体来源为 `notofonts/noto-cjk`，采用 SIL Open Font License 1.1，版权为 © 2014-2021 Adobe。许可证位于 `safevision/assets/fonts/OFL-NotoSansSC.txt`，原字体提交、文件校验值和生成参数见同目录的 `v3_ticker16.provenance.json`。共享字库子集 SafeVisionSharedTicker16 保留用于另一种库参数配置的兼容性测试，其来源记录为 `v3_spectrum_ticker.provenance.json`。

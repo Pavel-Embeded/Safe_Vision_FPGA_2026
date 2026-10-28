@@ -83,7 +83,8 @@ def audit(root,regression,ticker,board,controls):
  allowed|={'safevision/rtl/video/v3_audio_spectrum.v','safevision/rtl/video/v3_status_layers.v','safevision/rtl/video/v3_video_display_core.v'}
  allowed|={'safevision/rtl/media/v3_bmp_normalizer.v','safevision/rtl/hd/v3_status_layers.v','safevision/rtl/hd/v3_video_display_core.v'}
  top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig')
- require('.MESSAGE_CHARS(16)'in top and '.EXTERNAL_FONT(1)'in top and '.SHARED_TICKER(TICKER_ENABLE)'in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'shared-font/shared-status/lookahead/packed-reply production profile differs')
+ require(top.count('.MESSAGE_CHARS(32)')==1 and top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.MESSAGE_CHARS(16)'not in top and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'local32/shared-status/lookahead/packed-reply production profile differs')
+ production_profile=dict(font_storage='dedicated_ram9k',message_characters=32,period_pixels=1024,fft_font_sharing=False,video_latency_clocks=21,source_ahead_pixels=5)
  require('.REGISTERED_RESIDENT_READY(TICKER_ENABLE)'in top,'resident readiness profile not selected by the production flag')
  new={'safevision/rtl/video/v3_scrolling_ticker.v','safevision/assets/fonts/v3_ticker16.mem','safevision/assets/fonts/v3_ticker16.provenance.json'}|{str(FLOW/n).replace('\\','/')for n in ('ticker_enable.v','base/v3_ticker16.mem','hd/v3_ticker16.mem')}
  new|={'safevision/assets/fonts/v3_spectrum_ticker.mem','safevision/assets/fonts/v3_spectrum_ticker.provenance.json','safevision/assets/fonts/v3_ticker_shared16.mem'}|{str(FLOW/n).replace('\\','/')for n in ('base/v3_spectrum_ticker.mem','hd/v3_spectrum_ticker.mem')}
@@ -171,7 +172,7 @@ def audit(root,regression,ticker,board,controls):
  require((root/'safevision/verification/models/v3_audio_spectrum_frozen261026.sv').read_bytes()==original.replace(b'module v3_audio_spectrum #(',b'module v3_audio_spectrum_frozen261026 #('),'frozen FFT reference changed beyond module name')
  require(read(shared/'results.json')['complete'],'shared font/FFT suite incomplete')
  native=shared/stop;bind(root,native);raw=audit_file(native/'sim.log',True);require(raw['accepted'],'shared font or frozen FFT comparison failed')
- additions.append(dict(top=stop,raw_sha256=raw['sha256'],compiler=graph(root,native,dict(suite=ssuite,top=stop))))
+ additions.append(dict(top=stop,raw_sha256=raw['sha256'],compiler=graph(root,native,dict(suite=ssuite,top=stop)),role='alternate shared-font library configuration',production_selected=False))
  rows=read(shared_controls/'summary.json');require(rows['accepted']and len(rows['cases'])==3,'shared-port controls incomplete')
  require({c['name']for c in rows['cases']}=={'shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'},'shared-port detector inventory differs')
  for case in rows['cases']:
@@ -197,7 +198,8 @@ def audit(root,regression,ticker,board,controls):
   require(normalizer.count('wire[SB+XB-1:0] geometry_scratch={y_error,x_error};')==1,'unreviewed geometry scratch width')
   width_proof=dict(required=False,profile='original full-width temporary')
  require(len(additions)==7 and len({r['top']for r in additions})==7,'additional positive inventory changed')
- return dict(accepted=True,physical_inputs=217,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=7,total_positive_tops=310,preserved_semantic_controls=221,added_semantic_controls=24,total_semantic_controls=245,positive=checked,negative=negatives,additions=additions,geometry_controls=geometry_controls,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ compatibility=dict(production_selected=False,scope='Alternate shared-font library parameters; the production local32 path uses a dedicated font ROM',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
+ return dict(accepted=True,physical_inputs=217,production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=7,total_positive_tops=310,preserved_semantic_controls=221,added_semantic_controls=24,total_semantic_controls=245,positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,geometry_controls=geometry_controls,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)

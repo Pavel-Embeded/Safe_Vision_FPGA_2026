@@ -59,18 +59,18 @@ function Defaults {
 }
 function Ticker {
  $position=Send 'B:DIAG=101'
- if(($position -shr 12) -ne 0x544B1 -or ($position -band 0xFFF) -ge 768){throw 'Invalid ticker signature/position'}
+ if(($position -shr 12) -ne 0x544B1 -or ($position -band 0xFFF) -ge 1024){throw 'Invalid ticker signature/position'}
  $sampleMs=$timer.ElapsedMilliseconds;$pos=$position -band 4095
  if($null -ne $script:lastTickMs){
   $dt=$sampleMs-$script:lastTickMs
-  $expectedPosition=([int][Math]::Floor($dt*0.0299823633))%768
-  $actualPosition=($pos-$script:lastTickPosition+768)%768
-  $positionError=($actualPosition-$expectedPosition+1152)%768-384
+  $expectedPosition=([int][Math]::Floor($dt*0.0299823633))%1024
+  $actualPosition=($pos-$script:lastTickPosition+1024)%1024
+  $positionError=($actualPosition-$expectedPosition+1536)%1024-512
   if([Math]::Abs($positionError) -gt 4){throw 'Ticker stopped, reset unexpectedly or ran at the wrong cadence'}
   Log @{kind='ticker_rate';interval_ms=$dt;expected_pixels=$expectedPosition;actual_pixels=$actualPosition;position_error=$positionError}
  }
  $script:lastTickMs=$sampleMs;$script:lastTickPosition=$pos
- Log @{kind='ticker';position=$pos;sample_ms=$sampleMs;period_pixels=768}
+ Log @{kind='ticker';position=$pos;sample_ms=$sampleMs;period_pixels=1024}
  return $pos
 }
 $matched=$false;$restored=$false;$script:lastTickMs=$null;$latencies=New-Object 'System.Collections.Generic.List[int]'
@@ -79,7 +79,7 @@ try {
  if((Send 'B:DIAG=0') -ne 0x26102801){throw 'Unexpected firmware; no writes sent'}
  $matched=$true;Healthy
  $first=Ticker;PauseRx 2100;$second=Ticker
- $dp=($second-$first+768)%768
+ $dp=($second-$first+1024)%1024
  if($dp -lt 50 -or $dp -gt 75){throw 'Ticker position stalled or wrong speed'}
  Log @{kind='ticker_cadence';pixels=$dp;accepted=$true}
  $null=Send 'C:AUTO=0';PauseRx 1500

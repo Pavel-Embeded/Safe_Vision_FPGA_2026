@@ -34,7 +34,7 @@ def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
   require(xor(match[1])==int(match[4],16),'ACK XOR mismatch')
   require(int(match[2],16)==ack['code']==0 and int(match[3],16)==ack['value'],'ACK status/value mismatch')
   require(0<=ack['elapsed_ms']-tx['elapsed_ms']<=2100,'ACK outside transaction timeout')
-  if tx['body']=='B:DIAG=101':require(ack['value']>>12==0x544B1 and(ack['value']&4095)<768,'invalid ticker signature/position')
+  if tx['body']=='B:DIAG=101':require(ack['value']>>12==0x544B1 and(ack['value']&4095)<1024,'invalid ticker signature/position')
  # Cross-check derived events against the actual preceding ACKs. A rewritten
  # summary cannot fabricate slot commits, health, or recovery observations.
  live={};next_request=None;recover_request=None;recovery_busy=False;cache_cleared=False;default_time=None
@@ -72,11 +72,11 @@ def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
  tickacks=[e for e in replies if e['body']=='B:DIAG=101']
  require(len(tick)==len(tickacks)and len(rates)==len(tick)-1 and len(tick)>2,'ticker observation inventory mismatch')
  for sample,ack in zip(tick,tickacks):
-  require(sample['position']==ack['value']&4095 and sample['period_pixels']==768,'ticker sample differs from ACK')
+  require(sample['position']==ack['value']&4095 and sample['period_pixels']==1024,'ticker sample differs from ACK')
   require(0<=sample['sample_ms']-ack['elapsed_ms']<=100 and 0<=sample['elapsed_ms']-sample['sample_ms']<=100,'ticker time is detached from its raw reply')
  for before,after,rate in zip(tick,tick[1:],rates):
-  dt=after['sample_ms']-before['sample_ms'];expected=math.floor(dt*.0299823633)%768
-  actual=(after['position']-before['position'])%768;error=(actual-expected+384)%768-384
+  dt=after['sample_ms']-before['sample_ms'];expected=math.floor(dt*.0299823633)%1024
+  actual=(after['position']-before['position'])%1024;error=(actual-expected+512)%1024-512
   require(dt>0 and abs(error)<=4,'ticker cadence/reset failure')
   require((rate['interval_ms'],rate['expected_pixels'],rate['actual_pixels'],rate['position_error'])==(dt,expected,actual,error),'ticker rate receipt differs')
  moves=[e for e in events if e['kind']=='transition'];restores=[e for e in events if e['kind']=='recovery'];monitor=[e for e in events if e['kind']=='monitor'];complete=[e for e in events if e['kind']=='complete'];starts=[e for e in events if e['kind']=='monitor_started']
@@ -112,7 +112,7 @@ def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
  statistics=dict(count=count,minimum_ms=values[0],median_ms=(values[(count-1)//2]+values[count//2])/2,p95_ms=values[math.ceil(.95*count)-1],maximum_ms=values[-1])
  require(done['latency']==statistics,'latency statistics differ from individual transitions')
  saved=json.loads((folder/'summary.json').read_text('utf-8-sig'));require(saved['accepted']and saved['latency']==statistics and saved['continuous_monitor_ms']==done['continuous_monitor_ms'],'summary differs from raw campaign')
- return dict(accepted=True,firmware_id='26102801',ack_count=len(replies),manual_commits=transitions,recoveries=recoveries,continuous_monitor_ms=done['continuous_monitor_ms'],ticker_samples=len(tick),latency=statistics,trace_sha256=sha(folder/'trace.jsonl'),rx_sha256=sha(folder/'rx.bin'),physical_display_verified=False,scope='Recorded UART byte replay; no new hardware interaction')
+ return dict(accepted=True,firmware_id='26102801',period_pixels=1024,ack_count=len(replies),manual_commits=transitions,recoveries=recoveries,continuous_monitor_ms=done['continuous_monitor_ms'],ticker_samples=len(tick),latency=statistics,trace_sha256=sha(folder/'trace.jsonl'),rx_sha256=sha(folder/'rx.bin'),physical_display_verified=False,scope='Recorded UART byte replay; no new hardware interaction')
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--folder',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
  try:r=audit(a.folder)
