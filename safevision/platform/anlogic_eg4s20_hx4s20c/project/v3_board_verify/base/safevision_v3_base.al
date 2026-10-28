@@ -1005,7 +1005,7 @@
                 </PlaceProperty>
                 <RouteProperty>
                     <effort>routability</effort>
-                    <timing>on</timing>
+                    <timing>off</timing>
                     <fix_hold>on</fix_hold>
                     <post_route_opt>auto</post_route_opt>
                 </RouteProperty>
