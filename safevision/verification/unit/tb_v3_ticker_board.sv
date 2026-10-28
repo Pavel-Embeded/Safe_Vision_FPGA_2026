@@ -13,6 +13,7 @@ module tb_v3_ticker_board;
  defparam dut.scrolling.ticker.BITMAP_FILE="v3_ticker16.mem";
  reg[11:0] rx=0,ry=0;reg rd=0,rf=0;reg[23:0] underlying=24'h75a9c3;
  reg pixels[0:8191];reg[23:0] wanted[0:20];reg[23:0] new_wanted;
+ reg[24:0] wanted_xy[0:20];
  reg cv=0,query=0;reg signed[31:0] selector=0;
  integer errors=0,comparisons=0,i,p,xx,yy,source_col;
  task ck(input bit okay,input string message);begin comparisons++;
@@ -34,7 +35,10 @@ module tb_v3_ticker_board;
    text_bit=pixels[(py-458)*512+source_col];
   new_wanted=panel?(text_bit?24'hf4fff4:py==456?24'h3e8290:24'h0c171b):underlying;
   @(posedge dut.pixel_clk);#0.001;
-  for(i=20;i>0;i--)wanted[i]=wanted[i-1];wanted[0]=new_wanted;
+  for(i=20;i>0;i--)begin wanted[i]=wanted[i-1];wanted_xy[i]=wanted_xy[i-1];end
+  wanted[0]=new_wanted;wanted_xy[0]={active,12'(px),12'(py)};
+  ck(dut.out_de===wanted_xy[20][24],"original DE retains its raster latency");
+  if(wanted_xy[20][24])ck({dut.out_x,dut.out_y}===wanted_xy[20][23:0],"reconstructed production coordinates match a legal full-width raster");
   ck(dut.rendered_rgb===wanted[20],"production RGB mux preserves image outside strip and aligns every glyph");
  end endtask
  initial begin
@@ -53,9 +57,11 @@ module tb_v3_ticker_board;
   for(p=0;p<848;p=p+211)begin
    release dut.scrolling.ticker.position;
    force dut.scrolling.ticker.position=p;
-   for(i=0;i<21;i++)wanted[i]=underlying;
+   for(i=0;i<21;i++)begin wanted[i]=underlying;wanted_xy[i]=0;end
    repeat(24)pixel(0,0,0);
-   for(yy=454;yy<478;yy++)for(xx=0;xx<640;xx++)pixel(xx,yy,(xx%11)!=0);
+   // The existing coordinate reconstruction requires HTOTAL=800, including
+   // horizontal blanking. Keep that real production contract in this test.
+   for(yy=454;yy<478;yy++)for(xx=0;xx<800;xx++)pixel(xx,yy,xx<640&&(xx%11)!=0);
   end
   $display("[PASS] original RGB outside ticker, UP reservation, full glyph rows, clipped sides and DE gaps");
   p=400;release dut.scrolling.ticker.position;force dut.scrolling.ticker.position=12'd400;
