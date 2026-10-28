@@ -1,0 +1,11 @@
+{
+  "sources": ["safevision/rtl/video/v3_scrolling_ticker.v", "safevision/rtl/video/v3_audio_spectrum.v"],
+  "tops": ["tb_v3_ticker_shared_port"],
+  "defines": [],
+  "assets": ["safevision/assets/fonts/v3_spectrum_ticker.mem", "safevision/assets/audio/v3_spectrum_twiddle.mem", "safevision/verification/assets/ticker_shared261028/pixels.mem"],
+  "timeouts": {"tb_v3_ticker_shared_port": 1800},
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "generator_dependencies": [],
+  "generated_assets": []
+}

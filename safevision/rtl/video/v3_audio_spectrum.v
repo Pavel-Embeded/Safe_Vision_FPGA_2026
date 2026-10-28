@@ -44,7 +44,7 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  wire[6:0] cosine_address=twiddle_address[7]?twiddle_address[6:0]:-twiddle_address[6:0];
  wire font_access=SHARED_TICKER&&font_request;
  wire font_blocks_write=font_access&&(state==BAND_WRITE||state==BAND_PEAK_WRITE);
- wire compute_enable=state==CAPTURE||state==PUBLISH||(!area&&!font_blocks_write);
+ wire compute_enable=state==CAPTURE||state==PUBLISH||!area;
  reg[8:0] shared_a_data,shared_b_data;
  reg[15:0] fetched_cosine,fetched_sine;
  reg coefficient_window;
@@ -244,12 +244,12 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
      else begin bin_index<=bin_index+1'b1;read_address<=bin_index+1'b1;state<=BIN_WAIT;end
     HISTORY_REQUEST:state<=HISTORY_WAIT;
     HISTORY_WAIT:if(history_available)state<=BAND_WRITE;
-    BAND_WRITE:begin
+    BAND_WRITE:if(!font_access)begin
      pending_peak_word<=next_peak;
      if(band_height>pending_peak)pending_peak<=band_height;
      state<=BAND_PEAK_WRITE;
     end
-    BAND_PEAK_WRITE:begin
+    BAND_PEAK_WRITE:if(!font_access)begin
      if(band==31)state<=PUBLISH;
      else begin band<=band+1'b1;band_magnitude<=0;bin_index<=bin_index+1'b1;read_address<=bin_index+1'b1;state<=BIN_WAIT;end
     end
