@@ -49,6 +49,8 @@ def main():
   names|={'safevision/tools/audit_ticker_uart261028.py','safevision/tools/verify_ticker_ci.py','safevision/tools/replay_ticker_native261028.py','safevision/tools/ticker_host_profile261028.py','safevision/tools/check_ticker_offline261028.py'}
   names.add('safevision/tools/host/burn_ticker261028_sram.ps1')
   names|={'safevision/tools/build_ticker_shared_font.py','safevision/tools/check_shape_space261028.py'}
+  if functional.get('packed_font_proof'):
+   names|={'safevision/tools/build_ticker_shared32_lossless.py','safevision/tools/test_lossless_shared32_controls.py','safevision/verification/models/v3_scrolling_ticker_frozen_packed32.freeze.json','safevision/verification/models/v3_scrolling_ticker_frozen_packed32.sv'}
   names|={'safevision/tools/test_ticker_archive261028.py','safevision/tools/test_ticker_uart261028.py'}
   names|={'safevision/tools/test_geometry_live_miter261028.py','safevision/tools/test_source_wait_watchdog261028.py','safevision/tools/check_v3_legacy_ports537.py'}
   if functional['production_profile'].get('base_media_bram_locations'):

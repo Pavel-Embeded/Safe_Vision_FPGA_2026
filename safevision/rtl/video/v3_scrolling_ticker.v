@@ -52,7 +52,7 @@ module v3_scrolling_ticker #(
  wire border=box&&(y==HEIGHT-24);
  wire[3:0] glyph_row=y-(HEIGHT-22);
 
- `include "v3_ticker_packed32.vh"
+ `include "v3_ticker_byte32.vh"
  reg[17:0] packed_desc0;reg[3:0] packed_column0,packed_row0;reg packed_valid0;
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin packed_desc0<=0;packed_column0<=0;packed_row0<=0;packed_valid0<=0;end

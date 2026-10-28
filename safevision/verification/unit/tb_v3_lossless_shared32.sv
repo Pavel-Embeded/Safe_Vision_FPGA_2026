@@ -5,7 +5,7 @@ module tb_v3_lossless_shared32;
  wire[1:0]panel,text,edge_bit,rpanel,rtext,redge;
  wire[11:0]pos[0:1],rpos[0:1];wire[15:0]frames[0:1],rframes[0:1],loops[0:1],rloops[0:1];
  wire[1:0]request,index_hi;wire[8:0]index[0:1],word9[0:1];wire[7:0]word8[0:1];
- integer errors=0,comparisons=0,cycles=0,high_reads=0,ninth_bit_reads=0,p,xx,yy,i;
+ integer errors=0,comparisons=0,cycles=0,high_reads=0,highest_bit_reads=0,p,xx,yy,i;
  genvar lane;
  generate for(lane=0;lane<2;lane=lane+1)begin:pair
   localparam LAT=lane==0?5:21;
@@ -31,9 +31,9 @@ module tb_v3_lossless_shared32;
  always @(posedge clk)begin #0.001;cycles++;
   for(integer n=0;n<2;n++)ck({panel[n],text[n],edge_bit[n],pos[n],frames[n],loops[n]}==={rpanel[n],rtext[n],redge[n],rpos[n],rframes[n],rloops[n]},"every public pixel and counter equals the full frozen local32 parent");
   if(rst_n&&request[0])begin
-   ck({index_hi[0],index[0]}<561,"all packed accesses stay inside the immutable glyph payload");
+   ck({index_hi[0],index[0]}<626,"all packed accesses stay inside the immutable glyph payload");
    if(index_hi[0])high_reads++;
-   if(word9[0][8])ninth_bit_reads++;
+   if(word9[0][7])highest_bit_reads++;
   end
  end
  task tick(input integer a,b,input bit active,frame);begin
@@ -61,9 +61,9 @@ module tb_v3_lossless_shared32;
    ck(panel===rpanel&&text===rtext&&edge_bit===redge,"asynchronous reset immediately matches the parent");
    #7;rst_n=1;repeat(30)tick(0,0,0,0);
   end
-  ck(high_reads>1000&&ninth_bit_reads>1000,"both extended address and ninth data bit are genuinely used");
+  ck(high_reads>1000&&highest_bit_reads>1000,"both extended address and highest payload data bit are genuinely used");
   $display("[PASS] all1024positions, all32original16x16glyphs,5/21clockinterfaces, real shared RAM and asynchronous reset");
-  $display("PASS tb_v3_lossless_shared32 errors=%0d comparisons=%0d cycles=%0d high_reads=%0d ninth_bit_reads=%0d",errors,comparisons,cycles,high_reads,ninth_bit_reads);$finish;
+  $display("PASS tb_v3_lossless_shared32 errors=%0d comparisons=%0d cycles=%0d high_reads=%0d highest_bit_reads=%0d",errors,comparisons,cycles,high_reads,highest_bit_reads);$finish;
  end
  initial begin #2000000000;$display("[FAIL] lossless font miter timeout");$display("PASS tb_v3_lossless_shared32 errors=1 comparisons=%0d",comparisons);$finish;end
 endmodule

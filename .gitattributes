@@ -6217,3 +6217,5 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/build/manifests/lossless_shared32_sim.json -text
 /safevision/rtl/include/v3_ticker_packed32.vh -text
 /safevision/assets/fonts/v3_spectrum_ticker32.* -text
+
+/safevision/rtl/include/v3_ticker_byte32.vh -text

@@ -148,6 +148,41 @@ def source_wait(root,base):
   controls.append(dict(name=row['name'],raw_sha256=sha(native/'sim.log'),compiler=g))
  return positives,controls,dict(raw_bytes=3342390,pixels=307200,write_words=153600,readback_words=153600,maximum_no_pixel_cycles=int(coverage[5]),source_event_retained_after_healthy_read=True,old_pixel_watchdog_rejected=True)
 
+def packed_font(root,base):
+ meta=read(root/'safevision/verification/models/v3_scrolling_ticker_frozen_packed32.freeze.json')
+ require(meta['parent_commit']=='c528fe3bab995d7f1acf151c72e43e6482e2e4b8'and meta['source_path']=='safevision/rtl/video/v3_scrolling_ticker.v'and meta['reference_path']=='safevision/verification/models/v3_scrolling_ticker_frozen_packed32.sv','lossless font reference identity differs')
+ require(meta['rename_from']=='module v3_scrolling_ticker #('and meta['rename_to']=='module v3_scrolling_ticker_frozen_packed32 #(','lossless font reference rename differs')
+ parent=subprocess.check_output(['git','-C',str(root),'cat-file','blob',meta['parent_commit']+':'+meta['source_path']])
+ require(hashlib.sha256(parent).hexdigest()==meta['source_sha256']and parent.count(meta['rename_from'].encode())==1,'lossless font parent blob differs')
+ reference=root/meta['reference_path'];require(reference.read_bytes()==parent.replace(meta['rename_from'].encode(),meta['rename_to'].encode())and sha(reference)==meta['reference_sha256'],'lossless font reference changed beyond its module declaration')
+ from build_ticker_shared32_lossless import build
+ generated,proof=build(root)
+ require(proof['message_characters']==32 and proof['font_payload_words']==626 and proof['font_word_bits']==8 and proof['decoded_bit_comparisons']==8192 and proof['all_pixels_preserved']and proof['coefficient_and_display_prefix_preserved'],'lossless32 generator coverage differs')
+ require(all((root/name).read_bytes()==raw for name,raw in generated.items()),'packed font artifacts are stale')
+ additions=[positive(root,base/suite,suite,top)for suite,top in [('lossless_shared32','tb_v3_lossless_shared32'),('lossless_shared32_fft','tb_v3_lossless_shared32_fft')]]
+ miter=(base/'lossless_shared32/tb_v3_lossless_shared32/sim.log').read_text('utf-8')
+ fft=(base/'lossless_shared32_fft/tb_v3_lossless_shared32_fft/sim.log').read_text('utf-8')
+ for name in ('high_reads','highest_bit_reads'):require(int(re.search(r'\b'+name+r'=(\d+)',miter)[1])>1000,'lossless font address/data bit coverage absent')
+ for name,minimum in [('font_reads',100000),('high_reads',1000),('highest_reads',1000),('contested',0),('spectra',5),('display_reads',100000)]:require(int(re.search(r'\b'+name+r'=(\d+)',fft)[1])>minimum,'packed FFT contention or display coverage absent: '+name)
+ from test_lossless_shared32_controls import CASES
+ wanted={c[0]for c in CASES};require(wanted=={'font_high_address_lost','font_highest_bit_lost','font_quotient_corrupt','font_latency_extra_clock','font_publication_not_held'},'packed font control inventory differs')
+ folder=base/'lossless_shared32_controls';summary=read(folder/'summary.json');require(summary['accepted']and len(summary['cases'])==5,'packed font controls incomplete')
+ checked=[]
+ for name,target,before,after,suite,top in CASES:
+  rows=[r for r in summary['cases']if r['name']==name];require(len(rows)==1,'packed font control duplicated or missing')
+  row=rows[0];require(tuple(row[k]for k in('target','before','after','suite','top'))==(target,before,after,suite,top),'packed font control definition differs')
+  # Reuse the same complete native receipt checks as all other semantic controls.
+  trial=folder/name;one=read(trial/'result.json');require(row==one,'packed font control summary differs from its native result')
+  require(row['accepted']and row['process_exit']==1 and row['normal_completion'],'packed font control did not detect normally')
+  text=(root/target).read_text('utf-8-sig');require(sha(root/target)==row['original_sha256']and text.count(before)==1,'packed font control input differs')
+  require((trial/'mutant.v').read_text('utf-8-sig')==text.replace(before,after)and sha(trial/'mutant.v')==row['mutated_sha256'],'packed font mutant differs')
+  native=trial/'native'/top;bind(root,native,target,row['mutated_sha256']);g=graph(root,native,dict(suite=suite,top=top),row)
+  raw=(native/'sim.log').read_text('utf-8');counts=[int(n)for n in re.findall(r'errors\s*=\s*(\d+)',raw)]
+  require(sha(native/'sim.log')==row['sim_sha256']and'$finish called'in raw and'PASS '+top in raw and'[FAIL]'in raw and counts==row['error_counts']and any(counts),'packed font control raw detection absent')
+  require(not re.search(r'(?im)^\s*(?:Fatal:|FATAL\b|ERROR:|SKIP\b)',raw)and'[SKIP]'not in raw,'packed font detector crashed or skipped')
+  checked.append(dict(name=name,raw_sha256=sha(native/'sim.log'),compiler=g))
+ return additions,checked,proof
+
 def audit(root,regression,ticker,board,controls):
  require(__debug__,'assertions disabled')
  matrix=read(root/'safevision/build/qualification/four_features_261020.json')
@@ -163,12 +198,15 @@ def audit(root,regression,ticker,board,controls):
  layout_files={'safevision/tools/v3_sources.py','safevision/tools/v3_final_sta.py','safevision/tools/check_v3_board.py',str(FLOW/'v3_physical_base.adc').replace('\\','/')}
  allowed|=layout_files
  top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig')
- require(top.count('.MESSAGE_CHARS(32)')==1 and top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.MESSAGE_CHARS(16)'not in top and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'local32/shared-status/lookahead/packed-reply production profile differs')
- production_profile=dict(font_storage='dedicated_ram9k',message_characters=32,period_pixels=1024,fft_font_sharing=False,video_latency_clocks=21,source_ahead_pixels=5)
+ packed='.PACKED_EXTERNAL(1)'in top
+ selected=top.count('.EXTERNAL_FONT(1)')==1 and top.count('.SHARED_TICKER(TICKER_ENABLE)')==1 and top.count('.SHARED_PACKED_FONT(TICKER_ENABLE)')==1 and top.count('.PACKED_EXTERNAL(1)')==1 and '.EXTERNAL_FONT(0)'not in top and '.SHARED_TICKER(0)'not in top if packed else top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top
+ require(selected and top.count('.MESSAGE_CHARS(32)')==1 and '.MESSAGE_CHARS(16)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'32character/shared-status/lookahead/packed-reply production profile differs')
+ production_profile=dict(font_storage='lossless_shared_fft_dp9'if packed else'dedicated_ram9k',message_characters=32,period_pixels=1024,fft_font_sharing=packed,video_latency_clocks=21,source_ahead_pixels=5)
  require('.REGISTERED_RESIDENT_READY(TICKER_ENABLE)'in top,'resident readiness profile not selected by the production flag')
  require(top.count('.SOURCE_PROGRESS_AWARE(TICKER_ENABLE)')==1 and top.count('source_progress_mem<={source_progress_mem[1:0],player_progress[0]};')==1 and top.count('source_byte_progress=source_progress_mem[2]^source_progress_mem[1]')==1 and '.source_progress(source_byte_progress)'in top,'production accepted-byte progress path differs')
  new={'safevision/rtl/video/v3_scrolling_ticker.v','safevision/assets/fonts/v3_ticker16.mem','safevision/assets/fonts/v3_ticker16.provenance.json'}|{str(FLOW/n).replace('\\','/')for n in ('ticker_enable.v','base/v3_ticker16.mem','hd/v3_ticker16.mem')}
  new|={'safevision/assets/fonts/v3_spectrum_ticker.mem','safevision/assets/fonts/v3_spectrum_ticker.provenance.json','safevision/assets/fonts/v3_ticker_shared16.mem'}|{str(FLOW/n).replace('\\','/')for n in ('base/v3_spectrum_ticker.mem','hd/v3_spectrum_ticker.mem')}
+ if packed:new|={'safevision/assets/fonts/v3_spectrum_ticker32.mem','safevision/assets/fonts/v3_spectrum_ticker32.provenance.json','safevision/rtl/include/v3_ticker_packed32.vh','safevision/tools/build_ticker_shared32_lossless.py'}|{str(FLOW/n).replace('\\','/')for n in('base/v3_spectrum_ticker32.mem','hd/v3_spectrum_ticker32.mem')}
  require(set(old)<=set(sources)and set(sources)-set(old)==new,'unreviewed production dependency added/removed')
  changes={n for n,h in old.items()if sources[n]!=h}
  optional={str(FLOW/'v3_build_parameters_base.tcl').replace('\\','/')}
@@ -181,7 +219,7 @@ def audit(root,regression,ticker,board,controls):
   expected={'player/normalized_bmp$u_unpack/ramread0_syn_5':'X8Y18Z0','player/normalized_bmp$u_unpack/ramread0_syn_15':'X8Y18Z1','row_guard/ramread0_syn_6':'X8Y9Z0','row_guard/ramread0_syn_23':'X8Y9Z1','sink/u_fifo/fifo/ram_inst/ramread0_syn_6':'X8Y18Z3','sink/u_fifo/fifo/ram_inst/ramread0_syn_16':'X8Y18Z2'}
   require(locations==expected and not required_media_bram_locations(root,'hd'),'reviewed BASE six-RAM layout differs')
   production_profile['base_media_bram_locations']=locations
- require(len(sources)==217,'current physical inventory changed')
+ require(len(sources)==(223 if packed else 217),'current physical inventory changed')
  summary=read(regression/'summary.json');require(summary.get('complete')and summary.get('accepted'),'full native campaign incomplete/failed')
  expected_jobs={('legacy','a'),('legacy','b')}|{('positive',r['top'])for r in matrix['positive']if not r['legacy']}|{('negative',r['mutation'])for r in matrix['negative']}
  require({(r['kind'],r['name'])for r in summary['records']}==expected_jobs,'native campaign inventory differs')
@@ -287,8 +325,11 @@ def audit(root,regression,ticker,board,controls):
  wait_positive,wait_controls,wait_coverage=source_wait(root,controls.parent)
  additions+=[live_positive]+wait_positive
  require(len(additions)==12 and len({r['top']for r in additions})==12,'reviewed extended positive inventory changed')
- compatibility=dict(production_selected=False,scope='Alternate shared-font library parameters; the production local32 path uses a dedicated font ROM',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=217,production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=12,total_positive_tops=315,preserved_semantic_controls=221,added_semantic_controls=29,total_semantic_controls=250,positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ packed_controls=[];packed_proof=None
+ if packed:
+  extra,packed_controls,packed_proof=packed_font(root,controls.parent);additions+=extra
+ compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls),total_semantic_controls=250+len(packed_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)
