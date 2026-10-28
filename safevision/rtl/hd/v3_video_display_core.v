@@ -9,7 +9,7 @@ module v3_video_display_core #(
  parameter COMPACT_FONT_FILE="../../assets/fonts/font8x16_compact.mem",
  parameter STATUS_TEXT_FILE="../../assets/fonts/v3_status_text.mem",
  parameter integer PIXEL_HZ=HD?74250000:25175000,
- parameter integer EXTERNAL_CACHE_WRITE=0
+ parameter integer EXTERNAL_CACHE_WRITE=0,SHARED_TICKER=0
 )(
  input wire sys_clk,mem_clk,pixel_clk,sys_rst_n,mem_rst_n,pixel_rst_n,
  input wire[31:0] uptime_bcd,input wire wave_pcm_valid,input wire[23:0] wave_pcm_left,
@@ -25,7 +25,8 @@ module v3_video_display_core #(
  output wire[31:0] lookup_addr,input wire[31:0] lookup_crc,input wire lookup_valid,
  output wire[11:0] raw_x,raw_y,output wire raw_de,raw_hs,raw_vs,frame_start,
  output wire[11:0] x,y,output reg[23:0] rgb,output wire hs,vs,de,
- input wire cache_write_clk,cache_write_rst_n
+ input wire cache_write_clk,cache_write_rst_n,
+ input wire font_request,input wire[8:0] font_index,output wire[7:0] font_word
 );
  localparam integer CFG_W=HANDBOOK_PROFILE?99:96,DESC_W=HANDBOOK_PROFILE?26:24;
  localparam HA=HD?1280:640,HF=HD?110:16,HS=HD?40:96,HB=HD?220:48;
@@ -213,8 +214,9 @@ module v3_video_display_core #(
  wire frame_safe_raw,frame_safe_output;
  wire[15:0] osd_pixel4,em_pixel4,hud_pixel4,safe_pixel4;
  wire[7:0] osd_alpha4,em_alpha4,hud_alpha4;
- v3_status_layers #(.FLEX_SPECTRUM(FLEX_SPECTRUM),.USER_FEATURES(USER_FEATURES),.RASTER_PREDECODE(HD),.HD(HD),.HANDBOOK_PROFILE(HANDBOOK_PROFILE),.VOLUME_COLUMNS(VOLUME_COLUMNS),.VOLUME_SETTING(VOLUME_SETTING),.PIXEL_HZ(PIXEL_HZ),.PIPE_LATENCY(LATENCY),.FONT_FILE(FONT_FILE),
+ v3_status_layers #(.SHARED_TICKER(SHARED_TICKER),.FLEX_SPECTRUM(FLEX_SPECTRUM),.USER_FEATURES(USER_FEATURES),.RASTER_PREDECODE(HD),.HD(HD),.HANDBOOK_PROFILE(HANDBOOK_PROFILE),.VOLUME_COLUMNS(VOLUME_COLUMNS),.VOLUME_SETTING(VOLUME_SETTING),.PIXEL_HZ(PIXEL_HZ),.PIPE_LATENCY(LATENCY),.FONT_FILE(FONT_FILE),
   .COMPACT_FONT_FILE(COMPACT_FONT_FILE),.TEXT_FILE(STATUS_TEXT_FILE)) graphics(
+  .font_request(font_request),.font_index(font_index),.font_word(font_word),
   .pixel_clk(pixel_clk),.pixel_rst_n(pixel_rst_n),.raw_x(raw_x),.raw_y(raw_y),.raw_de(raw_de),
   .frame_start(frame_start),.cfg_data(cfg),.cache_valid(slots),.underflows(pixel_underflows),
   .active_slot(current),.generation(gen),.busy(busy),

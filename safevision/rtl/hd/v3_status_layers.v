@@ -6,7 +6,7 @@
 // are blank; rows 1/2,...,13/14 are identical. Both ROMs fit one RAM9K tile.
 module v3_status_layers #(
  parameter integer HD=0,HANDBOOK_PROFILE=0,USER_FEATURES=0,FLEX_SPECTRUM=0,VOLUME_COLUMNS=0,VOLUME_SETTING=0,PIXEL_HZ=HD?74250000:25175000,PIPE_LATENCY=21,
- parameter integer RASTER_PREDECODE=0,
+ parameter integer RASTER_PREDECODE=0,SHARED_TICKER=0,
  parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
  parameter COMPACT_FONT_FILE="../../assets/fonts/font8x16_compact.mem",
  parameter USER_TEXT_FILE="v3_four_features_text.mem",
@@ -19,7 +19,8 @@ module v3_status_layers #(
  input wire[31:0] underflows,input wire[1:0] active_slot,
  input wire[7:0] generation,input wire busy,safety_active,
  output wire[15:0] osd_rgb565,emergency_rgb565,hud_rgb565,safe_rgb565,
- output wire[7:0] osd_alpha,emergency_alpha,hud_alpha
+ output wire[7:0] osd_alpha,emergency_alpha,hud_alpha,
+ input wire font_request,input wire[8:0] font_index,output wire[7:0] font_word
 );
  localparam integer DESCRIPTOR_TEXT=USER_FEATURES&&HANDBOOK_PROFILE;
  localparam integer WIDTH=HD?1280:640,HEIGHT=HD?720:480;
@@ -517,16 +518,18 @@ module v3_status_layers #(
  wire wave_trace,wave_grid;wire[15:0] wave_colour;
  wire spectrum_ready;wire[15:0] spectrum_sequence;
  generate if(USER_FEATURES&&FLEX_SPECTRUM)begin:spectrum
-  v3_audio_spectrum #(.WIDTH(WIDTH),.HEIGHT(HEIGHT)) analyzer(
+  v3_audio_spectrum #(.SHARED_TICKER(SHARED_TICKER),.WIDTH(WIDTH),.HEIGHT(HEIGHT)) analyzer(
+   .font_request(font_request),.font_index(font_index),.font_word(font_word),
    .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(frame_start),.pcm_valid(wave_pcm_valid),.pcm_left(wave_pcm_left),
    .x(raw_x),.y(raw_y),.de(raw_de),.trace_pixel(wave_trace),.grid_pixel(wave_grid),.colour(wave_colour),.ready(spectrum_ready),.spectrum_sequence(spectrum_sequence),.dominant_bin(),.peak_height());
  end else if(USER_FEATURES)begin:waveform
+  assign font_word=0;
   assign spectrum_ready=0;assign spectrum_sequence=0;
   assign wave_colour=16'h05bf;
   v3_pcm_waveform #(.WIDTH(WIDTH),.HEIGHT(HEIGHT)) scope(
    .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(frame_start),.pcm_valid(wave_pcm_valid),.pcm_left(wave_pcm_left),
    .x(raw_x),.y(raw_y),.de(raw_de),.trace_pixel(wave_trace),.grid_pixel(wave_grid),.ready());
- end else begin:no_waveform assign spectrum_ready=0;assign spectrum_sequence=0;assign wave_trace=0;assign wave_grid=0;assign wave_colour=0;end endgenerate
+ end else begin:no_waveform assign font_word=0;assign spectrum_ready=0;assign spectrum_sequence=0;assign wave_trace=0;assign wave_grid=0;assign wave_colour=0;end endgenerate
  reg[2:0] wave_trace_pipe,wave_grid_pipe;reg[15:0] wave_colour_pipe[0:2];integer spectrum_ci;
  always @(posedge pixel_clk or negedge pixel_rst_n)
   if(!pixel_rst_n)for(spectrum_ci=0;spectrum_ci<3;spectrum_ci=spectrum_ci+1)wave_colour_pipe[spectrum_ci]<=0;

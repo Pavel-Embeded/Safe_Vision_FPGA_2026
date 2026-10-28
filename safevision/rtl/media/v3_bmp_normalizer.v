@@ -57,6 +57,11 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
  assign dbg_state=state;
  wire[15:0] abs_height=top_down?(~height+16'd1):height;
  wire[SB+9:0] width480=width[SB-1:0]*10'd480,height640=abs_height[SB-1:0]*10'd640;
+ // All accepted dimensions are positive. Cancel the common factor160:
+ // 480*W >=640*H iff3*W >=4*H. SB+2 bits cover both products exactly,
+ // including FLEX H=16384 ->65536. Keep full numerators for the DDA.
+ wire[SB+1:0] shape_width3={1'b0,width[SB-1:0],1'b0}+{2'b0,width[SB-1:0]};
+ wire shape_wide=shape_width3>={abs_height[SB-1:0],2'b0};
  task begin_input_row;begin cols_left<=w;phase<=0;padding_left<=w[1:0];skip_x<=0;x_error<=0;store_x<=0;line_full<=0;end endtask
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
@@ -75,10 +80,10 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
      if(width==0||width>(FLEX_PIXELS?16384:1920)||abs_height==0||abs_height>(FLEX_PIXELS?16384:1080))begin
       error<=1;err_code<=`ERR_MEDIA_INVALID;err_detail<=`DET_BMP_SIZE;done<=1;state<=FAILED;
      end else begin
-      w<=width[SB-1:0];h<=abs_height[SB-1:0];cols_left<=width[SB-1:0];padding_left<=width[1:0];orientation<=top_down;wide<=width480>=height640;
-      {y_error,x_error}<=width480>=height640?height640:width480;
-      skip_x<=FLEX_PIXELS?0:(width480>=height640?width[SB-1:0]:abs_height[SB-1:0]);store_x<=0;
-      src_row<=FLEX_PIXELS?(width480>=height640?width[SB-1:0]:abs_height[SB-1:0]):0;skip_y<=0;y_steps<=0;line_full<=0;
+      w<=width[SB-1:0];h<=abs_height[SB-1:0];cols_left<=width[SB-1:0];padding_left<=width[1:0];orientation<=top_down;wide<=shape_wide;
+      {y_error,x_error}<=shape_wide?height640:width480;
+      skip_x<=FLEX_PIXELS?0:(shape_wide?width[SB-1:0]:abs_height[SB-1:0]);store_x<=0;
+      src_row<=FLEX_PIXELS?(shape_wide?width[SB-1:0]:abs_height[SB-1:0]):0;skip_y<=0;y_steps<=0;line_full<=0;
       store_x<=0;out_x<=0;out_row<=0;phase<=0;after_row<=0;eof_seen<=0;have_row<=0;state<=GEOM;
      end
     end
