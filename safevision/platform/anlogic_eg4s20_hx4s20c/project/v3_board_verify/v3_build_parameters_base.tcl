@@ -19,4 +19,4 @@ set_param place opt_timing off
 set_param route post_route_opt ultra
 
 # Pack small control sets to reduce physical control/routing pressure.
-set_param rtl min_control_set 2
+set_param rtl min_control_set 4

@@ -980,7 +980,7 @@
         <Run Name="syn_1" Type="Synthesis" ConstraintSet="constraint_1" Description="" Active="true">
             <Strategy Name="Default_Synthesis_Strategy">
                 <RtlProperty>
-                    <min_control_set>2</min_control_set>
+                    <min_control_set>4</min_control_set>
                     <min_ripple_len>32</min_ripple_len>
                     <infer_fsm>off</infer_fsm>
                 </RtlProperty>
