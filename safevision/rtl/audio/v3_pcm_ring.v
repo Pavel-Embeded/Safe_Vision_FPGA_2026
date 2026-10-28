@@ -41,10 +41,10 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800,DIRECT_POINTER_COMP
    reg[PTR_W:0] value;
    always @(posedge clk or negedge rst_n)
     if(!rst_n)value<=0;
-    else if(owner==slot_index)begin
-     if(take_read)value<=value-1'b1;
-     else if(finish_write)value<=value+1'b1;
-    end
+    else if(owner==slot_index && (take_read || finish_write))
+     // take_read implies reading=1; finish_write implies reading=0.
+     // The two events are exclusive, so this is one signed +/-1 adder.
+     value<=value+{{PTR_W{reading}},1'b1};
    assign count[slot_index]=value;
   end else begin:arithmetic_level
    (* use_ripple=1 *) wire[PTR_W:0] occupancy=wp[slot_index]-rp[slot_index];
