@@ -34,8 +34,8 @@ SafeVision 在康芯 HX4S20C 开发板上运行，使用安路 EG4S20BG256。FPG
 | 串口 | 原始记录中的 5016 帧 ACK 独立核对通过 |
 | 实物 | 用户确认图像、声音、频谱、实体菜单和真实掉电重启正常 |
 
-冷启动依据为 [用户实物反馈](evidence/board/cold_boot_261025_user_report.json)，测试次数和现场串口日志未提供。2026-10-23 冻结包保留当时的待验状态，后续状态以 [验收更新](evidence/board/acceptance_updates.json) 为准。
+冷启动依据为 [用户实物反馈](evidence/board/cold_boot_261025_user_report.json)，测试次数和现场串口日志未提供。2026-10-23 冻结包保留发布当天的原始验收字段，后续状态以 [验收更新](evidence/board/acceptance_updates.json) 为准。
 
-当前批准范围为 BASE。长期运行、多 TF 卡和多显示器兼容性继续按具体测试记录验收。自动感光、图片内容自动亮度和主峰频率数字显示尚未进入当前位流。厂商加密 IP 的接口验证、原生时序与实际板测分别记录。
+当前批准范围为 BASE。亮度由按键或串口设置，AUTO 控制图片轮播。连续运行、TF 卡与显示器的兼容性按具体测试组合记录。厂商加密 IP 的接口验证、原生时序与实际板测分别记录。
 
 开发要求见 [CONTRIBUTING](CONTRIBUTING.md)，依赖来源见 [第三方说明](THIRD_PARTY_NOTICES.md)。[GitHub Actions](https://github.com/Pavel-Embeded/Safe_Vision_FPGA_2026/actions/workflows/base-qualification.yml) 复核源码及已有证据，不执行实体板卡测试。

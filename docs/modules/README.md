@@ -30,6 +30,7 @@
 | `video/v3_presentation_ctrl` | 当前/目标槽、Fade alpha、generation 和提交事件 | 32 帧渐变、音频 ready、取消、超时和帧边界 |
 | `video/video_compositor`、`v3_status_layers` | 颜色处理及背景、OSD、警告、HUD 合成 | Alpha 舍入、调色板、文字与同步标签；最终像素路径 21 拍 |
 | `video/v3_audio_spectrum` | 实际左声道 PCM 产生 512 点 FFT 和 32 频段 | 去均值、Hann、FFT、频段与峰值、帧边界双银行发布 |
+| [`video/v3_scrolling_ticker`](scrolling_ticker.md) | 中文安全提示、底条和帧边界位置更新 | 全部位置、独立字模、21 拍对齐、裁剪、诊断和媒体复位隔离 |
 | `audio/v3_audio_system`、`v3_pcm_ring` | WAV 描述符、PCM 环缓存、48 kHz 调度、音量和报警 | 槽标签、声道、回绕、缺音频回退及媒体恢复 |
 | `control/v3_user_controls` | 按键/UART 设置、轮播、菜单和配置回执 | 消抖、组合/长短按、范围、计时和配置保留 |
 | `v3_supervisor`、`media_recovery_ctrl`、`safety/fault_manager` | 错误、心跳、欠载和进展驱动安全选择及最多三次恢复 | 错误并发、时间戳、无进展超时、恢复失败与 SAFE |

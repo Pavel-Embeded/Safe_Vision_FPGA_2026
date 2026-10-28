@@ -8,7 +8,7 @@ $raw=[IO.File]::Open((Join-Path $OutDir 'rx.bin'),[IO.FileMode]::CreateNew)
 $sp=New-Object IO.Ports.SerialPort($Port,115200,([IO.Ports.Parity]::None),8,([IO.Ports.StopBits]::One))
 $sp.DtrEnable=$false;$sp.RtsEnable=$false;$sp.Handshake=[IO.Ports.Handshake]::None;$sp.ReadTimeout=100;$sp.WriteTimeout=1000
 $timer=[Diagnostics.Stopwatch]::StartNew();$script:response='';$script:exitCode=1
-function Log([hashtable]$fields){$fields.elapsed_ms=$timer.ElapsedMilliseconds;$fields.utc=[DateTime]::UtcNow.ToString('o');$log.WriteLine(($fields|ConvertTo-Json -Compress));$log.Flush()}
+function Log([hashtable]$fields){$fields.elapsed_ms=$timer.ElapsedMilliseconds;$script:loggedAtMs=$fields.elapsed_ms;$fields.utc=[DateTime]::UtcNow.ToString('o');$log.WriteLine(($fields|ConvertTo-Json -Compress));$log.Flush()}
 function ReadRx {
  while($sp.BytesToRead -gt 0){
   $b=New-Object byte[] ([Math]::Min($sp.BytesToRead,4096));$n=$sp.Read($b,0,$b.Length)
@@ -21,7 +21,7 @@ function Send([string]$body){
  ReadRx;$script:response=''
  $sum=0;foreach($b in [Text.Encoding]::ASCII.GetBytes($body)){$sum=$sum -bxor $b}
  $f='$'+$body+('*{0:X2}' -f $sum)+"`r`n";$b=[Text.Encoding]::ASCII.GetBytes($f)
- Log @{kind='tx';body=$body;hex=[BitConverter]::ToString($b).Replace('-','')};$sp.Write($b,0,$b.Length)
+ Log @{kind='tx';body=$body;hex=[BitConverter]::ToString($b).Replace('-','')};$script:lastTxMs=$script:loggedAtMs;$sp.Write($b,0,$b.Length)
  $w=[Diagnostics.Stopwatch]::StartNew();$matchesFound=@()
  while($w.ElapsedMilliseconds -lt 2000){
   ReadRx;$matchesFound=@([regex]::Matches($script:response,'\$(C:ACK=([0-9A-F]{2}),([0-9A-F]{8}))\*([0-9A-F]{2})\r\n'))
@@ -52,27 +52,34 @@ function Defaults {
  foreach($pair in @(@('A:BRTPC',80),@('A:CONTRAST',128),@('A:ALPHA',160),@('A:SCALER',0),@('A:SCALESEL',0),@('A:FADE',1),@('C:VOL',70),@('C:PERIOD',5),@('C:FIELD',0),@('C:MENU',0),@('C:AUTO',1))){$null=Send ($pair[0]+'='+$pair[1])}
 }
 function Ticker {
- $position=Send 'B:DIAG=101';$count=Send 'B:DIAG=102'
- if(($position -band 0xFFFFF000) -ne 0x544B1000 -or ($position -band 0xFFF) -ge 848){throw 'Invalid ticker signature/position'}
- $frame=$count -band 255;$loop=($count -shr 16) -band 255
- Log @{kind='ticker';position=($position -band 4095);frames=$frame;loops=$loop;sample_ms=$timer.ElapsedMilliseconds}
- return @($frame,$loop,($position -band 4095))
+ $position=Send 'B:DIAG=101'
+ if(($position -shr 12) -ne 0x544B1 -or ($position -band 0xFFF) -ge 1024){throw 'Invalid ticker signature/position'}
+ $sampleMs=$timer.ElapsedMilliseconds;$pos=$position -band 4095
+ if($null -ne $script:lastTickMs){
+  $dt=$sampleMs-$script:lastTickMs
+  $expectedPosition=([int][Math]::Floor($dt*0.0299823633))%1024
+  $actualPosition=($pos-$script:lastTickPosition+1024)%1024
+  $positionError=($actualPosition-$expectedPosition+1536)%1024-512
+  if([Math]::Abs($positionError) -gt 4){throw 'Ticker stopped, reset unexpectedly or ran at the wrong cadence'}
+  Log @{kind='ticker_rate';interval_ms=$dt;expected_pixels=$expectedPosition;actual_pixels=$actualPosition;position_error=$positionError}
+ }
+ $script:lastTickMs=$sampleMs;$script:lastTickPosition=$pos
+ Log @{kind='ticker';position=$pos;sample_ms=$sampleMs;period_pixels=1024}
+ return $pos
 }
-$matched=$false;$restored=$false;$latencies=New-Object 'System.Collections.Generic.List[int]'
+$matched=$false;$restored=$false;$script:lastTickMs=$null;$latencies=New-Object 'System.Collections.Generic.List[int]'
 try {
  $sp.Open();Log @{kind='opened';port=$Port;baud=115200;expected_id='26102801'};PauseRx 100
  if((Send 'B:DIAG=0') -ne 0x26102801){throw 'Unexpected firmware; no writes sent'}
  $matched=$true;Healthy
  $first=Ticker;PauseRx 2100;$second=Ticker
- $df=($second[0]-$first[0]+256)%256
- if($df -lt 100 -or $df -gt 150){throw 'Ticker frame counter stalled or wrong rate'}
- $dp=($second[2]-$first[2]+848)%848
+ $dp=($second-$first+1024)%1024
  if($dp -lt 50 -or $dp -gt 75){throw 'Ticker position stalled or wrong speed'}
- Log @{kind='ticker_cadence';frames=$df;pixels=$dp;accepted=$true}
+ Log @{kind='ticker_cadence';pixels=$dp;accepted=$true}
  $null=Send 'C:AUTO=0';PauseRx 1500
  $slot=Send 'B:SLOT?';$gen=Send 'B:GEN?'
  for($n=0;$n -lt $ManualTransitions;$n++){
-  $request=$timer.ElapsedMilliseconds;$null=Send 'C:NEXT=1';PauseRx 1000
+  $null=Send 'C:NEXT=1';$request=$script:lastTxMs;PauseRx 1000
   $nowSlot=Send 'B:SLOT?';$nowGen=Send 'B:GEN?';$lat=Send 'B:LATENCY?'
   if($nowSlot -ne (($slot+1)%4) -or $nowGen -ne (($gen+1)%256)){throw 'Accepted NEXT did not commit exactly once'}
   if($lat -eq 65535){throw 'NEXT timing canceled; stale latency is excluded'}
@@ -82,7 +89,7 @@ try {
  }
  Healthy
  for($n=0;$n -lt $Recoveries;$n++){
-  $before=Ticker;$request=$timer.ElapsedMilliseconds;$null=Send 'C:RECOVER=1'
+  $before=Ticker;$null=Send 'C:RECOVER=1';$request=$script:lastTxMs
   $busy=$false;$cleared=$false;$done=$false
   while($timer.ElapsedMilliseconds-$request -lt 30000){
    $state=Send 'B:RECOVERY?';$cache=Send 'B:CACHE?';$ready=Send 'B:STATUS?'
@@ -92,9 +99,9 @@ try {
    PauseRx 25
   }
   if(-not $done){throw 'Recovery completion/cache transition missing'}
-  $recoveryMs=$timer.ElapsedMilliseconds-$request;Healthy;$after=Ticker
-  if($after[0] -eq $before[0] -and $after[2] -eq $before[2]){throw 'Ticker stalled across media recovery'}
-  Log @{kind='recovery';index=$n;request_ms=$request;completed_ms=$timer.ElapsedMilliseconds;duration_ms=$recoveryMs;busy=$busy;cache_clear=$cleared;defaults_reset=$false}
+  $completedMs=$timer.ElapsedMilliseconds;$recoveryMs=$completedMs-$request;Healthy;$after=Ticker
+  if($after -eq $before){throw 'Ticker stalled across media recovery'}
+  Log @{kind='recovery';index=$n;request_ms=$request;completed_ms=$completedMs;duration_ms=$recoveryMs;busy=$busy;cache_clear=$cleared;defaults_reset=$false}
   PauseRx 500
  }
  Defaults;$restored=$true;PauseRx 1000;Healthy
@@ -109,7 +116,10 @@ try {
  }
  $duration=$timer.ElapsedMilliseconds-$monitorStart
  $sorted=@($latencies|Sort-Object);$stats=@{}
- if($sorted.Count){$stats=@{count=$sorted.Count;minimum_ms=$sorted[0];median_ms=$sorted[[int][Math]::Floor(($sorted.Count-1)/2)];p95_ms=$sorted[[int][Math]::Ceiling(.95*$sorted.Count)-1];maximum_ms=$sorted[-1]}}
+ if($sorted.Count){
+  $lo=[int][Math]::Floor(($sorted.Count-1)/2);$hi=[int][Math]::Floor($sorted.Count/2)
+  $stats=@{count=$sorted.Count;minimum_ms=$sorted[0];median_ms=($sorted[$lo]+$sorted[$hi])/2.0;p95_ms=$sorted[[int][Math]::Ceiling(.95*$sorted.Count)-1];maximum_ms=$sorted[-1]}
+ }
  Log @{kind='complete';manual_commits=$ManualTransitions;recoveries=$Recoveries;continuous_monitor_ms=$duration;requested_monitor_seconds=$DurationSeconds;observations=$observations;latency=$stats;defaults_restored=$true;physical_display_verified=$false;flash_written=$false}
  @{accepted=$true;manual_commits=$ManualTransitions;recoveries=$Recoveries;continuous_monitor_ms=$duration;latency=$stats;physical_display_verified=$false;flash_written=$false}|ConvertTo-Json -Depth 5|Set-Content -LiteralPath (Join-Path $OutDir 'summary.json') -Encoding utf8
  $script:exitCode=0;Write-Output 'TICKER BOARD REGRESSION PASS'
