@@ -39,6 +39,7 @@ module bmp_frame_sink #(
     //   SPI 分频调到最快档（236 ms < 400 ms）—— 仿真跑得快反而掩盖了真问题。
     parameter [31:0]  WRITE_TO_N  = 32'd50_000_000  // 400 ms：**无进展**才算超时
     ,parameter integer REQUIRE_WRITE_DRAIN = 0, REQUIRE_READBACK = 0, RESIDENT_LOAD = 0
+    ,parameter integer SOURCE_PROGRESS_AWARE = 0
 )(
     input  wire        clk,            // mem_clk 125 MHz（读侧 / 帧控制器）
     input  wire        rst_n,          // mem 域低有效
@@ -76,7 +77,8 @@ module bmp_frame_sink #(
     output reg  [15:0] frame_cnt,
     output reg  [18:0] px_written,
     input wire write_drained,verify_done,verify_pass,
-    output wire source_begin,output wire [1:0] source_slot,output wire source_top_down
+    output wire source_begin,output wire [1:0] source_slot,output wire source_top_down,
+    input wire source_progress
 );
 
     // ========================================================================
@@ -175,6 +177,13 @@ module bmp_frame_sink #(
     wire        sk_load  = fifo_rd_valid && (!sk_valid || sk_ready);
     wire        br_din_valid = sk_valid && (state_o == S_WRITE);
 
+    // Retain a real byte event if it coincides with healthy adapter activity.
+    // It can extend a source wait only after all pending pixels/writes drain.
+    reg source_progress_pending;
+    wire source_wait_credit=SOURCE_PROGRESS_AWARE && source_progress_pending &&
+        state_o==S_WRITE && fa_sync[2] && write_drained &&
+        !wr_req && !sk_valid && fifo_empty;
+
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             sk_data <= 16'd0; sk_valid <= 1'b0;
@@ -189,7 +198,8 @@ module bmp_frame_sink #(
 
     // 桥：行序用**实时**同步值（见下），像素从 skid 取
     bmp_frame_write_bridge #(
-        .GAP_TIMEOUT(GAP_TIMEOUT),.EXACT_SAMPLE_COMPARE(RESIDENT_LOAD)
+        .GAP_TIMEOUT(GAP_TIMEOUT),.EXACT_SAMPLE_COMPARE(RESIDENT_LOAD),
+        .SOURCE_PROGRESS_AWARE(SOURCE_PROGRESS_AWARE)
     ) u_bridge (
         .clk(clk), .rst_n(rst_n && !(RESIDENT_LOAD && state_o==S_ERROR)), .start(br_start), .top_down(td_sync[1]),
         .slot_sel(slot_lat), .slot_base(slot_base),
@@ -199,7 +209,8 @@ module bmp_frame_sink #(
         .wr_ready(wr_ready),
         .wr_done(br_done), .slot_valid(br_slot_valid),
         .crc_ok(br_crc_ok), .crc_value(br_crc_value), .px_cnt(br_px_cnt),
-        .wr_error(br_err), .err_code(br_ec), .err_detail(br_ed)
+        .wr_error(br_err), .err_code(br_ec), .err_detail(br_ed),
+        .source_progress(source_wait_credit)
     );
 
     // ★ 弹出时机：把 FIFO 的数据取进 skid 那一拍弹（skid 空着，或本拍正被桥取走）；
@@ -213,6 +224,13 @@ module bmp_frame_sink #(
     reg        swap_seen;
     reg [2:0]  empty_settle;      // FIFO 报空后再稳几拍才算真空
     reg [18:0] px_d;              // 上一拍的像素计数（判"有没有进展"）
+
+    always @(posedge clk or negedge rst_n)begin
+        if(!rst_n)source_progress_pending<=0;
+        else if(!SOURCE_PROGRESS_AWARE || state_o!=S_WRITE || !fa_sync[2])source_progress_pending<=0;
+        else if(source_wait_credit || br_px_cnt!=px_d || (wr_req && wr_ready))source_progress_pending<=source_progress;
+        else if(source_progress)source_progress_pending<=1;
+    end
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
@@ -268,6 +286,7 @@ module bmp_frame_sink #(
                     // ★ 超时按**无进展**计：桥这一拍还在推进像素（px_cnt 变了）就重新计时。
                     //   按"总时长"计会让真实板级每帧都在 400 ms 被掐断（一帧要 ~590 ms）✗
                     if (br_px_cnt != px_d) to_cnt <= 32'd0;
+                    else if (source_wait_credit) to_cnt <= 32'd0;
                     else                   to_cnt <= to_cnt + 32'd1;
 
                     if (br_done) begin
@@ -288,6 +307,9 @@ module bmp_frame_sink #(
                         err_detail <= br_ed;
                         empty_settle<=0;
                         state_o    <= S_ERROR;
+                    end else if (SOURCE_PROGRESS_AWARE && (source_wait_credit || br_px_cnt!=px_d)) begin
+                        // The qualified progress above resets this deadline on
+                        // this edge. Completed frames and errors keep priority.
                     end else if (to_cnt >= WRITE_TO_N) begin
                         last_frame_ok<= 1'b0;
                         err_code   <= MY_TO_FRAME;

@@ -59,7 +59,8 @@ module frame_writer #(
     parameter [31:0] GAP_TIMEOUT     = 32'd512,         // clocks; override for SD streaming latency
     parameter [31:0] SLOT_SPAN       = `SV_IMG_ALIGN_BYTES,     // 单槽预留（§5 地址表）
     parameter [31:0] MEM_VISIBLE     = `SV_MEM_VISIBLE_BYTES,    // SDRAM 对外可见容量 4 MiB（§3.4）
-    parameter integer EXACT_SAMPLE_COMPARE=0
+    parameter integer EXACT_SAMPLE_COMPARE=0,
+    parameter integer SOURCE_PROGRESS_AWARE=0
 )(
     input  wire        clk,             // mem_clk
     input  wire        rst_n,
@@ -89,7 +90,8 @@ module frame_writer #(
     output reg  [18:0] px_cnt,          // 应等于 307200
     output reg         wr_error,
     output reg  [7:0]  err_code,        // 对外主码
-    output reg  [7:0]  err_detail       // B 链内部细分码
+    output reg  [7:0]  err_detail,      // B 链内部细分码
+    input wire source_progress         // qualified mem-clock source-wait credit
 );
 
     // ------------------------------------------------------------------------
@@ -369,6 +371,10 @@ module frame_writer #(
                     // ---- (4) 帧内无进展超时（提前 EOF / 上游断流）----
                     else if (!frame_full) begin
                         if (px_accept || wr_accept) begin
+                            gap_cnt <= 16'd0;
+                        end else if (SOURCE_PROGRESS_AWARE && source_progress && !wr_pending && !din_valid) begin
+                            // The sink qualifies this credit only after its FIFO,
+                            // skid and physical write tail have drained.
                             gap_cnt <= 16'd0;
                         end else if (gap_cnt >= GAP_TIMEOUT) begin
                             wr_error   <= 1'b1;

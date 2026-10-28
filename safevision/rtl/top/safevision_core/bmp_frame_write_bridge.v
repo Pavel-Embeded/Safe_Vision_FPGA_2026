@@ -7,7 +7,8 @@
 // 12.5M clocks = 100ms at 125MHz; choose an explicit bound for other rates.
 module bmp_frame_write_bridge #(
     parameter [31:0] GAP_TIMEOUT=32'd12_500_000,
-    parameter integer EXACT_SAMPLE_COMPARE=0
+    parameter integer EXACT_SAMPLE_COMPARE=0,
+    parameter integer SOURCE_PROGRESS_AWARE=0
 )(
     input wire clk,rst_n,start,top_down,input wire [1:0] slot_sel,
     input wire [31:0] slot_base,input wire [15:0] din,input wire din_valid,
@@ -15,7 +16,8 @@ module bmp_frame_write_bridge #(
     output wire [15:0] wr_len,input wire wr_ready,
     output wire wr_done,output wire [3:0] slot_valid,output wire crc_ok,
     output wire [15:0] crc_value,output wire [18:0] px_cnt,
-    output wire wr_error,output wire [7:0] err_code,err_detail
+    output wire wr_error,output wire [7:0] err_code,err_detail,
+    input wire source_progress
 );
     reg [31:0] base;
     reg [9:0] column,row;
@@ -53,10 +55,12 @@ module bmp_frame_write_bridge #(
     end
     frame_address_gen address(.slot_base(base),.x(column),.y(row),
       .byte_addr(address_next),.word_addr(),.word_phase());
-    frame_writer #(.GAP_TIMEOUT(GAP_TIMEOUT),.EXACT_SAMPLE_COMPARE(EXACT_SAMPLE_COMPARE)) writer(
+    frame_writer #(.GAP_TIMEOUT(GAP_TIMEOUT),.EXACT_SAMPLE_COMPARE(EXACT_SAMPLE_COMPARE),
+      .SOURCE_PROGRESS_AWARE(SOURCE_PROGRESS_AWARE)) writer(
       .clk(clk),.rst_n(rst_n),.start(accept_start),.slot_sel(slot_sel),.slot_base(slot_base),
       .din(din),.din_valid(din_valid),.din_ready(din_ready),.wr_req(wr_req),
       .wr_addr(),.wr_data(wr_data),.wr_len(wr_len),.wr_ready(wr_ready),
       .wr_done(wr_done),.slot_valid(slot_valid),.crc_ok(crc_ok),.crc_value(crc_value),
-      .px_cnt(px_cnt),.wr_error(wr_error),.err_code(err_code),.err_detail(err_detail));
+      .px_cnt(px_cnt),.wr_error(wr_error),.err_code(err_code),.err_detail(err_detail),
+      .source_progress(source_progress));
 endmodule

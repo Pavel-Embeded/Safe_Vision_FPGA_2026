@@ -134,12 +134,21 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  wire writer_req,writer_ack,writer_busy;wire[31:0] writer_addr,writer_data;wire[15:0] writer_len;
  wire[3:0] sink_state;wire[7:0] sink_code;wire source_begin,source_top_down;wire[1:0] source_slot;
  wire guard_done,guard_pass,guard_fault;wire[3:0] approved;
+ // REF50 increments this token at most once per edge. Related MEM50 samples
+ // every edge; all three capture flops retain ordinary setup/hold analysis.
+ reg[2:0] source_progress_mem;
+ always @(posedge mem_clk or negedge mem_media_rst_n)
+ if(!mem_media_rst_n)source_progress_mem<=0;
+ else source_progress_mem<={source_progress_mem[1:0],player_progress[0]};
+ wire source_byte_progress=source_progress_mem[2]^source_progress_mem[1];
  wire writer_accepted=writer_busy && mem_req && mem_wr && mem_ready;
  wire write_drained=adapter_idle && !writer_busy;
  bmp_frame_sink #(.FIFO_AW(8),.REQUIRE_WRITE_DRAIN(1),.REQUIRE_READBACK(1),.RESIDENT_LOAD(1),
+ .SOURCE_PROGRESS_AWARE(TICKER_ENABLE),
  // REF reader permits 200ms token waits, including FAT reads between image
  // sectors. A 4ms pixel timeout rejected those legal stalls. Keep a bounded
- // 500ms inactivity limit, consistent with WRITE_TO_N and the SYS watchdog.
+ // Raw accepted-byte progress extends only an empty, drained source wait.
+ // Pending writes, physical drain and readback retain their 500ms deadlines.
  .GAP_TIMEOUT(25000000),.WRITE_TO_N(25000000),.SWAP_TO_N(5000000)) sink(
  .clk(mem_clk),.rst_n(mem_media_rst_n),.wr_clk(clk),.px_word(px_word),.px_word_valid(px_valid),
  .px_word_ready(px_ready),.frame_active(frame_active),.top_down(top_down),.slot(load_slot),
@@ -148,7 +157,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  .swap_toggle(),.swap_slot(),.swap_generation(),.swap_crc_ok(),.swap_busy(1'b0),
  .state_o(sink_state),.err_code(sink_code),.err_detail(),.frame_cnt(),.px_written(),
  .write_drained(write_drained),.verify_done(guard_done),.verify_pass(guard_pass),
- .source_begin(source_begin),.source_slot(source_slot),.source_top_down(source_top_down));
+ .source_begin(source_begin),.source_slot(source_slot),.source_top_down(source_top_down),
+ .source_progress(source_byte_progress));
  reg verify_sent;wire verify_start=sink_state==4 && write_drained && !verify_sent;
  always @(posedge mem_clk or negedge mem_media_rst_n)
  if(!mem_media_rst_n)verify_sent<=0;else if(source_begin)verify_sent<=0;else if(verify_start)verify_sent<=1;

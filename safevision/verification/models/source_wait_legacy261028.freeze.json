@@ -1,0 +1,31 @@
+{
+  "records": [
+    {
+      "module": "frame_writer",
+      "reference_module": "v3_frame_writer_before_source_wait261028",
+      "source_commit": "2b734a27f213b8b28e7daf832a2c7d2a413b30e3",
+      "source_path": "safevision/rtl/memory/frame_writer.v",
+      "reference_path": "safevision/verification/models/v3_frame_writer_before_source_wait261028.sv",
+      "original_sha256": "98982e6a361feacb42a9417f0bdfc3a97dd9d106e3a764660edf58c920587964",
+      "reference_sha256": "f21e4294a7bea5b8cbaf4b5ac7deb290b66b584a71b1af720d75f9db757924b3",
+      "namespace_only": [
+        "module frame_writer #(",
+        "module v3_frame_writer_before_source_wait261028 #("
+      ]
+    },
+    {
+      "module": "bmp_frame_sink",
+      "reference_module": "v3_frame_sink_before_source_wait261028",
+      "source_commit": "2b734a27f213b8b28e7daf832a2c7d2a413b30e3",
+      "source_path": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+      "reference_path": "safevision/verification/models/v3_frame_sink_before_source_wait261028.sv",
+      "original_sha256": "326fdf53c66a42a33f0412433f234891a2c52d42e76391706866582e062ae456",
+      "reference_sha256": "d7cde7375960ce0ba62b5528a661ac9f4640bbf50f536cd9d4f89a431a67c0b9",
+      "namespace_only": [
+        "module bmp_frame_sink #(",
+        "module v3_frame_sink_before_source_wait261028 #("
+      ]
+    }
+  ],
+  "scope": "Exact Git blobs before source-wait support; only module declarations renamed"
+}
