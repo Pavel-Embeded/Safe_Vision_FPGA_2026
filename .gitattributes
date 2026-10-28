@@ -6219,3 +6219,5 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/assets/fonts/v3_spectrum_ticker32.* -text
 
 /safevision/rtl/include/v3_ticker_byte32.vh -text
+
+/safevision/verification/models/v3_pcm_ring_frozen_pointer.* -text

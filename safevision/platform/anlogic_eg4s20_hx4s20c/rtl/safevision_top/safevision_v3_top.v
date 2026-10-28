@@ -368,7 +368,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  if(audio_commit_valid && audio_commit_ready)audio_commit_valid<=0;
  if(frame_commit)begin audio_commit_valid<=1;audio_commit_slot<=active_slot;audio_commit_gen<=generation;end
  end end
- v3_audio_system #(.PREINDEXED(1),.EXTERNAL_SERVICE(1),.MEDIA_RESET_INCLUDES_GLOBAL(1),.HANDBOOK_PROFILE(1)) audio(.external_service_ready(fs_service_ready),.core_cmd(fs_core_cmd),.core_rsp(fs_core_rsp),
+ v3_audio_system #(.DIRECT_RING_COMPARE(TICKER_ENABLE),.PREINDEXED(1),.EXTERNAL_SERVICE(1),.MEDIA_RESET_INCLUDES_GLOBAL(1),.HANDBOOK_PROFILE(1)) audio(.external_service_ready(fs_service_ready),.core_cmd(fs_core_cmd),.core_rsp(fs_core_rsp),
  .media_descriptor_valid(media_descriptor_valid),.media_descriptor_ready(media_descriptor_ready),
  .media_descriptor_slot(media_descriptor_slot),.media_descriptor(media_descriptor),.media_descriptor_found(media_descriptor_found),
  .ref_clk(clk),.mem_clk(mem_clk),.audio_clk(audio_clk),.pixel_clk(pixel_clk),.sys_clk(sys_clk),

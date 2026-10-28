@@ -4,7 +4,7 @@
 // One-word transactions use the existing memory-arbiter SD client; refresh/backpressure
 // never advance pointers until a completed write or an actual read-data-valid beat.
 // Valid/ready ingress obeys backpressure. All media state resets together.
-module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800)(
+module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800,DIRECT_POINTER_COMPARE=0)(
  input wire clk,rst_n,input wire [127:0] in_data,input wire [3:0] in_valid,output reg [3:0] in_ready,
  input wire commit_valid,input wire [1:0] commit_slot,input wire [7:0] commit_generation,
  output wire commit_ready,input wire [3:0] fallback,
@@ -19,11 +19,14 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800)(
  // Occupancy is their modular difference; no independent occupancy state can
  // diverge from the actual accepted write/read events.
  reg [PTR_W:0] wp[0:3],rp[0:3];wire [PTR_W:0] count[0:3];
+ wire[3:0] pointer_empty,pointer_full;
  reg [1:0] active,owner,rr;reg [7:0] generation;reg enabled;
  reg [1:0] state;reg reading,seen_data;reg [1:0] pick;reg any_write;
  integer i,j,k;
  assign len=1;assign commit_ready=(state==0)&&!out_valid&&!busy;
  genvar g;generate for(g=0;g<4;g=g+1)begin:status
+  assign pointer_empty[g]=(wp[g]==rp[g]);
+  assign pointer_full[g]=(wp[g]=={~rp[g][PTR_W],rp[g][PTR_W-1:0]});
   assign prefetched[g]=count[g]>=PREFETCH;
   assign levels[g*16+:16]={{(15-PTR_W){1'b0}},count[g]};
  end endgenerate
@@ -44,7 +47,7 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800)(
   any_write=0;pick=0;in_ready=0;
   for(i=0;i<4;i=i+1)begin
    j=rr+i;if(j>=4)j=j-4;
-   if(!any_write&&in_valid[j]&&count[j]<CAP)begin any_write=1;pick=j;end
+   if(!any_write&&in_valid[j]&&(DIRECT_POINTER_COMPARE?!pointer_full[j]:count[j]<CAP))begin any_write=1;pick=j;end
   end
   if(state==1&&ack&&!reading)in_ready[owner]=1;
  end
@@ -61,7 +64,7 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800)(
      // Reserve our one output register before issuing the read. A ready/valid
      // consumer may legally wait for valid before ready (the serialized FIFO
      // accepts its final word last), so ready must not gate valid production.
-     else if(!busy&&enabled&&!fallback[active]&&count[active]!=0&&!out_valid&&output_level<10'd240)begin
+     else if(!busy&&enabled&&!fallback[active]&&(DIRECT_POINTER_COMPARE?!pointer_empty[active]:count[active]!=0)&&!out_valid&&output_level<10'd240)begin
       owner<=active;reading<=1;seen_data<=0;req<=1;wr<=0;
       addr<=32'h00280000+({30'd0,active}<<16)+({{(30-PTR_W){1'b0}},rp[active][PTR_W-1:0]}<<2);state<=1;
      end else if(!busy&&any_write)begin

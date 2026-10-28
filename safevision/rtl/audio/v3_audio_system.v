@@ -7,7 +7,7 @@
 // commit_valid is retained until commit_ready. slot/generation change atomically.
 // Only matching-generation samples can reach the output; mismatches drain at
 // AUDIO clock speed. A missing/invalid WAV selects the same ROM as a quiet fallback.
-module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_SERVICE=0,MEDIA_RESET_INCLUDES_GLOBAL=0,HANDBOOK_PROFILE=0,PREINDEXED=0)(
+module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_SERVICE=0,MEDIA_RESET_INCLUDES_GLOBAL=0,HANDBOOK_PROFILE=0,PREINDEXED=0,DIRECT_RING_COMPARE=0)(
  input wire ref_clk,mem_clk,audio_clk,pixel_clk,sys_clk,rst_n,media_reset,
  input wire external_service_ready,output wire[444:0] core_cmd,input wire[836:0] core_rsp,
  input wire mounted,cache_ready,input wire [63:0] cache_keys,input wire [7:0] sec_per_clus,
@@ -94,7 +94,7 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  .dst_clk(mem_clk),.dst_rst_n(mem_rst_n),.dst_data(commit_mem),.dst_valid(commit_mem_valid),.dst_ready(ring_commit_ready));
  wire [39:0] ring_data,pcm_head;wire ring_valid,ring_ready,pcm_head_valid,pcm_head_ready;
  wire [8:0] output_wlevel;wire [31:0] ring_overflows;
- v3_pcm_ring #(.PREFETCH(PREFETCH)) ring(.clk(mem_clk),.rst_n(mem_rst_n),.in_data(ingress_data),
+ v3_pcm_ring #(.PREFETCH(PREFETCH),.DIRECT_POINTER_COMPARE(DIRECT_RING_COMPARE)) ring(.clk(mem_clk),.rst_n(mem_rst_n),.in_data(ingress_data),
  .in_valid(ingress_valid),.in_ready(ingress_ready),.commit_valid(commit_mem_valid),.commit_slot(commit_mem[1:0]),
  .commit_generation(commit_mem[9:2]),.commit_ready(ring_commit_ready),.fallback(fb_mem),.prefetched(ring_prefetched),
  .levels(ring_levels),.out_data(ring_data),.out_valid(ring_valid),.out_ready(ring_ready),.output_level({1'b0,output_wlevel}),
