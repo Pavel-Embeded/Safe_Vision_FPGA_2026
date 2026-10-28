@@ -32,6 +32,7 @@ def check_roms(text,root):
   matches=[n for n,data,parity,widths in mapped if data==expected and parity==expected_parity and (not is_descriptor or widths==['9','9'])]
   if len(matches)!=1:raise ValueError('mapped ROM content missing/corrupt/duplicated: '+name)
   result.append({'asset':name,'mapped_instance':matches[0],'bytes_compared':1024,'parity_bits_compared':1024,'logical_bits':9216 if is_descriptor else 8192,'payload_sha256':hashlib.sha256(expected+expected_parity).hexdigest()})
+ shared_ticker='.EXTERNAL_FONT(1)'in top and '.SHARED_TICKER(TICKER_ENABLE)'in top
  if '.FLEX_SPECTRUM(1)'in top:
   asset=root/'safevision/assets/audio/v3_spectrum_twiddle.mem'
   values=[int(t,16)for t in asset.read_text(encoding='utf-8-sig').split()]
@@ -43,6 +44,16 @@ def check_roms(text,root):
    # words each. Both display banks and every unused word start at zero.
    words=[0]*1024
    for i,v in enumerate(values[:128]):words[2*i]=v&511;words[2*i+1]=(v>>9)&127
+   if shared_ticker:
+    glyph=root/'safevision/assets/fonts/v3_ticker_shared16.mem'
+    font_values=[int(t,16)for t in glyph.read_text('ascii').split()]
+    if len(font_values)!=512 or any(v<0 or v>255 for v in font_values):raise ValueError('shared ticker font shape differs')
+    words[384:896]=font_values
+    merged=root/'safevision/assets/fonts/v3_spectrum_ticker.mem'
+    if [int(t,16)for t in merged.read_text('ascii').split()]!=words:raise ValueError('combined coefficient/font RAM contents differ')
+    metadata=json.loads((merged.parent/'v3_spectrum_ticker.provenance.json').read_text('utf-8'))
+    if metadata['message_characters']!=16 or metadata['font_start']!=384 or metadata['font_words']!=512 or metadata['rom_words']!=1024 or metadata['rom_word_bits']!=9 or metadata['font_word_bits']!=8 or metadata['font_order']!='character_row_half':raise ValueError('shared ticker font metadata shape differs')
+    if metadata['bitmap_sha256']!=hashlib.sha256(glyph.read_bytes()).hexdigest()or metadata['merged_sha256']!=hashlib.sha256(merged.read_bytes()).hexdigest()or metadata['coefficients_sha256']!=hashlib.sha256(asset.read_bytes()).hexdigest():raise ValueError('shared ticker asset provenance differs')
    expected=bytes(v&255 for v in words)
    parity=sum(((v>>8)&1)<<i for i,v in enumerate(words)).to_bytes(128,'little')
    reviewed_widths=['9','9']
@@ -55,7 +66,7 @@ def check_roms(text,root):
   if len(matches)!=1:raise ValueError('mapped spectrum twiddle ROM missing/corrupt/duplicated')
   result.append(dict(asset=asset.name,mapped_instance=matches[0],bytes_compared=1024,parity_bits_compared=1024,logical_bits=2048 if shared else 8192,quarter_wave_coefficients=128,zero_padding_words=384,layout='shared_dp9_coefficient_display'if shared else 'quarter_pdpw18',mutable_display_words=128 if shared else 0,unused_zero_words=640 if shared else 384,payload_sha256=hashlib.sha256(expected+parity).hexdigest()))
  production=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board_sources.list').read_text(encoding='utf-8-sig')
- if 'ticker_enable.v' in production:
+ if 'ticker_enable.v' in production and not shared_ticker:
   enable=root/'safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/ticker_enable.v'
   if not re.search(r'`define\s+SAFEVISION_TICKER_ENABLE\s+1\b',enable.read_text()):raise ValueError('ticker production selection is disabled')
   asset=root/'safevision/assets/fonts/v3_ticker16.mem'
@@ -68,6 +79,9 @@ def check_roms(text,root):
   matches=[n for n,data,p,widths in mapped if 'scrolling/ticker/'in n.replace('$','/') and data==expected and p==parity and widths==['1','1']]
   if len(matches)!=1:raise ValueError('mapped ticker ROM missing/corrupt/duplicated')
   result.append(dict(asset=asset.name,mapped_instance=matches[0],bytes_compared=1024,parity_bits_compared=1024,logical_bits=8192,zero_padding_words=0,payload_sha256=hashlib.sha256(expected+parity).hexdigest()))
+ if shared_ticker:
+  if '.MESSAGE_CHARS(16)'not in top or any('scrolling/ticker/'in n.replace('$','/')for n,_,_,_ in mapped):raise ValueError('shared ticker production selection or memory inference differs')
+  result.append(dict(asset='v3_ticker_shared16.mem',mapped_instance=matches[0],bytes_compared=512,parity_bits_compared=512,logical_bits=4096,shared_coefficient_memory=True,immutable_word_start=384,immutable_word_count=512))
  return result
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--netlist',type=Path,required=True);ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()

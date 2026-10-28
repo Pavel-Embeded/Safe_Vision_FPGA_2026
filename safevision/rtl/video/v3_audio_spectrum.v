@@ -3,12 +3,14 @@
 // Capture pauses only this observer while FFT runs; HDMI audio is never stalled.
 // Completed32-band spectra are committed at a video frame boundary.
 module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
- parameter TWIDDLE_FILE="v3_spectrum_twiddle.mem")(
+ parameter TWIDDLE_FILE="v3_spectrum_twiddle.mem",parameter integer SHARED_TICKER=0,
+ parameter SHARED_INIT_FILE="../../assets/fonts/v3_spectrum_ticker.mem")(
  input wire clk,rst_n,frame_start,pcm_valid,input wire[23:0] pcm_left,
  input wire[11:0] x,y,input wire de,
  output reg trace_pixel,grid_pixel,output reg[15:0] colour,
  output reg ready,output reg[15:0] spectrum_sequence,
- output reg[8:0] dominant_bin,output reg[6:0] peak_height);
+ output reg[8:0] dominant_bin,output reg[6:0] peak_height,
+ input wire font_request,input wire[8:0] font_index,output wire[7:0] font_word);
  localparam CAPTURE=0,WINDOW_WAIT=1,WINDOW_MUL=2,WINDOW_WRITE=3,
   A_WAIT=4,A_LATCH=5,B_LATCH=6,MUL0=7,MUL1=8,MUL2=9,MUL3=10,
   PRODUCT=11,WRITE_A=12,WRITE_B=13,STEP=14,BIN_WAIT=15,BIN_READ=16,
@@ -25,11 +27,14 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  (* ram_style="bram" *)reg[8:0] shared_ram[0:1023];
  reg[15:0] initial_coefficients[0:511];integer init_index;
  initial begin
+  if(SHARED_TICKER)$readmemh(SHARED_INIT_FILE,shared_ram);
+  else begin
   $readmemh(TWIDDLE_FILE,initial_coefficients);
   for(init_index=0;init_index<1024;init_index=init_index+1)shared_ram[init_index]=0;
   for(init_index=0;init_index<128;init_index=init_index+1)begin
    shared_ram[init_index*2]=initial_coefficients[init_index][8:0];
    shared_ram[init_index*2+1]={2'b00,initial_coefficients[init_index][15:9]};
+  end
   end
  end
  reg[4:0] state;reg[8:0] sample_index,read_address,write_address;
@@ -37,7 +42,9 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  reg[7:0] twiddle_address;
  wire[6:0] sine_address=twiddle_address[7]?-twiddle_address[6:0]:twiddle_address[6:0];
  wire[6:0] cosine_address=twiddle_address[7]?twiddle_address[6:0]:-twiddle_address[6:0];
- wire compute_enable=state==CAPTURE||state==PUBLISH||!area;
+ wire font_access=SHARED_TICKER&&font_request;
+ wire font_blocks_write=font_access&&(state==BAND_WRITE||state==BAND_PEAK_WRITE);
+ wire compute_enable=state==CAPTURE||state==PUBLISH||(!area&&!font_blocks_write);
  reg[8:0] shared_a_data,shared_b_data;
  reg[15:0] fetched_cosine,fetched_sine;
  reg coefficient_window;
@@ -53,8 +60,9 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  wire[9:0] history_address={3'b010,display_bank,band,1'b1};
  wire[9:0] pending_address={3'b010,pending_bank,band,state==BAND_PEAK_WRITE};
  wire[9:0] shared_a_address=area?display_level_address:history_request?history_address:{2'b00,quarter_address,request_count[0]};
- wire[9:0] shared_b_address=area?display_peak_address:pending_address;
- wire shared_write_enable=rst_n&&!area&&(state==BAND_WRITE||state==BAND_PEAK_WRITE);
+ wire[9:0] shared_b_address=area?display_peak_address:font_access?(10'd384+{1'b0,font_index}):pending_address;
+ assign font_word=shared_b_data[7:0];
+ wire shared_write_enable=rst_n&&!area&&!font_access&&(state==BAND_WRITE||state==BAND_PEAK_WRITE);
  wire[8:0] shared_write_data={2'b00,state==BAND_WRITE?band_height:pending_peak_word};
  wire signed[15:0] positive_cosine=twiddle_address==0?16'sd32767:$signed(fetched_cosine);
  wire signed[15:0] sine_value=twiddle_address==128?16'sd32767:$signed(fetched_sine);
@@ -96,7 +104,8 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  generate for(display_alias=0;display_alias<64;display_alias=display_alias+1)begin:simulation_bank_view
   assign spectrum_ram[display_alias]={shared_ram[256+display_alias*2][6:0],shared_ram[257+display_alias*2][6:0]};
  end endgenerate
- always @(posedge clk)if(shared_write_enable&&shared_b_address<256)$fatal(1,"immutable coefficient RAM write");
+ always @(posedge clk)if(shared_write_enable&&(shared_b_address<256||shared_b_address>=384))$fatal(1,"immutable coefficient/font RAM write");
+ always @(posedge clk)if(SHARED_TICKER&&rst_n&&font_request&&area)$fatal(1,"font overlaps spectrum display port");
  // synthesis translate_on
  function[8:0] reverse9;input[8:0] v;integer i;begin for(i=0;i<9;i=i+1)reverse9[i]=v[8-i];end endfunction
  reg signed[17:0] multiply_a,multiply_b;

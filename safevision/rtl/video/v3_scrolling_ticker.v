@@ -4,14 +4,15 @@
 module v3_scrolling_ticker #(
  parameter integer WIDTH=640,HEIGHT=480,MESSAGE_CHARS=32,
  parameter integer FRAMES_PER_PIXEL=2,PIXEL_LATENCY=21,
- parameter integer SOURCE_AHEAD=0,CLIP_INPUT=1,
+ parameter integer SOURCE_AHEAD=0,CLIP_INPUT=1,EXTERNAL_FONT=0,
  parameter BITMAP_FILE="../../assets/fonts/v3_ticker16.mem"
 )(
  input wire clk,rst_n,frame_start,
  input wire[11:0] x,y,input wire de,
  output wire panel_pixel,text_pixel,edge_pixel,
  output wire[11:0] position,
- output wire[15:0] frames,loops
+ output wire[15:0] frames,loops,
+ output wire font_request,output wire[8:0] font_index,input wire[7:0] font_word
 );
  localparam integer VIEW_LEFT=120,VIEW_RIGHT=WIDTH-8;
  localparam integer VIEW_WIDTH=WIDTH-128,TEXT_WIDTH=MESSAGE_CHARS*16;
@@ -48,17 +49,28 @@ module v3_scrolling_ticker #(
   source_x<TEXT_WIDTH;
  wire border=box&&(y==HEIGHT-24);
  wire[3:0] glyph_row=y-(HEIGHT-22);
- (* ram_style="block" *) reg[0:0] bitmap_rom[0:8191];
- initial $readmemh(BITMAP_FILE,bitmap_rom);
+
  reg[12:0] address1;
  reg valid1,valid2,dot3;
- reg[0:0] row2;
- // RAM output has no reset so TD can infer one physical RAM9K tile.
- always @(posedge clk)row2<=bitmap_rom[address1];
+ wire[0:0] row2;
+ reg[8:0] shared_address1;reg[2:0] column1,column2;
+ assign font_request=EXTERNAL_FONT&&valid1;
+ assign font_index=shared_address1;
+ generate if(EXTERNAL_FONT)begin:shared_font
+  assign row2[0]=font_word[7-column2];
+ end else begin:local_font
+  (* ram_style="block" *) reg[0:0] bitmap_rom[0:8191];
+  initial $readmemh(BITMAP_FILE,bitmap_rom);
+  reg local_row2;
+  always @(posedge clk)local_row2<=bitmap_rom[address1];
+  assign row2[0]=local_row2;
+ end endgenerate
  always @(posedge clk or negedge rst_n)begin
-  if(!rst_n)begin address1<=0;valid1<=0;valid2<=0;dot3<=0;end
+  if(!rst_n)begin address1<=0;shared_address1<=0;column1<=0;column2<=0;valid1<=0;valid2<=0;dot3<=0;end
   else begin
    address1<={source_x[8:0],glyph_row};
+   shared_address1<={source_x[7:4],glyph_row,source_x[3]};
+   column1<=source_x[2:0];column2<=column1;
    valid1<=glyph_valid;valid2<=valid1;
    dot3<=valid2&&row2[0];
   end
