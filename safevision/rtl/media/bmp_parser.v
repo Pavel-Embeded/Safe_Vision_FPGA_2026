@@ -130,7 +130,7 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
     // existing size predicates and33-bit extent comparisons remain unchanged.
     reg[16:0] extent_stride_q;
     reg[15:0] extent_height_q;
-    (* keep="true" *) reg[31:0] dynamic_bytes_q;
+    reg[31:0] dynamic_bytes_q;
     always @(posedge clk)begin
       extent_stride_q<=dynamic_stride;
       extent_height_q<=height_abs;
