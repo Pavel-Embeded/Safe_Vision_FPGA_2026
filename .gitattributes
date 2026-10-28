@@ -6222,3 +6222,8 @@ evidence/v3/handbook_26101802/research_01/** -text
 
 /safevision/verification/models/v3_pcm_ring_frozen_pointer.* -text
 /safevision/build/manifests/audio_system_pointer_sim.json -text
+
+/safevision/verification/models/bmp_parser_frozen_extent.sv -text
+/safevision/verification/models/bmp_parser_frozen_extent.freeze.json -text
+/safevision/verification/unit/tb_v3_bmp_extent_pipeline.sv -text
+/safevision/build/manifests/bmp_extent_pipeline_sim.json -text

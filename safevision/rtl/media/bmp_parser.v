@@ -104,7 +104,17 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
     // needed. Legacy mode retains its original header acceptance contract.
     wire[31:0] offbits_decrement = FLEX_PIXELS?((mstate==H_XFER)?32'd1:(hcnt==53)?32'd54:32'd14):32'd14;
     wire[31:0] offbits_delta=offbits_r-offbits_decrement;
-    wire [31:0] dib_capacity = offbits_delta;
+    // Exact unsigned32-bit subtraction by14, with a bounded byte path.
+    // The borrow prefix contains only zero-byte tests; no parser-state mux
+    // or full32-bit arithmetic feeds the byte14..17 DIB comparisons.
+    wire dib_borrow0=offbits_r[7:0]<8'd14;
+    wire dib_borrow1=dib_borrow0&&(offbits_r[15:8]==0);
+    wire dib_borrow2=dib_borrow1&&(offbits_r[23:16]==0);
+    wire[7:0] dib_cap0=offbits_r[7:0]-8'd14;
+    wire[7:0] dib_cap1=offbits_r[15:8]-{7'd0,dib_borrow0};
+    wire[7:0] dib_cap2=offbits_r[23:16]-{7'd0,dib_borrow1};
+    wire[7:0] dib_cap3=offbits_r[31:24]-{7'd0,dib_borrow2};
+    wire [31:0] dib_capacity = FLEX_PIXELS?{dib_cap3,dib_cap2,dib_cap1,dib_cap0}:offbits_delta;
     wire dib_ok    = dib_ge40_r && (!FLEX_PIXELS || dib_within_offset_r);
     wire legacy_size_ok = (width_lo_r == 16'd640) && width_hi_zero_r &&
                      ((height_lo_r == 16'd480) || (height_lo_r == 16'hfe20)) &&
@@ -120,7 +130,7 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
     // existing size predicates and33-bit extent comparisons remain unchanged.
     reg[16:0] extent_stride_q;
     reg[15:0] extent_height_q;
-    reg[31:0] dynamic_bytes_q;
+    (* keep="true" *) reg[31:0] dynamic_bytes_q;
     always @(posedge clk)begin
       extent_stride_q<=dynamic_stride;
       extent_height_q<=height_abs;
@@ -144,13 +154,25 @@ module bmp_parser #(parameter integer VARIABLE_SIZE=0,FLEX_PIXELS=0) (
     // flags settle on the following edge, before byte53 publishes the result.
     // file_size is the immutable open-file descriptor throughout this header.
     // Legacy mode preserves even the original unqualified combinational ABI.
-    reg[4:0] header_predicates_q;
-    always @(posedge clk) header_predicates_q<={sig_ok,dib_ok,size_ok,fmt_ok,trunc_ok};
+    // Capture the extent predicate only in the last two header positions.
+    // hcnt advances only on accepted bytes. Size operands finish by byte33,
+    // leaving at least19accepted clocks before the first possible capture.
+    // Byte53 publication and all continuous legacy outputs are unchanged.
+    wire[32:0] checked_extent={1'b0,offbits_r}+{1'b0,required_bytes};
+    wire trunc_checked=(offbits_r>=BMP_HDR_BYTES)&&(bfsize_r<=file_size)&&
+                       (checked_extent<={1'b0,(VARIABLE_SIZE?bfsize_r:file_size)});
+    wire header_late=(mstate==H_HEAD)&&((hcnt==6'd52)||(hcnt==6'd53));
+    reg[4:1] header_predicates_q;
+    (* keep="true" *) reg header_trunc_q;
+    always @(posedge clk)begin
+      header_predicates_q<={sig_ok,dib_ok,size_ok,fmt_ok};
+      if(!FLEX_PIXELS||header_late)header_trunc_q<=trunc_checked;
+    end
     wire final_sig=FLEX_PIXELS?header_predicates_q[4]:sig_ok;
     wire final_dib=FLEX_PIXELS?header_predicates_q[3]:dib_ok;
     wire final_size=FLEX_PIXELS?header_predicates_q[2]:size_ok;
     wire final_fmt=FLEX_PIXELS?header_predicates_q[1]:fmt_ok;
-    wire final_trunc=FLEX_PIXELS?header_predicates_q[0]:trunc_ok;
+    wire final_trunc=FLEX_PIXELS?header_trunc_q:trunc_ok;
     wire        check_ok = final_sig && final_dib && final_size && final_fmt && final_trunc;
 
     assign ready = (mstate == H_HEAD) ||

@@ -1,0 +1,11 @@
+{
+  "parent_commit": "2204949e4a4257fbbda48988ffd84a3db37ba181",
+  "source_path": "safevision/rtl/media/bmp_parser.v",
+  "reference_path": "safevision/verification/models/bmp_parser_frozen_extent.sv",
+  "source_sha256": "612fc193dbb9aecde2ffa6e03e9d09dae5a0a8b0d6d5bc2b660721b62d0f56d2",
+  "reference_sha256": "80aa344936f46d4f2aa563c7a7a7d68c17571130ee5474558c47871ba77e6cb3",
+  "rename_from": "module bmp_parser #(",
+  "rename_to": "module bmp_parser_frozen_extent #(",
+  "native_reference": "native71",
+  "native_reference_timing_approved": false
+}
