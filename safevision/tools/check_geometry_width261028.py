@@ -26,7 +26,9 @@ def check(root):
                 'geometry_ge_q<=geometry_scratch>=geometry_divisor;',
                 "wire[SB+9:0] saved_width480=w*10'd480,saved_height640=h*10'd640;",
                 '{y_error,x_error}<=wide?saved_height640:saved_width480;',
-                'src_row<=wide?w:h;']:
+                'src_row<=wide?w:h;',
+                "end else if(geometry_ge_q)begin {y_error,x_error}<=geometry_scratch-geometry_divisor;store_x<=store_x+1'b1;state<=GEOM;end",
+                "else if(geometry_scratch>=geometry_divisor)begin {y_error,x_error}<=geometry_scratch-geometry_divisor;store_x<=store_x+1'b1;end"]:
   assert text.count(anchor)==1,anchor
  assert text.count('geometry_scratch-geometry_divisor')==2
  h=np.arange(1,16385,dtype=np.uint32)[None,:];pairs=0;maximum=0;maximum_quotient=0;digest=hashlib.sha256()
