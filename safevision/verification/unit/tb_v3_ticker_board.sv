@@ -37,7 +37,7 @@ module tb_v3_ticker_board;
   source_col=px-(632-p);text_bit=0;
   if(panel&&py>=458&&py<474&&source_col>=0&&source_col<512)
    text_bit=pixels[(py-458)*512+source_col];
-  new_wanted=panel?(text_bit?24'hf4fff4:py==456?24'h3e8290:24'h0c171b):underlying;
+  new_wanted=panel?(text_bit?24'hffffff:py==456?24'h008080:24'h000000):underlying;
   @(posedge dut.pixel_clk);#0.001;
   for(i=20;i>0;i--)begin wanted[i]=wanted[i-1];wanted_xy[i]=wanted_xy[i-1];end
   wanted[0]=new_wanted;wanted_xy[0]={active,12'(px),12'(py)};

@@ -339,7 +339,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
   assign ticker_text=0;assign ticker_status_pixel=0;assign ticker_status_sys=0;
  end endgenerate
  wire[23:0] rendered_rgb=ticker_panel?
-  (ticker_text?24'hf4fff4:ticker_edge?24'h3e8290:24'h0c171b):rgb;
+  (ticker_text?24'hffffff:ticker_edge?24'h008080:24'h000000):rgb;
  reg audio_commit_valid;reg[1:0] audio_commit_slot;reg[7:0] audio_commit_gen;wire audio_commit_ready;
  always @(posedge sys_clk or negedge sys_rst_n)begin
  if(!sys_rst_n)begin audio_commit_valid<=0;audio_commit_slot<=0;audio_commit_gen<=0;end
@@ -542,16 +542,13 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
   ({32{b_diag_low[4]}} & {18'd0,energy,volume});
  (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & (TICKER_ENABLE?32'h26102801:32'h26102301));
  (* keep="true" *) wire[31:0] b_diag_next1=b_diag_payload1 & {32{b_diag_payload_valid}};
- (* keep="true" *) wire[31:0] b_diag_next2=b_diag_payload2 & {32{b_diag_payload_valid}};
+ // DIAG2 and DIAG101 are mutually exclusive, captured on the same edge.
+ // Reuse the existing payload bank rather than adding ten position registers.
+ wire[31:0] b_ticker_payload=TICKER_ENABLE&&cmd_value[6:0]==7'd101?ticker_status_sys:32'd0;
+ (* keep="true" *) wire[31:0] b_diag_next2=(b_diag_payload2|b_ticker_payload) & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next3=b_diag_payload3 & {32{b_diag_payload_valid}};
- wire[31:0] b_diag_next4=TICKER_ENABLE&&!cmd_query&&b_diag_small?
-  (cmd_value[6:0]==7'd101 ? ticker_status_sys:32'd0):32'd0;
- reg[31:0] b_diag_group4;
- always @(posedge sys_clk or negedge sys_rst_n)
-  if(!sys_rst_n)b_diag_group4<=0;
-  else if(cmd_valid&&cmd_target==66)b_diag_group4<=b_diag_next4;
  reg[31:0] b_diag_group0,b_diag_group1,b_diag_group2,b_diag_group3;
- wire[31:0] b_diag_data=b_diag_group0 | b_diag_group1 | b_diag_group2 | b_diag_group3 | b_diag_group4;
+ wire[31:0] b_diag_data=b_diag_group0 | b_diag_group1 | b_diag_group2 | b_diag_group3;
  // Capture every selected group on the ORIGINAL acceptance edge. The OR
  // moves after those registers; UART consumes at the same following edge.
  // No selector setup assumption, stale live counter or extra reply cycle.
