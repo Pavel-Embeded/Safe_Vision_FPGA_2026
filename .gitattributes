@@ -6205,3 +6205,9 @@ evidence/v3/handbook_26101802/research_01/** -text
 /artifacts/releases/BASE_26102301_6a957b0/** -text
 /artifacts/releases/BASE_26102301_6a957b0/**/*.bit binary
 /docs/releases/BASE_26102301/images/*.jpg binary
+
+# Preserve actual inputs of the added ticker/reference qualifications.
+/safevision/verification/models/v3_audio_spectrum_frozen261026.sv -text
+/safevision/build/manifests/ticker_board261028_sim.json -text
+/safevision/build/manifests/ticker_shared261028_sim.json -text
+/safevision/build/manifests/resident_owner_equivalence261028_sim.json -text
