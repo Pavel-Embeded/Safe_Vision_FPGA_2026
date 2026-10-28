@@ -3,6 +3,12 @@ module tb_v3_ticker_shared_port;
  reg clk=0;always #5 clk=~clk;
  reg rst=0,fs=0,de=0;reg[11:0] x=0,y=0;
  wire req;wire[8:0] index;wire[7:0] word;
+ reg[1:0] probe_run=0;reg[8:0] probe_index=0;
+ wire probe=!req&&(a.state==a.BAND_WRITE||a.state==a.BAND_PEAK_WRITE)&&probe_run!=3;
+ wire ram_request=req||probe;wire[8:0] ram_index=req?index:probe_index;
+ always @(posedge clk)if(!rst)begin probe_run<=0;probe_index<=0;end
+ else if(probe)begin probe_run<=probe_run+1'b1;probe_index<=probe_index+1'b1;end
+ else probe_run<=0;
  wire panel,text_pixel,edge_pixel;wire[11:0] position;
  v3_scrolling_ticker #(.EXTERNAL_FONT(1),.MESSAGE_CHARS(16),.PIXEL_LATENCY(5)) ticker(
   .clk(clk),.rst_n(rst),.frame_start(fs),.x(x),.y(y),.de(de),
@@ -17,11 +23,10 @@ module tb_v3_ticker_shared_port;
  v3_audio_spectrum #(.SHARED_TICKER(1),.SHARED_INIT_FILE("v3_spectrum_ticker.mem")) a(
   .clk(clk),.rst_n(rst),.frame_start(fs),.pcm_valid(pcm_valid),.pcm_left(pcm),.x(x),.y(y),.de(de),
   .trace_pixel(),.grid_pixel(),.colour(),.ready(ready_a),.spectrum_sequence(seq_a),.dominant_bin(bin_a),.peak_height(peak_a),
-  .font_request(req),.font_index(index),.font_word(word));
- v3_audio_spectrum #(.SHARED_TICKER(0)) b(
+  .font_request(ram_request),.font_index(ram_index),.font_word(word));
+ v3_audio_spectrum_frozen261026 b(
   .clk(clk),.rst_n(rst),.frame_start(fs),.pcm_valid(pcm_valid),.pcm_left(pcm),.x(x),.y(y),.de(de),
-  .trace_pixel(),.grid_pixel(),.colour(),.ready(ready_b),.spectrum_sequence(seq_b),.dominant_bin(bin_b),.peak_height(peak_b),
-  .font_request(1'b0),.font_index(9'd0),.font_word());
+  .trace_pixel(),.grid_pixel(),.colour(),.ready(ready_b),.spectrum_sequence(seq_b),.dominant_bin(bin_b),.peak_height(peak_b));
  reg pixels[0:4095];reg[15:0] coefficient[0:511];
  reg[4:0] expected_text=0,expected_panel=0,expected_edge=0;
  reg[7:0] expected_word;reg expected_access;
@@ -32,11 +37,11 @@ module tb_v3_ticker_shared_port;
   comparisons++;if(!okay)begin errors++;if(errors<15)$display("[FAIL] %s phase=%0d x=%0d y=%0d",message,phase,x,y);end
  end endtask
  always @(posedge clk)if(rst)begin
-  expected_access=req;expected_word=0;
-  if(req)begin
+  expected_access=ram_request;expected_word=0;
+  if(ram_request)begin
    font_reads++;
-   for(j=0;j<8;j++)expected_word[7-j]=pixels[index[4:1]*256+index[8:5]*16+index[0]*8+j];
-   ck(a.shared_b_address==384+index,"shared port selects the exact immutable font address");
+   for(j=0;j<8;j++)expected_word[7-j]=pixels[ram_index[4:1]*256+ram_index[8:5]*16+ram_index[0]*8+j];
+   ck(a.shared_b_address==384+ram_index,"shared port selects the exact immutable font address");
   end
   blocked_before_edge=a.font_blocks_write;saved_band_state=a.state;
   if(blocked_before_edge)begin stalled_band_writes++;ck(!a.shared_write_enable,"font lookup defers band writes");end

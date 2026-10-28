@@ -11,8 +11,9 @@ module tb_v3_ticker_board;
  defparam dut.video.COMPACT_FONT_FILE="font8x16_compact.mem";
  defparam dut.video.STATUS_TEXT_FILE="v3_status_text.mem";
  defparam dut.scrolling.ticker.BITMAP_FILE="v3_ticker16.mem";
+ defparam dut.video.graphics.spectrum.analyzer.SHARED_INIT_FILE="v3_spectrum_ticker.mem";
  reg[11:0] rx=0,ry=0;reg rd=0,rf=0;reg[23:0] underlying=24'h75a9c3;
- reg pixels[0:8191];reg[23:0] wanted[0:20];reg[23:0] new_wanted;
+ reg pixels[0:4095];reg[23:0] wanted[0:20];reg[23:0] new_wanted;
  reg[24:0] wanted_xy[0:20];
  reg cv=0,query=0;reg signed[31:0] selector=0;reg[6:0] catalog=36;
  reg[31:0] q0=0,q1=0,q2=0,q3=0,q4=0,packed_expected;integer basis;
@@ -36,8 +37,8 @@ module tb_v3_ticker_board;
   @(negedge dut.pixel_clk);rx=px;ry=py;rd=active;rf=0;
   panel=active&&px>=120&&px<632&&py>=456&&py<476;
   source_col=px-(632-p);text_bit=0;
-  if(panel&&py>=458&&py<474&&source_col>=0&&source_col<512)
-   text_bit=pixels[(py-458)*512+source_col];
+  if(panel&&py>=458&&py<474&&source_col>=0&&source_col<256)
+   text_bit=pixels[(py-458)*256+source_col];
   new_wanted=panel?(text_bit?24'hffffff:py==456?24'h008080:24'h000000):underlying;
   @(posedge dut.pixel_clk);#0.001;
   for(i=20;i>0;i--)begin wanted[i]=wanted[i-1];wanted_xy[i]=wanted_xy[i-1];end
@@ -77,7 +78,7 @@ module tb_v3_ticker_board;
   release dut.b_query_next0;release dut.b_query_next1;release dut.b_query_next2;
   release dut.b_query_next3;release dut.b_query_next4;catalog=36;query=0;
   $display("[PASS] packed query basis vectors, random live buses, exact capture edge and single replies");
-  for(p=0;p<1024;p=p+211)begin
+  for(p=0;p<768;p=p+211)begin
    release dut.scrolling.ticker.position;
    force dut.scrolling.ticker.position=p;
    for(i=0;i<21;i++)begin wanted[i]=underlying;wanted_xy[i]=0;end
