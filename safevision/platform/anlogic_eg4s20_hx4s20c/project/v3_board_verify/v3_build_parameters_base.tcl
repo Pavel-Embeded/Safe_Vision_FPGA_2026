@@ -13,7 +13,7 @@ set_param route timing on
 set_param rtl min_ripple_len 32
 
 # Measured EG4 packing strategy; clocks and full STA limits stay unchanged.
-set_param place opt_timing medium
+set_param place opt_timing off
 
 # Actual clocks/IO remain exact; optimize timing after congestion closure.
 set_param route post_route_opt ultra
