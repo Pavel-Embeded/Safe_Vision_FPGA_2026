@@ -317,8 +317,11 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  .lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),
  .raw_x(raw_x),.raw_y(raw_y),.raw_de(raw_de),.raw_hs(raw_hs),.raw_vs(raw_vs),.frame_start(raw_fs),
  .rgb(rgb),.hs(out_hs),.vs(out_vs),.de(out_de),.x(out_x),.y(out_y));
- // The ticker runs in parallel with the existing21-clock video path.
- // It owns only its small bottom strip; the media/safety pipeline is intact.
+ // Predict five columns from the existing final raster. The visible strip
+ // starts at x120 and ends eight columns before active-video end, so its
+ // five-stage glyph lookup never crosses a line or frame boundary. Final
+ // DE/panel clipping remains here. Original video latency stays21 clocks.
+ // This removes sixteen otherwise redundant one-bit delay registers.
  localparam integer HDMI_STATUS_W=TICKER_ENABLE?64:32;
  wire[HDMI_STATUS_W-1:0] hdmi_status_packet;
  wire ticker_text;wire[31:0] ticker_status_pixel,ticker_status_sys;
@@ -328,9 +331,10 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  generate if(TICKER_ENABLE)begin:scrolling
   wire[11:0] position;
   v3_scrolling_ticker #(.WIDTH(HD?1280:640),.HEIGHT(HD?720:480),
-   .PIXEL_LATENCY(21),.MESSAGE_CHARS(32),.FRAMES_PER_PIXEL(2)) ticker(
+   .PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0),
+   .MESSAGE_CHARS(32),.FRAMES_PER_PIXEL(2)) ticker(
    .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(raw_fs),
-   .x(raw_x),.y(raw_y),.de(raw_de),.panel_pixel(),
+   .x(out_x),.y(out_y),.de(out_de),.panel_pixel(),
    .text_pixel(ticker_text),.edge_pixel(),
    .position(position),.frames(),.loops());
   assign ticker_status_pixel={16'h544b,4'h1,position};
