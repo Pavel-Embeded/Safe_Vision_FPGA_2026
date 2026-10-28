@@ -2,7 +2,7 @@
 module tb_v3_resident_owner_equivalence;
  reg clk=0,rst=0,owner=0;always #5 clk=~clk;
  reg[444:0]local_cmd=0,external_cmd=0;reg[31:0]rng=32'h44502618;
- integer errors=0,comparisons=0,k,j,active_checks=0,gaps=0;
+ integer errors=0,comparisons=0,k,j,active_checks=0,gaps=0,resident_checks=0,local_checks=0;
  wire  a_sd_ncs,b_sd_ncs;
  wire  a_sd_dclk,b_sd_dclk;
  wire  a_sd_mosi,b_sd_mosi;
@@ -68,12 +68,14 @@ module tb_v3_resident_owner_equivalence;
    end
    @(negedge clk);
   end
-  if(active_checks<100000||gaps<4000)begin errors++;$display("[FAIL] insufficient stable-owner/reset-gap coverage");end
+  if(active_checks<100000||gaps<250||resident_checks<250000||local_checks<4000)begin errors++;$display("[FAIL] insufficient stable-owner/reset-gap coverage");end
   if(errors==0)$display("[PASS] all real player public pins against frozen original, reachable resident handoff, arbitrary445-bit contexts, terminal ownership and asynchronous reset");
   $display("[TB] tb_v3_resident_owner_equivalence done errors=%0d comparisons=%0d active=%0d gaps=%0d",errors,comparisons,active_checks,gaps);$finish;
  end
  always@(posedge clk)begin #0.001;if(rst)begin
   comparisons++;
+  if(a_external_service_ready)resident_checks++;
+  if(!owner)local_checks++;
   if({a_sd_ncs,a_sd_dclk,a_sd_mosi,a_px_word,a_px_word_valid,a_frame_active,a_top_down_o,a_slot_o,a_state_o,a_fail_stage,a_err_code,a_err_detail,a_init_r1,a_init_seq,a_sd_ready,a_card_usable,a_file_cnt,a_cur_file,a_cur_file_size,a_cur_bytes_rd,a_cur_px_written,a_last_frame_ok_o,a_frame_cnt,a_cache_valid,a_cache_count,a_cache_keys,a_rejected_files,a_external_core_rsp,a_external_service_ready,a_ext_rd_ready,a_ext_data,a_ext_data_valid,a_ext_data_last,a_ext_rd_done,a_ext_timeout,a_ext_crc_error,a_ext_err_code,a_ext_err_detail,a_fs_sec_per_clus,a_fs_fat_start_lba,a_fs_data_start_lba,a_fs_root_dir_lba,a_fs_root_clus,a_fs_total_clus,a_progress_count,a_last_reject_error,a_last_reject_key}!=={b_sd_ncs,b_sd_dclk,b_sd_mosi,b_px_word,b_px_word_valid,b_frame_active,b_top_down_o,b_slot_o,b_state_o,b_fail_stage,b_err_code,b_err_detail,b_init_r1,b_init_seq,b_sd_ready,b_card_usable,b_file_cnt,b_cur_file,b_cur_file_size,b_cur_bytes_rd,b_cur_px_written,b_last_frame_ok_o,b_frame_cnt,b_cache_valid,b_cache_count,b_cache_keys,b_rejected_files,b_external_core_rsp,b_external_service_ready,b_ext_rd_ready,b_ext_data,b_ext_data_valid,b_ext_data_last,b_ext_rd_done,b_ext_timeout,b_ext_crc_error,b_ext_err_code,b_ext_err_detail,b_fs_sec_per_clus,b_fs_fat_start_lba,b_fs_data_start_lba,b_fs_root_dir_lba,b_fs_root_clus,b_fs_total_clus,b_progress_count,b_last_reject_error,b_last_reject_key})begin errors++;if(errors<12)$display("[FAIL] actual player public interface differs");end
   if(d.service_ready_int)begin active_checks++;comparisons++;
    if(d.selected_core_cmd!==original.selected_core_cmd)begin errors++;if(errors<12)$display("[FAIL] stable ownership must select identical commands");end
