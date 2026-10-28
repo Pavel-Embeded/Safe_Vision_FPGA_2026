@@ -93,7 +93,7 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
      end
     end
     // Geometry is private until SETUP. Split wide compare from dimension
-    // selection in FLEX mode; at most640 extra REF edges per image, with
+    // selection in FLEX mode; at most642 extra REF edges per image, with
     // identical integer division, aspect fit and output pixel order.
     GEOM:if(FLEX_PIXELS)begin
       if(initial_y)wide<=saved_shape_wide;else geometry_ge_q<=geometry_scratch>=geometry_divisor;
