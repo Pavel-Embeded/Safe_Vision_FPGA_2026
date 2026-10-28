@@ -8,6 +8,7 @@ module tb_v3_bmp_extent_pipeline;
  wire[170:0] new_public[0:3],gold_public[0:3];
  integer errors=0,data_errors=0,comparisons=0,driver_errors=0;
  integer accepted_headers[0:3],rejected_headers[0:3];
+ wire[31:0] phase_checks[0:3],phase_failures[0:3];integer phase_error_total=0;
  always @(negedge clk)begin
   rng<={rng[30:0],rng[31]^rng[21]^rng[1]^rng[0]};
   out_ready<={rng[7]|rng[11],rng[5]|rng[9],rng[3]|rng[8],rng[0]|rng[4]};
@@ -26,6 +27,24 @@ module tb_v3_bmp_extent_pipeline;
    .compression(gz),.pixel_off(gf),.file_size_o(gl),.dbg_state(gds),.out_data(go_),.out_valid(gv),.out_ready(out_ready[g]),.out_sof(gs),.out_eof(ge));
   assign new_public[g]={new_ready[g],nd,nb,nc,nn,nw,nh,nt,np,nz,nf,nl,nds,no,nv,ns,ne};
   assign gold_public[g]={gold_ready[g],gd,gb,gc,gn,gw,gh,gt,gp,gz,gf,gl,gds,go_,gv,gs,ge};
+  reg[31:0] product_history0,product_history1;
+  reg[32:0] extent_history0,extent_history1;
+  integer timing_checks=0,timing_errors=0;
+  assign phase_checks[g]=timing_checks;assign phase_failures[g]=timing_errors;
+  always @(posedge clk)begin
+   if(!rst_n)begin product_history0<=0;product_history1<=0;extent_history0<=0;extent_history1<=0;end
+   else begin
+    if(FLEX&&dut.header_late)begin
+     timing_checks=timing_checks+1;
+     if(dut.dynamic_bytes_q!==product_history0||product_history0!==product_history1||dut.checked_extent!==extent_history0||extent_history0!==extent_history1)begin
+      timing_errors=timing_errors+1;
+      if(timing_errors<=4)$display("[FAIL] late header captured a changing product or extent lane=%0d hcnt=%0d",g,dut.hcnt);
+     end
+    end
+    product_history0<=dut.dynamic_bytes_q;product_history1<=product_history0;
+    extent_history0<=dut.checked_extent;extent_history1<=extent_history0;
+   end
+  end
   assign gold_done[g]=gd;assign gold_bad[g]=gb;
  end endgenerate
  always @(posedge clk)begin
@@ -119,10 +138,13 @@ module tb_v3_bmp_extent_pipeline;
   end
   for(integer lane=0;lane<4;lane=lane+1)begin
    $display("[INFO] lane%0d accepted=%0d rejected=%0d",lane,accepted_headers[lane],rejected_headers[lane]);
+   $display("[INFO] lane%0d late_checks=%0d phase_errors=%0d",lane,phase_checks[lane],phase_failures[lane]);
+   errors=errors+phase_failures[lane];phase_error_total=phase_error_total+phase_failures[lane];
+   if(lane>=2&&phase_checks[lane]==0)begin errors=errors+1;$display("[FAIL] late phase coverage missing");end
    if(accepted_headers[lane]==0||rejected_headers[lane]==0)begin errors=errors+1;$display("[FAIL] acceptance/rejection coverage missing");end
   end
   if(!errors)$display("[PASS] complete frozen parser public interface; four parameter profiles; one byte per clock, stalls, early EOF and async reset; carry and DIB borrow boundaries");
-  $display("PASS tb_v3_bmp_extent_pipeline errors=%0d comparisons=%0d data_errors=%0d driver_errors=%0d cases=2048",errors,comparisons,data_errors,driver_errors);
+  $display("PASS tb_v3_bmp_extent_pipeline errors=%0d comparisons=%0d data_errors=%0d driver_errors=%0d phase_errors=%0d cases=2048",errors,comparisons,data_errors,driver_errors,phase_error_total);
   $finish;
  end
  initial begin #1000000000;$display("[FAIL] parser miter watchdog errors=1");$finish;end
