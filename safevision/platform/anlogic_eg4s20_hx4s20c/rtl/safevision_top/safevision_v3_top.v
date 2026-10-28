@@ -544,7 +544,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  (* keep="true" *) wire[31:0] b_diag_next1=b_diag_payload1 & {32{b_diag_payload_valid}};
  // DIAG2 and DIAG101 are mutually exclusive, captured on the same edge.
  // Reuse the existing payload bank rather than adding ten position registers.
- wire[31:0] b_ticker_payload=TICKER_ENABLE&&cmd_value[6:0]==7'd101?ticker_status_sys:32'd0;
+ wire[31:0] b_ticker_payload=(TICKER_ENABLE && cmd_value[6:0]==7'd101) ? ticker_status_sys : 32'd0;
  (* keep="true" *) wire[31:0] b_diag_next2=(b_diag_payload2|b_ticker_payload) & {32{b_diag_payload_valid}};
  (* keep="true" *) wire[31:0] b_diag_next3=b_diag_payload3 & {32{b_diag_payload_valid}};
  reg[31:0] b_diag_group0,b_diag_group1,b_diag_group2,b_diag_group3;
