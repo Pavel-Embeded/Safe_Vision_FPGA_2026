@@ -63,11 +63,9 @@ module v3_scrolling_ticker #(
  wire[3:0] packed_xmin=packed_desc[7:4],packed_width=packed_desc[3:0];
  wire[3:0] packed_column=packed_column0-packed_xmin,packed_row=packed_row0-4'd1;
  wire[7:0] packed_linear=({packed_column,4'b0}-{3'b0,packed_column,1'b0})+{4'b0,packed_row};
- // Exactly floor(n/9) throughout the complete8-bit input domain; no DSP.
- wire[13:0] packed_magic={packed_linear,6'b0}-{3'b0,packed_linear,3'b0}+{6'b0,packed_linear};
- wire[4:0] packed_quotient=packed_magic[13:9];
- wire[7:0] packed_multiple9={packed_quotient,3'b0}+{3'b0,packed_quotient};
- wire[3:0] packed_bit=packed_linear-packed_multiple9;
+ // Direct byte address and bit select; all original glyph pixels retained.
+ wire[4:0] packed_quotient=packed_linear[7:3];
+ wire[3:0] packed_bit={1'b0,packed_linear[2:0]};
  wire[9:0] packed_word_address=packed_base+{5'b0,packed_quotient};
  wire packed_bounds=packed_column0>=packed_xmin&&{1'b0,packed_column0}<({1'b0,packed_xmin}+{1'b0,packed_width})&&packed_row0>=1&&packed_row0<=14;
  reg packed_hi1;reg[3:0] packed_bit1,packed_bit2;
