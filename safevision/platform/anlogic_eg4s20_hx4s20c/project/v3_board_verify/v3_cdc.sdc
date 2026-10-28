@@ -3,8 +3,6 @@
 # MEM50 -> SYS100 packed packet payload/control retain real setup/hold.
 set_false_path -to [get_regs {*req_meta *ack_meta frame_heartbeat_sync/meta pll_loss_sync/meta locks_meta* video/media_m1 video/media_p1 video/safe_p1 video/fault_s1 video/fault_p1 video/present_s1 video/cache/pixel_fault_meta video/cache/*store/done_meta video/cache/*store/fault_meta}]
 set_false_path -through [get_nets {control_common_rst_n config_common_rst_n media_common_rst_n tx_reset}] -to [get_pins {*.sr */*.sr}]
-# scrolling*status_mailbox: payload held from request through returned ACK; 8ns bounds physical flight.
-set_max_delay -datapath_only -from [get_regs {scrolling*status_mailbox/payload*}] -to [get_regs {scrolling*status_mailbox/dst_data*}] 8.000
 # uptime_to_pixel: payload held from request through returned ACK; 8ns bounds physical flight.
 set_max_delay -datapath_only -from [get_regs {uptime_to_pixel/payload*}] -to [get_regs {uptime_to_pixel/dst_data*}] 8.000
 # hdmi_status_mailbox: payload held from request through returned ACK; 8ns bounds physical flight.

@@ -47,7 +47,7 @@ module tb_v3_ticker_board;
   force dut.scrolling.ticker.frame_count=8'hfe;force dut.scrolling.ticker.loop_count=8'h57;
   repeat(100)@(negedge dut.sys_clk);
   command(0,0,0,32'h26102801);command(0,1,0,32'h26102801);
-  command(101,0,0,32'h544b1190);command(102,0,0,32'h005700fe);
+  command(101,0,0,32'h544b1190);command(102,0,3,0);
   command(103,0,3,0);command(32'h10000065,0,3,0);command(-1,0,3,0);
   $display("[PASS] production selection, ID, atomic cross-clock status and selector bounds");
   for(p=0;p<848;p=p+211)begin
@@ -60,7 +60,7 @@ module tb_v3_ticker_board;
   $display("[PASS] original RGB outside ticker, UP reservation, full glyph rows, clipped sides and DE gaps");
   p=400;release dut.scrolling.ticker.position;force dut.scrolling.ticker.position=12'd400;
   force dut.media_reset=1'b1;repeat(100)@(negedge dut.pixel_clk);
-  command(101,0,0,32'h544b1190);command(102,0,0,32'h005700fe);
+  command(101,0,0,32'h544b1190);command(102,0,3,0);
   ck(dut.pixel_rst_n,"media recovery leaves the independent display reset released");
   release dut.media_reset;
   $display("[PASS] ticker status and pixel reset survive media recovery");
