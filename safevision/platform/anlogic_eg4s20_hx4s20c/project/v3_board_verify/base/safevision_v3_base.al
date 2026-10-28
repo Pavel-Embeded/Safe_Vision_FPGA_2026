@@ -1007,7 +1007,7 @@
                     <effort>routability</effort>
                     <timing>on</timing>
                     <fix_hold>on</fix_hold>
-                    <post_route_opt>ultra</post_route_opt>
+                    <post_route_opt>auto</post_route_opt>
                 </RouteProperty>
             </Strategy>
             <UserParams />

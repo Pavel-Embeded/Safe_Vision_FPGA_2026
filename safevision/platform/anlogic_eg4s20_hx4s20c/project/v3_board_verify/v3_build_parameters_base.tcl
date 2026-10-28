@@ -16,7 +16,7 @@ set_param rtl min_ripple_len 32
 set_param place opt_timing off
 
 # Actual clocks/IO remain exact; optimize timing after congestion closure.
-set_param route post_route_opt ultra
+set_param route post_route_opt auto
 
 # Pack small control sets to reduce physical control/routing pressure.
 set_param rtl min_control_set 2
