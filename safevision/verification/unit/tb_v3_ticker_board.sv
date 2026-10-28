@@ -14,7 +14,8 @@ module tb_v3_ticker_board;
  reg[11:0] rx=0,ry=0;reg rd=0,rf=0;reg[23:0] underlying=24'h75a9c3;
  reg pixels[0:8191];reg[23:0] wanted[0:20];reg[23:0] new_wanted;
  reg[24:0] wanted_xy[0:20];
- reg cv=0,query=0;reg signed[31:0] selector=0;
+ reg cv=0,query=0;reg signed[31:0] selector=0;reg[6:0] catalog=36;
+ reg[31:0] q0=0,q1=0,q2=0,q3=0,q4=0,packed_expected;integer basis;
  integer errors=0,comparisons=0,i,p,xx,yy,source_col;
  task ck(input bit okay,input string message);begin comparisons++;
   if(!okay)begin errors++;if(errors<15)$display("[FAIL] %s x=%0d y=%0d phase=%0d t=%t",message,rx,ry,p,$time);end
@@ -24,7 +25,7 @@ module tb_v3_ticker_board;
   @(negedge dut.pixel_clk);rf=0;
  end endtask
  task command(input integer bank,input bit ask,input[7:0] code,input[31:0] expected);integer n;begin
-  @(negedge dut.sys_clk);selector=bank;query=ask;cv=1;
+  @(negedge dut.sys_clk);catalog=36;selector=bank;query=ask;cv=1;
   @(negedge dut.sys_clk);cv=0;n=0;
   while(!dut.b_reply&&n<200)begin @(negedge dut.sys_clk);n++;end
   ck(dut.b_reply&&dut.b_reply_code===code,"production diagnostic completion/code");
@@ -49,7 +50,7 @@ module tb_v3_ticker_board;
   $readmemb("pixels.mem",pixels);
   repeat(10)@(negedge clk);rst_n=1;wait(dut.sys_rst_n&&dut.pixel_rst_n);
   ck(dut.TICKER_ENABLE==1,"production source list enables ticker");
-  force dut.cmd_valid=cv;force dut.cmd_target=8'd66;force dut.cmd_catalog_id=7'd36;force dut.cmd_value=selector;force dut.cmd_query=query;
+  force dut.cmd_valid=cv;force dut.cmd_target=8'd66;force dut.cmd_catalog_id=catalog;force dut.cmd_value=selector;force dut.cmd_query=query;
   force dut.raw_x=rx;force dut.raw_y=ry;force dut.raw_de=rd;force dut.raw_fs=rf;force dut.rgb=underlying;
   force dut.scrolling.ticker.position=12'd400;
   repeat(100)@(negedge dut.sys_clk);
@@ -57,6 +58,25 @@ module tb_v3_ticker_board;
   command(101,0,0,32'h544b1190);command(102,0,3,0);
   command(103,0,3,0);command(32'h10000065,0,3,0);command(-1,0,3,0);
   $display("[PASS] production selection, ID, atomic cross-clock status and selector bounds");
+  force dut.b_query_next0=q0;force dut.b_query_next1=q1;force dut.b_query_next2=q2;
+  force dut.b_query_next3=q3;force dut.b_query_next4=q4;
+  for(basis=0;basis<256;basis++)begin
+   @(negedge dut.sys_clk);catalog=dut.B_QUERY_STATUS;selector=0;query=1;
+   q0=0;q1=0;q2=0;q3=0;q4=0;
+   if(basis<160)begin case(basis/32)
+    0:q0=32'd1<<(basis%32);1:q1=32'd1<<(basis%32);
+    2:q2=32'd1<<(basis%32);3:q3=32'd1<<(basis%32);
+    4:q4=32'd1<<(basis%32);endcase
+   end else begin q0=$urandom;q1=$urandom;q2=$urandom;q3=$urandom;q4=$urandom;end
+   packed_expected=q0|q1|q2|q3|q4;cv=1;
+   @(negedge dut.sys_clk);cv=0;q0=~q0;q1=~q1;q2=~q2;q3=~q3;q4=~q4;
+   ck(dut.b_reply&&dut.b_reply_code==0,"packed query replies on the original acceptance edge");
+   ck(dut.b_reply_value===packed_expected,"all five full32-bit live groups are captured before subsequent changes");
+   repeat(10)@(negedge dut.sys_clk);ck(!dut.b_reply,"packed query has exactly one reply");
+  end
+  release dut.b_query_next0;release dut.b_query_next1;release dut.b_query_next2;
+  release dut.b_query_next3;release dut.b_query_next4;catalog=36;query=0;
+  $display("[PASS] packed query basis vectors, random live buses, exact capture edge and single replies");
   for(p=0;p<1024;p=p+211)begin
    release dut.scrolling.ticker.position;
    force dut.scrolling.ticker.position=p;

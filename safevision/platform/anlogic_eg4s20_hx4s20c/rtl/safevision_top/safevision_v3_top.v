@@ -526,6 +526,10 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
   ({32{b_query_select[22]}} & (uart_overrun)) |
   ({32{b_query_select[23]}} & (uart_reply_dropped)) |
   ({32{b_query_select[24]}} & ({16'd0,response_latency_ms}));
+ // One packed query register preserves the original acceptance edge and
+ // reply latency. All five one-hot groups remain explicit balanced logic.
+ // The legacy profile keeps its frozen register grouping for old witnesses.
+ wire[31:0] b_query_packed=b_query_next0|b_query_next1|b_query_next2|b_query_next3|b_query_next4;
  reg[31:0] b_query_group0,b_query_group1,b_query_group2,b_query_group3,b_query_group4;
  wire[31:0] b_query_data=b_query_group0 | b_query_group1 | b_query_group2 | b_query_group3 | b_query_group4;
  // The ordinary one-hot query groups are zero for DIAG. Form DIAG's
@@ -568,7 +572,12 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  else if(cmd_valid && cmd_target==66)begin b_reply_fast<=b_diag_selected;b_reply_query<=cmd_query&&!b_diag_selected;b_reply<=1;b_reply_code<=0;
  b_reply_direct<=0;
  b_diag_group0<=b_diag_next0;b_diag_group1<=b_diag_next1;b_diag_group2<=b_diag_next2;b_diag_group3<=b_diag_next3;
+ if(TICKER_ENABLE)begin
+  b_query_group0 <= b_query_packed;
+  b_query_group1 <= 0;b_query_group2 <= 0;b_query_group3 <= 0;b_query_group4 <= 0;
+ end else begin
  b_query_group0<=b_query_next0;b_query_group1<=b_query_next1;b_query_group2<=b_query_next2;b_query_group3<=b_query_next3;b_query_group4<=b_query_next4;
+ end
  if(b_diag_selected)begin
   if(cmd_query || cmd_value==0 || cmd_value==1 || cmd_value==2 || cmd_value==3 || cmd_value==100 || (TICKER_ENABLE&&cmd_value==101))begin end
   else if(diag_mem_range)begin
