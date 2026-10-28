@@ -211,6 +211,49 @@ def pointer_compare(root,base):
   verified.append(dict(name=name,raw_sha256=sha(native/'sim.log'),compiler=g))
  return additions,dict(mathematical_proof=actual,detector_baseline=detector,semantic_controls=verified)
 
+def bmp_extent(root,base):
+ from check_bmp_header_phase import check
+ recorded=read(base/'bmp_extent_numeric/result.json');actual=check(root)
+ require(actual==recorded and actual['accepted']and actual['legacy_flex0_combinational_behavior_preserved']and actual['all_other_parser_state_and_outputs_unchanged'],'BMP source transform or arithmetic proof differs')
+ require(actual['extent_sum_bits']==33 and actual['private_sum_stages']==0 and actual['late_capture_bytes']==[52,53] and actual['setup_cycles']==2 and actual['hold_cycles']==1 and actual['minimum_stable_cycles']==19 and actual['header_publication_byte']==53 and actual['conservative_latest_settle_byte']<53,'BMP pipeline contract differs')
+ require(actual['bound_transitivity_proven']and actual['bound_weak_order_classes']==13,'BMP comparison transitivity proof absent')
+ suite='bmp_extent_pipeline';top='tb_v3_bmp_extent_pipeline'
+ extra=positive(root,base/'bmp_extent',suite,top)
+ raw=(base/'bmp_extent'/top/'sim.log').read_text('utf-8')
+ require(re.findall(r'\bdata_errors=(\d+)',raw)==['0']and re.findall(r'\bdriver_errors=(\d+)',raw)==['0']and'cases=2048'in raw,'BMP public comparison baseline incomplete')
+ require(re.findall(r'\bphase_errors=(\d+)',raw)[-1:]==['0'] and sum(map(int,re.findall(r'late_checks=(\d+)',raw)))>=15984,'late-header stable-data assertions incomplete')
+ from test_bmp_header_phase_controls import CASES,SOURCE
+ require({c[0]for c in CASES}=={'extent_carry_lost','extent_equal_rejected','dib_high_borrow_lost'}and SOURCE=='safevision/rtl/media/bmp_parser.v','BMP semantic inventory differs')
+ folder=base/'bmp_extent_controls';summary=read(folder/'summary.json');require(summary['accepted']and len(summary['cases'])==3,'BMP controls incomplete')
+ verified=[]
+ for name,before,after in CASES:
+  rows=[r for r in summary['cases']if r['name']==name];require(len(rows)==1,'BMP control duplicated or absent');row=rows[0]
+  require(tuple(row[k]for k in('target','before','after','suite','top'))==(SOURCE,before,after,suite,top),'BMP mutation definition differs')
+  trial=folder/name;require(read(trial/'result.json')==row and row['accepted']and row['process_exit']==1 and row['normal_completion'],'BMP control did not finish normally')
+  text=(root/SOURCE).read_text('utf-8-sig');require(sha(root/SOURCE)==row['original_sha256']and text.count(before)==1,'BMP control source differs')
+  require((trial/'mutant.v').read_text('utf-8-sig')==text.replace(before,after)and sha(trial/'mutant.v')==row['mutated_sha256'],'BMP mutant differs')
+  native=trial/'native'/top;bind(root,native,SOURCE,row['mutated_sha256']);g=graph(root,native,dict(suite=suite,top=top),row)
+  raw=(native/'sim.log').read_text('utf-8');counts=[int(v)for v in re.findall(r'errors\s*=\s*(\d+)',raw)]
+  require(sha(native/'sim.log')==row['sim_sha256']and'$finish called'in raw and'PASS '+top in raw and'[FAIL] every public parser output'in raw and counts==row['error_counts']and any(counts),'BMP raw semantic detection absent')
+  require(not re.search(r'(?im)^\s*(?:Fatal:|FATAL\b|ERROR:|SKIP\b)',raw)and'[SKIP]'not in raw,'BMP control crashed or skipped')
+  values=re.findall(r'\bdata_errors=(\d+)',raw)
+  require(len(values)==1 and int(values[0])==row['actual_data_comparison_errors']and int(values[0])>0 and re.findall(r'\bdriver_errors=(\d+)',raw)==['0']and row['driver_errors']==0,'BMP control found only a driver fault')
+  verified.append(dict(name=name,raw_sha256=sha(native/'sim.log'),compiler=g))
+ # This control tests the timing contract, not public functional behavior.
+ trial=base/'bmp_phase_contract';row=read(trial/'result.json')
+ before="((hcnt==6'd52)||(hcnt==6'd53))";after="(hcnt>=6'd28)"
+ require(row['accepted'] and row['classification']=='Timing stability contract detection, not a public-functional failure' and row['before']==before and row['after']==after and row['target']==SOURCE,'phase control identity differs')
+ text=(root/SOURCE).read_text('utf-8-sig');require(text.count(before)==1 and sha(root/SOURCE)==row['original_sha256'],'phase control source differs')
+ mutant=trial/'mutant.v';require(mutant.read_text('utf-8-sig')==text.replace(before,after) and sha(mutant)==row['mutated_sha256'],'phase mutant differs')
+ native=trial/'native'/top;bind(root,native,SOURCE,row['mutated_sha256']);g=graph(root,native,dict(suite=suite,top=top),row)
+ raw=(native/'sim.log').read_text('utf-8');values=re.findall(r'PASS tb_v3_bmp_extent_pipeline errors=(\d+) comparisons=(\d+) data_errors=(\d+) driver_errors=(\d+) phase_errors=(\d+) cases=2048',raw)
+ require(len(values)==1 and row['process_exit']==1 and row['normal_completion'] and '$finish called'in raw and sha(native/'sim.log')==row['sim_sha256'],'phase detector did not finish normally')
+ errors,comparisons,data_errors,driver_errors,phase_errors=map(int,values[0])
+ require(errors>0 and comparisons>=1000000 and data_errors==0 and driver_errors==0 and phase_errors==row['timing_contract_errors'] and phase_errors>0,'phase stability detector failed')
+ require(not re.search(r'(?im)^\s*(?:Fatal:|FATAL\b|ERROR:|SKIP\b)',raw)and'[SKIP]'not in raw,'phase detector crashed or skipped')
+ return [extra],verified,dict(mathematical_proof=actual,semantic_controls=verified,timing_contract_control=dict(name=row['name'],errors=phase_errors,raw_sha256=sha(native/'sim.log'),compiler=g),timing_contract_control_counted_as_semantic=False)
+
+
 def audit(root,regression,ticker,board,controls):
  require(__debug__,'assertions disabled')
  matrix=read(root/'safevision/build/qualification/four_features_261020.json')
@@ -228,6 +271,9 @@ def audit(root,regression,ticker,board,controls):
  top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig')
  direct_pointer=top.count('.DIRECT_RING_COMPARE(TICKER_ENABLE)')==1
  if direct_pointer:allowed|={'safevision/rtl/audio/v3_pcm_ring.v','safevision/rtl/audio/v3_audio_system.v'}
+ header_phase='wire header_late=(mstate==H_HEAD)'in(root/'safevision/rtl/media/bmp_parser.v').read_text('utf-8-sig')
+ require(header_phase,'reviewed header phase not selected')
+ allowed|={'safevision/rtl/media/bmp_parser.v','safevision/tools/gen_v3_cdc.py',str(FLOW/'v3_cdc.sdc').replace('\\','/'),str(FLOW/'v3_cdc_audit.tcl').replace('\\','/')}
  packed='.PACKED_EXTERNAL(1)'in top
  selected=top.count('.EXTERNAL_FONT(1)')==1 and top.count('.SHARED_TICKER(TICKER_ENABLE)')==1 and top.count('.SHARED_PACKED_FONT(TICKER_ENABLE)')==1 and top.count('.PACKED_EXTERNAL(1)')==1 and '.EXTERNAL_FONT(0)'not in top and '.SHARED_TICKER(0)'not in top if packed else top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top
  require(selected and top.count('.MESSAGE_CHARS(32)')==1 and '.MESSAGE_CHARS(16)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'32character/shared-status/lookahead/packed-reply production profile differs')
@@ -237,6 +283,7 @@ def audit(root,regression,ticker,board,controls):
  new={'safevision/rtl/video/v3_scrolling_ticker.v','safevision/assets/fonts/v3_ticker16.mem','safevision/assets/fonts/v3_ticker16.provenance.json'}|{str(FLOW/n).replace('\\','/')for n in ('ticker_enable.v','base/v3_ticker16.mem','hd/v3_ticker16.mem')}
  new|={'safevision/assets/fonts/v3_spectrum_ticker.mem','safevision/assets/fonts/v3_spectrum_ticker.provenance.json','safevision/assets/fonts/v3_ticker_shared16.mem'}|{str(FLOW/n).replace('\\','/')for n in ('base/v3_spectrum_ticker.mem','hd/v3_spectrum_ticker.mem')}
  if packed:new|={'safevision/assets/fonts/v3_spectrum_ticker32.mem','safevision/assets/fonts/v3_spectrum_ticker32.provenance.json','safevision/rtl/include/v3_ticker_packed32.vh','safevision/rtl/include/v3_ticker_byte32.vh','safevision/tools/build_ticker_shared32_lossless.py'}|{str(FLOW/n).replace('\\','/')for n in('base/v3_spectrum_ticker32.mem','hd/v3_spectrum_ticker32.mem')}
+ new.add('safevision/tools/check_bmp_header_phase.py')
  require(set(old)<=set(sources)and set(sources)-set(old)==new,'unreviewed production dependency added/removed')
  changes={n for n,h in old.items()if sources[n]!=h}
  optional={str(FLOW/'v3_build_parameters_base.tcl').replace('\\','/')}
@@ -373,8 +420,12 @@ def audit(root,regression,ticker,board,controls):
   production_profile['audio_ring_direct_pointer_compare']=True
   production_profile['audio_ring_registered_occupancy']=pointer_proof['mathematical_proof']['registered_occupancy']
   production_profile['audio_ring_capacity_pairs_per_slot']=16384
+ header_controls=[];header_proof=None
+ if header_phase:
+  extra,header_controls,header_proof=bmp_extent(root,controls.parent);additions+=extra
+  production_profile['bmp_extent_sum_bits']=33;production_profile['bmp_extent_private_stages']=0;production_profile['bmp_header_phase']=[52,53];production_profile['bmp_header_setup_cycles']=2;production_profile['bmp_header_hold_cycles']=1;production_profile['bmp_publication_byte']=53
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)

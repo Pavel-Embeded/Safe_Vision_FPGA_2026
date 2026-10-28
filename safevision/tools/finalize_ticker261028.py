@@ -59,6 +59,8 @@ def main():
    names|={'safevision/tools/test_v3_media_bram_layout261028.py','safevision/verification/assets/bram_layout261028/route25.adc','safevision/verification/assets/bram_layout261028/place45.adc','safevision/verification/assets/bram_layout261028/provenance.json'}
   if functional['geometry_width'].get('accepted'):
    names.add('safevision/tools/check_geometry_width261028.py')
+  if functional['production_profile'].get('bmp_header_phase'):
+   names|={'safevision/tools/check_bmp_header_phase.py','safevision/tools/test_bmp_header_phase_controls.py','safevision/verification/models/bmp_parser_frozen_extent.freeze.json'}
   commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD']).decode().strip()
   binding=source_commit_binding(root,root,commit,names);require(binding['verified'],'approval inputs are not committed: '+str(binding.get('errors')))
   all_inputs={name:sha(root/name)for name in names}
