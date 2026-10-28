@@ -160,6 +160,8 @@ def audit(root,regression,ticker,board,controls):
  allowed|={'safevision/rtl/video/v3_audio_spectrum.v','safevision/rtl/video/v3_status_layers.v','safevision/rtl/video/v3_video_display_core.v'}
  allowed|={'safevision/rtl/media/v3_bmp_normalizer.v','safevision/rtl/hd/v3_status_layers.v','safevision/rtl/hd/v3_video_display_core.v'}
  allowed|={'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v','safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v','safevision/rtl/memory/frame_writer.v'}
+ layout_files={'safevision/tools/v3_sources.py','safevision/tools/v3_final_sta.py','safevision/tools/check_v3_board.py',str(FLOW/'v3_physical_base.adc').replace('\\','/')}
+ allowed|=layout_files
  top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig')
  require(top.count('.MESSAGE_CHARS(32)')==1 and top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.MESSAGE_CHARS(16)'not in top and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'local32/shared-status/lookahead/packed-reply production profile differs')
  production_profile=dict(font_storage='dedicated_ram9k',message_characters=32,period_pixels=1024,fft_font_sharing=False,video_latency_clocks=21,source_ahead_pixels=5)
@@ -170,7 +172,15 @@ def audit(root,regression,ticker,board,controls):
  require(set(old)<=set(sources)and set(sources)-set(old)==new,'unreviewed production dependency added/removed')
  changes={n for n,h in old.items()if sources[n]!=h}
  optional={str(FLOW/'v3_build_parameters_base.tcl').replace('\\','/')}
+ optional|=layout_files
  require((allowed-optional)<=changes and changes<=allowed,'unexpected physical changes: '+repr((changes-allowed)|((allowed-optional)-changes)))
+ if changes&layout_files:
+  require(changes&layout_files==layout_files,'partial media-RAM layout/readback profile')
+  from v3_sources import required_media_bram_locations
+  locations=required_media_bram_locations(root,'base')
+  expected={'player/normalized_bmp$u_unpack/ramread0_syn_5':'X8Y18Z0','player/normalized_bmp$u_unpack/ramread0_syn_15':'X8Y18Z1','row_guard/ramread0_syn_6':'X8Y9Z0','row_guard/ramread0_syn_23':'X8Y9Z1','sink/u_fifo/fifo/ram_inst/ramread0_syn_6':'X8Y18Z3','sink/u_fifo/fifo/ram_inst/ramread0_syn_16':'X8Y18Z2'}
+  require(locations==expected and not required_media_bram_locations(root,'hd'),'reviewed BASE six-RAM layout differs')
+  production_profile['base_media_bram_locations']=locations
  require(len(sources)==217,'current physical inventory changed')
  summary=read(regression/'summary.json');require(summary.get('complete')and summary.get('accepted'),'full native campaign incomplete/failed')
  expected_jobs={('legacy','a'),('legacy','b')}|{('positive',r['top'])for r in matrix['positive']if not r['legacy']}|{('negative',r['mutation'])for r in matrix['negative']}

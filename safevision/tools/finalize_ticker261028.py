@@ -22,6 +22,12 @@ def main():
     code=subprocess.run([sys.executable,'-B',str(root/'safevision/tools'/tool)],cwd=root,stdout=log,stderr=subprocess.STDOUT).returncode
    require(code==0,'delivery evidence refusal tests failed: '+tool)
   functional=audit(root,proof/'regression',proof/'ticker',proof/'board',proof/'controls');save(out/'functional.audit.json',functional)
+  if functional['production_profile'].get('base_media_bram_locations'):
+   helper='test_v3_media_bram_layout261028.py';helper_temp=out/'helper_tmp';helper_temp.mkdir()
+   helper_env=os.environ.copy();helper_env['TEMP']=helper_env['TMP']=str(helper_temp)
+   with(out/(helper+'.log')).open('w',encoding='utf-8')as log:
+    code=subprocess.run([sys.executable,'-B',str(root/'safevision/tools'/helper),'--repo',str(root),'--output',str(out/'media_bram.controls.json')],cwd=root,env=helper_env,stdout=log,stderr=subprocess.STDOUT).returncode
+   require(code==0 and read(out/'media_bram.controls.json')['accepted']and read(out/'media_bram.controls.json')['check_count']==13,'media RAM source/native-location detector tests failed')
   hardware=snapshot(root);require(snapshot(frozen)==hardware,'routed source differs from current hardware')
   record=read(native/'base/build.manifest.json');folder=native/'base'
   require(record['status']=='PASS'and record['source_unchanged']and record['source_commit_binding']['verified']and record['sources']==hardware,'native source identity rejected')
@@ -45,6 +51,8 @@ def main():
   names|={'safevision/tools/build_ticker_shared_font.py','safevision/tools/check_shape_space261028.py'}
   names|={'safevision/tools/test_ticker_archive261028.py','safevision/tools/test_ticker_uart261028.py'}
   names|={'safevision/tools/test_geometry_live_miter261028.py','safevision/tools/test_source_wait_watchdog261028.py','safevision/tools/check_v3_legacy_ports537.py'}
+  if functional['production_profile'].get('base_media_bram_locations'):
+   names|={'safevision/tools/test_v3_media_bram_layout261028.py','safevision/verification/assets/bram_layout261028/route25.adc','safevision/verification/assets/bram_layout261028/place45.adc','safevision/verification/assets/bram_layout261028/provenance.json'}
   if functional['geometry_width'].get('accepted'):
    names.add('safevision/tools/check_geometry_width261028.py')
   commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD']).decode().strip()

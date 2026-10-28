@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "scope": "Native RAM-location parser fixtures and layout references only; historical coordinates provide no approval for current RTL, timing or hardware",
+  "records": [
+    {
+      "path": "safevision/verification/assets/bram_layout261028/route25.adc",
+      "sha256": "ac2e2bd6056c95056a0c57668af7ef615525757a6b90310870f74c5696fe8dd4",
+      "native_command": "report_cells -bram -export_adc",
+      "source_commit": "6661d915e41b286926535d7d697c67055b1afa8c",
+      "database_sha256": "455e6622783832ea4deef0e94c2921338165603090877aed26e2426a923c887e",
+      "placement_completed": true,
+      "routing_completed": true,
+      "timing_approved": false,
+      "hardware_approval": false
+    },
+    {
+      "path": "safevision/verification/assets/bram_layout261028/place45.adc",
+      "sha256": "9635a399f2412ba4719bd595079b9adb18ef7ed177e94388a2e2b4027e5e106b",
+      "native_command": "report_cells -bram -export_adc",
+      "source_commit": "042fa0e953d9e9ef65bb96d0ba65dedbf667e9fc",
+      "database_sha256": "1dcf9ff1d882756ff0bd89c7ba2fd21de11a3af5727f76cf60fb28b8fc9b4c14",
+      "placement_completed": true,
+      "routing_completed": false,
+      "timing_approved": false,
+      "hardware_approval": false
+    }
+  ]
+}
