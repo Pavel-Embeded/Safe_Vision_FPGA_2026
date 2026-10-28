@@ -34,8 +34,22 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800,DIRECT_POINTER_COMP
                  ((state==2)&&reading&&rvalid&&!seen_data);
  wire finish_write=(state==2)&&!busy&&!reading;
  generate for(genvar slot_index=0;slot_index<4;slot_index=slot_index+1)begin:parallel_pointers
-  (* use_ripple=1 *) wire[PTR_W:0] occupancy=wp[slot_index]-rp[slot_index];
-  assign count[slot_index]=occupancy;
+  if(DIRECT_POINTER_COMPARE)begin:registered_level
+   // This state changes on exactly the same edges as the two pointers.
+   // Reset establishes value=wp-rp modulo2*CAP. The shared increment and
+   // decrement events preserve that identity without adding status latency.
+   reg[PTR_W:0] value;
+   always @(posedge clk or negedge rst_n)
+    if(!rst_n)value<=0;
+    else if(owner==slot_index)begin
+     if(take_read)value<=value-1'b1;
+     else if(finish_write)value<=value+1'b1;
+    end
+   assign count[slot_index]=value;
+  end else begin:arithmetic_level
+   (* use_ripple=1 *) wire[PTR_W:0] occupancy=wp[slot_index]-rp[slot_index];
+   assign count[slot_index]=occupancy;
+  end
   always @(posedge clk or negedge rst_n)
    if(!rst_n)begin wp[slot_index]<=0;rp[slot_index]<=0;end
    else if(owner==slot_index)begin
