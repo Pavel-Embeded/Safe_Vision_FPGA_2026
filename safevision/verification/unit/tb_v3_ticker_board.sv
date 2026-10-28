@@ -31,7 +31,7 @@ module tb_v3_ticker_board;
   @(negedge dut.pixel_clk);rx=px;ry=py;rd=active;rf=0;
   panel=active&&px>=120&&px<632&&py>=456&&py<476;
   source_col=px-(632-p);text_bit=0;
-  if(panel&&py>=458&&py<474&&source_col>=0&&source_col<336)
+  if(panel&&py>=458&&py<474&&source_col>=0&&source_col<512)
    text_bit=pixels[(py-458)*512+source_col];
   new_wanted=panel?(text_bit?24'hf4fff4:py==456?24'h3e8290:24'h0c171b):underlying;
   @(posedge dut.pixel_clk);#0.001;
@@ -54,7 +54,7 @@ module tb_v3_ticker_board;
   command(101,0,0,32'h544b1190);command(102,0,3,0);
   command(103,0,3,0);command(32'h10000065,0,3,0);command(-1,0,3,0);
   $display("[PASS] production selection, ID, atomic cross-clock status and selector bounds");
-  for(p=0;p<848;p=p+211)begin
+  for(p=0;p<1024;p=p+211)begin
    release dut.scrolling.ticker.position;
    force dut.scrolling.ticker.position=p;
    for(i=0;i<21;i++)begin wanted[i]=underlying;wanted_xy[i]=0;end

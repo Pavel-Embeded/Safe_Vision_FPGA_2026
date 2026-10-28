@@ -6,7 +6,7 @@ import struct
 from pathlib import Path
 from PIL import Image,ImageDraw,ImageFont
 
-MESSAGE='请保持冷静，听从指挥，沿安全出口有序疏散。'
+MESSAGE='安全提示：遇紧急情况，请保持冷静，听从工作人员指挥，并有序撤离。'
 FONT_BLOB='fafdfebf3103db4dc81d33ebd55b6786e08c9ebe'
 
 def source_copyright(raw):
@@ -39,7 +39,7 @@ def main():
     raw=args.font.read_bytes()
     assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==FONT_BLOB
     copyright_text=source_copyright(raw)
-    assert len(MESSAGE)==21
+    assert len(MESSAGE)==32
     # The CJK outline includes descenders: 14px fits the full outline in a
     # 16px cell without cropping punctuation or the bottom character stroke.
     font=ImageFont.truetype(str(args.font),14)

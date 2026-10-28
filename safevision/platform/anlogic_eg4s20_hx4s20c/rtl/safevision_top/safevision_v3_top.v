@@ -328,7 +328,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  generate if(TICKER_ENABLE)begin:scrolling
   wire[11:0] position;
   v3_scrolling_ticker #(.WIDTH(HD?1280:640),.HEIGHT(HD?720:480),
-   .PIXEL_LATENCY(21),.MESSAGE_CHARS(21),.FRAMES_PER_PIXEL(2)) ticker(
+   .PIXEL_LATENCY(21),.MESSAGE_CHARS(32),.FRAMES_PER_PIXEL(2)) ticker(
    .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(raw_fs),
    .x(raw_x),.y(raw_y),.de(raw_de),.panel_pixel(),
    .text_pixel(ticker_text),.edge_pixel(),

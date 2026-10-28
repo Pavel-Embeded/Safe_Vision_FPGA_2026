@@ -12,7 +12,7 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
  integer model_position=0,model_divider=0,model_frames=0,model_loops=0;
  integer errors=0,comparisons=0,steps=0,i,xx,yy,ph,frame,source_column;
  reg want_panel,want_text,want_edge;
- localparam PERIOD=(WIDTH-128)+21*16;
+ localparam PERIOD=(WIDTH-128)+32*16;
  task ck(input bit okay,input string message);begin
   comparisons++;
   if(!okay)begin errors++;if(errors<15)$display("[FAIL] %s phase=%0d x=%0d y=%0d t=%t",message,model_position,x,y,$time);end
@@ -25,7 +25,7 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
   want_edge=want_panel&&py==HEIGHT-24;
   source_column=(px-120)-((WIDTH-128)-model_position);
   want_text=0;
-  if(want_panel&&py>=HEIGHT-22&&py<HEIGHT-6&&source_column>=0&&source_column<336)
+  if(want_panel&&py>=HEIGHT-22&&py<HEIGHT-6&&source_column>=0&&source_column<512)
    want_text=reference_pixels[(py-(HEIGHT-22))*512+source_column];
   @(posedge clk);#1;
   for(i=20;i>0;i=i-1)begin qp[i]=qp[i-1];qt[i]=qt[i-1];qe[i]=qe[i-1];end

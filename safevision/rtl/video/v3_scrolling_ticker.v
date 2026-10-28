@@ -2,7 +2,7 @@
 // resets never enter this module. Three one-bit tags retain the production
 // 21-clock raw-raster contract without delaying the existing video stream.
 module v3_scrolling_ticker #(
- parameter integer WIDTH=640,HEIGHT=480,MESSAGE_CHARS=21,
+ parameter integer WIDTH=640,HEIGHT=480,MESSAGE_CHARS=32,
  parameter integer FRAMES_PER_PIXEL=2,PIXEL_LATENCY=21,
  parameter BITMAP_FILE="../../assets/fonts/v3_ticker16.mem"
 )(
@@ -41,7 +41,7 @@ module v3_scrolling_ticker #(
  wire[12:0] source_x=translated-VIEW_RIGHT;
  wire box=de&&x>=VIEW_LEFT&&x<VIEW_RIGHT&&y>=HEIGHT-24&&y<HEIGHT-4;
  wire glyph_valid=box&&y>=HEIGHT-22&&y<HEIGHT-6&&
-  translated>=VIEW_RIGHT&&translated<VIEW_RIGHT+TEXT_WIDTH;
+  source_x<TEXT_WIDTH;
  wire border=box&&(y==HEIGHT-24);
  wire[3:0] glyph_row=y-(HEIGHT-22);
  (* ram_style="block" *) reg[15:0] bitmap_rom[0:511];
