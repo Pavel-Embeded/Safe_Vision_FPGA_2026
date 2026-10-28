@@ -3,6 +3,7 @@ import hashlib,json,re,shutil,xml.etree.ElementTree as ET
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 FLOW=Path('safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify')
+BASE_MEDIA_BRAM_LOCATIONS=(('player/normalized_bmp$u_unpack/ramread0_syn_5', 'X8Y18Z0'), ('player/normalized_bmp$u_unpack/ramread0_syn_15', 'X8Y18Z1'), ('row_guard/ramread0_syn_6', 'X8Y9Z0'), ('row_guard/ramread0_syn_23', 'X8Y9Z1'), ('sink/u_fifo/fifo/ram_inst/ramread0_syn_6', 'X8Y18Z3'), ('sink/u_fifo/fifo/ram_inst/ramread0_syn_16', 'X8Y18Z2'))
 def assets(root):
  result=[]
  for line in (root/FLOW/'v3_board_assets.list').read_text(encoding='utf-8-sig').splitlines():
@@ -102,7 +103,10 @@ def physical_constraint_files(root,mode=None):
   statements=[s.strip() for s in extra.read_text(encoding='utf-8-sig').splitlines() if s.strip() and not s.lstrip().startswith('#')]
   approved='set_inst_assignment {memory_ip/u2_ram/u2_wrrd/sdr_t_reg} {location = x19y31z1;}'
   phy=['create_bound {v3_phy_region} -mode fixed -width 12 -height 30 -origin {29 8}', 'add_cells_to_bound -bound v3_phy_region -cells {reset_phy serializer}']
-  if statements not in ([approved],[approved]+phy):raise ValueError('unreviewed internal physical constraint')
+  media=[f'set_inst_assignment {{{n}}} {{LOCATION = {loc};}}'for n,loc in BASE_MEDIA_BRAM_LOCATIONS]
+  layouts=([approved],[approved]+phy)
+  if extra.name=='v3_physical_base.adc':layouts+=([approved]+media,)
+  if statements not in layouts:raise ValueError('unreviewed internal physical constraint')
  files=[root/FLOW/'v3_board.adc']
  if mode is None:files.extend(p for p in extras if p.exists())
  else:
@@ -110,6 +114,16 @@ def physical_constraint_files(root,mode=None):
   if not extra.exists():extra=common
   if extra.exists():files.append(extra)
  return files
+
+def required_media_bram_locations(root,mode):
+ """Only the explicitly reviewed BASE six-RAM layout requires readback."""
+ physical_constraint_files(root,mode)
+ if mode!='base':return {}
+ path=root/FLOW/'v3_physical_base.adc'
+ if not path.is_file():return {}
+ text=path.read_text('utf-8-sig')
+ lines=[f'set_inst_assignment {{{n}}} {{LOCATION = {loc};}}'for n,loc in BASE_MEDIA_BRAM_LOCATIONS]
+ return dict(BASE_MEDIA_BRAM_LOCATIONS)if all(line in text.splitlines()for line in lines)else {}
 
 def build_parameters(root,mode=None):
  """Resolve reviewed common and optional mode-specific native TD parameters."""

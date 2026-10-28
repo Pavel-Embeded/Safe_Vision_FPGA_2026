@@ -46,6 +46,7 @@ def reassess(exe,folder,sdc_paths,audit_path=None,env=None,route_process_exit_co
  if audit_path:commands+=[' source {'+Path(audit_path).as_posix()+'}']
  commands+=[' report_timing_summary -ep_num 200 -path_num 3 -file route.timing',' report_timing_status -file route.status',
  ' report_timing_exception -ep_num 200 -path_num 8 -file route.exceptions',' check_timing -verbose -file route.check',' export_sdc -file route.derived.sdc',
+ ' report_cells -bram -file route.bram.adc -export_adc',
  # All formal reports above use the exact same pre-clock-summary clock graph.
  ' report_clock_summary -levels 20 -expand_buckets -debug -file route.clocks',
  ' check_timing -verbose -file after_clock_report.check',
@@ -66,6 +67,7 @@ def reassess(exe,folder,sdc_paths,audit_path=None,env=None,route_process_exit_co
   record['sta_process_exit_code']=p.returncode;console=(folder/'final_sta.console.log').read_text(encoding='utf-8',errors='replace')
   record['normal_completion']=p.returncode==0 and 'V3 FINAL STA COMPLETE' in console and not re.search(r'V3 FINAL STA FAILED|\bERROR:',console)
   if not record['normal_completion']:raise RuntimeError('fresh TD STA failed or lacks normal completion marker')
+  record['bram_location_report_sha256']=digest(folder/'route.bram.adc')
   after={name:digest(Path(name)) for name in frozen};record['database_and_constraint_sha256_after']=after
   if after!=frozen:raise RuntimeError('frozen database or constraints changed during final STA')
   margins0,paths0,clocks0=timing_identity(before_timing);margins1,paths1,clocks1=timing_identity(read_report(folder/'route.timing'))

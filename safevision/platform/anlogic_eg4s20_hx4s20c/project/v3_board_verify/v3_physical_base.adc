@@ -1,3 +1,11 @@
 # BASE uses the reviewed SDRAM output-enable location without the optional PHY bound.
 # Board pin assignments are exclusively defined in v3_board.adc.
 set_inst_assignment {memory_ip/u2_ram/u2_wrrd/sdr_t_reg} {location = x19y31z1;}
+
+# Keep the six media-buffer RAM sites from the previously routed layout.
+set_inst_assignment {player/normalized_bmp$u_unpack/ramread0_syn_5} {LOCATION = X8Y18Z0;}
+set_inst_assignment {player/normalized_bmp$u_unpack/ramread0_syn_15} {LOCATION = X8Y18Z1;}
+set_inst_assignment {row_guard/ramread0_syn_6} {LOCATION = X8Y9Z0;}
+set_inst_assignment {row_guard/ramread0_syn_23} {LOCATION = X8Y9Z1;}
+set_inst_assignment {sink/u_fifo/fifo/ram_inst/ramread0_syn_6} {LOCATION = X8Y18Z3;}
+set_inst_assignment {sink/u_fifo/fifo/ram_inst/ramread0_syn_16} {LOCATION = X8Y18Z2;}

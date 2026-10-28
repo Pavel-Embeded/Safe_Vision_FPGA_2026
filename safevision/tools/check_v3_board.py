@@ -103,10 +103,25 @@ def clock_definition_health(health):
  if not masters or any(int(x) for x in masters):errors.append('V3 missing/nonzero generated-master connectivity health')
  return errors
 
+def media_bram_locations(text,expected):
+ rows=[];errors=[]
+ for line in text.splitlines():
+  if not line.strip():continue
+  match=re.fullmatch(r'set_inst_assignment \{([^}]+)\} \{LOCATION = (X[0-9]+Y[0-9]+Z[0-9]+);\}',line)
+  if not match:errors.append('invalid native BRAM placement row');continue
+  rows.append(match.groups())
+ actual=dict(rows)
+ if len(actual)!=len(rows)or not rows:errors.append('missing or duplicate native BRAM placement rows')
+ for name,location in expected.items():
+  if actual.get(name)!=location:errors.append('media BRAM location differs: '+name)
+ return dict(accepted=not errors,errors=errors,reported_brams=len(rows),required_locations=expected,actual_required_locations={name:actual.get(name)for name in expected})
+
 def check(folder,repo):
  errors=[];files=['route.timing','route.check','route.area','route.exceptions','constraint.objects.tsv','route.derived.sdc','route.db','route.netlist.v','gate.hidden.params','gate.netlist.v','route.clocks','route.hidden.params','final_sta.tcl','final_sta.manifest.json','after_clock_report.check','after_clock_report.timing','after_clock_report.exceptions','inprocess.route.timing','inprocess.route.check','inprocess.route.exceptions']
- from v3_sources import build_parameters
+ from v3_sources import build_parameters,required_media_bram_locations
  mode=folder.name if folder.name in ('base','hd') else None
+ required_bram=required_media_bram_locations(repo,mode)
+ if required_bram:files.append('route.bram.adc')
  if any((stage,key)==('place','seed') for stage,key,value in build_parameters(repo,mode)):
   files.extend(('place.all.params','place.seed.params'))
  for name in files:
@@ -141,6 +156,12 @@ def check(folder,repo):
   from v3_resource_policy import load
   result['resource_policy']=load(repo)
   rg=resource_gate(area,result['resource_policy']);errors.extend(rg.pop('errors'));result.update({k:v for k,v in rg.items() if k!='accepted'})
+  if required_bram:
+   bram_report=folder/'route.bram.adc'
+   if integrity.get('bram_location_report_sha256')!=hashlib.sha256(bram_report.read_bytes()).hexdigest():errors.append('fresh-process BRAM placement report identity differs')
+   layout=media_bram_locations(read_report(bram_report),required_bram);errors.extend(layout['errors'])
+   if layout['reported_brams']!=result['resources']['bram']['used']+result['resources']['bram32k']['used']:errors.append('native BRAM placement inventory differs from native area')
+   result['media_bram_locations']=layout
   result['spi_cs_ordinary_paths']=check_cs(timing)
   if not result['spi_cs_ordinary_paths']['accepted']:errors.extend(result['spi_cs_ordinary_paths']['errors'])
   budget=json.loads((repo/FLOW/'io_budget.json').read_text(encoding='utf-8'))
