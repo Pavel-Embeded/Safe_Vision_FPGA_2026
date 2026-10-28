@@ -19,6 +19,10 @@ module tb_v3_ticker_board;
  task ck(input bit okay,input string message);begin comparisons++;
   if(!okay)begin errors++;if(errors<15)$display("[FAIL] %s x=%0d y=%0d phase=%0d t=%t",message,rx,ry,p,$time);end
  end endtask
+ task frame_pulse;begin
+  @(negedge dut.pixel_clk);rx=0;ry=480;rd=0;rf=1;
+  @(negedge dut.pixel_clk);rf=0;
+ end endtask
  task command(input integer bank,input bit ask,input[7:0] code,input[31:0] expected);integer n;begin
   @(negedge dut.sys_clk);selector=bank;query=ask;cv=1;
   @(negedge dut.sys_clk);cv=0;n=0;
@@ -48,7 +52,6 @@ module tb_v3_ticker_board;
   force dut.cmd_valid=cv;force dut.cmd_target=8'd66;force dut.cmd_catalog_id=7'd36;force dut.cmd_value=selector;force dut.cmd_query=query;
   force dut.raw_x=rx;force dut.raw_y=ry;force dut.raw_de=rd;force dut.raw_fs=rf;force dut.rgb=underlying;
   force dut.scrolling.ticker.position=12'd400;
-  force dut.scrolling.ticker.frame_count=8'hfe;force dut.scrolling.ticker.loop_count=8'h57;
   repeat(100)@(negedge dut.sys_clk);
   command(0,0,0,32'h26102801);command(0,1,0,32'h26102801);
   command(101,0,0,32'h544b1190);command(102,0,3,0);
@@ -64,9 +67,14 @@ module tb_v3_ticker_board;
    for(yy=454;yy<478;yy++)for(xx=0;xx<800;xx++)pixel(xx,yy,xx<640&&(xx%11)!=0);
   end
   $display("[PASS] original RGB outside ticker, UP reservation, full glyph rows, clipped sides and DE gaps");
-  p=400;release dut.scrolling.ticker.position;force dut.scrolling.ticker.position=12'd400;
-  force dut.media_reset=1'b1;repeat(100)@(negedge dut.pixel_clk);
-  command(101,0,0,32'h544b1190);command(102,0,3,0);
+  release dut.scrolling.ticker.position;
+  ck(dut.scrolling.ticker.position==0,"unforced hardware scroll state starts at zero");
+  repeat(10)frame_pulse;
+  repeat(100)@(negedge dut.sys_clk);command(101,0,0,32'h544b1005);
+  force dut.media_reset=1'b1;
+  repeat(20)frame_pulse;
+  repeat(100)@(negedge dut.sys_clk);command(101,0,0,32'h544b100f);command(102,0,3,0);
+  ck(dut.scrolling.ticker.position==15,"actual scroll state advances through media reset");
   ck(dut.pixel_rst_n,"media recovery leaves the independent display reset released");
   release dut.media_reset;
   $display("[PASS] ticker status and pixel reset survive media recovery");
