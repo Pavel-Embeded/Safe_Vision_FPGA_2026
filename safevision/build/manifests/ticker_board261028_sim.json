@@ -120,11 +120,15 @@
     "safevision/assets/fonts/v3_four_features_text.mem",
     "safevision/assets/audio/v3_spectrum_twiddle.mem",
     "safevision/assets/fonts/v3_ticker16.mem",
-    "safevision/verification/assets/ticker261028/pixels.mem"
+    "safevision/verification/assets/ticker261028/pixels.mem",
+    "safevision/assets/fonts/v3_spectrum_ticker32.mem",
+    "safevision/assets/fonts/v3_spectrum_ticker32.provenance.json"
   ],
   "strict_generated_inputs": 1,
   "native_runner": "safevision/tools/run_v3_sim_flexible.py",
-  "generator_dependencies": [],
+  "generator_dependencies": [
+    "safevision/tools/build_ticker_shared32_lossless.py"
+  ],
   "generated_assets": [],
   "timeouts": {
     "tb_v3_ticker_board": 900

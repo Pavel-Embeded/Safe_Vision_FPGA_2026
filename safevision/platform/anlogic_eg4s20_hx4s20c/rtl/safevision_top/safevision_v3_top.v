@@ -314,9 +314,10 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  energy,fault_code,audio_underflows,hud_latency};
  wire[11:0] raw_x,raw_y,out_x,out_y;wire raw_de,raw_hs,raw_vs;
  wire[23:0] rgb;wire out_hs,out_vs,out_de;
- wire ticker_font_request;wire[8:0] ticker_font_index;wire[7:0] ticker_font_word;
- v3_video_display_core #(.SHARED_TICKER(0),.EXTERNAL_CACHE_WRITE(1),.FLEX_SPECTRUM(1),.HD(HD),.HANDBOOK_PROFILE(1),.USER_FEATURES(1),.VOLUME_COLUMNS(0),.VOLUME_SETTING(0),.STATUS_TEXT_FILE("../../assets/fonts/v3_handbook_status_text.mem"),.PIXEL_HZ(PIXEL_HZ),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
+ wire ticker_font_request,ticker_font_index_hi;wire[8:0] ticker_font_index,ticker_font_word9;wire[7:0] ticker_font_word;
+ v3_video_display_core #(.SHARED_TICKER(TICKER_ENABLE),.SHARED_PACKED_FONT(TICKER_ENABLE),.EXTERNAL_CACHE_WRITE(1),.FLEX_SPECTRUM(1),.HD(HD),.HANDBOOK_PROFILE(1),.USER_FEATURES(1),.VOLUME_COLUMNS(0),.VOLUME_SETTING(0),.STATUS_TEXT_FILE("../../assets/fonts/v3_handbook_status_text.mem"),.PIXEL_HZ(PIXEL_HZ),.PACKED_CACHE(1),.FADE_FRAMES(32),.MEM_TIMEOUT(5000000),.FONT_FILE("../../../assets/fonts/font8x16.mem")) video(.sys_clk(sys_clk),.mem_clk(mem_clk),.pixel_clk(pixel_clk),
  .font_request(ticker_font_request),.font_index(ticker_font_index),.font_word(ticker_font_word),
+   .font_index_hi(ticker_font_index_hi),.font_word9(ticker_font_word9),
  .cache_write_clk(pll_sys100_clk),.cache_write_rst_n(cache_write_rst_n),
  .sys_rst_n(sys_rst_n),.mem_rst_n(mem_rst_n),.pixel_rst_n(pixel_rst_n),.media_reset(media_reset),
  .uptime_bcd(boot_bcd_pixel),.wave_pcm_valid(pcm_valid),.wave_pcm_left(pcm_left),
@@ -344,8 +345,9 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
   wire[11:0] position;
   v3_scrolling_ticker #(.WIDTH(HD?1280:640),.HEIGHT(HD?720:480),
    .PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0),
-   .EXTERNAL_FONT(0),.MESSAGE_CHARS(32),.FRAMES_PER_PIXEL(2)) ticker(
+   .EXTERNAL_FONT(1),.PACKED_EXTERNAL(1),.MESSAGE_CHARS(32),.FRAMES_PER_PIXEL(2)) ticker(
    .font_request(ticker_font_request),.font_index(ticker_font_index),.font_word(ticker_font_word),
+   .font_index_hi(ticker_font_index_hi),.font_word9(ticker_font_word9),
    .clk(pixel_clk),.rst_n(pixel_rst_n),.frame_start(raw_fs),
    .x(out_x),.y(out_y),.de(out_de),.panel_pixel(),
    .text_pixel(ticker_text),.edge_pixel(),
@@ -354,7 +356,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
   assign ticker_status_sys=hdmi_status_packet[63:32];
  end else begin:no_scrolling
   assign ticker_text=0;assign ticker_status_pixel=0;assign ticker_status_sys=0;
-  assign ticker_font_request=0;assign ticker_font_index=0;
+  assign ticker_font_request=0;assign ticker_font_index=0;assign ticker_font_index_hi=0;
  end endgenerate
  wire[23:0] rendered_rgb=ticker_panel?
   (ticker_text?24'hffffff:ticker_edge?24'h008080:24'h000000):rgb;

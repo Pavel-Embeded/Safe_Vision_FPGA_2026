@@ -9,7 +9,7 @@ module v3_video_display_core #(
  parameter COMPACT_FONT_FILE="../../assets/fonts/font8x16_compact.mem",
  parameter STATUS_TEXT_FILE="../../assets/fonts/v3_status_text.mem",
  parameter integer PIXEL_HZ=HD?74250000:25175000,
- parameter integer EXTERNAL_CACHE_WRITE=0,SHARED_TICKER=0
+ parameter integer EXTERNAL_CACHE_WRITE=0,SHARED_TICKER=0,SHARED_PACKED_FONT=0
 )(
  input wire sys_clk,mem_clk,pixel_clk,sys_rst_n,mem_rst_n,pixel_rst_n,
  input wire[31:0] uptime_bcd,input wire wave_pcm_valid,input wire[23:0] wave_pcm_left,
@@ -28,7 +28,8 @@ module v3_video_display_core #(
  // Packed storage needs WRITE100 even when BASE controls use SYS50.
  // Appended optional ports preserve all legacy positional connections.
  input wire cache_write_clk,cache_write_rst_n,
- input wire font_request,input wire[8:0] font_index,output wire[7:0] font_word
+ input wire font_request,input wire[8:0] font_index,output wire[7:0] font_word,
+ input wire font_index_hi,output wire[8:0] font_word9
 );
  localparam integer CFG_W=HANDBOOK_PROFILE?99:96,DESC_W=HANDBOOK_PROFILE?26:24;
  localparam HA=HD?1280:640,HF=HD?110:16,HS=HD?40:96,HB=HD?220:48;
@@ -216,9 +217,10 @@ module v3_video_display_core #(
  wire frame_safe_raw,frame_safe_output;
  wire[15:0] osd_pixel4,em_pixel4,hud_pixel4,safe_pixel4;
  wire[7:0] osd_alpha4,em_alpha4,hud_alpha4;
- v3_status_layers #(.SHARED_TICKER(SHARED_TICKER),.FLEX_SPECTRUM(FLEX_SPECTRUM),.USER_FEATURES(USER_FEATURES),.HD(HD),.HANDBOOK_PROFILE(HANDBOOK_PROFILE),.VOLUME_COLUMNS(VOLUME_COLUMNS),.VOLUME_SETTING(VOLUME_SETTING),.RASTER_PREDECODE(HD),.PIXEL_HZ(PIXEL_HZ),.PIPE_LATENCY(LATENCY),.FONT_FILE(FONT_FILE),
+ v3_status_layers #(.SHARED_TICKER(SHARED_TICKER),.SHARED_PACKED_FONT(SHARED_PACKED_FONT),.FLEX_SPECTRUM(FLEX_SPECTRUM),.USER_FEATURES(USER_FEATURES),.HD(HD),.HANDBOOK_PROFILE(HANDBOOK_PROFILE),.VOLUME_COLUMNS(VOLUME_COLUMNS),.VOLUME_SETTING(VOLUME_SETTING),.RASTER_PREDECODE(HD),.PIXEL_HZ(PIXEL_HZ),.PIPE_LATENCY(LATENCY),.FONT_FILE(FONT_FILE),
   .COMPACT_FONT_FILE(COMPACT_FONT_FILE),.TEXT_FILE(STATUS_TEXT_FILE)) graphics(
   .font_request(font_request),.font_index(font_index),.font_word(font_word),
+  .font_index_hi(font_index_hi),.font_word9(font_word9),
   .pixel_clk(pixel_clk),.pixel_rst_n(pixel_rst_n),.raw_x(raw_x),.raw_y(raw_y),.raw_de(raw_de),
   .frame_start(frame_start),.cfg_data(cfg),.cache_valid(slots),.underflows(pixel_underflows),
   .active_slot(current),.generation(gen),.busy(busy),

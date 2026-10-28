@@ -5,14 +5,15 @@ from check_v3_rom_netlist import check_roms
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--netlist',type=Path,required=True);ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
  raw=a.netlist.read_text('utf-8-sig');good=check_roms(raw,a.repo)
- ticker=next(row for row in good if row['asset']in('v3_ticker16.mem','v3_ticker_shared16.mem'))
- shared=ticker['asset']=='v3_ticker_shared16.mem'
+ ticker=next(row for row in good if row['asset']in('v3_ticker16.mem','v3_ticker_shared16.mem','v3_spectrum_ticker32.mem'))
+ packed=ticker['asset']=='v3_spectrum_ticker32.mem'
+ shared=packed or ticker['asset']=='v3_ticker_shared16.mem'
  blocks=list(re.finditer(r'EG_PHY_BRAM\s*#\((.*?)\)\s+(\\[^\s]+|[\w$]+)\s*\(',raw,re.S))
  block=next(m for m in blocks if m[2]==ticker['mapped_instance'])
  body=block[0];data_block='0C'if shared else'00'
  token=re.search(r'(\.INIT_'+data_block+r'\(256\s*\x27h)([0-9a-fA-F]{64})',body,re.I)
  assert token is not None
- metadata=json.loads((a.repo/('safevision/assets/fonts/v3_spectrum_ticker.provenance.json'if shared else'safevision/assets/fonts/v3_ticker16.provenance.json')).read_text('utf-8-sig'))
+ metadata={'rom_word_bits':9}if packed else json.loads((a.repo/('safevision/assets/fonts/v3_spectrum_ticker.provenance.json'if shared else'safevision/assets/fonts/v3_ticker16.provenance.json')).read_text('utf-8-sig'))
  assert metadata['rom_word_bits']in(1,9,16)
  physical_width='9'if shared else'1'if metadata['rom_word_bits']==1 else'18'
  assert body.count('.DATA_WIDTH_A("'+physical_width+'")')==1

@@ -4,13 +4,16 @@
 // Completed32-band spectra are committed at a video frame boundary.
 module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  parameter TWIDDLE_FILE="v3_spectrum_twiddle.mem",parameter integer SHARED_TICKER=0,
- parameter SHARED_INIT_FILE="../../assets/fonts/v3_spectrum_ticker.mem")(
+ parameter SHARED_INIT_FILE="../../assets/fonts/v3_spectrum_ticker.mem",
+ parameter integer SHARED_PACKED_FONT=0,
+ parameter PACKED_INIT_FILE="../../assets/fonts/v3_spectrum_ticker32.mem")(
  input wire clk,rst_n,frame_start,pcm_valid,input wire[23:0] pcm_left,
  input wire[11:0] x,y,input wire de,
  output reg trace_pixel,grid_pixel,output reg[15:0] colour,
  output reg ready,output reg[15:0] spectrum_sequence,
  output reg[8:0] dominant_bin,output reg[6:0] peak_height,
- input wire font_request,input wire[8:0] font_index,output wire[7:0] font_word);
+ input wire font_request,input wire[8:0] font_index,output wire[7:0] font_word,
+ input wire font_index_hi,output wire[8:0] font_word9);
  localparam CAPTURE=0,WINDOW_WAIT=1,WINDOW_MUL=2,WINDOW_WRITE=3,
   A_WAIT=4,A_LATCH=5,B_LATCH=6,MUL0=7,MUL1=8,MUL2=9,MUL3=10,
   PRODUCT=11,WRITE_A=12,WRITE_B=13,STEP=14,BIN_WAIT=15,BIN_READ=16,
@@ -27,7 +30,10 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  (* ram_style="bram" *)reg[8:0] shared_ram[0:1023];
  reg[15:0] initial_coefficients[0:511];integer init_index;
  initial begin
-  if(SHARED_TICKER)$readmemh(SHARED_INIT_FILE,shared_ram);
+  if(SHARED_TICKER)begin
+   if(SHARED_PACKED_FONT)$readmemh(PACKED_INIT_FILE,shared_ram);
+   else $readmemh(SHARED_INIT_FILE,shared_ram);
+  end
   else begin
   $readmemh(TWIDDLE_FILE,initial_coefficients);
   for(init_index=0;init_index<1024;init_index=init_index+1)shared_ram[init_index]=0;
@@ -60,8 +66,9 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  wire[9:0] history_address={3'b010,display_bank,band,1'b1};
  wire[9:0] pending_address={3'b010,pending_bank,band,state==BAND_PEAK_WRITE};
  wire[9:0] shared_a_address=area?display_level_address:history_request?history_address:{2'b00,quarter_address,request_count[0]};
- wire[9:0] shared_b_address=area?display_peak_address:font_access?(10'd384+{1'b0,font_index}):pending_address;
+ wire[9:0] shared_b_address=area?display_peak_address:font_access?(10'd384+{SHARED_PACKED_FONT?font_index_hi:1'b0,font_index}):pending_address;
  assign font_word=shared_b_data[7:0];
+ assign font_word9=shared_b_data;
  wire shared_write_enable=rst_n&&!area&&!font_access&&(state==BAND_WRITE||state==BAND_PEAK_WRITE);
  wire[8:0] shared_write_data={2'b00,state==BAND_WRITE?band_height:pending_peak_word};
  wire signed[15:0] positive_cosine=twiddle_address==0?16'sd32767:$signed(fetched_cosine);

@@ -6213,3 +6213,7 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/build/manifests/resident_owner_equivalence261028_sim.json -text
 /safevision/verification/models/source_wait_legacy261028.freeze.json -text
 /safevision/verification/assets/bram_layout261028/** -text
+/safevision/verification/models/v3_scrolling_ticker_frozen_packed32.* -text
+/safevision/build/manifests/lossless_shared32_sim.json -text
+/safevision/rtl/include/v3_ticker_packed32.vh -text
+/safevision/assets/fonts/v3_spectrum_ticker32.* -text

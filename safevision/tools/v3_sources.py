@@ -61,6 +61,8 @@ def scope(root):
  files.add(Path('safevision/tools/check_v3_clock_contract.py'))
  files.add(Path('safevision/tools/check_v3_sample_netlist.py'))
  files.add(Path('safevision/tools/check_v3_native_clock_domains.py'))
+ if '.PACKED_EXTERNAL(1)'in (root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig'):
+  files.add(Path('safevision/tools/build_ticker_shared32_lossless.py'))
  return sorted(files,key=lambda p:p.as_posix())
 def snapshot(root):
  from v3_resource_policy import load

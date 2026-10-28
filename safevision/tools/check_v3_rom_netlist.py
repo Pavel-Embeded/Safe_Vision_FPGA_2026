@@ -33,6 +33,8 @@ def check_roms(text,root):
   if len(matches)!=1:raise ValueError('mapped ROM content missing/corrupt/duplicated: '+name)
   result.append({'asset':name,'mapped_instance':matches[0],'bytes_compared':1024,'parity_bits_compared':1024,'logical_bits':9216 if is_descriptor else 8192,'payload_sha256':hashlib.sha256(expected+expected_parity).hexdigest()})
  shared_ticker='.EXTERNAL_FONT(1)'in top and '.SHARED_TICKER(TICKER_ENABLE)'in top
+ packed_ticker=shared_ticker and '.PACKED_EXTERNAL(1)'in top and '.SHARED_PACKED_FONT(TICKER_ENABLE)'in top
+ packed_proof=None;spectrum_instance=None
  if '.FLEX_SPECTRUM(1)'in top:
   asset=root/'safevision/assets/audio/v3_spectrum_twiddle.mem'
   values=[int(t,16)for t in asset.read_text(encoding='utf-8-sig').split()]
@@ -44,7 +46,15 @@ def check_roms(text,root):
    # words each. Both display banks and every unused word start at zero.
    words=[0]*1024
    for i,v in enumerate(values[:128]):words[2*i]=v&511;words[2*i+1]=(v>>9)&127
-   if shared_ticker:
+   if packed_ticker:
+    from build_ticker_shared32_lossless import build as build_packed
+    generated,packed_proof=build_packed(root)
+    for rel,payload in generated.items():
+     if (root/rel).read_bytes()!=payload:raise ValueError('lossless packed font asset differs: '+rel)
+    packed=[int(t,16)for t in generated['safevision/assets/fonts/v3_spectrum_ticker32.mem'].decode('ascii').split()]
+    if packed[:384]!=words[:384]or len(packed)!=1024 or not packed_proof['all_pixels_preserved']or packed_proof['decoded_bit_comparisons']!=8192:raise ValueError('packed font coefficient/display prefix or complete bitmap differs')
+    words=packed
+   elif shared_ticker:
     glyph=root/'safevision/assets/fonts/v3_ticker_shared16.mem'
     font_values=[int(t,16)for t in glyph.read_text('ascii').split()]
     if len(font_values)!=512 or any(v<0 or v>255 for v in font_values):raise ValueError('shared ticker font shape differs')
@@ -64,6 +74,7 @@ def check_roms(text,root):
    reviewed_widths=['18','18']
   matches=[n for n,data,p,widths in mapped if data==expected and p==parity and widths==reviewed_widths]
   if len(matches)!=1:raise ValueError('mapped spectrum twiddle ROM missing/corrupt/duplicated')
+  spectrum_instance=matches[0]
   result.append(dict(asset=asset.name,mapped_instance=matches[0],bytes_compared=1024,parity_bits_compared=1024,logical_bits=2048 if shared else 8192,quarter_wave_coefficients=128,zero_padding_words=384,layout='shared_dp9_coefficient_display'if shared else 'quarter_pdpw18',mutable_display_words=128 if shared else 0,unused_zero_words=640 if shared else 384,payload_sha256=hashlib.sha256(expected+parity).hexdigest()))
  production=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board_sources.list').read_text(encoding='utf-8-sig')
  if 'ticker_enable.v' in production and not shared_ticker:
@@ -80,8 +91,12 @@ def check_roms(text,root):
   if len(matches)!=1:raise ValueError('mapped ticker ROM missing/corrupt/duplicated')
   result.append(dict(asset=asset.name,mapped_instance=matches[0],bytes_compared=1024,parity_bits_compared=1024,logical_bits=8192,zero_padding_words=0,payload_sha256=hashlib.sha256(expected+parity).hexdigest()))
  if shared_ticker:
-  if '.MESSAGE_CHARS(16)'not in top or any('scrolling/ticker/'in n.replace('$','/')for n,_,_,_ in mapped):raise ValueError('shared ticker production selection or memory inference differs')
-  result.append(dict(asset='v3_ticker_shared16.mem',mapped_instance=matches[0],bytes_compared=512,parity_bits_compared=512,logical_bits=4096,shared_coefficient_memory=True,immutable_word_start=384,immutable_word_count=512))
+  if ('.MESSAGE_CHARS(32)'if packed_ticker else'.MESSAGE_CHARS(16)')not in top or any('scrolling/ticker/'in n.replace('$','/')for n,_,_,_ in mapped):raise ValueError('shared ticker production selection or memory inference differs')
+  if packed_ticker:
+   if spectrum_instance is None or packed_proof is None:raise ValueError('packed font requires the verified physical FFT RAM')
+   result.append(dict(asset='v3_spectrum_ticker32.mem',mapped_instance=spectrum_instance,bytes_compared=1024,parity_bits_compared=1024,logical_bits=8192,stored_font_bits=packed_proof['font_payload_words']*9,decoded_bit_comparisons=8192,all_pixels_preserved=True,shared_coefficient_memory=True,immutable_word_start=384,immutable_word_count=packed_proof['font_payload_words'],unused_zero_words=640-packed_proof['font_payload_words']))
+   result[-2].update(layout='shared_dp9_coefficient_display_lossless32',unused_zero_words=640-packed_proof['font_payload_words'])
+  else:result.append(dict(asset='v3_ticker_shared16.mem',mapped_instance=spectrum_instance,bytes_compared=512,parity_bits_compared=512,logical_bits=4096,shared_coefficient_memory=True,immutable_word_start=384,immutable_word_count=512))
  return result
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--netlist',type=Path,required=True);ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
