@@ -5,6 +5,7 @@ import argparse,hashlib,json,math,re
 FRAME=re.compile(rb'\$(C:ACK=([0-9A-F]{2}),([0-9A-F]{8}))\*([0-9A-F]{2})\r\n')
 CRITICAL=('LEVEL','INTEGRITY','PRESENTATION','RECOVERY','VUNDERFLOW','UNDERFLOW','OVERFLOW')
 COUNTERS=('EVENTDROP','UARTREJECT','UARTFRAME','UARTOVERRUN','UARTDROP')
+DEFAULTS={'A:BRTPC':80,'A:CONTRAST':128,'A:ALPHA':160,'A:SCALER':0,'A:SCALESEL':0,'A:FADE':1,'C:VOL':70,'C:PERIOD':5,'C:FIELD':0,'C:MENU':0,'C:AUTO':1}
 def require(ok,message):
  if not ok:raise ValueError(message)
 def xor(data):
@@ -23,6 +24,7 @@ def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
  for e in events:
   if e['kind']=='rx':require(e['text'].encode('ascii')==bytes.fromhex(e['hex']),'RX text differs from raw bytes')
  sent=[e for e in events if e['kind']=='tx'];replies=[e for e in events if e['kind']=='ack'];frames=list(FRAME.finditer(raw))
+ require(raw.count(b'$C:ACK=')==len(frames),'malformed or incomplete raw ACK frame')
  require(len(sent)==len(replies)==len(frames)>0,'transmit/ACK/raw inventory differs')
  require(sent[0]['body']=='B:DIAG=0'and replies[0]['value']==0x26102801,'firmware not identified before writes')
  for tx,ack,match in zip(sent,replies,frames):
@@ -32,12 +34,13 @@ def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
   require(xor(match[1])==int(match[4],16),'ACK XOR mismatch')
   require(int(match[2],16)==ack['code']==0 and int(match[3],16)==ack['value'],'ACK status/value mismatch')
   require(0<=ack['elapsed_ms']-tx['elapsed_ms']<=2100,'ACK outside transaction timeout')
-  if tx['body']=='B:DIAG=101':require(ack['value']>>12==0x544B1 and(ack['value']&4095)<1024,'invalid ticker signature/position')
+  if tx['body']=='B:DIAG=101':require(ack['value']>>12==0x544B1 and(ack['value']&4095)<768,'invalid ticker signature/position')
  # Cross-check derived events against the actual preceding ACKs. A rewritten
  # summary cannot fabricate slot commits, health, or recovery observations.
- live={};next_request=None;recover_request=None;recovery_busy=False;cache_cleared=False
+ live={};next_request=None;recover_request=None;recovery_busy=False;cache_cleared=False;default_time=None
  for e in events:
   kind=e['kind']
+  if kind=='tx'and default_time is not None:require(not(e['body'].startswith(('A:','C:'))and'='in e['body']),'configuration changed after default readback')
   if kind=='tx'and e['body']=='C:NEXT=1':next_request=(e['elapsed_ms'],live.get('B:SLOT?'),live.get('B:GEN?'))
   if kind=='tx'and e['body']=='C:RECOVER=1':recover_request=e['elapsed_ms'];recovery_busy=False;cache_cleared=False
   if kind=='ack':
@@ -47,6 +50,10 @@ def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
     if e['body']=='B:CACHE?'and e['value']!=15:cache_cleared=True
   if kind=='health':require(all(live.get('B:'+q+'?')==v for q,v in e['values'].items()),'health receipt differs from ACK values')
   if kind=='monitor':require(all(live.get('B:'+q+'?')==v for q,v in e['values'].items()),'monitor receipt differs from ACK values')
+  if kind=='defaults':
+   require(default_time is None and e['values']==DEFAULTS,'default configuration receipt differs')
+   require(all(live.get(q+'?')==value and live.get(q+'='+str(value))is not None for q,value in DEFAULTS.items()),'defaults lack actual write and readback replies')
+   default_time=e['elapsed_ms']
   if kind=='transition':
    require(next_request is not None and next_request[1]is not None and next_request[2]is not None,'transition has no initial slot/generation')
    request,slot,generation=next_request
@@ -65,13 +72,14 @@ def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
  tickacks=[e for e in replies if e['body']=='B:DIAG=101']
  require(len(tick)==len(tickacks)and len(rates)==len(tick)-1 and len(tick)>2,'ticker observation inventory mismatch')
  for sample,ack in zip(tick,tickacks):
-  require(sample['position']==ack['value']&4095 and sample['period_pixels']==1024,'ticker sample differs from ACK')
+  require(sample['position']==ack['value']&4095 and sample['period_pixels']==768,'ticker sample differs from ACK')
+  require(0<=sample['sample_ms']-ack['elapsed_ms']<=100 and 0<=sample['elapsed_ms']-sample['sample_ms']<=100,'ticker time is detached from its raw reply')
  for before,after,rate in zip(tick,tick[1:],rates):
-  dt=after['sample_ms']-before['sample_ms'];expected=math.floor(dt*.0299823633)%1024
-  actual=(after['position']-before['position'])%1024;error=(actual-expected+512)%1024-512
+  dt=after['sample_ms']-before['sample_ms'];expected=math.floor(dt*.0299823633)%768
+  actual=(after['position']-before['position'])%768;error=(actual-expected+384)%768-384
   require(dt>0 and abs(error)<=4,'ticker cadence/reset failure')
   require((rate['interval_ms'],rate['expected_pixels'],rate['actual_pixels'],rate['position_error'])==(dt,expected,actual,error),'ticker rate receipt differs')
- moves=[e for e in events if e['kind']=='transition'];restores=[e for e in events if e['kind']=='recovery'];monitor=[e for e in events if e['kind']=='monitor'];complete=[e for e in events if e['kind']=='complete']
+ moves=[e for e in events if e['kind']=='transition'];restores=[e for e in events if e['kind']=='recovery'];monitor=[e for e in events if e['kind']=='monitor'];complete=[e for e in events if e['kind']=='complete'];starts=[e for e in events if e['kind']=='monitor_started']
  require(len(moves)==transitions and len([e for e in sent if e['body']=='C:NEXT=1'])==transitions,'transition count differs')
  require([e['index']for e in moves]==list(range(transitions)),'transition index differs')
  for i,e in enumerate(moves):
@@ -79,9 +87,26 @@ def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
   if i:require(e['slot']==(moves[i-1]['slot']+1)%4 and e['generation']==(moves[i-1]['generation']+1)%256,'transition did not commit once')
  require(len(restores)==recoveries and len([e for e in sent if e['body']=='C:RECOVER=1'])==recoveries,'recovery count differs')
  for i,e in enumerate(restores):require(e['index']==i and e['busy']and e['cache_clear']and 0<e['duration_ms']<=30000 and e['duration_ms']==e['completed_ms']-e['request_ms'],'incomplete recovery')
- require(monitor and len(complete)==1,'missing continuous monitor/completion')
+ require(monitor and len(complete)==1 and default_time is not None and default_time<monitor[0]['elapsed_ms'],'missing continuous monitor/completion/default readback')
+ require(len(starts)==1,'missing unique continuous-monitor origin')
+ origin=starts[0]['start_ms']
+ require(default_time<=origin and 0<=starts[0]['elapsed_ms']-origin<=100,'monitor origin differs from capture clock')
+ require(0<=monitor[0]['elapsed_ms']-origin<=15000,'unobserved gap at monitor start')
+ generation=None;generation_time=None
  for i,e in enumerate(monitor):require(e['index']==i and e['values']['STATUS']==7 and all(e['values'][q]==0 for q in COUNTERS),'monitor health failed')
- done=complete[0];require(done['continuous_monitor_ms']>=minimum_seconds*1000 and monitor[-1]['duration_ms']>=minimum_seconds*1000-10000,'continuous run too short')
+ for e in monitor:
+  require(abs(e['duration_ms']-(e['elapsed_ms']-origin))<=100,'monitor duration differs from capture clock')
+  if generation is None:generation=e['values']['GEN'];generation_time=e['elapsed_ms']
+  elif e['elapsed_ms']-generation_time>=30000:
+   require(e['values']['GEN']!=generation,'automatic slideshow generation stalled for30seconds')
+   generation=e['values']['GEN'];generation_time=e['elapsed_ms']
+ require(len(monitor)>=max(1,minimum_seconds//10),'too few continuous health observations')
+ for before,after in zip(monitor,monitor[1:]):
+  require(0<after['duration_ms']-before['duration_ms']<=15000,'unobserved gap in continuous monitoring')
+  require(abs((after['duration_ms']-before['duration_ms'])-(after['elapsed_ms']-before['elapsed_ms']))<=10,'monitor duration differs from capture clock')
+ done=complete[0];require(abs(done['continuous_monitor_ms']-(done['elapsed_ms']-origin))<=100,'completion duration differs from capture clock')
+ require(0<=done['elapsed_ms']-monitor[-1]['elapsed_ms']<=15000,'unobserved gap at monitor end')
+ require(done['continuous_monitor_ms']>=minimum_seconds*1000 and monitor[-1]['duration_ms']>=minimum_seconds*1000-10000,'continuous run too short')
  require(done['defaults_restored']and done['manual_commits']==transitions and done['recoveries']==recoveries,'completion inventory/defaults differ')
  values=sorted(e['latency_ms']for e in moves);count=len(values)
  statistics=dict(count=count,minimum_ms=values[0],median_ms=(values[(count-1)//2]+values[count//2])/2,p95_ms=values[math.ceil(.95*count)-1],maximum_ms=values[-1])

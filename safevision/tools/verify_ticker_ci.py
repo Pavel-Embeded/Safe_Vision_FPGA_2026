@@ -1,6 +1,6 @@
 """Verify the current ticker delivery and preserve the original BASE replay."""
 from pathlib import Path,PurePosixPath
-import argparse,hashlib,json,os,subprocess,sys
+import argparse,hashlib,json,os,re,subprocess,sys
 from ticker_evidence_archive import unpack
 from audit_ticker261028 import audit
 from audit_ticker_uart261028 import audit as audit_uart
@@ -58,6 +58,14 @@ def verify(root,out):
  require(files==set(delivery['files_sha256'])|{'delivery.manifest.json'},'unlisted or missing release file')
  require(delivery['files_sha256']['release.index.json']==sha(release/'release.index.json'),'release index not bound')
  result=offline(root,release,out);index=result['index'];functional=result['functional'];native=result['native']
+ programmed=read(release/'board/programming/programming.json')
+ require(programmed['program_sram_command_succeeded']and programmed['process_exit']==0 and programmed['bit_sha256']==index['bit_sha256'],'programming receipt does not identify the approved bitstream')
+ require(programmed['expected_firmware_id']=='26102801'and programmed['approval_source_commit']==index['approval_source_commit']and programmed['flash_written']is False,'programming approval or target differs')
+ console=release/'board/programming/download.console.log';require(sha(console)==programmed['console_sha256'],'programming log changed')
+ raw=console.read_bytes();text=raw.decode('utf-16')if raw.startswith((b'\xff\xfe',b'\xfe\xff'))else raw.decode('utf-8-sig',errors='replace')
+ require(re.search(r'Chip\s*validation success: EG4S20BG256',text)and'BW_TICKER_SRAM_COMPLETED'in text and'finish command "download -bit'in text,'normal hardware download markers missing')
+ require('BW_TICKER_SRAM_FAILED'not in text and'Unknown cable'not in text and'USB device open error'not in text,'programming log reports cable or download failure')
+ require(not re.search(r'(?im)\bERROR\b',text),'programming log contains an error')
  uart=audit_uart(release/'board/regression')
  supplementary=replay_supplementary(root,release/'board',out/'supplementary')
  physical=read(release/'board/physical_acceptance.json')
@@ -68,6 +76,8 @@ def verify(root,out):
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT);ap.add_argument('--run-dir',type=Path,required=True);a=ap.parse_args();out=a.run_dir.resolve();require(not out.exists()and not out.is_relative_to(a.repo.resolve()),'fresh isolated audit directory required');out.mkdir(parents=True)
  try:
+  for tool in ('test_ticker_archive261028.py','test_ticker_uart261028.py'):
+   run([sys.executable,'-B',str(a.repo.resolve()/'safevision/tools'/tool)],a.repo.resolve(),out/(tool+'.log'))
   old=baseline(a.repo.resolve(),out);r=verify(a.repo.resolve(),out);r['baseline_replay_sha256']=sha(out/'baseline-replay/verification.json')
  except Exception as e:r=dict(accepted=False,error=type(e).__name__+': '+str(e),fresh_TD_build_performed=False,hardware_test_performed=False)
  (out/'verification.json').write_text(json.dumps(r,indent=2)+'\n','utf-8');print('BASE TICKER DELIVERY REPLAY '+('PASS'if r['accepted']else'FAILED: '+r['error']));return 0 if r['accepted']else 1

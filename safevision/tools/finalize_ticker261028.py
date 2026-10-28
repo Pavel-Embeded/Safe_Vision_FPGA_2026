@@ -17,6 +17,10 @@ def main():
  result=dict(schema=1,profile='ticker261028',accepted=False,bitstreams_complete=False,expected_firmware_id='26102801',hardware_verified=False,flash_written=False,github_upload_performed=False)
  try:
   base=read(a.baseline_replay/'verification.json');require(base['accepted']and base['physical_inputs']==206 and base['positive_unique_tops']==303 and base['semantic_negative_controls']==221,'original qualification replay failed')
+  for tool in ('test_ticker_archive261028.py','test_ticker_uart261028.py'):
+   with(out/(tool+'.log')).open('w',encoding='utf-8')as log:
+    code=subprocess.run([sys.executable,'-B',str(root/'safevision/tools'/tool)],cwd=root,stdout=log,stderr=subprocess.STDOUT).returncode
+   require(code==0,'delivery evidence refusal tests failed: '+tool)
   functional=audit(root,proof/'regression',proof/'ticker',proof/'board',proof/'controls');save(out/'functional.audit.json',functional)
   hardware=snapshot(root);require(snapshot(frozen)==hardware,'routed source differs from current hardware')
   record=read(native/'base/build.manifest.json');folder=native/'base'
@@ -25,7 +29,7 @@ def main():
   gate=check(folder,frozen);require(gate['gate_accepted']and gate['timing_passed']and gate['status']=='PASS','strict native timing gate failed: '+str(gate['errors']))
   save(out/'base.gate.json',gate)
   subprocess.run([sys.executable,'-B',str(root/'safevision/tools/test_ticker_rom261028.py'),'--netlist',str(folder/'gate.netlist.v'),'--repo',str(root),'--output',str(out/'rom.controls.json')],check=True)
-  rom=read(out/'rom.controls.json');require(rom['accepted']and len(rom['controls'])==4 and all(c['rejected']for c in rom['controls']),'mapped ROM rejection controls failed')
+  rom=read(out/'rom.controls.json');require(rom['accepted']and len(rom['controls'])==5 and all(c['rejected']for c in rom['controls']),'mapped ROM rejection controls failed')
   # The original full gate and original absolute path attestations are kept.
   # Rechecking uses the unchanged real routed directory, not a reconstructed DB.
   protected={Path(row['path']):row['sha256']for row in gate['reports']}
@@ -38,6 +42,10 @@ def main():
   names|={'safevision/tools/audit_ticker261028.py','safevision/tools/ticker_evidence_archive.py','safevision/tools/finalize_ticker261028.py','safevision/tools/test_ticker_rom261028.py','safevision/tools/build_ticker_font.py','safevision/tools/host/exercise_ticker261028.ps1',a.archive.resolve().relative_to(root).as_posix()}
   names|={'safevision/tools/audit_ticker_uart261028.py','safevision/tools/verify_ticker_ci.py','safevision/tools/replay_ticker_native261028.py','safevision/tools/ticker_host_profile261028.py','safevision/tools/check_ticker_offline261028.py'}
   names.add('safevision/tools/host/burn_ticker261028_sram.ps1')
+  names|={'safevision/tools/build_ticker_shared_font.py','safevision/tools/check_shape_space261028.py'}
+  names|={'safevision/tools/test_ticker_archive261028.py','safevision/tools/test_ticker_uart261028.py'}
+  if functional['geometry_width'].get('accepted'):
+   names.add('safevision/tools/check_geometry_width261028.py')
   commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD']).decode().strip()
   binding=source_commit_binding(root,root,commit,names);require(binding['verified'],'approval inputs are not committed: '+str(binding.get('errors')))
   all_inputs={name:sha(root/name)for name in names}

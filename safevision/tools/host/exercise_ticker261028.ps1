@@ -1,4 +1,4 @@
-﻿param([string]$Port='COM6',[Parameter(Mandatory=$true)][string]$OutDir,[int]$DurationSeconds=7200,[int]$ManualTransitions=100,[int]$Recoveries=10)
+param([string]$Port='COM6',[Parameter(Mandatory=$true)][string]$OutDir,[int]$DurationSeconds=7200,[int]$ManualTransitions=100,[int]$Recoveries=10)
 $ErrorActionPreference='Stop'
 if(Test-Path -LiteralPath $OutDir){throw 'Fresh output directory required'}
 $null=New-Item -ItemType Directory -Path $OutDir
@@ -28,6 +28,7 @@ function Send([string]$body){
   if($matchesFound.Count -gt 0){break};Start-Sleep -Milliseconds 3
  }
  if($matchesFound.Count -ne 1){throw ('Expected exactly one ACK: '+$body)}
+ if([regex]::Matches($script:response,'\$C:ACK=').Count -ne 1){throw ('Malformed or unsolicited ACK: '+$body)}
  $m=$matchesFound[0];$sum=0;foreach($b in [Text.Encoding]::ASCII.GetBytes($m.Groups[1].Value)){$sum=$sum -bxor $b}
  if($sum -ne [Convert]::ToInt32($m.Groups[4].Value,16)){throw ('Bad ACK checksum: '+$body)}
  $code=[Convert]::ToInt32($m.Groups[2].Value,16);$value=[Convert]::ToUInt32($m.Groups[3].Value,16)
@@ -49,22 +50,27 @@ function PauseRx([int]$milliseconds){$w=[Diagnostics.Stopwatch]::StartNew();whil
 function Signed([uint32]$v){if($v -ge 2147483648){return ([int64]$v-4294967296)};return ([int64]$v)}
 
 function Defaults {
- foreach($pair in @(@('A:BRTPC',80),@('A:CONTRAST',128),@('A:ALPHA',160),@('A:SCALER',0),@('A:SCALESEL',0),@('A:FADE',1),@('C:VOL',70),@('C:PERIOD',5),@('C:FIELD',0),@('C:MENU',0),@('C:AUTO',1))){$null=Send ($pair[0]+'='+$pair[1])}
+ $settings=@(@('A:BRTPC',80),@('A:CONTRAST',128),@('A:ALPHA',160),@('A:SCALER',0),@('A:SCALESEL',0),@('A:FADE',1),@('C:VOL',70),@('C:PERIOD',5),@('C:FIELD',0),@('C:MENU',0),@('C:AUTO',1))
+ foreach($pair in $settings){$null=Send ($pair[0]+'='+$pair[1])}
+ PauseRx 100
+ $actual=@{}
+ foreach($pair in $settings){$actual[$pair[0]]=Send ($pair[0]+'?');if($actual[$pair[0]] -ne $pair[1]){throw ('Default readback failed '+$pair[0])}}
+ Log @{kind='defaults';values=$actual}
 }
 function Ticker {
  $position=Send 'B:DIAG=101'
- if(($position -shr 12) -ne 0x544B1 -or ($position -band 0xFFF) -ge 1024){throw 'Invalid ticker signature/position'}
+ if(($position -shr 12) -ne 0x544B1 -or ($position -band 0xFFF) -ge 768){throw 'Invalid ticker signature/position'}
  $sampleMs=$timer.ElapsedMilliseconds;$pos=$position -band 4095
  if($null -ne $script:lastTickMs){
   $dt=$sampleMs-$script:lastTickMs
-  $expectedPosition=([int][Math]::Floor($dt*0.0299823633))%1024
-  $actualPosition=($pos-$script:lastTickPosition+1024)%1024
-  $positionError=($actualPosition-$expectedPosition+1536)%1024-512
+  $expectedPosition=([int][Math]::Floor($dt*0.0299823633))%768
+  $actualPosition=($pos-$script:lastTickPosition+768)%768
+  $positionError=($actualPosition-$expectedPosition+1152)%768-384
   if([Math]::Abs($positionError) -gt 4){throw 'Ticker stopped, reset unexpectedly or ran at the wrong cadence'}
   Log @{kind='ticker_rate';interval_ms=$dt;expected_pixels=$expectedPosition;actual_pixels=$actualPosition;position_error=$positionError}
  }
  $script:lastTickMs=$sampleMs;$script:lastTickPosition=$pos
- Log @{kind='ticker';position=$pos;sample_ms=$sampleMs;period_pixels=1024}
+ Log @{kind='ticker';position=$pos;sample_ms=$sampleMs;period_pixels=768}
  return $pos
 }
 $matched=$false;$restored=$false;$script:lastTickMs=$null;$latencies=New-Object 'System.Collections.Generic.List[int]'
@@ -73,7 +79,7 @@ try {
  if((Send 'B:DIAG=0') -ne 0x26102801){throw 'Unexpected firmware; no writes sent'}
  $matched=$true;Healthy
  $first=Ticker;PauseRx 2100;$second=Ticker
- $dp=($second-$first+1024)%1024
+ $dp=($second-$first+768)%768
  if($dp -lt 50 -or $dp -gt 75){throw 'Ticker position stalled or wrong speed'}
  Log @{kind='ticker_cadence';pixels=$dp;accepted=$true}
  $null=Send 'C:AUTO=0';PauseRx 1500
@@ -89,7 +95,7 @@ try {
  }
  Healthy
  for($n=0;$n -lt $Recoveries;$n++){
-  $before=Ticker;$null=Send 'C:RECOVER=1';$request=$script:lastTxMs
+  $null=Ticker;$null=Send 'C:RECOVER=1';$request=$script:lastTxMs
   $busy=$false;$cleared=$false;$done=$false
   while($timer.ElapsedMilliseconds-$request -lt 30000){
    $state=Send 'B:RECOVERY?';$cache=Send 'B:CACHE?';$ready=Send 'B:STATUS?'
@@ -99,18 +105,20 @@ try {
    PauseRx 25
   }
   if(-not $done){throw 'Recovery completion/cache transition missing'}
-  $completedMs=$timer.ElapsedMilliseconds;$recoveryMs=$completedMs-$request;Healthy;$after=Ticker
-  if($after -eq $before){throw 'Ticker stalled across media recovery'}
+  $completedMs=$timer.ElapsedMilliseconds;$recoveryMs=$completedMs-$request;Healthy;$null=Ticker
   Log @{kind='recovery';index=$n;request_ms=$request;completed_ms=$completedMs;duration_ms=$recoveryMs;busy=$busy;cache_clear=$cleared;defaults_reset=$false}
   PauseRx 500
  }
  Defaults;$restored=$true;PauseRx 1000;Healthy
- $monitorStart=$timer.ElapsedMilliseconds;$observations=0
+ $monitorStart=$timer.ElapsedMilliseconds;$observations=0;$progressGeneration=$null;$progressMs=$monitorStart
+ Log @{kind='monitor_started';start_ms=$monitorStart}
  while($timer.ElapsedMilliseconds-$monitorStart -lt 1000*$DurationSeconds){
   Healthy;$null=Ticker
   $values=@{};foreach($q in @('STATUS','SLOT','GEN','EVENTDROP','UARTREJECT','UARTFRAME','UARTOVERRUN','UARTDROP')){$values[$q]=Send ('B:'+$q+'?')}
   if($values.STATUS -ne 7){throw 'Media not READY'}
   foreach($q in @('EVENTDROP','UARTREJECT','UARTFRAME','UARTOVERRUN','UARTDROP')){if($values[$q] -ne 0){throw ('Nonzero '+$q)}}
+  if($null -eq $progressGeneration){$progressGeneration=$values.GEN;$progressMs=$timer.ElapsedMilliseconds}
+  elseif($timer.ElapsedMilliseconds-$progressMs -ge 30000){if($values.GEN -eq $progressGeneration){throw 'Automatic slideshow generation did not advance for30seconds'};$progressGeneration=$values.GEN;$progressMs=$timer.ElapsedMilliseconds}
   Log @{kind='monitor';index=$observations;values=$values;duration_ms=($timer.ElapsedMilliseconds-$monitorStart)};$observations++
   PauseRx 5000
  }

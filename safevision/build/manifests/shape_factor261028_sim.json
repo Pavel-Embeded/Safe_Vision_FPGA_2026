@@ -1,0 +1,11 @@
+{
+ "sources": ["safevision/rtl/media/v3_bmp_normalizer.v"],
+ "tops": ["tb_v3_shape_factor"],
+ "defines": [],
+ "assets": [],
+ "strict_generated_inputs": 1,
+ "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+ "generator_dependencies": [],
+ "generated_assets": [],
+ "timeouts": {"tb_v3_shape_factor": 600}
+}
