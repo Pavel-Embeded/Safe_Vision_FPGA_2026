@@ -53,6 +53,7 @@ module sd_bmp_player #(
     parameter integer GUARDED_CS = 0,
     parameter integer MID_REF_SAMPLE = 0,
     parameter integer RESIDENT_CACHE = 0,
+    parameter integer REGISTERED_RESIDENT_READY = 0,
     parameter integer FLEX_FILES = 0,
     // SPI 分频（见文件头推导；按 50 MHz 取默认）
     // ★★ 2026-10-06 板级实测后：初始化时钟由 396.8 kHz **降到 100 kHz**。
@@ -406,7 +407,14 @@ module sd_bmp_player #(
     assign media_descriptor_slot=out_slot;
     assign media_descriptor={sel_wav_size,sel_wav_clus};
     assign media_descriptor_found=sel_wav_valid;
+    // In resident mode S_READY/cache_count=4 is terminal until rst_n.
+    // The existing owner/gap registers therefore encode the same two-edge
+    // handoff without a fresh state/count decode on the wide response bus.
+    generate if(REGISTERED_RESIDENT_READY && RESIDENT_CACHE)begin:g_resident_ready
+      assign external_service_ready=SHARED_SERVICE&&service_owner_q&&service_gap&&rst_n;
+    end else begin:g_legacy_ready
     assign external_service_ready=SHARED_SERVICE&&ext_owner&&service_ready_int;
+    end endgenerate
     assign external_core_rsp=external_service_ready?physical_core_rsp:837'd0;
     // service_ready_int implies service_owner_q==ext_owner. During the
     // two-edge ownership gap the entire kernel is held in reset, so selecting

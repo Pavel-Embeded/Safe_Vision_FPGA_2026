@@ -113,7 +113,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  wire[31:0] ext_addr;wire[15:0] ext_len;wire[7:0] ext_data,ext_code,ext_detail;
  wire[7:0] sec_per_clus;wire[31:0] fat_start,data_start,root_lba,root_clus,total_clus;
  wire[444:0] fs_core_cmd;wire[836:0] fs_core_rsp;wire fs_service_ready;
- sd_bmp_player #(.FLEX_FILES(1),.GUARDED_CS(1),.MID_REF_SAMPLE(1),.SHARED_SERVICE(1),.RESIDENT_CACHE(1),.CLK_HZ(50000000),.CLK_DIV_INIT(249),.CLK_DIV_FAST(0),.MOUNT_TO_N(100000000)) player(
+ sd_bmp_player #(.REGISTERED_RESIDENT_READY(TICKER_ENABLE),.FLEX_FILES(1),.GUARDED_CS(1),.MID_REF_SAMPLE(1),.SHARED_SERVICE(1),.RESIDENT_CACHE(1),.CLK_HZ(50000000),.CLK_DIV_INIT(249),.CLK_DIV_FAST(0),.MOUNT_TO_N(100000000)) player(
  .clk(clk),.rst_n(ref_media_rst_n),.cs_guard_rst_n(ref_rst_n),.run(1'b1),.btn_next(1'b0),.btn_auto(1'b0),.restart(1'b0),
  .sd_ncs(sd_ncs),.sd_dclk(sd_dclk),.sd_mosi(sd_mosi),.sd_miso(sd_miso),
  .px_word(px_word),.px_word_valid(px_valid),.px_word_ready(px_ready),.frame_active(frame_active),
