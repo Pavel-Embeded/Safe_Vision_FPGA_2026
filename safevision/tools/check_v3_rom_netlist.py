@@ -60,12 +60,12 @@ def check_roms(text,root):
   if not re.search(r'`define\s+SAFEVISION_TICKER_ENABLE\s+1\b',enable.read_text()):raise ValueError('ticker production selection is disabled')
   asset=root/'safevision/assets/fonts/v3_ticker16.mem'
   values=[int(t,16)for t in asset.read_text(encoding='utf-8-sig').split()]
-  if len(values)!=512 or any(v<0 or v>65535 for v in values) :raise ValueError('invalid ticker ROM size, width or zero padding')
+  if len(values)!=8192 or any(v not in(0,1)for v in values):raise ValueError('invalid ticker single-bit ROM shape')
   metadata=json.loads((asset.parent/'v3_ticker16.provenance.json').read_text(encoding='utf-8'))
-  if metadata['message_characters']!=32 or metadata['bitmap_sha256']!=hashlib.sha256(asset.read_bytes()).hexdigest():raise ValueError('ticker metadata/content differs')
-  expected=b''.join(bytes((v&255,(v>>9)&255))for v in values)
-  parity=sum(((v>>8)&1)<<(2*i)for i,v in enumerate(values)).to_bytes(128,'little')
-  matches=[n for n,data,p,widths in mapped if 'scrolling/ticker/'in n.replace('$','/') and data==expected and p==parity and widths==['18','18']]
+  if metadata['message_characters']!=32 or metadata['rom_words']!=8192 or metadata['rom_word_bits']!=1 or metadata['storage_order']!='column_major_bit' or metadata['bitmap_sha256']!=hashlib.sha256(asset.read_bytes()).hexdigest():raise ValueError('ticker metadata/content differs')
+  expected=sum(v<<i for i,v in enumerate(values)).to_bytes(1024,'little')
+  parity=bytes(128)
+  matches=[n for n,data,p,widths in mapped if 'scrolling/ticker/'in n.replace('$','/') and data==expected and p==parity and widths==['1','1']]
   if len(matches)!=1:raise ValueError('mapped ticker ROM missing/corrupt/duplicated')
   result.append(dict(asset=asset.name,mapped_instance=matches[0],bytes_compared=1024,parity_bits_compared=1024,logical_bits=8192,zero_padding_words=0,payload_sha256=hashlib.sha256(expected+parity).hexdigest()))
  return result

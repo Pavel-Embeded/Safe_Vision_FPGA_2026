@@ -48,19 +48,19 @@ module v3_scrolling_ticker #(
   source_x<TEXT_WIDTH;
  wire border=box&&(y==HEIGHT-24);
  wire[3:0] glyph_row=y-(HEIGHT-22);
- (* ram_style="block" *) reg[15:0] bitmap_rom[0:511];
+ (* ram_style="block" *) reg[0:0] bitmap_rom[0:8191];
  initial $readmemh(BITMAP_FILE,bitmap_rom);
- reg[8:0] address1;reg[3:0] column1,column2;
+ reg[12:0] address1;
  reg valid1,valid2,dot3;
- reg[15:0] row2;
+ reg[0:0] row2;
  // RAM output has no reset so TD can infer one physical RAM9K tile.
  always @(posedge clk)row2<=bitmap_rom[address1];
  always @(posedge clk or negedge rst_n)begin
-  if(!rst_n)begin address1<=0;column1<=0;column2<=0;valid1<=0;valid2<=0;dot3<=0;end
+  if(!rst_n)begin address1<=0;valid1<=0;valid2<=0;dot3<=0;end
   else begin
-   address1<={source_x[8:4],glyph_row};column1<=source_x[3:0];
-   valid1<=glyph_valid;valid2<=valid1;column2<=column1;
-   dot3<=valid2&&row2[15-column2];
+   address1<={source_x[8:0],glyph_row};
+   valid1<=glyph_valid;valid2<=valid1;
+   dot3<=valid2&&row2[0];
   end
  end
  reg[PIXEL_LATENCY-1:0] panel_pipe,edge_pipe;
