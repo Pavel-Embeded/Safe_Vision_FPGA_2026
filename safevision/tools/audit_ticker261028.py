@@ -191,8 +191,8 @@ def pointer_compare(root,base):
  detector=positive(root,base/'pointer_detector','ring_pointer_trace','tb_v3_ring_pointer_trace')
  raw=(base/'pointer_detector/tb_v3_ring_pointer_trace/sim.log').read_text('utf-8');require(re.findall(r'\bdata_errors=(\d+)',raw)==['0'],'original bounded detector has comparison errors')
  from test_ring_pointer_controls import CASES
- require({c[0]for c in CASES}=={'ring_empty_inverted','ring_full_wrong_phase','ring_empty_ignores_wrap','ring_status_bit_changed','ring_production_mode_disabled'},'pointer detector inventory differs')
- folder=base/'pointer_controls';summary=read(folder/'summary.json');require(summary['accepted']and len(summary['cases'])==5,'pointer semantic controls incomplete')
+ require({c[0]for c in CASES}=={'ring_empty_inverted','ring_full_wrong_phase','ring_empty_ignores_wrap','ring_status_bit_changed','ring_production_mode_disabled','ring_occupancy_sign_reversed','ring_occupancy_owner_leaks','ring_occupancy_read_ignored'},'pointer detector inventory differs')
+ folder=base/'pointer_controls';summary=read(folder/'summary.json');require(actual['registered_occupancy']and summary['accepted']and len(summary['cases'])==8,'pointer/occupancy semantic controls incomplete')
  verified=[]
  for name,target,before,after,suite,top in CASES:
   rows=[r for r in summary['cases']if r['name']==name];require(len(rows)==1,'pointer control duplicated or absent');row=rows[0]
@@ -371,6 +371,7 @@ def audit(root,regression,ticker,board,controls):
  if direct_pointer:
   extra,pointer_proof=pointer_compare(root,controls.parent);additions+=extra;pointer_controls=pointer_proof['semantic_controls']
   production_profile['audio_ring_direct_pointer_compare']=True
+  production_profile['audio_ring_registered_occupancy']=pointer_proof['mathematical_proof']['registered_occupancy']
   production_profile['audio_ring_capacity_pairs_per_slot']=16384
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
  return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)

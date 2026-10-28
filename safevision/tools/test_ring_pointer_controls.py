@@ -11,6 +11,12 @@ CASES=(
  ('ring_status_bit_changed',R,"assign levels[g*16+:16]={{(15-PTR_W){1'b0}},count[g]};","assign levels[g*16+:16]={{(15-PTR_W){1'b0}},count[g]}^16'h0001;",'ring_pointer_trace','tb_v3_ring_pointer_trace'),
  ('ring_production_mode_disabled',T,'v3_audio_system #(.DIRECT_RING_COMPARE(TICKER_ENABLE),','v3_audio_system #(.DIRECT_RING_COMPARE(0),','ticker_board261028','tb_v3_ticker_board'),
 )
+CASES+=(
+ ('ring_occupancy_sign_reversed',R,"value<=value+{{PTR_W{reading}},1'b1};","value<=value+{{PTR_W{!reading}},1'b1};",'ring_pointer_trace','tb_v3_ring_pointer_trace'),
+ ('ring_occupancy_owner_leaks',R,'else if(owner==slot_index && (take_read || finish_write))','else if(take_read || finish_write)','ring_pointer_trace','tb_v3_ring_pointer_trace'),
+ ('ring_occupancy_read_ignored',R,'else if(owner==slot_index && (take_read || finish_write))','else if(owner==slot_index && finish_write)','ring_pointer_trace','tb_v3_ring_pointer_trace'),
+)
+
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
  p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--case',action='append');p.add_argument('--workers',type=int,default=2);a=p.parse_args()

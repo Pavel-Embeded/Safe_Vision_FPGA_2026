@@ -15,7 +15,30 @@ def check(root):
  for before,after in patches:
   if expected.count(before)!=1:raise ValueError('ring source patch is ambiguous')
   expected=expected.replace(before,after)
- if(root/source).read_text('utf-8-sig')!=expected:raise ValueError('ring changed beyond the reviewed predicate-only transformation')
+ actual_source=(root/source).read_text('utf-8-sig')
+ registered_occupancy='begin:registered_level'in actual_source
+ if registered_occupancy:
+  prior_level="  (* use_ripple=1 *) wire[PTR_W:0] occupancy=wp[slot_index]-rp[slot_index];\n  assign count[slot_index]=occupancy;\n"
+  counter_level="""  if(DIRECT_POINTER_COMPARE)begin:registered_level
+   // This state changes on exactly the same edges as the two pointers.
+   // Reset establishes value=wp-rp modulo2*CAP. The shared increment and
+   // decrement events preserve that identity without adding status latency.
+   reg[PTR_W:0] value;
+   always @(posedge clk or negedge rst_n)
+    if(!rst_n)value<=0;
+    else if(owner==slot_index && (take_read || finish_write))
+     // take_read implies reading=1; finish_write implies reading=0.
+     // The two events are exclusive, so this is one signed +/-1 adder.
+     value<=value+{{PTR_W{reading}},1'b1};
+   assign count[slot_index]=value;
+  end else begin:arithmetic_level
+   (* use_ripple=1 *) wire[PTR_W:0] occupancy=wp[slot_index]-rp[slot_index];
+   assign count[slot_index]=occupancy;
+  end
+"""
+  if expected.count(prior_level)!=1:raise ValueError('occupancy transform anchor differs')
+  expected=expected.replace(prior_level,counter_level)
+ if actual_source!=expected:raise ValueError('ring changed beyond reviewed pointer predicates and exact occupancy events')
  selected={source:sha(root/source)}
  for path,changes in [
   ('safevision/rtl/audio/v3_audio_system.v',[('HANDBOOK_PROFILE=0,PREINDEXED=0)(', 'HANDBOOK_PROFILE=0,PREINDEXED=0,DIRECT_RING_COMPARE=0)('),('v3_pcm_ring #(.PREFETCH(PREFETCH)) ring(', 'v3_pcm_ring #(.PREFETCH(PREFETCH),.DIRECT_POINTER_COMPARE(DIRECT_RING_COMPARE)) ring(')]),
@@ -41,12 +64,22 @@ def check(root):
      if empty!=(count==0)or full!=(count==cap):raise ValueError('pointer equality differs from modular count')
      if count<=cap:
       if(not empty)!=(count!=0)or(not full)!=(count<cap):raise ValueError('reachable scheduling predicate differs')
+      # Reset sets value=wp-rp=0. For either permitted event, the exact
+      # signed update and the changed pointer preserve this equality.
+      # owner selects the same one of four slots in BOTH state blocks.
+      for reading in(0,1):
+       if reading and count==0 or not reading and count==cap:continue
+       next_wp=wp if reading else (wp+1)&mask
+       next_rp=(rp+1)&mask if reading else rp
+       signed_step=mask if reading else 1
+       next_count=(count+signed_step)&mask
+       if next_count!=((next_wp-next_rp)&mask)or not 0<=next_count<=cap:raise ValueError('occupancy induction differs')
       legal_pairs+=weight
      all_pairs+=weight;classes+=1
      matrix.update(bytes((width,high_w,high_r,int(empty),int(full),int(count<=cap))))
   if all_pairs!=4*cap*cap or legal_pairs!=2*cap*(cap+1):raise ValueError('compressed exhaustive domain coverage differs')
   result.append(dict(pointer_bits=width,capacity=cap,difference_classes=classes,all_binary_pointer_pairs=all_pairs,reachable_pointer_pairs=legal_pairs))
- return dict(accepted=True,scope='Mathematical binary-state proof and exact predicate-only source identity; native timing and board acceptance are separate',invariant='0 <= modular(wp-rp) <= CAP',invariant_basis='Reset sets equal pointers; serialized completed reads only when nonempty and completed writes only when not full preserve the bound',original_arithmetic_status_unchanged=True,request_latency_unchanged=True,default_parameter_behavior_preserved=True,widths=result,decision_sha256=matrix.hexdigest(),source_sha256=sha(root/source),selected_source_sha256=selected,model_sha256=sha(root/model),tool_sha256=sha(Path(__file__)))
+ return dict(accepted=True,scope='Mathematical binary-state and occupancy induction proof with complete source identity; native timing and board acceptance are separate',registered_occupancy=registered_occupancy,occupancy_induction='Reset equality; exclusive accepted read or completed write updates the same owner and exact signed modular delta; other slots and idle edges retain state',invariant='0 <= modular(wp-rp) <= CAP',invariant_basis='Reset sets equal pointers; serialized completed reads only when nonempty and completed writes only when not full preserve the bound',original_arithmetic_status_unchanged=True,request_latency_unchanged=True,default_parameter_behavior_preserved=True,widths=result,decision_sha256=matrix.hexdigest(),source_sha256=sha(root/source),selected_source_sha256=selected,model_sha256=sha(root/model),tool_sha256=sha(Path(__file__)))
 def main():
  p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,default=ROOT);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
  try:r=check(a.repo.resolve())
