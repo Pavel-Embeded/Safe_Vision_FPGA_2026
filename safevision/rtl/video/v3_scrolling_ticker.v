@@ -37,8 +37,11 @@ module v3_scrolling_ticker #(
   end
  end
 
- wire[12:0] translated={1'b0,x}+{1'b0,position};
- wire[12:0] source_x=translated-VIEW_RIGHT;
+ // Coordinates outside the viewport are rejected by box. Within it,
+ // WIDTH+PERIOD bounds the sum; negative offsets wrap above TEXT_WIDTH.
+ localparam integer ARITH_W=$clog2(WIDTH+PERIOD);
+ wire[ARITH_W-1:0] translated=x[ARITH_W-1:0]+position;
+ wire[ARITH_W-1:0] source_x=translated-VIEW_RIGHT;
  wire box=de&&x>=VIEW_LEFT&&x<VIEW_RIGHT&&y>=HEIGHT-24&&y<HEIGHT-4;
  wire glyph_valid=box&&y>=HEIGHT-22&&y<HEIGHT-6&&
   source_x<TEXT_WIDTH;
