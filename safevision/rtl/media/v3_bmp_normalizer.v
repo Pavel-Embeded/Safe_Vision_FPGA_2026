@@ -62,6 +62,11 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
  // including FLEX H=16384 ->65536. Keep full numerators for the DDA.
  wire[SB+1:0] shape_width3={1'b0,width[SB-1:0],1'b0}+{2'b0,width[SB-1:0]};
  wire shape_wide=shape_width3>={abs_height[SB-1:0],2'b0};
+ // FLEX captures dimensions on SOF, then separates the decision and
+ // numerator/divisor load. Reuse initial_y before the actual row epoch.
+ wire[SB+1:0] saved_width3={1'b0,w,1'b0}+{2'b0,w};
+ wire saved_shape_wide=saved_width3>={h,2'b0};
+ wire[SB+9:0] saved_width480=w*10'd480,saved_height640=h*10'd640;
  task begin_input_row;begin cols_left<=w;phase<=0;padding_left<=w[1:0];skip_x<=0;x_error<=0;store_x<=0;line_full<=0;end endtask
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
@@ -80,20 +85,25 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
      if(width==0||width>(FLEX_PIXELS?16384:1920)||abs_height==0||abs_height>(FLEX_PIXELS?16384:1080))begin
       error<=1;err_code<=`ERR_MEDIA_INVALID;err_detail<=`DET_BMP_SIZE;done<=1;state<=FAILED;
      end else begin
-      w<=width[SB-1:0];h<=abs_height[SB-1:0];cols_left<=width[SB-1:0];padding_left<=width[1:0];orientation<=top_down;wide<=shape_wide;
-      {y_error,x_error}<=shape_wide?height640:width480;
+      w<=width[SB-1:0];h<=abs_height[SB-1:0];cols_left<=width[SB-1:0];padding_left<=width[1:0];orientation<=top_down;wide<=FLEX_PIXELS?0:shape_wide;
+      {y_error,x_error}<=FLEX_PIXELS?0:(shape_wide?height640:width480);
       skip_x<=FLEX_PIXELS?0:(shape_wide?width[SB-1:0]:abs_height[SB-1:0]);store_x<=0;
-      src_row<=FLEX_PIXELS?(shape_wide?width[SB-1:0]:abs_height[SB-1:0]):0;skip_y<=0;y_steps<=0;line_full<=0;
+      src_row<=0;initial_y<=FLEX_PIXELS;skip_y<=0;y_steps<=0;line_full<=0;
       store_x<=0;out_x<=0;out_row<=0;phase<=0;after_row<=0;eof_seen<=0;have_row<=0;state<=GEOM;
      end
     end
     // Geometry is private until SETUP. Split wide compare from dimension
     // selection in FLEX mode; at most640 extra REF edges per image, with
     // identical integer division, aspect fit and output pixel order.
-    GEOM:if(FLEX_PIXELS)begin geometry_ge_q<=geometry_scratch>=geometry_divisor;state<=GEOM_DECIDE;end
+    GEOM:if(FLEX_PIXELS)begin
+      if(initial_y)wide<=saved_shape_wide;else geometry_ge_q<=geometry_scratch>=geometry_divisor;
+      state<=GEOM_DECIDE;end
      else if(geometry_scratch>=geometry_divisor)begin {y_error,x_error}<=geometry_scratch-geometry_divisor;store_x<=store_x+1'b1;end
      else begin dw<=wide?10'd640:store_x==0?10'd1:store_x;dh<=wide?(store_x==0?10'd1:store_x):10'd480;state<=SETUP;end
-    GEOM_DECIDE:if(geometry_ge_q)begin {y_error,x_error}<=geometry_scratch-geometry_divisor;store_x<=store_x+1'b1;state<=GEOM;end
+    GEOM_DECIDE:if(initial_y)begin
+      {y_error,x_error}<=wide?saved_height640:saved_width480;src_row<=wide?w:h;
+      initial_y<=0;state<=GEOM;
+     end else if(geometry_ge_q)begin {y_error,x_error}<=geometry_scratch-geometry_divisor;store_x<=store_x+1'b1;state<=GEOM;end
      else begin dw<=wide?10'd640:store_x==0?10'd1:store_x;dh<=wide?(store_x==0?10'd1:store_x):10'd480;state<=SETUP;end
     SETUP:begin x_error<=((10'd640-dw)>>1)+dw;skip_x<=0;store_x<=0;
      if(FLEX_PIXELS)src_row<=0;
