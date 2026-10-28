@@ -31,10 +31,11 @@ module v3_bmp_normalizer #(parameter integer FLEX_PIXELS=0)(
  reg[XB-1:0] x_error;reg[SB-1:0] y_error;reg[9:0] store_x,out_x;reg[DH-1:0]out_row;
  reg[7:0] blue,green;reg[1:0] phase,padding_left;reg[15:0] captured;
  reg after_row,eof_seen,have_row,initial_y,line_full;
- // FLEX starts at N<=16384*640<2^24 and subtracts only while N>=D.
- // Every geometry remainder therefore fits the original25-bit numerator.
- // The row epoch later reuses these registers; its full widths stay intact.
- localparam GB=FLEX_PIXELS?SB+10:SB+XB;
+ // FLEX selects N=min(480*W,640*H). Accepted W<=16384 gives
+ // N<=7,864,320<2^23; nonnegative subtractions preserve this bound.
+ // GEOM reads omit seven unused high tuple bits. Row registers and both
+ // original25-bit products retain their full widths.
+ localparam GB=FLEX_PIXELS?SB+8:SB+XB;
  wire[GB-1:0] geometry_scratch={y_error,x_error};
  wire[SB-1:0] geometry_divisor=FLEX_PIXELS?src_row:skip_x;
  // Canonical line uses two native RAM9K tiles; no distributed tail.
