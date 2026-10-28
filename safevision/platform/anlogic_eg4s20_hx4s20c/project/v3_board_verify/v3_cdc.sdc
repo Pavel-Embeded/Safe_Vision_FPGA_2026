@@ -40,3 +40,8 @@ set_max_delay -datapath_only -from [get_regs {*rd_to_wr*primary_addr_gray_reg*}]
 # Only metadata/completion first sampling stages; later local stages stay timed.
 set_false_path -to [get_regs {sink/fa_sync[0] sink/td_sync[0] sink/sl_sync[0] sink/sl_sync[1]}]
 set_false_path -to [get_regs {player/mr_sync[0] player/fd_sync[0] player/lok_sync[0]}]
+# Header extent: product is stable at least19 clocks before byte52 capture.
+# Restrict the exception to this DSP and this private predicate; paired hold
+# restores the ordinary minimum-delay edge. All other paths stay single-cycle.
+set_multicycle_path -setup -from [get_cells {player/u_bmp/mult0*}] -to [get_regs {player/u_bmp/header_trunc_q}] 2
+set_multicycle_path -hold -from [get_cells {player/u_bmp/mult0*}] -to [get_regs {player/u_bmp/header_trunc_q}] 1

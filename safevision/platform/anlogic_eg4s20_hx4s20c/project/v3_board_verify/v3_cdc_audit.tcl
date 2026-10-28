@@ -65,6 +65,9 @@ v3_expect_objects {registered_reset.wav_kernel} [get_regs {audio/source/kernel_r
 v3_expect_objects {registered_owner.filesystem} [get_regs {player/service_owner_q*}]
 v3_expect_objects {frame_safe.source} [get_regs {video/frame_safe_boundary*choose_safe/raw_selected*}]
 v3_expect_objects {frame_safe.output} [get_regs {video/frame_safe_boundary*choose_safe/output_selected*}]
+v3_expect_objects {header_extent.product} [get_cells {player/u_bmp/mult0*}]
+v3_expect_objects {header_extent.capture} [get_regs {player/u_bmp/header_trunc_q}]
+if {[llength [get_cells {player/u_bmp/mult0*}]]!=1 || [llength [get_regs {player/u_bmp/header_trunc_q}]]!=1} {error "V3 header extent endpoint count changed"}
 proc v3_exact_register_bits {stem} {
  set matches {}
  set expression [format {^sink/u_bridge/writer/%s\[[0-9]+\]$} $stem]
