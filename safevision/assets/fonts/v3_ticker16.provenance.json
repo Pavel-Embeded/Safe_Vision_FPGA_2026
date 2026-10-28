@@ -39,8 +39,9 @@
     16
   ],
   "message_characters": 32,
-  "rom_words": 512,
-  "rom_word_bits": 16,
+  "rom_words": 8192,
+  "rom_word_bits": 1,
+  "storage_order": "column_major_bit",
   "physical_budget_ram9k": 1,
   "font_pixels": 14,
   "threshold": 96,
@@ -53,6 +54,6 @@
   "copyright": "© 2014-2021 Adobe (http://www.adobe.com/).",
   "license": "SIL Open Font License 1.1",
   "derived_asset_name": "SafeVisionTicker16",
-  "bitmap_sha256": "07e53f9285968256b26049e313f7c0de37f62693d537d54566ade4838eb4cef6",
+  "bitmap_sha256": "db9b32e51a3ef8cdf735018c5ec3fa80698970b509312903556ecbc0a094eccf",
   "reference_sha256": "5997d38ff2cf270a5183fbd6ad2490a9467ad7a090daaac98857e26cae096408"
 }
