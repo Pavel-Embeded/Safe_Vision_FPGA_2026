@@ -14,9 +14,11 @@ def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def check(root):
  start=time.monotonic();source=root/'safevision/rtl/media/v3_bmp_normalizer.v';text=source.read_text('utf-8-sig')
- for anchor in ['localparam GB=FLEX_PIXELS?SB+10:SB+XB;',
+ for anchor in ['localparam SB=FLEX_PIXELS?15:11,XB=FLEX_PIXELS?15:12;',
+                'localparam GB=FLEX_PIXELS?SB+10:SB+XB;',
                 'wire[GB-1:0] geometry_scratch={y_error,x_error};',
                 'geometry_ge_q<=geometry_scratch>=geometry_divisor;',
+                "wire[SB+9:0] saved_width480=w*10'd480,saved_height640=h*10'd640;",
                 '{y_error,x_error}<=wide?saved_height640:saved_width480;',
                 'src_row<=wide?w:h;']:
   assert text.count(anchor)==1,anchor
