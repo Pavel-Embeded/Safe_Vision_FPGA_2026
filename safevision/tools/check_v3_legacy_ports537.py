@@ -7,7 +7,8 @@ from pathlib import Path
 import argparse,hashlib,json,re,subprocess,sys
 ROOT=Path(__file__).resolve().parents[2]
 REFERENCE='25d311a25288d24072d11aee77b19f7bad53e4fa'
-NEW_RTL={'safevision/rtl/storage/v3_fat_name_store.v','safevision/rtl/storage/v3_flexible_media_index.v','safevision/rtl/video/v3_audio_spectrum.v'}
+NEW_RTL={'safevision/rtl/storage/v3_fat_name_store.v','safevision/rtl/storage/v3_flexible_media_index.v','safevision/rtl/video/v3_audio_spectrum.v','safevision/rtl/video/v3_scrolling_ticker.v'}
+NEW_HEADERLESS={'safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/ticker_enable.v'}
 
 def clean(text):
  return re.sub(r'("(?:\\.|[^"\\])*")|//[^\n]*|/\*[\s\S]*?\*/',lambda m:m.group(1)or' ',text)
@@ -62,6 +63,10 @@ def check(root,repository=None):
   current=(root/name).read_bytes()
   if name in NEW_RTL:
    assert headers(current),'new RTL has no public module header: '+name
+   continue
+  if name in NEW_HEADERLESS:
+   if headers(current):raise ValueError('macro-only input declares a module: '+name)
+   records.append(dict(path=name,current_sha256=hashlib.sha256(current).hexdigest(),modules={},role='new macro-only input; no module ports'))
    continue
   p=subprocess.run(['git','-C',str(repository),'show',REFERENCE+':'+name],capture_output=True)
   if p.returncode:raise ValueError('missing historical interface blob: '+name)

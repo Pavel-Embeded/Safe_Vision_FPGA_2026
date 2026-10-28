@@ -44,6 +44,7 @@ def main():
   names.add('safevision/tools/host/burn_ticker261028_sram.ps1')
   names|={'safevision/tools/build_ticker_shared_font.py','safevision/tools/check_shape_space261028.py'}
   names|={'safevision/tools/test_ticker_archive261028.py','safevision/tools/test_ticker_uart261028.py'}
+  names|={'safevision/tools/test_geometry_live_miter261028.py','safevision/tools/test_source_wait_watchdog261028.py','safevision/tools/check_v3_legacy_ports537.py'}
   if functional['geometry_width'].get('accepted'):
    names.add('safevision/tools/check_geometry_width261028.py')
   commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD']).decode().strip()

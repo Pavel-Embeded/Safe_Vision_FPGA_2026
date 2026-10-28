@@ -1,0 +1,23 @@
+{
+ "sources": [
+  "safevision/rtl/media/bmp_parser.v",
+  "safevision/rtl/media/v3_bmp_normalizer.v",
+  "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v",
+  "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v",
+  "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
+  "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+  "safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
+  "safevision/rtl/memory/frame_writer.v",
+  "safevision/rtl/memory/frame_address_gen.v",
+  "safevision/rtl/common/crc16_ccitt.v",
+  "safevision/rtl/memory/v3_row_integrity.v"
+ ],
+ "tops": ["tb_v3_progress_wide_independent"],
+ "defines": [],
+ "assets": [],
+ "strict_generated_inputs": 1,
+ "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+ "generator_dependencies": [],
+ "generated_assets": [],
+ "timeouts": {"tb_v3_progress_wide_independent": 1800}
+}

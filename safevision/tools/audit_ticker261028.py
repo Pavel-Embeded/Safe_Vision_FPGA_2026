@@ -28,9 +28,14 @@ def bind(root,folder,target=None,mutant_sha=None):
 def positive(root,base,suite,top):
  record=read(base/'results.json')
  require(record.get('complete'),'additional positive suite incomplete: '+suite)
+ rows=[r for r in record['results']if r['top']==top]
+ require(record['suite']==suite and len(rows)==1 and rows[0]['status']=='PASS'and rows[0].get('source_overrides',[])==[],'additional positive result identity or status differs: '+top)
  native=base/top;bind(root,native);raw=audit_file(native/'sim.log',True)
  require(raw['accepted'],'additional positive raw failure: '+top)
- return dict(top=top,raw_sha256=raw['sha256'],compiler=graph(root,native,dict(suite=suite,top=top)))
+ text=(native/'sim.log').read_text('utf-8',errors='replace')
+ counts=re.findall(r'\bPASS '+re.escape(top)+r'\b[^\r\n]*\berrors=0\b[^\r\n]*\bcomparisons=(\d+)',text)
+ require(len(counts)==1 and int(counts[0])==rows[0]['data_comparisons'],'additional positive raw comparison count differs: '+top)
+ return dict(top=top,data_comparisons=int(counts[0]),raw_sha256=raw['sha256'],compiler=graph(root,native,dict(suite=suite,top=top)))
 
 def semantic_controls(root,base,suite,top,wanted):
  rows=read(base/'summary.json')
@@ -71,6 +76,78 @@ def numeric_geometry_width(root,folder):
  for key in keys:require(actual[key]==recorded[key],'geometry-width replay differs: '+key)
  require(actual['accepted']and actual['dimension_pairs']==16384**2 and actual['candidate_bits']==23 and actual['original_scratch_bits']==30 and actual['maximum_initial_numerator']==480*16384 and actual['maximum_initial_numerator']<2**23,'geometry-width domain coverage incomplete')
  return dict(accepted=True,dimension_pairs=actual['dimension_pairs'],candidate_bits=actual['candidate_bits'],maximum_initial_numerator=actual['maximum_initial_numerator'],vectors_sha256=actual['vectors_sha256'],evidence_sha256=sha(folder/'result.json'),tool_sha256=sha(tool),scope=actual['scope'])
+def live_geometry(root,base):
+ suite='geometry_live_miter261028';top='tb_v3_geometry_live_miter'
+ checked=positive(root,base/'geometry_live',suite,top)
+ folder=base/'geometry_live_controls';row=read(folder/'summary.json')
+ target='safevision/rtl/media/v3_bmp_normalizer.v'
+ meta=read(root/'safevision/verification/models/v3_bmp_normalizer_frozen_live261028.freeze.json')
+ require(meta['parent_commit']=='df73ee8f20fa06b7a048fb2dc3c2c4eefbb5cc49','geometry reference parent changed')
+ require(meta['original_path']==target and meta['reference_path']=='safevision/verification/models/v3_bmp_normalizer_frozen_live261028.sv'and meta['rename_from']=='module v3_bmp_normalizer #('and meta['rename_to']=='module v3_bmp_normalizer_frozen_live261028 #(','geometry reference namespace definition changed')
+ parent=subprocess.check_output(['git','-C',str(root),'show',meta['parent_commit']+':'+target])
+ before=meta['rename_from'].encode();after=meta['rename_to'].encode()
+ require(parent.count(before)==1 and hashlib.sha256(parent).hexdigest()==meta['original_sha256'],'geometry parent blob differs')
+ require(parent.replace(before,after)==(root/meta['reference_path']).read_bytes()and sha(root/meta['reference_path'])==meta['reference_sha256'],'geometry model is not the exact renamed parent')
+ require(row['accepted']and row['rename_only']and row['current_source_sha256']==sha(root/target)==meta['candidate_sha256']and row['reference_sha256']==meta['reference_sha256']and row['tool_sha256']==sha(root/'safevision/tools/test_geometry_live_miter261028.py'),'public-cycle miter identity differs')
+ case=row['control'];require(case['name']=='geometry_live_pixel_bit_changed'and case['mutated_public_signal']=='pixel[0]'and case['process_exit']==1 and case['normal_completion']and case['protocol_and_coverage_counters_equal'],'public pixel control incomplete')
+ require(row['positive_sha256']==sha(base/'geometry_live/results.json'),'public-cycle positive receipt differs from the control baseline')
+ text=(root/target).read_text('utf-8-sig')
+ before="EPUSH:begin pixel<=row_black||col_black?16'd0:read_pixel;";after="EPUSH:begin pixel<=(row_black||col_black?16'd0:read_pixel)^16'h0001;"
+ require(text.count(before)==1,'public pixel mutation anchor differs')
+ mutant=folder/'public_state_mutant.v'
+ require(mutant.read_text('utf-8-sig')==text.replace(before,after)and sha(mutant)==case['mutant_sha256'],'public pixel mutation differs')
+ native=folder/'native'/top;bind(root,native,target,case['mutant_sha256'])
+ g=graph(root,native,dict(suite=suite,top=top),dict(mutated_sha256=case['mutant_sha256']))
+ raw=(native/'sim.log').read_text('utf-8',errors='replace')
+ require(sha(native/'sim.log')==case['sim_sha256']and'$finish called'in raw and'[FAIL] all62FLEX public bits agree'in raw and not re.search(r'(?im)^\s*(?:Fatal:|FATAL\b|ERROR:|SKIP\b)',raw)and'[SKIP]'not in raw,'public pixel detector raw evidence differs')
+ pattern=r'PASS '+top+r' errors=(\d+) comparisons=(\d+) cycles=(\d+) frames=(\d+) invalid_sizes=(\d+) invalid_eofs=(\d+) async_checks=(\d+) stalled_cycles=(\d+)'
+ pos=re.search(pattern,(base/'geometry_live'/top/'sim.log').read_text('utf-8'));neg=re.search(pattern,raw)
+ require(pos and neg and pos[1]=='0'and pos.groups()[1:]==neg.groups()[1:]and int(pos[2])>30000000 and int(pos[3])>1000000 and list(map(int,pos.groups()[3:7]))==[12,16,5,5]and int(pos[8])>100000,'public-cycle miter coverage or timing differs')
+ require([int(n)for n in re.findall(r'errors\s*=\s*(\d+)',raw)]==case['error_counts']and int(neg[1])>=307200,'public pixel errors absent')
+ return checked,dict(name=case['name'],raw_sha256=sha(native/'sim.log'),compiler=g,protocol_and_coverage_counters_equal=True)
+
+def source_wait(root,base):
+ wanted=[('source_wait_watchdog261028','tb_v3_source_wait_watchdog',900000),('source_wait_legacy261028','tb_v3_source_wait_legacy',20000),('source_wait_writer261028','tb_v3_source_wait_writer',6),('progress_wide_independent261028','tb_v3_progress_wide_independent',50000000)]
+ positives=[]
+ for suite,top,minimum in wanted:
+  folder=base/suite;positives.append(positive(root,folder,suite,top))
+  result=read(folder/'results.json');require(len(result['results'])==1 and positives[-1]['data_comparisons']>=minimum,'source-wait coverage incomplete: '+top)
+ wide=(base/'progress_wide_independent261028/tb_v3_progress_wide_independent/sim.log').read_text('utf-8')
+ coverage=re.search(r'raw_bytes=(\d+) pixels=(\d+) writes=(\d+) reads=(\d+) max_pixel_gap_cycles=(\d+) credits=(\d+) busy_saved=(\d+) stale_checks=(\d+) legacy_rejected=(\d+)',wide)
+ require(coverage and list(map(int,coverage.groups()[:4]))==[3342390,307200,153600,153600]and int(coverage[5])>50000000 and int(coverage[6])>1000 and int(coverage[7])==1 and int(coverage[8])>0 and int(coverage[9])==1,'real wide-BMP/readback/old-timeout control coverage differs')
+ freeze=read(root/'safevision/verification/models/source_wait_legacy261028.freeze.json')
+ require({r['module']for r in freeze['records']}=={'frame_writer','bmp_frame_sink'}and len(freeze['records'])==2,'source-wait frozen reference inventory differs')
+ frozen_paths={'frame_writer':('safevision/rtl/memory/frame_writer.v','safevision/verification/models/v3_frame_writer_before_source_wait261028.sv','v3_frame_writer_before_source_wait261028'),'bmp_frame_sink':('safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v','safevision/verification/models/v3_frame_sink_before_source_wait261028.sv','v3_frame_sink_before_source_wait261028')}
+ for row in freeze['records']:
+  require(row['source_commit']=='2b734a27f213b8b28e7daf832a2c7d2a413b30e3','source-wait reference commit differs')
+  source_path,reference_path,reference_module=frozen_paths[row['module']]
+  require((row['source_path'],row['reference_path'],row['reference_module'])==(source_path,reference_path,reference_module)and row['namespace_only']==['module '+row['module']+' #(','module '+reference_module+' #('],'source-wait reference namespace definition changed')
+  original=subprocess.check_output(['git','-C',str(root),'show',row['source_commit']+':'+row['source_path']])
+  before,after=(v.encode()for v in row['namespace_only'])
+  require(original.count(before)==1 and hashlib.sha256(original).hexdigest()==row['original_sha256']and original.replace(before,after)==(root/row['reference_path']).read_bytes()and sha(root/row['reference_path'])==row['reference_sha256'],'source-wait frozen model differs beyond module name')
+ folder=base/'source_wait_controls';summary=read(folder/'summary.json')
+ require(summary['driver_sha256']==sha(root/'safevision/tools/test_source_wait_watchdog261028.py')and summary['runner_sha256']==sha(root/'safevision/tools/run_v3_sim_flexible.py'),'source-wait control driver or runner differs')
+ writer='safevision/rtl/memory/frame_writer.v';sink='safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v'
+ inventory={
+  'pending_write_hint_unprotected':(writer,'SOURCE_PROGRESS_AWARE && source_progress && !wr_pending && !din_valid','SOURCE_PROGRESS_AWARE && source_progress && !din_valid','source_wait_writer261028','tb_v3_source_wait_writer'),
+  'legacy_hint_enabled':(writer,'SOURCE_PROGRESS_AWARE && source_progress && !wr_pending && !din_valid',"1'b1 && source_progress && !wr_pending && !din_valid",'source_wait_legacy261028','tb_v3_source_wait_legacy'),
+  'deadline_priority_lost':(sink,'SOURCE_PROGRESS_AWARE && (source_wait_credit || br_px_cnt!=px_d)',"1'b0 && (source_wait_credit || br_px_cnt!=px_d)",'source_wait_watchdog261028','tb_v3_source_wait_watchdog'),
+  'physical_drain_guard_lost':(sink,'state_o==S_WRITE && fa_sync[2] && write_drained &&','state_o==S_WRITE && fa_sync[2] &&','source_wait_watchdog261028','tb_v3_source_wait_watchdog')}
+ require(summary['accepted']and len(summary['cases'])==4 and {r['name']for r in summary['cases']}==set(inventory),'source-wait control inventory differs')
+ controls=[]
+ for row in summary['cases']:
+  require(tuple(row[k]for k in('target','before','after','suite','top'))==inventory[row['name']],'source-wait control definition changed')
+  require(row['accepted']and row['process_exit']==1 and row['normal_completion'],'source-wait control failed to finish normally')
+  source=root/row['target'];text=source.read_text('utf-8-sig');require(sha(source)==row['original_sha256']and text.count(row['before'])==1,'source-wait source/anchor differs')
+  trial=folder/row['name'];mutant=trial/'mutant.v';native=trial/'native'/row['top']
+  require(mutant.read_text('utf-8-sig')==text.replace(row['before'],row['after'])and sha(mutant)==row['mutated_sha256'],'source-wait control bytes differ')
+  bind(root,native,row['target'],row['mutated_sha256']);g=graph(root,native,dict(suite=row['suite'],top=row['top']),row)
+  raw=(native/'sim.log').read_text('utf-8',errors='replace');counts=[int(n)for n in re.findall(r'errors\s*=\s*(\d+)',raw)]
+  require(sha(native/'sim.log')==row['sim_sha256']and'$finish called'in raw and'PASS '+row['top']in raw and'[FAIL]'in raw and counts==row['error_counts']and any(counts),'source-wait semantic detection absent')
+  require(not re.search(r'(?im)^\s*(?:Fatal:|FATAL\b|ERROR:|SKIP\b)',raw)and'[SKIP]'not in raw,'source-wait detector crashed or skipped')
+  controls.append(dict(name=row['name'],raw_sha256=sha(native/'sim.log'),compiler=g))
+ return positives,controls,dict(raw_bytes=3342390,pixels=307200,write_words=153600,readback_words=153600,maximum_no_pixel_cycles=int(coverage[5]),source_event_retained_after_healthy_read=True,old_pixel_watchdog_rejected=True)
+
 def audit(root,regression,ticker,board,controls):
  require(__debug__,'assertions disabled')
  matrix=read(root/'safevision/build/qualification/four_features_261020.json')
@@ -82,10 +159,12 @@ def audit(root,regression,ticker,board,controls):
  allowed|={'safevision/tools/check_v3_rom_netlist.py','safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v','safevision/rtl/storage/sd_bmp_player.v'}
  allowed|={'safevision/rtl/video/v3_audio_spectrum.v','safevision/rtl/video/v3_status_layers.v','safevision/rtl/video/v3_video_display_core.v'}
  allowed|={'safevision/rtl/media/v3_bmp_normalizer.v','safevision/rtl/hd/v3_status_layers.v','safevision/rtl/hd/v3_video_display_core.v'}
+ allowed|={'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v','safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v','safevision/rtl/memory/frame_writer.v'}
  top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig')
  require(top.count('.MESSAGE_CHARS(32)')==1 and top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.MESSAGE_CHARS(16)'not in top and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'local32/shared-status/lookahead/packed-reply production profile differs')
  production_profile=dict(font_storage='dedicated_ram9k',message_characters=32,period_pixels=1024,fft_font_sharing=False,video_latency_clocks=21,source_ahead_pixels=5)
  require('.REGISTERED_RESIDENT_READY(TICKER_ENABLE)'in top,'resident readiness profile not selected by the production flag')
+ require(top.count('.SOURCE_PROGRESS_AWARE(TICKER_ENABLE)')==1 and top.count('source_progress_mem<={source_progress_mem[1:0],player_progress[0]};')==1 and top.count('source_byte_progress=source_progress_mem[2]^source_progress_mem[1]')==1 and '.source_progress(source_byte_progress)'in top,'production accepted-byte progress path differs')
  new={'safevision/rtl/video/v3_scrolling_ticker.v','safevision/assets/fonts/v3_ticker16.mem','safevision/assets/fonts/v3_ticker16.provenance.json'}|{str(FLOW/n).replace('\\','/')for n in ('ticker_enable.v','base/v3_ticker16.mem','hd/v3_ticker16.mem')}
  new|={'safevision/assets/fonts/v3_spectrum_ticker.mem','safevision/assets/fonts/v3_spectrum_ticker.provenance.json','safevision/assets/fonts/v3_ticker_shared16.mem'}|{str(FLOW/n).replace('\\','/')for n in ('base/v3_spectrum_ticker.mem','hd/v3_spectrum_ticker.mem')}
  require(set(old)<=set(sources)and set(sources)-set(old)==new,'unreviewed production dependency added/removed')
@@ -194,8 +273,12 @@ def audit(root,regression,ticker,board,controls):
  require(normalizer.count('localparam GB=FLEX_PIXELS?SB+8:SB+XB;')==1 and normalizer.count('wire[GB-1:0] geometry_scratch={y_error,x_error};')==1 and 'localparam GB=FLEX_PIXELS?SB+10:SB+XB;'not in normalizer,'production geometry-width23 profile differs')
  width_proof=numeric_geometry_width(root,controls.parent/'geometry_width')
  require(len(additions)==7 and len({r['top']for r in additions})==7,'additional positive inventory changed')
+ live_positive,live_control=live_geometry(root,controls.parent)
+ wait_positive,wait_controls,wait_coverage=source_wait(root,controls.parent)
+ additions+=[live_positive]+wait_positive
+ require(len(additions)==12 and len({r['top']for r in additions})==12,'reviewed extended positive inventory changed')
  compatibility=dict(production_selected=False,scope='Alternate shared-font library parameters; the production local32 path uses a dedicated font ROM',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=217,production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=7,total_positive_tops=310,preserved_semantic_controls=221,added_semantic_controls=24,total_semantic_controls=245,positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,geometry_controls=geometry_controls,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=217,production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=12,total_positive_tops=315,preserved_semantic_controls=221,added_semantic_controls=29,total_semantic_controls=250,positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)
