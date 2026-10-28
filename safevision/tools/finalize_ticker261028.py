@@ -51,6 +51,8 @@ def main():
   names|={'safevision/tools/build_ticker_shared_font.py','safevision/tools/check_shape_space261028.py'}
   if functional.get('packed_font_proof'):
    names|={'safevision/tools/build_ticker_shared32_lossless.py','safevision/tools/test_lossless_shared32_controls.py','safevision/verification/models/v3_scrolling_ticker_frozen_packed32.freeze.json','safevision/verification/models/v3_scrolling_ticker_frozen_packed32.sv'}
+  if functional.get('audio_ring_pointer_proof'):
+   names|={'safevision/tools/check_ring_pointer_compare.py','safevision/tools/test_ring_pointer_controls.py','safevision/verification/models/v3_pcm_ring_frozen_pointer.freeze.json','safevision/verification/models/v3_pcm_ring_frozen_pointer.sv'}
   names|={'safevision/tools/test_ticker_archive261028.py','safevision/tools/test_ticker_uart261028.py'}
   names|={'safevision/tools/test_geometry_live_miter261028.py','safevision/tools/test_source_wait_watchdog261028.py','safevision/tools/check_v3_legacy_ports537.py'}
   if functional['production_profile'].get('base_media_bram_locations'):

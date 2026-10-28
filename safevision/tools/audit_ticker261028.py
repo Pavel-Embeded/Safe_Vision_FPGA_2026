@@ -183,6 +183,34 @@ def packed_font(root,base):
   checked.append(dict(name=name,raw_sha256=sha(native/'sim.log'),compiler=g))
  return additions,checked,proof
 
+def pointer_compare(root,base):
+ from check_ring_pointer_compare import check
+ recorded=read(base/'pointer_numeric/result.json');actual=check(root)
+ require(actual==recorded and actual['accepted']and actual['request_latency_unchanged']and actual['original_arithmetic_status_unchanged'],'pointer mathematical proof or exact source transformation differs')
+ additions=[positive(root,base/name,suite,top)for name,suite,top in [('pointer_miter','ring_pointer_compare','tb_v3_ring_pointer_compare'),('pointer_audio','audio_system_pointer','tb_v3_audio_system_pointer')]]
+ detector=positive(root,base/'pointer_detector','ring_pointer_trace','tb_v3_ring_pointer_trace')
+ raw=(base/'pointer_detector/tb_v3_ring_pointer_trace/sim.log').read_text('utf-8');require(re.findall(r'\bdata_errors=(\d+)',raw)==['0'],'original bounded detector has comparison errors')
+ from test_ring_pointer_controls import CASES
+ require({c[0]for c in CASES}=={'ring_empty_inverted','ring_full_wrong_phase','ring_empty_ignores_wrap','ring_status_bit_changed','ring_production_mode_disabled'},'pointer detector inventory differs')
+ folder=base/'pointer_controls';summary=read(folder/'summary.json');require(summary['accepted']and len(summary['cases'])==5,'pointer semantic controls incomplete')
+ verified=[]
+ for name,target,before,after,suite,top in CASES:
+  rows=[r for r in summary['cases']if r['name']==name];require(len(rows)==1,'pointer control duplicated or absent');row=rows[0]
+  require(tuple(row[k]for k in('target','before','after','suite','top'))==(target,before,after,suite,top),'pointer control definition differs')
+  trial=folder/name;require(read(trial/'result.json')==row and row['accepted']and row['process_exit']==1 and row['normal_completion'],'pointer control did not finish normally')
+  text=(root/target).read_text('utf-8-sig');require(sha(root/target)==row['original_sha256']and text.count(before)==1,'pointer control source differs')
+  require((trial/'mutant.v').read_text('utf-8-sig')==text.replace(before,after)and sha(trial/'mutant.v')==row['mutated_sha256'],'pointer mutation differs')
+  native=trial/'native'/top;bind(root,native,target,row['mutated_sha256']);g=graph(root,native,dict(suite=suite,top=top),row)
+  raw=(native/'sim.log').read_text('utf-8');counts=[int(v)for v in re.findall(r'errors\s*=\s*(\d+)',raw)]
+  require(sha(native/'sim.log')==row['sim_sha256']and'$finish called'in raw and'PASS '+top in raw and'[FAIL]'in raw and counts==row['error_counts']and any(counts),'pointer raw semantic detection absent')
+  require(not re.search(r'(?im)^\s*(?:Fatal:|FATAL\b|ERROR:|SKIP\b)',raw)and'[SKIP]'not in raw,'pointer control crashed or skipped')
+  if suite=='ring_pointer_trace':
+   values=re.findall(r'\bdata_errors=(\d+)',raw);require(len(values)==1 and int(values[0])==row['actual_data_comparison_errors']and int(values[0])>0,'pointer control detected only a driver stall')
+   require(re.search(r'\[FAIL\].*(?:every public output|occupancies|prefetch threshold|independent PCM)',raw),'pointer comparison detector absent')
+  else:require('[FAIL] production selects direct full/empty pointer scheduling'in raw,'production pointer selection detector absent')
+  verified.append(dict(name=name,raw_sha256=sha(native/'sim.log'),compiler=g))
+ return additions,dict(mathematical_proof=actual,detector_baseline=detector,semantic_controls=verified)
+
 def audit(root,regression,ticker,board,controls):
  require(__debug__,'assertions disabled')
  matrix=read(root/'safevision/build/qualification/four_features_261020.json')
@@ -198,6 +226,8 @@ def audit(root,regression,ticker,board,controls):
  layout_files={'safevision/tools/v3_sources.py','safevision/tools/v3_final_sta.py','safevision/tools/check_v3_board.py',str(FLOW/'v3_physical_base.adc').replace('\\','/')}
  allowed|=layout_files
  top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig')
+ direct_pointer=top.count('.DIRECT_RING_COMPARE(TICKER_ENABLE)')==1
+ if direct_pointer:allowed|={'safevision/rtl/audio/v3_pcm_ring.v','safevision/rtl/audio/v3_audio_system.v'}
  packed='.PACKED_EXTERNAL(1)'in top
  selected=top.count('.EXTERNAL_FONT(1)')==1 and top.count('.SHARED_TICKER(TICKER_ENABLE)')==1 and top.count('.SHARED_PACKED_FONT(TICKER_ENABLE)')==1 and top.count('.PACKED_EXTERNAL(1)')==1 and '.EXTERNAL_FONT(0)'not in top and '.SHARED_TICKER(0)'not in top if packed else top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top
  require(selected and top.count('.MESSAGE_CHARS(32)')==1 and '.MESSAGE_CHARS(16)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'32character/shared-status/lookahead/packed-reply production profile differs')
@@ -337,8 +367,13 @@ def audit(root,regression,ticker,board,controls):
  packed_controls=[];packed_proof=None
  if packed:
   extra,packed_controls,packed_proof=packed_font(root,controls.parent);additions+=extra
+ pointer_proof=None;pointer_controls=[]
+ if direct_pointer:
+  extra,pointer_proof=pointer_compare(root,controls.parent);additions+=extra;pointer_controls=pointer_proof['semantic_controls']
+  production_profile['audio_ring_direct_pointer_compare']=True
+  production_profile['audio_ring_capacity_pairs_per_slot']=16384
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls),total_semantic_controls=250+len(packed_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)

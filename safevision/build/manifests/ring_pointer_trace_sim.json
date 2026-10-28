@@ -1,0 +1,11 @@
+{
+ "sources": ["safevision/rtl/audio/v3_pcm_ring.v", "safevision/verification/models/v3_pcm_ring_frozen_pointer.sv", "safevision/verification/unit/tb_v3_ring_pointer_compare.sv"],
+ "tops": ["tb_v3_ring_pointer_trace"],
+ "defines": [],
+ "assets": ["safevision/verification/models/v3_pcm_ring_frozen_pointer.freeze.json"],
+ "generator_dependencies": [],
+ "generated_assets": [],
+ "strict_generated_inputs": 1,
+ "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+ "timeouts": {"tb_v3_ring_pointer_trace":300}
+}

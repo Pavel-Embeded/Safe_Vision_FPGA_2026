@@ -51,6 +51,7 @@ module tb_v3_ticker_board;
   $readmemb("pixels.mem",pixels);
   repeat(10)@(negedge clk);rst_n=1;wait(dut.sys_rst_n&&dut.pixel_rst_n);
   ck(dut.TICKER_ENABLE==1,"production source list enables ticker");
+  ck(dut.audio.DIRECT_RING_COMPARE==1&&dut.audio.ring.DIRECT_POINTER_COMPARE==1,"production selects direct full/empty pointer scheduling");
   ck(dut.scrolling.ticker.MESSAGE_CHARS==32&&dut.scrolling.ticker.EXTERNAL_FONT==1&&dut.scrolling.ticker.PACKED_EXTERNAL==1,"production selects all32losslessly shared glyphs");
   ck(dut.video.SHARED_TICKER==1&&dut.video.SHARED_PACKED_FONT==1,"production selects the checked9-bit shared memory layout");
   force dut.cmd_valid=cv;force dut.cmd_target=8'd66;force dut.cmd_catalog_id=catalog;force dut.cmd_value=selector;force dut.cmd_query=query;
