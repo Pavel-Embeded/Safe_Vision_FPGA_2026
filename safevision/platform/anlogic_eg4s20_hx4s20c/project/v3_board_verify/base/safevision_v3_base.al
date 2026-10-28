@@ -1001,7 +1001,7 @@
                     <hfn_opt_effort>low</hfn_opt_effort>
                     <pr_strategy>5</pr_strategy>
                     <seed>7</seed>
-                    <opt_timing>off</opt_timing>
+                    <opt_timing>medium</opt_timing>
                 </PlaceProperty>
                 <RouteProperty>
                     <effort>routability</effort>
