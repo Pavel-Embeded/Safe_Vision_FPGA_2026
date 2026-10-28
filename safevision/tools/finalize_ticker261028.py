@@ -27,7 +27,7 @@ def main():
    helper_env=os.environ.copy();helper_env['TEMP']=helper_env['TMP']=str(helper_temp)
    with(out/(helper+'.log')).open('w',encoding='utf-8')as log:
     code=subprocess.run([sys.executable,'-B',str(root/'safevision/tools'/helper),'--repo',str(root),'--output',str(out/'media_bram.controls.json')],cwd=root,env=helper_env,stdout=log,stderr=subprocess.STDOUT).returncode
-   require(code==0 and read(out/'media_bram.controls.json')['accepted']and read(out/'media_bram.controls.json')['check_count']==13,'media RAM source/native-location detector tests failed')
+   require(code==0 and read(out/'media_bram.controls.json')['accepted']and read(out/'media_bram.controls.json')['check_count']==(26 if len(functional['production_profile']['base_media_bram_locations'])==45 else 13),'media RAM source/native-location detector tests failed')
   hardware=snapshot(root);require(snapshot(frozen)==hardware,'routed source differs from current hardware')
   record=read(native/'base/build.manifest.json');folder=native/'base'
   require(record['status']=='PASS'and record['source_unchanged']and record['source_commit_binding']['verified']and record['sources']==hardware,'native source identity rejected')

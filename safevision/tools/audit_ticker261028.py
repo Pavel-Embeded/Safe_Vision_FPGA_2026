@@ -206,7 +206,7 @@ def audit(root,regression,ticker,board,controls):
  require(top.count('.SOURCE_PROGRESS_AWARE(TICKER_ENABLE)')==1 and top.count('source_progress_mem<={source_progress_mem[1:0],player_progress[0]};')==1 and top.count('source_byte_progress=source_progress_mem[2]^source_progress_mem[1]')==1 and '.source_progress(source_byte_progress)'in top,'production accepted-byte progress path differs')
  new={'safevision/rtl/video/v3_scrolling_ticker.v','safevision/assets/fonts/v3_ticker16.mem','safevision/assets/fonts/v3_ticker16.provenance.json'}|{str(FLOW/n).replace('\\','/')for n in ('ticker_enable.v','base/v3_ticker16.mem','hd/v3_ticker16.mem')}
  new|={'safevision/assets/fonts/v3_spectrum_ticker.mem','safevision/assets/fonts/v3_spectrum_ticker.provenance.json','safevision/assets/fonts/v3_ticker_shared16.mem'}|{str(FLOW/n).replace('\\','/')for n in ('base/v3_spectrum_ticker.mem','hd/v3_spectrum_ticker.mem')}
- if packed:new|={'safevision/assets/fonts/v3_spectrum_ticker32.mem','safevision/assets/fonts/v3_spectrum_ticker32.provenance.json','safevision/rtl/include/v3_ticker_packed32.vh','safevision/tools/build_ticker_shared32_lossless.py'}|{str(FLOW/n).replace('\\','/')for n in('base/v3_spectrum_ticker32.mem','hd/v3_spectrum_ticker32.mem')}
+ if packed:new|={'safevision/assets/fonts/v3_spectrum_ticker32.mem','safevision/assets/fonts/v3_spectrum_ticker32.provenance.json','safevision/rtl/include/v3_ticker_packed32.vh','safevision/rtl/include/v3_ticker_byte32.vh','safevision/tools/build_ticker_shared32_lossless.py'}|{str(FLOW/n).replace('\\','/')for n in('base/v3_spectrum_ticker32.mem','hd/v3_spectrum_ticker32.mem')}
  require(set(old)<=set(sources)and set(sources)-set(old)==new,'unreviewed production dependency added/removed')
  changes={n for n,h in old.items()if sources[n]!=h}
  optional={str(FLOW/'v3_build_parameters_base.tcl').replace('\\','/')}
@@ -217,9 +217,18 @@ def audit(root,regression,ticker,board,controls):
   from v3_sources import required_media_bram_locations
   locations=required_media_bram_locations(root,'base')
   expected={'player/normalized_bmp$u_unpack/ramread0_syn_5':'X8Y18Z0','player/normalized_bmp$u_unpack/ramread0_syn_15':'X8Y18Z1','row_guard/ramread0_syn_6':'X8Y9Z0','row_guard/ramread0_syn_23':'X8Y9Z1','sink/u_fifo/fifo/ram_inst/ramread0_syn_6':'X8Y18Z3','sink/u_fifo/fifo/ram_inst/ramread0_syn_16':'X8Y18Z2'}
-  require(locations==expected and not required_media_bram_locations(root,'hd'),'reviewed BASE six-RAM layout differs')
+  if len(locations)==45:
+   reference=root/'safevision/verification/assets/bram_layout261028/route25.adc'
+   require(sha(reference)=='ac2e2bd6056c95056a0c57668af7ef615525757a6b90310870f74c5696fe8dd4','native layout reference changed')
+   full=dict(re.findall(r'set_inst_assignment \{([^}]+)\} \{LOCATION = ([^;]+);\}',reference.read_text('utf-8-sig')))
+   require(len(full)==46 and set(expected)<=set(full),'reference native macro inventory differs')
+   del full['scrolling$ticker/ramread0_syn_5']
+   full['video/graphics/spectrum$analyzer/ramread0_syn_5']=full.pop('video/graphics/spectrum$analyzer/ramread0_syn_6')
+   require(locations==full and len(set(full.values()))==45,'full shared-font macro layout differs from the verified reference')
+  else:require(locations==expected,'reviewed BASE six-RAM layout differs')
+  require(not required_media_bram_locations(root,'hd'),'HD layout changed')
   production_profile['base_media_bram_locations']=locations
- require(len(sources)==(223 if packed else 217),'current physical inventory changed')
+ require(len(sources)==(224 if packed else 217),'current physical inventory changed')
  summary=read(regression/'summary.json');require(summary.get('complete')and summary.get('accepted'),'full native campaign incomplete/failed')
  expected_jobs={('legacy','a'),('legacy','b')}|{('positive',r['top'])for r in matrix['positive']if not r['legacy']}|{('negative',r['mutation'])for r in matrix['negative']}
  require({(r['kind'],r['name'])for r in summary['records']}==expected_jobs,'native campaign inventory differs')
