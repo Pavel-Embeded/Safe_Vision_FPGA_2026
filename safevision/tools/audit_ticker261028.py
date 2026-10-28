@@ -63,13 +63,13 @@ def numeric_shape(root,folder):
 
 def numeric_geometry_width(root,folder):
  recorded=read(folder/'result.json');tool=root/'safevision/tools/check_geometry_width261028.py'
- require(recorded.get('accepted')and recorded['source_sha256']==sha(root/'safevision/rtl/media/v3_bmp_normalizer.v')and recorded['tool_sha256']==sha(tool),'geometry-width proof source identity differs')
+ require(recorded.get('accepted')and recorded.get('candidate_bits')==23 and recorded.get('height_representations')==2 and recorded.get('discarded_high_tuple_bits')==7 and recorded.get('full_numerator_bits')==25 and recorded.get('minimum_identity')=='N = min(480*W,640*H)'and recorded['source_sha256']==sha(root/'safevision/rtl/media/v3_bmp_normalizer.v')and recorded['tool_sha256']==sha(tool),'geometry-width proof source identity or profile differs')
  spec=importlib.util.spec_from_file_location('ticker_geometry_width_replay',tool)
  module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
  actual=module.check(root)
- keys=('accepted','scope','dimension_pairs','width_range','height_range','candidate_bits','original_scratch_bits','maximum_initial_numerator','maximum_quotient','subtraction_invariant','vectors_sha256','source_sha256','tool_sha256')
+ keys=('accepted','scope','dimension_pairs','width_range','height_range','height_representations','candidate_bits','original_scratch_bits','discarded_high_tuple_bits','full_numerator_bits','minimum_identity','maximum_initial_numerator','maximum_quotient','subtraction_invariant','vectors_sha256','source_sha256','tool_sha256')
  for key in keys:require(actual[key]==recorded[key],'geometry-width replay differs: '+key)
- require(actual['accepted']and actual['dimension_pairs']==16384**2 and actual['candidate_bits']==25 and actual['original_scratch_bits']==30 and actual['maximum_initial_numerator']<2**25,'geometry-width domain coverage incomplete')
+ require(actual['accepted']and actual['dimension_pairs']==16384**2 and actual['candidate_bits']==23 and actual['original_scratch_bits']==30 and actual['maximum_initial_numerator']==480*16384 and actual['maximum_initial_numerator']<2**23,'geometry-width domain coverage incomplete')
  return dict(accepted=True,dimension_pairs=actual['dimension_pairs'],candidate_bits=actual['candidate_bits'],maximum_initial_numerator=actual['maximum_initial_numerator'],vectors_sha256=actual['vectors_sha256'],evidence_sha256=sha(folder/'result.json'),tool_sha256=sha(tool),scope=actual['scope'])
 def audit(root,regression,ticker,board,controls):
  require(__debug__,'assertions disabled')
@@ -191,12 +191,8 @@ def audit(root,regression,ticker,board,controls):
  geometry_controls+=semantic_controls(root,controls.parent/'geometry_controls','geometry_stages261028','tb_v3_geometry_stages',{'geometry_live_metadata','geometry_divisor_swapped'})
  numeric=numeric_shape(root,controls.parent/'shape_numeric')
  normalizer=(root/'safevision/rtl/media/v3_bmp_normalizer.v').read_text('utf-8-sig')
- if 'localparam GB=FLEX_PIXELS?SB+10:SB+XB;'in normalizer:
-  require(normalizer.count('localparam GB=FLEX_PIXELS?SB+10:SB+XB;')==1 and normalizer.count('wire[GB-1:0] geometry_scratch={y_error,x_error};')==1,'geometry-width profile differs')
-  width_proof=numeric_geometry_width(root,controls.parent/'geometry_width')
- else:
-  require(normalizer.count('wire[SB+XB-1:0] geometry_scratch={y_error,x_error};')==1,'unreviewed geometry scratch width')
-  width_proof=dict(required=False,profile='original full-width temporary')
+ require(normalizer.count('localparam GB=FLEX_PIXELS?SB+8:SB+XB;')==1 and normalizer.count('wire[GB-1:0] geometry_scratch={y_error,x_error};')==1 and 'localparam GB=FLEX_PIXELS?SB+10:SB+XB;'not in normalizer,'production geometry-width23 profile differs')
+ width_proof=numeric_geometry_width(root,controls.parent/'geometry_width')
  require(len(additions)==7 and len({r['top']for r in additions})==7,'additional positive inventory changed')
  compatibility=dict(production_selected=False,scope='Alternate shared-font library parameters; the production local32 path uses a dedicated font ROM',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
  return dict(accepted=True,physical_inputs=217,production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=7,total_positive_tops=310,preserved_semantic_controls=221,added_semantic_controls=24,total_semantic_controls=245,positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,geometry_controls=geometry_controls,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
