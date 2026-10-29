@@ -1000,7 +1000,7 @@
                     <post_place_opt>medium</post_place_opt>
                     <hfn_opt_effort>low</hfn_opt_effort>
                     <pr_strategy>6</pr_strategy>
-                    <seed>0</seed>
+                    <seed>1</seed>
                     <opt_timing>off</opt_timing>
                     <ce_weight>on</ce_weight>
                     <cn_opt_effort>high</cn_opt_effort>
