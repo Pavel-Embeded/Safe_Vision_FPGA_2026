@@ -66,7 +66,12 @@ def check(root):
    for patch in direct['files'][path]['patches']:
     if prior.count(patch['before'])!=patch['occurrences']:raise ValueError('composed integration anchor differs')
     prior=prior.replace(patch['before'],patch['after'])
-   if(root/path).read_text('utf-8-sig')!=prior:raise ValueError('unreviewed change after complete audio/direct-row composition')
+   if(root/path).read_text('utf-8-sig')!=prior and '.EXTERNAL_FONT(0),.PACKED_EXTERNAL(0),.MESSAGE_CHARS(32)'in(root/path).read_text('utf-8-sig'):
+    from check_dedicated_font import check as dedicated_check,parent_top,transform as dedicated_transform
+    dedicated=dedicated_check(root)
+    if not dedicated['accepted']or parent_top(root)!=prior:raise ValueError('dedicated parent is not exact composed audio/direct-row TOP')
+    prior=dedicated_transform(prior)
+   if(root/path).read_text('utf-8-sig')!=prior:raise ValueError('unreviewed change after complete audio/direct-row/font composition')
   selected[path]=sha(root/path)
  result=[];matrix=hashlib.sha256()
  # For fixed high bits, every expression depends on lower words only through

@@ -386,6 +386,12 @@ def audit(root,regression,ticker,board,controls):
   from v3_checkpoint_flow import validate
   require(validate(root)['accepted'],'checkpoint source transform differs')
   allowed|={'safevision/tools/run_v3_board.py','safevision/tools/v3_source_profiles.py'}
+ dedicated_profile='.EXTERNAL_FONT(0),.PACKED_EXTERNAL(0),.MESSAGE_CHARS(32)'in top
+ dedicated_proof=None
+ if dedicated_profile:
+  from check_dedicated_font import check as dedicated_check
+  dedicated_proof=dedicated_check(root)
+  require(dedicated_proof==read(controls.parent/'dedicated_font_numeric/result.json')and dedicated_proof['accepted']and dedicated_proof['font_bits']==8192 and dedicated_proof['added_video_latency']==0,'dedicated complete-source/font/stimulus proof differs')
  packed='.PACKED_EXTERNAL(1)'in top
  selected=top.count('.EXTERNAL_FONT(1)')==1 and top.count('.SHARED_TICKER(TICKER_ENABLE)')==1 and top.count('.SHARED_PACKED_FONT(TICKER_ENABLE)')==1 and top.count('.PACKED_EXTERNAL(1)')==1 and '.EXTERNAL_FONT(0)'not in top and '.SHARED_TICKER(0)'not in top if packed else top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top
  require(selected and top.count('.MESSAGE_CHARS(32)')==1 and '.MESSAGE_CHARS(16)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'32character/shared-status/lookahead/packed-reply production profile differs')
@@ -395,7 +401,7 @@ def audit(root,regression,ticker,board,controls):
  require(top.count('.SOURCE_PROGRESS_AWARE(TICKER_ENABLE)')==1 and top.count('source_progress_mem<={source_progress_mem[1:0],player_progress[0]};')==1 and top.count('source_byte_progress=source_progress_mem[2]^source_progress_mem[1]')==1 and '.source_progress(source_byte_progress)'in top,'production accepted-byte progress path differs')
  new={'safevision/rtl/video/v3_scrolling_ticker.v','safevision/assets/fonts/v3_ticker16.mem','safevision/assets/fonts/v3_ticker16.provenance.json'}|{str(FLOW/n).replace('\\','/')for n in ('ticker_enable.v','base/v3_ticker16.mem','hd/v3_ticker16.mem')}
  new|={'safevision/assets/fonts/v3_spectrum_ticker.mem','safevision/assets/fonts/v3_spectrum_ticker.provenance.json','safevision/assets/fonts/v3_ticker_shared16.mem'}|{str(FLOW/n).replace('\\','/')for n in ('base/v3_spectrum_ticker.mem','hd/v3_spectrum_ticker.mem')}
- if packed:new|={'safevision/assets/fonts/v3_spectrum_ticker32.mem','safevision/assets/fonts/v3_spectrum_ticker32.provenance.json','safevision/rtl/include/v3_ticker_packed32.vh','safevision/rtl/include/v3_ticker_byte32.vh','safevision/tools/build_ticker_shared32_lossless.py'}|{str(FLOW/n).replace('\\','/')for n in('base/v3_spectrum_ticker32.mem','hd/v3_spectrum_ticker32.mem')}
+ if packed or dedicated_profile:new|={'safevision/assets/fonts/v3_spectrum_ticker32.mem','safevision/assets/fonts/v3_spectrum_ticker32.provenance.json','safevision/rtl/include/v3_ticker_packed32.vh','safevision/rtl/include/v3_ticker_byte32.vh','safevision/tools/build_ticker_shared32_lossless.py'}|{str(FLOW/n).replace('\\','/')for n in('base/v3_spectrum_ticker32.mem','hd/v3_spectrum_ticker32.mem')}
  new.add('safevision/tools/check_bmp_header_phase.py')
  if checkpoint:new|={'safevision/tools/v3_checkpoint_flow.py',str(FLOW/'v3_implementation_checkpoint.tcl').replace('\\','/')}
  require(set(old)<=set(sources)and set(sources)-set(old)==new,'unreviewed production dependency added/removed')
@@ -419,7 +425,7 @@ def audit(root,regression,ticker,board,controls):
   else:require(locations==expected,'reviewed BASE six-RAM layout differs')
   require(not required_media_bram_locations(root,'hd'),'HD layout changed')
   production_profile['base_media_bram_locations']=locations
- require(len(sources)==(224 if packed else 217)+int(header_phase)+2*int(checkpoint),'current physical inventory changed')
+ require(len(sources)==(224 if packed or dedicated_profile else 217)+int(header_phase)+2*int(checkpoint),'current physical inventory changed')
  summary=read(regression/'summary.json');require(summary.get('complete')and summary.get('accepted'),'full native campaign incomplete/failed')
  expected_jobs={('legacy','a'),('legacy','b')}|{('positive',r['top'])for r in matrix['positive']if not r['legacy']}|{('negative',r['mutation'])for r in matrix['negative']}
  require({(r['kind'],r['name'])for r in summary['records']}==expected_jobs,'native campaign inventory differs')
@@ -526,7 +532,7 @@ def audit(root,regression,ticker,board,controls):
  additions+=[live_positive]+wait_positive
  require(len(additions)==12 and len({r['top']for r in additions})==12,'reviewed extended positive inventory changed')
  packed_controls=[];packed_proof=None
- if packed:
+ if packed or dedicated_profile:
   extra,packed_controls,packed_proof=packed_font(root,controls.parent);additions+=extra
  pointer_proof=None;pointer_controls=[]
  if direct_pointer:
@@ -561,7 +567,7 @@ def audit(root,regression,ticker,board,controls):
   extra,prefill_controls,prefill_proof=prefill_pipeline(root,controls.parent);additions+=extra
   production_profile.update(registered_prefill_admission=True,prefill_delay_ref_cycles=1)
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,decimal_dsp_proof=decimal_proof,audio_request_boundary_proof=request_proof,prefill_pipeline_proof=prefill_proof,prefill_pipeline_controls=prefill_controls,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,decimal_dsp_proof=decimal_proof,audio_request_boundary_proof=request_proof,prefill_pipeline_proof=prefill_proof,dedicated_font_proof=dedicated_proof,prefill_pipeline_controls=prefill_controls,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)

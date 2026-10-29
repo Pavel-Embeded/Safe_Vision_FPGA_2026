@@ -76,6 +76,8 @@ def main():
    names.add('safevision/tools/check_audio_request_boundary.py')
   if functional['production_profile'].get('registered_prefill_admission'):
    names|={'safevision/tools/check_prefill_pipeline.py','safevision/tools/test_prefill_pipeline_controls.py'}
+  if functional.get('dedicated_font_proof'):
+   names.add('safevision/tools/check_dedicated_font.py')
   commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD']).decode().strip()
   binding=source_commit_binding(root,root,commit,names);require(binding['verified'],'approval inputs are not committed: '+str(binding.get('errors')))
   all_inputs={name:sha(root/name)for name in names}

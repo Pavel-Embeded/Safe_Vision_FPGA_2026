@@ -39,7 +39,14 @@ def check(root):
   for patch in row['patches']:
    require(expected.count(patch['before'])==patch['occurrences'],'whole-body transform anchor differs')
    expected=expected.replace(patch['before'],patch['after'])
-  require((root/name).read_text('utf-8-sig')==expected and sha(root/name)==row['current_sha256'],'unreviewed source edit: '+name)
+  actual=(root/name).read_text('utf-8-sig')
+  if name.endswith('/safevision_v3_top.v')and actual!=expected and '.EXTERNAL_FONT(0),.PACKED_EXTERNAL(0),.MESSAGE_CHARS(32)'in actual:
+   from check_dedicated_font import check as dedicated_check,parent_top,transform as dedicated_transform
+   dedicated=dedicated_check(root)
+   require(dedicated['accepted']and parent_top(root)==expected and hashlib.sha256(expected.encode('utf-8')).hexdigest()==row['current_sha256'],'dedicated font parent is not the exact direct-row TOP')
+   expected=dedicated_transform(expected)
+   require(actual==expected,'unreviewed TOP after complete font composition')
+  else:require(actual==expected and sha(root/name)==row['current_sha256'],'unreviewed source edit: '+name)
   sources[name]=sha(root/name)
   if'reference'in row:
    before=b'module v3_row_integrity #(';after=('module '+row['reference_module']+' #(').encode()
