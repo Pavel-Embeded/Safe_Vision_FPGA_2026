@@ -35,7 +35,7 @@
 
 // V3 derivative: freeze ONLY idle_between_sectors during intentional cache pause.
 // Native clk remains running; timeout protection stays enabled for every live transaction.
-module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_TIMER=0,DIRECT_REQUEST_ADDRESS=0,PIPELINED_LBA=0) (
+module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_TIMER=0,DIRECT_REQUEST_ADDRESS=0,PIPELINED_LBA=0,REGISTERED_TIMEOUT_EDGE=0) (
     input wire context_load,
     input wire [135:0] context_in,
     output wire [135:0] context_out,
@@ -165,12 +165,21 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
     (* use_ripple=1 *) wire[31:0] next_cluster_lba=EXTERNAL_LBA?external_lba:(cluster_lba_bias+cluster_offset);
     wire [31:0] next_count=cnt+32'd1;
     wire last_file_byte=next_count==fsize;
+    // The timeout branch uses this predicate only on accepted sector byte511.
+    // An accepted byte raises valid, preventing another acceptance on the
+    // following edge. The registered predicate is therefore current at use.
+    // Context loads reset bcnt to0; legacy/library mode keeps its old path.
+    (* keep="true" *) reg timeout_last_q;
+    always @(posedge clk or negedge rst_n)
+      if(!rst_n)timeout_last_q<=1'b0;
+      else timeout_last_q<=last_file_byte;
+    wire timeout_last=REGISTERED_TIMEOUT_EDGE?timeout_last_q:last_file_byte;
     wire timeout_enabled=rst_n&&stream_enable&&context_enable&&!context_load;
     assign timeout_tick=timeout_enabled&&((mstate==F_SEC_REQ)||(mstate==F_SEC_RECV&&!valid)||(PIPELINED_LBA&&mstate==F_LBA));
     assign timeout_reset=rst_n&&(context_load||(timeout_enabled&&(
       (mstate==F_IDLE&&start)||(PIPELINED_LBA&&mstate==F_LBA&&external_lba_valid)||
       (mstate==F_SEC_REQ&&to_cnt!=`SD_TO_DATA&&!valid&&sd_rd_ready)||
-      (mstate==F_SEC_RECV&&to_cnt!=`SD_TO_DATA&&!sd_timeout_err&&!sd_crc16_err&&!valid&&sd_data_valid&&sd_data_ready&&bcnt==511&&!stop_pending&&!last_file_byte&&((sec_in_clus+8'd1)<sec_per_clus))||
+      (mstate==F_SEC_RECV&&to_cnt!=`SD_TO_DATA&&!sd_timeout_err&&!sd_crc16_err&&!valid&&sd_data_valid&&sd_data_ready&&bcnt==511&&!stop_pending&&!timeout_last&&((sec_in_clus+8'd1)<sec_per_clus))||
       (mstate==F_WALK&&wk_done&&!wk_eoc&&!wk_error))));
     reg[31:0] legacy_rd_addr;
     assign sd_rd_addr=DIRECT_REQUEST_ADDRESS?cur_lba:legacy_rd_addr;

@@ -181,7 +181,7 @@ fat32_directory_scanner #(.SV_MEDIA_ONLY(FLEX_FILES?0:1),.FULL_NAMES(FLEX_FILES)
  .wk_rst_walk(d_wk_rst_walk));
 wire[135:0] compact_fs_context;
 assign f_context_out={129'd0,compact_fs_context};
-v3_file_streamer_compact_ctx #(.EXTERNAL_LBA(FLEX_FILES),.EXTERNAL_TIMER(FLEX_FILES),.DIRECT_REQUEST_ADDRESS(FLEX_FILES),.PIPELINED_LBA(FLEX_FILES)) fs(.clk(clk),
+v3_file_streamer_compact_ctx #(.EXTERNAL_LBA(FLEX_FILES),.EXTERNAL_TIMER(FLEX_FILES),.DIRECT_REQUEST_ADDRESS(FLEX_FILES),.PIPELINED_LBA(FLEX_FILES),.REGISTERED_TIMEOUT_EDGE(FLEX_FILES)) fs(.clk(clk),
  .external_timeout_count({32'd0,shared_timeout}),.timeout_tick(timeout_ticks[1]),.timeout_reset(timeout_resets[1]),
  .external_lba(shared_lba),.lba_cluster(file_lba_cluster),
  .external_lba_valid(file_lba_valid),.lba_request(file_lba_request),

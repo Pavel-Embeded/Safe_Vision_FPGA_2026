@@ -6227,3 +6227,6 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/verification/models/bmp_parser_frozen_extent.freeze.json -text
 /safevision/verification/unit/tb_v3_bmp_extent_pipeline.sv -text
 /safevision/build/manifests/bmp_extent_pipeline_sim.json -text
+
+/safevision/verification/models/v3_file_streamer_frozen_timeout.sv -text
+/safevision/verification/models/v3_file_streamer_frozen_timeout.freeze.json -text
