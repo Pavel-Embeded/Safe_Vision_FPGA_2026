@@ -96,19 +96,19 @@ always @*begin
   default:;
  endcase
 end
-wire reject_header=(index==3&&assembled!=32'h46464952)||
+(* keep="true" *) wire reject_header=(index==3&&assembled!=32'h46464952)||
  (index==7&&(assembled<4||riff_overflow||(file_size!=0&&(PIPELINED_BOUNDS?fast_riff_oversize:riff_oversize))))||
  (index==11&&(assembled!=32'h45564157||riff_left<8))||din_eof;
-wire reject_chunk_format=index==7&&((kind==K_FMT&&assembled<16)||
+(* keep="true" *) wire reject_chunk_format=index==7&&((kind==K_FMT&&assembled<16)||
  (kind==K_DATA&&(!fmt_seen||assembled==0||assembled[1:0]!=0)));
-wire reject_format=(index==1&&assembled[31:16]!=16'd1)||
+(* keep="true" *) wire reject_format=(index==1&&assembled[31:16]!=16'd1)||
  (index==3&&assembled[31:16]!=16'd2)||(index==7&&assembled!=32'd48000)||
  (index==15&&assembled[31:16]!=16'd16);
-wire reject_tail=(riff_left==0)||
+(* keep="true" *) wire reject_tail=(riff_left==0)||
  ((riff_left==1)&&(!chunk_end_now||!data_seen))||
  ((riff_left!=1)&&chunk_end_now&&riff_left<9)||
  (din_eof&&!(chunk_end_now&&riff_left==1));
-wire reject_body_state=(state==W_CHUNK&&reject_chunk_format)||
+(* keep="true" *) wire reject_body_state=(state==W_CHUNK&&reject_chunk_format)||
  (state==W_FMT&&reject_format)||(state==W_DATA&&left==1&&index!=3)||
  !(state==W_CHUNK||state==W_FMT||state==W_SKIP||state==W_DATA||state==W_PAD);
 always @*begin
