@@ -169,7 +169,7 @@ module v3_file_streamer_compact_ctx #(parameter integer EXTERNAL_LBA=0,EXTERNAL_
     // An accepted byte raises valid, preventing another acceptance on the
     // following edge. The registered predicate is therefore current at use.
     // Context loads reset bcnt to0; legacy/library mode keeps its old path.
-    (* keep="true" *) reg timeout_last_q;
+    reg timeout_last_q;
     always @(posedge clk or negedge rst_n)
       if(!rst_n)timeout_last_q<=1'b0;
       else timeout_last_q<=last_file_byte;
