@@ -312,6 +312,31 @@ def direct_row_lookup(root,base):
   controls += [dict(profile=mode,**row)for row in checked]
  return positives,controls,dict(source_and_domain=actual,public_output_bits=233,independent_CRC_model='Python zlib CRC32 of little-endian source words',profiles=['base','hd'],semantic_controls=controls)
 
+def decimal_dsp(root,base):
+ from check_decimal_dsp import check
+ actual=check(root);recorded=read(base/'decimal_numeric/result.json')
+ require(actual==recorded and actual['accepted']and actual['domain_pairs']==268435456 and actual['public_state_reset_and_latency_unchanged']and actual['added_latency_cycles']==0 and not actual['new_timing_exception'],'decimal whole-source/integer proof differs')
+ exhaustive=read(base/'decimal_exhaustive/result.json')
+ require(exhaustive['accepted']and exhaustive['binding']==actual and exhaustive['comparisons']==268435456 and exhaustive['mismatches']==0 and exhaustive['times9_disagreements']==268435440 and exhaustive['missing_nibble_disagreements']==251658240,'decimal exhaustive domain/control receipt differs')
+ require(exhaustive['tool_sha256']==sha(root/'safevision/tools/check_decimal_dsp_exhaustive.py'),'decimal exhaustive helper changed')
+ suite='decimal_dsp_miter';top='tb_v3_decimal_dsp_miter'
+ item=positive(root,base/'decimal_miter',suite,top);raw=(base/'decimal_miter'/top/'sim.log').read_text('utf-8')
+ require(item['data_comparisons']>=900000 and re.findall(r'\bdata_errors=(\d+)',raw)==['0']and re.findall(r'\bdriver_errors=(\d+)',raw)==['0']and'DECIMAL public_bits=186'in raw,'complete decimal public miter absent')
+ tb=(root/'safevision/verification/unit/tb_v3_decimal_dsp_miter.sv').read_text('utf-8-sig')
+ require('wire[185:0] d_public={cv,target,name,value,q,pv,code,rejected,catalog_id};'in tb and'wire[185:0] g_public={ocv,otarget,oname,ovalue,oq,opv,ocode,orejected,oid};'in tb,'decimal output omitted from complete tuple')
+ require('always @(posedge clk)begin #2;compare_public();end'in tb and'always @(negedge clk)begin #2;compare_public();end'in tb,'decimal half-edge comparison absent')
+ from test_decimal_dsp_controls import CASES,SOURCE
+ require({c[0]for c in CASES}=={'times9','missing_nibble'}and SOURCE=='safevision/rtl/control/v3_command_parser_catalog.v','decimal control inventory differs')
+ folder=base/'decimal_controls';summary=read(folder/'summary.json')
+ for name,before,after in CASES:
+  rows=[r for r in summary['cases']if r['name']==name];require(len(rows)==1,'decimal control missing/duplicated')
+  require(tuple(rows[0][k]for k in('target','before','after','suite','top'))==(SOURCE,before,after,suite,top),'decimal control definition differs')
+ checked=semantic_controls(root,folder,suite,top,{c[0]for c in CASES})
+ for row in summary['cases']:
+  log=(folder/row['name']/'native'/top/'sim.log').read_text('utf-8');counts=re.findall(r'\bdata_errors=(\d+)',log)
+  require(len(counts)==1 and int(counts[0])==row['actual_data_comparison_errors']and int(counts[0])>0 and re.findall(r'\bdriver_errors=(\d+)',log)==['0']and'[FAIL] full decimal parser public interface differs'in log,'decimal control detected only a driver failure')
+ return [item],checked,dict(source_and_identity=actual,exhaustive_domain=exhaustive,complete_public_bits=186,semantic_controls=checked)
+
 def audit(root,regression,ticker,board,controls):
  require(__debug__,'assertions disabled')
  matrix=read(root/'safevision/build/qualification/four_features_261020.json')
@@ -327,6 +352,8 @@ def audit(root,regression,ticker,board,controls):
  layout_files={'safevision/tools/v3_sources.py','safevision/tools/v3_final_sta.py','safevision/tools/check_v3_board.py',str(FLOW/'v3_physical_base.adc').replace('\\','/')}
  allowed|=layout_files
  top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig')
+ decimal_reallocation="decimal_product=number*4'd10;"in(root/'safevision/rtl/control/v3_command_parser_catalog.v').read_text('utf-8-sig')
+ if decimal_reallocation:allowed.add('safevision/rtl/control/v3_command_parser_catalog.v')
  direct_lookup=top.count('.DIRECT_LOOKUP(1)')==1
  if direct_lookup:allowed|={'safevision/rtl/video/v3_line_cache.v','safevision/rtl/memory/v3_row_integrity.v','safevision/rtl/hd/v3_line_cache.v','safevision/rtl/hd/v3_row_integrity.v'}
  direct_pointer=top.count('.DIRECT_RING_COMPARE(TICKER_ENABLE)')==1
@@ -501,8 +528,12 @@ def audit(root,regression,ticker,board,controls):
  if direct_lookup:
   extra,direct_controls,direct_proof=direct_row_lookup(root,controls.parent);additions+=extra
   production_profile.update(direct_row_lookup=True,row_lookup_public_bits=233,row_lookup_descriptor_cases=4096,row_lookup_added_latency=0)
+ decimal_controls=[];decimal_proof=None
+ if decimal_reallocation:
+  extra,decimal_controls,decimal_proof=decimal_dsp(root,controls.parent);additions+=extra
+  production_profile.update(decimal_dsp_reallocation=True,decimal_accumulator_bits=24,decimal_public_bits=186,decimal_added_latency=0)
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,decimal_dsp_proof=decimal_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)

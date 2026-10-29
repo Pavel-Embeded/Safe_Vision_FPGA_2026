@@ -246,6 +246,7 @@ module tb_v3_decimal_dsp_miter;
   $display("[TB] tb_v3_decimal_dsp_miter done errors=%0d comparisons=%0d commands=%0d replies=%0d",errors,comparisons,commands,replies);wait(&timeout_done);
   ck((timeout_errors[0]|timeout_errors[1]|timeout_errors[2]|timeout_errors[3]|timeout_errors[4])==0,"exact timeout boundaries, deadline bytes, restarts and resets at five timer sizes");
   $display("[TB] tb_v3_decimal_dsp_miter done errors=%0d comparisons=%0d",errors,comparisons);
+  $display("PASS tb_v3_decimal_dsp_miter errors=%0d comparisons=%0d public_bits=186",errors,public_comparisons);
   $display("DECIMAL public_bits=186 comparisons=%0d data_errors=%0d driver_errors=%0d",public_comparisons,data_errors,driver_errors);
   $finish;
  end
