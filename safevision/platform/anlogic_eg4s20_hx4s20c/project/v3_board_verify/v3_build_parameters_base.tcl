@@ -1,13 +1,13 @@
 # BASE strategy2: only EG4 parameters confirmed in native registered tables.
-set_param place pr_strategy 6
+set_param place pr_strategy 5
 
 set_param place post_place_opt medium
 set_param place hfn_opt_effort low
 
-set_param place seed 1
+set_param place seed 7
 
 # Routability comparison; actual BASE50 control and all media clocks retained.
-set_param route timing off
+set_param route timing on
 
 # Measured capacity profile; original clocks, I/O and STA gates retained.
 set_param rtl min_ripple_len 32
@@ -27,3 +27,6 @@ set_param place ce_weight on
 set_param place cn_opt_effort high
 set_param place critical_hfn_opt on
 set_param place enhanced_beeline_opt 3
+
+# Native supported finite-state-machine inference.
+set_param rtl infer_fsm on

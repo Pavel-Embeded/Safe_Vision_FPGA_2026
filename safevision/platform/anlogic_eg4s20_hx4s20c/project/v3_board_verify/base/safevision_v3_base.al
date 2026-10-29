@@ -982,7 +982,7 @@
                 <RtlProperty>
                     <min_control_set>2</min_control_set>
                     <min_ripple_len>32</min_ripple_len>
-                    <infer_fsm>off</infer_fsm>
+                    <infer_fsm>on</infer_fsm>
                 </RtlProperty>
                 <GateProperty>
                     <map_mode>area_prior</map_mode>
@@ -999,8 +999,8 @@
                     <effort>high</effort>
                     <post_place_opt>medium</post_place_opt>
                     <hfn_opt_effort>low</hfn_opt_effort>
-                    <pr_strategy>6</pr_strategy>
-                    <seed>1</seed>
+                    <pr_strategy>5</pr_strategy>
+                    <seed>7</seed>
                     <opt_timing>off</opt_timing>
                     <ce_weight>on</ce_weight>
                     <cn_opt_effort>high</cn_opt_effort>
@@ -1009,7 +1009,7 @@
                 </PlaceProperty>
                 <RouteProperty>
                     <effort>routability</effort>
-                    <timing>off</timing>
+                    <timing>on</timing>
                     <fix_hold>on</fix_hold>
                     <post_route_opt>ultra</post_route_opt>
                 </RouteProperty>
