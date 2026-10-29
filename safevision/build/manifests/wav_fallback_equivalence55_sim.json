@@ -27,7 +27,7 @@
     "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
     "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
     "safevision/rtl/audio/v3_audio_prefill_compare.v",
-    "safevision/verification/models/v3_wav_fallback_reference55.sv",
+    "safevision/verification/models/v3_wav_fallback_reference55.v",
     "safevision/rtl/storage/v3_fat_name_store.v"
   ],
   "tops": [
@@ -45,7 +45,7 @@
   ],
   "test_sources": {
     "tb_v3_wav_fallback_equivalence55": [
-      "safevision/verification/unit/tb_v3_wav_fallback_equivalence55.sv"
+      "safevision/verification/unit/tb_v3_wav_fallback_equivalence55.v"
     ]
   }
 }

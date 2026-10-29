@@ -35,6 +35,6 @@ module v3_scaler_bilinear_thirds(input wire clk,rst_n,valid_in,bilinear,
  end
  // synthesis translate_off
  always @(posedge clk)if(rst_n && !((fx==0||fx==85||fx==170)&&(fy==0||fy==85||fy==170)))
-  $fatal(1,"production scaler fraction outside exact-thirds contract");
+  begin $display("[FAIL] production scaler fraction outside exact-thirds contract"); $finish; end 
  // synthesis translate_on
 endmodule

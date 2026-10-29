@@ -110,8 +110,8 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  generate for(display_alias=0;display_alias<64;display_alias=display_alias+1)begin:simulation_bank_view
   assign spectrum_ram[display_alias]={shared_ram[256+display_alias*2][6:0],shared_ram[257+display_alias*2][6:0]};
  end endgenerate
- always @(posedge clk)if(shared_write_enable&&(shared_b_address<256||shared_b_address>=384))$fatal(1,"immutable coefficient/font RAM write");
- always @(posedge clk)if(SHARED_TICKER&&rst_n&&font_request&&area)$fatal(1,"font overlaps spectrum display port");
+ always @(posedge clk)if(shared_write_enable&&(shared_b_address<256||shared_b_address>=384))begin $display("[FAIL] immutable coefficient/font RAM write"); $finish; end 
+ always @(posedge clk)if(SHARED_TICKER&&rst_n&&font_request&&area)begin $display("[FAIL] font overlaps spectrum display port"); $finish; end 
  // synthesis translate_on
  function[8:0] reverse9;input[8:0] v;integer i;begin for(i=0;i<9;i=i+1)reverse9[i]=v[8-i];end endfunction
  reg signed[17:0] multiply_a,multiply_b;

@@ -1,5 +1,5 @@
 {
-  "sources": ["safevision/rtl/video/scaler/scaler_bilinear.v", "safevision/verification/unit/tb_v3_video_thirds.sv"],
+  "sources": ["safevision/rtl/video/scaler/scaler_bilinear.v", "safevision/verification/unit/tb_v3_video_thirds.v"],
   "tops": ["tb_v3_video_thirds"],
   "test_sources": {"tb_v3_video_thirds": []},
   "timeouts": {"tb_v3_video_thirds": 600}

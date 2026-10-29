@@ -54,7 +54,7 @@ module v3_audio_priority_serial #(parameter integer RAMP_N=240,FULL_SCALE=256)(
   end
  end
  // synthesis translate_off
- initial if(FULL_SCALE!=256||RAMP_N<1)$fatal(1,"invalid crossfade parameters");
- always@(posedge audio_clk)if(rst_n&&sample_valid&&state!=0)$fatal(1,"crossfade sample overrun");
+ initial if(FULL_SCALE!=256||RAMP_N<1)begin $display("[FAIL] invalid crossfade parameters"); $finish; end 
+ always@(posedge audio_clk)if(rst_n&&sample_valid&&state!=0)begin $display("[FAIL] crossfade sample overrun"); $finish; end 
  // synthesis translate_on
 endmodule

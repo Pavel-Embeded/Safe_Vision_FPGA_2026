@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[2]
 PARENT='5444950eb958684d0f79afa51cbd308e904ecaaa'
 TOP='safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v'
 TOP_SHA='41f14b76382af3bc1c16f0aa7f4ef43776e96dc28ccbfe327f901780a60415ea'
-BENCH='safevision/verification/unit/tb_v3_ticker_board.sv'
+BENCH='safevision/verification/unit/tb_v3_ticker_board.v'
 BENCH_SHA='5a5e730e699f1f04c942f2483409f6180f759c22014a0e89b58071a05fa44129'
 PATCHES=[('.SHARED_TICKER(TICKER_ENABLE),.SHARED_PACKED_FONT(TICKER_ENABLE)', '.SHARED_TICKER(0),.SHARED_PACKED_FONT(0)'), ('.EXTERNAL_FONT(1),.PACKED_EXTERNAL(1),.MESSAGE_CHARS(32)', '.EXTERNAL_FONT(0),.PACKED_EXTERNAL(0),.MESSAGE_CHARS(32)')]
 BENCH_PATCHES=[('dut.scrolling.ticker.MESSAGE_CHARS==32&&dut.scrolling.ticker.EXTERNAL_FONT==1&&dut.scrolling.ticker.PACKED_EXTERNAL==1,"production selects all32losslessly shared glyphs"', 'dut.scrolling.ticker.MESSAGE_CHARS==32&&dut.scrolling.ticker.EXTERNAL_FONT==0&&dut.scrolling.ticker.PACKED_EXTERNAL==0,"production selects all32unchanged glyphs in dedicated one-bit RAM"'), ('dut.video.SHARED_TICKER==1&&dut.video.SHARED_PACKED_FONT==1,"production selects the checked9-bit shared memory layout"', 'dut.video.SHARED_TICKER==0&&dut.video.SHARED_PACKED_FONT==0,"production selects dedicated font and independent spectrum ports"')]

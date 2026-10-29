@@ -1,7 +1,7 @@
 {
   "sources": [
     "safevision/rtl/storage/mbr_parser.v",
-    "safevision/verification/models/mbr_parser255_reference.sv"
+    "safevision/verification/models/mbr_parser255_reference.v"
   ],
   "tops": [
     "tb_v3_mbr_parser_storage257"

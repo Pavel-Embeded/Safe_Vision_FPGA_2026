@@ -1,7 +1,7 @@
 {
   "sources": [
     "safevision/rtl/video/v3_status_layers.v",
-    "safevision/verification/models/v3_volume_column_reference67.sv",
+    "safevision/verification/models/v3_volume_column_reference67.v",
     "safevision/rtl/video/v3_pcm_waveform.v",
     "safevision/rtl/video/v3_audio_spectrum.v"
   ],
@@ -10,7 +10,7 @@
   ],
   "test_sources": {
     "tb_v3_column_equivalence67": [
-      "safevision/verification/unit/tb_v3_column_equivalence67.sv"
+      "safevision/verification/unit/tb_v3_column_equivalence67.v"
     ]
   },
   "assets": [

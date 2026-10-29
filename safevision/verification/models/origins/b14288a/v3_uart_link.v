@@ -34,8 +34,8 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  wire push=reply_valid || parse_reply || event_push;
  wire[1:0] lost={1'b0,(push && full)}+{1'b0,(reply_valid && parse_reply)};
  sync_fifo #(.W(49),.DEPTH(128),.ALMOST_FULL_TH(120),.ALMOST_EMPTY_TH(1)) replies(
- .clk(clk),.rst_n(rst_n),.wr_en(push),.din(reply_valid?{1'b0,8'd0,reply_code,reply_value}:
-    parse_reply?{1'b0,8'd0,parse_code,32'd0}:{1'b1,4'd0,evt_src,evt_code,evt_ts}),
+ .clk(clk),.rst_n(rst_n),.wr_en(push),.din(reply_valid ? {1'b0,8'd0,reply_code,reply_value}:
+    parse_reply ? {1'b0,8'd0,parse_code,32'd0}:{1'b1,4'd0,evt_src,evt_code,evt_ts}),
  .full(full),.almost_full(),.rd_en(pop),.dout(head),.empty(empty),.almost_empty(),.data_count());
  reg sending;reg[4:0] position;reg[48:0] payload;reg[7:0] checksum;
  wire tx_ready;reg[7:0] byte_tx;
@@ -44,7 +44,7 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  wire[7:0] byte_stage;wire byte_fresh;
  wire[48:0] packet;
  wire send_valid=sending && (!TX_PIPELINE || byte_fresh);
- wire[7:0] send_data=TX_PIPELINE?byte_stage:byte_tx;
+ wire[7:0] send_data=TX_PIPELINE ? byte_stage:byte_tx;
  wire byte_fire=send_valid && tx_ready;
  generate if(TX_PIPELINE)begin:g_tx_pipeline
   (* preserve="true" *) reg[7:0] data_q;reg fresh_q;
@@ -65,7 +65,7 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  end endgenerate
 
  assign pop=!sending && !empty;
- function[7:0] hex;input[3:0] nibble;begin case(nibble)
+ function[7:0] hex;input[3:0] nibble;begin begin case(nibble)
  4'h0:hex=8'h30;
  4'h1:hex=8'h31;
  4'h2:hex=8'h32;
@@ -82,8 +82,8 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  4'hd:hex=8'h44;
  4'he:hex=8'h45;
  4'hf:hex=8'h46;
- default:hex=nibble<10?48+nibble:55+nibble;
- endcase end endfunction
+ default:hex=nibble<10 ? 48+nibble:55+nibble;
+ endcase end  end endfunction
  reg format_hex;reg[3:0] format_nibble;reg[7:0] format_literal;
  always @*begin
   format_hex=0;format_nibble=0;format_literal=8'h3f;
@@ -108,16 +108,16 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
    16:begin format_hex=1;format_nibble=packet[7:4];end 17:begin format_hex=1;format_nibble=packet[3:0];end
    default:format_literal=8'h3f;
   endcase
-  byte_tx=format_hex?hex(format_nibble):format_literal;
+  byte_tx=format_hex ? hex(format_nibble):format_literal;
  end
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin sending<=0;position<=0;payload<=0;checksum<=0;reply_dropped<=0;end
   else begin
-   if(lost!=0)reply_dropped<=(reply_dropped>32'hffffffff-lost)?32'hffffffff:reply_dropped+lost;
+   if(lost!=0)reply_dropped<=(reply_dropped>32'hffffffff-lost) ? 32'hffffffff:reply_dropped+lost;
    if(pop)begin payload<=head;sending<=1;position<=0;checksum<=0;end
    else if(byte_fire)begin
-    if(position>=1 && position<=(packet[48]?20:17))checksum<=checksum^send_data;
-    if(position==(packet[48]?25:22))begin sending<=0;position<=0;end else position<=position+1'b1;
+    if(position>=1 && position<=(packet[48] ? 20:17))checksum<=checksum^send_data;
+    if(position==(packet[48] ? 25:22))begin sending<=0;position<=0;end else position<=position+1'b1;
    end
   end
  end

@@ -47,7 +47,7 @@ def main():
         entry=dict(top=top,status='FAIL',source_overrides=sorted(overrides),strict_generated_inputs=1,native_runner=RUNNER)
         files={};before=None
         try:
-            tests=manifest.get('test_sources',{}).get(top,['safevision/verification/unit/'+top+'.sv'])
+            tests=manifest.get('test_sources',{}).get(top,['safevision/verification/unit/'+top+'.v'])
             if isinstance(tests,str):tests=[tests]
             src=list(dict.fromkeys(manifest['sources']+tests))
             files={name:overrides.get(name,inside(ROOT,name))for name in src}
@@ -74,7 +74,7 @@ def main():
             before=snapshot();save(folder/'sources.sha256.json',before)
             (folder/'sources.prj').write_text('\n'.join('"'+files[name].as_posix()+'"'for name in src),encoding='utf-8')
             defines=sum((['-d',value]for value in manifest.get('defines',['SIM_FAST_TO'])),[])
-            run([str(tools['xvlog']),'--sv',*defines,'-i',str(ROOT/'safevision/rtl/include'),'--file','sources.prj','--log','compile.log'],folder,'compile.console.log',env)
+            run([str(tools['xvlog']),*defines,'-i',str(ROOT/'safevision/rtl/include'),'--file','sources.prj','--log','compile.log'],folder,'compile.console.log',env)
             run([str(tools['xelab']),'work.'+top,'-s',top,'--mt','off','--timescale','1ns/1ps','--log','elab.log'],folder,'elab.console.log',env)
             run([str(tools['xsim']),top,'-runall','--log','sim.log'],folder,'sim.console.log',env,manifest.get('timeouts',{}).get(top,600))
             text=(folder/'sim.log').read_text(encoding='utf-8',errors='replace')

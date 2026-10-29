@@ -9,8 +9,8 @@
     "tb_v3_mem_activity_tag_phase5"
   ],
   "test_sources": {
-    "tb_v3_mem_activity_tag": "safevision/verification/unit/tb_v3_mem_activity_tag.sv",
-    "tb_v3_mem_activity_tag_phase3": "safevision/verification/unit/tb_v3_mem_activity_tag.sv",
-    "tb_v3_mem_activity_tag_phase5": "safevision/verification/unit/tb_v3_mem_activity_tag.sv"
+    "tb_v3_mem_activity_tag": "safevision/verification/unit/tb_v3_mem_activity_tag.v",
+    "tb_v3_mem_activity_tag_phase3": "safevision/verification/unit/tb_v3_mem_activity_tag.v",
+    "tb_v3_mem_activity_tag_phase5": "safevision/verification/unit/tb_v3_mem_activity_tag.v"
   }
 }

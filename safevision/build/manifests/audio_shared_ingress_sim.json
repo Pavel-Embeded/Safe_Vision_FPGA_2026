@@ -42,6 +42,6 @@
     "tb_v3_audio_context_loop": "safevision/tools/gen_v3_audio_unaligned_fixture.py"
   },
   "test_sources": {
-    "tb_v3_ingress_shared": "safevision/verification/unit/tb_v3_ingress_shared.sv"
+    "tb_v3_ingress_shared": "safevision/verification/unit/tb_v3_ingress_shared.v"
   }
 }

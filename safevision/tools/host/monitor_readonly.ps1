@@ -1,4 +1,4 @@
-param([string]$Port='COM6',[Parameter(Mandatory=$true)][string]$OutDir,[int]$DurationSeconds=3600,[int]$PollSeconds=20,[uint32]$ExpectedId=0x26101802,[string]$StopFile='')
+param([string]$Port='COM6',[Parameter(Mandatory=$true)][string]$OutDir,[int]$DurationSeconds=3600,[int]$PollSeconds=20,[uint32]$ExpectedId=0x26102801,[string]$StopFile='')
 $ErrorActionPreference='Stop'
 if(Test-Path -LiteralPath $OutDir){throw 'Fresh output directory required'}
 $null=New-Item -ItemType Directory -Path $OutDir

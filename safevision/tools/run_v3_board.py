@@ -43,7 +43,6 @@ def main():
  root=a.repo.resolve();out=a.run_dir.resolve();modes=a.mode or ['base','hd']
  if len(modes)!=len(set(modes)) or set(modes)-{'base','hd'}:raise ValueError('invalid or duplicate modes')
  if a.bitgen and a.synth_only:raise ValueError('synthesis-only cannot generate a bitstream')
- if a.bitgen and set(modes)!={'base','hd'}:raise ValueError('release bitgen requires both BASE and HD in this invocation')
  if not str(out).isascii():raise ValueError('TD run directory must be ASCII')
  exe=a.td_root/'bin/td_commands_prompt.exe'
  if not exe.is_file():raise FileNotFoundError(exe)

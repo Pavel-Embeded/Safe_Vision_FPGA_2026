@@ -46,10 +46,10 @@ $rtl=@($rtl)+@($extra)
 foreach($f in $rtl){ if(-not (Test-Path -LiteralPath $f)){ throw "Missing source: $f" } }
 
 $sim=@(
-  'verification/models/vendor_ip_stub.sv',
-  'verification/models/top_ip_stub.sv',
-  'verification/models/sd_spi_card_model.sv',
-  'verification/unit/tb_safevision_top.sv'
+  'verification/models/vendor_ip_stub.v',
+  'verification/models/top_ip_stub.v',
+  'verification/models/sd_spi_card_model.v',
+  'verification/unit/tb_safevision_top.v'
 ) | ForEach-Object { Join-Path $sv $_ }
 foreach($f in $sim){ if(-not (Test-Path -LiteralPath $f)){ throw "Missing source: $f" } }
 
@@ -62,7 +62,7 @@ try{
   & (Join-Path $ModelSimBin 'vlib.exe') work > vlib.log 2>&1
   & (Join-Path $ModelSimBin 'vlog.exe') -quiet '+define+SIM_FAST_TO' "+incdir+$inc" @rtl > rtl.log 2>&1
   if($LASTEXITCODE){ Get-Content -LiteralPath (Join-Path $RunDir 'rtl.log') | Select-Object -Last 25; throw 'RTL compile failed' }
-  & (Join-Path $ModelSimBin 'vlog.exe') -quiet -sv '+define+SIM_FAST_TO' "+incdir+$inc" @sim > tb.log 2>&1
+  & (Join-Path $ModelSimBin 'vlog.exe') -quiet  '+define+SIM_FAST_TO' "+incdir+$inc" @sim > tb.log 2>&1
   if($LASTEXITCODE){ Get-Content -LiteralPath (Join-Path $RunDir 'tb.log') | Select-Object -Last 25; throw 'TB compile failed' }
 
   $do = if($Waves){'log -r /*; run -all; quit -f'}else{'run -all; quit -f'}

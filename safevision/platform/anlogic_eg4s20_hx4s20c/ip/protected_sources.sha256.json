@@ -1,0 +1,18 @@
+[
+  {
+    "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor/hdmi1.4b_transmitter_core/hdmi_1_4b_transmitter_core_wrapper.enc.v",
+    "sha256": "fbb346edee7c3ace7e2f6d93b1f95010811daff1ab81d9d10c42f6f3786814e2"
+  },
+  {
+    "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_as_ram.enc.v",
+    "sha256": "474b7672fc7dd3d163ee70e76d6605ceb26d948eb99f40fad361b822cc3fe162"
+  },
+  {
+    "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_init_ref.enc.v",
+    "sha256": "e2336eb6bca95ba3d146dfbd224099ff6976324eaaf8b254afe4a56060dbdb91"
+  },
+  {
+    "path": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/sdram/sdr_wrrd.enc.v",
+    "sha256": "25d202cac7714beaebb4a8f199a1a6e036371cd2dd7963a9950a38a09862dbbd"
+  }
+]

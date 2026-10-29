@@ -43,6 +43,6 @@ module v3_audio_volume(input wire clk,rst_n,valid_in,input wire[23:0] left_in,ri
   end
  end
  // synthesis translate_off
- always @(posedge clk)if(rst_n&&valid_in&&busy)$fatal(1,"audio volume scheduler overlapped samples");
+ always @(posedge clk)if(rst_n&&valid_in&&busy)begin $display("[FAIL] audio volume scheduler overlapped samples"); $finish; end 
  // synthesis translate_on
 endmodule

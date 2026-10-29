@@ -9,7 +9,7 @@
   ],
   "test_sources": {
     "tb_v3_key_gestures478": [
-      "safevision/verification/unit/tb_v3_key_gestures478.sv"
+      "safevision/verification/unit/tb_v3_key_gestures478.v"
     ]
   }
 }

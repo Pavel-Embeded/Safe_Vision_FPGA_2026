@@ -22,11 +22,12 @@
     "safevision/rtl/storage/spi_master.v",
     "safevision/rtl/storage/sd_sector_reader.v",
     "safevision/rtl/storage/sd_checked_sector_reader.v",
-    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/verification/models/sd_spi_card_model.v",
     "safevision/rtl/storage/fat32_directory_scanner.v",
     "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
     "safevision/rtl/control/v3_command_parser_catalog.v",
-    "safevision/rtl/storage/v3_fat_name_store.v"
+    "safevision/rtl/storage/v3_fat_name_store.v",
+    "safevision/rtl/video/v3_hd_coord_arith.v"
   ],
   "tops": [
     "tb_v3_math",

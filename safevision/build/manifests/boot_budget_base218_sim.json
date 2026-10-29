@@ -2,7 +2,7 @@
   "defines": [],
   "sources": [
     "safevision/rtl/control/v3_supervisor.v",
-    "safevision/verification/models/v3_supervisor_reference.sv",
+    "safevision/verification/models/v3_supervisor_reference.v",
     "safevision/rtl/control/media_recovery_ctrl.v",
     "safevision/rtl/safety/fault_manager.v"
   ],
@@ -10,6 +10,6 @@
     "tb_v3_boot_budget218"
   ],
   "test_sources": {
-    "tb_v3_boot_budget218": "safevision/verification/unit/tb_v3_boot_budget218.sv"
+    "tb_v3_boot_budget218": "safevision/verification/unit/tb_v3_boot_budget218.v"
   }
 }

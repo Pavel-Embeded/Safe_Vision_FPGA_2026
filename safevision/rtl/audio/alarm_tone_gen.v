@@ -78,7 +78,7 @@ module alarm_tone_gen #(
     end
 
     // synthesis translate_off
-    initial if (PHASE_INC < 1) $fatal(1, "alarm_tone_gen invalid PHASE_INC (must be >= 1)");
+    initial if (PHASE_INC < 1) begin $display("[FAIL] alarm_tone_gen invalid PHASE_INC (must be >= 1)"); $finish; end 
     // synthesis translate_on
 
 endmodule

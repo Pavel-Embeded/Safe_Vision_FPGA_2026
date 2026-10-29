@@ -45,10 +45,10 @@ def strict_inputs(root,folder,manifest,top,before=None):
     return dict(strict_generated_inputs_verified=True,native_runner=STRICT_RUNNER,generator_dependencies=len(manifest['generator_dependencies']),runtime_assets=len(generated),generation_inputs=len(generation_before),generation_before_sha256=hashlib.sha256((folder/'generation.before.sha256.json').read_bytes()).hexdigest(),generation_after_sha256=hashlib.sha256((folder/'generation.after.sha256.json').read_bytes()).hexdigest())
 def check(root,folder,metadata,negative=None):
     root=Path(root).resolve();folder=Path(folder).resolve();before=read(folder/'sources.sha256.json')
-    hdl=[n for n in before if not n.startswith('generated:') and n.endswith(('.v','.sv'))]
+    hdl=[n for n in before if not n.startswith('generated:') and n.endswith(('.v',))]
     logs=metadata.get('compiler_logs',['compile.log'])
     log='\n'.join((folder/n).read_text(encoding='utf-8',errors='replace')for n in logs if(folder/n).is_file())
-    paths=re.findall(r'Analyzing (?:SystemVerilog|Verilog) file "([^"]+)"',log)
+    paths=re.findall(r'Analyzing Verilog file "([^"]+)"',log)
     if not paths and (folder/'sources.prj').is_file():
         paths=re.findall(r'"([^"]+\.(?:v|sv))"',(folder/'sources.prj').read_text(encoding='utf-8'))
     assert paths,'missing actual compiler HDL graph: '+str(folder)
@@ -68,7 +68,7 @@ def check(root,folder,metadata,negative=None):
     assert len(observed)==len(set(observed)),'duplicate analyzed HDL'
     suite=metadata['suite'];top=metadata['top'];manifest=root/'safevision/build/manifests'/(suite+'_sim.json')
     if manifest.is_file():
-        m=read(manifest);assert top in m['tops'];tests=m.get('test_sources',{}).get(top,['safevision/verification/unit/'+top+'.sv'])
+        m=read(manifest);assert top in m['tops'];tests=m.get('test_sources',{}).get(top,['safevision/verification/unit/'+top+'.v'])
         if isinstance(tests,str):tests=[tests]
         expected=list(dict.fromkeys(m['sources']+tests))
         assert observed==expected,('current selected manifest differs from analyzed HDL',top,sorted(set(expected)-set(observed)),sorted(set(observed)-set(expected)))

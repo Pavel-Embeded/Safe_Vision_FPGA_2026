@@ -1,8 +1,8 @@
 {
   "defines": [],
   "test_sources": {
-    "tb_v3_packed_clock_positive_261023": "safevision/verification/unit/tb_v3_packed_clock_261023.sv",
-    "tb_v3_packed_clock_negative_261023": "safevision/verification/unit/tb_v3_packed_clock_261023.sv"
+    "tb_v3_packed_clock_positive_261023": "safevision/verification/unit/tb_v3_packed_clock_261023.v",
+    "tb_v3_packed_clock_negative_261023": "safevision/verification/unit/tb_v3_packed_clock_261023.v"
   },
   "assets": [],
   "tops": [

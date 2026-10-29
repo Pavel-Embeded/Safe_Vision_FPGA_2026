@@ -28,7 +28,7 @@ try{
  $sources+=Join-Path $RepoRoot 'safevision/rtl/video/hdmi_output/hdmi_edid_control.v'
  & (Join-Path $XSimBin 'xvlog.bat') @sources --log rtl.log > rtl.console.log 2>&1
  if($LASTEXITCODE){throw 'Actual PHY compile failed'}
- & (Join-Path $XSimBin 'xvlog.bat') --sv -d SAFEVISION_HDMI_CONTRACT_MODEL (Join-Path $RepoRoot 'safevision/verification/models/hdmi_encoder_contract_model.sv') (Join-Path $RepoRoot 'safevision/verification/unit/tb_a_hdmi_output.sv') --log tb.log > tb.console.log 2>&1
+ & (Join-Path $XSimBin 'xvlog.bat')  -d SAFEVISION_HDMI_CONTRACT_MODEL (Join-Path $RepoRoot 'safevision/verification/models/hdmi_encoder_contract_model.v') (Join-Path $RepoRoot 'safevision/verification/unit/tb_a_hdmi_output.v') --log tb.log > tb.console.log 2>&1
  if($LASTEXITCODE){throw 'PHY test compile failed'}
  & (Join-Path $XSimBin 'xelab.bat') work.tb_a_hdmi_output work.glbl -s phy --timescale '1ns/1ps' --log elab.log > elab.console.log 2>&1
  if($LASTEXITCODE){throw 'PHY elaboration failed'}

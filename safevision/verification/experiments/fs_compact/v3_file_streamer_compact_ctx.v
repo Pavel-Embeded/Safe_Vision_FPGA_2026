@@ -70,13 +70,13 @@ module v3_file_streamer_compact_ctx (
 
     function [31:0] cluster_sectors;
       input [31:0] delta;input [7:0] spc;
-      begin case(spc)
+      begin begin case(spc)
        1:cluster_sectors=delta;2:cluster_sectors=delta<<1;4:cluster_sectors=delta<<2;
        8:cluster_sectors=delta<<3;16:cluster_sectors=delta<<4;32:cluster_sectors=delta<<5;
        64:cluster_sectors=delta<<6;128:cluster_sectors=delta<<7;
        default:cluster_sectors=0;
       endcase end
-    endfunction
+     end endfunction
 
 
     localparam [2:0] F_IDLE     = 3'd0,

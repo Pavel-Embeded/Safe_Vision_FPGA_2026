@@ -41,6 +41,6 @@ module v3_memory_path_observer #(
   end
  end
  // synthesis translate_off
- initial if(WORDS<1||WORDS>511)$fatal(1,"observer window outside9-bit count");
+ initial if(WORDS<1||WORDS>511)begin $display("[FAIL] observer window outside9-bit count"); $finish; end 
  // synthesis translate_on
 endmodule

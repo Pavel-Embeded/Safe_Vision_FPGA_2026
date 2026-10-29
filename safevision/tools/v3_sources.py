@@ -50,6 +50,9 @@ def native_rom_sidecars(root,write=False):
 def scope(root):
  files=set(sources(root,'base')+sources(root,'hd')+assets(root))
  files.add(Path('safevision/assets/fonts/OFL-NotoSansSC.txt'))
+ files.add(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/protected_sources.sha256.json'))
+ files.update(Path('safevision/tools')/name for name in ('check_verilog.py','verilog_tokens.py'))
+ files.add(Path('safevision/tools/check_bmp_header_phase.py'))
  from check_source_tree import SUITES
  files.add(Path('safevision/tools/run_v3_sim_flexible.py'))
  for suite in SUITES:
@@ -59,7 +62,7 @@ def scope(root):
   files.update(Path(n) for key in ('sources','assets','generator_dependencies') for n in data.get(key,[]))
   files.update(Path(n) for n in data.get('generators',{}).values())
   for top in data['tops']:
-   tests=data.get('test_sources',{}).get(top,['safevision/verification/unit/'+top+'.sv'])
+   tests=data.get('test_sources',{}).get(top,['safevision/verification/unit/'+top+'.v'])
    files.update(Path(n) for n in ([tests] if isinstance(tests,str) else tests))
  files.update(native_rom_sidecars(root))
  for rel in ('safevision/rtl/include','safevision/assets/fonts',str(FLOW)):

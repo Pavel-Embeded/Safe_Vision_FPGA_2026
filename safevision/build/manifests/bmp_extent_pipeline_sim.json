@@ -1,7 +1,7 @@
 {
   "sources": [
     "safevision/rtl/media/bmp_parser.v",
-    "safevision/verification/models/bmp_parser_frozen_extent.sv"
+    "safevision/verification/models/bmp_parser_frozen_extent.v"
   ],
   "tops": ["tb_v3_bmp_extent_pipeline"],
   "assets": [],

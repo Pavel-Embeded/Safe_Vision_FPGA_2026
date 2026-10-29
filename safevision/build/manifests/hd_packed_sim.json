@@ -15,7 +15,7 @@
   },
   "test_sources": {
     "tb_v3_hd_packed_rows": [
-      "safevision/verification/unit/tb_v3_hd_packed_rows.sv"
+      "safevision/verification/unit/tb_v3_hd_packed_rows.v"
     ]
   }
 }

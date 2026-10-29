@@ -1,7 +1,7 @@
 {
   "sources": [
     "safevision/rtl/control/v3_user_controls.v",
-    "safevision/verification/models/v3_controls_pipeline_reference.sv",
+    "safevision/verification/models/v3_controls_pipeline_reference.v",
     "safevision/rtl/control/input_sync.v",
     "safevision/rtl/control/key_debounce.v"
   ],
@@ -10,7 +10,7 @@
   ],
   "test_sources": {
     "tb_v3_control_longpress55": [
-      "safevision/verification/unit/tb_v3_control_longpress55.sv"
+      "safevision/verification/unit/tb_v3_control_longpress55.v"
     ]
   }
 }

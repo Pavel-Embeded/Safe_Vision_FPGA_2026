@@ -49,8 +49,8 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  end
  wire descriptor_capture=ev&&entry_ready&&valid_name&&fc>=2&&size>=44&&|descriptor_matches;
 
- wire[7:0] ram_address=descriptor_write?{4'b1000,descriptor_slot,context_index[1:0]}:
-  state==Q_DESC1?{4'b1000,active,context_index[1:0]}:context_address;
+ wire[7:0] ram_address=descriptor_write ? {4'b1000,descriptor_slot,context_index[1:0]}:
+  state==Q_DESC1 ? {4'b1000,active,context_index[1:0]}:context_address;
  wire [2:0] en,ready,dr,dv,dl,done,toerr,crcerr;
  wire [31:0] addr[0:2];wire [15:0] lens[0:2];wire [3:0] states[0:2];
  wire [31:0] scan_cur,file_cur,w_next,hop_count;
@@ -61,17 +61,17 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  wire run_kernel=(state==Q_RUN||state==Q_START)&&!pause_boundary;
 
  wire [CTX_PAD-1:0] export_context={context_padding,hop_count,fs_context,wp_context};
- wire [CTX_PAD-1:0] next_context={(state==Q_SAVE)?export_context[15:0]:context_q,export_context[CTX_PAD-1:16]};
+ wire [CTX_PAD-1:0] next_context={(state==Q_SAVE) ? export_context[15:0]:context_q,export_context[CTX_PAD-1:16]};
  wire [15:0] save_word=export_context[15:0];
 
  a_pixel_fifo_eram #(.MODE("SP"),.DATAWIDTH_A(16),.DATAWIDTH_B(16),
  .ADDRWIDTH_A(8),.ADDRWIDTH_B(8),.REGMODE_A("NOREG")) context_ram(
  .clka(clk),.rsta(!rst_n),.cea(state==Q_SAVE||state==Q_LOAD1||descriptor_write||state==Q_DESC1),
  .ocea(1'b1),.wea(state==Q_SAVE||descriptor_write),
- .dia(descriptor_write?track_descriptor[15:0]:save_word),.addra(ram_address),.doa(context_q),
+ .dia(descriptor_write ? track_descriptor[15:0]:save_word),.addra(ram_address),.doa(context_q),
  .clkb(clk),.rstb(!rst_n),.ceb(1'b0),.oceb(1'b0),.web(1'b0),.dib(16'd0),.addrb(8'd0),.dob());
  assign pcm_data={128'd0}|({96'd0,sample}<<(active*32));
- assign pcm_valid=(state==Q_RUN)?(sample_valid?(4'b1<<active):4'b0):4'b0;
+ assign pcm_valid=(state==Q_RUN) ? (sample_valid ? (4'b1<<active):4'b0):4'b0;
  reg [1:0] chosen;reg eligible;integer i,j,k;
  always @*begin eligible=0;chosen=0;
   for(i=0;i<4;i=i+1)begin j=rr+i;if(j>=4)j=j-4;
@@ -98,7 +98,7 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
       else context_index<=context_index+1'b1;
      end
      if(scan_seen&&scan_done&&descriptor_pending==0&&!descriptor_capture)begin
-      index_done<=1;fallback<=(dir_bad||scan_code!=0)?4'hf:~found;state<=Q_CHOOSE;
+      index_done<=1;fallback<=(dir_bad||scan_code!=0) ? 4'hf:~found;state<=Q_CHOOSE;
      end
     end
     Q_CHOOSE:if(eligible)begin kernel_progress<=0;active<=chosen;rr<=chosen+1'b1;context_index<=0;
@@ -190,36 +190,36 @@ wire svc_w_sd_data_ready;
 assign {svc_d_scan_done,svc_d_dir_bad,svc_d_err_code,svc_d_err_detail,svc_d_dbg_state,svc_d_ent_name,svc_d_ent_attr,svc_d_ent_first_clus,svc_d_ent_size,svc_d_ent_index,svc_d_ent_valid,svc_d_sd_rd_addr,svc_d_sd_rd_len,svc_d_sd_rd_en,svc_d_sd_data_ready,svc_d_wk_cur_clus,svc_d_wk_start,svc_d_wk_rst_walk,svc_f_busy,svc_f_done,svc_f_error,svc_f_err_code,svc_f_err_detail,svc_f_bytes_rd,svc_f_dbg_state,svc_f_data,svc_f_valid,svc_f_sof,svc_f_eof,svc_f_idle_between_sectors,svc_f_context_out,svc_f_sd_rd_addr,svc_f_sd_rd_len,svc_f_sd_rd_en,svc_f_sd_data_ready,svc_f_wk_cur_clus,svc_f_wk_start,svc_f_wk_rst_walk,svc_w_busy,svc_w_done,svc_w_next_clus,svc_w_eoc,svc_w_error,svc_w_err_code,svc_w_err_detail,svc_w_hop_cnt,svc_w_dbg_state,svc_w_sd_rd_addr,svc_w_sd_rd_len,svc_w_sd_rd_en,svc_w_sd_data_ready}=core_rsp;
 
  wire legacy_ds_scan_done;
-assign scan_done=EXTERNAL_SERVICE?(external_service_ready?svc_d_scan_done:1'd0):legacy_ds_scan_done;
+assign scan_done=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_scan_done:1'd0):legacy_ds_scan_done;
 wire legacy_ds_dir_bad;
-assign dir_bad=EXTERNAL_SERVICE?(external_service_ready?svc_d_dir_bad:1'd0):legacy_ds_dir_bad;
+assign dir_bad=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_dir_bad:1'd0):legacy_ds_dir_bad;
 wire [7:0] legacy_ds_err_code;
-assign scan_code=EXTERNAL_SERVICE?(external_service_ready?svc_d_err_code:8'd0):legacy_ds_err_code;
+assign scan_code=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_err_code:8'd0):legacy_ds_err_code;
 wire [3:0] legacy_ds_dbg_state;
-assign states[0]=EXTERNAL_SERVICE?(external_service_ready?svc_d_dbg_state:4'd0):legacy_ds_dbg_state;
+assign states[0]=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_dbg_state:4'd0):legacy_ds_dbg_state;
 wire [87:0] legacy_ds_ent_name;
-assign name=EXTERNAL_SERVICE?(external_service_ready?svc_d_ent_name:88'd0):legacy_ds_ent_name;
+assign name=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_ent_name:88'd0):legacy_ds_ent_name;
 wire [31:0] legacy_ds_ent_first_clus;
-assign fc=EXTERNAL_SERVICE?(external_service_ready?svc_d_ent_first_clus:32'd0):legacy_ds_ent_first_clus;
+assign fc=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_ent_first_clus:32'd0):legacy_ds_ent_first_clus;
 wire [31:0] legacy_ds_ent_size;
-assign size=EXTERNAL_SERVICE?(external_service_ready?svc_d_ent_size:32'd0):legacy_ds_ent_size;
+assign size=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_ent_size:32'd0):legacy_ds_ent_size;
 wire legacy_ds_ent_valid;
-assign ev=EXTERNAL_SERVICE?(external_service_ready?svc_d_ent_valid:1'd0):legacy_ds_ent_valid;
+assign ev=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_ent_valid:1'd0):legacy_ds_ent_valid;
 wire [31:0] legacy_ds_sd_rd_addr;
-assign addr[0]=EXTERNAL_SERVICE?(external_service_ready?svc_d_sd_rd_addr:32'd0):legacy_ds_sd_rd_addr;
+assign addr[0]=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_sd_rd_addr:32'd0):legacy_ds_sd_rd_addr;
 wire [15:0] legacy_ds_sd_rd_len;
-assign lens[0]=EXTERNAL_SERVICE?(external_service_ready?svc_d_sd_rd_len:16'd0):legacy_ds_sd_rd_len;
+assign lens[0]=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_sd_rd_len:16'd0):legacy_ds_sd_rd_len;
 wire legacy_ds_sd_rd_en;
-assign en[0]=EXTERNAL_SERVICE?(external_service_ready?svc_d_sd_rd_en:1'd0):legacy_ds_sd_rd_en;
+assign en[0]=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_sd_rd_en:1'd0):legacy_ds_sd_rd_en;
 wire legacy_ds_sd_data_ready;
-assign dr[0]=EXTERNAL_SERVICE?(external_service_ready?svc_d_sd_data_ready:1'd0):legacy_ds_sd_data_ready;
+assign dr[0]=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_sd_data_ready:1'd0):legacy_ds_sd_data_ready;
 wire [31:0] legacy_ds_wk_cur_clus;
-assign scan_cur=EXTERNAL_SERVICE?(external_service_ready?svc_d_wk_cur_clus:32'd0):legacy_ds_wk_cur_clus;
+assign scan_cur=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_wk_cur_clus:32'd0):legacy_ds_wk_cur_clus;
 wire legacy_ds_wk_start;
-assign scan_ws=EXTERNAL_SERVICE?(external_service_ready?svc_d_wk_start:1'd0):legacy_ds_wk_start;
+assign scan_ws=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_wk_start:1'd0):legacy_ds_wk_start;
 wire legacy_ds_wk_rst_walk;
-assign scan_wr=EXTERNAL_SERVICE?(external_service_ready?svc_d_wk_rst_walk:1'd0):legacy_ds_wk_rst_walk;
-fat32_directory_scanner ds(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:rst_n),.scan_en(scan_start),.scan_done(legacy_ds_scan_done),.dir_bad(legacy_ds_dir_bad),.err_code(legacy_ds_err_code),
+assign scan_wr=EXTERNAL_SERVICE ? (external_service_ready ? svc_d_wk_rst_walk:1'd0):legacy_ds_wk_rst_walk;
+fat32_directory_scanner ds(.clk(clk),.rst_n(EXTERNAL_SERVICE ? 1'b0:rst_n),.scan_en(scan_start),.scan_done(legacy_ds_scan_done),.dir_bad(legacy_ds_dir_bad),.err_code(legacy_ds_err_code),
  .dbg_state(legacy_ds_dbg_state),.sec_per_clus(sec_per_clus),.root_clus(root_clus),.root_dir_lba(root_dir_lba),.data_start_lba(data_start_lba),
  .ent_name(legacy_ds_ent_name),.ent_first_clus(legacy_ds_ent_first_clus),.ent_size(legacy_ds_ent_size),.ent_valid(legacy_ds_ent_valid),.ent_ready(entry_ready),
  .sd_rd_addr(legacy_ds_sd_rd_addr),.sd_rd_len(legacy_ds_sd_rd_len),.sd_rd_en(legacy_ds_sd_rd_en),.sd_rd_ready(ready[0]),
@@ -228,71 +228,71 @@ fat32_directory_scanner ds(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:rst_n),.scan_e
  .wk_cur_clus(legacy_ds_wk_cur_clus),.wk_start(legacy_ds_wk_start),.wk_rst_walk(legacy_ds_wk_rst_walk),.wk_busy(wb),.wk_done(wd),
  .wk_next_clus(w_next),.wk_eoc(w_eoc),.wk_error(we),.wk_err_code(wc),.wk_err_detail(wt));
  wire legacy_wk_busy;
-assign wb=EXTERNAL_SERVICE?(external_service_ready?svc_w_busy:1'd0):legacy_wk_busy;
+assign wb=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_busy:1'd0):legacy_wk_busy;
 wire legacy_wk_done;
-assign wd=EXTERNAL_SERVICE?(external_service_ready?svc_w_done:1'd0):legacy_wk_done;
+assign wd=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_done:1'd0):legacy_wk_done;
 wire [31:0] legacy_wk_next_clus;
-assign w_next=EXTERNAL_SERVICE?(external_service_ready?svc_w_next_clus:32'd0):legacy_wk_next_clus;
+assign w_next=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_next_clus:32'd0):legacy_wk_next_clus;
 wire legacy_wk_eoc;
-assign w_eoc=EXTERNAL_SERVICE?(external_service_ready?svc_w_eoc:1'd0):legacy_wk_eoc;
+assign w_eoc=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_eoc:1'd0):legacy_wk_eoc;
 wire legacy_wk_error;
-assign we=EXTERNAL_SERVICE?(external_service_ready?svc_w_error:1'd0):legacy_wk_error;
+assign we=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_error:1'd0):legacy_wk_error;
 wire [7:0] legacy_wk_err_code;
-assign wc=EXTERNAL_SERVICE?(external_service_ready?svc_w_err_code:8'd0):legacy_wk_err_code;
+assign wc=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_err_code:8'd0):legacy_wk_err_code;
 wire [7:0] legacy_wk_err_detail;
-assign wt=EXTERNAL_SERVICE?(external_service_ready?svc_w_err_detail:8'd0):legacy_wk_err_detail;
+assign wt=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_err_detail:8'd0):legacy_wk_err_detail;
 wire [31:0] legacy_wk_hop_cnt;
-assign hop_count=EXTERNAL_SERVICE?(external_service_ready?svc_w_hop_cnt:32'd0):legacy_wk_hop_cnt;
+assign hop_count=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_hop_cnt:32'd0):legacy_wk_hop_cnt;
 wire [3:0] legacy_wk_dbg_state;
-assign states[2]=EXTERNAL_SERVICE?(external_service_ready?svc_w_dbg_state:4'd0):legacy_wk_dbg_state;
+assign states[2]=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_dbg_state:4'd0):legacy_wk_dbg_state;
 wire [31:0] legacy_wk_sd_rd_addr;
-assign addr[2]=EXTERNAL_SERVICE?(external_service_ready?svc_w_sd_rd_addr:32'd0):legacy_wk_sd_rd_addr;
+assign addr[2]=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_sd_rd_addr:32'd0):legacy_wk_sd_rd_addr;
 wire [15:0] legacy_wk_sd_rd_len;
-assign lens[2]=EXTERNAL_SERVICE?(external_service_ready?svc_w_sd_rd_len:16'd0):legacy_wk_sd_rd_len;
+assign lens[2]=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_sd_rd_len:16'd0):legacy_wk_sd_rd_len;
 wire legacy_wk_sd_rd_en;
-assign en[2]=EXTERNAL_SERVICE?(external_service_ready?svc_w_sd_rd_en:1'd0):legacy_wk_sd_rd_en;
+assign en[2]=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_sd_rd_en:1'd0):legacy_wk_sd_rd_en;
 wire legacy_wk_sd_data_ready;
-assign dr[2]=EXTERNAL_SERVICE?(external_service_ready?svc_w_sd_data_ready:1'd0):legacy_wk_sd_data_ready;
-v3_cluster_walker_ctx wk(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rst_n),.context_load(load_context),
- .context_hop(next_context[WP_BITS+FS_BITS+:32]),.rst_walk(index_done?(run_kernel&&file_wr):scan_wr),.start(index_done?(run_kernel&&file_ws):scan_ws),
- .cur_clus(index_done?file_cur:scan_cur),.busy(legacy_wk_busy),.done(legacy_wk_done),.next_clus(legacy_wk_next_clus),.hop_cnt(legacy_wk_hop_cnt),
+assign dr[2]=EXTERNAL_SERVICE ? (external_service_ready ? svc_w_sd_data_ready:1'd0):legacy_wk_sd_data_ready;
+v3_cluster_walker_ctx wk(.clk(clk),.rst_n(EXTERNAL_SERVICE ? 1'b0:kernel_rst_n),.context_load(load_context),
+ .context_hop(next_context[WP_BITS+FS_BITS+:32]),.rst_walk(index_done ? (run_kernel&&file_wr):scan_wr),.start(index_done ? (run_kernel&&file_ws):scan_ws),
+ .cur_clus(index_done ? file_cur:scan_cur),.busy(legacy_wk_busy),.done(legacy_wk_done),.next_clus(legacy_wk_next_clus),.hop_cnt(legacy_wk_hop_cnt),
  .eoc(legacy_wk_eoc),.error(legacy_wk_error),.err_code(legacy_wk_err_code),.err_detail(legacy_wk_err_detail),.dbg_state(legacy_wk_dbg_state),
  .fat_start_lba(fat_start_lba),.total_clus(total_clus),.sd_rd_addr(legacy_wk_sd_rd_addr),.sd_rd_len(legacy_wk_sd_rd_len),.sd_rd_en(legacy_wk_sd_rd_en),.sd_rd_ready(ready[2]),
  .sd_data(data),.sd_data_valid(dv[2]),.sd_data_ready(legacy_wk_sd_data_ready),.sd_data_last(dl[2]),.sd_rd_done(done[2]),
  .sd_timeout_err(toerr[2]),.sd_crc16_err(crcerr[2]),.sd_err_code(err_code),.sd_err_detail(err_detail));
  wire legacy_fs_busy;
-assign fbusy=EXTERNAL_SERVICE?(external_service_ready?svc_f_busy:1'd0):legacy_fs_busy;
+assign fbusy=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_busy:1'd0):legacy_fs_busy;
 wire legacy_fs_done;
-assign fdone=EXTERNAL_SERVICE?(external_service_ready?svc_f_done:1'd0):legacy_fs_done;
+assign fdone=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_done:1'd0):legacy_fs_done;
 wire legacy_fs_error;
-assign ferr=EXTERNAL_SERVICE?(external_service_ready?svc_f_error:1'd0):legacy_fs_error;
+assign ferr=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_error:1'd0):legacy_fs_error;
 wire [3:0] legacy_fs_dbg_state;
-assign states[1]=EXTERNAL_SERVICE?(external_service_ready?svc_f_dbg_state:4'd0):legacy_fs_dbg_state;
+assign states[1]=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_dbg_state:4'd0):legacy_fs_dbg_state;
 wire [7:0] legacy_fs_data;
-assign bytes_data=EXTERNAL_SERVICE?(external_service_ready?svc_f_data:8'd0):legacy_fs_data;
+assign bytes_data=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_data:8'd0):legacy_fs_data;
 wire legacy_fs_valid;
-assign fvalid=EXTERNAL_SERVICE?(external_service_ready?svc_f_valid:1'd0):legacy_fs_valid;
+assign fvalid=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_valid:1'd0):legacy_fs_valid;
 wire legacy_fs_eof;
-assign fend=EXTERNAL_SERVICE?(external_service_ready?svc_f_eof:1'd0):legacy_fs_eof;
+assign fend=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_eof:1'd0):legacy_fs_eof;
 wire legacy_fs_idle_between_sectors;
-assign pauseable=EXTERNAL_SERVICE?(external_service_ready?svc_f_idle_between_sectors:1'd0):legacy_fs_idle_between_sectors;
+assign pauseable=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_idle_between_sectors:1'd0):legacy_fs_idle_between_sectors;
 wire [264:0] legacy_fs_context_out;
-assign fs_context=EXTERNAL_SERVICE?(external_service_ready?svc_f_context_out:265'd0):legacy_fs_context_out;
+assign fs_context=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_context_out:265'd0):legacy_fs_context_out;
 wire [31:0] legacy_fs_sd_rd_addr;
-assign addr[1]=EXTERNAL_SERVICE?(external_service_ready?svc_f_sd_rd_addr:32'd0):legacy_fs_sd_rd_addr;
+assign addr[1]=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_sd_rd_addr:32'd0):legacy_fs_sd_rd_addr;
 wire [15:0] legacy_fs_sd_rd_len;
-assign lens[1]=EXTERNAL_SERVICE?(external_service_ready?svc_f_sd_rd_len:16'd0):legacy_fs_sd_rd_len;
+assign lens[1]=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_sd_rd_len:16'd0):legacy_fs_sd_rd_len;
 wire legacy_fs_sd_rd_en;
-assign en[1]=EXTERNAL_SERVICE?(external_service_ready?svc_f_sd_rd_en:1'd0):legacy_fs_sd_rd_en;
+assign en[1]=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_sd_rd_en:1'd0):legacy_fs_sd_rd_en;
 wire legacy_fs_sd_data_ready;
-assign dr[1]=EXTERNAL_SERVICE?(external_service_ready?svc_f_sd_data_ready:1'd0):legacy_fs_sd_data_ready;
+assign dr[1]=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_sd_data_ready:1'd0):legacy_fs_sd_data_ready;
 wire [31:0] legacy_fs_wk_cur_clus;
-assign file_cur=EXTERNAL_SERVICE?(external_service_ready?svc_f_wk_cur_clus:32'd0):legacy_fs_wk_cur_clus;
+assign file_cur=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_wk_cur_clus:32'd0):legacy_fs_wk_cur_clus;
 wire legacy_fs_wk_start;
-assign file_ws=EXTERNAL_SERVICE?(external_service_ready?svc_f_wk_start:1'd0):legacy_fs_wk_start;
+assign file_ws=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_wk_start:1'd0):legacy_fs_wk_start;
 wire legacy_fs_wk_rst_walk;
-assign file_wr=EXTERNAL_SERVICE?(external_service_ready?svc_f_wk_rst_walk:1'd0):legacy_fs_wk_rst_walk;
-v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rst_n),.context_load(load_context),.context_enable(run_kernel),
+assign file_wr=EXTERNAL_SERVICE ? (external_service_ready ? svc_f_wk_rst_walk:1'd0):legacy_fs_wk_rst_walk;
+v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE ? 1'b0:kernel_rst_n),.context_load(load_context),.context_enable(run_kernel),
  .context_in(next_context[WP_BITS+:FS_BITS]),.context_out(legacy_fs_context_out),.stream_enable(1'b1),.idle_between_sectors(legacy_fs_idle_between_sectors),
  .start(start),.first_clus(track_descriptor[31:0]),.file_size(track_descriptor[63:32]),.busy(legacy_fs_busy),.done(legacy_fs_done),.error(legacy_fs_error),.dbg_state(legacy_fs_dbg_state),
  .data(legacy_fs_data),.valid(legacy_fs_valid),.ready((parser_ready||waverr)&&run_kernel),.eof(legacy_fs_eof),
@@ -334,5 +334,5 @@ v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rs
    default:phase<=0;
   endcase
  end
-assign core_cmd={kernel_rst_n,scan_start,entry_ready,load_context,run_kernel,start,track_descriptor[31:0],track_descriptor[63:32],(parser_ready||waverr)&&run_kernel,{129'd0,next_context[WP_BITS+:FS_BITS]},load_context,next_context[WP_BITS+FS_BITS+:32],index_done?(run_kernel&&file_wr):scan_wr,index_done?(run_kernel&&file_ws):scan_ws,index_done?file_cur:scan_cur,ready,dv,dl,done,toerr,crcerr,data,err_code,err_detail};
+assign core_cmd={kernel_rst_n,scan_start,entry_ready,load_context,run_kernel,start,track_descriptor[31:0],track_descriptor[63:32],(parser_ready||waverr)&&run_kernel,{129'd0,next_context[WP_BITS+:FS_BITS]},load_context,next_context[WP_BITS+FS_BITS+:32],index_done ? (run_kernel&&file_wr):scan_wr,index_done ? (run_kernel&&file_ws):scan_ws,index_done ? file_cur:scan_cur,ready,dv,dl,done,toerr,crcerr,data,err_code,err_detail};
 endmodule

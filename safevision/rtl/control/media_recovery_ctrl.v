@@ -62,6 +62,6 @@ module media_recovery_ctrl #(
  end
  // synthesis translate_off
  initial if(RESET_CYCLES<2||SETTLE_CYCLES<2||MAX_ATTEMPTS>3||TIMEOUT_CYCLES<1)
-  $fatal(1,"invalid media recovery parameters");
+  begin $display("[FAIL] invalid media recovery parameters"); $finish; end 
  // synthesis translate_on
 endmodule

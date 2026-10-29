@@ -1,7 +1,7 @@
 {
   "sources": [
     "safevision/rtl/hd/v3_row_integrity.v",
-    "safevision/verification/models/v3_row_integrity_frozen_direct_hd.sv"
+    "safevision/verification/models/v3_row_integrity_frozen_direct_hd.v"
   ],
   "tops": [
     "tb_v3_direct_row_hd"

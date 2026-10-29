@@ -189,6 +189,6 @@ module frame_integrity_guard #(
     end
     // synthesis translate_off
     initial if(BLOCK_WORDS!=64||WORDS%BLOCK_WORDS||ROW_WORDS%BLOCK_WORDS||BLOCKS>2400)
-        $fatal(1,"unsupported signature geometry");
+        begin $display("[FAIL] unsupported signature geometry"); $finish; end 
     // synthesis translate_on
 endmodule

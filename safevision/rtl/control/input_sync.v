@@ -61,7 +61,7 @@ module input_sync #(
     end
 
     // synthesis translate_off
-    initial if (DEB_N < 1) $fatal(1, "input_sync invalid DEB_N (must be >= 1)");
+    initial if (DEB_N < 1) begin $display("[FAIL] input_sync invalid DEB_N (must be >= 1)"); $finish; end 
     // synthesis translate_on
 
 endmodule

@@ -22,8 +22,8 @@ try{
  Write-XSimProject -Paths @($guard,(Join-Path $sv 'rtl/memory/video_read_dma_checked.v')) -Path rtl.prj
  & (Join-Path $XSimBin 'xvlog.bat') -i (Join-Path $sv 'rtl/include') --log rtl.log --file rtl.prj > rtl.console.log 2>&1
  if($LASTEXITCODE){throw 'Negative control RTL compile failed'}
- Write-XSimProject -Paths @((Join-Path $sv 'verification/unit/tb_frame_integrity.sv')) -Path tb.prj
- & (Join-Path $XSimBin 'xvlog.bat') --sv --log tb.log --file tb.prj > tb.console.log 2>&1
+ Write-XSimProject -Paths @((Join-Path $sv 'verification/unit/tb_frame_integrity.v')) -Path tb.prj
+ & (Join-Path $XSimBin 'xvlog.bat')  --log tb.log --file tb.prj > tb.console.log 2>&1
  if($LASTEXITCODE){throw 'Negative control TB compile failed'}
  & (Join-Path $XSimBin 'xelab.bat') work.tb_frame_integrity -s header_negative -generic_top '"HEADER_LATE=1"' --timescale 1ns/1ps --log elab.log > elab.console.log 2>&1
  if($LASTEXITCODE){throw 'Negative control elaboration failed'}

@@ -42,10 +42,10 @@
   "generators": {},
   "test_sources": {
     "tb_v3_priority_base50": [
-      "safevision/verification/unit/tb_v3_audio_priority_phases.sv"
+      "safevision/verification/unit/tb_v3_audio_priority_phases.v"
     ],
     "tb_v3_priority_hd50": [
-      "safevision/verification/unit/tb_v3_audio_priority_phases.sv"
+      "safevision/verification/unit/tb_v3_audio_priority_phases.v"
     ]
   },
   "timeouts": {

@@ -1,7 +1,7 @@
 {
   "sources": [
     "safevision/rtl/storage/fat32_directory_scanner.v",
-    "safevision/verification/models/legacy_directory_scanner_reference.sv",
+    "safevision/verification/models/legacy_directory_scanner_reference.v",
     "safevision/rtl/storage/v3_fat_name_store.v"
   ],
   "tops": [

@@ -52,6 +52,6 @@ module uart_rx #(parameter integer CLK_HZ=100000000,BAUD=115200)(
   end
  end
  // synthesis translate_off
- initial if(CLK_HZ<BAUD*32)$fatal(1,"UART RX clock too slow");
+ initial if(CLK_HZ<BAUD*32)begin $display("[FAIL] UART RX clock too slow"); $finish; end 
  // synthesis translate_on
 endmodule

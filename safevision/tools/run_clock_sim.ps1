@@ -32,10 +32,10 @@ try {
         (Join-Path $sv 'platform\anlogic_eg4s20_hx4s20c\rtl\clock\reset_sync.v'),
         (Join-Path $sv 'platform\anlogic_eg4s20_hx4s20c\rtl\clock\clock_reset_ctrl.v')
     )
-    $tb = Join-Path $sv 'verification\unit\tb_clock_reset_ctrl.sv'
+    $tb = Join-Path $sv 'verification\unit\tb_clock_reset_ctrl.v'
     & $vlog $rtl
     if ($LASTEXITCODE -ne 0) { exit 1 }
-    & $vlog -sv $tb
+    & $vlog  $tb
     if ($LASTEXITCODE -ne 0) { exit 1 }
 
     $result = & $vsim -c -do 'onerror {quit -code 1}; run -all; quit -f' tb_clock_reset_ctrl 2>&1 | Out-String

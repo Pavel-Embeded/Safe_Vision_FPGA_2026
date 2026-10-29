@@ -2,8 +2,8 @@
   "defines": [],
   "sources": [
     "safevision/rtl/audio/v3_pcm_ring.v",
-    "safevision/verification/models/v3_pcm_ring_reference.sv",
-    "safevision/verification/models/v3_pcm_ring_cycle_miter.sv"
+    "safevision/verification/models/v3_pcm_ring_reference.v",
+    "safevision/verification/models/v3_pcm_ring_cycle_miter.v"
   ],
   "tops": [
     "tb_v3_pcm_ring_equivalence",

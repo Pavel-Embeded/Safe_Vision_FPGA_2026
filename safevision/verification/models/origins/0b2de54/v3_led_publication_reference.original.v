@@ -16,7 +16,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  inout wire HDMI_DDC_SDA);
 
 
- localparam integer PIXEL_HZ=HD?74166667:25185185;
+ localparam integer PIXEL_HZ=HD ? 74166667:25185185;
  wire sys_clk,mem_clk,mem_clk_sft,pixel_clk,serial_clk,audio_clk;
  wire sys_lock,video_lock,audio_lock,ref_rst_n,common_rst_n,control_common_rst_n;
  wire sys_rst_n,mem_rst_n,pixel_rst_n,audio_rst_n,config_rst_n;
@@ -147,7 +147,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  .sd_req(aux_req),.sd_wr(aux_wr),.sd_addr(aux_addr),.sd_wdata(aux_data),.sd_len(aux_len),
  .sd_ack(aux_ack),.sd_busy(aux_busy),.sd_valid(aux_valid),.sd_data(aux_rdata));
  memory_arbiter #(.COMPACT_CONSEC_COUNTER(1),.HIGH_WATER(640),.CRITICAL_WATER(320)) arbiter(
- .clk(mem_clk),.rst_n(mem_media_rst_n),.video_fifo_level(dma_busy?16'd0:16'd1024),
+ .clk(mem_clk),.rst_n(mem_media_rst_n),.video_fifo_level(dma_busy ? 16'd0:16'd1024),
  .rd_req(rd_req),.rd_addr(rd_addr),.rd_len(rd_len),.rd_ack(rd_ack),.rd_busy(rd_busy),.rd_data(rd_data),.rd_data_valid(rd_valid),
  .wr_req(writer_req),.wr_addr(writer_addr),.wr_data(writer_data),.wr_len(writer_len),.wr_ack(writer_ack),.wr_busy(writer_busy),
  .sd_req(aux_req),.sd_wr(aux_wr),.sd_addr(aux_addr),.sd_wdata(aux_data),.sd_len(aux_len),.sd_ack(aux_ack),.sd_busy(aux_busy),
@@ -213,7 +213,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
 
  v3_supervisor #(.RECOVER_CYCLES(490000000)) supervisor(.clk(sys_clk),.rst_n(sys_rst_n),.manual_safe(manual_safe),.recover_request(recover_request),.cache_ready(cached),
  .media_failed(ref_status_sys[15:12]==10 || mem_status_sys[7:0]!=0),
- .media_code((mem_status_sys[7:0]!=0)?mem_status_sys[7:0]:ref_status_sys[31:24]),
+ .media_code((mem_status_sys[7:0]!=0) ? mem_status_sys[7:0]:ref_status_sys[31:24]),
  .integrity_fault(mem_status_sys[11] || video_fault || presentation_fault),.bus_fault(mem_status_sys[10] || mem_status_sys[9]),.fatal(pll_loss_sys),
  .frame_heartbeat(frame_toggle_sys!=previous_frame_toggle),.mem_heartbeat(mem_progress),.progress_heartbeat(media_progress),
  .memory_active(mem_status_sys[8]),.media_active(ref_status_sys[15:12]>=2 && ref_status_sys[15:12]!=7 && ref_status_sys[15:12]!=10 && ref_status_sys[15:12]!=11),
@@ -228,7 +228,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire request_accepted,response_started;wire[15:0] response_latency_ms;
  v3_response_timer response_timer(.clk(sys_clk),.rst_n(sys_rst_n),.start(request_accepted),
  .finish(response_started),.cancel(safe_active||media_reset),.latency_ms(response_latency_ms));
- wire[7:0] hud_latency=response_latency_ms>255?8'd255:response_latency_ms[7:0];
+ wire[7:0] hud_latency=response_latency_ms>255 ? 8'd255:response_latency_ms[7:0];
  wire cfg_ready;wire[98:0] cfg_data={brightness_raw,scale_select,auto_enabled,brightness[7:0],contrast,osd_alpha,bilinear,fit,fade_enable,volume,period_select,field,menu,
  energy,fault_code,audio_underflows,hud_latency};
  wire[11:0] raw_x,raw_y,out_x,out_y;wire raw_de,raw_hs,raw_vs;
@@ -432,13 +432,13 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
 
 
  reg b_reply;reg b_reply_query;reg b_reply_fast;reg[7:0] b_reply_code;reg signed[31:0] b_reply_direct;
- wire signed[31:0] b_reply_value=b_reply_query?b_query_data:(b_reply_fast?b_diag_data:b_reply_direct);
+ wire signed[31:0] b_reply_value=b_reply_query ? b_query_data:(b_reply_fast ? b_diag_data:b_reply_direct);
  always @(posedge sys_clk or negedge sys_rst_n)begin
  if(!sys_rst_n)begin b_reply<=0;b_reply_query<=0;b_reply_fast<=0;b_diag_group0<=0;b_diag_group1<=0;b_diag_group2<=0;b_diag_group3<=0;b_reply_code<=0;b_reply_direct<=0;b_query_group0<=0;b_query_group1<=0;b_query_group2<=0;b_query_group3<=0;b_query_group4<=0;end
  else begin b_reply<=0;
 
 
- if(diag_reply_valid)begin b_reply_fast<=0;b_reply_query<=0;b_reply<=1;b_reply_code<=diag_reply_ok?0:4;b_reply_direct<=diag_reply_value;end
+ if(diag_reply_valid)begin b_reply_fast<=0;b_reply_query<=0;b_reply<=1;b_reply_code<=diag_reply_ok ? 0:4;b_reply_direct<=diag_reply_value;end
  else if(cmd_valid && cmd_target==66)begin b_reply_fast<=b_diag_selected;b_reply_query<=cmd_query&&!b_diag_selected;b_reply<=1;b_reply_code<=0;
  b_reply_direct<=0;
  b_diag_group0<=b_diag_next0;b_diag_group1<=b_diag_next1;b_diag_group2<=b_diag_next2;b_diag_group3<=b_diag_next3;
@@ -458,7 +458,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  v3_uart_link #(.BOARD_CATALOG(1)) uart(.clk(sys_clk),.rst_n(sys_rst_n),.rxd(uart_rxd),.txd(normal_uart_txd),
  .command_valid(cmd_valid),.command_target(cmd_target),.command_name(cmd_name),.command_value(cmd_value),.command_query(cmd_query),
  .catalog_id(cmd_catalog_id),
- .reply_valid(controls_reply || b_reply),.reply_code(b_reply?b_reply_code:controls_reply_code),.reply_value(b_reply?b_reply_value:controls_reply_value),
+ .reply_valid(controls_reply || b_reply),.reply_code(b_reply ? b_reply_code:controls_reply_code),.reply_value(b_reply ? b_reply_value:controls_reply_value),
  .evt_valid(evt_valid),.evt_code(evt_value[7:0]),.evt_src(evt_src),.evt_ts(evt_ts),.evt_ready(evt_ready),
  .parser_rejected(uart_rejected),.rx_framing(uart_framing),.rx_overrun(uart_overrun),.reply_dropped(uart_reply_dropped));
 
@@ -503,8 +503,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  end
  always @(posedge clk or negedge ref_rst_n)begin
   if(!ref_rst_n)begin uart_txd<=1'b1;led<=4'd0;end
-  else begin uart_txd<=sys_loss_ref?fatal_uart_txd:normal_uart_half;
-   led<=sys_loss_ref?4'hf:status_half;end
+  else begin uart_txd<=sys_loss_ref ? fatal_uart_txd:normal_uart_half;
+   led<=sys_loss_ref ? 4'hf:status_half;end
  end
 
  wire[23:0] axis_data;wire axis_valid,axis_user,axis_last,axis_ready,resync,overflow;
@@ -524,8 +524,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  always @(posedge pixel_clk or negedge pixel_rst_n)if(!pixel_rst_n)begin edid_count<=0;edid_trig<=0;end
  else begin edid_trig<=0;if(tx_reset)edid_count<=0;else if(edid_count<100000)begin edid_count<=edid_count+1'b1;if(edid_count==99999)edid_trig<=1;end end
  wire[9:0] ch0,ch1,ch2,chclk;wire hdmi_locked;
- hdmi_1_4b_transmitter_core_wrapper #(.DEVICE("EG"),.HTOTAL(HD?1650:800),.HSA(HD?40:96),.HFP(HD?110:16),.HBP(HD?220:48),.HACTIVE(HD?1280:640),
- .VTOTAL(HD?750:525),.VSA(HD?5:2),.VFP(HD?5:10),.VBP(HD?20:33),.VACTIVE(HD?720:480),.VIDEO_VIC(HD?4:1),
+ hdmi_1_4b_transmitter_core_wrapper #(.DEVICE("EG"),.HTOTAL(HD ? 1650:800),.HSA(HD ? 40:96),.HFP(HD ? 110:16),.HBP(HD ? 220:48),.HACTIVE(HD ? 1280:640),
+ .VTOTAL(HD ? 750:525),.VSA(HD ? 5:2),.VFP(HD ? 5:10),.VBP(HD ? 20:33),.VACTIVE(HD ? 720:480),.VIDEO_VIC(HD ? 4:1),
  .VIDEO_TPG("Disable"),.VIDEO_FORMAT("RGB"),.AUDIO_SAMPLE_RATE("48K"),.IIC_SCL_DIV(250)) transmitter(
  .I_pixel_clk(pixel_clk),.I_rst(tx_reset),.I_edid_read_trig(edid_trig),.O_edid_read_valid(),.O_edid_read_data(),
  .I_axis_s_user(axis_user),.I_axis_s_valid(axis_valid),.I_axis_s_last(axis_last),.I_axis_s_data(axis_data),.O_axis_s_ready(axis_ready),

@@ -112,7 +112,7 @@ module v3_status_layers #(
   always @(posedge pixel_clk or negedge pixel_rst_n)begin
    if(!pixel_rst_n)seen<=0;
    else begin
-    if(seen && (raw_x!==predicted_x || raw_y!==predicted_y))$fatal(1,"RASTER_PREDECODE requires exact nominal raster recurrence");
+    if(seen && (raw_x!==predicted_x || raw_y!==predicted_y))begin $display("[FAIL] RASTER_PREDECODE requires exact nominal raster recurrence"); $finish; end 
     seen<=1;predicted_x<=raw_x==RASTER_HT-1?12'd0:raw_x+1'b1;predicted_y<=next_y;
    end
   end

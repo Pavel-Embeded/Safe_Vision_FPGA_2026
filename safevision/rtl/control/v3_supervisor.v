@@ -201,9 +201,9 @@ module v3_supervisor #(
  end
  // synthesis translate_off
  initial if(CLK_HZ<1000 || FRAME_CYCLES<2 || MEM_CYCLES<2 || PROGRESS_CYCLES<2)
-  $fatal(1,"invalid supervisor clock or watchdog limits");
+  begin $display("[FAIL] invalid supervisor clock or watchdog limits"); $finish; end 
  // synthesis translate_on
  // synthesis translate_off
- initial if(BOOT_MS_OVERRIDE>0&&(CLK_HZ<1000||CLK_HZ%1000!=0))$fatal(1,"BOOT_MS_OVERRIDE requires exact1ms tick");
+ initial if(BOOT_MS_OVERRIDE>0&&(CLK_HZ<1000||CLK_HZ%1000!=0))begin $display("[FAIL] BOOT_MS_OVERRIDE requires exact1ms tick"); $finish; end 
  // synthesis translate_on
 endmodule

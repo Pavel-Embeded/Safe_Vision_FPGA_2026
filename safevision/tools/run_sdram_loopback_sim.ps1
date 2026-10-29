@@ -21,7 +21,7 @@ if(-not [string]::IsNullOrWhiteSpace($ModelSimBin)){
 }
 $platform='safevision/platform/anlogic_eg4s20_hx4s20c'
 $top=Join-Path $RepoRoot "$platform/rtl/top_sdram_loopback.v"
-$tb=Join-Path $RepoRoot 'safevision/verification/unit/tb_sdram_loopback.sv'
+$tb=Join-Path $RepoRoot 'safevision/verification/unit/tb_sdram_loopback.v'
 if($script:UseModelSim){
     $sources=@(
         (Join-Path $RepoRoot 'safevision/rtl/common/uart_tx.v'),

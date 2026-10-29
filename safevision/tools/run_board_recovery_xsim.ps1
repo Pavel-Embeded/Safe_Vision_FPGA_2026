@@ -25,8 +25,8 @@ try{
   'platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v')
  $rtl+=@('rtl/memory/frame_integrity_guard.v','rtl/memory/video_read_dma_checked.v')
  $rtl=@($rtl|Select-Object -Unique|ForEach-Object{Join-Path $sv $_})
- $sim=@('verification/models/board_memory_contract_model.sv','verification/models/top_ip_stub.sv',
-  'verification/unit/tb_safevision_board_recovery.sv')|ForEach-Object{Join-Path $sv $_}
+ $sim=@('verification/models/board_memory_contract_model.v','verification/models/top_ip_stub.v',
+  'verification/unit/tb_safevision_board_recovery.v')|ForEach-Object{Join-Path $sv $_}
  Copy-Item -LiteralPath (Join-Path $sv 'assets/fonts/font8x16.mem') -Destination $run -Force
  Push-Location -LiteralPath $run
  try{
@@ -34,7 +34,7 @@ try{
   & (Join-Path $XSimBin 'xvlog.bat') -d SIM_FAST_TO -i (Join-Path $sv 'rtl/include') --log rtl.log --file 'rtl.prj' > rtl.console.log 2>&1
   if($LASTEXITCODE){throw "RTL compilation failed: $run/rtl.log"}
   Write-XSimProject -Paths $sim -Path 'sim.prj'
-  & (Join-Path $XSimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i (Join-Path $sv 'rtl/include') --log tb.log --file 'sim.prj' > tb.console.log 2>&1
+  & (Join-Path $XSimBin 'xvlog.bat')  -d SIM_FAST_TO -i (Join-Path $sv 'rtl/include') --log tb.log --file 'sim.prj' > tb.console.log 2>&1
   if($LASTEXITCODE){throw "TB compilation failed: $run/tb.log"}
   & (Join-Path $XSimBin 'xelab.bat') work.tb_safevision_board_recovery -s board_recovery -debug typical --timescale 1ns/1ps --log elab.log > elab.console.log 2>&1
   if($LASTEXITCODE){throw "Elaboration failed: $run/elab.log"}

@@ -57,7 +57,7 @@ def check(root,repository=None):
  from v3_sources import snapshot
  physical=snapshot(root);records=[]
  for name in sorted(physical):
-  if not name.endswith(('.v','.sv'))or name.endswith('.enc.v'):continue
+  if not name.endswith(('.v',))or name.endswith('.enc.v'):continue
   current=(root/name).read_bytes()
   if name in NEW_RTL:
    assert headers(current),'new RTL has no public module header: '+name

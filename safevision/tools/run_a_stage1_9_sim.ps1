@@ -34,7 +34,7 @@ function Invoke-Case([string]$top,[bool]$mutation=$false){
     try{
         & (Join-Path $XSimBin 'xvlog.bat') -i $inc --log xvlog.log @sources
         if($LASTEXITCODE -ne 0){throw "$name RTL compile failed"}
-        & (Join-Path $XSimBin 'xvlog.bat') --sv --log xvlog_tb.log (Join-Path $RepoRoot "safevision/verification/unit/$top.sv")
+        & (Join-Path $XSimBin 'xvlog.bat')  --log xvlog_tb.log (Join-Path $RepoRoot "safevision/verification/unit/$top.v")
         if($LASTEXITCODE -ne 0){throw "$name TB compile failed"}
         & (Join-Path $XSimBin 'xelab.bat') "work.$top" -s "${name}_sim" --timescale '1ns/1ps' --log xelab.log
         if($LASTEXITCODE -ne 0){throw "$name elaborate failed"}

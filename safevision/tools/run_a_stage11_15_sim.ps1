@@ -95,7 +95,7 @@ try {
    Write-XSimProject -Paths $files -Path 'files.prj'
    & (Join-Path $XSimBin 'xvlog.bat') -i (Join-Path $RepoRoot 'safevision/rtl/include') --file 'files.prj' --log rtl.log > rtl.console.log 2>&1
    if($LASTEXITCODE){throw 'Combined A+B RTL compile failed'}
-   & (Join-Path $XSimBin 'xvlog.bat') --sv -i (Join-Path $RepoRoot 'safevision/rtl/include') (Join-Path $RepoRoot "safevision/verification/unit/$case.sv") --log tb.log > tb.console.log 2>&1
+   & (Join-Path $XSimBin 'xvlog.bat')  -i (Join-Path $RepoRoot 'safevision/rtl/include') (Join-Path $RepoRoot "safevision/verification/unit/$case.v") --log tb.log > tb.console.log 2>&1
    if($LASTEXITCODE){throw 'TB compile failed'}
    & (Join-Path $XSimBin 'xelab.bat') "work.$case" -s $case --timescale '1ns/1ps' --log elab.log > elab.console.log 2>&1
    if($LASTEXITCODE){throw 'Elaboration failed'}

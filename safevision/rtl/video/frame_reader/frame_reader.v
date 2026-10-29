@@ -45,6 +45,6 @@ module frame_reader #(
       .hblank_out(hblank_out),.vblank_out(vblank_out));
     // synthesis translate_off
     initial if(IMAGE_W<1||IMAGE_H<1||ORIGIN_X<0||ORIGIN_Y<0||
-      ORIGIN_X+IMAGE_W>4096||ORIGIN_Y+IMAGE_H>4096)$fatal(1,"frame_reader invalid viewport");
+      ORIGIN_X+IMAGE_W>4096||ORIGIN_Y+IMAGE_H>4096)begin $display("[FAIL] frame_reader invalid viewport"); $finish; end 
     // synthesis translate_on
 endmodule

@@ -62,13 +62,13 @@ $rtl = @(
 )
 
 $tbFiles = @(
-    (Join-Path $sv 'verification\unit\tb_c_input_sync.sv'),
-    (Join-Path $sv 'verification\unit\tb_c_priority_arbiter.sv'),
-    (Join-Path $sv 'verification\unit\tb_c_playback_fsm.sv'),
-    (Join-Path $sv 'verification\unit\tb_c_emergency_fsm.sv'),
-    (Join-Path $sv 'verification\unit\tb_c_watchdog.sv'),
-    (Join-Path $sv 'verification\unit\tb_c_fault_manager.sv'),
-    (Join-Path $sv 'verification\unit\tb_c_audio.sv')
+    (Join-Path $sv 'verification\unit\tb_c_input_sync.v'),
+    (Join-Path $sv 'verification\unit\tb_c_priority_arbiter.v'),
+    (Join-Path $sv 'verification\unit\tb_c_playback_fsm.v'),
+    (Join-Path $sv 'verification\unit\tb_c_emergency_fsm.v'),
+    (Join-Path $sv 'verification\unit\tb_c_watchdog.v'),
+    (Join-Path $sv 'verification\unit\tb_c_fault_manager.v'),
+    (Join-Path $sv 'verification\unit\tb_c_audio.v')
 )
 
 $TBS = @(
@@ -90,7 +90,7 @@ try {
     & $vlog $inc $rtl
     if ($LASTEXITCODE -ne 0) { Write-Output 'COMPILE FAILED (RTL)'; exit 1 }
 
-    & $vlog -sv $inc $tbFiles
+    & $vlog  $inc $tbFiles
     if ($LASTEXITCODE -ne 0) { Write-Output 'COMPILE FAILED (TB)'; exit 1 }
 
 

@@ -15,8 +15,8 @@ def fragment(text):
 def check(root):
     top = root / 'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v'
     models = root / 'safevision/verification/models'
-    candidate = models / 'v3_led_publication_candidate.sv'
-    reference = models / 'v3_led_publication_reference.sv'
+    candidate = models / 'v3_led_publication_candidate.v'
+    reference = models / 'v3_led_publication_reference.v'
     live = re.sub(r'\s+', '', fragment(top.read_text('utf-8-sig')))
     model = candidate.read_text('utf-8-sig')
     model = model[model.index(' reg normal_uart_half;'):model.rindex('\nendmodule')]

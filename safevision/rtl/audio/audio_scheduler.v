@@ -75,7 +75,7 @@ module audio_scheduler #(
     end
 
     // synthesis translate_off
-    initial if (TICK_N < 1) $fatal(1, "audio_scheduler invalid TICK_N (must be >= 1)");
+    initial if (TICK_N < 1) begin $display("[FAIL] audio_scheduler invalid TICK_N (must be >= 1)"); $finish; end 
     // synthesis translate_on
 
 endmodule

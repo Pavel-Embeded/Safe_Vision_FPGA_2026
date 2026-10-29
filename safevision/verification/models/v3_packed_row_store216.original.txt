@@ -21,10 +21,10 @@ module v3_packed_row_store #(parameter integer HANDBOOK_PROFILE=0)(
  reg[15:0] high_data;reg[11:0] high_position;
  wire new_packet=request_toggle!=seen_toggle;
  wire write_enable=high_pending||new_packet;
- wire[15:0] write_data=high_pending?high_data:packet_data[15:0];
- wire[11:0] write_position=high_pending?high_position:packet_position;
- wire write_stream=high_pending?high_stream:packet_stream;
- wire[3:0] write_tile={1'b0,write_position[11:9]}+(write_stream?4'd5:4'd0);
+ wire[15:0] write_data=high_pending ? high_data:packet_data[15:0];
+ wire[11:0] write_position=high_pending ? high_position:packet_position;
+ wire write_stream=high_pending ? high_stream:packet_stream;
+ wire[3:0] write_tile={1'b0,write_position[11:9]}+(write_stream ? 4'd5:4'd0);
  always @(posedge write_clk or negedge write_rst_n)begin
   if(!write_rst_n)begin seen_toggle<=0;high_pending<=0;high_data<=0;high_position<=0;
    high_stream<=0;high_last<=0;done_toggle<=0;write_fault<=0;end
@@ -48,13 +48,13 @@ module v3_packed_row_store #(parameter integer HANDBOOK_PROFILE=0)(
  reg[9:0] prepared_sy,previous_sx,previous_sy;reg previous_valid;
  reg[2:0] warm;reg[15:0] ca0,ca1,cb0,cb1;
  wire shrink=HANDBOOK_PROFILE&&scale_select[1];
- wire[2:0] raster_step=shrink?(scale_select==2?3'd2:3'd4):3'd1;
- function[1:0] row_bank;input[9:0] source_row;begin
-  row_bank=!shrink?source_row[1:0]:scale_select==2?source_row[2:1]:source_row[3:2];
- end endfunction
- wire[9:0] read_row0=coord_valid?sy:prepared_sy;
- wire[9:0] read_row1=shrink?read_row0:read_row0==479?10'd479:read_row0+1'b1;
- wire[9:0] read_column=coord_valid?(sx>=640-raster_step?10'd639:sx+raster_step):10'd0;
+ wire[2:0] raster_step=shrink ? (scale_select==2 ? 3'd2:3'd4):3'd1;
+ function[1:0] row_bank;input[9:0] source_row;begin begin
+  row_bank=!shrink ? source_row[1:0]:scale_select==2 ? source_row[2:1]:source_row[3:2];
+ end  end endfunction
+ wire[9:0] read_row0=coord_valid ? sy:prepared_sy;
+ wire[9:0] read_row1=shrink ? read_row0:read_row0==479 ? 10'd479:read_row0+1'b1;
+ wire[9:0] read_column=coord_valid ? (sx>=640-raster_step ? 10'd639:sx+raster_step):10'd0;
  wire[1:0] rb0=row_bank(read_row0),rb1=row_bank(read_row1);
  wire[11:0] rbase0={1'b0,rb0,9'd0}+{3'd0,rb0,7'd0};
  wire[11:0] rbase1={1'b0,rb1,9'd0}+{3'd0,rb1,7'd0};
@@ -77,14 +77,14 @@ module v3_packed_row_store #(parameter integer HANDBOOK_PROFILE=0)(
    else if(!previous_valid)begin
     if(sx!=0||sy!=prepared_sy||warm<3)pixel_fault<=1;
    end else if(sy!=previous_sy||sx<previous_sx||
-    (shrink?(sx!=previous_sx&&sx!=previous_sx+raster_step):(sx>previous_sx+1'b1)))pixel_fault<=1;
+    (shrink ? (sx!=previous_sx&&sx!=previous_sx+raster_step):(sx>previous_sx+1'b1)))pixel_fault<=1;
    else if(sx!=previous_sx)begin ca0<=qa0;ca1<=qa1;cb0<=qb0;cb1<=qb1;end
   end
  end
  genvar g;
  generate for(g=0;g<10;g=g+1)begin:tiles
   (* ram_style="block" *) reg[15:0] pixels[0:511];reg[15:0] r;
-  wire[8:0] read_address=(tile0==(g%5))?position0[8:0]:position1[8:0];
+  wire[8:0] read_address=(tile0==(g%5)) ? position0[8:0]:position1[8:0];
   always @(posedge write_clk)if(write_rst_n&&write_enable&&write_tile==g)pixels[write_position[8:0]]<=write_data;
   always @(posedge pixel_clk)r<=pixels[read_address];
   assign q[g]=r;

@@ -125,6 +125,6 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_ST
     end
     // synthesis translate_off
     initial if(FIFO_AW<6||FIFO_AW>14||BURST_WORDS<1||2*BURST_WORDS>CAPACITY-4)
-        $fatal(1,"a_frame_fetch_bridge invalid FIFO/burst configuration");
+        begin $display("[FAIL] a_frame_fetch_bridge invalid FIFO/burst configuration"); $finish; end 
     // synthesis translate_on
 endmodule

@@ -9,7 +9,7 @@
   ],
   "test_sources": {
     "tb_v3_ui_boundary409": [
-      "safevision/verification/unit/tb_v3_ui_boundary409.sv"
+      "safevision/verification/unit/tb_v3_ui_boundary409.v"
     ]
   }
 }

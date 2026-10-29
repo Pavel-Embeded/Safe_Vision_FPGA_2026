@@ -9,7 +9,7 @@
   ],
   "test_sources": {
     "tb_v3_hd_reject_carry": [
-      "safevision/verification/unit/tb_v3_hd_reject_carry.sv"
+      "safevision/verification/unit/tb_v3_hd_reject_carry.v"
     ]
   }
 }

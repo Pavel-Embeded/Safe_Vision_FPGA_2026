@@ -45,7 +45,7 @@
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
     "safevision/rtl/storage/sd_bmp_player.v",
-    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/verification/models/sd_spi_card_model.v",
     "safevision/rtl/memory/v3_row_integrity.v",
     "safevision/rtl/storage/sd_checked_sector_reader.v",
     "safevision/rtl/media/v3_bmp_normalizer.v",
@@ -63,6 +63,6 @@
   },
   "wall_timeout_note": "Long native wall budget; DUT cycle watchdogs, throughput contracts and all assertions remain unchanged.",
   "test_sources": {
-    "tb_v3_mixed_card217": "safevision/verification/unit/tb_v3_mixed_card217.sv"
+    "tb_v3_mixed_card217": "safevision/verification/unit/tb_v3_mixed_card217.v"
   }
 }

@@ -87,13 +87,13 @@ module v3_boot_reference171 (
     wire spc_ok = (spc != 8'd0) && (spc <= 8'd128) && ((spc & (spc - 8'd1)) == 8'd0);
 
 
-    wire [2:0] w_log2_spc = (spc[7]) ? 3'd7 :
-                            (spc[6]) ? 3'd6 :
-                            (spc[5]) ? 3'd5 :
-                            (spc[4]) ? 3'd4 :
-                            (spc[3]) ? 3'd3 :
-                            (spc[2]) ? 3'd2 :
-                            (spc[1]) ? 3'd1 : 3'd0;
+    wire [2:0] w_log2_spc = (spc[7])  ?  3'd7 :
+                            (spc[6])  ?  3'd6 :
+                            (spc[5])  ?  3'd5 :
+                            (spc[4])  ?  3'd4 :
+                            (spc[3])  ?  3'd3 :
+                            (spc[2])  ?  3'd2 :
+                            (spc[1])  ?  3'd1 : 3'd0;
     wire nfat_ok = (nfat == 8'd1) || (nfat == 8'd2);
 
 
@@ -239,13 +239,13 @@ module v3_boot_reference171 (
                     num_fats       <= nfat;
                     fat_start_lba  <= {16'd0, w_rsvd};
                     root_clus      <= w_rc;
-                    data_start_lba <= {16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32);
-                    root_dir_lba   <= {16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32)
+                    data_start_lba <= {16'd0, w_rsvd} + (nfat == 8'd2  ?  (w_fs32<<1) : w_fs32);
+                    root_dir_lba   <= {16'd0, w_rsvd} + (nfat == 8'd2  ?  (w_fs32<<1) : w_fs32)
                                       + ((w_rc - 32'd2) << w_log2_spc);
                     total_sec      <= w_ts32;
 
 
-                    total_clus     <= (w_ts32 - ({16'd0, w_rsvd} + (nfat == 8'd2 ? (w_fs32<<1) : w_fs32))) >> w_log2_spc;
+                    total_clus     <= (w_ts32 - ({16'd0, w_rsvd} + (nfat == 8'd2  ?  (w_fs32<<1) : w_fs32))) >> w_log2_spc;
                     mstate         <= M_DONE;
                 end
             end

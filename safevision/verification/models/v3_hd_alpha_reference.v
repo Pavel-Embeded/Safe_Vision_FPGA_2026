@@ -14,8 +14,8 @@ module v3_hd_alpha_reference(
  reg[13:0] sr,sb;reg[14:0] sg;reg[4:0] br2,bb2;reg[5:0] bg2;reg v1,v2;
  function[6:0] div255;
   input[14:0] x;reg[15:0] t;
-  begin t={1'b0,x}+16'd1;div255=(t+(t>>8))>>8;end
- endfunction
+  begin begin t={1'b0,x}+16'd1;div255=(t+(t>>8))>>8;end
+  end endfunction
  wire[6:0] qr=div255({1'b0,sr}),qg=div255(sg),qb=div255({1'b0,sb});
  wire[4:0] rr=br2+qr[4:0],rb=bb2+qb[4:0];wire[5:0] rg=bg2+qg[5:0];
  always @(posedge clk or negedge rst_n)begin

@@ -4,32 +4,32 @@
 module scaler_bilinear #(parameter RASTER_THIRDS=0)(input wire clk,rst_n,valid_in,bilinear,
  input wire [15:0] p00,p10,p01,p11,input wire [7:0] fx,fy,
  output reg [15:0] pixel,output reg valid_out);
- function signed[5:0] rounded_third;input[6:0] delta;reg[127:0] plane;begin
+ function signed[5:0] rounded_third;input[6:0] delta;reg[127:0] plane;begin begin
   plane=128'h71c71c71c71c71c7c71c71c71c71c71c;rounded_third[0]=plane[delta];
   plane=128'h7e07e07e07e07e0707e07e07e07e07e0;rounded_third[1]=plane[delta];
   plane=128'h7ff8007ff8007ff8f8007ff8007ff800;rounded_third[2]=plane[delta];
   plane=128'h7fffff8000007fff00007fffff800000;rounded_third[3]=plane[delta];
   plane=128'h7fffffffffff8000ffff800000000000;rounded_third[4]=plane[delta];
   plane=128'h7fffffffffffffff0000000000000000;rounded_third[5]=plane[delta];
- end endfunction
+ end  end endfunction
  function[5:0] lerp;
   input[5:0] a,b;input[7:0] f;
   reg signed[6:0] delta;reg signed[15:0] product,numerator;
   reg signed[5:0] part;reg signed[6:0] term;reg[5:0] origin;
-  begin delta=$signed({1'b0,b})-$signed({1'b0,a});
+  begin begin delta=$signed({1'b0,b})-$signed({1'b0,a});
    if(RASTER_THIRDS)begin
     part=rounded_third(delta);
-    origin=f==85?a:b;
-    term=f==85?$signed({part[5],part}):-$signed({part[5],part});
+    origin=f==85 ? a:b;
+    term=f==85 ? $signed({part[5],part}):-$signed({part[5],part});
     numerator=$signed({1'b0,origin})+term;
-    lerp=f==0?a:numerator[5:0];
+    lerp=f==0 ? a:numerator[5:0];
    end else begin
     product=delta*$signed({1'b0,f});
     numerator=$signed({2'b0,a,8'b0})+product+16'sd128;
     lerp=numerator[13:8];
    end
   end
- endfunction
+  end endfunction
  reg[15:0] top,bottom,vertical,n1,n2;reg[7:0] y1;reg m1,m2,v1,v2;
  wire[5:0] tr=lerp({1'b0,p00[15:11]},{1'b0,p10[15:11]},fx);
  wire[5:0] tg=lerp(p00[10:5],p10[10:5],fx);
@@ -47,7 +47,7 @@ module scaler_bilinear #(parameter RASTER_THIRDS=0)(input wire clk,rst_n,valid_i
    top<={tr[4:0],tg,tb[4:0]};bottom<={br[4:0],bg,bb[4:0]};
    y1<=fy;n1<=p00;m1<=bilinear;v1<=valid_in;
    vertical<={rr[4:0],rg,rb[4:0]};n2<=n1;m2<=m1;v2<=v1;
-   pixel<=m2?vertical:n2;valid_out<=v2;
+   pixel<=m2 ? vertical:n2;valid_out<=v2;
   end
  end
 endmodule

@@ -41,7 +41,7 @@
   "generators": {},
   "test_sources": {
     "tb_v3_sample_credit": [
-      "safevision/verification/unit/tb_v3_sample_credit.sv"
+      "safevision/verification/unit/tb_v3_sample_credit.v"
     ]
   }
 }

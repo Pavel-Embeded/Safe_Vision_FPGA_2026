@@ -6,7 +6,7 @@
     "safevision/rtl/control/v3_command_parser.v",
     "safevision/rtl/control/v3_command_parser_catalog.v",
     "safevision/rtl/control/v3_uart_link.v",
-    "safevision/verification/models/v3_uart_formatter_reference.sv"
+    "safevision/verification/models/v3_uart_formatter_reference.v"
   ],
   "tops": [
     "tb_v3_uart_formatter_equivalence"

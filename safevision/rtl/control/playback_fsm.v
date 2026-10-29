@@ -81,6 +81,6 @@ module playback_fsm #(parameter integer SLOTS=4,WAIT_TIMEOUT=500000000,
  end
  // synthesis translate_off
  initial if(SLOTS<2 || SLOTS>4 || WAIT_TIMEOUT<1 || RESET_CYCLES<2 || SETTLE_CYCLES<2)
-  $fatal(1,"invalid playback parameters");
+  begin $display("[FAIL] invalid playback parameters"); $finish; end 
  // synthesis translate_on
 endmodule

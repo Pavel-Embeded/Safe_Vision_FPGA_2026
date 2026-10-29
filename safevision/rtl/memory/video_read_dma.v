@@ -65,7 +65,7 @@ module video_read_dma #(
     // synthesis translate_off
     initial if(BURST_WORDS<1 || BURST_WORDS>65535 || PIX_DEPTH<1 ||
         PIX_DEPTH>65535 || BURST_WORDS*2>PIX_DEPTH || LOW_WATER<1 || LOW_WATER>PIX_DEPTH)
-        $fatal(1,"video_read_dma invalid burst/FIFO parameters");
+        begin $display("[FAIL] video_read_dma invalid burst/FIFO parameters"); $finish; end 
     // synthesis translate_on
 
     localparam [2:0] V_IDLE    = 3'd0,

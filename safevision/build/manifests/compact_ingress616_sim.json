@@ -39,19 +39,19 @@
   ],
   "test_sources": {
     "tb_v3_ingress_credit616": [
-      "safevision/verification/unit/tb_v3_compact_ingress616.sv"
+      "safevision/verification/unit/tb_v3_compact_ingress616.v"
     ],
     "tb_v3_ingress_compact616": [
-      "safevision/verification/unit/tb_v3_compact_ingress616.sv"
+      "safevision/verification/unit/tb_v3_compact_ingress616.v"
     ],
     "tb_v3_ingress_legacy616": [
-      "safevision/verification/unit/tb_v3_compact_ingress616.sv"
+      "safevision/verification/unit/tb_v3_compact_ingress616.v"
     ],
     "tb_v3_ingress_prefill616": [
-      "safevision/verification/unit/tb_v3_compact_ingress616.sv"
+      "safevision/verification/unit/tb_v3_compact_ingress616.v"
     ],
     "tb_v3_audio_depth616": [
-      "safevision/verification/unit/tb_v3_compact_ingress616.sv"
+      "safevision/verification/unit/tb_v3_compact_ingress616.v"
     ]
   },
   "assets": [],

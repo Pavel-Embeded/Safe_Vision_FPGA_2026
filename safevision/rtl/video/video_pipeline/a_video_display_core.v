@@ -106,6 +106,6 @@ module a_video_display_core #(
       .line_start_out(line_start),.frame_start_out(frame_start),.active_frame_start_out(active_frame_start),
       .hblank_out(hblank),.vblank_out(vblank),.selected_layer(selected_layer));
     // synthesis translate_off
-    initial if(HD!=0&&HD!=1)$fatal(1,"a_video_display_core HD must be 0 or 1");
+    initial if(HD!=0&&HD!=1)begin $display("[FAIL] a_video_display_core HD must be 0 or 1"); $finish; end 
     // synthesis translate_on
 endmodule

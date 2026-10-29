@@ -20,12 +20,12 @@ module v3_pcm_ingress_shared_fifo(
    default:begin selected=0;selected_data=wr_data[31:0];end
   endcase
  end
- wire[15:0] fifo_wdata=(write_part==0)?selected_data[15:0]:(write_part==1)?selected_data[31:16]:{14'd0,selected};
+ wire[15:0] fifo_wdata=(write_part==0) ? selected_data[15:0]:(write_part==1) ? selected_data[31:16]:{14'd0,selected};
  wire fifo_wr_ready,fifo_rd_valid;wire[15:0] fifo_data;wire[9:0] words;
  wire[10:0] rounded_words={1'b0,words}+11'd2;
  wire fifo_wr_valid=wr_rst_n&&(|wr_valid);
  wire fifo_rd_ready=rd_rst_n&&((read_part!=2)||rd_ready[fifo_data[1:0]]);
- assign wr_ready=(wr_rst_n&&write_part==2&&fifo_wr_ready)?wr_valid:4'd0;
+ assign wr_ready=(wr_rst_n&&write_part==2&&fifo_wr_ready) ? wr_valid:4'd0;
 
 
  (* dsp_style="yes" *) wire[20:0] pair_credit_product=words*10'd683+21'd1366;
@@ -34,7 +34,7 @@ module v3_pcm_ingress_shared_fifo(
  assign wr_partial=(write_part!=0);
  assign sector_room=wr_rst_n&&write_part==0&&words<=11'd632;
  assign rd_data={4{low_words}};
- assign rd_valid=(rd_rst_n&&read_part==2&&fifo_rd_valid)?(4'b1<<fifo_data[1:0]):4'd0;
+ assign rd_valid=(rd_rst_n&&read_part==2&&fifo_rd_valid) ? (4'b1<<fifo_data[1:0]):4'd0;
  sv_async_fifo #(.WIDTH(16),.AW(10)) q(.rst(rst),.wr_clk(wr_clk),.wr_data(fifo_wdata),
  .wr_valid(fifo_wr_valid),.wr_ready(fifo_wr_ready),.wr_level(words),.rd_clk(rd_clk),
  .rd_data(fifo_data),.rd_valid(fifo_rd_valid),.rd_ready(fifo_rd_ready),.rd_level());
@@ -53,11 +53,11 @@ module v3_pcm_ingress_shared_fifo(
  // synthesis translate_off
  reg[131:0] held_input;
  always @(posedge wr_clk)if(wr_rst_n)begin
-  if(wr_valid!=0&&(wr_valid&(wr_valid-1'b1))!=0)$fatal(1,"tagged ingress requires one active source");
-  if(write_part!=0&&{wr_valid,wr_data}!==held_input)$fatal(1,"tagged ingress source changed before third-word acceptance");
+  if(wr_valid!=0&&(wr_valid&(wr_valid-1'b1))!=0)begin $display("[FAIL] tagged ingress requires one active source"); $finish; end 
+  if(write_part!=0&&{wr_valid,wr_data}!==held_input)begin $display("[FAIL] tagged ingress source changed before third-word acceptance"); $finish; end 
   held_input<={wr_valid,wr_data};
  end
  always @(posedge rd_clk)if(rd_rst_n&&read_part==2&&fifo_rd_valid&&fifo_data[15:2]!=0)
-  $fatal(1,"tagged ingress invalid slot padding");
+  begin $display("[FAIL] tagged ingress invalid slot padding"); $finish; end 
  // synthesis translate_on
 endmodule

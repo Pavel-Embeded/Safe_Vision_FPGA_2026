@@ -121,6 +121,6 @@ module video_read_dma_checked #(
     // synthesis translate_off
     initial if(BURST_WORDS<2||(BURST_WORDS&(BURST_WORDS-1))!=0||
                FRAME_WORDS%BURST_WORDS!=0||PIX_DEPTH<=RESERVE||LOW_WATER<1)
-        $fatal(1,"checked DMA requires power-of-two blocks and a complete frame");
+        begin $display("[FAIL] checked DMA requires power-of-two blocks and a complete frame"); $finish; end 
     // synthesis translate_on
 endmodule

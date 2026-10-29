@@ -16,6 +16,6 @@ module a_counter #(
     end
     // synthesis translate_off
     initial if (WIDTH < 1 || WIDTH > 30 || MODULO < 1 || MODULO > (2**WIDTH))
-        $fatal(1,"a_counter invalid parameters");
+        begin $display("[FAIL] a_counter invalid parameters"); $finish; end 
     // synthesis translate_on
 endmodule

@@ -20,5 +20,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -B safevision/tools/check_source_tree.py
+      - run: python -B -m unittest discover -s safevision/verification/python -v
       - run: sudo apt-get update && sudo apt-get install -y iverilog
+      - run: python -B safevision/tools/check_verilog.py --compile --elaborate --run-dir "$RUNNER_TEMP/verilog-2005"
       - run: python -B safevision/tools/check_source_tree.py --simulate --engine iverilog --suite ticker261028 --suite spectrum539 --top tb_v3_ticker_clip --top tb_v3_spectrum539 --output "$RUNNER_TEMP/simulation"

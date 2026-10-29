@@ -8,7 +8,7 @@
   ],
   "test_sources": {
     "tb_v3_directory_lba70": [
-      "safevision/verification/unit/tb_v3_directory_lba70.sv"
+      "safevision/verification/unit/tb_v3_directory_lba70.v"
     ]
   }
 }

@@ -1,7 +1,7 @@
 {
   "sources": [
     "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
-    "safevision/verification/models/v3_file_streamer_compact_reference.sv"
+    "safevision/verification/models/v3_file_streamer_compact_reference.v"
   ],
   "tops": [
     "tb_v3_file_lba_equivalence"

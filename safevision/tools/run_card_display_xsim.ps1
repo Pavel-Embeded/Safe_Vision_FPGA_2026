@@ -22,30 +22,30 @@ try{
   $env:TMP=Join-Path $run 'tmp';$env:TEMP=$env:TMP
   if($c -eq 'reservation'){
    $rtl=@('rtl/memory/memory_arbiter.v')
-   $top='tb_video_bus_reservation';$sim=@("verification/unit/$top.sv")
+   $top='tb_video_bus_reservation';$sim=@("verification/unit/$top.v")
   }elseif($c -eq 'integrity'){
    $rtl=@('rtl/memory/frame_integrity_guard.v','rtl/memory/video_read_dma_checked.v')
-   $top='tb_frame_integrity';$sim=@("verification/unit/$top.sv")
+   $top='tb_frame_integrity';$sim=@("verification/unit/$top.v")
   }elseif($c -eq 'dma'){
    $rtl=@('rtl/memory/video_read_dma.v','rtl/memory/memory_arbiter.v')
-   $top='tb_video_read_dma_integration';$sim=@("verification/unit/$top.sv")
+   $top='tb_video_read_dma_integration';$sim=@("verification/unit/$top.v")
   }elseif($c -in @('idle','bridge')){
    $rtl=@('rtl/video/hdmi_output/hdmi_video_bridge.v')
    $top=if($c -eq 'idle'){'tb_hdmi_video_bridge_idle'}else{'tb_hdmi_video_bridge'}
-   $sim=@("verification/unit/$top.sv")
+   $sim=@("verification/unit/$top.v")
   }elseif($c -in @('adapter','timeout')){
    $rtl=@('platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v')
    $top=if($c -eq 'timeout'){'tb_sdram_response_timeout'}else{'tb_sdram_app_adapter_streaming'}
-   $sim=@("verification/unit/$top.sv")
+   $sim=@("verification/unit/$top.v")
   }elseif($c -in @('writer','crc')){
    $rtl=@('rtl/common/crc16_ccitt.v','rtl/memory/frame_address_gen.v','rtl/memory/frame_writer.v')
    $top=if($c -eq 'crc'){'tb_frame_writer_crc_feedback'}else{'tb_frame_writer_full_flag_equivalence'}
-   $sim=@("verification/unit/$top.sv")
+   $sim=@("verification/unit/$top.v")
   }elseif($c -in @('drain','player','slowinit')){
    $src=Get-Content -LiteralPath (Join-Path $sv 'tools/run_sd_bmp_player_sim.ps1') -Raw
    $rtl=@([regex]::Matches($src,"'((?:platform|rtl)/[^']+\.v)'")|ForEach-Object{$_.Groups[1].Value})
-   if($c -eq 'drain'){$sim=@('verification/unit/tb_bmp_frame_sink_drain.sv');$top='tb_bmp_frame_sink_drain'}
-   else{$top=if($c -eq 'slowinit'){'tb_sd_slow_initialization'}else{'tb_sd_bmp_player'};$sim=@('verification/models/sd_spi_card_model.sv',"verification/unit/$top.sv")}
+   if($c -eq 'drain'){$sim=@('verification/unit/tb_bmp_frame_sink_drain.v');$top='tb_bmp_frame_sink_drain'}
+   else{$top=if($c -eq 'slowinit'){'tb_sd_slow_initialization'}else{'tb_sd_bmp_player'};$sim=@('verification/models/sd_spi_card_model.v',"verification/unit/$top.v")}
   }else{
    $src=Get-Content -LiteralPath (Join-Path $sv 'tools/run_a_stage11_15_sim.ps1') -Raw
    $rtl=@([regex]::Matches($src,"'((?:platform|rtl)/[^']+\.v)'")|ForEach-Object{$_.Groups[1].Value})
@@ -57,9 +57,9 @@ try{
     'platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v',
     'platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v')
    $top=if($c -in @('card','init')){'tb_safevision_card_display'}elseif($c -eq 'memory'){'tb_safevision_memory_display'}elseif($c -eq 'safety'){'tb_safevision_fault_display'}elseif($c -eq 'edid'){'tb_safevision_hdmi_reset'}else{'tb_safevision_top'}
-   $memory=if($c -in @('card','init','safety','memory')){'verification/models/board_memory_contract_model.sv'}else{'verification/models/vendor_ip_stub.sv'}
-   $sim=@($memory,'verification/models/top_ip_stub.sv','verification/models/sd_spi_card_model.sv',"verification/unit/$top.sv")
-   if($c -eq 'init'){$sim+='verification/unit/tb_safevision_real_sd_init.sv'}
+   $memory=if($c -in @('card','init','safety','memory')){'verification/models/board_memory_contract_model.v'}else{'verification/models/vendor_ip_stub.v'}
+   $sim=@($memory,'verification/models/top_ip_stub.v','verification/models/sd_spi_card_model.v',"verification/unit/$top.v")
+   if($c -eq 'init'){$sim+='verification/unit/tb_safevision_real_sd_init.v'}
    Copy-Item -LiteralPath (Join-Path $sv 'assets/fonts/font8x16.mem') -Destination $run -Force
   }
   $rtl+=@('rtl/memory/frame_integrity_guard.v','rtl/memory/video_read_dma_checked.v')
@@ -73,7 +73,7 @@ try{
    & (Join-Path $XSimBin 'xvlog.bat') @defines -i (Join-Path $sv 'rtl/include') --log rtl.log --file 'rtl.prj' > rtl.console.log 2>&1
    if($LASTEXITCODE){throw "$c RTL compile failed: $run/rtl.log"}
    Write-XSimProject -Paths $sim -Path 'sim.prj'
-   & (Join-Path $XSimBin 'xvlog.bat') --sv @defines -i (Join-Path $sv 'rtl/include') --log tb.log --file 'sim.prj' > tb.console.log 2>&1
+   & (Join-Path $XSimBin 'xvlog.bat')  @defines -i (Join-Path $sv 'rtl/include') --log tb.log --file 'sim.prj' > tb.console.log 2>&1
    if($LASTEXITCODE){throw "$c TB compile failed: $run/tb.log"}
    $elab=@("work.$top",'-s','board_test','--timescale','1ns/1ps','--log','elab.log')
    if($c -eq 'init'){$elab+=@('work.tb_safevision_real_sd_init')}

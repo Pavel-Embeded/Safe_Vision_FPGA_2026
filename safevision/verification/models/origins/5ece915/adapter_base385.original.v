@@ -47,13 +47,13 @@ module sdram_app_adapter #(
     reg [31:0] rfbase,rexp;
 
 
-    function [4:0] read_size;input[31:0] base;begin
-      read_size=(&base[20:4])?(5'd16-{1'b0,base[3:0]}):5'd16;
-    end endfunction
-    function [4:0] read_span_size;input[31:0] base;reg[5:0] span;begin
+    function [4:0] read_size;input[31:0] base;begin begin
+      read_size=(&base[20:4]) ? (5'd16-{1'b0,base[3:0]}):5'd16;
+    end  end endfunction
+    function [4:0] read_span_size;input[31:0] base;reg[5:0] span;begin begin
       span={1'b0,read_size(base)}+{4'b0,base[1:0]};
-      read_span_size={span[4:2],2'b00}+(|span[1:0]?5'd4:5'd0);
-    end endfunction
+      read_span_size={span[4:2],2'b00}+(|span[1:0] ? 5'd4:5'd0);
+    end  end endfunction
     reg[1:0] read_lead;reg[4:0] read_words,read_physical_words;
     reg [5:0] rcnt;
     reg [4:0] rhead,rcmd_i,rcv_i;
@@ -77,14 +77,14 @@ module sdram_app_adapter #(
     wire need_flush=(wcnt!=0)&&((wcnt==WB)||(widle>=48)||
                     (req&&(!wr||(w_checked&&!w_contiguous))));
     assign init_done=Sdr_init_done&&!protocol_fault;
-    assign ready=rst_n&&Sdr_init_done&&!protocol_fault&&(wr?w_can:(FAST_READ?r_fast_can:r_go));
+    assign ready=rst_n&&Sdr_init_done&&!protocol_fault&&(wr ? w_can:(FAST_READ ? r_fast_can:r_go));
     assign write_idle=rst_n&&Sdr_init_done&&!protocol_fault&&idle_hw&&(wcnt==0)&&!App_wr_en;
 
 
-    wire read_pop=rst_n&&!protocol_fault&&(FAST_READ?r_fast_fire:(r_go&&req&&!wr));
+    wire read_pop=rst_n&&!protocol_fault&&(FAST_READ ? r_fast_fire:(r_go&&req&&!wr));
     wire read_fill=rst_n&&!protocol_fault&&(state==H_READ||state==H_WAIT)&&Sdr_rd_en&&(rcv_i>={3'b000,read_lead})&&(rcv_i<read_words+{3'b000,read_lead});
     wire[4:0] logical_rcv_index=rcv_i-{3'b000,read_lead};
-    wire[4:0] fill_address=PREFETCH_READ?{fill_bank,logical_rcv_index[3:0]}:logical_rcv_index;
+    wire[4:0] fill_address=PREFETCH_READ ? {fill_bank,logical_rcv_index[3:0]}:logical_rcv_index;
     //synthesis force_ram
     reg[31:0] rbuf[0:2*RB-1]; //synthesis ram_style = bram_9k
     reg[31:0] read_payload;
@@ -95,12 +95,12 @@ module sdram_app_adapter #(
     end
     always @(posedge clk or negedge rst_n)
       if(!rst_n)read_seen<=0;else if(read_pop)read_seen<=1;
-    assign rdata=read_seen?read_payload:32'd0;
+    assign rdata=read_seen ? read_payload:32'd0;
 
 
     wire preload_first=rst_n&&!protocol_fault&&idle_hw&&Sdr_init_done&&need_flush&&!w_accept;
     wire preload_next=rst_n&&!protocol_fault&&(state==H_WRITE);
-    wire[3:0] write_read_address=preload_first?4'd0:((wi[3:0]+4'd1)-{2'b00,write_lead});
+    wire[3:0] write_read_address=preload_first ? 4'd0:((wi[3:0]+4'd1)-{2'b00,write_lead});
 
 
     (* ram_style="bram_9k" *) reg[35:0] wbuf[0:WB-1];
@@ -111,7 +111,7 @@ module sdram_app_adapter #(
     end
     // synthesis translate_off
     always @(posedge clk)if(read_pop&&read_fill&&rhead==fill_address)
-      $fatal(1,"read-cache live-word collision");
+      begin $display("[FAIL] read-cache live-word collision"); $finish; end 
     // synthesis translate_on
 
     always @(posedge clk or negedge rst_n)begin
@@ -131,7 +131,7 @@ module sdram_app_adapter #(
         App_wr_en<=0;App_rd_en<=0;rdata_valid<=0;
 
 
-        App_wr_dm <= (read_quiet>=5'd6) ? 4'h0 : App_wr_dm;
+        App_wr_dm <= (read_quiet>=5'd6)  ?  4'h0 : App_wr_dm;
 
 
         if(App_rd_en||App_wr_en)read_quiet<=0;
@@ -178,7 +178,7 @@ module sdram_app_adapter #(
         case(state)
           H_IDLE:begin
             if(Sdr_init_done&&need_flush&&!w_accept)begin
-              wi<=0;write_lead<=wbase[1:0];physical_words<={write_span[4:2],2'b00}+(|write_span[1:0]?5'd4:5'd0);state<=H_WRITE;
+              wi<=0;write_lead<=wbase[1:0];physical_words<={write_span[4:2],2'b00}+(|write_span[1:0] ? 5'd4:5'd0);state<=H_WRITE;
             end else if(Sdr_init_done&&req&&!wr&&!r_hit&&(wcnt==0)&&!r_sv&&!r_go)begin
 
 
@@ -219,14 +219,14 @@ module sdram_app_adapter #(
         if((state==H_READ||state==H_WAIT)&&Sdr_rd_en)begin
           if(rcv_i==read_physical_words-1'b1)begin
             if(PREFETCH_READ&&contiguous_refill&&!(req&&wr))
-              rcnt<=rcnt+read_words-(r_fast_fire?1'b1:1'b0);
+              rcnt<=rcnt+read_words-(r_fast_fire ? 1'b1:1'b0);
             else begin
               rexp<=rfbase;rcnt<=read_words;
-              rhead<=PREFETCH_READ?{fill_bank,4'b0}:5'd0;
+              rhead<=PREFETCH_READ ? {fill_bank,4'b0}:5'd0;
             end
             prefetch_addr<=rfbase+read_words;next_fill_bank<=~fill_bank;
             rcv_i<=0;
-            gap<=PREFETCH_READ?(read_quiet>=16?5'd0:5'd16-read_quiet):5'd16;
+            gap<=PREFETCH_READ ? (read_quiet>=16 ? 5'd0:5'd16-read_quiet):5'd16;
             state<=H_RGAP;
           end else rcv_i<=rcv_i+1'b1;
         end
@@ -235,6 +235,6 @@ module sdram_app_adapter #(
 
 
     // synthesis translate_off
-    initial if(PREFETCH_READ&&!FAST_READ)$fatal(1,"read prefetch requires FAST_READ");
+    initial if(PREFETCH_READ&&!FAST_READ)begin $display("[FAIL] read prefetch requires FAST_READ"); $finish; end 
     // synthesis translate_on
 endmodule

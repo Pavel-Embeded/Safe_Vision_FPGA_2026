@@ -45,10 +45,10 @@
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
     "safevision/rtl/storage/sd_bmp_player.v",
-    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/verification/models/sd_spi_card_model.v",
     "safevision/rtl/memory/v3_row_integrity.v",
     "safevision/rtl/storage/sd_checked_sector_reader.v",
-    "safevision/verification/unit/tb_v3_resident.sv",
+    "safevision/verification/unit/tb_v3_resident.v",
     "safevision/rtl/media/v3_bmp_normalizer.v",
     "safevision/rtl/storage/v3_fat_name_store.v",
     "safevision/rtl/storage/v3_flexible_media_index.v"

@@ -58,37 +58,37 @@
   ],
   "test_sources": {
     "tb_v3_hd_audio_ring": [
-      "safevision/verification/unit/tb_v3_hd_audio_ring.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_ring.v"
     ],
     "tb_v3_hd_audio_wav": [
-      "safevision/verification/unit/tb_v3_hd_audio_wav.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_wav.v"
     ],
     "tb_v3_hd_audio_wav_errors": [
-      "safevision/verification/unit/tb_v3_hd_audio_wav_errors.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_wav_errors.v"
     ],
     "tb_v3_hd_audio_system": [
-      "safevision/verification/unit/tb_v3_hd_audio_system.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_system.v"
     ],
     "tb_v3_hd_audio_underflow": [
-      "safevision/verification/unit/tb_v3_hd_audio_underflow.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_underflow.v"
     ],
     "tb_v3_hd_audio_volume": [
-      "safevision/verification/unit/tb_v3_hd_audio_volume.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_volume.v"
     ],
     "tb_v3_hd_audio_context": [
-      "safevision/verification/unit/tb_v3_hd_audio_context.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_context.v"
     ],
     "tb_v3_hd_audio_context_loop": [
-      "safevision/verification/unit/tb_v3_hd_audio_context_loop.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_context_loop.v"
     ],
     "tb_v3_hd_audio_packet": [
-      "safevision/verification/unit/tb_v3_hd_audio_packet.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_packet.v"
     ],
     "tb_v3_hd_audio_ingress": [
-      "safevision/verification/unit/tb_v3_hd_audio_ingress.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_ingress.v"
     ],
     "tb_v3_hd_audio_sample_fifo": [
-      "safevision/verification/unit/tb_v3_hd_audio_sample_fifo.sv"
+      "safevision/verification/unit/tb_v3_hd_audio_sample_fifo.v"
     ]
   }
 }

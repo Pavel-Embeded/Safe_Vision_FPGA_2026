@@ -7,7 +7,7 @@
   ],
   "test_sources": {
     "tb_v3_prefetch_prefix_base382": [
-      "safevision/verification/unit/tb_v3_prefetch_prefix_base382.sv"
+      "safevision/verification/unit/tb_v3_prefetch_prefix_base382.v"
     ]
   }
 }

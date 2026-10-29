@@ -4,8 +4,8 @@
 module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_PROFILE=0)(
  input wire mem_clk,mem_rst_n,pixel_clk,pixel_rst_n,
  input wire write_clk,write_rst_n,prepare_valid,input wire[9:0] prepare_sy,
- input wire request_valid,output wire request_ready,input wire[(HANDBOOK_PROFILE?26:24)-1:0] request_data,
- output wire response_valid,input wire response_ready,output wire[(HANDBOOK_PROFILE?26:24)-1:0] response_data,
+ input wire request_valid,output wire request_ready,input wire[(HANDBOOK_PROFILE ? 26:24)-1:0] request_data,
+ output wire response_valid,input wire response_ready,output wire[(HANDBOOK_PROFILE ? 26:24)-1:0] response_data,
  input wire[9:0] sx,sy,input wire coord_valid,input wire[1:0] scale_select,
  input wire[1:0] current_slot,target_slot,input wire dual_needed,output wire primed,
  output wire[15:0] a00,a10,a01,a11,b00,b10,b01,b11,
@@ -16,12 +16,12 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
  output reg fault,output wire dma_busy,output wire dma_progress
 );
  `include "crc32_word.vh"
- localparam integer DESC_W=HANDBOOK_PROFILE?26:24;
+ localparam integer DESC_W=HANDBOOK_PROFILE ? 26:24;
  wire[DESC_W-1:0] cmd;wire cmd_valid;wire cmd_ready;
  function[1:0] row_bank;
   input[9:0] source_row;input[1:0] mode;
-  begin row_bank=!HANDBOOK_PROFILE||!mode[1]?source_row[1:0]:mode==2?source_row[2:1]:source_row[3:2];end
- endfunction
+  begin begin row_bank=!HANDBOOK_PROFILE||!mode[1] ? source_row[1:0]:mode==2 ? source_row[2:1]:source_row[3:2];end
+  end endfunction
  reg[DESC_W-1:0] reply;reg reply_pending;wire reply_ready;
  video_cdc_mailbox #(.WIDTH(DESC_W)) requests(
   .src_clk(pixel_clk),.src_rst_n(pixel_rst_n),.src_data(request_data),
@@ -37,7 +37,7 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
 
  reg[DESC_W-1:0] descriptor;
  wire[25:0] descriptor_extended=descriptor;wire[25:0] response_extended=response_data;
- wire[1:0] memory_scale=HANDBOOK_PROFILE?descriptor_extended[25:24]:0;reg[2:0] state;reg first_half_announced;
+ wire[1:0] memory_scale=HANDBOOK_PROFILE ? descriptor_extended[25:24]:0;reg[2:0] state;reg first_half_announced;
  localparam IDLE=0,SELECT=1,QUERY1=2,QUERY2=3,ISSUE=4,READ=5,RETIRE=6,REPLY=7;
  reg[2:0] item,bank;reg[1:0] slot;reg[9:0] row;
  reg[1:0] tag_slot[0:7];reg[9:0] tag_row[0:7];reg[7:0] tag_valid;
@@ -45,11 +45,11 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
 
 
  wire stream=descriptor[19]&&item[0];
- wire row_select=descriptor[19]?item[1]:item[0];
- wire[1:0] wanted_slot=stream?descriptor[21:20]:descriptor[23:22];
- wire[9:0] wanted_row=row_select?{1'b0,descriptor[8:0]}:descriptor[18:9];
+ wire row_select=descriptor[19] ? item[1]:item[0];
+ wire[1:0] wanted_slot=stream ? descriptor[21:20]:descriptor[23:22];
+ wire[9:0] wanted_row=row_select ? {1'b0,descriptor[8:0]}:descriptor[18:9];
  wire[2:0] wanted_bank={stream,row_bank(wanted_row,memory_scale)};
- wire[2:0] item_count=descriptor[19]?4:2;
+ wire[2:0] item_count=descriptor[19] ? 4:2;
  assign cmd_ready=state==IDLE && !reply_pending && !fault;
  assign rd_len=16'd64;
  assign dma_busy=state!=IDLE;
@@ -79,7 +79,7 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
     SELECT:if(item==item_count)state<=REPLY;
 
 
-     else if(item==(descriptor[19]?2:1)&&!first_half_announced)begin
+     else if(item==(descriptor[19] ? 2:1)&&!first_half_announced)begin
       if(!reply_pending)begin
        reply<={memory_scale,descriptor[23:19],1'b1,descriptor[17:9],descriptor[17:9]};
        reply_pending<=1;first_half_announced<=1;
@@ -125,12 +125,12 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
   end
  end
  reg[1:0] pixel_slot[0:7];reg[9:0] pixel_row[0:7];reg[7:0] pixel_valid;
- wire[9:0] next_row=HANDBOOK_PROFILE&&scale_select[1]?sy:sy==479?10'd479:sy+1'b1;
+ wire[9:0] next_row=HANDBOOK_PROFILE&&scale_select[1] ? sy:sy==479 ? 10'd479:sy+1'b1;
  wire[1:0] sb0=row_bank(sy,scale_select),sb1=row_bank(next_row,scale_select);
  wire[1:0] rb0=row_bank({1'b0,response_data[17:9]},response_extended[25:24]);
  wire[1:0] rb1=row_bank({1'b0,response_data[8:0]},response_extended[25:24]);
  reg[2:0] row0_bank,row1_bank;reg odd_column,edge_column;
- wire[8:0] even_address=(sx[0]&&sx<639)?{1'b0,sx[9:1]}+1'b1:{1'b0,sx[9:1]};
+ wire[8:0] even_address=(sx[0]&&sx<639) ? {1'b0,sx[9:1]}+1'b1:{1'b0,sx[9:1]};
  wire[8:0] odd_address={1'b0,sx[9:1]};
  wire[15:0] even_q[0:7],odd_q[0:7];
  reg[1:0] active_current,active_target;reg dual;
@@ -193,13 +193,13 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
   always @(posedge pixel_clk)begin eq<=even_pixels[even_address];oq<=odd_pixels[odd_address];end
   assign even_q[g]=eq;assign odd_q[g]=oq;
  end
- assign a00=odd_column?odd_q[row0_bank]:even_q[row0_bank];
- assign a10=odd_column?(edge_column?odd_q[row0_bank]:even_q[row0_bank]):odd_q[row0_bank];
- assign a01=odd_column?odd_q[row1_bank]:even_q[row1_bank];
- assign a11=odd_column?(edge_column?odd_q[row1_bank]:even_q[row1_bank]):odd_q[row1_bank];
- assign b00=odd_column?odd_q[row0_bank+4]:even_q[row0_bank+4];
- assign b10=odd_column?(edge_column?odd_q[row0_bank+4]:even_q[row0_bank+4]):odd_q[row0_bank+4];
- assign b01=odd_column?odd_q[row1_bank+4]:even_q[row1_bank+4];
- assign b11=odd_column?(edge_column?odd_q[row1_bank+4]:even_q[row1_bank+4]):odd_q[row1_bank+4];
+ assign a00=odd_column ? odd_q[row0_bank]:even_q[row0_bank];
+ assign a10=odd_column ? (edge_column ? odd_q[row0_bank]:even_q[row0_bank]):odd_q[row0_bank];
+ assign a01=odd_column ? odd_q[row1_bank]:even_q[row1_bank];
+ assign a11=odd_column ? (edge_column ? odd_q[row1_bank]:even_q[row1_bank]):odd_q[row1_bank];
+ assign b00=odd_column ? odd_q[row0_bank+4]:even_q[row0_bank+4];
+ assign b10=odd_column ? (edge_column ? odd_q[row0_bank+4]:even_q[row0_bank+4]):odd_q[row0_bank+4];
+ assign b01=odd_column ? odd_q[row1_bank+4]:even_q[row1_bank+4];
+ assign b11=odd_column ? (edge_column ? odd_q[row1_bank+4]:even_q[row1_bank+4]):odd_q[row1_bank+4];
  end endgenerate
 endmodule

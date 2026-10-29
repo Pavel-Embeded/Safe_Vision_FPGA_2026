@@ -54,7 +54,7 @@ module audio_priority_arbiter #(
 
     // synthesis translate_off
     initial if (FULL_SCALE != 256 || RAMP_N<1)
-        $fatal(1, "audio_priority_arbiter invalid FULL_SCALE (must be 256, RAMP_N >= 1)");
+        begin $display("[FAIL] audio_priority_arbiter invalid FULL_SCALE (must be 256, RAMP_N >= 1)"); $finish; end 
     // synthesis translate_on
 
 endmodule

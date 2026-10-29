@@ -22,12 +22,12 @@
     "safevision/rtl/storage/spi_master.v",
     "safevision/rtl/storage/sd_sector_reader.v",
     "safevision/rtl/storage/sd_checked_sector_reader.v",
-    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/verification/models/sd_spi_card_model.v",
     "safevision/rtl/storage/fat32_directory_scanner.v",
     "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
     "safevision/rtl/hd/v3_command_parser_catalog.v",
-    "safevision/verification/models/v3_uart_link_hd_reference353.sv",
-    "safevision/verification/models/v3_uart_miter_hd357.sv",
+    "safevision/verification/models/v3_uart_link_hd_reference353.v",
+    "safevision/verification/models/v3_uart_miter_hd357.v",
     "safevision/rtl/storage/v3_fat_name_store.v"
   ],
   "tops": [
@@ -41,7 +41,7 @@
   ],
   "test_sources": {
     "tb_v3_uart_rom_hd357": [
-      "safevision/verification/unit/tb_v3_uart_rom_hd357.sv"
+      "safevision/verification/unit/tb_v3_uart_rom_hd357.v"
     ]
   }
 }

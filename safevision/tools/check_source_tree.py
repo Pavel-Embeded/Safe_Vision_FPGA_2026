@@ -10,6 +10,8 @@ ROOT = Path(__file__).resolve().parents[2]
 SUITES = ('ticker261028', 'ticker_shared261028', 'ticker_board261028', 'flexible_fs550', 'flexible_retry_fs550', 'flexible_bmp542', 'flexible_bmp_bounds551', 'spectrum539')
 
 def check(root=ROOT):
+    from check_verilog import language
+    language(root)
     from v3_sources import sources, assets, native_rom_sidecars, check_gui, snapshot
     for mode in ('base', 'hd'):
         sources(root, mode)
@@ -71,10 +73,10 @@ def simulate(suites, output, engine, xsim_bin, tops=None):
                 generator = manifest.get('generators', {}).get(top)
                 if generator: subprocess.run([sys.executable, '-B', str(ROOT / generator), '--output', str(folder)], check=True)
                 for name in manifest.get('assets', []): shutil.copyfile(ROOT / name, folder / Path(name).name)
-                tests = manifest.get('test_sources', {}).get(top, ['safevision/verification/unit/' + top + '.sv'])
+                tests = manifest.get('test_sources', {}).get(top, ['safevision/verification/unit/' + top + '.v'])
                 if isinstance(tests, str): tests = [tests]
                 files = list(dict.fromkeys(manifest['sources'] + tests))
-                command = ['iverilog', '-g2012', '-I', str(ROOT / 'safevision/rtl/include'), '-s', top, '-o', 'sim.out']
+                command = ['iverilog', '-g2005', '-I', str(ROOT / 'safevision/rtl/include'), '-s', top, '-o', 'sim.out']
                 command += ['-D' + x for x in manifest.get('defines', ['SIM_FAST_TO'])]
                 command += [str(ROOT / x) for x in files]
                 subprocess.run(command, cwd=folder, check=True, timeout=300)

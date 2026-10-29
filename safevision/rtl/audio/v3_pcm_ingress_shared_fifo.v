@@ -53,11 +53,11 @@ module v3_pcm_ingress_shared_fifo #(parameter integer AW=10)(
  // synthesis translate_off
  reg[131:0] held_input;
  always @(posedge wr_clk)if(wr_rst_n)begin
-  if(wr_valid!=0&&(wr_valid&(wr_valid-1'b1))!=0)$fatal(1,"tagged ingress requires one active source");
-  if(write_part!=0&&{wr_valid,wr_data}!==held_input)$fatal(1,"tagged ingress source changed before third-word acceptance");
+  if(wr_valid!=0&&(wr_valid&(wr_valid-1'b1))!=0)begin $display("[FAIL] tagged ingress requires one active source"); $finish; end 
+  if(write_part!=0&&{wr_valid,wr_data}!==held_input)begin $display("[FAIL] tagged ingress source changed before third-word acceptance"); $finish; end 
   held_input<={wr_valid,wr_data};
  end
  always @(posedge rd_clk)if(rd_rst_n&&read_part==2&&fifo_rd_valid&&fifo_data[15:2]!=0)
-  $fatal(1,"tagged ingress invalid slot padding");
+  begin $display("[FAIL] tagged ingress invalid slot padding"); $finish; end 
  // synthesis translate_on
 endmodule

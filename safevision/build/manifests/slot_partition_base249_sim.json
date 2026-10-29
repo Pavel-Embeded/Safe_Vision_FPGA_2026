@@ -6,6 +6,6 @@
     "tb_v3_slot_partition_base249"
   ],
   "test_sources": {
-    "tb_v3_slot_partition_base249": "safevision/verification/unit/tb_v3_slot_partition249.sv"
+    "tb_v3_slot_partition_base249": "safevision/verification/unit/tb_v3_slot_partition249.v"
   }
 }

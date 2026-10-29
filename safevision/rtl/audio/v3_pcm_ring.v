@@ -100,8 +100,8 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800,DIRECT_POINTER_COMP
   end
  end
  // synthesis translate_off
- initial if(PTR_W<4||PTR_W>14||PREFETCH>=CAP)$fatal(1,"v3_pcm_ring invalid size");
+ initial if(PTR_W<4||PTR_W>14||PREFETCH>=CAP)begin $display("[FAIL] v3_pcm_ring invalid size"); $finish; end 
  always @(posedge clk)if(rst_n&&out_valid&&!out_ready&&state==2&&rvalid&&!seen_data)
-  $fatal(1,"v3_pcm_ring missing reserved output capacity");
+  begin $display("[FAIL] v3_pcm_ring missing reserved output capacity"); $finish; end 
  // synthesis translate_on
 endmodule

@@ -61,13 +61,13 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
 
     function [31:0] cluster_sectors;
       input [31:0] delta;input [7:0] spc;
-      begin case(spc)
+      begin begin case(spc)
        1:cluster_sectors=delta;2:cluster_sectors=delta<<1;4:cluster_sectors=delta<<2;
        8:cluster_sectors=delta<<3;16:cluster_sectors=delta<<4;32:cluster_sectors=delta<<5;
        64:cluster_sectors=delta<<6;128:cluster_sectors=delta<<7;
        default:cluster_sectors=0;
       endcase end
-    endfunction
+     end endfunction
 
 
     localparam [2:0] D_IDLE     = 3'd0,
@@ -91,8 +91,8 @@ module fat32_directory_scanner #(parameter integer SV_MEDIA_ONLY=0) (
     wire [87:0] media_name={16'h5356,
       4'h3,media_digits[15:12],4'h3,media_digits[11:8],
       4'h3,media_digits[7:4],4'h3,media_digits[3:0],16'h2020,
-      (media_bmp?24'h424d50:24'h574156)};
-    assign ent_name=SV_MEDIA_ONLY?media_name:full_name;
+      (media_bmp ? 24'h424d50:24'h574156)};
+    assign ent_name=SV_MEDIA_ONLY ? media_name:full_name;
     wire [87:0] name_raw=ent_name;
     wire [7:0] attr_raw=ent_attr;
     wire [15:0] fc_h=ent_first_clus[31:16];

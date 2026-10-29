@@ -2,7 +2,7 @@
   "defines": [],
   "sources": [
     "safevision/rtl/hd/sdram_app_adapter.v",
-    "safevision/verification/models/sdram_adapter_hd_reference385.sv"
+    "safevision/verification/models/sdram_adapter_hd_reference385.v"
   ],
   "tops": [
     "tb_v3_prefix_miter_hd_read64_385",
@@ -12,16 +12,16 @@
   ],
   "test_sources": {
     "tb_v3_prefix_miter_hd_read64_385": [
-      "safevision/verification/unit/tb_v3_prefix_miter_hd_read64_385.sv"
+      "safevision/verification/unit/tb_v3_prefix_miter_hd_read64_385.v"
     ],
     "tb_v3_prefix_miter_hd_read64_short_385": [
-      "safevision/verification/unit/tb_v3_prefix_miter_hd_read64_short_385.sv"
+      "safevision/verification/unit/tb_v3_prefix_miter_hd_read64_short_385.v"
     ],
     "tb_v3_prefix_miter_hd_read64_long_385": [
-      "safevision/verification/unit/tb_v3_prefix_miter_hd_read64_long_385.sv"
+      "safevision/verification/unit/tb_v3_prefix_miter_hd_read64_long_385.v"
     ],
     "tb_v3_prefix_miter_hd_read64_basic_385": [
-      "safevision/verification/unit/tb_v3_prefix_miter_hd_read64_basic_385.sv"
+      "safevision/verification/unit/tb_v3_prefix_miter_hd_read64_basic_385.v"
     ]
   },
   "assets": []

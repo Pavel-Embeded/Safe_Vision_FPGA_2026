@@ -9,7 +9,7 @@ def main():
  manifest=Path('safevision/build/manifests/v3_board_top_sim.json')
  j=json.loads((ROOT/manifest).read_text(encoding='utf-8-sig'))
  files=set(map(Path,j['sources']+j['assets']))
- files|={manifest,Path('safevision/tools/run_v3_sim.py'),Path('safevision/verification/unit/tb_v3_board_top.sv')}
+ files|={manifest,Path('safevision/tools/run_v3_sim.py'),Path('safevision/verification/unit/tb_v3_board_top.v')}
  files|={p.relative_to(ROOT) for p in (ROOT/'safevision/rtl/include').glob('*.vh')}
  before={p.as_posix():hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in sorted(files)}
  for rel in before:

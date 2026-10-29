@@ -14,7 +14,7 @@ def main():
  copies={
   'safevision/tools/run_v3_sim.py':root/'safevision/tools/run_v3_sim.py',
   'safevision/rtl/video/scaler/scaler_bilinear.v':experiment/('scaler_'+args.variant+'.v'),
-  'safevision/verification/unit/tb_v3_video_thirds.sv':experiment/'tb_v3_video_thirds.sv',
+  'safevision/verification/unit/tb_v3_video_thirds.v':experiment/'tb_v3_video_thirds.v',
   'safevision/build/manifests/video_v3_thirds_sim.json':experiment/'candidate_sim.json'}
  for name,original in copies.items():
   target=source/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(original,target)

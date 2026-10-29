@@ -299,6 +299,6 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
  end endgenerate
  // synthesis translate_off
  always @(posedge mem_clk)if(mem_rst_n&&state==READ&&rd_valid&&word_column==319)
-  if(expected_steps!=0)$fatal(1,"CRC inverse not ready before final row word");
+  if(expected_steps!=0)begin $display("[FAIL] CRC inverse not ready before final row word"); $finish; end 
  // synthesis translate_on
 endmodule

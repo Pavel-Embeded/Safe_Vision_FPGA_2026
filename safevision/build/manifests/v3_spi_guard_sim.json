@@ -9,7 +9,7 @@
     "safevision/rtl/storage/sd_sector_reader.v",
     "safevision/rtl/storage/sd_checked_sector_reader.v",
     "safevision/rtl/common/crc16_ccitt.v",
-    "safevision/verification/models/sd_spi_card_model.sv"
+    "safevision/verification/models/sd_spi_card_model.v"
   ],
   "tops": [
     "tb_v3_spi_cs_guard"

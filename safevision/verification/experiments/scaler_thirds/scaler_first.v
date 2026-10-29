@@ -8,13 +8,13 @@ module scaler_bilinear #(parameter RASTER_THIRDS=0)(input wire clk,rst_n,valid_i
   input[5:0] a,b;input[7:0] f;
   reg signed[6:0] delta;reg signed[15:0] product,numerator;
   reg[7:0] weighted;
-  begin
+  begin begin
    if(RASTER_THIRDS)begin
 
 
-    weighted=f==85?{1'b0,a,1'b0}+{2'b0,b}+8'd1:
+    weighted=f==85 ? {1'b0,a,1'b0}+{2'b0,b}+8'd1:
                            {2'b0,a}+{1'b0,b,1'b0}+8'd1;
-    lerp=f==0?a:weighted/8'd3;
+    lerp=f==0 ? a:weighted/8'd3;
    end else begin
     delta=$signed({1'b0,b})-$signed({1'b0,a});
     product=delta*$signed({1'b0,f});
@@ -22,7 +22,7 @@ module scaler_bilinear #(parameter RASTER_THIRDS=0)(input wire clk,rst_n,valid_i
     lerp=numerator[13:8];
    end
   end
- endfunction
+  end endfunction
  reg[15:0] top,bottom,vertical,n1,n2;reg[7:0] y1;reg m1,m2,v1,v2;
  wire[5:0] tr=lerp({1'b0,p00[15:11]},{1'b0,p10[15:11]},fx);
  wire[5:0] tg=lerp(p00[10:5],p10[10:5],fx);
@@ -40,7 +40,7 @@ module scaler_bilinear #(parameter RASTER_THIRDS=0)(input wire clk,rst_n,valid_i
    top<={tr[4:0],tg,tb[4:0]};bottom<={br[4:0],bg,bb[4:0]};
    y1<=fy;n1<=p00;m1<=bilinear;v1<=valid_in;
    vertical<={rr[4:0],rg,rb[4:0]};n2<=n1;m2<=m1;v2<=v1;
-   pixel<=m2?vertical:n2;valid_out<=v2;
+   pixel<=m2 ? vertical:n2;valid_out<=v2;
   end
  end
 endmodule

@@ -29,9 +29,9 @@ $rtl=@([regex]::Matches($sourceList,"'((?:platform|rtl)/[^']+\.v)'") | ForEach-O
 if($rtl.Count -lt 30){throw 'A+B canonical source list was not found'}
 $rtl+=Join-Path $RepoRoot 'safevision/rtl/top/safevision_core/safevision_core.v'
 $rtl+=Join-Path $RepoRoot 'safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v'
-$sv=@('models/vendor_ip_stub.sv','models/sd_spi_card_model.sv','models/ab_frame_sink.sv',
- 'unit/tb_card_to_screen.sv','unit/tb_card_to_display.sv',
- 'unit/tb_ab_frame_display.sv','unit/tb_safevision_core.sv') | ForEach-Object {
+$sv=@('models/vendor_ip_stub.v','models/sd_spi_card_model.v','models/ab_frame_sink.v',
+ 'unit/tb_card_to_screen.v','unit/tb_card_to_display.v',
+ 'unit/tb_ab_frame_display.v','unit/tb_safevision_core.v') | ForEach-Object {
  Join-Path $RepoRoot ('safevision/verification/'+$_)
 }
 foreach($f in @($rtl)+@($sv)){if(-not(Test-Path -LiteralPath $f)){throw "Missing source $f"}}
@@ -45,7 +45,7 @@ try{
  if($Tool -eq 'XSim'){
   & (Join-Path $XSimBin 'xvlog.bat') -d SIM_FAST_TO -i $inc @rtl --log rtl.log > rtl.console.log 2>&1
   if($LASTEXITCODE){throw 'A+B RTL compile failed'}
-  & (Join-Path $XSimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i $inc @sv --log tb.log > tb.console.log 2>&1
+  & (Join-Path $XSimBin 'xvlog.bat')  -d SIM_FAST_TO -i $inc @sv --log tb.log > tb.console.log 2>&1
   if($LASTEXITCODE){throw 'A+B verification compile failed'}
 
   $generic=@();if(-not $isCard){$generic=@('-generic_top',('"HD='+$HD+'"'),'-generic_top',('"SUBMIT_LEAD='+$SubmitLead+'"'))}
@@ -61,7 +61,7 @@ try{
   if($LASTEXITCODE){throw 'ModelSim library creation failed'}
   & (Join-Path $ModelSimBin 'vlog.exe') '+define+SIM_FAST_TO' "+incdir+$inc" @rtl > rtl.log 2>&1
   if($LASTEXITCODE){throw 'A+B RTL compile failed'}
-  & (Join-Path $ModelSimBin 'vlog.exe') -sv '+define+SIM_FAST_TO' "+incdir+$inc" @sv > tb.log 2>&1
+  & (Join-Path $ModelSimBin 'vlog.exe')  '+define+SIM_FAST_TO' "+incdir+$inc" @sv > tb.log 2>&1
   if($LASTEXITCODE){throw 'A+B verification compile failed'}
   $generic=@();if(-not $isCard){$generic=@("-gHD=$HD","-gSUBMIT_LEAD=$SubmitLead")}
   if($Top -eq 'tb_safevision_core'){$generic+=@('-gSWAPS='+$SwapCount)}

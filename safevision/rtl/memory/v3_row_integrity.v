@@ -48,7 +48,7 @@ module v3_row_integrity #(
     `SV_IMG2_BASE==32'h00140000&&`SV_IMG3_BASE==32'h001e0000)
   addr_slot=(|addr[31:21]) ? 2'd3 : addr[20:17]>=4'd15 ? 2'd3 :
    addr[20:17]>=4'd10 ? 2'd2 : addr[20:17]>=4'd5 ? 2'd1 : 2'd0;
- else addr_slot=addr>=`SV_IMG3_BASE?3:addr>=`SV_IMG2_BASE?2:addr>=`SV_IMG1_BASE?1:0;
+ else addr_slot=addr>=`SV_IMG3_BASE ? 3:addr>=`SV_IMG2_BASE ? 2:addr>=`SV_IMG1_BASE ? 1:0;
  end endfunction
 
 
@@ -182,11 +182,11 @@ module v3_row_integrity #(
  end
  // synthesis translate_off
  always @(posedge clk)if(rst_n)begin
-  if(source_beat && capture)$fatal(1,"guard phase contract violated");
-  if(source_first !== (source_words==0))$fatal(1,"unary source position invariant violated");
-  if(source_words>FRAME_WORDS)$fatal(1,"source counter exceeded frame bound");
+  if(source_beat && capture)begin $display("[FAIL] guard phase contract violated"); $finish; end 
+  if(source_first !== (source_words==0))begin $display("[FAIL] unary source position invariant violated"); $finish; end 
+  if(source_words>FRAME_WORDS)begin $display("[FAIL] source counter exceeded frame bound"); $finish; end 
  end
  initial if(ROW_WORDS%BURST || ROW_WORDS<64 || BURST!=64 || ROWS<1 || ROWS>480 || TIMEOUT<2)
- $fatal(1,"unsupported row signature geometry");
+ begin $display("[FAIL] unsupported row signature geometry"); $finish; end 
  // synthesis translate_on
 endmodule

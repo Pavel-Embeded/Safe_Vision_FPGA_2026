@@ -125,13 +125,13 @@ module sdram_app_adapter #(
     assign rdata=read_seen?read_payload:32'd0;
     // synthesis translate_off
     always @(posedge clk)begin
-      if(read_fill&&w_accept)$fatal(1,"shared payload write-port overlap");
-      if(read_pop&&(preload_first||preload_next))$fatal(1,"shared payload read-port overlap");
+      if(read_fill&&w_accept)begin $display("[FAIL] shared payload write-port overlap"); $finish; end 
+      if(read_pop&&(preload_first||preload_next))begin $display("[FAIL] shared payload read-port overlap"); $finish; end 
     end
     // synthesis translate_on
     // synthesis translate_off
     always @(posedge clk)if(read_pop&&read_fill&&rhead==fill_address)
-      $fatal(1,"read-cache live-word collision");
+      begin $display("[FAIL] read-cache live-word collision"); $finish; end 
     // synthesis translate_on
 
     always @(posedge clk or negedge rst_n)begin
@@ -255,6 +255,6 @@ module sdram_app_adapter #(
 
 
     // synthesis translate_off
-    initial if(PREFETCH_READ&&!FAST_READ)$fatal(1,"read prefetch requires FAST_READ");
+    initial if(PREFETCH_READ&&!FAST_READ)begin $display("[FAIL] read prefetch requires FAST_READ"); $finish; end 
     // synthesis translate_on
 endmodule

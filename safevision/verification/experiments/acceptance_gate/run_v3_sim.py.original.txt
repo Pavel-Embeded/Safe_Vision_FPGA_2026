@@ -35,7 +35,7 @@ def main():
         for name in manifest.get('assets',[]):
             import shutil
             shutil.copyfile(ROOT/name,folder/Path(name).name)
-        tests=manifest.get('test_sources',{}).get(top,['safevision/verification/unit/'+top+'.sv'])
+        tests=manifest.get('test_sources',{}).get(top,['safevision/verification/unit/'+top+'.v'])
         if isinstance(tests,str):tests=[tests]
         src=list(dict.fromkeys(manifest['sources']+tests))
         for f in src:
@@ -53,7 +53,7 @@ def main():
         start=time.monotonic();entry={'top':top,'status':'FAIL','source_overrides':sorted(overrides)}
         try:
             defines=sum((['-d',d] for d in manifest.get('defines',['SIM_FAST_TO'])),[])
-            run([str(tools['xvlog']),'--sv',*defines,'-i',str(ROOT/'safevision/rtl/include'),
+            run([str(tools['xvlog']),*defines,'-i',str(ROOT/'safevision/rtl/include'),
                  '--file','sources.prj','--log','compile.log'],folder,'compile.console.log',env)
             run([str(tools['xelab']),'work.'+top,'-s',top,'--mt','off','--timescale','1ns/1ps',
                  '--log','elab.log'],folder,'elab.console.log',env)

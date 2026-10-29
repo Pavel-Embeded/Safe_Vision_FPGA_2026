@@ -1,7 +1,7 @@
 {
   "sources": [
-    "safevision/verification/models/v3_led_publication_reference.sv",
-    "safevision/verification/models/v3_led_publication_candidate.sv"
+    "safevision/verification/models/v3_led_publication_reference.v",
+    "safevision/verification/models/v3_led_publication_candidate.v"
   ],
   "tops": [
     "tb_v3_led_publication",
@@ -9,10 +9,10 @@
   ],
   "test_sources": {
     "tb_v3_led_publication": [
-      "safevision/verification/unit/tb_v3_led_publication.sv"
+      "safevision/verification/unit/tb_v3_led_publication.v"
     ],
     "tb_v3_led_stopped_reset": [
-      "safevision/verification/unit/tb_v3_led_stopped_reset.sv"
+      "safevision/verification/unit/tb_v3_led_stopped_reset.v"
     ]
   },
   "generators": {

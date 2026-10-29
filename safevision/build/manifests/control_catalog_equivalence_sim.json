@@ -4,7 +4,7 @@
     "safevision/rtl/control/input_sync.v",
     "safevision/rtl/control/key_debounce.v",
     "safevision/rtl/control/v3_user_controls.v",
-    "safevision/verification/models/v3_user_controls_reference.sv"
+    "safevision/verification/models/v3_user_controls_reference.v"
   ],
   "tops": [
     "tb_v3_control_catalog_equivalence"

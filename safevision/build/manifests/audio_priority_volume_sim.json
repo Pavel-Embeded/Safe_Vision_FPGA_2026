@@ -44,16 +44,16 @@
   "generators": {},
   "test_sources": {
     "tb_v3_pv_base37": [
-      "safevision/verification/unit/tb_v3_audio_priority_volume.sv"
+      "safevision/verification/unit/tb_v3_audio_priority_volume.v"
     ],
     "tb_v3_pv_hd37": [
-      "safevision/verification/unit/tb_v3_audio_priority_volume.sv"
+      "safevision/verification/unit/tb_v3_audio_priority_volume.v"
     ],
     "tb_v3_pv_base73": [
-      "safevision/verification/unit/tb_v3_audio_priority_volume.sv"
+      "safevision/verification/unit/tb_v3_audio_priority_volume.v"
     ],
     "tb_v3_pv_hd73": [
-      "safevision/verification/unit/tb_v3_audio_priority_volume.sv"
+      "safevision/verification/unit/tb_v3_audio_priority_volume.v"
     ]
   },
   "timeouts": {

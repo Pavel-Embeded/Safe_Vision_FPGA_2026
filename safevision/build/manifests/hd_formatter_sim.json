@@ -6,14 +6,14 @@
     "safevision/rtl/control/v3_command_parser.v",
     "safevision/rtl/hd/v3_command_parser_catalog.v",
     "safevision/rtl/hd/v3_uart_link.v",
-    "safevision/verification/models/v3_uart_formatter_reference.sv"
+    "safevision/verification/models/v3_uart_formatter_reference.v"
   ],
   "tops": [
     "tb_v3_hd_uart_formatter_equivalence"
   ],
   "test_sources": {
     "tb_v3_hd_uart_formatter_equivalence": [
-      "safevision/verification/unit/tb_v3_hd_uart_formatter_equivalence.sv"
+      "safevision/verification/unit/tb_v3_hd_uart_formatter_equivalence.v"
     ]
   },
   "timeouts": {

@@ -44,7 +44,7 @@ try {
             if($LASTEXITCODE -ne 0){throw "$variant RTL compile failed"}
             $runTops=if($variant -eq 'corrected'){$tops}else{@($oldFailures.Keys | Sort-Object)}
             foreach($top in $runTops){
-                & (Join-Path $XSimBin 'xvlog.bat') --sv (Join-Path $RepoRoot "safevision/verification/unit/$top.sv") --log "${top}_tb.log" > "${top}_compile.console.log" 2>&1
+                & (Join-Path $XSimBin 'xvlog.bat')  (Join-Path $RepoRoot "safevision/verification/unit/$top.v") --log "${top}_tb.log" > "${top}_compile.console.log" 2>&1
                 if($LASTEXITCODE -ne 0){throw "$top TB compile failed"}
                 & (Join-Path $XSimBin 'xelab.bat') "work.$top" -s $top --timescale '1ns/1ps' --log "${top}_elab.log" > "${top}_elab.console.log" 2>&1
                 if($LASTEXITCODE -ne 0){throw "$top elaboration failed"}

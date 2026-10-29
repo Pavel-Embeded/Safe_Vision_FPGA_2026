@@ -44,7 +44,7 @@
   },
   "test_sources": {
     "tb_v3_ingress_credit": [
-      "safevision/verification/unit/tb_v3_ingress_credit.sv"
+      "safevision/verification/unit/tb_v3_ingress_credit.v"
     ]
   }
 }

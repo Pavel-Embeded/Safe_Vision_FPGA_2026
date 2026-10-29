@@ -13,7 +13,7 @@
   },
   "assets": [],
   "test_sources": {
-    "tb_v3_cache_pipe805": "safevision/verification/unit/tb_v3_cache_pipe805.sv"
+    "tb_v3_cache_pipe805": "safevision/verification/unit/tb_v3_cache_pipe805.v"
   },
   "generators": {}
 }

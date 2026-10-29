@@ -2,7 +2,7 @@
 
 
 module v3_status_layers #(
- parameter integer HD=0,PIXEL_HZ=HD?74250000:25175000,PIPE_LATENCY=21,
+ parameter integer HD=0,PIXEL_HZ=HD ? 74250000:25175000,PIPE_LATENCY=21,
  parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
  parameter COMPACT_FONT_FILE="../../assets/fonts/font8x16_compact.mem",
  parameter TEXT_FILE="../../assets/fonts/v3_status_text.mem"
@@ -15,27 +15,27 @@ module v3_status_layers #(
  output wire[15:0] osd_rgb565,emergency_rgb565,hud_rgb565,safe_rgb565,
  output wire[7:0] osd_alpha,emergency_alpha,hud_alpha
 );
- localparam integer WIDTH=HD?1280:640,HEIGHT=HD?720:480;
+ localparam integer WIDTH=HD ? 1280:640,HEIGHT=HD ? 720:480;
  reg[31:0] second_count;reg[7:0] frame_count,fps;
  reg[5:0] blink_count;reg blink;
  always @(posedge pixel_clk or negedge pixel_rst_n)begin
   if(!pixel_rst_n)begin second_count<=0;frame_count<=0;fps<=0;blink_count<=0;blink<=1;end
   else begin
-   if(second_count==PIXEL_HZ-1)begin second_count<=0;fps<=frame_count+(frame_start?1'b1:1'b0);frame_count<=0;end
+   if(second_count==PIXEL_HZ-1)begin second_count<=0;fps<=frame_count+(frame_start ? 1'b1:1'b0);frame_count<=0;end
    else begin second_count<=second_count+1'b1;if(frame_start&&frame_count!=255)frame_count<=frame_count+1'b1;end
    if(frame_start)begin if(blink_count==29)begin blink_count<=0;blink<=~blink;end else blink_count<=blink_count+1'b1;end
   end
  end
- function[7:0] hexchar;input[3:0] n;begin hexchar=n<10?8'd48+n:8'd55+n;end endfunction
+ function[7:0] hexchar;input[3:0] n;begin begin hexchar=n<10 ? 8'd48+n:8'd55+n;end  end endfunction
 
 
  reg[2:0] decimal_select;reg[9:0] decimal_digits[0:5];reg[8:0] decimal_value;
  wire signed[8:0] brightness=cfg_data[95:87];
- wire[8:0] magnitude=brightness[8]?-brightness:brightness;
+ wire[8:0] magnitude=brightness[8] ? -brightness:brightness;
  reg[8:0] decimal_binary;reg[11:0] decimal_work;reg[3:0] decimal_left;
- wire[3:0] dh=decimal_work[11:8]>=5?decimal_work[11:8]+4'd3:decimal_work[11:8];
- wire[3:0] dt=decimal_work[7:4]>=5?decimal_work[7:4]+4'd3:decimal_work[7:4];
- wire[3:0] do_=decimal_work[3:0]>=5?decimal_work[3:0]+4'd3:decimal_work[3:0];
+ wire[3:0] dh=decimal_work[11:8]>=5 ? decimal_work[11:8]+4'd3:decimal_work[11:8];
+ wire[3:0] dt=decimal_work[7:4]>=5 ? decimal_work[7:4]+4'd3:decimal_work[7:4];
+ wire[3:0] do_=decimal_work[3:0]>=5 ? decimal_work[3:0]+4'd3:decimal_work[3:0];
  wire[11:0] decimal_next={dh[2:0],dt,do_,decimal_binary[8]};
  always @*begin
   case(decimal_select)0:decimal_value={1'b0,generation};1:decimal_value={1'b0,fps};
@@ -54,9 +54,9 @@ module v3_status_layers #(
   end
  end
  function[7:0] decimal_char;input[9:0] bcd;input[1:0] place;
-  begin case(place)2:decimal_char=8'd48+{2'd0,bcd[9:8]};1:decimal_char=8'd48+bcd[7:4];default:decimal_char=8'd48+bcd[3:0];endcase end
- endfunction
- wire[6:0] energy=cfg_data[54:48]>100?7'd100:cfg_data[54:48];
+  begin begin case(place)2:decimal_char=8'd48+{2'd0,bcd[9:8]};1:decimal_char=8'd48+bcd[7:4];default:decimal_char=8'd48+bcd[3:0];endcase end
+  end endfunction
+ wire[6:0] energy=cfg_data[54:48]>100 ? 7'd100:cfg_data[54:48];
 
  wire[7:0] index=raw_x[10:3]-8'd1;
  reg[11:0] origin_y;reg[5:0] length;reg[1:0] category;reg[3:0] line_id,menu_row;
@@ -68,7 +68,7 @@ module v3_status_layers #(
   else if(raw_y>=40&&raw_y<56)begin origin_y=40;length=42;enabled=1;line_id=2;end
   else if(cfg_data[55]&&raw_y>=80&&raw_y<256)begin
    category=0;enabled=1;
-   menu_row=raw_y>=240?8:raw_y>=220?7:raw_y>=200?6:raw_y>=180?5:raw_y>=160?4:raw_y>=140?3:raw_y>=120?2:raw_y>=100?1:0;
+   menu_row=raw_y>=240 ? 8:raw_y>=220 ? 7:raw_y>=200 ? 6:raw_y>=180 ? 5:raw_y>=160 ? 4:raw_y>=140 ? 3:raw_y>=120 ? 2:raw_y>=100 ? 1:0;
    origin_y=80+menu_row*20;line_id=3+menu_row;length=35;
    if(raw_y>=origin_y+16)enabled=0;
   end else if(raw_y>=HEIGHT-64&&raw_y<HEIGHT-48&&cfg_data[47:40]!=0)begin
@@ -81,7 +81,7 @@ module v3_status_layers #(
   override_valid=0;override_code=0;
   case(line_id)
    0:begin
-    if(HD&&index>=11&&index<=14)begin override_valid=1;override_code=index==11?"H":index==12?"D":" ";end
+    if(HD&&index>=11&&index<=14)begin override_valid=1;override_code=index==11 ? "H":index==12 ? "D":" ";end
     if(index==21)begin override_valid=1;override_code=49+active_slot;end
     if(index>=27&&index<=29)begin override_valid=1;override_code=decimal_char(decimal_digits[0],29-index);end
     if(index==35||index==36)begin override_valid=1;override_code=decimal_char(decimal_digits[1],36-index);end
@@ -94,28 +94,28 @@ module v3_status_layers #(
      if(safety_active)case(index)23:override_code="S";24:override_code="A";25:override_code="F";default:override_code="E";endcase
      else case(index)23:override_code="W";24:override_code="A";25:override_code="I";default:override_code="T";endcase
     end
-    if(index==32||index==33)begin override_valid=1;override_code=index==32?48+(PIPE_LATENCY/10)%10:48+PIPE_LATENCY%10;end
+    if(index==32||index==33)begin override_valid=1;override_code=index==32 ? 48+(PIPE_LATENCY/10)%10:48+PIPE_LATENCY%10;end
    end
    2:begin
     if(index>=9&&index<=16)begin override_valid=1;override_code=hexchar(underflows[(16-index)*4+:4]);end
     if(index>=27&&index<=34)begin override_valid=1;override_code=hexchar(cfg_data[8+(34-index)*4+:4]);end
-    if(index==40||index==41)begin override_valid=1;override_code=hexchar(index==40?cfg_data[47:44]:cfg_data[43:40]);end
+    if(index==40||index==41)begin override_valid=1;override_code=hexchar(index==40 ? cfg_data[47:44]:cfg_data[43:40]);end
    end
    4:begin
-    if(index==12)begin override_valid=1;override_code=brightness[8]?"-":"+";end
+    if(index==12)begin override_valid=1;override_code=brightness[8] ? "-":"+";end
     if(index>=13&&index<=15)begin override_valid=1;override_code=decimal_char(decimal_digits[2],15-index);end
    end
    5:if(index>=12&&index<=14)begin override_valid=1;override_code=decimal_char(decimal_digits[3],14-index);end
    6:if(cfg_data[70]&&index>=12&&index<=19)begin override_valid=1;
     case(index)12:override_code="B";13:override_code="I";14:override_code="L";15:override_code="I";16:override_code="N";17:override_code="E";18:override_code="A";default:override_code="R";endcase end
-   7:if(!cfg_data[69]&&index>=12&&index<=14)begin override_valid=1;override_code=index==13?":":"1";end
-   8:if(!cfg_data[68]&&index>=12&&index<=14)begin override_valid=1;override_code=index==12?"O":"F";end
+   7:if(!cfg_data[69]&&index>=12&&index<=14)begin override_valid=1;override_code=index==13 ? ":":"1";end
+   8:if(!cfg_data[68]&&index>=12&&index<=14)begin override_valid=1;override_code=index==12 ? "O":"F";end
    9:if(index>=12&&index<=14)begin override_valid=1;override_code=decimal_char(decimal_digits[4],14-index);end
    10:if(index==12||index==13)begin override_valid=1;
-    case(cfg_data[60:59])0:override_code=index==12?"0":"2";1:override_code=index==12?"0":"5";
-     2:override_code=index==12?"1":"0";default:override_code=index==12?"3":"0";endcase end
+    case(cfg_data[60:59])0:override_code=index==12 ? "0":"2";1:override_code=index==12 ? "0":"5";
+     2:override_code=index==12 ? "1":"0";default:override_code=index==12 ? "3":"0";endcase end
    11:if(index>=12&&index<=14)begin override_valid=1;override_code=decimal_char(decimal_digits[5],14-index);end
-   12:if(index==13||index==14)begin override_valid=1;override_code=hexchar(index==13?cfg_data[47:44]:cfg_data[43:40]);end
+   12:if(index==13||index==14)begin override_valid=1;override_code=hexchar(index==13 ? cfg_data[47:44]:cfg_data[43:40]);end
   endcase
  end
  wire[3:0] normal_glyph_row=raw_y[3:0]-origin_y[3:0];
@@ -145,7 +145,7 @@ module v3_status_layers #(
  reg normal_v1,normal_v2,normal_v3,safe_v1,safe_v2,safe_v3;
  reg[9:0] normal_addr2,safe_addr2;reg[7:0] normal_bits3,safe_bits3;
  reg font_dot,safe_dot;
- wire[7:0] normal_effective=override_v1?override1:normal_code1;
+ wire[7:0] normal_effective=override_v1 ? override1:normal_code1;
  wire[3:0] nr=normal_row1-1'b1,sr=safe_row1-1'b1;
  wire[5:0] safe_text_column=safe_text_offset+safe_index;
 
@@ -189,21 +189,21 @@ module v3_status_layers #(
    panel_pipe<={panel_pipe[2:0],menu_panel};select_pipe<={select_pipe[2:0],selected};border_pipe<={border_pipe[2:0],warning_border};
    de_pipe<={de_pipe[2:0],raw_de};bar_edge_pipe<={bar_edge_pipe[2:0],bar_edge};bar_fill_pipe<={bar_fill_pipe[2:0],bar_fill};end
  end
- assign osd_rgb565=font_dot&&cat[3]==0?16'hffff:select_pipe[3]?16'h05bf:16'h1086;
- assign osd_alpha=de_pipe[3]&&((font_dot&&cat[3]==0)||panel_pipe[3])?oa[3]:0;
+ assign osd_rgb565=font_dot&&cat[3]==0 ? 16'hffff:select_pipe[3] ? 16'h05bf:16'h1086;
+ assign osd_alpha=de_pipe[3]&&((font_dot&&cat[3]==0)||panel_pipe[3]) ? oa[3]:0;
  assign emergency_rgb565=16'hf800;
- assign emergency_alpha=de_pipe[3]&&(border_pipe[3]||(font_dot&&cat[3]==1))?8'd224:0;
- assign hud_rgb565=font_dot&&cat[3]==2?16'hffff:bar_fill_pipe[3]?16'h07e0:16'h7bef;
- assign hud_alpha=de_pipe[3]&&((font_dot&&cat[3]==2)||bar_fill_pipe[3]||bar_edge_pipe[3])?8'd224:0;
- wire[12:0] dy=raw_y>=HEIGHT/2?raw_y-HEIGHT/2:HEIGHT/2-raw_y;
+ assign emergency_alpha=de_pipe[3]&&(border_pipe[3]||(font_dot&&cat[3]==1)) ? 8'd224:0;
+ assign hud_rgb565=font_dot&&cat[3]==2 ? 16'hffff:bar_fill_pipe[3] ? 16'h07e0:16'h7bef;
+ assign hud_alpha=de_pipe[3]&&((font_dot&&cat[3]==2)||bar_fill_pipe[3]||bar_edge_pipe[3]) ? 8'd224:0;
+ wire[12:0] dy=raw_y>=HEIGHT/2 ? raw_y-HEIGHT/2:HEIGHT/2-raw_y;
  wire arrow=(raw_x>=WIDTH/2-96&&raw_x<WIDTH/2-32&&dy<=(raw_x-(WIDTH/2-96))/2)||
   (raw_x>=WIDTH/2-32&&raw_x<WIDTH/2+96&&dy<=12);
  wire safe_border=raw_x<4||raw_x>=WIDTH-4||raw_y<4||raw_y>=HEIGHT-4;
  reg[15:0] safe_geometry[0:3];
  always @(posedge pixel_clk or negedge pixel_rst_n)begin
   if(!pixel_rst_n)for(j=0;j<4;j=j+1)safe_geometry[j]<=0;
-  else begin safe_geometry[0]<=safe_border?(blink?16'hf800:16'h7800):arrow&&blink?16'h07e0:16'h1800;
+  else begin safe_geometry[0]<=safe_border ? (blink ? 16'hf800:16'h7800):arrow&&blink ? 16'h07e0:16'h1800;
    for(j=1;j<4;j=j+1)safe_geometry[j]<=safe_geometry[j-1];end
  end
- assign safe_rgb565=de_pipe[3]?(safe_dot?16'h07e0:safe_geometry[3]):16'd0;
+ assign safe_rgb565=de_pipe[3] ? (safe_dot ? 16'h07e0:safe_geometry[3]):16'd0;
 endmodule

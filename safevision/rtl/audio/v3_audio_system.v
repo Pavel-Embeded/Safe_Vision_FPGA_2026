@@ -181,8 +181,8 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  // synthesis translate_off
  integer bounded_track;
  always @(posedge mem_clk)if(mem_rst_n)for(bounded_track=0;bounded_track<4;bounded_track=bounded_track+1)
-  if(ring.count[bounded_track]>PREFETCH+640)$fatal(1,"tagged ingress prefill bound violated track=%0d count=%0d",bounded_track,ring.count[bounded_track]);
- initial if(SAMPLE_DIV<2||SAMPLE_DIV>65536)$fatal(1,"invalid audio divider");
+  if(ring.count[bounded_track]>PREFETCH+640)begin $display("[FAIL] tagged ingress prefill bound violated track=%0d count=%0d",bounded_track,ring.count[bounded_track]); $finish; end 
+ initial if(SAMPLE_DIV<2||SAMPLE_DIV>65536)begin $display("[FAIL] invalid audio divider"); $finish; end 
  // synthesis translate_on
 endmodule
 

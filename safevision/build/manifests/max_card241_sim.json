@@ -45,7 +45,7 @@
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
     "safevision/rtl/storage/sd_bmp_player.v",
-    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/verification/models/sd_spi_card_model.v",
     "safevision/rtl/memory/v3_row_integrity.v",
     "safevision/rtl/storage/sd_checked_sector_reader.v",
     "safevision/rtl/media/v3_bmp_normalizer.v",
@@ -63,7 +63,7 @@
   },
   "wall_timeout_note": "Real SPI maximum-size card; bounded9-second simulated loader watchdog and20ms no-progress deadline; all complete-raster/CRC assertions retained.",
   "test_sources": {
-    "tb_v3_max_card241": "safevision/verification/unit/tb_v3_max_card241.sv"
+    "tb_v3_max_card241": "safevision/verification/unit/tb_v3_max_card241.v"
   },
   "verification_profile_correction": "225 incorrectly inherited the legacy default500000-cycle pixel-gap timeout.241 uses production top25000000 cycles; same1920x1080 image, FAT chains, SPI,20ms REF no-progress guard, full-frame CRC/readback and independent raster assertions."
 }

@@ -37,7 +37,7 @@ def main():
     (folder / 'sources.sha256.json').write_text(json.dumps(before, indent=2))
     (folder / 'sources.prj').write_text('\n'.join('"' + p.as_posix() + '"' for p in paths))
     commands = [
-        ('xvlog', ['--sv', '-d', 'SIM_FAST_TO', '-i', str(root / 'safevision/rtl/include'),
+        ('xvlog', [ '-d', 'SIM_FAST_TO', '-i', str(root / 'safevision/rtl/include'),
                    '--file', 'sources.prj', '--log', 'compile.log']),
         ('xelab', ['work.' + top, '-s', top, '--mt', 'off', '--timescale', '1ns/1ps', '--log', 'elab.log']),
         ('xsim', [top, '-runall', '--log', 'sim.log']),

@@ -1,7 +1,7 @@
 {
   "sources": [
     "safevision/rtl/audio/v3_pcm_ring.v",
-    "safevision/verification/models/v3_pcm_ring_frozen_pointer.sv"
+    "safevision/verification/models/v3_pcm_ring_frozen_pointer.v"
   ],
   "tops": [
     "tb_v3_ring_pointer_compare"

@@ -48,7 +48,7 @@ module file_index #(parameter integer CURSOR_MODE=0,CANDIDATE_SLOTS=4) (
 
     // synthesis translate_off
     initial if(CANDIDATE_SLOTS<1 || CANDIDATE_SLOTS>4)
-        $fatal(1,"invalid candidate capacity");
+        begin $display("[FAIL] invalid candidate capacity"); $finish; end 
     // synthesis translate_on
     localparam integer NSLOT = 4;
     localparam integer NWAV  = 8;

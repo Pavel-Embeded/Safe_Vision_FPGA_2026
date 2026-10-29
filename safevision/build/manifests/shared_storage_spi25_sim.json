@@ -22,7 +22,7 @@
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
     "safevision/rtl/storage/sd_bmp_player.v",
-    "safevision/verification/models/sd_spi_card_model.sv",
+    "safevision/verification/models/sd_spi_card_model.v",
     "safevision/rtl/memory/v3_row_integrity.v",
     "safevision/rtl/storage/v3_wav_source.v",
     "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",

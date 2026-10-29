@@ -23,7 +23,7 @@ try{
  $env:TEMP=Join-Path $RunDir 'tmp';$env:TMP=$env:TEMP
  & (Join-Path $XSimBin 'xvlog.bat') @sources --log rtl.log > rtl.console.log 2>&1
  if($LASTEXITCODE){throw 'Actual PHY compile failed'}
- & (Join-Path $XSimBin 'xvlog.bat') --sv (Join-Path $RepoRoot 'safevision/verification/unit/tb_hdmi_vendor_phy.sv') --log tb.log > tb.console.log 2>&1
+ & (Join-Path $XSimBin 'xvlog.bat')  (Join-Path $RepoRoot 'safevision/verification/unit/tb_hdmi_vendor_phy.v') --log tb.log > tb.console.log 2>&1
  if($LASTEXITCODE){throw 'PHY test compile failed'}
  & (Join-Path $XSimBin 'xelab.bat') work.tb_hdmi_vendor_phy work.glbl -s phy --timescale '1ns/1ps' --log elab.log > elab.console.log 2>&1
  if($LASTEXITCODE){throw 'PHY elaboration failed'}

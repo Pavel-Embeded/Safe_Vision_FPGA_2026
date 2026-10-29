@@ -15,7 +15,7 @@
     "safevision/rtl/video/v3_constant224_blend.v",
     "safevision/rtl/video/v3_hd_coord_arith.v",
     "safevision/rtl/video/v3_video_display_core.v",
-    "safevision/verification/unit/tb_v3_video_midfade.sv",
+    "safevision/verification/unit/tb_v3_video_midfade.v",
     "safevision/rtl/video/scaler/v3_scaler_bilinear_thirds.v",
     "safevision/rtl/control/v3_pixel_response_tracker.v",
     "safevision/rtl/video/v3_frame_safe_select.v",

@@ -8,9 +8,9 @@ param(
     [string]$TdRoot = 'D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116',
     [string]$PythonExe = 'python',
     [string]$RunDir = (Join-Path (Split-Path $PSScriptRoot -Parent) 'verification\work_video_clock'),
-    [string]$VideoTb = (Join-Path $RepoRoot 'safevision\verification\unit\tb_video_timing.sv'),
-    [string]$RealFrameTb = (Join-Path $RepoRoot 'safevision\verification\unit\tb_frame_swap_real_frame.sv'),
-    [string]$IntegrationTb = (Join-Path $RepoRoot 'safevision\verification\unit\tb_clock_video_subsystem.sv')
+    [string]$VideoTb = (Join-Path $RepoRoot 'safevision\verification\unit\tb_video_timing.v'),
+    [string]$RealFrameTb = (Join-Path $RepoRoot 'safevision\verification\unit\tb_frame_swap_real_frame.v'),
+    [string]$IntegrationTb = (Join-Path $RepoRoot 'safevision\verification\unit\tb_clock_video_subsystem.v')
 )
 
 $ErrorActionPreference = 'Stop'
@@ -18,11 +18,11 @@ $includeDir = Join-Path $RepoRoot 'safevision\rtl\include'
 $videoRtl = Join-Path $RepoRoot 'safevision\rtl\video\video_timing\video_timing.v'
 $resetRtl = Join-Path $RepoRoot 'safevision\platform\anlogic_eg4s20_hx4s20c\rtl\clock\reset_sync.v'
 $resetCtrlRtl = Join-Path $RepoRoot 'safevision\platform\anlogic_eg4s20_hx4s20c\rtl\clock\clock_reset_ctrl.v'
-$resetTb = Join-Path $RepoRoot 'safevision\verification\unit\tb_clock_reset_ctrl.sv'
+$resetTb = Join-Path $RepoRoot 'safevision\verification\unit\tb_clock_reset_ctrl.v'
 $fbmRtl = Join-Path $RepoRoot 'safevision\rtl\memory\frame_buffer_manager.v'
 $swapRtl = Join-Path $RepoRoot 'safevision\rtl\memory\frame_swap_ctrl.v'
 $swapCdcRtl = Join-Path $RepoRoot 'safevision\rtl\memory\frame_swap_cdc.v'
-$swapTb = Join-Path $RepoRoot 'safevision\verification\unit\tb_frame_swap_ctrl.sv'
+$swapTb = Join-Path $RepoRoot 'safevision\verification\unit\tb_frame_swap_ctrl.v'
 $platform = Join-Path $RepoRoot 'safevision\platform\anlogic_eg4s20_hx4s20c'
 $clockGenRtl = Join-Path $platform 'rtl\clock\clock_gen.v'
 $subsystemRtl = Join-Path $platform 'rtl\clock\clock_video_subsystem.v'
@@ -71,8 +71,8 @@ function Invoke-XSimCase {
 
         & $xvlog -i $includeDir --log xvlog_verilog.log @VerilogSources
         if ($LASTEXITCODE -ne 0) { throw "$Name Verilog compile failed ($LASTEXITCODE)" }
-        & $xvlog --sv -i $includeDir --log xvlog_sv.log @SvSources
-        if ($LASTEXITCODE -ne 0) { throw "$Name SystemVerilog compile failed ($LASTEXITCODE)" }
+        & $xvlog  -i $includeDir --log xvlog_sv.log @SvSources
+        if ($LASTEXITCODE -ne 0) { throw "$Name Verilog compile failed ($LASTEXITCODE)" }
         & $xelab "work.$Top" -s "${Top}_sim" --timescale '1ns/1ps' --log xelab.log
         if ($LASTEXITCODE -ne 0) { throw "$Name elaboration failed ($LASTEXITCODE)" }
         & $xsim "${Top}_sim" -runall --log xsim.log

@@ -64,6 +64,6 @@ module v3_hud_palette224(input wire clk,rst_n,valid_in,enabled,
    p2<=enabled1?blended:back1;v2<=v1;pixel<=p2;valid_out<=v2;end
  end
  // synthesis translate_off
- always@(posedge clk)if(rst_n&&enabled&&foreground!=16'hffff&&foreground!=16'h07e0&&foreground!=16'h7bef&&foreground!=16'h05bf&&foreground!=16'hffe0&&foreground!=16'hf800&&foreground!=0)$fatal(1,"unsupported HUD palette colour");
+ always@(posedge clk)if(rst_n&&enabled&&foreground!=16'hffff&&foreground!=16'h07e0&&foreground!=16'h7bef&&foreground!=16'h05bf&&foreground!=16'hffe0&&foreground!=16'hf800&&foreground!=0)begin $display("[FAIL] unsupported HUD palette colour"); $finish; end 
  // synthesis translate_on
 endmodule

@@ -9,7 +9,7 @@
   ],
   "test_sources": {
     "tb_v3_ui_timebase395": [
-      "safevision/verification/unit/tb_v3_ui_timebase395.sv"
+      "safevision/verification/unit/tb_v3_ui_timebase395.v"
     ]
   }
 }

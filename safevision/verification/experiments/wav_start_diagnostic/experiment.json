@@ -5,6 +5,6 @@
   "native_driver": "run_v3_sim.py with an explicit isolated experiment manifest",
   "files": {
     "original_manifest.json": "c4282f3637e7d92212f20b1170838f3791e0c3a95cbd7b2149f0c6a88a549d38",
-    "tb_wav_parser_diagnostic.sv": "5728116b4a4e50be472f314aae7fec08edc138415158e9ff882b81df47a22c22"
+    "tb_wav_parser_diagnostic.v": "5728116b4a4e50be472f314aae7fec08edc138415158e9ff882b81df47a22c22"
   }
 }

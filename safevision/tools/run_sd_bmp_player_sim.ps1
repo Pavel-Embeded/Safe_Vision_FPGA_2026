@@ -38,9 +38,9 @@ try{
   foreach($f in $rtl){ if(-not (Test-Path -LiteralPath $f)){ throw "Missing source: $f" } }
   & (Join-Path $ModelSimBin 'vlog.exe') -quiet "+incdir+$inc" @rtl
   if($LASTEXITCODE){ throw 'RTL compile failed' }
-  & (Join-Path $ModelSimBin 'vlog.exe') -quiet -sv "+incdir+$inc" `
-      (Join-Path $sv 'verification/models/sd_spi_card_model.sv') `
-      (Join-Path $sv 'verification/unit/tb_sd_bmp_player.sv')
+  & (Join-Path $ModelSimBin 'vlog.exe') -quiet  "+incdir+$inc" `
+      (Join-Path $sv 'verification/models/sd_spi_card_model.v') `
+      (Join-Path $sv 'verification/unit/tb_sd_bmp_player.v')
   if($LASTEXITCODE){ throw 'TB compile failed' }
 
   $do = if($Waves){'log -r /*; run -all; quit -f'}else{'run -all; quit -f'}

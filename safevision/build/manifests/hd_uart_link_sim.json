@@ -15,7 +15,7 @@
   ],
   "test_sources": {
     "tb_v3_hd_uart_link": [
-      "safevision/verification/unit/tb_v3_hd_uart_link.sv"
+      "safevision/verification/unit/tb_v3_hd_uart_link.v"
     ]
   },
   "timeouts": {

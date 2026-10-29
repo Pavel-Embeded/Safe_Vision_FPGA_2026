@@ -36,7 +36,7 @@ foreach($name in $names){
     $old+=$oldPath;$current+=$newPath
 }
 $model=@((Join-Path $TdRoot 'sim_release/eg4/eg_logic_clk.v'),(Join-Path $TdRoot 'sim_release/eg4/eg_phy_pll.v'))
-$tb=Join-Path $RepoRoot 'safevision/verification/unit/tb_pll_feedback_equivalence.sv'
+$tb=Join-Path $RepoRoot 'safevision/verification/unit/tb_pll_feedback_equivalence.v'
 $savedTemp=$env:TEMP;$savedTmp=$env:TMP
 try{
     foreach($case in @('equivalence','phase_negative_control')){
@@ -56,7 +56,7 @@ try{
         try{
             & (Join-Path $XSimBin 'xvlog.bat') --log xvlog.log @model @old @candidate
             if($LASTEXITCODE -ne 0){throw "$case RTL compile failed"}
-            & (Join-Path $XSimBin 'xvlog.bat') --sv --log xvlog_tb.log $tb
+            & (Join-Path $XSimBin 'xvlog.bat')  --log xvlog_tb.log $tb
             if($LASTEXITCODE -ne 0){throw "$case TB compile failed"}
             & (Join-Path $XSimBin 'xelab.bat') work.tb_pll_feedback_equivalence -s pll_equivalence_sim --timescale '1ns/1ps' --log xelab.log
             if($LASTEXITCODE -ne 0){throw "$case elaboration failed"}

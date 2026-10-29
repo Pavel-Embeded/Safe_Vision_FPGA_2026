@@ -15,7 +15,7 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000)(
  output reg fault,output wire dma_busy,output wire dma_progress
 );
  `include "crc32_word.vh"
- function[1:0] bank_index;input[9:0] r;begin bank_index=r%3;end endfunction
+ function[1:0] bank_index;input[9:0] r;begin begin bank_index=r%3;end  end endfunction
  wire[23:0] cmd;wire cmd_valid;wire cmd_ready;
  reg[23:0] reply;reg reply_pending;wire reply_ready;
  video_cdc_mailbox #(.WIDTH(24)) requests(
@@ -38,11 +38,11 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000)(
 
 
  wire stream=descriptor[19]&&item[0];
- wire row_select=descriptor[19]?item[1]:item[0];
- wire[1:0] wanted_slot=stream?descriptor[21:20]:descriptor[23:22];
- wire[9:0] wanted_row=row_select?{1'b0,descriptor[8:0]}:descriptor[18:9];
+ wire row_select=descriptor[19] ? item[1]:item[0];
+ wire[1:0] wanted_slot=stream ? descriptor[21:20]:descriptor[23:22];
+ wire[9:0] wanted_row=row_select ? {1'b0,descriptor[8:0]}:descriptor[18:9];
  wire[2:0] wanted_bank={stream,bank_index(wanted_row)};
- wire[2:0] item_count=descriptor[19]?4:2;
+ wire[2:0] item_count=descriptor[19] ? 4:2;
  assign cmd_ready=state==IDLE && !reply_pending && !fault;
  assign rd_len=16'd64;
  assign dma_busy=state!=IDLE;
@@ -65,7 +65,7 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000)(
     SELECT:if(item==item_count)state<=REPLY;
 
 
-     else if(item==(descriptor[19]?2:1)&&!first_half_announced)begin
+     else if(item==(descriptor[19] ? 2:1)&&!first_half_announced)begin
       if(!reply_pending)begin
        reply<={descriptor[23:19],1'b1,descriptor[17:9],descriptor[17:9]};
        reply_pending<=1;first_half_announced<=1;
@@ -106,9 +106,9 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000)(
   end
  end
  reg[1:0] pixel_slot[0:7];reg[9:0] pixel_row[0:7];reg[7:0] pixel_valid;
- wire[9:0] next_row=sy==479?10'd479:sy+1'b1;
+ wire[9:0] next_row=sy==479 ? 10'd479:sy+1'b1;
  reg[2:0] row0_bank,row1_bank;reg odd_column,edge_column;
- wire[8:0] even_address=(sx[0]&&sx<639)?{1'b0,sx[9:1]}+1'b1:{1'b0,sx[9:1]};
+ wire[8:0] even_address=(sx[0]&&sx<639) ? {1'b0,sx[9:1]}+1'b1:{1'b0,sx[9:1]};
  wire[8:0] odd_address={1'b0,sx[9:1]};
  wire[15:0] even_q[0:7],odd_q[0:7];
  reg[1:0] active_current,active_target;reg dual;
@@ -161,12 +161,12 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000)(
   always @(posedge pixel_clk)begin eq<=even_pixels[even_address];oq<=odd_pixels[odd_address];end
   assign even_q[g]=eq;assign odd_q[g]=oq;
  end else begin:absent assign even_q[g]=0;assign odd_q[g]=0;end end endgenerate
- assign a00=odd_column?odd_q[row0_bank]:even_q[row0_bank];
- assign a10=odd_column?(edge_column?odd_q[row0_bank]:even_q[row0_bank]):odd_q[row0_bank];
- assign a01=odd_column?odd_q[row1_bank]:even_q[row1_bank];
- assign a11=odd_column?(edge_column?odd_q[row1_bank]:even_q[row1_bank]):odd_q[row1_bank];
- assign b00=odd_column?odd_q[row0_bank+4]:even_q[row0_bank+4];
- assign b10=odd_column?(edge_column?odd_q[row0_bank+4]:even_q[row0_bank+4]):odd_q[row0_bank+4];
- assign b01=odd_column?odd_q[row1_bank+4]:even_q[row1_bank+4];
- assign b11=odd_column?(edge_column?odd_q[row1_bank+4]:even_q[row1_bank+4]):odd_q[row1_bank+4];
+ assign a00=odd_column ? odd_q[row0_bank]:even_q[row0_bank];
+ assign a10=odd_column ? (edge_column ? odd_q[row0_bank]:even_q[row0_bank]):odd_q[row0_bank];
+ assign a01=odd_column ? odd_q[row1_bank]:even_q[row1_bank];
+ assign a11=odd_column ? (edge_column ? odd_q[row1_bank]:even_q[row1_bank]):odd_q[row1_bank];
+ assign b00=odd_column ? odd_q[row0_bank+4]:even_q[row0_bank+4];
+ assign b10=odd_column ? (edge_column ? odd_q[row0_bank+4]:even_q[row0_bank+4]):odd_q[row0_bank+4];
+ assign b01=odd_column ? odd_q[row1_bank+4]:even_q[row1_bank+4];
+ assign b11=odd_column ? (edge_column ? odd_q[row1_bank+4]:even_q[row1_bank+4]):odd_q[row1_bank+4];
 endmodule

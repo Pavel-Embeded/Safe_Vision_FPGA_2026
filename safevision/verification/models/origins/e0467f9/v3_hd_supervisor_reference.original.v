@@ -19,13 +19,13 @@ module v3_supervisor #(
  output reg[2:0] err_level,output reg[31:0] err_ts);
 
 
- localparam integer TICK_DIV=(CLK_HZ>=1000 && CLK_HZ%1000==0)?CLK_HZ/1000:1;
+ localparam integer TICK_DIV=(CLK_HZ>=1000 && CLK_HZ%1000==0) ? CLK_HZ/1000:1;
  localparam integer BOOT_LIMIT=(BOOT_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer FRAME_LIMIT=(FRAME_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer MEM_LIMIT=(MEM_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer PROGRESS_LIMIT=(PROGRESS_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer WINDOW_LIMIT=CLK_HZ/TICK_DIV;
- function integer width_for;input integer limit;begin width_for=(limit>1)?$clog2(limit+1):1;end endfunction
+ function integer width_for;input integer limit;begin begin width_for=(limit>1) ? $clog2(limit+1):1;end  end endfunction
  reg[width_for(BOOT_LIMIT)-1:0] boot_timer;
  reg[width_for(FRAME_LIMIT)-1:0] frame_timer;
  reg[width_for(MEM_LIMIT)-1:0] mem_timer;
@@ -69,8 +69,8 @@ module v3_supervisor #(
  end endgenerate
  function ge_groups;
   input[3:0] g,e;
-  begin ge_groups=g[3] | (e[3]&g[2]) | (e[3]&e[2]&g[1]) | (e[3]&e[2]&e[1]&(g[0]|e[0]));end
- endfunction
+  begin begin ge_groups=g[3] | (e[3]&g[2]) | (e[3]&e[2]&g[1]) | (e[3]&e[2]&e[1]&(g[0]|e[0]));end
+  end endfunction
  wire video_threshold=!video_limit[32] && ge_groups(video_gt,video_eq);
  wire audio_threshold=!audio_limit[32] && ge_groups(audio_gt,audio_eq);
  reg initialized,fault_i_old,fault_b_old,failed_old,hd_fault_old;
@@ -190,6 +190,6 @@ module v3_supervisor #(
  end
  // synthesis translate_off
  initial if(CLK_HZ<1000 || FRAME_CYCLES<2 || MEM_CYCLES<2 || PROGRESS_CYCLES<2)
-  $fatal(1,"invalid supervisor clock or watchdog limits");
+  begin $display("[FAIL] invalid supervisor clock or watchdog limits"); $finish; end 
  // synthesis translate_on
 endmodule

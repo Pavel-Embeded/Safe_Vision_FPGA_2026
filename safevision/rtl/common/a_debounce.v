@@ -31,6 +31,6 @@ module a_debounce #(
     // synthesis translate_off
     initial if (STABLE_CYCLES<1 ||
         (RESET_LEVEL !== 1'b0 && RESET_LEVEL !== 1'b1))
-        $fatal(1,"a_debounce invalid parameters");
+        begin $display("[FAIL] a_debounce invalid parameters"); $finish; end 
     // synthesis translate_on
 endmodule

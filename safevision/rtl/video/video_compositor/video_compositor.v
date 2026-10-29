@@ -50,6 +50,6 @@ module video_compositor #(
       .hblank_out(hblank_out),.vblank_out(vblank_out));
     // synthesis translate_off
     initial if(NORMAL_LATENCY<0||OSD_LATENCY<0||EMERGENCY_LATENCY<0||ALIGN>31)
-        $fatal(1,"video_compositor invalid latency");
+        begin $display("[FAIL] video_compositor invalid latency"); $finish; end 
     // synthesis translate_on
 endmodule

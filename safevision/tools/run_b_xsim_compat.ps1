@@ -44,7 +44,7 @@ try {
     & (Join-Path $xsimBin 'xvlog.bat') -d SIM_FAST_TO -i (Join-Path $repo 'safevision/rtl/include') --log all_rtl.log --file 'rtl.prj'
     if($LASTEXITCODE -ne 0){throw 'B+A combined Verilog compile failed'}
     Write-XSimProject -Paths $tb -Path 'tb.prj'
-    & (Join-Path $xsimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i (Join-Path $repo 'safevision/rtl/include') --log all_tb.log --file 'tb.prj'
+    & (Join-Path $xsimBin 'xvlog.bat')  -d SIM_FAST_TO -i (Join-Path $repo 'safevision/rtl/include') --log all_tb.log --file 'tb.prj'
     if($LASTEXITCODE -ne 0){throw 'B TB compile failed'}
     foreach($top in $tops){
         & (Join-Path $xsimBin 'xelab.bat') "work.$top" -s "${top}_sim" --timescale '1ns/1ps' --log "${top}_elab.log"

@@ -8,8 +8,8 @@
     "safevision/platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v",
     "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
-    "safevision/verification/models/v3_frame_writer_before_source_wait261028.sv",
-    "safevision/verification/models/v3_frame_sink_before_source_wait261028.sv"
+    "safevision/verification/models/v3_frame_writer_before_source_wait261028.v",
+    "safevision/verification/models/v3_frame_sink_before_source_wait261028.v"
   ],
   "tops": [
     "tb_v3_source_wait_legacy"

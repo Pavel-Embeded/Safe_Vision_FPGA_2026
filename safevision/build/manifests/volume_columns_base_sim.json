@@ -17,7 +17,7 @@
   ],
   "test_sources": {
     "tb_v3_volume_columns_base": [
-      "safevision/verification/unit/tb_v3_volume_columns.sv"
+      "safevision/verification/unit/tb_v3_volume_columns.v"
     ]
   }
 }

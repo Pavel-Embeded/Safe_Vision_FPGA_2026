@@ -75,11 +75,11 @@
     "safevision/rtl/audio/v3_audio_system.v",
     "safevision/rtl/audio/v3_audio_volume.v",
     "safevision/rtl/audio/v3_pcm_packet_fifo.v",
-    "safevision/verification/models/board_memory_contract_model.sv",
-    "safevision/verification/models/top_ip_stub.sv",
-    "safevision/verification/models/v3_audio_pll_clock_model.sv",
+    "safevision/verification/models/board_memory_contract_model.v",
+    "safevision/verification/models/top_ip_stub.v",
+    "safevision/verification/models/v3_audio_pll_clock_model.v",
     "safevision/rtl/audio/v3_pcm_ingress_fifo.v",
-    "safevision/verification/models/v3_memory_pll_clock_model.sv",
+    "safevision/verification/models/v3_memory_pll_clock_model.v",
     "safevision/rtl/audio/v3_pcm_sample_fifo.v",
     "safevision/rtl/video/v3_packed_row_store.v",
     "safevision/rtl/video/v3_constant224_blend.v",
@@ -119,7 +119,7 @@
     "safevision/assets/audio/v3_spectrum_twiddle.mem"
   ],
   "test_sources": {
-    "tb_v3_feature_board_base198": "safevision/verification/unit/tb_v3_feature_board198.sv"
+    "tb_v3_feature_board_base198": "safevision/verification/unit/tb_v3_feature_board198.v"
   },
   "timeouts": {
     "tb_v3_feature_board_base198": 1200

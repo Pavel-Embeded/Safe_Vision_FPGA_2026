@@ -18,6 +18,6 @@ module a_pixel_fifo #(parameter integer AW=10)(
       .empty_flag(empty),.afull(almost_full),.aempty(almost_empty),
       .wrusedw(wr_words),.rdusedw(rd_pixels),.wr_rst_done(wr_reset_done));
     // synthesis translate_off
-    initial if(AW<6||AW>14)$fatal(1,"a_pixel_fifo AW must be 6..14");
+    initial if(AW<6||AW>14)begin $display("[FAIL] a_pixel_fifo AW must be 6..14"); $finish; end 
     // synthesis translate_on
 endmodule

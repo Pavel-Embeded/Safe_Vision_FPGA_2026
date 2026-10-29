@@ -13,7 +13,7 @@
   },
   "test_sources": {
     "tb_v3_hd_row_crc_balance": [
-      "safevision/verification/unit/tb_v3_hd_row_crc_balance.sv"
+      "safevision/verification/unit/tb_v3_hd_row_crc_balance.v"
     ]
   }
 }

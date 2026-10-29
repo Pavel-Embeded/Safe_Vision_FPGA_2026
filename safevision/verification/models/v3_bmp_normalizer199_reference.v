@@ -1,0 +1,120 @@
+`include "safevision_defs.vh"
+
+
+module v3_bmp_normalizer199_reference(
+ input wire clk,rst_n,input wire[7:0] din,input wire din_valid,
+ output wire din_ready,input wire din_sof,din_eof,
+ input wire[15:0] width,height,input wire top_down,
+ output reg[15:0] pixel,output reg pixel_valid,input wire pixel_ready,
+ output wire[9:0] x,y,output wire img_sof,img_eof,
+ output reg done,error,output reg[7:0] err_code,err_detail,output wire[3:0] dbg_state);
+ localparam IDLE=0,GEOM=1,SETUP=2,YADV=3,READ=4,STORE=5,XADV=6,ROWEND=7,
+  EWAIT=8,EPUSH=9,EHOLD=10,DRAIN=11,FINISH=12,FAILED=13;
+ reg[3:0] state;reg[11:0] w,h;reg orientation,wide;
+ reg[21:0] remainder;reg[11:0] denominator;reg[9:0] quotient;
+ reg[9:0] dw,dh,pad_x,pad_before;
+ reg[12:0] stride,byte_col;reg[10:0] src_row,src_x,target_x,target_y,captured_x;
+ reg[12:0] x_error,y_error;reg[9:0] store_x,out_x,out_row;
+ reg[7:0] blue,green;reg[1:0] phase;reg[15:0] captured;
+ reg after_row,eof_seen,have_row,initial_y;
+
+
+ (* ram_style="bram" *) reg[15:0] row_pixels[0:639];
+ wire[9:0] row_index=(out_x>=pad_x&&out_x<pad_x+dw) ? out_x-pad_x:10'd0;
+ reg[15:0] read_pixel;
+ always @(posedge clk)begin
+  read_pixel<=row_pixels[row_index];
+  if(state==STORE)row_pixels[store_x]<=captured;
+ end
+ wire row_black=out_row<pad_before||out_row>=pad_before+dh;
+ wire col_black=out_x<pad_x||out_x>=pad_x+dw;
+ wire last_row_byte=byte_col==stride-1'b1;
+ assign din_ready=state==READ||state==DRAIN;
+ assign x=out_x;assign y=orientation ? out_row:10'd479-out_row;
+ assign img_sof=pixel_valid&&out_x==0&&out_row==0;
+ assign img_eof=pixel_valid&&out_x==639&&out_row==479;
+ assign dbg_state=state;
+ wire[15:0] abs_height=top_down ? (~height+16'd1):height;
+ wire[21:0] width480=width[11:0]*10'd480,height640=abs_height[11:0]*10'd640;
+ always @(posedge clk or negedge rst_n)begin
+  if(!rst_n)begin
+   state<=IDLE;w<=0;h<=0;orientation<=0;wide<=0;remainder<=0;denominator<=1;quotient<=0;
+   dw<=0;dh<=0;pad_x<=0;pad_before<=0;stride<=0;byte_col<=0;src_row<=0;src_x<=0;target_x<=0;target_y<=0;
+   captured_x<=0;x_error<=0;y_error<=0;store_x<=0;out_x<=0;out_row<=0;blue<=0;green<=0;phase<=0;captured<=0;
+   after_row<=0;eof_seen<=0;have_row<=0;initial_y<=0;pixel<=0;pixel_valid<=0;done<=0;error<=0;err_code<=0;err_detail<=0;
+  end else begin
+   done<=0;
+   case(state)
+    IDLE:if(din_valid&&din_sof)begin
+     error<=0;err_code<=0;err_detail<=0;pixel_valid<=0;
+     if(width==0||width>1920||abs_height==0||abs_height>1080)begin
+      error<=1;err_code<=`ERR_MEDIA_INVALID;err_detail<=`DET_BMP_SIZE;done<=1;state<=FAILED;
+     end else begin
+      w<=width[11:0];h<=abs_height[11:0];orientation<=top_down;wide<=width480>=height640;
+      remainder<=width480>=height640 ? height640:width480;
+      denominator<=width480>=height640 ? width[11:0]:abs_height[11:0];quotient<=0;
+      stride<=((({1'b0,width[11:0]}<<1)+{1'b0,width[11:0]}+13'd3)>>2)<<2;
+      byte_col<=0;src_row<=0;src_x<=0;target_x<=0;target_y<=0;x_error<=0;y_error<=0;
+      store_x<=0;out_x<=0;out_row<=0;phase<=0;after_row<=0;eof_seen<=0;have_row<=0;state<=GEOM;
+     end
+    end
+    GEOM:if(remainder>=denominator)begin remainder<=remainder-denominator;quotient<=quotient+1'b1;end
+     else begin dw<=wide ? 10'd640:quotient==0 ? 10'd1:quotient;dh<=wide ? (quotient==0 ? 10'd1:quotient):10'd480;state<=SETUP;end
+    SETUP:begin
+     pad_x<=(10'd640-dw)>>1;
+     pad_before<=orientation ? ((10'd480-dh)>>1):(10'd480-dh-((10'd480-dh)>>1));
+     target_y<=0;y_error<=orientation ? 13'd0:{1'b0,h}-1'b1;initial_y<=1;state<=YADV;
+    end
+    YADV:if(y_error>=dh)begin y_error<=y_error-dh;target_y<=target_y+1'b1;end
+     else if(initial_y)begin initial_y<=0;state<=pad_before!=0 ? EWAIT:READ;end
+     else if(target_y==src_row)state<=EWAIT;
+     else begin src_row<=src_row+1'b1;src_x<=0;byte_col<=0;phase<=0;target_x<=0;x_error<=0;store_x<=0;state<=READ;end
+    READ:if(din_valid)begin
+     if(din_eof)begin
+      eof_seen<=1;
+      if(!last_row_byte||src_row!=h-1'b1)begin error<=1;err_code<=`ERR_MEDIA_INVALID;err_detail<=`DET_BMP_TRUNC;done<=1;state<=FAILED;end
+     end
+     if(last_row_byte)begin byte_col<=0;state<=ROWEND;end else byte_col<=byte_col+1'b1;
+     if(byte_col<({1'b0,w}<<1)+{1'b0,w})begin
+      case(phase)
+       0:begin blue<=din;phase<=1;end
+       1:begin green<=din;phase<=2;end
+       2:begin
+        phase<=0;src_x<=src_x+1'b1;
+        if(src_row==target_y&&src_x==target_x)begin
+         captured<={din[7:3],green[7:2],blue[7:3]};captured_x<=src_x;after_row<=last_row_byte;state<=STORE;
+        end
+       end
+      endcase
+     end
+
+     if(din_eof&&(!last_row_byte||src_row!=h-1'b1))state<=FAILED;
+    end
+    STORE:if(store_x==dw-1'b1)state<=after_row ? ROWEND:READ;
+     else begin store_x<=store_x+1'b1;x_error<=x_error+w;state<=XADV;end
+    XADV:if(x_error>=dw)begin x_error<=x_error-dw;target_x<=target_x+1'b1;end
+     else if(target_x==captured_x)state<=STORE;
+     else state<=after_row ? ROWEND:READ;
+    ROWEND:if(src_row==target_y)begin have_row<=1;out_x<=0;state<=EWAIT;end
+     else begin src_row<=src_row+1'b1;src_x<=0;byte_col<=0;phase<=0;target_x<=0;x_error<=0;store_x<=0;state<=READ;end
+    EWAIT:state<=EPUSH;
+    EPUSH:begin pixel<=row_black||col_black ? 16'd0:read_pixel;pixel_valid<=1;state<=EHOLD;end
+    EHOLD:if(pixel_ready)begin
+     pixel_valid<=0;
+     if(out_x!=639)begin out_x<=out_x+1'b1;state<=EWAIT;end
+     else if(out_row==479)state<=eof_seen ? FINISH:DRAIN;
+     else begin
+      out_x<=0;out_row<=out_row+1'b1;
+      if(out_row+1'b1<pad_before||out_row+1'b1>=pad_before+dh)state<=EWAIT;
+      else if(!have_row)state<=READ;
+      else begin y_error<=y_error+h;state<=YADV;end
+     end
+    end
+    DRAIN:if(din_valid&&din_eof)begin eof_seen<=1;state<=FINISH;end
+    FINISH:begin done<=1;state<=IDLE;end
+    FAILED:begin pixel_valid<=0;state<=IDLE;end
+    default:state<=IDLE;
+   endcase
+  end
+ end
+endmodule

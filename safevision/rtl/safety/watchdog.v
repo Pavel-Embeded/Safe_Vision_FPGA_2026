@@ -120,7 +120,7 @@ module watchdog #(
     initial if (TO_FRAME_CYC < 1 || TO_MEM_CYC < 1 || TO_PROG_CYC < 1 ||
                 TO_FRAME_CYC == TO_MEM_CYC || TO_MEM_CYC == TO_PROG_CYC ||
                 TO_FRAME_CYC == TO_PROG_CYC)
-        $fatal(1, "watchdog invalid thresholds (must be >=1 and mutually distinct)");
+        begin $display("[FAIL] watchdog invalid thresholds (must be >=1 and mutually distinct)"); $finish; end 
     // synthesis translate_on
 
 endmodule

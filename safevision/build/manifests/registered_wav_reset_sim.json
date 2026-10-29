@@ -27,7 +27,7 @@
     "safevision/rtl/media/v3_wav_parser_compact_ctx.v",
     "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
     "safevision/rtl/audio/v3_audio_prefill_compare.v",
-    "safevision/verification/models/v3_wav_reset_reference.sv",
+    "safevision/verification/models/v3_wav_reset_reference.v",
     "safevision/rtl/storage/v3_fat_name_store.v"
   ],
   "tops": [

@@ -29,7 +29,7 @@ rtl += [platform / 'ip/pll' / (name+'.v') for name in
         ('sv_system_pll','sv_audio_pll','sv_video_vga_pll','sv_video_hd_pll')]
 rtl += [args.td_root / 'sim_release/eg4' / name for name in ('eg_logic_clk.v','eg_phy_pll.v')]
 benches = [repo / 'safevision/verification/unit' / name for name in
-           ('tb_video_timing_params.sv','tb_clock_parameter_guards.sv')]
+           ('tb_video_timing_params.v','tb_clock_parameter_guards.v')]
 for path in rtl + benches:
     if not path.is_file():
         raise RuntimeError('Missing source: '+str(path))
@@ -52,7 +52,7 @@ def run_tool(name, arguments, console):
         raise RuntimeError('%s returned %d; see %s' % (name,result.returncode,console))
 
 run_tool('xvlog',['-i',repo/'safevision/rtl/include','--log','xvlog_verilog.log',*rtl],out/'compile_verilog.console.log')
-run_tool('xvlog',['--sv','--log','xvlog_sv.log',*benches],out/'compile_sv.console.log')
+run_tool('xvlog',['--log','xvlog_sv.log',*benches],out/'compile_sv.console.log')
 results=[]
 for family, top, count in (('video','tb_video_timing_params',32),('clock','tb_clock_parameter_guards',9)):
     for case_id in range(count):
