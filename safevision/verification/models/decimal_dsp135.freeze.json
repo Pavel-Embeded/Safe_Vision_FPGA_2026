@@ -1,0 +1,9 @@
+{
+  "parent_commit": "e796999e6309bb5d1d06f7b8b1f41af580251060",
+  "source": "safevision/rtl/control/v3_command_parser_catalog.v",
+  "source_sha256": "2df89083cb8337b5c7886a1bf8220542ffd9ae2796b975caec1a396d4d94a4e3",
+  "model": "safevision/verification/models/v3_command_parser_decimal_frozen.sv",
+  "model_sha256": "6832cc44a5bd56e0af7258477deac7fa588a86ff0fa6fbcf0e990900948cabc4",
+  "before": " // Exact modulo24-bit decimal multiply-add. Carry-save compression leaves\n // one local ripple addition, avoiding two cascaded18-bit DSP multipliers.\n wire[23:0] decimal_a={number[20:0],3'b000};\n wire[23:0] decimal_b={number[22:0],1'b0};\n wire[23:0] decimal_c={20'd0,rx_data[3:0]};\n (* keep=\"true\" *) wire[23:0] decimal_sum=decimal_a^decimal_b^decimal_c;\n (* keep=\"true\" *) wire[23:0] decimal_carry=((decimal_a&decimal_b)|(decimal_a&decimal_c)|(decimal_b&decimal_c))<<1;\n (* keep=\"true\",use_ripple=1 *) wire[23:0] decimal_next=decimal_sum+decimal_carry;",
+  "after": " // Exact modulo24-bit decimal multiply-add. Reuse the two DSP blocks\n // released by direct row lookup; no register or accepted-byte edge changes.\n (* use_dsp=1,dsp_style=\"yes\" *) wire[27:0] decimal_product=number*4'd10;\n wire[23:0] decimal_next=decimal_product[23:0]+{20'd0,rx_data[3:0]};"
+}

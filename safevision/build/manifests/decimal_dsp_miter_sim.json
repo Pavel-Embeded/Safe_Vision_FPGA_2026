@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "safevision/rtl/control/v3_command_parser_catalog.v",
+    "safevision/verification/models/v3_command_parser_decimal_frozen.sv",
+    "safevision/verification/unit/v3_command_parser_reference.sv"
+  ],
+  "tops": [
+    "tb_v3_decimal_dsp_miter"
+  ],
+  "defines": [],
+  "assets": [
+    "safevision/assets/control/v3_command_catalog.mem",
+    "safevision/verification/models/decimal_dsp135.freeze.json"
+  ],
+  "generator_dependencies": [],
+  "generated_assets": [],
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "timeouts": {
+    "tb_v3_decimal_dsp_miter": 300
+  }
+}

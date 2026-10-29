@@ -6248,3 +6248,8 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/verification/unit/tb_v3_direct_row_hd.sv -text
 
 /safevision/build/manifests/direct_row_hd113_sim.json -text
+
+/safevision/verification/models/v3_command_parser_decimal_frozen.sv -text
+/safevision/verification/models/decimal_dsp135.freeze.json -text
+/safevision/verification/unit/tb_v3_decimal_dsp_miter.sv -text
+/safevision/build/manifests/decimal_dsp_miter_sim.json -text
