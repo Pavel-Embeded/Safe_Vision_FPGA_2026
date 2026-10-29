@@ -282,6 +282,36 @@ def fs_timeout_pipeline(root,base):
   require(len(values)==1 and int(values[0])==row['actual_data_comparison_errors']and int(values[0])>0 and re.findall(r'\bdriver_errors=(\d+)',log)==['0']and'[FAIL] full file-streamer public interface differs'in log,'control detected only an internal phase assertion')
  return [item],checked,dict(protocol_proof=actual,semantic_controls=checked,complete_public_bits=322,consumption_and_updated_edges_compared=True)
 
+def direct_row_lookup(root,base):
+ from check_direct_row_lookup import check
+ actual=check(root);recorded=read(base/'direct_row_numeric/result.json')
+ require(actual==recorded and actual['accepted']and actual['cases']==4096 and actual['unique_valid_signature_rows']==1920,'direct-row complete source/address-domain proof differs')
+ require(actual['valid_queries']==3360 and actual['invalid_queries']==736 and actual['added_latency_cycles']==0 and not actual['CRC_operators_or_state_updates_changed']and not actual['new_clock_domain']and not actual['new_timing_exception'],'direct-row contract/CRC/timing scope differs')
+ from test_direct_row_controls import CASES
+ require({c[0]for c in CASES}=={'slot_carry_lost','row_index_shifted'},'direct-row mutant inventory differs')
+ ports='verify_done verify_pass fault approved rd_req rd_addr rd_len lookup_crc lookup_valid bad_addr bad_expected bad_actual source_words checked_rows'.split()
+ positives=[];controls=[]
+ for mode in('base','hd'):
+  suite='direct_row_'+mode+'113';top='tb_v3_direct_row_'+mode;folder=base/('direct_row_'+mode)
+  item=positive(root,folder,suite,top);raw=(folder/top/'sim.log').read_text('utf-8')
+  require(item['data_comparisons']>=2800000 and re.findall(r'\bdata_errors=(\d+)',raw)==['0']and re.findall(r'\bdriver_errors=(\d+)',raw)==['0']and re.findall(r'\bgold_errors=(\d+)',raw)==['0']and re.findall(r'\bqueries=(\d+)',raw)==['4096']and re.findall(r'\bverified_frames=(\d+)',raw)==['4']and'public_bits=233'in raw,'direct-row complete public/independent CRC coverage absent')
+  tb=(root/('safevision/verification/unit/'+top+'.sv')).read_text('utf-8-sig')
+  for prefix in('d','g'):
+   require('wire[232:0] '+prefix+'_public={'+','.join(prefix+'_'+name for name in ports)+'};'in tb,'row-guard output omitted from public comparison')
+   for name in ports:require(tb.count('.'+name+'('+prefix+'_'+name+')')==1,'row-guard output missing/duplicated')
+  require('if(rst_n)compare_public;'in tb and'#1;if(rst_n)compare_public;'in tb,'row-guard consumption/update edge comparison absent')
+  positives.append(item);folder=base/'direct_row_controls'/mode
+  summary=read(folder/'summary.json');target='safevision/rtl/'+('memory'if mode=='base'else'hd')+'/v3_row_integrity.v'
+  for name,start,end in CASES:
+   rows=[r for r in summary['cases']if r['name']==name];require(len(rows)==1,'direct-row control missing/duplicate')
+   require(tuple(rows[0][k]for k in('target','before','after','suite','top'))==(target,start,end,suite,top),'direct-row mutation definition differs')
+  checked=semantic_controls(root,folder,suite,top,{c[0]for c in CASES})
+  for row in summary['cases']:
+   raw=(folder/row['name']/'native'/top/'sim.log').read_text('utf-8');values=re.findall(r'\bdata_errors=(\d+)',raw)
+   require(len(values)==1 and int(values[0])==row['actual_data_comparison_errors']and int(values[0])>0 and re.findall(r'\bdriver_errors=(\d+)',raw)==['0']and re.findall(r'\bqueries=(\d+)',raw)==['4096']and re.findall(r'\bverified_frames=(\d+)',raw)==['4'],'direct-row mutation detected only a driver failure')
+  controls += [dict(profile=mode,**row)for row in checked]
+ return positives,controls,dict(source_and_domain=actual,public_output_bits=233,independent_CRC_model='Python zlib CRC32 of little-endian source words',profiles=['base','hd'],semantic_controls=controls)
+
 def audit(root,regression,ticker,board,controls):
  require(__debug__,'assertions disabled')
  matrix=read(root/'safevision/build/qualification/four_features_261020.json')
@@ -297,6 +327,8 @@ def audit(root,regression,ticker,board,controls):
  layout_files={'safevision/tools/v3_sources.py','safevision/tools/v3_final_sta.py','safevision/tools/check_v3_board.py',str(FLOW/'v3_physical_base.adc').replace('\\','/')}
  allowed|=layout_files
  top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig')
+ direct_lookup=top.count('.DIRECT_LOOKUP(1)')==1
+ if direct_lookup:allowed|={'safevision/rtl/video/v3_line_cache.v','safevision/rtl/memory/v3_row_integrity.v','safevision/rtl/hd/v3_line_cache.v','safevision/rtl/hd/v3_row_integrity.v'}
  direct_pointer=top.count('.DIRECT_RING_COMPARE(TICKER_ENABLE)')==1
  if direct_pointer:allowed|={'safevision/rtl/audio/v3_pcm_ring.v','safevision/rtl/audio/v3_audio_system.v'}
  header_phase='wire header_late=(mstate==H_HEAD)'in(root/'safevision/rtl/media/bmp_parser.v').read_text('utf-8-sig')
@@ -465,8 +497,12 @@ def audit(root,regression,ticker,board,controls):
  if fs_registered:
   extra,fs_controls,fs_proof=fs_timeout_pipeline(root,controls.parent);additions+=extra
   production_profile.update(fs_timeout_registered=True,fs_timeout_public_bits=322)
+ direct_controls=[];direct_proof=None
+ if direct_lookup:
+  extra,direct_controls,direct_proof=direct_row_lookup(root,controls.parent);additions+=extra
+  production_profile.update(direct_row_lookup=True,row_lookup_public_bits=233,row_lookup_descriptor_cases=4096,row_lookup_added_latency=0)
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)

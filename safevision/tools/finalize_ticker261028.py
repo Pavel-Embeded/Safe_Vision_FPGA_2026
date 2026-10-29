@@ -63,6 +63,8 @@ def main():
    names|={'safevision/tools/check_bmp_header_phase.py','safevision/tools/test_bmp_header_phase_controls.py','safevision/verification/models/bmp_parser_frozen_extent.freeze.json'}
   if functional['production_profile'].get('fs_timeout_registered'):
    names|={'safevision/tools/check_fs_timeout_pipeline.py','safevision/tools/test_fs_timeout_controls.py','safevision/verification/models/v3_file_streamer_frozen_timeout.freeze.json'}
+  if functional['production_profile'].get('direct_row_lookup'):
+   names|={'safevision/tools/check_direct_row_lookup.py','safevision/tools/test_direct_row_controls.py','safevision/verification/models/direct_row_lookup112.freeze.json'}
   commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD']).decode().strip()
   binding=source_commit_binding(root,root,commit,names);require(binding['verified'],'approval inputs are not committed: '+str(binding.get('errors')))
   all_inputs={name:sha(root/name)for name in names}
