@@ -47,6 +47,12 @@ def check(root):
   for before,after in changes:
    if prior.count(before)!=1:raise ValueError('ring integration anchor differs')
    prior=prior.replace(before,after)
+  if path=='safevision/rtl/audio/v3_audio_system.v' and 'PREFILL_PIPELINE=DIRECT_RING_COMPARE' in(root/path).read_text('utf-8-sig'):
+   from check_prefill_pipeline import check as prefill_check,transform as prefill_transform,PARENT as prefill_parent
+   prefill_proof=prefill_check(root)
+   prefill_original=subprocess.check_output(['git','-C',str(root),'cat-file','blob',prefill_parent+':'+path]).decode('utf-8-sig')
+   if not prefill_proof['accepted']or prefill_original!=prior:raise ValueError('prefill parent is not the exact ring integration')
+   prior=prefill_transform(prior)
   if(root/path).read_text('utf-8-sig')!=prior:
    if path!='safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v':raise ValueError('ring integration changed beyond its parameter wiring')
    # Compose two complete frozen transformations. The row-index parent TOP

@@ -337,6 +337,22 @@ def decimal_dsp(root,base):
   require(len(counts)==1 and int(counts[0])==row['actual_data_comparison_errors']and int(counts[0])>0 and re.findall(r'\bdriver_errors=(\d+)',log)==['0']and'[FAIL] full decimal parser public interface differs'in log,'decimal control detected only a driver failure')
  return [item],checked,dict(source_and_identity=actual,exhaustive_domain=exhaustive,complete_public_bits=186,semantic_controls=checked)
 
+def prefill_pipeline(root,base):
+ from check_prefill_pipeline import check
+ actual=check(root);recorded=read(base/'prefill_numeric/result.json')
+ require(actual==recorded and actual['accepted']and actual['admission_delay_ref_cycles']==1 and actual['added_state_bits']==4 and actual['current_sector_room_retained']and actual['pcm_data_tag_handshake_unchanged']and not actual['clock_or_timing_constraints_changed'],'prefill complete-source/register contract differs')
+ item=positive(root,base/'prefill_admission','audio_prefill_pipeline','tb_v3_audio_prefill_pipeline')
+ raw=(base/'prefill_admission/tb_v3_audio_prefill_pipeline/sim.log').read_text('utf-8')
+ require(item['data_comparisons']==527360 and re.findall(r'\btransitions=(\d+)',raw)==['61691']and re.findall(r'\bresets=(\d+)',raw)==['256'],'prefill all-mask, random and asynchronous-reset coverage differs')
+ from test_prefill_pipeline_controls import CASES,SOURCE,TOP
+ require({c[0]for c in CASES}=={'pipeline_bypassed','track_rotation','stale_reset','hard_credit_delayed'},'prefill mutant inventory differs')
+ folder=base/'prefill_controls';summary=read(folder/'summary.json')
+ for name,before,after in CASES:
+  rows=[r for r in summary['cases']if r['name']==name];require(len(rows)==1,'prefill mutation missing/duplicated')
+  require(tuple(rows[0][k]for k in('target','before','after','suite','top'))==(SOURCE,before,after,'audio_prefill_pipeline',TOP),'prefill mutation definition differs')
+ checked=semantic_controls(root,folder,'audio_prefill_pipeline',TOP,{c[0]for c in CASES})
+ return [item],checked,dict(source_and_identity=actual,semantic_controls=checked)
+
 def audit(root,regression,ticker,board,controls):
  require(__debug__,'assertions disabled')
  matrix=read(root/'safevision/build/qualification/four_features_261020.json')
@@ -540,8 +556,12 @@ def audit(root,regression,ticker,board,controls):
   request_proof=request_check(root)
   require(request_proof==read(controls.parent/'request_boundary_numeric/result.json')and request_proof['accepted']and request_proof['request_priority_cases']==64 and request_proof['verilog_operators_state_and_interface_unchanged']and request_proof['added_latency_cycles']==0 and not request_proof['clock_reset_constraints_changed'],'audio request complete-source/priority proof differs')
   production_profile['audio_request_boundary']=True
+ prefill_proof=None;prefill_controls=[]
+ if 'PREFILL_PIPELINE=DIRECT_RING_COMPARE'in(root/'safevision/rtl/audio/v3_audio_system.v').read_text('utf-8-sig'):
+  extra,prefill_controls,prefill_proof=prefill_pipeline(root,controls.parent);additions+=extra
+  production_profile.update(registered_prefill_admission=True,prefill_delay_ref_cycles=1)
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,decimal_dsp_proof=decimal_proof,audio_request_boundary_proof=request_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,decimal_dsp_proof=decimal_proof,audio_request_boundary_proof=request_proof,prefill_pipeline_proof=prefill_proof,prefill_pipeline_controls=prefill_controls,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)
