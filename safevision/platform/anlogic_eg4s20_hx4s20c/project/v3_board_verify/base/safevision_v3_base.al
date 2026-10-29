@@ -999,8 +999,8 @@
                     <effort>high</effort>
                     <post_place_opt>medium</post_place_opt>
                     <hfn_opt_effort>low</hfn_opt_effort>
-                    <pr_strategy>5</pr_strategy>
-                    <seed>7</seed>
+                    <pr_strategy>6</pr_strategy>
+                    <seed>1</seed>
                     <opt_timing>off</opt_timing>
                 </PlaceProperty>
                 <RouteProperty>
