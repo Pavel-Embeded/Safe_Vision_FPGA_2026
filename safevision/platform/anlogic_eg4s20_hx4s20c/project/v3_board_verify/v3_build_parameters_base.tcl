@@ -7,7 +7,7 @@ set_param place hfn_opt_effort low
 set_param place seed 1
 
 # Routability comparison; actual BASE50 control and all media clocks retained.
-set_param route timing off
+set_param route timing greedy
 
 # Measured capacity profile; original clocks, I/O and STA gates retained.
 set_param rtl min_ripple_len 32
@@ -16,7 +16,7 @@ set_param rtl min_ripple_len 32
 set_param place opt_timing off
 
 # Actual clocks/IO remain exact; optimize timing after congestion closure.
-set_param route post_route_opt auto
+set_param route post_route_opt ultra
 
 # Pack small control sets to reduce physical control/routing pressure.
 set_param rtl min_control_set 2
