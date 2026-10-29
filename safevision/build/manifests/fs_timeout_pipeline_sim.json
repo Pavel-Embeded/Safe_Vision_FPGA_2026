@@ -1,0 +1,22 @@
+{
+  "sources": [
+    "safevision/rtl/storage/v3_file_streamer_compact_ctx.v",
+    "safevision/verification/models/v3_file_streamer_frozen_timeout.sv"
+  ],
+  "tops": [
+    "tb_v3_fs_timeout_pipeline"
+  ],
+  "defines": [
+    "SIM_FAST_TO"
+  ],
+  "assets": [
+    "safevision/verification/models/v3_file_streamer_frozen_timeout.freeze.json"
+  ],
+  "generator_dependencies": [],
+  "generated_assets": [],
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "timeouts": {
+    "tb_v3_fs_timeout_pipeline": 300
+  }
+}
