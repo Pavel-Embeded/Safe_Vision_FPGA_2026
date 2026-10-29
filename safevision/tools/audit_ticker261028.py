@@ -312,7 +312,7 @@ def audit(root,regression,ticker,board,controls):
   else:require(locations==expected,'reviewed BASE six-RAM layout differs')
   require(not required_media_bram_locations(root,'hd'),'HD layout changed')
   production_profile['base_media_bram_locations']=locations
- require(len(sources)==(224 if packed else 217),'current physical inventory changed')
+ require(len(sources)==(224 if packed else 217)+int(header_phase)+2*int(checkpoint),'current physical inventory changed')
  summary=read(regression/'summary.json');require(summary.get('complete')and summary.get('accepted'),'full native campaign incomplete/failed')
  expected_jobs={('legacy','a'),('legacy','b')}|{('positive',r['top'])for r in matrix['positive']if not r['legacy']}|{('negative',r['mutation'])for r in matrix['negative']}
  require({(r['kind'],r['name'])for r in summary['records']}==expected_jobs,'native campaign inventory differs')
