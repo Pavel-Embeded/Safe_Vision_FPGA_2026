@@ -1,0 +1,72 @@
+{
+  "accepted": true,
+  "workflow_sha256": "5712101b58a02d02c7c70a120abf206fb7633fc4efbd71cbaf26d77d3ecb9866",
+  "frozen_baseline_ref": "09faac2e8fa718c9f92ef4a5013b68003ec8afe6",
+  "preserved_frozen_tools": 5,
+  "current_tests_and_audit_retained": true,
+  "required_audit_runs_after_any_baseline_result": true,
+  "synthetic_cases": [
+    {
+      "case": "baseline_success",
+      "accepted": true,
+      "expected_acceptance": true,
+      "exit_code": 0
+    },
+    {
+      "case": "baseline_failure",
+      "accepted": false,
+      "expected_acceptance": false,
+      "exit_code": 1
+    },
+    {
+      "case": "baseline_cancelled",
+      "accepted": false,
+      "expected_acceptance": false,
+      "exit_code": 1
+    },
+    {
+      "case": "baseline_skipped",
+      "accepted": false,
+      "expected_acceptance": false,
+      "exit_code": 1
+    },
+    {
+      "case": "baseline_unknown",
+      "accepted": false,
+      "expected_acceptance": false,
+      "exit_code": 1
+    },
+    {
+      "case": "baseline_empty",
+      "accepted": false,
+      "expected_acceptance": false,
+      "exit_code": 1
+    },
+    {
+      "case": "current_pass",
+      "accepted": true,
+      "expected_acceptance": true,
+      "exit_code": 0
+    },
+    {
+      "case": "current_reject",
+      "accepted": false,
+      "expected_acceptance": false,
+      "exit_code": 1
+    },
+    {
+      "case": "current_raise",
+      "accepted": false,
+      "expected_acceptance": false,
+      "exit_code": 1
+    },
+    {
+      "case": "current_existing_output",
+      "accepted": false,
+      "expected_acceptance": false,
+      "exit_code": 1
+    }
+  ],
+  "actual_current_hardware_verification_performed": false,
+  "scope": "Actual workflow shell gate and Python wrapper, with explicit synthetic verifier stubs"
+}

@@ -1,0 +1,13 @@
+{
+  "evidence_kind": "user_report",
+  "firmware_id": "26102801",
+  "bit_sha256": "1a0cf8cccdb1487b34f70e20eaa333dc106826dbc1d821be99b6a828b80b4083",
+  "recorded_at_utc": "2026-10-29T11:07:22.449948+00:00",
+  "user_verbatim": "已断电重接，各项正常",
+  "cold_power_cycle_passed_user_report": true,
+  "machine_verified_power_removal": false,
+  "power_off_seconds_measured": null,
+  "post_reconnect_serial_capture": "board/boot",
+  "pictures_audio_ticker_uptime_spectrum_normal_user_report": true,
+  "scope": "User reports physical power removal and normal operation; separate read-only UART capture confirms current firmware and health after reconnect"
+}

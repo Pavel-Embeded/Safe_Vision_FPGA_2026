@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "scope": "Original repository audit, exact historical source retention and clean-checkout host-tool tests; hardware capture remains separate",
+  "first_audit": "records_before_retention310.log",
+  "passing_audit": "clean_records311.json",
+  "original_auditor_modified": false,
+  "retained_original_source_objects": 12,
+  "retained_locations_updated": 24,
+  "archive_controls": 7,
+  "uart_controls": 28,
+  "flash_controls": 21,
+  "repository_controls": 10,
+  "files_sha256": {
+    "records_before_retention310.log": "d60a3d86400830eefb01c11cd97e92b8f00784a8cbc38351bca53ddfbf2d819d",
+    "retention310.driver.log": "eb3ae29b18fe8e552220ba055e6932a59069e932e09e9d65bc65d42823bc768d",
+    "retain_source_versions310.py": "20a3827cf025a5ff042ceaec3ecc8d031f92d0d94ca03d9bf4077deadc967a7d",
+    "clean_records311.json": "081e5b5489d2fd97437122d128680f8ff7874bf54b8a574ed57b41be2f03656b",
+    "clean_records311.log": "5c7d7c1c2daa630071984e718a16e0f2d124499b9710b991d46f6e1e29ee9f7f",
+    "records_controls313.log": "9dbde28171f13c6b28475b49ad2fbf3be7ead3bb35b3ac06ff15e4486491f9b6",
+    "clean309_test_ticker_archive261028.py.log": "e4b5bd11550fa03e63ccd6f512fc3618659eb673225fe9b368e5670bbfff88e3",
+    "clean309_test_ticker_uart261028.py.log": "8e350c79889d73eb98a0b59deedc82b75b4dbe5036f80e9e765cdd4d27a78d11",
+    "clean309_test_ticker_flash261028.py.log": "265689732023b0b241ab3ed2f3d4637b6238383ebc600630b261f2d951dcecce",
+    "clean_flash309.json": "6ec951e6a4211acb4e1f340cfa50783407781e4a69aa1036044c647195f2c817"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "accepted": true,
+  "firmware_id": "26102801",
+  "acceptance_profile": "flash_install261029",
+  "minimum_continuous_monitor_seconds": 60,
+  "manual_transitions": 100,
+  "recoveries": 10,
+  "flash_written": true,
+  "configuration_geometry_period_source": "board_flash293",
+  "two_hour_test_required": false,
+  "two_hour_pass_claimed": false,
+  "cold_power_cycle_user_report": true
+}

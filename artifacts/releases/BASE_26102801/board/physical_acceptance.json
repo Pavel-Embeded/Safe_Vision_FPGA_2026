@@ -1,0 +1,18 @@
+{
+  "evidence_kind": "user_report",
+  "firmware_id": "26102801",
+  "bit_sha256": "1a0cf8cccdb1487b34f70e20eaa333dc106826dbc1d821be99b6a828b80b4083",
+  "recorded_at_utc": "2026-10-29T10:17:27.885083+00:00",
+  "user_verbatim": "六项均正常；六项都正常",
+  "replies": [
+    "六项均正常",
+    "六项都正常"
+  ],
+  "scope": "User observed the current SRAM-programmed image before this Flash operation; not a post-Flash or cold-power observation",
+  "chinese_legible": true,
+  "scroll_smooth": true,
+  "uptime_visible": true,
+  "spectrum_visible": true,
+  "pictures_normal": true,
+  "audio_normal": true
+}

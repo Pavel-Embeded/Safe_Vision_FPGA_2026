@@ -1,0 +1,118 @@
+{
+  "accepted": true,
+  "stages": {
+    "configuration": {
+      "source": "safevision/tools/host/audit_configuration_26102004.py",
+      "source_sha256": "07fd83c02d4d67bd5deed7c38ba6376788cded51dfffccb4dfe22ff9c37545e2",
+      "transformed_sha256": "632d48c0627a7ca6aef18092d2d6877e2234d72eeb1cd554b9a454b2d8bef428",
+      "replacement": {
+        "before": "26102004",
+        "after": "26102801",
+        "occurrences": 3
+      },
+      "result": {
+        "accepted": true,
+        "firmware_id": "26102801",
+        "scope": "actual UART identity, startup defaults, setting/readback and reported health counters",
+        "ordered_valid_acks": 540,
+        "startup_defaults": 8,
+        "configuration_cases": 40,
+        "health_observations": 42,
+        "defaults_restored": true,
+        "physical_display_verified": false,
+        "physical_audio_verified": false,
+        "github_uploaded": false,
+        "rx_sha256": "de745ddea1c6f7fe05602ea9b33bb084bb4fcf1c44dd405d59d962d2b50209c6",
+        "trace_sha256": "9170c388b4f3c7a943b75f4c7b58e836aa8b466fb38431c445bcbb26d6b8e9c6"
+      }
+    },
+    "geometries": {
+      "source": "safevision/tools/host/audit_geometries.py",
+      "source_sha256": "8ee53facfae5295c527c794fefea3ba12cc6b114121e38392fad329d5791fa4c",
+      "transformed_sha256": "4d95680452b331e9f05c8cf55cde41010357369050f8aff1189498f6b1a6aa43",
+      "replacement": {
+        "before": "26101802",
+        "after": "26102801",
+        "occurrences": 2
+      },
+      "result": {
+        "raw_transactions_valid": true,
+        "firmware_id": "26102801",
+        "ordered_valid_acks": 630,
+        "health_observations": 42,
+        "physical_display_verified": false,
+        "physical_audio_verified": false,
+        "github_uploaded": false,
+        "rx_sha256": "c506291c809935f6a0b9a4895a45ee44b092db9f42c72fc2230253c40e6b5917",
+        "trace_sha256": "d1d310d8e431e67e288731315fd3e1018a610431a677089faa8a73e9c1fb285b",
+        "accepted": true,
+        "combinations": 8,
+        "manual_fade_commits": 32,
+        "auto_commits": 32,
+        "settings_restored": true,
+        "physical_button_test": false,
+        "emergency_latency_test": false
+      }
+    },
+    "periods": {
+      "source": "safevision/tools/host/audit_periods.py",
+      "source_sha256": "51fc063183146344209cb07fce26acaeebbf044d740c78e47e3d8d647c433d77",
+      "transformed_sha256": "c28028538068b6d6f3a6b91c6e2284c7947de29468723f4811aabd0941af7132",
+      "replacement": {
+        "before": "26101802",
+        "after": "26102801",
+        "occurrences": 2
+      },
+      "result": {
+        "accepted": true,
+        "firmware_id": "26102801",
+        "ordered_valid_acks": 2947,
+        "period_cases": [
+          {
+            "period_seconds": 2,
+            "auto_commits": 3,
+            "measured_intervals_ms": [
+              2491,
+              2504
+            ],
+            "nominal_period_plus_fade_ms": 2533.647062747405
+          },
+          {
+            "period_seconds": 5,
+            "auto_commits": 3,
+            "measured_intervals_ms": [
+              5617,
+              5502
+            ],
+            "nominal_period_plus_fade_ms": 5533.647062747405
+          },
+          {
+            "period_seconds": 10,
+            "auto_commits": 3,
+            "measured_intervals_ms": [
+              10504,
+              10508
+            ],
+            "nominal_period_plus_fade_ms": 10533.647062747405
+          },
+          {
+            "period_seconds": 30,
+            "auto_commits": 3,
+            "measured_intervals_ms": [
+              30622,
+              30486
+            ],
+            "nominal_period_plus_fade_ms": 30533.647062747405
+          }
+        ],
+        "health_observations": 14,
+        "settings_restored": true,
+        "rx_sha256": "96bcf784bcabf39f5c6bb3398356ee6f937e9309e20239f9debe6a96135157d5",
+        "trace_sha256": "bb1c83fef7b5abc8a1ffcae59c43715c787a293acd601311f7d6c16ee4c76648",
+        "physical_display_verified": false,
+        "physical_audio_verified": false,
+        "github_uploaded": false
+      }
+    }
+  }
+}

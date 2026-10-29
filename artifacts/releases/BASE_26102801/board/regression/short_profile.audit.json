@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "firmware_id": "26102801",
+  "period_pixels": 1024,
+  "ack_count": 5468,
+  "manual_commits": 100,
+  "recoveries": 10,
+  "continuous_monitor_ms": 63976,
+  "ticker_samples": 44,
+  "latency": {
+    "count": 100,
+    "minimum_ms": 18,
+    "median_ms": 25.0,
+    "p95_ms": 33,
+    "maximum_ms": 33
+  },
+  "trace_sha256": "96892e8bc92956e65aa03cae5b2685b945ad30a307df381002a14d0ca2ad5200",
+  "rx_sha256": "40c4c7eb130a5cfc1ec45df7f6c55e5c5b1fa08a5a4c030307902aedca58b11d",
+  "physical_display_verified": false,
+  "scope": "Recorded UART byte replay; no new hardware interaction"
+}

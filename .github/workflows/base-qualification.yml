@@ -135,6 +135,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -B safevision/tools/verify_ticker_flash261028.py --output "$env:RUNNER_TEMP/safevision-flash-audit.json"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Preserve explicit user-selected board profile
+        run: python -B safevision/tools/test_ticker_flash_policy261029.py
       - name: Verify debug archives, retained evidence and documentation links
         shell: pwsh
         run: |
@@ -150,7 +152,7 @@ jobs:
           import json, os, sys
           root = Path.cwd()
           sys.path.insert(0, str(root / 'safevision/tools'))
-          from verify_ticker_ci import verify
+          from verify_ticker_flash_delivery261029 import verify
           out = Path(os.environ['RUNNER_TEMP']) / 'safevision-base-audit'
           if out.exists():
               raise ValueError('Fresh verification directory required')

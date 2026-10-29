@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "acceptance_profile": "flash_install261029",
+  "original_two_hour_validator_preserved": true,
+  "original_default_rejected_short_record": true,
+  "actual_short_record_closed_normally": true,
+  "short_audit": "short_profile.audit.json",
+  "scope": "User cancelled two-hour requirement; original default auditor still rejects short evidence; explicit60-second auditor checks the same raw bytes and all100transitions/10recoveries"
+}

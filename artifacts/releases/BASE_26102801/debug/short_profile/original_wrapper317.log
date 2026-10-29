@@ -1,0 +1,8 @@
+TICKER UART AUDIT FAILED: ValueError: too few continuous health observations
+Independent UART replay failed
+At D:\Codex\sv_scroll261028\run_regression317.ps1:7 char:25
++ if($LASTEXITCODE -ne 0){throw 'Independent UART replay failed'}
++                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Independent UART replay failed:String) [], RuntimeException
+    + FullyQualifiedErrorId : Independent UART replay failed
+ 

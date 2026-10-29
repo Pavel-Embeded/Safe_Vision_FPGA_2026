@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "D:\Codex\sv_scroll261028\clean_delivery285\safevision\tools\audit_repository_records.py", line 153, in <module>
+    main()
+  File "D:\Codex\sv_scroll261028\clean_delivery285\safevision\tools\audit_repository_records.py", line 145, in main
+    result = audit(args.repo.resolve())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Codex\sv_scroll261028\clean_delivery285\safevision\tools\audit_repository_records.py", line 99, in audit
+    require(index.get(row['retained']) == row['git_blob'], 'Retained object changed: '+row['retained'])
+  File "D:\Codex\sv_scroll261028\clean_delivery285\safevision\tools\audit_repository_records.py", line 11, in require
+    raise ValueError(message)
+ValueError: Retained object changed: safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc

@@ -16,4 +16,4 @@
 
 当前 HDMI 输出为 640×480，大尺寸 BMP 在导入时归一化为显示画布。亮度通过实体菜单或串口调整。各功能的测试结果按版本和具体设备组合记录，最终评分由评委依据赛题要求和现场演示判断。
 
-当前证据见 [验收](../releases/BASE_26102301/ACCEPTANCE.md)，实现范围见 [媒体与频谱](../architecture/flexible-media-and-spectrum.md)，模块和契约见 [模块手册](../modules/README.md)。旧需求表中的 B/E 编号沿用当时学习手册，不与本页编号混用。
+当前证据见 [BASE 26102801 资格](../../artifacts/releases/BASE_26102801/functional.audit.json) 和 [原始板测](../../artifacts/releases/BASE_26102801/board)，实现范围见 [媒体与频谱](../architecture/flexible-media-and-spectrum.md)，模块和契约见 [模块手册](../modules/README.md)。旧需求表中的 B/E 编号沿用当时学习手册，不与本页编号混用。

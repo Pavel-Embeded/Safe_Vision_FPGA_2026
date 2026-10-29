@@ -20,7 +20,33 @@ powershell -NoProfile -File .\safevision\tools\host\burn_ticker261028_sram.ps1 -
 
 脚本先核对当前源码、位流和证据包，再重放功能及完整时序检查，随后调用本机 TD BitWriter。下载回执保存实际器件、位流校验值、工具校验值和命令结束状态。串口使用板载 CH340，参数为 115200、8N1；主机脚本关闭 DTR、RTS。
 
-本版下载目标为 SRAM。板载 Flash 保留 BASE 26102301；完全断电或按 CONFIG1 后，由 Flash 加载该版本。再次运行上述下载命令可加载本版。旧成功位流和 Flash 恢复步骤见 [BASE 26102301 操作说明](../BASE_26102301/OPERATIONS.md)。
+板载 Flash 已固化 BASE 26102801。SRAM 下载用于临时加载，CONFIG1 或重新上电则从 Flash 加载。切勿把 KEY1 媒体复位与 CONFIG1 配置重载混用。
+
+## Flash 固化与恢复
+
+当前安装的原始回执见 [flash/receipt.json](../../../artifacts/releases/BASE_26102801/flash/receipt.json)。流程包括器件和 EF4015 识别、两次完整备份、写入、独立校验、两次完整读回及 Flash 重载。重载后串口读回本版固件、四槽有效位和零健康错误。
+
+再次安装时，先运行预览。确认选择的版本后，加 `-Apply` 并指定新的英文输出目录。脚本核对位流及工具校验值，保留当时完整 Flash 的两次备份，任何阶段失败即停止。默认不触发硬件操作。
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\artifacts\releases\BASE_26102801\flash\tools\program_flash.ps1 -Image Latest
+powershell -NoProfile -ExecutionPolicy Bypass -File .\artifacts\releases\BASE_26102801\flash\tools\program_flash.ps1 -Image Latest -Apply -OutDir D:\Codex\SafeVision_Flash_Install
+```
+
+恢复到旧成功 BASE 26102301 时选择 `Previous`，输出路径同样使用新的空目录：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\artifacts\releases\BASE_26102801\flash\tools\program_flash.ps1 -Image Previous -Apply -OutDir D:\Codex\SafeVision_Flash_Rollback
+```
+
+`Previous` 使用随包保存的 `SafeVision_BASE_6a957b0.bit`。更早版本资料见 [BASE 26102301 操作说明](../BASE_26102301/OPERATIONS.md)。本次安装前读出的 Flash 与旧归档内容不同，因此按原始备份保存，不为它指定固件版本。
+
+本版完全断电重接后由用户确认各项正常，后续只读串口回读通过；实体断电与机器采集分别留证，见 [用户反馈](../../../artifacts/releases/BASE_26102801/board/cold_boot_user_report.json)。旧版掉电反馈继续绑定旧版位流。独立复查命令如下：
+
+```powershell
+python -B safevision/tools/verify_ticker_flash261028.py --output D:\Codex\SafeVision_Flash_Check.json
+```
+
 
 ## 离线复查环境
 
@@ -28,7 +54,7 @@ powershell -NoProfile -File .\safevision\tools\host\burn_ticker261028_sram.ps1 -
 
 ```powershell
 python -m pip install pypdf==6.10.0 numpy==2.3.5 PyYAML==6.0.3
-python -B safevision/tools/verify_ticker_ci.py --run-dir D:\Codex\SafeVision_Offline_Check
+python -B safevision/tools/verify_ticker_flash_delivery261029.py --run-dir D:\Codex\SafeVision_Offline_Check
 ```
 
 输出目录须为新的英文路径。工具逐项复查当前源码、位流、原始功能和时序记录、串口采集及实体反馈，并在冻结的 BASE 26102301 中执行原验收。GitHub Actions 将旧基线和当前交付放在两个独立任务中运行；主检查要求旧基线成功，再执行本版的完整证据复查。

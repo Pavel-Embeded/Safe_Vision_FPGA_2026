@@ -1,29 +1,20 @@
 # 文档入口
 
-当前稳定版是 BASE 26102301。使用和复测时先查现行文档，旧问题再按日期查调试记录。
+BASE 26102801 是当前交付，也已固化到板载 Flash。使用时先核对下载目标和固件标识，再查对应版本的操作说明。
 
 | 要做的事 | 入口 |
 | --- | --- |
-| 核对固件、源码和位流 | [当前交付](../SAFEVISION_CURRENT.md) |
-| 准备 TF 卡、下载或恢复旧版 | [操作与恢复](releases/BASE_26102301/OPERATIONS.md) |
-| 使用实体按键和八项参数 | [菜单说明](releases/BASE_26102301/MENU_CN.md) |
-| 看数据流与模块接口 | [项目结构](PROJECT_STRUCTURE.md)、[生产模块](modules/README.md)、[媒体与频谱](architecture/flexible-media-and-spectrum.md) |
-| 对照赛题要求 | [官方要求对应表](requirements/official_problem1.md) |
-| 查看测试与实物反馈 | [BASE 验收](releases/BASE_26102301/ACCEPTANCE.md) |
-| 排查旧故障 | [调试目录](debug/README.md)、[时间线](debug/TIMELINE.md)、[逐次记录](debug/RUNS.md) |
-| 查找旧说明的整理版和原件 | [历史说明索引](history/DOCUMENTS.md) |
-| 提交修改或补充记录 | [开发规范](../CONTRIBUTING.md)、[文字约定](WRITING.md) |
+| 核对固件、源码、位流和 Flash | [当前交付](../SAFEVISION_CURRENT.md) |
+| 准备 TF 卡、下载或恢复 | [本版操作说明](releases/BASE_26102801/OPERATIONS.md)、[旧版 Flash 恢复](releases/BASE_26102301/OPERATIONS.md) |
+| 操作实体按键和八项参数 | [菜单说明](releases/BASE_26102301/MENU_CN.md) |
+| 看模块与数据流 | [项目结构](PROJECT_STRUCTURE.md)、[模块手册](modules/README.md)、[媒体与频谱](architecture/flexible-media-and-spectrum.md) |
+| 看字幕的字库与像素时序 | [字幕模块](modules/scrolling_ticker.md) |
+| 对照赛题要求 | [官方对应表](requirements/official_problem1.md) |
+| 读取本版机器采集 | [发布索引](../artifacts/releases/BASE_26102801/release.index.json)、[板测原件](../artifacts/releases/BASE_26102801/board) |
+| 排查故障和构建尝试 | [调试目录](debug/README.md)、[本版记录索引](debug/TICKER_261028.md)、[历史时间线](debug/TIMELINE.md) |
+| 查历史说明 | [整理版与原件索引](history/DOCUMENTS.md) |
+| 提交修改或记录 | [开发规范](../CONTRIBUTING.md)、[文字约定](WRITING.md) |
 
-## 版本与记录
+模块说明以当前顶层、生产清单和实际端口为准。历史交接、V2 及 docs/v3 按原来的版本读取。冻结发布包、原始日志、波形、时序报告及版权许可保留原字节。
 
-模块目录内的 README 说明该模块或历史阶段的设计。早期 A/B 交接、V2 接口规范和 docs/v3 检查点保留当时参数及未完成项，不能直接作为当前固件的验收结果。
-
-当前 BASE 支持手动亮度、对比度调节。图像的“自适应”指长宽比适配，当前位流没有自动感光或图片内容自动亮度反馈。HD 试验沿用各次原始结果，未列入当前 BASE 发布。
-
-2026-10-25 的完全断电重启已由用户实物确认，2026-10-26 再次确认。现场测试次数、耗时和串口原始采集未提供，详见 [验收更新](../evidence/board/acceptance_updates.json)。
-
-## 原件与整理版
-
-冻结发布包、串口日志、波形、时序报告和既有归档保留原字节。原始说明绑定发布哈希时，另存整理版，并在历史索引中给出原件路径。厂商版权和许可说明沿用原文。
-
-本次文字修改的逐文件来源、校验值和检查结果见 [文档复核记录](../evidence/documentation_review_261026/review.json)。
+当前支持实体菜单或串口调节亮度和对比度；图片导入按长宽比适配。BASE 26102301 的用户掉电反馈，以及 BASE 26102801 的 SRAM 实物反馈、Flash 安装和重载板测分别保存，版本关系见当前交付页。

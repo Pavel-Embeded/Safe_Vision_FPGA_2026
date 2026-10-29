@@ -1,12 +1,12 @@
 # 生产模块手册
 
-此手册对应 BASE 26102301，生产入口为 `safevision_v3_top`。[发布索引](../../artifacts/releases/BASE_26102301_6a957b0/release.index.json) 记录 206 个实际输入的指纹。测试与综合各用显式文件清单，行为模型只参加仿真。
+此手册对应 BASE 26102801，生产入口为 `safevision_v3_top`。[发布索引](../../artifacts/releases/BASE_26102801/release.index.json) 记录 226 个实际输入的指纹。测试与综合各用显式文件清单，行为模型只参加仿真。
 
 ## 时钟与复位
 
 | 域 | 当前职责 | 复位范围 |
 | --- | --- | --- |
-| REF，板载 50 MHz | SD、目录、媒体解析、启动计时 | 全局参考复位；媒体路径另有媒体复位 |
+| REF，板载 50 MHz | SD、目录、媒体解析、启动计时 | 媒体路径有独立复位；UP 计时仅在 FPGA 配置时初始化 |
 | SYS，BASE 50 MHz | 控制、UART、故障与恢复 | SYS 记录在媒体复位期间保留 |
 | MEM，50 MHz | SDRAM 服务与环缓存 | 媒体复位及同步释放 |
 | WRITE，100 MHz | packed cache 的两次 16 位写入 | 从共同媒体 epoch 异步置位、在写域同步释放 |
@@ -29,6 +29,7 @@
 | `video/scaler` | 画布坐标和插值；BASE 常用模式为整数坐标 | 坐标、边缘夹紧、有效位及固定延迟 |
 | `video/v3_presentation_ctrl` | 当前/目标槽、Fade alpha、generation 和提交事件 | 32 帧渐变、音频 ready、取消、超时和帧边界 |
 | `video/video_compositor`、`v3_status_layers` | 颜色处理及背景、OSD、警告、HUD 合成 | Alpha 舍入、调色板、文字与同步标签；最终像素路径 21 拍 |
+| `video/v3_boot_uptime` | 50 MHz 参考时钟生成累计秒数与 BCD，经邮箱送到显示域 | 每秒递增；KEY1 和媒体恢复保留计时；配置初始化归零 |
 | `video/v3_audio_spectrum` | 实际左声道 PCM 产生 512 点 FFT 和 32 频段 | 去均值、Hann、FFT、频段与峰值、帧边界双银行发布 |
 | [`video/v3_scrolling_ticker`](scrolling_ticker.md) | 中文安全提示、底条和帧边界位置更新 | 全部位置、独立字模、21 拍对齐、裁剪、诊断和媒体复位隔离 |
 | `audio/v3_audio_system`、`v3_pcm_ring` | WAV 描述符、PCM 环缓存、48 kHz 调度、音量和报警 | 槽标签、声道、回绕、缺音频回退及媒体恢复 |
@@ -44,7 +45,7 @@
 
 ## 测试与变更
 
-完整测试名称和分组保存在 [当前矩阵](../../safevision/build/qualification/four_features_261020.json)，执行证据由 [acceptance.json](../../evidence/v3/four_features_261020/acceptance.json) 绑定。目录、归一化、完整帧、PCM、FFT、菜单、跨域和恢复均有独立或整机检查。
+本版 [functional.audit.json](../../artifacts/releases/BASE_26102801/functional.audit.json) 核对 325 个独立正向 top 和 278 项语义负控；编译输入、原始日志、逐拍对照及路由报告保存在 [qualification.zip](../../artifacts/releases/BASE_26102801/qualification.zip)。目录、归一化、完整帧、PCM、FFT、菜单、字幕、跨域和恢复均有独立或整机检查。冻结的 BASE 26102301 原资格在复查工具中单独重放。
 
 修改接口时同时核对时钟、复位、端口顺序、握手与延迟。保留旧实例默认行为，更新明确的仿真/综合依赖；执行受影响测试后再检查完整资格。发布前重新核对资源和 Slow/Fast 的 setup、hold、recovery、removal。
 

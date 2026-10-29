@@ -1,9 +1,10 @@
 # 调试记录
 
-调试记录按固件 ID、源提交和原始路径查找，失败结果、临时诊断与最终修正一并保留。当前稳定版为 BASE 26102301。
+调试记录按固件 ID、源提交和原始路径查找，失败结果、临时诊断与最终修正一并保留。当前交付为 BASE 26102801。
 
 | 查找入口 | 用途 |
 | --- | --- |
+| [滚动字幕版记录](TICKER_261028.md) | 115 次构建尝试、最终资格、串口采样修正、长测和空间清理 |
 | [SDRAM 读写排查](SDRAM_261017.md) | 读有效、写入流量与非对齐读的分层定位 |
 | [故障时间线](TIMELINE.md) | 从现象查找排查过程与最终修正 |
 | [逐次记录目录](RUNS.md) | 每个记录组、文件数、大小和代表性原件 |
@@ -12,7 +13,7 @@
 | [实板验收更新](../../evidence/board/acceptance_updates.json) | 后续用户实物确认与固定发布证据的关系 |
 | [源码变更说明](../changes) | 多尺寸、频谱、WRITE100 和 CI 修正 |
 
-记录索引中的分类只表示来源与保存位置。日志文件名中的 PASS、旧汇总或目录名不能代替对应输入、正常结束和实际结论检查。原始记录保持字节不变。
+记录索引中的分类只表示来源与保存位置。日志文件名中的 PASS、旧汇总或目录名不能代替对应输入、正常结束和实际结论检查。原始记录保持字节不变。旧清理清单引用的源码继续开发后，历史字节另存于 [retained_source_261028](../../evidence/repository_cleanup_261026/retained_source_261028)，当前清单更新保存位置，原清单保存在 [duplicates_261026.original.json](../../evidence/repository_cleanup_261026/duplicates_261026.original.json)。
 
 ## 记录格式
 
@@ -22,6 +23,6 @@
 
 ## 运行检查
 
-`python -B safevision/tools/audit_repository_records.py` 核对收录文件、去重保留路径、冷启动反馈和当前文档链接。完整离线资格、原生时序及串口重放入口为 `python -B safevision/tools/verify_current_base_ci.py --run-dir <新的空目录>`。
+`python -B safevision/tools/audit_repository_records.py` 核对收录文件、去重保留路径、冷启动反馈和当前文档链接。完整离线资格、原生时序及串口重放入口为 `python -B safevision/tools/verify_ticker_flash_delivery261029.py --run-dir <新的空目录>`。
 
-这两个入口读取已有证据。本次仓库整理保持生产 RTL、管脚、PLL、约束和位流不变。
+这两个入口读取已保存的采集和报告。当前复查同时保留 BASE 26102301 的冻结资格；新硬件修改按构建、时序、位流、下载、串口和实物观察的顺序分别留证。

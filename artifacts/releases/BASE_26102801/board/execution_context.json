@@ -1,8 +1,8 @@
-﻿{
-    "utc":  "2026-10-29T10:20:28.0192022Z",
-    "cold_power_cycle_verified":  false,
-    "sram_receipt_is_original_prior_programming":  true,
-    "flash_receipt_sha256":  "81fa703c3aa83a3decfaf15c317e491921fcdc1b0ab8bb14c2294a96bf232283",
-    "capture_after_flash_refresh":  true,
-    "sram_program_repeated_for_this_capture":  false
+{
+  "sram_program_repeated_for_this_capture": false,
+  "utc": "2026-10-29T11:05:47.8084718Z",
+  "flash_receipt_sha256": "81fa703c3aa83a3decfaf15c317e491921fcdc1b0ab8bb14c2294a96bf232283",
+  "capture_after_user_reported_cold_boot": true,
+  "capture_after_flash_refresh": true,
+  "sram_receipt_is_original_prior_programming": true
 }
