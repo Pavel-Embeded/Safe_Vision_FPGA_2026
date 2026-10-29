@@ -254,6 +254,34 @@ def bmp_extent(root,base):
  return [extra],verified,dict(mathematical_proof=actual,semantic_controls=verified,timing_contract_control=dict(name=row['name'],errors=phase_errors,raw_sha256=sha(native/'sim.log'),compiler=g),timing_contract_control_counted_as_semantic=False)
 
 
+def fs_timeout_pipeline(root,base):
+ from check_fs_timeout_pipeline import check
+ actual=check(root);recorded=read(base/'fs_timeout_numeric/result.json')
+ require(actual==recorded and actual['accepted']and actual['normal_protocol']['eligible_states']>0 and not actual['no_bubble_contract_control']['accepted'],'file timeout protocol/source proof differs')
+ require(actual['public_data_and_latency_unchanged']and actual['timeout_threshold_unchanged']and not actual['new_timing_exception'],'file timeout contract changed')
+ suite='fs_timeout_pipeline';top='tb_v3_fs_timeout_pipeline'
+ item=positive(root,base/'fs_timeout_miter',suite,top);raw=(base/'fs_timeout_miter'/top/'sim.log').read_text('utf-8')
+ require(item['data_comparisons']>=8000000 and re.findall(r'\bdata_errors=(\d+)',raw)==['0']and re.findall(r'\bphase_errors=(\d+)',raw)==['0']and re.findall(r'\bdriver_errors=(\d+)',raw)==['0']and'cases=256'in raw,'complete file-kernel comparison absent')
+ ports='context_out idle_between_sectors busy done error err_code err_detail bytes_rd dbg_state data valid sof eof wk_cur_clus wk_start wk_rst_walk sd_rd_addr sd_rd_len sd_rd_en sd_data_ready lba_cluster timeout_tick timeout_reset lba_request'.split()
+ tb=(root/'safevision/verification/unit/tb_v3_fs_timeout_pipeline.sv').read_text('utf-8-sig')
+ for prefix in('d','g'):
+  vector='wire[321:0] '+prefix+'_public={'+','.join(prefix+'_'+name for name in ports)+'};'
+  require(vector in tb,'all322public bits must be compared, including timeout_reset')
+  for name in ports:require(tb.count('.'+name+'('+prefix+'_'+name+')')==1,'public output omitted from reference/DUT: '+name)
+ require('differs at consumption edge'in tb,'consumption-edge comparison absent')
+ from test_fs_timeout_controls import CASES,SOURCE
+ wanted={'predicate_stuck_zero','predicate_stuck_one'}
+ require({c[0]for c in CASES}==wanted and SOURCE=='safevision/rtl/storage/v3_file_streamer_compact_ctx.v','file timeout mutant inventory differs')
+ folder=base/'fs_timeout_controls';summary=read(folder/'summary.json')
+ for name,before,after in CASES:
+  rows=[r for r in summary['cases']if r['name']==name];require(len(rows)==1,'file timeout control missing/duplicate');row=rows[0]
+  require((row['target'],row['before'],row['after'])==(SOURCE,before,after),'file timeout control definition differs')
+ checked=semantic_controls(root,folder,suite,top,wanted)
+ for row in summary['cases']:
+  log=(folder/row['name']/'native'/top/'sim.log').read_text('utf-8');values=re.findall(r'\bdata_errors=(\d+)',log)
+  require(len(values)==1 and int(values[0])==row['actual_data_comparison_errors']and int(values[0])>0 and re.findall(r'\bdriver_errors=(\d+)',log)==['0']and'[FAIL] full file-streamer public interface differs'in log,'control detected only an internal phase assertion')
+ return [item],checked,dict(protocol_proof=actual,semantic_controls=checked,complete_public_bits=322,consumption_and_updated_edges_compared=True)
+
 def audit(root,regression,ticker,board,controls):
  require(__debug__,'assertions disabled')
  matrix=read(root/'safevision/build/qualification/four_features_261020.json')
@@ -274,6 +302,8 @@ def audit(root,regression,ticker,board,controls):
  header_phase='wire header_late=(mstate==H_HEAD)'in(root/'safevision/rtl/media/bmp_parser.v').read_text('utf-8-sig')
  require(header_phase,'reviewed header phase not selected')
  allowed|={'safevision/rtl/media/bmp_parser.v','safevision/tools/gen_v3_cdc.py',str(FLOW/'v3_cdc.sdc').replace('\\','/'),str(FLOW/'v3_cdc_audit.tcl').replace('\\','/')}
+ fs_registered='.REGISTERED_TIMEOUT_EDGE(FLEX_FILES)'in(root/'safevision/rtl/storage/v3_shared_fs_service.v').read_text('utf-8-sig')
+ if fs_registered:allowed|={'safevision/rtl/storage/v3_file_streamer_compact_ctx.v','safevision/rtl/storage/v3_shared_fs_service.v'}
  checkpoint=(root/FLOW/'v3_implementation_checkpoint.tcl').is_file()
  if checkpoint:
   from v3_checkpoint_flow import validate
@@ -431,8 +461,12 @@ def audit(root,regression,ticker,board,controls):
  if header_phase:
   extra,header_controls,header_proof=bmp_extent(root,controls.parent);additions+=extra
   production_profile['bmp_extent_sum_bits']=33;production_profile['bmp_extent_private_stages']=0;production_profile['bmp_header_phase']=[52,53];production_profile['bmp_header_setup_cycles']=2;production_profile['bmp_header_hold_cycles']=1;production_profile['bmp_publication_byte']=53
+ fs_controls=[];fs_proof=None
+ if fs_registered:
+  extra,fs_controls,fs_proof=fs_timeout_pipeline(root,controls.parent);additions+=extra
+  production_profile.update(fs_timeout_registered=True,fs_timeout_public_bits=322)
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)
