@@ -69,6 +69,8 @@ def main():
    names|={'safevision/tools/check_decimal_dsp.py','safevision/tools/check_decimal_dsp_exhaustive.py','safevision/tools/test_decimal_dsp_controls.py','safevision/verification/models/decimal_dsp135.freeze.json'}
   if functional['production_profile'].get('audio_request_boundary'):
    names.add('safevision/tools/check_audio_request_boundary.py')
+  if functional['production_profile'].get('registered_prefill_admission'):
+   names|={'safevision/tools/check_prefill_pipeline.py','safevision/tools/test_prefill_pipeline_controls.py'}
   commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD']).decode().strip()
   binding=source_commit_binding(root,root,commit,names);require(binding['verified'],'approval inputs are not committed: '+str(binding.get('errors')))
   all_inputs={name:sha(root/name)for name in names}
