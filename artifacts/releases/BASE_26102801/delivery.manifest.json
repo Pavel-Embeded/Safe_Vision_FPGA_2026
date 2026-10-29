@@ -177,7 +177,9 @@
     "debug/ci_validation/frozen_baseline287/replay/verification.json": "6546f5b5130e6ed4aa6921abf5b6f9bdd075dbf93548cc022e692f30d21197fa",
     "flash/recovery/SafeVision_BASE_6a957b0.bit": "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
     "flash/tools/program_flash.ps1": "e44509cdd4fd00d9c8b256a9832e76c9df9990b81d64b75291a890da2e0bd344",
-    "wav_mapping_controls/fixture/safevision/rtl/media/v3_wav_parser_compact_ctx.v": "927b69d5cdbd152a68d88dcf489773bccb936c425ca00dccc007abd6db613e04"
+    "wav_mapping_controls/fixture/safevision/rtl/media/v3_wav_parser_compact_ctx.v": "927b69d5cdbd152a68d88dcf489773bccb936c425ca00dccc007abd6db613e04",
+    "SafeVision_BASE_26102801_FLASH.zip": "fd58555b018b16875cca4f412b229d448f7406123170ac1ff98acb894ef93038",
+    "flash.install.index.json": "b198704bb51dcc9eb1f2816fc33c50842b95366b18eb6522c32ba232ebab84ba"
   },
   "acceptance_profile": "flash_install261029",
   "two_hour_pass_claimed": false,

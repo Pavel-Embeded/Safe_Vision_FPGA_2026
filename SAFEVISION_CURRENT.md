@@ -5,6 +5,7 @@ BASE 26102801 输出 640×480 HDMI，保留任意合法名称与多尺寸 BMP、
 | 项目 | 身份 |
 | --- | --- |
 | 位流 | [SafeVision_BASE_75b34e6.bit](artifacts/releases/BASE_26102801/SafeVision_BASE_75b34e6.bit) |
+| 便携 Flash 包 | [SafeVision_BASE_26102801_FLASH.zip](artifacts/releases/BASE_26102801/SafeVision_BASE_26102801_FLASH.zip) |
 | SHA-256 | `1a0cf8cccdb1487b34f70e20eaa333dc106826dbc1d821be99b6a828b80b4083` |
 | 批准源码 | `10168948e372d290b2f3b85428c1d07108d95883` |
 | 物理构建 | `75b34e6ca2fa3517b521ccc08c6d0f4d3ea72079` |

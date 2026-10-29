@@ -24,6 +24,8 @@ powershell -NoProfile -File .\safevision\tools\host\burn_ticker261028_sram.ps1 -
 
 ## Flash 固化与恢复
 
+便携文件见 [Flash 安装包](../../../artifacts/releases/BASE_26102801/SafeVision_BASE_26102801_FLASH.zip)。ZIP 内的 `FLASH_INSTALL.md` 给出独立安装与恢复步骤，`package.index.json` 登记所含文件的校验值。完整源码和资格归档继续保存在项目仓库。
+
 当前安装的原始回执见 [flash/receipt.json](../../../artifacts/releases/BASE_26102801/flash/receipt.json)。流程包括器件和 EF4015 识别、两次完整备份、写入、独立校验、两次完整读回及 Flash 重载。重载后串口读回本版固件、四槽有效位和零健康错误。
 
 再次安装时，先运行预览。确认选择的版本后，加 `-Apply` 并指定新的英文输出目录。脚本核对位流及工具校验值，保留当时完整 Flash 的两次备份，任何阶段失败即停止。默认不触发硬件操作。

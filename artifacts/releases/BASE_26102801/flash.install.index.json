@@ -1,0 +1,10 @@
+{
+  "accepted": true,
+  "archive": "SafeVision_BASE_26102801_FLASH.zip",
+  "archive_sha256": "fd58555b018b16875cca4f412b229d448f7406123170ac1ff98acb894ef93038",
+  "archive_bytes": 4433327,
+  "files": 31,
+  "package_index_sha256": "e12c6b2405399cd340beca816ad34f1d8ccc6f3a4fb5a0044953bf28208b5e21",
+  "bit_sha256": "1a0cf8cccdb1487b34f70e20eaa333dc106826dbc1d821be99b6a828b80b4083",
+  "scope": "Portable install and rollback package; full qualification remains in repository"
+}

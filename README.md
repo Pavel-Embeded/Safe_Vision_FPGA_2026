@@ -7,6 +7,7 @@ FAT32 根目录中的 BMP 可使用中文长文件名和不同尺寸。系统按
 | 入口 | 内容 |
 | --- | --- |
 | [当前版本](SAFEVISION_CURRENT.md) | 位流、源码、板测和 Flash 的版本关系 |
+| [Flash 安装包](artifacts/releases/BASE_26102801/SafeVision_BASE_26102801_FLASH.zip) | 解压后直接固化或恢复，包含脚本、位流和校验清单 |
 | [文档入口](docs/README.md) | 使用、模块、调试与历史资料 |
 | [项目结构](docs/PROJECT_STRUCTURE.md) | 源码、约束、测试和交付目录 |
 | [模块手册](docs/modules/README.md) | 接口、时钟、复位、握手和测试入口 |
