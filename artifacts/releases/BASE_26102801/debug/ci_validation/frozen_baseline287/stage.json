@@ -1,0 +1,34 @@
+{
+  "accepted": true,
+  "frozen_commit": "09faac2e8fa718c9f92ef4a5013b68003ec8afe6",
+  "tools": [
+    {
+      "tool": "test_base_delivery.py",
+      "exit_code": 0,
+      "log_sha256": "0bf7eb6be3e83cf7d005615e03824d0a921bc789ba6a01db25bc80892d7c3eae"
+    },
+    {
+      "tool": "test_current_base_ci.py",
+      "exit_code": 0,
+      "log_sha256": "454eaccc9664ecdaad58f442381c6557784d950644db8ca2a2948f47ce240bba"
+    },
+    {
+      "tool": "test_repository_records.py",
+      "exit_code": 0,
+      "log_sha256": "cd238421dd1594d4fa2c0435e6e6edc773eb20dee42f4a0a7eea4e6182896d0e"
+    },
+    {
+      "tool": "audit_repository_records.py",
+      "exit_code": 0,
+      "log_sha256": "35301ccecf11a99718811abbe289829d63d87e05fb7b9be9b654da534602ebfb"
+    },
+    {
+      "tool": "verify_current_base_ci.py",
+      "exit_code": 0,
+      "log_sha256": "77bab5f776ef3461309235796b74d2984785e379d503b474e368a1bc37650264"
+    }
+  ],
+  "verification_sha256": "6546f5b5130e6ed4aa6921abf5b6f9bdd075dbf93548cc022e692f30d21197fa",
+  "hardware_test_performed": false,
+  "github_uploaded": false
+}

@@ -1,0 +1,14 @@
+{
+  "accepted": true,
+  "archived_original_records": 21530,
+  "archives": 68,
+  "protected_original_git_objects": 64867,
+  "removed_identical_copies": 14688,
+  "removed_logical_bytes": 549393778,
+  "archive_bytes": 36877336,
+  "links_checked": 269,
+  "cold_boot_status": "passed_user_report",
+  "cold_boot_machine_verified": false,
+  "bit_sha256": "95ace341ca3aa00363b1a5fc31108fe6d3cd352579906047a6bb02c0ac1a4c5e",
+  "new_hardware_test_performed": false
+}

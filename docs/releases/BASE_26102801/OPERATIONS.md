@@ -22,6 +22,17 @@ powershell -NoProfile -File .\safevision\tools\host\burn_ticker261028_sram.ps1 -
 
 本版下载目标为 SRAM。板载 Flash 保留 BASE 26102301；完全断电或按 CONFIG1 后，由 Flash 加载该版本。再次运行上述下载命令可加载本版。旧成功位流和 Flash 恢复步骤见 [BASE 26102301 操作说明](../BASE_26102301/OPERATIONS.md)。
 
+## 离线复查环境
+
+完整复查使用 Python 3.12、Node.js 24，以及与 GitHub Actions 相同的固定版本依赖。在独立的 Python 环境中运行：
+
+```powershell
+python -m pip install pypdf==6.10.0 numpy==2.3.5 PyYAML==6.0.3
+python -B safevision/tools/verify_ticker_ci.py --run-dir D:\Codex\SafeVision_Offline_Check
+```
+
+输出目录须为新的英文路径。工具逐项复查当前源码、位流、原始功能和时序记录、串口采集及实体反馈，并在冻结的 BASE 26102301 中执行原验收。GitHub Actions 将旧基线和当前交付放在两个独立任务中运行；主检查要求旧基线成功，再执行本版的完整证据复查。
+
 ## 按键与菜单
 
 正常播放时，KEY2 换图，KEY3 切换自动轮播，KEY4 控制应急显示。KEY2+KEY3 同时长按约两秒进入菜单。菜单内短按 KEY2 增加、短按 KEY3 减小；长按 KEY2 切换项目，长按 KEY3 退出。

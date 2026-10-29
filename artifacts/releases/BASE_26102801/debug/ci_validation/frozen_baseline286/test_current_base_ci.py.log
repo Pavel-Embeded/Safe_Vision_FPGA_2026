@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "D:\Codex\SafeVision_BASE_CURRENT\repo\safevision\tools\test_current_base_ci.py", line 4, in <module>
+    import yaml
+ModuleNotFoundError: No module named 'yaml'

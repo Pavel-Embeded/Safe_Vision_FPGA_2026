@@ -1,0 +1,12 @@
+Cloning into 'D:\Codex\sv_scroll261028\clean_delivery285'...
+done.
+HEAD is now at 5201beae build(base): retain approved ticker proof and raw debug archives
+{
+  "accepted": true,
+  "clean_checkout_commit": "5201beaea4d9c6d5e829e30c7bab1c3173be03c8",
+  "bit_sha256": "1a0cf8cccdb1487b34f70e20eaa333dc106826dbc1d821be99b6a828b80b4083",
+  "physical_inputs": 226,
+  "approval_source_commit": "10168948e372d290b2f3b85428c1d07108d95883",
+  "fresh_hardware_test_performed": false,
+  "scope": "New clean checkout of committed bytes; independent full offline replay only"
+}
