@@ -36,7 +36,7 @@ def replay(root,captures,out):
   runner="import sys;from pathlib import Path;p=Path(sys.argv[1]);old=sys.argv[3];t=p.read_text('utf-8-sig');capture=sys.argv[2];sys.argv=[str(p),capture];exec(compile(t.replace(old,'26102801'),str(p),'exec'),{'__name__':'__main__','__file__':str(p)})"
   with log.open('w',encoding='utf-8')as f:code=subprocess.run([sys.executable,'-B','-c',runner,str(path),str(captures/stage),old],stdout=f,stderr=subprocess.STDOUT).returncode
   require(code==0,'supplementary byte audit failed: '+str(log))
-  report=json.loads((captures/stage/'transaction_audit.json').read_text('utf-8-sig'))
+  report=json.loads((captures/stage/(stage+'.audit.json')).read_text('utf-8-sig'))
   require(report.get('accepted',report.get('raw_transactions_valid'))is True and report['firmware_id']=='26102801','supplementary audit did not accept')
   reports[stage]=dict(source=path.relative_to(root).as_posix(),source_sha256=sha(raw),transformed_sha256=sha(transformed.encode('utf-8')),replacement=dict(before=old,after='26102801',occurrences=count),result=report)
  (out/'summary.json').write_text(json.dumps(dict(accepted=True,stages=reports),indent=2)+'\n','utf-8');return reports
