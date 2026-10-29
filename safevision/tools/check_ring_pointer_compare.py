@@ -47,7 +47,20 @@ def check(root):
   for before,after in changes:
    if prior.count(before)!=1:raise ValueError('ring integration anchor differs')
    prior=prior.replace(before,after)
-  if(root/path).read_text('utf-8-sig')!=prior:raise ValueError('ring integration changed beyond its parameter wiring')
+  if(root/path).read_text('utf-8-sig')!=prior:
+   if path!='safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v':raise ValueError('ring integration changed beyond its parameter wiring')
+   # Compose two complete frozen transformations. The row-index parent TOP
+   # must equal the already reconstructed audio TOP byte for byte; its seven
+   # reviewed edits are then independently checked in full before acceptance.
+   from check_direct_row_lookup import check as check_direct,PARENT as direct_parent,META as direct_meta
+   proof=check_direct(root)
+   row_parent=subprocess.check_output(['git','-C',str(root),'cat-file','blob',direct_parent+':'+path]).decode('utf-8-sig').replace('\r\n','\n')
+   if not proof['accepted']or row_parent!=prior:raise ValueError('direct-row parent is not the exact audio integration')
+   direct=json.loads((root/direct_meta).read_text('utf-8-sig'))
+   for patch in direct['files'][path]['patches']:
+    if prior.count(patch['before'])!=patch['occurrences']:raise ValueError('composed integration anchor differs')
+    prior=prior.replace(patch['before'],patch['after'])
+   if(root/path).read_text('utf-8-sig')!=prior:raise ValueError('unreviewed change after complete audio/direct-row composition')
   selected[path]=sha(root/path)
  result=[];matrix=hashlib.sha256()
  # For fixed high bits, every expression depends on lower words only through
