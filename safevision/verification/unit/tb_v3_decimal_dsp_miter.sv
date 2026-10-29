@@ -1,10 +1,9 @@
 `timescale 1ns/1ps
 module tb_v3_decimal_dsp_miter;
  reg clk=0,rst=0,rv=0;reg[7:0] data=0;always #5 clk=~clk;
- wire[6:0] catalog_id;wire cv,ocv,q,oq,pv,opv;wire[7:0] target,otarget,code,ocode;wire[95:0] name,oname;wire signed[31:0] value,ovalue;wire[31:0] rejected,orejected;
+ wire[6:0] catalog_id,oid;wire cv,ocv,q,oq,pv,opv;wire[7:0] target,otarget,code,ocode;wire[95:0] name,oname;wire signed[31:0] value,ovalue;wire[31:0] rejected,orejected;
  v3_command_parser_catalog #(.TIMEOUT(10000),.CATALOG_FILE("v3_command_catalog.mem")) dut(clk,rst,rv,data,cv,target,name,value,q,pv,code,rejected,catalog_id);
  v3_command_parser_decimal_frozen #(.TIMEOUT(10000),.CATALOG_FILE("v3_command_catalog.mem")) reference(clk,rst,rv,data,ocv,otarget,oname,ovalue,oq,opv,ocode,orejected,oid);
- wire[6:0] oid;
  wire[185:0] d_public={cv,target,name,value,q,pv,code,rejected,catalog_id};
  wire[185:0] g_public={ocv,otarget,oname,ovalue,oq,opv,ocode,orejected,oid};
  integer public_comparisons=0,data_errors=0,driver_errors=0;
