@@ -107,7 +107,7 @@ wire [15:0] context_q;
  assign pcm_valid=(state==Q_RUN)?(sample_valid?(4'b1<<active):4'b0):4'b0;
  // Eligibility is independent of round-robin choice. Four parallel
  // winners avoid a serial dynamic-index priority path into state enables.
- wire[3:0] requests=found&~fallback&slot_fill&sector_room;
+ (* keep="true" *) wire[3:0] requests=found&~fallback&slot_fill&sector_room;
  (* keep="true" *) wire eligible=|requests;
  wire p0=rr==0,p1=rr==1,p2=rr==2,p3=rr==3;
  (* keep="true" *) wire[3:0] winner;
