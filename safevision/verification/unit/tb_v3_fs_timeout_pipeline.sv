@@ -80,6 +80,10 @@ v3_file_streamer_frozen_timeout #(.EXTERNAL_LBA(P),.EXTERNAL_TIMER(P),.DIRECT_RE
    phase_count=phase_count+1;
    if(dut.timeout_last_q!==dut.last_file_byte)begin phase_errors=phase_errors+1;errors=errors+1;if(phase_errors<=4)$display("[FAIL] sector-boundary predicate is stale lane=%0d",g);end
   end
+  if(rst_n)begin
+   comparisons=comparisons+1;
+   if(d_public!==g_public)begin data_errors=data_errors+1;errors=errors+1;if(data_errors<=6)$display("[FAIL] full file-streamer public interface differs at consumption edge lane=%0d case=%0d step=%0d",g,scenario,step);end
+  end
   #1;
   if(rst_n)begin
    comparisons=comparisons+1;
