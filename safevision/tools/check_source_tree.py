@@ -32,7 +32,8 @@ def check(root=ROOT):
         if path.suffix == '.py': ast.parse(data.decode('utf-8-sig'), filename=name)
         if path.suffix == '.json': json.loads(data.decode('utf-8-sig'))
         if path.suffix == '.md': raise ValueError('documentation in source tree: ' + name)
-    manifests = list((root / 'safevision/build/manifests').glob('*_sim.json'))
+    manifest_folder = root / 'safevision/build/manifests'
+    manifests = [path for path in paths if path.parent == manifest_folder and path.name.endswith('_sim.json')]
     for path in manifests:
         data = json.loads(path.read_text('utf-8-sig'))
         names = list(data.get('sources', [])) + list(data.get('assets', [])) + list(data.get('generator_dependencies', []))
