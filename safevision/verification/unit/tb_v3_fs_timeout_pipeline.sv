@@ -96,7 +96,7 @@ v3_file_streamer_frozen_timeout #(.EXTERNAL_LBA(P),.EXTERNAL_TIMER(P),.DIRECT_RE
   for(scenario=0;scenario<256;scenario=scenario+1)begin
    case(scenario%8)0:span=0;1:span=1;2:span=511;3:span=512;4:span=513;5:span=1024;6:span=1025;default:span=2049;endcase
    case((scenario/8)%4)0:seed_count=0;1:seed_count=32'hfffffe00;2:seed_count=32'hffffffff;default:seed_count=32'h12345678;endcase
-   if((scenario%8)==0)begin reset_all;file_size=span;start=1;end
+   if((scenario%5)==0)begin reset_all;file_size=span;start=1;end
    else begin @(negedge clk);context_in={32'd2,32'd128,8'd0,seed_count,seed_count+span};context_load=1;end
    @(negedge clk);start=0;context_load=0;
    for(step=0;step<4000;step=step+1)begin
