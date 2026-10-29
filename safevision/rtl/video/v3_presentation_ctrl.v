@@ -1,6 +1,6 @@
-// Pixel-domain presentation transaction. A target generation is allocated for
-// every attempt, including cancelled attempts. A completed NEXT has its own
-// toggle so a startup presentation cannot accidentally ACK a queued NEXT.
+
+
+
 module v3_presentation_ctrl #(
  parameter integer FADE_FRAMES=32,TRANSITION_TIMEOUT_FRAMES=300
 )(input wire clk,rst_n,frame_start,media_reset,safety,request,fade_enable,

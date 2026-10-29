@@ -1,11 +1,6 @@
 
 
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: anlgoic
-// Author: 	xg 
-// description: sdram write and read operate
-//////////////////////////////////////////////////////////////////////////////////
 
 
 `define   DATA_WIDTH                        32
@@ -13,7 +8,6 @@
 `define   DM_WIDTH                          4
 `define   ROW_WIDTH                        11
 `define   BA_WIDTH                        2
-
 
 
 `pragma protect begin_protected

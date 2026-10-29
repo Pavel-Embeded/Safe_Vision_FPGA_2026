@@ -1,9 +1,6 @@
-// MEM-domain four independent circular partitions in AUDIO_RING (256 KiB total).
-// Each stereo PCM pair is one 32-bit word. slot0..3 each owns 64 KiB (16384 pairs).
-// req is retained through ack; address/wdata remain stable through busy completion.
-// One-word transactions use the existing memory-arbiter SD client; refresh/backpressure
-// never advance pointers until a completed write or an actual read-data-valid beat.
-// Valid/ready ingress obeys backpressure. All media state resets together.
+
+
+
 module v3_pcm_ring_frozen_pointer #(parameter integer PTR_W=14,PREFETCH=800)(
  input wire clk,rst_n,input wire [127:0] in_data,input wire [3:0] in_valid,output reg [3:0] in_ready,
  input wire commit_valid,input wire [1:0] commit_slot,input wire [7:0] commit_generation,
@@ -15,9 +12,8 @@ module v3_pcm_ring_frozen_pointer #(parameter integer PTR_W=14,PREFETCH=800)(
  input wire ack,busy,input wire [31:0] rdata,input wire rvalid,
  output reg [31:0] overflow_count);
  localparam integer CAP=1<<PTR_W;
- // The extra pointer bit distinguishes full from empty after an address wrap.
- // Occupancy is their modular difference; no independent occupancy state can
- // diverge from the actual accepted write/read events.
+
+
  reg [PTR_W:0] wp[0:3],rp[0:3];wire [PTR_W:0] count[0:3];
  reg [1:0] active,owner,rr;reg [7:0] generation;reg enabled;
  reg [1:0] state;reg reading,seen_data;reg [1:0] pick;reg any_write;
@@ -58,9 +54,8 @@ module v3_pcm_ring_frozen_pointer #(parameter integer PTR_W=14,PREFETCH=800)(
    case(state)
     0:begin
      if(commit_valid&&commit_ready)begin active<=commit_slot;generation<=commit_generation;enabled<=1;end
-     // Reserve our one output register before issuing the read. A ready/valid
-     // consumer may legally wait for valid before ready (the serialized FIFO
-     // accepts its final word last), so ready must not gate valid production.
+
+
      else if(!busy&&enabled&&!fallback[active]&&count[active]!=0&&!out_valid&&output_level<10'd240)begin
       owner<=active;reading<=1;seen_data<=0;req<=1;wr<=0;
       addr<=32'h00280000+({30'd0,active}<<16)+({{(30-PTR_W){1'b0}},rp[active][PTR_W-1:0]}<<2);state<=1;

@@ -1,5 +1,5 @@
-// SYS controller survives media reset. Reset is finite, then rescan is started.
-// Failure/timeout keeps SAFE; a new manual request is required for another try.
+
+
 module v3_hd_recovery_reference #(
     parameter integer RESET_CYCLES=32, SETTLE_CYCLES=32,
     parameter integer TIMEOUT_CYCLES=500000000, MAX_ATTEMPTS=3
@@ -12,8 +12,8 @@ module v3_hd_recovery_reference #(
     localparam IDLE=0,RESET=1,SETTLE=2,START=3,WAIT=4,LOCKED=5;
     reg [31:0] timer;
     assign busy=(state!=IDLE && state!=LOCKED);
-    // A preserved single flip-flop drives asynchronous reset trees. The
-    // equation is exactly (next_state==RESET), with no extra control cycle.
+
+
     (* preserve="true",keep="true" *) reg media_reset_q;
     wire reset_next=!fatal&&(((state==IDLE||state==LOCKED)&&request&&attempts<MAX_ATTEMPTS)||
                             (state==RESET&&timer!=RESET_CYCLES-1));

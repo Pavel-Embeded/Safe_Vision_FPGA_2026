@@ -1,5 +1,0 @@
-{
-  "accepted": false,
-  "error": "AssertionError: independent reference changed: safevision/verification/models/v3_memory_pll_clock_model.sv",
-  "release_ready": false
-}

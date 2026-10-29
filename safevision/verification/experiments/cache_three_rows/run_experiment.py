@@ -1,4 +1,4 @@
-"""Reproduce a rejected architecture: EXPECTED_FAIL is not a production PASS."""
+
 import argparse
 import hashlib
 import json

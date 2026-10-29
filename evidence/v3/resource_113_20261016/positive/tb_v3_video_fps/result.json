@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_video_fps",
-  "suite": "video_v3_fps",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "1134f58952c9364db4d8921809d2dbc854cd83fa94ab8b467cfcc6f4daa86703",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_112_20261016\\positive\\tb_v3_video_fps"
-}

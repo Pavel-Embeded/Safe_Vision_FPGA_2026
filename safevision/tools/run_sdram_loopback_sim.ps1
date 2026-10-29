@@ -1,5 +1,5 @@
-# Application-level SDRAM loopback regression for the integrated soak checker.
-# Encrypted controller, physical DQ and AC timing are not modeled.
+
+
 param(
     [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
     [string]$TdRoot='D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116',
@@ -11,7 +11,7 @@ $ErrorActionPreference='Stop'
 $RepoRoot=[IO.Path]::GetFullPath($RepoRoot)
 $RunDir=[IO.Path]::GetFullPath($RunDir)
 if($RunDir -match '[^\x00-\x7f]'){throw 'XSim 2018.3 needs ASCII RunDir'}
-# An explicitly selected ModelSim takes precedence even if XSim is also installed.
+
 if(-not [string]::IsNullOrWhiteSpace($ModelSimBin)){
     $script:UseModelSim=$true
 }elseif(Test-Path -LiteralPath $XSimBin){

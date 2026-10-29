@@ -20,7 +20,7 @@ module tb_v3_hd_coord_arith;
   for(k=0;k<21;k++)refq[k]=0;
   repeat(3)@(negedge clk);#2;rst_n=1;
   for(k=0;k<100;k++)begin repeat(1650+k%41)@(negedge clk);reset(1+k%3);end
-  // Two complete HD rasters, including line, blanking and frame wrap.
+
   repeat(1650*750*2+50)@(negedge clk);#2;
   $display("[PASS] arithmetic coordinate delay/reset/full rasters checks=%0d errors=%0d",checks,errors);
   $display("PASS tb_v3_hd_coord_arith comparisons=%0d errors=%0d",checks,errors);$finish;

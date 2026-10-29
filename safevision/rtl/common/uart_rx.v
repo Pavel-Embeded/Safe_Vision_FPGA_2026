@@ -1,15 +1,15 @@
-// 16x oversampling, midpoint majority vote. Fractional tick avoids divider drift.
+
 module uart_rx #(parameter integer CLK_HZ=100000000,BAUD=115200)(
  input wire clk,rst_n,rxd,ready,output reg [7:0] data,output reg valid,
  output reg [31:0] frame_errors,overruns);
  (* async_reg="true" *) reg meta,sync;
- // Legal configurations keep0<=acc<CLK_HZ by induction. The full next
- // sum fits one extra bit. Preserve the original fallback for invalid params.
+
+
  localparam integer BOUNDED_ACC=CLK_HZ>0 && BAUD>0 && BAUD<=CLK_HZ/32;
  localparam integer ACC_W=BOUNDED_ACC?((CLK_HZ>1)?$clog2(CLK_HZ):1):32;
  reg [ACC_W-1:0] acc;
  (* use_ripple=1 *) wire [ACC_W:0] next_acc={1'b0,acc}+BAUD*16;
- // No added cycle: a+rate>=clock iff a>=clock-rate for all legal values.
+
  wire tick;
  generate if(BOUNDED_ACC)begin:bounded_tick_prediction
   reg tick_q;

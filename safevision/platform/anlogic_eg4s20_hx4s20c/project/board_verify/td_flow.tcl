@@ -1,8 +1,6 @@
-# TD6.2.168116 board bring-up: synthesize/place/route/STA with real pins.
-# Target: safevision_top on HX4S20C, HDMI B output, package-in SDRAM.
-# Route/report only. A successful Tcl exit means the reports were produced;
-# run_board_sta.ps1 performs the separate fail-closed timing gate. This flow
-# alone does not prove HDMI electrical behavior or SDRAM AC correctness.
+
+
+
 if {![info exists board_mode] || $board_mode ni {base hd}} {error "Select base or hd"}
 set here [file dirname [file normalize [info script]]]
 set root [file normalize [file join $here .. .. .. .. ..]]
@@ -35,17 +33,14 @@ foreach f $paths {if {![file isfile $f]} {error "Missing source: $f"}}
 
 if {[catch {
     import_device eagle_s20.db -package EG4S20BG256
-    # Official TD 6.2 implementation options. Improve actual routed slack
-    # without relaxing clock periods or exempting business data paths.
+
+
     set_param place effort high
     set_param place post_place_opt high
     set_param route timing greedy
     set_param route fix_hold on
-    # read_hdl takes ONE include directory here (a Tcl list shifts the arguments
-    # and silently blanks -include_dir). The vendor encrypted HDMI/SDRAM cores
-    # resolve their own "global_def.v" from the directory that also holds the
-    # .enc.v files, which is why ip/sdram/ and the vendor include/ dir need no
-    # extra -include_dir entry.
+
+
     read_hdl -file [join $paths " "] \
         -include_dir [file join $root safevision rtl include] \
         -define "SAFEVISION_BOARD_HD=$hd" -top safevision_top
@@ -77,9 +72,7 @@ if {[catch {
     export_sdc -file route.derived.sdc
     export_db route.db
 
-    # Route/report only. run_board_sta.ps1 validates these final reports before
-    # a separate import_db/bitgen invocation. Environment flags cannot bypass
-    # that gate inside this flow.
+
 } err]} {puts stderr "BOARD TD FAILED: $err";exit 1}
 puts "BOARD TD ROUTED mode=$board_mode (inspect timing/I-O health before any programming)"
 exit 0

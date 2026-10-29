@@ -1,6 +1,6 @@
-// Exact public recovery behavior; separate short reset/settle and long WAIT timers.
-// A one-cycle prediction register removes the wide timeout compare from the
-// counter clock-enable fanout. START primes it; WAIT retains failure priority.
+
+
+
 module media_recovery_ctrl #(
  parameter integer RESET_CYCLES=32,SETTLE_CYCLES=32,
  parameter integer TIMEOUT_CYCLES=500000000,MAX_ATTEMPTS=3,PROGRESSIVE_WAIT=0
@@ -8,22 +8,21 @@ module media_recovery_ctrl #(
  input wire clk,rst_n,request,done,failed,fatal,
  output wire busy,media_reset,output reg rescan_start,recovered,
  output reg safe_latched,output reg[1:0]attempts,output reg[2:0]state,
- // Append optional inputs so legacy positional instances retain every port.
+
  input wire progress
 );
  localparam IDLE=0,RESET=1,SETTLE=2,START=3,WAIT=4,LOCKED=5;
  localparam integer SHORT_LIMIT=RESET_CYCLES>SETTLE_CYCLES?RESET_CYCLES:SETTLE_CYCLES;
  localparam integer SHORT_W=SHORT_LIMIT<2?1:$clog2(SHORT_LIMIT);
- localparam integer WAIT_W=32; // Retain native32-bit carry mapping; only WAIT owns this counter.
+ localparam integer WAIT_W=32;
  reg[SHORT_W-1:0]short_timer;
  reg[WAIT_W-1:0]wait_timer;
  reg wait_expired_raw;
  wire wait_progress=PROGRESSIVE_WAIT && progress;
  wire wait_expired=wait_expired_raw && !wait_progress;
  wire next_wait_expired=TIMEOUT_CYCLES<=1?1'b1:(wait_timer>=TIMEOUT_CYCLES-2);
- // Counter values after leaving WAIT are private and cleared by START.
- // Count through a coincident done/failed/fatal exit; this removes those
- // late inputs from32 enables without changing any public recovery edge.
+
+
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin wait_timer<=0;wait_expired_raw<=TIMEOUT_CYCLES<=1;end
   else if(state==START&&!fatal)begin wait_timer<=0;wait_expired_raw<=TIMEOUT_CYCLES<=1;end

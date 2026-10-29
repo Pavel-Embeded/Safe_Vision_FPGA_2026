@@ -1,9 +1,6 @@
-// Fixed-rate scan -> vendor AXIS, pixel domain. Geometry DE includes safe
-// underflow pixels; pixel_valid must never gate the HDMI scan.
-// Small queue preserves data/user/last during receiver backpressure. APUG092
-// requires a continuous line and ready may drop AFTER accepted last only.
-// Unexpected stalls are bounded by the queue. Overflow aborts the frame and
-// resets the transmitter, then waits for the next SOF; it never pauses scan.
+
+
+
 module hdmi_video_bridge #(
     parameter integer HD=0,QUEUE_AW=4
 )(
@@ -24,10 +21,8 @@ module hdmi_video_bridge #(
     wire full_drop=want&&!push;
     assign queue_level=count;
     assign axis_valid=rst_n&&(count!=0);
-    // RAM is intentionally not reset. While no beat is valid, never expose
-    // uninitialized/stale SOF/EOL/data to the vendor boundary. This also makes
-    // reset/overflow idle deterministic without adding RAM reset fanout.
-    // A valid stalled beat still reads the same head and remains unchanged.
+
+
     assign {axis_user,axis_last,axis_data}=axis_valid?q[head]:26'd0;
     always @(posedge clk or negedge rst_n)begin
         if(!rst_n)begin head<=0;tail<=0;count<=0;wait_sof<=1;

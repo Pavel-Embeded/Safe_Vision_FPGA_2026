@@ -1,17 +1,14 @@
-// $<A|B|C>:<NAME>[=<decimal>|?]*HH CR LF. XOR covers target through argument.
-// No command side effect until checksum and complete terminator are accepted.
-// 32-character body, 100ms timeout. Numeric configuration uses signed decimal.
+
+
+
 module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter CATALOG_FILE="../../assets/control/v3_command_catalog.mem")(
  input wire clk,rst_n,rx_valid,input wire [7:0] rx_data,
  output reg command_valid,output wire [7:0] target,
  output wire [95:0] name,output wire signed [31:0] value,output wire query,
  output reg reply_valid,output reg [7:0] reply_code,
  output wire [31:0] rejected,output wire [6:0] catalog_id);
- // Cycle-exact saturating event counter. The decoded rejection only drives
- // one pending flop, not32 counter enables. Publish min(base+pending,MAX)
- // and feed that same value back into base every cycle. Thus the public
- // count increments on the ORIGINAL reject edge, including consecutive
- // errors, and remains saturated; no extra query latency is introduced.
+
+
  (* preserve="true" *) reg[31:0] rejected_base;
  (* preserve="true" *) reg rejected_pending;
  wire[32:0] rejected_sum={1'b0,rejected_base}+{32'd0,rejected_pending};
@@ -19,32 +16,28 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
  reg [2:0] state;reg [7:0] checksum,received;
  localparam integer TIMER_W=TIMEOUT>1?$clog2(TIMEOUT):1;
  reg [TIMER_W-1:0] timer;reg timer_expired;reg [23:0] number;
- reg [5:0] length;// Only presence of a digit is required. A modulo-16 digit counter would
- // reject legal leading-zero values and permit a minus after 16 digits.
+ reg [5:0] length;
+
  reg [3:0] names;reg digit_seen;reg negative,argument;
  reg [7:0] dest;reg ask;
- // Payload is meaningful only with command_valid. It stays in the assembly
- // bank through the validated LF edge, avoiding a duplicate 137-bit bank.
+
+
  reg[95:0] catalog_name;
  assign target=dest;assign name=catalog_name;assign query=ask;
- // UART leaves at least304 SYS edges between bytes. Register decimal
- // sign conversion before the consumer's range/command decode. At the
- // validated LF edge, number/sign have been stable for several full bytes;
- // only command_valid qualifies this payload, as specified by the interface.
+
+
  (* preserve="true" *) reg signed[31:0] value_reg;
  always @(posedge clk or negedge rst_n)
   if(!rst_n)value_reg<=0;
   else value_reg<=negative?-$signed({8'd0,number}):$signed({8'd0,number});
  assign value=value_reg;
- // Payload names are exact for the finite board command catalog. Unknown
- // names become zero, which is unequal to every consumer command literal.
- // No hashes are used. Minimum name-byte spacing is 84 SYS edges;
- // UART RX guarantees at least304 at its supported minimum clock/baud ratio.
+
+
  localparam integer CATALOG_N=41,CATALOG_AW=6;
  reg[CATALOG_N-1:0] possible;
  reg[1:0] scan_state;reg[CATALOG_AW-1:0] scan_index;
  reg[3:0] held_position;reg[7:0] held_character;
- // Limit only this measured high-fanout command decode bank.
+
  (* max_fanout=8 *) reg[6:0] command_id;
  assign catalog_id=command_id;
  wire name_byte=rx_valid&&state==1&&length>=2&&length<32&&!argument&&!ask&&names<12&&rx_data>=65&&rx_data<=90;
@@ -111,10 +104,8 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
   7'd40:catalog_name=96'h00000000000000004d454e55;
   7'd41:catalog_name=96'h000000005343414c4553454c;
   default:;endcase end
- // The previous number must be <1,000,000 before another digit is accepted;
- // hence the largest legal result is 9,999,999 and fits exactly in 24 bits.
- // Exact modulo24-bit decimal multiply-add. Carry-save compression leaves
- // one local ripple addition, avoiding two cascaded18-bit DSP multipliers.
+
+
  wire[23:0] decimal_a={number[20:0],3'b000};
  wire[23:0] decimal_b={number[22:0],1'b0};
  wire[23:0] decimal_c={20'd0,rx_data[3:0]};
@@ -136,8 +127,8 @@ module v3_command_parser_catalog #(parameter integer TIMEOUT=10000000,parameter 
    reply_valid<=0;reply_code<=0;rejected_base<=0;rejected_pending<=0;end
   else begin
    command_valid<=0;reply_valid<=0;rejected_base<=rejected;rejected_pending<=0;
-   // Reset/restart wins on the original receive edge. For T>1, timer
-   // reachesT-1 exactly one cycle after this registered equality becomes1.
+
+
    if(rx_valid||state==0)timer_expired<=(TIMEOUT<=1);
    else if(TIMEOUT<=1)timer_expired<=1;
    else timer_expired<=timer==TIMEOUT-2;

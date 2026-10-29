@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_board_query_catalog",
-  "suite": "board_query_catalog",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "213af12ddc0b4f88d6b2728899ae4060ee1ee0e97762bf99e4e28f9b288a68f8",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_remaining\\tb_v3_board_query_catalog\\tb_v3_board_query_catalog"
-}

@@ -1,4 +1,4 @@
-"""Exhaust the positive dimension domain using independent integer formulas."""
+
 from pathlib import Path
 import argparse,hashlib,json,platform
 import numpy as np
@@ -11,7 +11,7 @@ def check(root):
  assert "saved_shape_wide=saved_width3>={h,2'b0}"in text
  assert "if(initial_y)wide<=saved_shape_wide"in text
  h=np.arange(1,16385,dtype=np.uint32)[None,:];digest=hashlib.sha256();compared=0
- # Verify the16-bit signed-height conversion independently for both inputs.
+
  assert np.all(((-((-h)&65535))&65535)==h)
  for first in range(1,16385,128):
   w=np.arange(first,min(first+128,16385),dtype=np.uint32)[:,None]

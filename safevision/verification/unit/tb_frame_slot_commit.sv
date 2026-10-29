@@ -38,7 +38,7 @@ module tb_frame_slot_commit;
   for(n=0;n<120;n=n+1)begin
    if(n==60)begin
     @(negedge bc);slot=3;gen=8'hee;fi=1;req=~req;
-    // Reset while the request is still in the CDC pipeline.
+
     #1;reset_epoch;
    end
    before_ack=acks;before_commit=commits;before_invalid=invalids;
@@ -53,8 +53,8 @@ module tb_frame_slot_commit;
    end
   end
   if(commits!=109||invalids!=11||acks!=109)$fatal(1,"slot coverage totals %0d/%0d/%0d",commits,invalids,acks);
-  // Continuous playback must also survive generation 255 -> 0. Zero is a
-  // valid generation in an active epoch, not an implicit reset/no-frame tag.
+
+
   for(n=0;n<300;n=n+1)begin
    before_ack=acks;before_commit=commits;
    @(negedge bc);slot=n%2;gen=n[7:0];fi=n%2;crc=1;

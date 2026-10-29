@@ -1,9 +1,0 @@
-{
-  "safevision/verification/unit/tb_v3_wav_pipe724.sv": "0032e1cc7227f7425ea3849e8cb20b4e22f716782ff4e50fae358ed815286f12",
-  "safevision/verification/unit/tb_v3_wav_context730.sv": "7089b1dfe659e2f4c91f2e593df6c933ce7029faa952aa570cc4b9c1a2285a77",
-  "safevision/build/manifests/wav_pipe724_sim.json": "904689cd60886ba3249dc669fad767f388a8839baa62fb4a896426b24db66b59",
-  "safevision/build/manifests/wav_context730_sim.json": "7e7b4615b376da3fab492bc82c32b423adcef6d19a9a0d860b083e15fe8cc3e7",
-  "safevision/verification/fixtures/wav730_disk.mem": "4d2854fdb4fc2a8dd3cee9bae6142b058421dec800bdef33077d9fb15753525a",
-  "safevision/verification/fixtures/wav730_pcm.mem": "635a456bd744988093b0990e87bdf76ee17119e31aa884bd06fdb28f18ba88e9",
-  "safevision/verification/fixtures/wav730.reference.json": "c7ef0ef750d34efc30c4221c028afff17798043c531fb33ba29ebbc5c0cff149"
-}

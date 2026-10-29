@@ -1,4 +1,4 @@
-// Stable single-bit level only; not a pulse or a multi-bit payload.
+
 module video_level_sync #(parameter RESET_VALUE=1'b0)(
     input wire clk,rst_n,async_level,output wire level
 );

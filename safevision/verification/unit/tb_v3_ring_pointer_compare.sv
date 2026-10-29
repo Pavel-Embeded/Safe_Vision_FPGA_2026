@@ -89,8 +89,8 @@ module ring_pointer_lane #(parameter PW=4)(input wire clk,output reg done=0,outp
   repeat(5)@(negedge clk);rst=1;
   fill_and_drain(0);fill_and_drain(1);
   for(i=0;i<4;i++)ck(writes[i]==2*CAP&&reads[i]==2*CAP,"each pointer makes two complete capacity traversals");
-  // Assert reset during a genuine retained memory request, then refill all
-  // locations before replaying the next complete memory/audio generation.
+
+
   @(negedge clk);fallback=15;valid=15;while(!(current_req&&!ack))begin @(negedge clk);end
   #2;rst=0;
   #0.002;ck(req[0]===req[1]&&out_valid[0]===out_valid[1],"asynchronous reset immediately matches the parent");

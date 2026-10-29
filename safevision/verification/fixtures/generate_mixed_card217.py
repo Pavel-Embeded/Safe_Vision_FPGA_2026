@@ -1,6 +1,6 @@
-"""Four different legal BMP sizes/orientations on real descending FAT chains.
-Pillow decodes input; independent integer coordinate reference normalizes RGB.
-"""
+
+
+
 import argparse,io,json,struct
 from pathlib import Path
 from PIL import Image

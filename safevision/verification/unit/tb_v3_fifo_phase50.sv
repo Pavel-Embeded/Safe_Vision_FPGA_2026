@@ -10,8 +10,8 @@ module tb_v3_fifo_phase50;
  task check(input bit ok,input string message);begin comparisons++;if(!ok)begin errors++;if(errors<10)$display("[FAIL] %s written=%0d read=%0d",message,written,readn);end end endtask
  always@(negedge wc)begin rngw=rngw*1664525+1013904223;wv<=!stop_write&&rngw[1:0]!=0;end
  always@(negedge rc)begin rngr=rngr*1664525+1013904223;ready<=draining||rngr[1:0]!=0;end
- // Compare at the actual protocol sampling edge before nonblocking updates.
- // Only reset-ready's between-edge phase changes, not accepted transfers.
+
+
  always@(posedge wc or posedge rst)begin
   if(rst)begin written=0;data<=0;end
   else begin

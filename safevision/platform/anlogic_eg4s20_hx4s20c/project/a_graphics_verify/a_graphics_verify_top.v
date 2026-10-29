@@ -1,4 +1,4 @@
-// Internal STA harness. Probe/config pins lack board I/O budgets; never burn it.
+
 `ifndef A_GRAPHICS_HD
 `define A_GRAPHICS_HD 0
 `endif

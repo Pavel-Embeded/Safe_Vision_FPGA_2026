@@ -1,10 +1,7 @@
 module v3_led_publication_candidate(input wire clk,sys_clk,sys_rst_n,ref_rst_n,normal_uart_txd,sys_loss_ref,fatal_uart_txd,safe_active,recovery_busy,transition_busy,cached,output reg uart_txd,output reg[3:0] led);
  reg normal_uart_half;reg led_release_half;
- // A single falling-edge validity bit retains reset blanking until the
- // first SYS falling edge and avoids the measured direct reset-to-PAD hold path.
- // SYS100 and REF50 rising edges are phase aligned. Capture LED status
- // directly at REF: the latest SYS edge has the full10ns budget. UART keeps
- // its existing falling-edge publication and independent FATAL override.
+
+
  wire[3:0] status_half=led_release_half?{safe_active,recovery_busy,transition_busy,cached}:4'd0;
  always @(negedge sys_clk or negedge sys_rst_n)begin
   if(!sys_rst_n)begin normal_uart_half<=1'b1;led_release_half<=0;end

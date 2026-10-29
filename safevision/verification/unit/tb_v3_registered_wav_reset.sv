@@ -25,8 +25,8 @@ module tb_v3_registered_wav_reset;
    errors++;if(errors<12)$display("[FAIL] asynchronous kernel reset decode hazard");
   end
  end
- // Emulate clock-to-Q skew of LOAD1(7)->LOAD2(8), traversing RESET(2).
- // Inject once between edges, with no change to the reference state.
+
+
  always@(posedge clk)if(rst_n&&d.state==7&&skew_checks==0)begin
   #0.2;force d.state=4'd7;#0.2;force d.state=4'd2;
   #0.2;force d.state=4'd8;#0.2;release d.state;skew_checks++;
@@ -53,12 +53,12 @@ module tb_v3_registered_wav_reset;
  integer good_before,bad_hops;
  initial begin
   $readmemh("audio_disk_unaligned.mem",disk);$readmemh("audio_pcm_unaligned.mem",gold);
-  // Highest slot SV9999: plausible long RIFF but FAT chain 19->23->19 cycles.
-  // Other slots loop every 16 clusters, repeatedly resetting their OWN walk epochs.
+
+
   put32(16*512+27*32+28,120054);put32(33*512+4,120046);put32(33*512+50,120000);
   put32(512+23*4,19);
   for(integer i=0;i<4;i=i+1)received[i]=0;
-  // Exhaust every round-robin starting point and all request masks.
+
   force d.rr=forced_rr;force original.rr=forced_rr;
   force d.found=forced_found;force original.found=forced_found;
   force d.fallback=4'd0;force original.fallback=4'd0;

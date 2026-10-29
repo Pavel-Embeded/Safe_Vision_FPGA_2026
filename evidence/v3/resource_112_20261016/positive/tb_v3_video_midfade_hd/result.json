@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_video_midfade_hd",
-  "suite": "video_v3_midfade",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "7a0a41d69d7b3c8229affea9578fdbd5e2a3458fa42a4512ad6ae74faa75e7c4",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\retimed_video_frames\\tb_v3_video_midfade_hd\\tb_v3_video_midfade_hd"
-}

@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Observe rendered glyph pixels, not the DUT's BCD registers or character bus.
+
 module tb_v3_video_decimal;
  reg clk=0,rst=0;always #5 clk=~clk;
  reg[11:0] x=0,y=0;reg[95:0] cfg=0;reg[7:0] gen=0;
@@ -14,7 +14,7 @@ module tb_v3_video_decimal;
   integer digit,character,xx,yy;bit dot;begin
    for(place=0;place<3;place=place+1)begin
     digit=place==0?number/100:place==1?(number/10)%10:number%10;character=48+digit;
-    // Every glyph row and column is checked against the independent full font.
+
     for(yy=0;yy<16;yy=yy+1)for(xx=0;xx<8;xx=xx+1)begin
      @(negedge clk);x=8+(first_column+place)*8+xx;y=top+yy;
      repeat(4)@(posedge clk);#1;dot=font[character*16+yy][7-xx];

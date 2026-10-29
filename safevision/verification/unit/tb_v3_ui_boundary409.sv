@@ -34,10 +34,10 @@ module tb_v3_ui_boundary409;
   ck(d.UI_DIV==100&&d.UI_DEBOUNCE==21&&d.HOLD_LIMIT==1001&&d.CHORD_LIMIT==2001,"shared tick and conservative minimum debounce/hold limits");
   ck(pct==80&&bri==60&&con==128&&vol==70&&aut&&!menu,"cold boot full defaults");
   period_test(2);period_test(5);period_test(10);period_test(30);
-  // A10ms bounce cannot complete the >=20ms stable window.
+
   bn=0;ticks(1000);bn=1;ticks(2300);ck(d.levels[0]==0&&!menu,"short bounce rejected");
-  // Place a19.5ms pulse just before a tick: a20-tick counter would
-  // falsely accept it, whereas21 ticks guarantee at least20ms stability.
+
+
   while(d.ui_phase!=95)@(negedge clk);
   bn=0;ticks(1950);ck(d.levels[0]==0,"19.5ms pulse never meets20ms debounce");
   bn=1;ticks(2300);ck(d.levels[0]==0&&!menu,"subthreshold pulse leaves no press or menu event");

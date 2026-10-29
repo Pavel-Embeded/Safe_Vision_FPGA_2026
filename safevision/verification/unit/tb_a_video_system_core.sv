@@ -1,13 +1,11 @@
-// Actual B BMP parser/unpacker/writer + A stages1-20 assembly.
-// Models only the downstream memory, not the physical SDRAM or HDMI encoder.
+
+
 `timescale 1ns / 1ps
 `include "pixel_format_defs.vh"
 
 module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_LEAD=0, SWAPS=1, IMMEDIATE=0);
 
-    // ------------------------------------------------------------------------
-    // 三个时钟域（与整机一致：sys 100M / mem 125M / pixel 74.25M）
-    // ------------------------------------------------------------------------
+
     reg clk_sys = 1'b0;  always #5.0   clk_sys = ~clk_sys;
     reg clk_mem = 1'b0;  always #4.0   clk_mem = ~clk_mem;
     reg clk_pix = 1'b0;  always #(HD ? 6.734 : 19.861) clk_pix = ~clk_pix;
@@ -28,22 +26,19 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
     localparam integer H = 480;
     localparam integer FRAME_PIX = W * H;
 
-    // ========================================================================
-    // 1) BMP 字节源：54 Byte 头 + 640×480×24bit 像素（自底向上存，BMP 常规）
-    //    像素值 = px24(x,y) 的确定性函数，显示侧用同一个函数算期望值。
-    // ========================================================================
+
     function [23:0] px24;
         input integer x;
         input integer y;
         reg [7:0] rr,gg,bb;
         begin
-            // BGR 存盘；这里给的是 RGB 语义值
+
             rr=x[7:0]^y[7:0]; gg=x+y; bb=x*3;
             px24={rr,gg,bb};
         end
     endfunction
 
-    // RGB565（与 bmp_unpack 的截断口径一致：R>>3, G>>2, B>>3）
+
     function [15:0] px565;
         input integer x;
         input integer y;
@@ -54,7 +49,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         end
     endfunction
 
-    // RGB888（把 RGB565 展开成 888，与 A 的 core 的 expand 口径一致）
+
     function [23:0] expand565;
         input [15:0] p;
         begin
@@ -66,32 +61,32 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
     initial begin
         integer i;
         for (i = 0; i < 54; i = i + 1) hdr[i] = 8'h00;
-        hdr[0]  = 8'h42; hdr[1]  = 8'h4D;                       // "BM"
-        hdr[2]  = (54 + FRAME_PIX*3) & 8'hFF;                  // 文件大小（小端）
+        hdr[0]  = 8'h42; hdr[1]  = 8'h4D;
+        hdr[2]  = (54 + FRAME_PIX*3) & 8'hFF;
         hdr[3]  = ((54 + FRAME_PIX*3) >> 8) & 8'hFF;
         hdr[4]  = ((54 + FRAME_PIX*3) >> 16) & 8'hFF;
         hdr[5]  = ((54 + FRAME_PIX*3) >> 24) & 8'hFF;
-        hdr[10] = 54;                                          // bfOffBits = 54
-        hdr[14] = 40;                                          // biSize = 40
-        hdr[18] = W & 8'hFF;      hdr[19] = (W >> 8) & 8'hFF;   // biWidth
-        hdr[22] = H & 8'hFF;      hdr[23] = (H >> 8) & 8'hFF;   // biHeight（正 = 自底向上）
-        hdr[26] = 1;                                           // biPlanes
-        hdr[28] = 24;                                          // biBitCount
-        hdr[34] = (FRAME_PIX*3) & 8'hFF;                       // biSizeImage
+        hdr[10] = 54;
+        hdr[14] = 40;
+        hdr[18] = W & 8'hFF;      hdr[19] = (W >> 8) & 8'hFF;
+        hdr[22] = H & 8'hFF;      hdr[23] = (H >> 8) & 8'hFF;
+        hdr[26] = 1;
+        hdr[28] = 24;
+        hdr[34] = (FRAME_PIX*3) & 8'hFF;
         hdr[35] = ((FRAME_PIX*3) >> 8) & 8'hFF;
         hdr[36] = ((FRAME_PIX*3) >> 16) & 8'hFF;
         hdr[37] = ((FRAME_PIX*3) >> 24) & 8'hFF;
     end
 
-    // 字节流：先 54 个头字节，再按 BMP 行序（自底向上）输出 B,G,R
+
     reg  [7:0]  bmp_data  = 8'h00;
     reg         bmp_valid = 1'b0;
     wire        bmp_ready;
     reg         bmp_eof   = 1'b0;
 
-    integer bi = 0;                     // 已发出的字节序号
-    integer bx, by, bc;                 // 当前像素坐标与通道
-    reg [23:0] px_tmp;         // ★ 先把函数返回值存下来再选位（Questa vopt 会对 f(x)[7:0] 崩）
+    integer bi = 0;
+    integer bx, by, bc;
+    reg [23:0] px_tmp;
     integer row_pad;
     always @(posedge clk_mem) begin
         if (!rst_n) begin
@@ -105,11 +100,11 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
                     bmp_valid <= 1'b1;
                     bi        <= bi + 1;
                 end else if (by < H) begin
-                    // BMP 自底向上：第 0 行 = 图像最后一行
+
                     px_tmp    = px24(bx, H-1-by);
-                    bmp_data  <= (bc == 0) ? px_tmp[7:0]    :   // B
-                                 (bc == 1) ? px_tmp[15:8]   :   // G
-                                             px_tmp[23:16];     // R
+                    bmp_data  <= (bc == 0) ? px_tmp[7:0]    :
+                                 (bc == 1) ? px_tmp[15:8]   :
+                                             px_tmp[23:16];
                     bmp_valid <= 1'b1;
                     bi        <= bi + 1;
                     if (bc == 2) begin
@@ -125,9 +120,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         end
     end
 
-    // ========================================================================
-    // 2) B：bmp_parser → bmp_unpack → frame_writer
-    // ========================================================================
+
     wire        bp_ready;
     wire        bp_check_done, bp_check_error;
     wire [7:0]  bp_err_code, bp_err_detail;
@@ -200,7 +193,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
     );
 
     reg         fw_start = 1'b0;
-    wire [1:0]  fw_slot_sel = 2'd1;                       // 写到 IMG1 槽
+    wire [1:0]  fw_slot_sel = 2'd1;
     wire [31:0] fw_slot_base = `SV_IMG1_BASE;
     wire        fw_wr_req, fw_wr_done, fw_crc_ok, fw_wr_error;
     wire [31:0] fw_wr_addr, fw_wr_data;
@@ -236,9 +229,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         .err_detail (fw_err_detail)
     );
 
-    // ========================================================================
-    // 3) B：memory_arbiter（写通道接 frame_writer，读通道接 A 的 core）
-    // ========================================================================
+
     wire        arb_rd_req;
     wire [31:0] arb_rd_addr;
     wire [15:0] arb_rd_len;
@@ -247,26 +238,25 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
     wire        arb_wr_ack, arb_wr_busy;
 
     wire        mem_req, mem_wr;
-    reg         mem_ready = 1'b1;      // 本 TB 驱动（存储模型）
+    reg         mem_ready = 1'b1;
     wire [31:0] mem_addr, mem_wdata;
     wire [3:0]  mem_wstrb;
-    reg  [31:0] mem_rdata = 32'd0;     // 本 TB 驱动
-    reg         mem_rdata_valid = 1'b0;// 本 TB 驱动
+    reg  [31:0] mem_rdata = 32'd0;
+    reg         mem_rdata_valid = 1'b0;
 
     wire [15:0] pix_fifo_level;
 
-    // frame_writer 的 wr_ready = 仲裁器受理了这一拍（本模块逐 word 请求、len=1）
+
     assign fw_wr_ready = arb_wr_ack;
 
 
-    // ---- 存储模型：真存真取（模拟 mem_ctrl 的下游）----
-    localparam integer MEM_WORDS = 1024 * 1024;              // 4 MiB
+    localparam integer MEM_WORDS = 1024 * 1024;
     reg [31:0] sd_mem [0:MEM_WORDS-1];
 
     integer mcyc = 0;
     always @(posedge clk_mem) begin
         mcyc <= mcyc + 1;
-        mem_ready <= ((mcyc % 17) != 0);                     // 周期性忙，制造真实竞争
+        mem_ready <= ((mcyc % 17) != 0);
     end
 
     reg [31:0] raddr_p0, raddr_p1, raddr_p2;
@@ -286,37 +276,21 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         end
     end
 
-    // ========================================================================
-    // 4) B：frame_swap_ctrl + frame_swap_cdc（换帧握手，让 A 知道显示哪个槽）
-    // ========================================================================
+
     reg         frame_ready = 1'b0;
     reg [7:0] submitted_generation=8'hfe;reg submitted_fi=0;
     integer swap_i;
     wire        swap_req_b, mb_fidx_b, mb_crc_b, swap_error, active_commit;
-    wire [2:0]  swap_state_o;      // 诊断：帧交换 FSM 当前状态
+    wire [2:0]  swap_state_o;
     wire [1:0]  mb_slot_b, active_next;
     wire [7:0]  mb_gen_b, gen_next;
     wire        fs_evt_b, ack_evt_b;
 
-    // ★ 超时要用能覆盖一整帧的值：A 的 core 在真实垂直消隐才回 frame_start，
-    //   一帧约 16.7 ms。早先这里给了 40000 拍（=400 us）⇒ 等不到消隐就超时进 SAFE。
-    //   模块默认 5_000_000 拍（=50 ms）正是覆盖一整帧加余量，直接用默认值。
 
     assign swap_req_b=u_display.video.swap_req_b;
     wire req_evt_a, frame_start_a, swap_ack_a;
-    // ★★ 这里**故意不再例化 `frame_swap_cdc`**：A 的 `a_video_display_core` 内部
-    //    已经有一个（`swaps` 实例），它把 A 侧的 `frame_start`/`swap_ack` 变成
-    //    B 域单拍事件，从 core 的 `frame_start_evt_b`/`swap_ack_evt_b` 输出。
-    //    ⇒ 整机里 B 侧**不应该**再放一份 CDC。
-    //    ★ 本 TB 早先版本违反了这条（又例化了一个 u_cdc 驱动同一组线），
-    //      造成 `fs_evt_b`/`ack_evt_b` **双驱动**，换帧 FSM 永远收不到 frame_start、
-    //      超时进 SAFE —— 曾一度被误判成 RTL bug，实际是 TB 接线错。
 
 
-    // A 侧（pixel 域）行为模型：收到请求 → 给 frame_start 单拍 → toggle swap_ack
-    // ---- ★ 脉冲捕获（必须用 always 数边沿；1 ms 采样看不到单周期事件）----
-    //   ★ 只观察 **TB 级**信号：层次引用在 vopt 下不可靠（而且 TB 里已不再例化 CDC，
-    //     A 的 core 内部那个 CDC 的输入输出就是下面这两根线）。
     integer fs_b_pulses = 0, ack_b_pulses = 0;
     reg     fs_b_d = 1'b0, ack_b_d = 1'b0;
     always @(posedge clk_sys) begin
@@ -326,10 +300,10 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         if (ack_evt_b && !ack_b_d) ack_b_pulses = ack_b_pulses + 1;
     end
 
-    // ★ 计数器必须声明在使用它的 always 块之前（否则 Verilog 建隐式网线、报 undefined）
+
     integer a_req_seen = 0, a_acks = 0, commits = 0;
     reg     cmt_d = 1'b0;
-    // ★★ 独立诊断：数 FSM 状态转移序列 + 用**另一个**计数器数 active_commit 边沿
+
     integer acmt_edges = 0, st_changes = 0;
     reg     acmt_d = 1'b0;
     reg [2:0] st_d = 3'd0;
@@ -346,7 +320,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         end
     end
 
-    // ★ 换帧提交计数（之前只声明了变量、增量块跟 A 模型一起被删了 ⇒ 恒 0）
+
     always @(posedge clk_sys) begin
         if (!rst_n) cmt_d <= 1'b0;
         else begin
@@ -354,13 +328,8 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
             if (active_commit && !cmt_d) commits = commits + 1;
         end
     end
-    // ★ A 侧的应答（frame_start / swap_ack）现在由 **A 的 core 内部**产生，
-    //   TB 不再模拟 A 的应答（早先版本自己模拟了一份，同时 core 也有一份 ⇒ 双驱动）。
-    //   因此 `a_req_seen` / `a_acks` 这两个 TB 侧计数不再可用（core 内部不可见）。
 
-    // ========================================================================
-    // 5) A：a_video_display_core（阶段 11–15）
-    // ========================================================================
+
     wire [11:0] scan_x, scan_y;
     wire        scan_de, scan_frame_start;
     wire [23:0] disp_rgb;
@@ -407,8 +376,8 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         end
     endtask
     always @(posedge clk_pix) if(rst_n&&em_applied)applied_count=applied_count+1;
-    // Probes must reflect the immediately preceding edge in THEIR own domain.
-    // Verify actual field positions instead of assuming a trace is useful.
+
+
     reg [63:0] want_pixel_debug,want_mem_debug;reg [31:0] want_sys_debug;
     integer debug_checks=0;
     always @(posedge clk_pix)begin
@@ -503,11 +472,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         .mem_fetch_state(mem_fetch_state)
     );
 
-    // ========================================================================
-    // 6) 断言：屏幕像素 == 源 BMP 像素
-    //    A 的 core 内部有固定的图层延迟（Normal=1 / OSD=4 / Emergency=0，最终 5 拍），
-    //    所以按"延迟 5 拍对齐"比较（与 A 的 TB 同口径）。
-    // ========================================================================
+
     integer pix_ok = 0, pix_bad = 0;
     integer red_samples=0,green_samples=0,blue_samples=0;
     integer frame_no = 0;
@@ -520,10 +485,8 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
             comparing <= 1'b0;
             for (ei = 0; ei < 5; ei = ei + 1) exp_rgb[ei] = 24'h000000;
         end else begin
-            // ★ 直接比对，**不要给期望值加延迟**：A 的 core 输出的 `x`/`y` 本身就已经是
-            //   延迟后的扫描坐标（`rgb` 与 `x`/`y`/`de` 在输出端本来就同拍）。
-            //   早先版本把期望值再延迟 5 拍，等于拿 x-5 的期望去比 x 的像素 ——
-            //   表现是"每个像素都错、且错得像横向平移 5 个像素"（实测踩过）。
+
+
             if (pix_active_valid) comparing <= 1'b1;
 
             if (comparing && disp_de && disp_layer==1 && (disp_x >= (HD?320:0)) && (disp_x < (HD?960:W)) && (disp_y >= (HD?120:0)) && (disp_y < (HD?600:H))) begin
@@ -570,8 +533,8 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
           swap_state_o,pix_active_valid,pix_active_slot,pix_generation,scan_frame_start);
         $dumpvars(0,ctrl_valid,ctrl_ready,ctrl_active,em_active,em_applied,em_pending);
     end
-    // Bounded memory waveform in CSV: one actual 64-word read burst plus its
-    // final busy release. Avoid dumping every 125MHz clock for whole frames.
+
+
     integer debug_fd=0,debug_rows=0;
     initial if($test$plusargs("WAVES"))begin
         debug_fd=$fopen("emergency_pixels.csv","w");
@@ -601,27 +564,26 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
             else if(u_display.video.rd_data_valid)burst_words=burst_words+1;
         end
     end
-    // ========================================================================
-    // 7) 主流程
-    // ========================================================================
+
+
     initial begin
         rst_n = 1'b0;
         #400;
         rst_n = 1'b1;
 
-        // ★ 必须先启动 frame_writer：它的 din_ready 要求 running
+
         repeat (4) @(posedge clk_mem);
         @(negedge clk_mem); fw_start = 1'b1;
         @(negedge clk_mem); fw_start = 1'b0;
 
-        // 等 BMP 字节流发完
+
         wait (bu_done || bu_error || (fw_px_cnt == `SV_FRAME_PIXELS));
         check(!bu_error, "1) bmp_unpack 无错（BMP 头与像素段都被接受）");
         check(bp_width  == 16'd640, "2) bmp_parser 解析出宽度 = 640");
         check(bp_height == 16'd480, "3) bmp_parser 解析出高度 = 480");
         check(!bp_check_error,      "4) BMP 头校验通过");
 
-        // 等 frame_writer 写完
+
         wait (fw_slot_valid[1] || fw_wr_error);
         check(!fw_wr_error, "5) frame_writer 写帧无错");
         check(fw_px_cnt == `SV_FRAME_PIXELS, "6) frame_writer 写满 307200 像素");
@@ -629,26 +591,24 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         check(fw_slot_valid[1] == 1'b1, "8) 槽 1 的 slot_valid 置位（A 才允许读）");
 
         if(SUBMIT_LEAD>0)wait(scan_y==(HD?719:479) && scan_x==(HD?1650:800)-SUBMIT_LEAD);
-        // 触发换帧握手
+
         @(negedge clk_sys);
         frame_ready = 1'b1;
         @(negedge clk_sys);
         frame_ready = 1'b0;
 
-        // ★ 等**电平**信号 pix_active_valid，不要等单拍信号 active_commit：
-        //   后者是 sys 域单拍，若在 wait 之前就闪过，wait 会永久挂住（实测踩过）。
+
         wait (pix_active_valid);
-        // ★ 比对窗口：从“画面已激活”开始，再跨两整帧
-        //   （早先只等 2000 拍，落在消隐期 ⇒ pix_ok=0）
+
+
         repeat (2) @(posedge disp_frame_start);
         repeat (2000) @(posedge clk_pix);
 
-        // 等两帧画面，然后收账
+
         wait (frame_no >= 2);
         repeat (2000) @(posedge clk_pix);
 
-        // Repeated requests exercise opposite mailbox/ACK ordering and 8-bit
-        // generation wrap FE->FF->00->01; payload changes only in B IDLE.
+
         for(swap_i=1;swap_i<SWAPS;swap_i=swap_i+1)begin
             wait(swap_state_o==0);
             wait(scan_y==(HD?719:479) && scan_x==(HD?1650:800)-(swap_i%4+1));
@@ -691,7 +651,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         $finish;
     end
 
-    // ---- 换帧过程诊断（每 1 ms 打一行，只在 frame_ready 之后开始，避免刷屏）----
+
     reg diag_on = 1'b0;
     always @(posedge clk_sys) if (frame_ready) diag_on <= 1'b1;
     initial begin
@@ -705,7 +665,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         end
     end
 
-    // 看门狗（本 TB 要过 92 万字节 + 两帧扫描，给足）
+
     initial begin
         #200_000_000;
         $display("[FAIL] tb_a_video_system_core 看门狗超时（bi=%0d fw_px=%0d frames=%0d ok=%0d bad=%0d active=%b swapst=%0d swap_err=%b commits=%0d）",
@@ -713,7 +673,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         $finish;
     end
 
-    // 进度（每 2 ms 仿真时间打一行，便于定位慢在哪一段）
+
     initial begin
         forever begin
             #2_000_000;

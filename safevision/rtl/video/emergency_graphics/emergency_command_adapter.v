@@ -1,8 +1,6 @@
-// Optional C native SYS-domain commit_toggle -> A valid/ready adapter.
-// C keeps all five payload bits unchanged until commit_ack_toggle equals its
-// commit_toggle, and cannot commit again before that ACK. Both endpoints reset
-// their toggles to zero in the same SYS reset epoch. This is NOT an async CDC;
-// emergency_control_bridge performs the atomic SYS -> PIXEL crossing.
+
+
+
 module emergency_command_adapter(
     input wire clk,rst_n,commit_toggle,emergency_active,
     input wire [1:0] direction,warning_level,

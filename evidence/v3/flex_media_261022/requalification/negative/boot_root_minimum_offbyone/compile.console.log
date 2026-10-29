@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/original618/negative/boot_root_minimum_offbyone/sim/tb_v3_boot_pipeline171/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module fat32_boot_parser
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate618/safevision/verification/models/v3_boot_reference171.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_boot_reference171
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_boot_pipeline171.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_boot_pipeline171

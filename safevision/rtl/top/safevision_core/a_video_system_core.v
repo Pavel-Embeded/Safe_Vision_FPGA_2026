@@ -1,20 +1,20 @@
-// A stages1-20 portable video assembly. B media/memory and C policy/audio
-// retain ownership. This module wires their frozen interfaces and adds A
-// emergency control/graphics; physical HDMI attaches to a_hdmi_output.
+
+
+
 module a_video_system_core #(
     parameter integer HD=0,FIFO_AW=10,BURST_WORDS=64,MAX_BURSTS=4,STARVE_LIMIT=64,
     parameter [31:0] SWAP_TIMEOUT_N=32'd5_000_000,
     parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
     parameter integer EMERGENCY_IMMEDIATE=0
 )(
-    // SYS domain: producer retains payload until swap_state_o returns IDLE.
+
     input wire frame_ready,wr_frame_index,input wire [1:0] wr_slot_id,
     input wire [7:0] wr_generation,input wire wr_crc_ok,
     output wire active_commit,output wire [1:0] active_next,
     output wire [7:0] generation_next,output wire frame_index_next,swap_error,
     output wire [2:0] swap_state_o,
     output wire frame_start_evt_b,swap_ack_evt_b,
-    // MEM domain: byte addresses, lengths in 32-bit words. Frame writer len=1.
+
     input wire wr_req,input wire [31:0] wr_addr,wr_data,input wire [15:0] wr_len,
     output wire wr_ack,wr_busy,
     input wire sd_req,sd_wr,input wire [31:0] sd_addr,sd_wdata,input wire [15:0] sd_len,
@@ -58,8 +58,8 @@ module a_video_system_core #(
         .x(scan_x),.y(scan_y),.active(emergency_pixel_active),
         .direction(emergency_pixel_direction),.warning_level(emergency_pixel_level),
         .rgb(em_rgb),.valid(em_valid));
-    // Domain-local registered probes. Sample each bundle with its own clock.
-    // These buses are not control CDCs and must not be sampled in another domain.
+
+
     always @(posedge pixel_clk or negedge prn)begin
         if(!prn)pixel_debug<=0;
         else pixel_debug<={emergency_pixel_active,emergency_pixel_level,emergency_pixel_direction,

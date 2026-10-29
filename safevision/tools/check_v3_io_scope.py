@@ -1,4 +1,4 @@
-"""Mapped asynchronous IO scope: real datapath bounds and an unused DDC DI."""
+
 import re
 
 def bounded_outputs(text,ports,budget=5.0,command='set_max_delay -datapath_only -to [get_ports {uart_txd led* HDMI_DDC_SCL}] 5.000'):
@@ -17,8 +17,8 @@ def bounded_outputs(text,ports,budget=5.0,command='set_max_delay -datapath_only 
  return {'accepted':not errors,'errors':errors,'paths':paths,'scope':'physical propagation bound, no synchronous external receiver assumed'}
 
 def dead_ddc_input(text):
- # The fixed-mode vendor EDID consumer is optimized out. Prove the resulting
- # exact physical PAD has no DI connection; no generic inout exemption exists.
+
+
  blocks=[]
  for m in re.finditer(r'EG_PHY_PAD\s*#\((.*?)\)\s+(\\[^\s]+|[\w$]+)\s*\((.*?)\);',text,re.S):
   if re.search(r'\.bpad\(\s*HDMI_DDC_SDA\s*\)',m[3]):blocks.append(m)

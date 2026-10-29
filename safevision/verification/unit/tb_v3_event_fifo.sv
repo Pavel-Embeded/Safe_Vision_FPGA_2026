@@ -24,7 +24,7 @@ module tb_v3_event_fifo;
  task cycle;input wr,rd;begin w=wr;r=rd;din=din+44'h13579bdf01;@(negedge clk);end endtask
  initial begin
   repeat(3)@(negedge clk);rst_n=1;
-  // All empty/full/pop/push combinations, every pointer location and bypass.
+
   for(phase=0;phase<80;phase=phase+1)begin
    cycle(1,0);repeat(6)cycle(1,1);repeat(12)cycle(1,0);
    repeat(12)cycle(1,1);repeat(12)cycle(0,1);repeat(2)cycle(0,0);

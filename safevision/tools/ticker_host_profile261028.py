@@ -1,4 +1,4 @@
-"""Version-bind preserved configuration/geometry/period tests to ticker BASE."""
+
 from pathlib import Path
 import argparse,hashlib,json,subprocess,sys
 BASELINE='09faac2e8fa718c9f92ef4a5013b68003ec8afe6'
@@ -30,8 +30,8 @@ def replay(root,captures,out):
  for stage,(script,audit,old,count)in PROFILES.items():
   path,raw=frozen(root,audit);text=raw.decode('utf-8-sig');require(text.count(old)==count,'unexpected audit firmware occurrences')
   transformed=text.replace(old,'26102801')
-  # Keep original __file__ so the unmodified dependency resolution reads the
-  # current repository decoder. Only the guarded firmware literal changes.
+
+
   log=out/(stage+'.console.log')
   runner="import sys;from pathlib import Path;p=Path(sys.argv[1]);old=sys.argv[3];t=p.read_text('utf-8-sig');capture=sys.argv[2];sys.argv=[str(p),capture];exec(compile(t.replace(old,'26102801'),str(p),'exec'),{'__name__':'__main__','__file__':str(p)})"
   with log.open('w',encoding='utf-8')as f:code=subprocess.run([sys.executable,'-B','-c',runner,str(path),str(captures/stage),old],stdout=f,stderr=subprocess.STDOUT).returncode

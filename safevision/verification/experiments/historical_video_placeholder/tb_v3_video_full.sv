@@ -131,7 +131,7 @@ module tb_v3_video_model #(parameter HD=0)();
   if(underflow!=0||fault)begin $display("[FAIL] normal DMA underflow=%d fault=%b",underflow,fault);errors=errors+1;end
   safety=1;wait_frame();compare_frame(1,0,0,0);
   media_reset=1;repeat(200)@(posedge sys);media_reset=0;wait_frame();compare_frame(1,0,0,0);
-  // CRC negative control: approved row signature is intentionally corrupted.
+
   safety=0;corrupt_crc=1;wait(tv);allow_audio=1;wait(fault);wait_frame();compare_frame(1,0,0,0);
   $display("[PASS] media-reset SAFE continuity and corrupt CRC detection");
   $display("[TB] tb_v3_video_%s done frames=%0d comparisons=%0d errors=%0d",HD?"hd":"base",frames,comparisons,errors);

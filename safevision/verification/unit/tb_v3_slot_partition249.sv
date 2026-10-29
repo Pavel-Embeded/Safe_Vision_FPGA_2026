@@ -8,10 +8,8 @@ module slot_partition_case249(output reg done=0,output integer errors=0,comparis
   if(dut.source_slot!==old_partition(a)||dut.query_slot!==old_partition(b))begin errors++;if(errors<8)$display("[FAIL] full32-bit slot partition a=%h b=%h",a,b);end
  end endtask
  initial begin
-  // Every possible15-bit high prefix, with low17 bits at BOTH interval
-  // endpoints and a random interior value. All original slot bases are
-  // multiples of2^17, so this exhausts every distinct classification interval
-  // of the complete2^32 input domain; no lower bit can change membership.
+
+
   for(prefix=0;prefix<32768;prefix++)for(low=0;low<3;low++)begin
    r=rnd(r);a={15'(prefix),low==0?17'd0:low==1?17'h1ffff:r[16:0]};b=~a;check();
   end

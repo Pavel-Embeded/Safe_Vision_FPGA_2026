@@ -1,4 +1,4 @@
-"""Bad primary WAV, bad fallback, valid arbitrary-name WAV; independent PCM."""
+
 import argparse,struct,json
 from pathlib import Path
 def generate(out):
@@ -13,7 +13,7 @@ def generate(out):
  disk[lba(5)*512:lba(5)*512+4]=b'RIFF'
  gold=[((((n*73+19)&65535)<<16)|((n*41+17)&65535)) for n in range(N)]
  pcm=b''.join(struct.pack('<I',v) for v in gold);fmt=struct.pack('<HHIIHH',1,2,48000,192000,4,16)
- # A 601-byte odd JUNK chunk deliberately delays the first PCM beyond a sector.
+
  body=b'WAVEfmt '+struct.pack('<I',16)+fmt+b'JUNK'+struct.pack('<I',601)+bytes([0x61])*601+b'\0data'+struct.pack('<I',len(pcm))+pcm
  wave=b'RIFF'+struct.pack('<I',len(body))+body;chain=[16,28,17,29,18,30]
  for i,c in enumerate(chain):

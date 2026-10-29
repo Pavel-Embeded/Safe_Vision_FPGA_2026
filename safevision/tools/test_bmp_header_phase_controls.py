@@ -1,4 +1,4 @@
-"""Require complete public-output mismatches for BMP arithmetic mutants."""
+
 import argparse,concurrent.futures,hashlib,json,re,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

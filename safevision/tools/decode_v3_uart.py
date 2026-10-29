@@ -1,4 +1,4 @@
-"""Verify a probe_v3_uart.ps1 journal without claiming a board acceptance pass."""
+
 from __future__ import annotations
 
 import argparse

@@ -1,4 +1,4 @@
-"""Reject GUI, Tcl and ADC drift; use unchanged native reports for parser checks."""
+
 import argparse,json,shutil,sys
 from pathlib import Path
 from v3_sources import ROOT,FLOW,scope,build_parameters,gui_project,check_gui,native_parameters,physical_constraint_files
@@ -22,7 +22,7 @@ def main():
   check(name,bad)
  native=native_parameters(root,a.native_base.resolve());check('every effective BASE native parameter acknowledged',len(native)==len(build_parameters(root,'base')))
  folder=source/FLOW;common=folder/'v3_build_parameters.tcl';original=common.read_text(encoding='utf-8')
- # Test a distinct mode override, independent of the selected production value.
+
  import re
  text=re.sub(r'set_param rtl min_ripple_len \d+','set_param rtl min_ripple_len 32',original);common.write_text(text,encoding='utf-8')
  override=folder/'v3_build_parameters_hd.tcl';override.write_text('set_param rtl min_ripple_len 16\n',encoding='ascii')

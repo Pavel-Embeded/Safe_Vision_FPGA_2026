@@ -14,7 +14,7 @@ module tb_v3_aux_mux;
  repeat(3)tick();@(negedge clk);rst_n=1;vr=1;ar=1;aw=1;tick();check(sreq && !swr && saddr==va && slen==64,"verify wins simultaneous request");
  repeat(4)begin tick();check(sreq && !aack && vbusy,"request retained while arbiter unavailable");end
  @(negedge clk);ack=1;busy=1;#1;check(vack && !aack,"grant routes to latched owner");tick();@(negedge clk);ack=0;vr=0;
- // Input selection changes while 64 delayed responses still belong to CRC.
+
  for(i=0;i<64;i++)begin
   @(negedge clk);valid=1;rd=i;#1;check(vvalid && !avalid && vdata==i,"all delayed responses retain owner");tick();
   @(negedge clk);valid=0;tick();

@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/lookahead_remaining/negative_functional/bmp_extent_carry/bmp_parser.v" into library work
-INFO: [VRFC 10-311] analyzing module bmp_parser
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/lookahead_supervisor_r2/source/safevision/verification/unit/tb_v3_bmp_bounds.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_bmp_bounds

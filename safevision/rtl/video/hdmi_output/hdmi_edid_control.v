@@ -1,5 +1,5 @@
-// Synchronize optional physical HPD. If the board exposes no FPGA HPD pin,
-// tie hpd=1 and use reread (PIXEL synchronous) for an explicit EDID retry.
+
+
 module hdmi_edid_control #(parameter integer SETTLE_CYCLES=100000)(
     input wire clk,rst_n,hpd,reread,
     output reg trigger,output wire connected,output wire tx_reset

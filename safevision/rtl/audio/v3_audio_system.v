@@ -1,12 +1,6 @@
-// V3 audio assembly. Clocks: REF=50MHz, production MEM=50MHz, AUDIO=12.288136MHz,
-// SYS=50MHz(BASE)/100MHz(HD), PIXEL=25.2/74.25MHz. 48k cadence is AUDIO / 256 (~48000.531Hz).
-// Control/status cross via immutable bundled mailboxes; sample streams use the
-// vendor TD equal-width FWFT FIFO. media_reset resets source/rings/media FIFOs;
-// ROM tone, sample clock, priority ramp and HDMI packet cadence use global reset.
-// PCM16 -> HDMI24 is LEFT ALIGNED (x256), preserving full-scale amplitude.
-// commit_valid is retained until commit_ready. slot/generation change atomically.
-// Only matching-generation samples can reach the output; mismatches drain at
-// AUDIO clock speed. A missing/invalid WAV selects the same ROM as a quiet fallback.
+
+
+
 module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_SERVICE=0,MEDIA_RESET_INCLUDES_GLOBAL=0,HANDBOOK_PROFILE=0,PREINDEXED=0,DIRECT_RING_COMPARE=0,PREFILL_PIPELINE=DIRECT_RING_COMPARE)(
  input wire ref_clk,mem_clk,audio_clk,pixel_clk,sys_clk,rst_n,media_reset,
  input wire external_service_ready,output wire[444:0] core_cmd,input wire[836:0] core_rsp,
@@ -26,20 +20,20 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  input wire ack,busy,input wire [31:0] rdata,input wire rvalid,
  output wire pcm_valid,output wire [23:0] left,right,
  output wire acr_valid,output wire [19:0] N,CTS,
- // All descriptor signals are REF-domain; accepted during resident preload.
+
  input wire media_descriptor_valid,output wire media_descriptor_ready,
  input wire[1:0] media_descriptor_slot,input wire[63:0] media_descriptor,
  input wire media_descriptor_found);
- // Every global endpoint has asynchronous assertion and local synchronous release.
- // All mailbox endpoints in a group share the SAME raw assertion epoch.
+
+
  wire ref_global_rst_n,mem_global_rst_n,audio_global_rst_n,pixel_global_rst_n,sys_global_rst_n;
  v3_audio_reset_release gr(.clk(ref_clk),.assert_reset(!rst_n),.rst_n(ref_global_rst_n));
  v3_audio_reset_release gm(.clk(mem_clk),.assert_reset(!rst_n),.rst_n(mem_global_rst_n));
  v3_audio_reset_release ga(.clk(audio_clk),.assert_reset(!rst_n),.rst_n(audio_global_rst_n));
  v3_audio_reset_release gp(.clk(pixel_clk),.assert_reset(!rst_n),.rst_n(pixel_global_rst_n));
  v3_audio_reset_release gs(.clk(sys_clk),.assert_reset(!rst_n),.rst_n(sys_global_rst_n));
- // Board mode receives the single canonical raw media epoch, including global reset.
- // Local two-stage releases and all data-path reset timing remain in place.
+
+
  (* keep="true" *) wire media_reset_any=MEDIA_RESET_INCLUDES_GLOBAL?media_reset:(!rst_n||media_reset);wire sys_media_rst_n;
  v3_audio_reset_release sm(.clk(sys_clk),.assert_reset(media_reset_any),.rst_n(sys_media_rst_n));
  (* async_reg="true" *) reg [1:0] rr,mr,ar;
@@ -68,9 +62,8 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
    .partial(global_ingress_partial),.fill(fill[g]));
   assign room[g]=global_sector_room;
  end endgenerate
- // The admission predicate is one REF cycle old in production. The source
- // services only one sector at a time; sector_room remains a CURRENT-cycle
- // hard capacity check at Q_CHOOSE. No PCM data, tag or handshake is delayed.
+
+
  generate if(PREFILL_PIPELINE)begin:registered_prefill
   (* preserve="true",keep="true" *) reg[3:0] value;
   always @(posedge ref_clk or negedge ref_rst_n)
@@ -99,7 +92,7 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  .dst_data(index_mem),.dst_valid(index_mem_valid),.dst_ready(1'b1));
  wire [3:0] fb_mem=index_mem[3:0];
  wire [9:0] commit_mem;wire commit_mem_valid,ring_commit_ready;
- // Media epoch resets BOTH descriptor mailbox domains; callers reissue after recovery.
+
  video_cdc_mailbox #(.WIDTH(10)) commit_to_mem(.src_clk(sys_clk),.src_rst_n(sys_media_rst_n),
  .src_data({commit_generation,commit_slot}),.src_valid(commit_valid),.src_ready(commit_ready),
  .dst_clk(mem_clk),.dst_rst_n(mem_rst_n),.dst_data(commit_mem),.dst_valid(commit_mem_valid),.dst_ready(ring_commit_ready));
@@ -137,9 +130,8 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  assign pcm_head_ready=pcm_head_valid&&(!matching||(tick&&ctrl[17]&&!ctrl[8]));
  reg [23:0] wav_l,wav_r;reg sample_valid;
  reg [31:0] underflow_audio;
- // A new generation is allowed up to one 60Hz frame (800 sample ticks) to
- // reach this clock domain. Once its first sample is accepted, every empty
- // tick is a true underflow. A failed priming window also counts failures.
+
+
  reg primed;reg [7:0] priming_generation;reg [9:0] priming_ticks;
  always @(posedge audio_clk or negedge audio_global_rst_n)begin
   if(!audio_global_rst_n)begin wav_l<=0;wav_r<=0;sample_valid<=0;underflow_audio<=0;primed<=0;priming_generation<=0;priming_ticks<=0;end
@@ -195,7 +187,6 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
 endmodule
 
 
-// Reset synchronizer is the only custom CDC here; data FIFOs remain TD IP.
 module v3_audio_reset_release(input wire clk,assert_reset,output wire rst_n);
  (* async_reg="true", keep="true" *) reg [1:0] release_ff;
  always @(posedge clk or posedge assert_reset)

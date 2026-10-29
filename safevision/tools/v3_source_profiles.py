@@ -1,4 +1,4 @@
-"""Exact ordered BASE/HD implementation selection and native acknowledgement."""
+
 from pathlib import Path
 import re,hashlib
 CANONICAL=(
@@ -30,8 +30,8 @@ def native_acknowledgement(root,folder,mode):
  from v3_sources import sources
  log=folder.parent/(mode+'.console.log')
  if(folder/'checkpoint.synthesis.json').is_file():
-  # The implementation process imports gate.db and never invokes read_hdl.
-  # Use its exact, checksum-linked synthesis process; reject a forged handoff.
+
+
   from v3_checkpoint_flow import verify_receipt
   verify_receipt(folder)
   log=folder/'synthesis.console.log'

@@ -1,10 +1,6 @@
 `include "safevision_defs.vh"
-// REF-domain transaction boundary around the existing SPI/CMD17 engine.
-// One 512-byte RAM holds the entire sector until its CRC16 is known good.
-// No directory entry, BMP byte or PCM byte escapes a failed SD transaction.
-// The private fill side is always ready; the public output is synchronous RAM
-// with FWFT ready/valid semantics. data/last remain stable under backpressure.
-// rd_done follows all 512 accepted output bytes, or a raw protocol/CRC error.
+
+
 module sd_checked_sector_reader #(parameter[15:0] CLK_DIV_FAST=`SD_DIV_FAST)(
  input wire clk,rst_n,sdhc,rd_en,input wire[31:0] rd_addr,input wire[15:0] rd_len,
  output wire rd_ready,output wire[7:0] data,output wire data_valid,
@@ -28,7 +24,7 @@ module sd_checked_sector_reader #(parameter[15:0] CLK_DIV_FAST=`SD_DIV_FAST)(
  assign data=read_q;assign data_valid=state==SEND;
  assign data_last=state==SEND && position==511;
  assign dbg_state={1'b0,state};
- // Synchronous dual-port RAM; validity, rather than a bulk RAM reset, guards it.
+
  always @(posedge clk)begin
   if(raw_valid && fill_ready)sector[filled[8:0]]<=raw_data;
   read_q<=sector[read_address];

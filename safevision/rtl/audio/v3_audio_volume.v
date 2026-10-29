@@ -1,7 +1,6 @@
-// Exact PCM24 gain with a shared gain multiplier and narrow serial divider. Public outputs retain
-// the original bypass edge, left publication at37 and right/valid at74 clocks.
-// Signed magnitude division truncates toward zero; all input, busy, reset and
-// output edges remain identical to the frozen original serial implementation.
+
+
+
 module v3_audio_volume(input wire clk,rst_n,valid_in,input wire[23:0] left_in,right_in,
  input wire[6:0] volume,output reg valid_out,output reg[23:0] left_out,right_out,
  output wire busy);
@@ -11,10 +10,8 @@ module v3_audio_volume(input wire clk,rst_n,valid_in,input wire[23:0] left_in,ri
  wire[23:0] magnitude=active?right_magnitude:(left_in[23]?(~left_in+24'd1):left_in);
  wire[6:0] multiplier_gain=active?saved_gain:safe_gain;
  (* dsp_style="yes" *) wire[30:0] multiplied=magnitude*multiplier_gain;
- // Invariant at each division step: remainder<100. The shifted trial
- // is at most199, so one8-bit compare/subtraction is sufficient. Product
- // and quotient share the same30-bit shift register. Thirty exact steps
- // finish before the existing37/74-edge public publication boundaries.
+
+
  wire[7:0] trial={remainder,product[29]};
  wire quotient_bit=trial>=8'd100;
  wire[29:0] divided={product[28:0],quotient_bit};

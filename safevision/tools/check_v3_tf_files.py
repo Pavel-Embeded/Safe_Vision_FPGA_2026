@@ -1,8 +1,6 @@
-"""Read-only preflight of host-visible files; no format/write/rename on the card.
 
-This cannot prove the on-card MBR/FAT chain or electrical compatibility. For a
-real Windows drive, report its filesystem separately from BMP header checks.
-"""
+
+
 import argparse,ctypes,hashlib,json,os,re,struct
 from pathlib import Path
 

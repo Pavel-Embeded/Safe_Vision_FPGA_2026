@@ -17,9 +17,8 @@ module tb_v3_lossless_shared32;
    .MESSAGE_CHARS(32),.BITMAP_FILE("v3_ticker16.mem")) original(
    .clk(clk),.rst_n(rst_n),.frame_start(fs),.x(x),.y(y),.de(de),.panel_pixel(rpanel[lane]),.text_pixel(rtext[lane]),.edge_pixel(redge[lane]),
    .position(rpos[lane]),.frames(rframes[lane]),.loops(rloops[lane]),.font_request(),.font_index(),.font_word(8'd0));
-  // The real shared RAM and its registered read port supply the glyph data.
-  // Spectrum display is disabled here; coefficient/FFT contention is tested
-  // separately with the complete observer and frame raster.
+
+
   v3_audio_spectrum #(.SHARED_TICKER(1),.SHARED_PACKED_FONT(1),.PACKED_INIT_FILE("v3_spectrum_ticker32.mem")) memory(
    .clk(clk),.rst_n(rst_n),.frame_start(fs),.pcm_valid(1'b0),.pcm_left(24'd0),.x(x),.y(y),.de(1'b0),
    .trace_pixel(),.grid_pixel(),.colour(),.ready(),.spectrum_sequence(),.dominant_bin(),.peak_height(),
@@ -42,7 +41,7 @@ module tb_v3_lossless_shared32;
  task advance;begin tick(0,0,0,1);tick(0,0,0,0);tick(0,0,0,1);tick(0,0,0,0);end endtask
  initial begin
   repeat(4)@(negedge clk);rst_n=1;
-  // Every position, glyph cell and viewport edge, including all blank pixels.
+
   for(p=0;p<1024;p++)begin
    ck(pos[0]==p,"exact1024-position production cadence");
    for(yy=456;yy<476;yy++)begin
@@ -53,7 +52,7 @@ module tb_v3_lossless_shared32;
   end
   repeat(30)tick(4095,4095,0,0);
   ck(pos[0]==0&&loops[0]==1,"one complete unchanged1024-position wrap");
-  // Reset while glyph reads are in flight, including asynchronous assertion.
+
   for(i=0;i<5;i++)begin
    repeat(1260)tick(198,460+i%3,1,1);
    ck(request[0],"reset occurs during a genuine packed glyph read");

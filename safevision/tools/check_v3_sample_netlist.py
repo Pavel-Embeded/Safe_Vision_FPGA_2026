@@ -1,4 +1,4 @@
-"""Follow preserved sample Q nets to real packed flip-flop output pins."""
+
 import re
 
 PREFIX='sink/u_bridge/writer/'
@@ -16,8 +16,8 @@ def check(text):
   if not q:continue
   parts=[]
   for part in q[1].strip().strip('{}').split(','):
-   # Escaped bus identifier followed by a constant bit select is emitted as
-   # "\\hier/net [31]". Normalize only that separator, not general net text.
+
+
    net=re.sub(r'\s+(?=\[\d+(?::\d+)?\])','',part.strip()).lstrip('\\').strip()
    span=re.fullmatch(r'(.*)\[(\d+):(\d+)\]',net)
    if span:

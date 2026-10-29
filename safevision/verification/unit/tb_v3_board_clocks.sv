@@ -2,7 +2,7 @@
 module board_clock_case #(parameter HD=0,EXPECTED_HZ=25185185)(input clk,output reg done=0,output integer errors=0,comparisons=0);
  reg rst_n=0;
  safevision_v3_top #(.HD(HD)) dut(.clk(clk),.rst_n(rst_n),.btn_next(1'b1),.btn_auto(1'b1),.btn_emergency(1'b1),.uart_rxd(1'b1),.sd_miso(1'b1));
- // Same measured MEM50/+8ns data-before-valid relation as real board.
+
  defparam dut.memory_ip.OUTPUT_VALID_DELAY=1;
  defparam dut.uart.g_catalog.parser.CATALOG_FILE="v3_command_catalog.mem";
  defparam dut.video.FONT_FILE="font8x16.mem";
@@ -11,7 +11,7 @@ module board_clock_case #(parameter HD=0,EXPECTED_HZ=25185185)(input clk,output 
  task check(input bit ok,input string message);begin comparisons=comparisons+1;if(!ok)begin errors=errors+1;$display("[FAIL] HD=%0d %s",HD,message);end end endtask
  realtime writer_edge=0;
  always @(posedge dut.pll_sys100_clk)writer_edge=$realtime;
- // A release on SYS50 would silently revive the old serializer mistake.
+
  always @(posedge dut.cache_write_rst_n)begin #0.001;
   if(rst_n)check($realtime-writer_edge<0.002,"cache reset releases only on its own WRITE100 rising edge");
  end

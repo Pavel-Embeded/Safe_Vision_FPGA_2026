@@ -1,6 +1,6 @@
 
 module hdmi_1_4b_transmitter_core_wrapper#(
-    parameter DEVICE            = "EG", //"EF2","EF3","EF4","SF1","SF2","EG","PH1A","PH1P","DR1","PH2A"
+    parameter DEVICE            = "EG",
 
     parameter HTOTAL            = 2200,
     parameter HSA               = 44,
@@ -24,50 +24,36 @@ module hdmi_1_4b_transmitter_core_wrapper#(
     input wire       I_pixel_clk,
     input wire       I_rst,
 
-    /*
-        edid read interface 
-    */
+
     input wire       I_edid_read_trig,
     output wire      O_edid_read_valid,
     output wire[7:0] O_edid_read_data,
 
-    /*
-        video interface 
-    */
+
     input wire       I_axis_s_user,
     input wire       I_axis_s_valid,
     input wire       I_axis_s_last,
     input wire[23:0] I_axis_s_data,
     output wire      O_axis_s_ready,
 
-    /*
-        audio interface 
-    */
-    input wire       I_audio_valid,     
-    input wire[23:0] I_audio_left_data, 
+
+    input wire       I_audio_valid,
+    input wire[23:0] I_audio_left_data,
     input wire[23:0] I_audio_right_data,
 
-    /*
-        audio regenaration interface
-    */
+
     input wire       I_acr_valid,
     input wire[19:0] I_acr_cts,
     input wire[19:0] I_acr_n,
 
-    /*
-        status signal
-    */
+
     output wire      O_video_locked,
 
-    /*
-        DDC channel interface
-    */
+
     output wire      O_ddc_scl,
     inout wire       IO_ddc_sda,
 
-    /*
-        tmds data interface 
-    */
+
     output wire[9:0] O_ch0_tmds_data,
     output wire[9:0] O_ch1_tmds_data,
     output wire[9:0] O_ch2_tmds_data,
@@ -5036,6 +5022,5 @@ erqDpJ1uBBUBFPbpQXs+HkYosTBAmqqUeyONkYjdwiqdMetF79kQHyXf514qBTtd
 jrvWHVOrhKr9nbMoQN88TjfjB+HldGC3w/eo79gJ9TILTbTDmxU4xgsqNr4LzH+V
 TATWqrJI2tVMFNU+Yg1t1wIEEpFnMHf73IuYOoPasUY=
 `pragma protect end_protected
-
 
 

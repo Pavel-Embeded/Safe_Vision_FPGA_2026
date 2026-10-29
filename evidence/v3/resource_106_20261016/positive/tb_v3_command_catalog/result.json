@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_command_catalog",
-  "suite": "command_catalog",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "55ec00ae80be8dd414cdda7191af79c084b5ef1d9a514e25d545cb2e3728d5d3",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\publication_candidate\\sim\\command_catalog\\tb_v3_command_catalog"
-}

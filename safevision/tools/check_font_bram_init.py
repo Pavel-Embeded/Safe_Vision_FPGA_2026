@@ -1,9 +1,6 @@
-"""Check TD's public emitted BRAM INIT parameters against all 4096 asset bytes.
 
-Uses the per-bank data_offset/depth/width metadata in TD write_verilog output.
-This is initialization readback, not a simulation of the encrypted BRAM model.
-Usage: python check_font_bram_init.py font_gate.v font8x16.mem
-"""
+
+
 import re
 import sys
 from pathlib import Path

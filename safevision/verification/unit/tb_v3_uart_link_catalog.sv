@@ -59,15 +59,15 @@ module tb_v3_uart_link_catalog;
  expect_reply(0,0,3,0);send_command("A:BRIGHT=0-1",0);
  expect_reply(0,0,3,0);send_command("A:BRIGHT??",0);
  ck(commands==1 && rejected==5,"malformed commands have no effects");
- // A bounded burst tests queue capacity and UART's ready/valid byte cadence.
+
  for(i=0;i<100;i=i+1)begin expect_reply(0,0,i,i*32'h10204081);
  code=i;answer=i*32'h10204081;reply=1;@(negedge clk);end reply=0;
  expect_reply(1,3,8'hf3,32'h12345678);evtsrc=3;evtcode=8'hf3;evtts=32'h12345678;
  while(!evtready)@(negedge clk);evt=1;@(negedge clk);evt=0;
  expect_reply(1,2,7,32'hfffffff0);evtsrc=2;evtcode=7;evtts=32'hfffffff0;
  while(!evtready)@(negedge clk);evt=1;@(negedge clk);evt=0;
- // Minimum supported clock/baud ratio32; RX noise runs concurrently
- // with the original108 ordered replies, preserving the12ms watchdog.
+
+
  for(integer noise=0;noise<1000;noise++)byte_in(8'h55);
  ck(commands==1 && bytes_sent>=1000,"1000 serial noise bytes never generate a spurious command");
  guard=0;while(received<enqueued && guard<1000000)begin @(negedge clk);guard=guard+1;end

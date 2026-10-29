@@ -15,7 +15,7 @@
   "source_bitmap_sha256": "db9b32e51a3ef8cdf735018c5ec3fa80698970b509312903556ecbc0a094eccf",
   "source_shared16_sha256": "9a4bbad623d5867983f061ebdde161b0b6cfb93864bbf95c86344e3ef3f3314d",
   "combined_sha256": "20e65a9a00c5d409caa0b9b72ad2e9a53a4ec88a3b73eb02c29cb4b9500ea481",
-  "descriptor_sha256": "96fe6c85659e97413265b71fbf5db6c7f6fb601cd92efdaca5f91c5cae9ee612",
+  "descriptor_sha256": "59854cd24a7f39ed8922befea385a3cc8750d8ffdb2b3575c17df17e6cdc3532",
   "decoded_bit_comparisons": 8192,
   "all_pixels_preserved": true,
   "coefficient_and_display_prefix_preserved": true,

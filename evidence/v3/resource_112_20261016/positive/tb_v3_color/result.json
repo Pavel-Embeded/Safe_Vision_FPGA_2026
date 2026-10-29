@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_color",
-  "suite": "v3",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "c034d038e66f13690a59327ff3e7c512c119ce2db3c40dfc8bcf8629edfd37e1",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_remaining\\tb_v3_color\\tb_v3_color"
-}

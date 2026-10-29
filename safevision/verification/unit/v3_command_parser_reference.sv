@@ -1,6 +1,6 @@
-// $<A|B|C>:<NAME>[=<decimal>|?]*HH CR LF. XOR covers target through argument.
-// No command side effect until checksum and complete terminator are accepted.
-// 32-character body, 100ms timeout. Numeric configuration uses signed decimal.
+
+
+
 module v3_command_parser_reference #(parameter integer TIMEOUT=10000000)(
  input wire clk,rst_n,rx_valid,input wire [7:0] rx_data,
  output reg command_valid,output wire [7:0] target,
@@ -10,16 +10,16 @@ module v3_command_parser_reference #(parameter integer TIMEOUT=10000000)(
  reg [2:0] state;reg [7:0] checksum,received;
  localparam integer TIMER_W=TIMEOUT>1?$clog2(TIMEOUT):1;
  reg [TIMER_W-1:0] timer;reg [23:0] number;
- reg [5:0] length;// Only presence of a digit is required. A modulo-16 digit counter would
- // reject legal leading-zero values and permit a minus after 16 digits.
+ reg [5:0] length;
+
  reg [3:0] names;reg digit_seen;reg negative,argument;
  reg [7:0] dest;reg [95:0] token;reg ask;
- // Payload is meaningful only with command_valid. It stays in the assembly
- // bank through the validated LF edge, avoiding a duplicate 137-bit bank.
+
+
  assign target=dest;assign name=token;assign query=ask;
  assign value=negative?-$signed({8'd0,number}):$signed({8'd0,number});
- // The previous number must be <1,000,000 before another digit is accepted;
- // hence the largest legal result is 9,999,999 and fits exactly in 24 bits.
+
+
  wire[23:0] decimal_next=number*24'd10+{20'd0,rx_data[3:0]};
  function [4:0] hex;
  input[7:0] c;begin

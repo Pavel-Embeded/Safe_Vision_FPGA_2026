@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Public start/request contract;64-bit mathematical LBA oracle.
+
 module tb_v3_lba_pipeline747;
  reg clk=0,rst=0,start=0;always #5 clk=~clk;
  reg[31:0]first=0,base=0;reg[7:0]spc=1;wire[444:0]cmd;wire[836:0]rsp0,rsp1;

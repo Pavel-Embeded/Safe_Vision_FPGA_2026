@@ -1,2 +1,0 @@
-Independent WAV fixture cases=188 bytes=64386 PCM=8689
-{"top": "tb_v3_audio_negative_container", "status": "FAIL", "source_overrides": ["safevision/rtl/media/v3_wav_parser_compact_ctx.v"], "error": "missing completion/checks or nonzero error: D:\\Codex\\svflex537\\qualification811\\negative\\container_extension\\sim\\tb_v3_audio_negative_container\\sim.log", "elapsed_s": 9.125}

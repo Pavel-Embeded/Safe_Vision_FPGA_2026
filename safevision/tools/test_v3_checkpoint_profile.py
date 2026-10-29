@@ -1,4 +1,4 @@
-"""Exercise actual recorded compilation, then reject seven independent corruptions."""
+
 from pathlib import Path
 import argparse,hashlib,json,re,shutil,sys
 root=Path(__file__).resolve().parents[2];sys.path.insert(0,str(root/'safevision/tools'))
@@ -44,8 +44,8 @@ for name in('wrong_order','missing_read_hdl','duplicate_read_hdl','unlinked_synt
  except(ValueError,KeyError,OSError)as exc:rows.append(dict(name=name,rejected=True,reason=str(exc)))
  else:raise AssertionError('corruption accepted: '+name)
 reset();assert native_acknowledgement(actual_root,out,'base')['accepted'];assert all(sha(out/n)==sha(original/n)for n in files)
-# Only the redundant generated database is removed after every fixture check;
-# all small control inputs/results and untouched original CAD evidence remain.
+
+
 assert(out/'gate.db').resolve().parent==out and not(out/'gate.db').is_symlink();(out/'gate.db').unlink()
 r=dict(accepted=True,scope='Actual native ordered compilation and checksum-linked synthesis/implementation handoff; timing approval is separate',positive=positive,controls=rows,source_validator=validate(root),source_profiles_sha256=sha(root/'safevision/tools/v3_source_profiles.py'),checkpoint_helper_sha256=sha(root/'safevision/tools/v3_checkpoint_flow.py'),original_native_untouched=True)
 (out/'verification.json').write_text(json.dumps(r,indent=2)+'\n',encoding='utf-8');print(json.dumps(dict(accepted=True,ordered_hdl_count=positive['ordered_hdl_count'],rejected_controls=len(rows))))

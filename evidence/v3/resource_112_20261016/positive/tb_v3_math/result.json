@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_math",
-  "suite": "v3",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "44a2c29723e9e59091ddeb6c860f9af0dd9ec5862fae21b048a7b676623cc242",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_remaining\\tb_v3_math\\tb_v3_math"
-}

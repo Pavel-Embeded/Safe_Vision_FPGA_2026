@@ -1,5 +1,5 @@
-# Reuse the source/TB lists in the existing ModelSim runner without executing it.
-# This companion verifies B plus the A stage-1..10 sources with XSim.
+
+
 param(
     [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
     [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
@@ -28,7 +28,7 @@ $aSources=@('common/a_counter.v','common/a_debounce.v','common/a_edge_detect.v',
     'video/osd_overlay/osd_status_text.v','video/osd_overlay/osd_coordinate_text.v',
     'video/osd_overlay/osd_overlay.v','video/osd_overlay/a_graphics_frontend.v')
 foreach($source in $aSources){$rtl+=Join-Path $repo "safevision/rtl/$source"}
-# Follow B's current TBS list, including new integration/adapter tests.
+
 $topMatch=[regex]::Match($original,'(?s)\$TBS = @\((.*?)\n\)')
 if(-not $topMatch.Success){throw 'Cannot find current B top list'}
 $tops=@([regex]::Matches($topMatch.Groups[1].Value,'"(tb_[^"]+)"') | ForEach-Object {$_.Groups[1].Value})

@@ -9,8 +9,7 @@
   ],
   "defines": [],
   "assets": [
-    "safevision/assets/control/v3_command_catalog.mem",
-    "safevision/verification/models/decimal_dsp135.freeze.json"
+    "safevision/assets/control/v3_command_catalog.mem"
   ],
   "generator_dependencies": [],
   "generated_assets": [],

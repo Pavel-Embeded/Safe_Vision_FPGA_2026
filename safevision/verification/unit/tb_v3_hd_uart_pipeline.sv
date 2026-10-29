@@ -18,7 +18,7 @@ module tb_v3_hd_uart_pipeline;
   rxd=1;repeat(32)@(negedge clk);
  end endtask
  task send_command;begin
-  // Complete checksum-valid C:NEXT=1 command (XOR72), then malformed input.
+
   byte_in("$");byte_in("C");byte_in(":");byte_in("N");byte_in("E");byte_in("X");byte_in("T");byte_in("=");byte_in("1");
   byte_in("*");byte_in("7");byte_in("2");byte_in(13);byte_in(10);
   byte_in("$");byte_in("Z");byte_in(13);byte_in(10);
@@ -37,7 +37,7 @@ module tb_v3_hd_uart_pipeline;
     end
     begin repeat(8)send_command();end
    join
-   // More than enough serial clocks to drain128 queued26-byte records.
+
    repeat(1200000)@(negedge clk);
    if(!d.empty||d.sending||!reference.empty||reference.sending)begin errors++;$display("[FAIL] queue did not drain");end
    @(negedge clk);#1;rst=0;#2;rst=1;repeat(12)@(negedge clk);

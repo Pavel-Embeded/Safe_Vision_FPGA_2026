@@ -1,5 +1,5 @@
-# Actual A/B RTL + A emergency/HDMI-boundary checks. Vendor encrypted HDMI
-# transmitter functional simulation is a separate simulator capability.
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',

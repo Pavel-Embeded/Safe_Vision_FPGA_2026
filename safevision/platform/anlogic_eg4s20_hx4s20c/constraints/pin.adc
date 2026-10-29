@@ -1,77 +1,5 @@
-# ============================================================================
-# pin.adc - SafeVision B chain bring-up tops (shared by all bring-up tops)
-# ----------------------------------------------------------------------------
-# Board: Anlogic EG4S20BG256 (KX HX4S20C).  Device matches the vendor lab
-# example 7_lab_ex_2026_nosoft/example/lab_ex4_tf (also EG4S20BG256).
-#
-# Pin sources, in order of authority:
-#   A. HX4S20开发板手册-HDL版2410.pdf (official board manual) pin tables:
-#        - 串口引脚分配表 : RXD = F12, TXD = D12
-#        - 4个独立LED引脚分配: LED1=A4, LED2=A3, LED3=C10, LED4=B12
-#        - 独立按键表     : KEY1 = A2 (KEY2=B2, KEY3=B1, KEY4=C1)
-#   B. Board schematics 3_原理图/开发板原理图/ : 2_FPGA.pdf (FPGA pin map,
-#      pin number <-> net name) and 6_EX_DEVICE.pdf (SD / LED / key sheet).
-#   C. Vendor lab example pin.adc (same device) - used to cross-check clk/sd_*.
-#
-#   port      pin   schematic net      source / note
-#   --------  ----  -----------------  --------------------------------------
-#   clk       R7    FPGA_GCLK          A+B+C  board 50 MHz oscillator
-#   rst_n     A2    KEY_1              A+B    independent button, 10K pull-up on board
-#   sd_dclk   A14   FPGA_SD_CLK        B+C    SPI SCLK        [SD-ONLY, see below]
-#   sd_mosi   A13   FPGA_SD_CMD        B+C    SPI MOSI        [SD-ONLY, see below]
-#   sd_miso   B14   FPGA_SD_D0         B+C    SPI MISO        [SD-ONLY, see below]
-#   sd_ncs    A12   FPGA_SD_D3         B+C    CD/DAT3 = SPI CS[SD-ONLY, see below]
-#   led[0]    A4    LED0               A+B    manual calls it LED1
-#   led[1]    A3    LED1               A+B
-#   led[2]    C10   LED2               A+B
-#   led[3]    B12   LED3               A+B
-#   uart_txd  D12   TXD                A      CONFIRMED - see below
-#
-# uart_txd: the board has an ONBOARD USB-UART (CH340G, refdes U41), so no
-# external USB-TTL adapter is needed - just plug the USB cable and open the COM
-# port at 115200 8N1.
-#   Manual table 串口引脚分配表: RXD = F12, TXD = D12 (FPGA pins).
-#   Manual figure 2-10 (USB连接CH340串口原理图) shows the wires CROSS:
-#       U41 pin 2 (CH340 TXD, chip output)  ->  net named RXD
-#       U41 pin 3 (CH340 RXD, chip input)   ->  net named TXD
-#   So the nets are named from the FPGA point of view:
-#       net RXD on F12 = FPGA receive  (input)
-#       net TXD on D12 = FPGA transmit (output) -> drives CH340 pin 3
-#   Confirmed safe: D12 is an output driving a CH340 input, not a bus fight.
-#
-# TF card pin mapping follows both SD-mode and SPI-mode semantics from the
-# manual (SPI mode: pin2=cs, pin3=di, pin5=sclk, pin7=do), which matches the
-# schematic net names above.  The manual's TF section only prints the connector
-# pinout, not the FPGA pins, so the SD rows rest on source B+C.
-#
-# sd_miso: the schematic sheet we could read does not state whether D0 has an
-# external pull-up.  PULLTYPE = NONE matches the vendor example; switch to
-# PULLUP here if bring-up shows MISO floating before the card drives it.
-#   ★ 2026-10-06 板级实测证实了这条预案：SD 初始化约 1/10 成功、状态行 `ED=11`
-#     （CMD0 的 R1 ≠ 0x01）——正是"悬空 MISO 的噪声被当成假 R1"的签名。
-#     处置：**board bring-up 的 `project/board_verify/board_b.adc` 已改成 PULLUP**
-#     （本共享文件保持原样，不动其它顶层的行为）。
-#
-# ============================================================================
-#  ##  [SD-ONLY] 四根 SD/SPI 引脚的开关说明（中文，务必看清）  ##
-# ----------------------------------------------------------------------------
-#  三个 bring-up 顶层的端口不完全一样：
-#    top_stage5_sector_rd    : clk / rst_n / sd_ncs·sd_dclk·sd_mosi·sd_miso / uart_txd / led[3:0]
-#    top_stage6_fat32_mount  : 同上（都与 SD 卡打交道）
-#    top_sdram_loopback      : clk / rst_n /                        uart_txd / led[3:0]
-#                              ★ SDRAM 是【封装内硬核】，不用 TF 卡，所以没有 sd_* 端口
-#
-#  TD 对"约束文件里出现顶层不存在的端口"是【报错】而不是警告，2026-10-02 实测：
-#     HDL-1492 ERROR: Failed to find pin sd_dclk in model top_sdram_loopback.
-#     USR-0148 ERROR: set_pin_assignment { sd_dclk } {...} is not a valid ADC command
-#  然后整个 syn_1 直接 PRJ-5013 失败。
-#
-#  => 规则：**用 top_sdram_loopback 时，下面四条 [SD-ONLY] 必须保持注释状态**；
-#     用 top_stage5 / top_stage6（例如重跑 M-7 多卡 / M-8 拔卡）时，把四行行首的
-#     `#` 去掉即可。CLK / RESET / UART / LED 六条是公共的，恒定生效。
-# ============================================================================
 
-# ---- 公共引脚：三个 bring-up 顶层都有，恒定生效 ----------------------------
+
 
 set_pin_assignment	{ clk }	{ LOCATION = R7; IOSTANDARD = LVCMOS33; PULLTYPE = NONE; }
 
@@ -84,11 +12,4 @@ set_pin_assignment	{ led[1] }	{ LOCATION = A3; IOSTANDARD = LVCMOS33; DRIVESTREN
 set_pin_assignment	{ led[2] }	{ LOCATION = C10; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
 set_pin_assignment	{ led[3] }	{ LOCATION = B12; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
 
-# ---- [SD-ONLY] SD/SPI 四根：只有 top_stage5_sector_rd / top_stage6_fat32_mount
-#      有这些端口。当前 TOP_MODULE = top_sdram_loopback，所以保持注释。
-#      重跑阶段 5/6 时去掉行首的 # -------------------------------------------------
 
-#set_pin_assignment	{ sd_dclk }	{ LOCATION = A14; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
-#set_pin_assignment	{ sd_mosi }	{ LOCATION = A13; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }
-#set_pin_assignment	{ sd_miso }	{ LOCATION = B14; IOSTANDARD = LVCMOS33; PULLTYPE = NONE; }
-#set_pin_assignment	{ sd_ncs }	{ LOCATION = A12; IOSTANDARD = LVCMOS33; DRIVESTRENGTH = 8; PULLTYPE = NONE; }

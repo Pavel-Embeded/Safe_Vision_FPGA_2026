@@ -1,5 +1,5 @@
-// Two RGB565 pixels -> one 32-bit FIFO word; first pixel is low halfword.
-// Flush/reset only at a coordinated FIFO/frame epoch. Odd pixels stay pending.
+
+
 module pixel_word_packer(
     input wire clk,rst_n,input wire [15:0] pixel,input wire valid,output wire ready,
     output wire [31:0] word_data,output wire word_valid,input wire word_ready,

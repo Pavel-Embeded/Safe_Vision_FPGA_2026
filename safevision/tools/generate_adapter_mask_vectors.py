@@ -1,4 +1,4 @@
-"""Independent UART oracle for six-pattern guarded delayed-DQM experiment."""
+
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];V=ROOT/'safevision/verification/vectors'
 patterns=[int(x,16) for x in (V/'adapter_path_patterns.hex').read_text().split()]

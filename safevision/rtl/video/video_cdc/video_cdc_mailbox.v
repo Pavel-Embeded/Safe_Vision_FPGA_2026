@@ -1,10 +1,6 @@
-// One outstanding, non-droppable bundled-data mailbox. Common reset epoch:
-// assert reset in BOTH domains together; release synchronously in each domain.
-// src_data is captured on src_valid&&src_ready and held through the return ACK.
-// dst_data/valid are stable during backpressure. Synchronizers + settle edge
-// give payload time to settle; physical max-delay constraints remain required.
-// Data registers may merge equivalent/constant bits; synchronizer stages remain
-// preserved. Native CDC endpoint audits and8ns payload constraints are mandatory.
+
+
+
 module video_cdc_mailbox #(parameter integer WIDTH=32)(
     input wire src_clk,src_rst_n,input wire [WIDTH-1:0] src_data,
     input wire src_valid,output wire src_ready,
@@ -16,10 +12,8 @@ module video_cdc_mailbox #(parameter integer WIDTH=32)(
     (* async_reg="true", keep="true" *) reg ack_meta,ack_sync,req_meta,req_sync;
     reg settling;
     assign src_ready=(req_toggle==ack_sync) && src_rst_n;
-    // The private payload has no meaning before its request toggle. Every
-    // new request captures data first, while the destination output and all
-    // protocol state retain their asynchronous reset. Public behavior,
-    // including zero destination data during reset, is unchanged.
+
+
     always @(posedge src_clk)
         if(src_rst_n&&src_valid&&src_ready)payload<=src_data;
     always @(posedge src_clk or negedge src_rst_n) begin

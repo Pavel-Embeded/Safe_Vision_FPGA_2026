@@ -1,10 +1,6 @@
-// ============================================================================
-// clock_video_verify_top.v - TD-only clock/reset/timing implementation check
-// ----------------------------------------------------------------------------
-// This is a verification top, not SafeVision's product top or a board image.
-// SV_VERIFY_HD is a synthesis-time define (0=BASE, 1=HD). Four reset-request
-// inputs and all probe outputs have no verified board pin assignments.
-// ============================================================================
+
+
+
 `ifndef SV_VERIFY_HD
 `define SV_VERIFY_HD 0
 `endif
@@ -55,9 +51,7 @@ module clock_video_verify_top (
         .hblank(hblank), .vblank(vblank)
     );
 
-    // Nine independently reset state elements keep all five generated clock
-    // domains and all nine reset outputs observable in the mapped netlist.
-    // Each probe stays in its own clock domain; no cross-domain sample is made.
+
     reg [3:0] sys_count, mem_count, pixel_count, audio_count;
     reg [3:0] media_count, memory_client_count, hdmi_pixel_count;
     reg serial_toggle, hdmi_serial_toggle;
@@ -94,8 +88,7 @@ module clock_video_verify_top (
                            audio_count[3], serial_toggle, pixel_count[3],
                            mem_count[3], sys_count[3]};
 
-    // A pixel-domain register exercises the scan coordinates and all timing
-    // labels; probe_video is an unpinned logic probe, not an HDMI output.
+
     reg [7:0] pixel_sample;
     always @(posedge pixel_clk or negedge pixel_rst_n) begin
         if (!pixel_rst_n) pixel_sample <= 8'd0;

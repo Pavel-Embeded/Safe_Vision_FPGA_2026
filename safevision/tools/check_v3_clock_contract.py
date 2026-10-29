@@ -1,9 +1,6 @@
-"""Check configured nominal PLL counters against V3 board/HUD parameters.
 
-This is not a PLL behavioral simulation or an oscillator measurement. The
-NORMAL / CLKC0_EXT EG_PHY_PLL template has VCO = FIN * FB * C0DIV / REFDIV.
-Native derive_clocks and routed STA remain separate required evidence.
-"""
+
+
 import argparse,hashlib,json,re
 from fractions import Fraction
 from pathlib import Path
@@ -11,7 +8,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 
 def supervisor_parameters(text):
- """Read explicit named parameters without evaluating Verilog text."""
+
  headers=re.findall(r'\bv3_supervisor\s*#\((.*?)\)\s+supervisor\s*\(',text,re.S)
  if len(headers)!=1 or re.search(r'\bdefparam\s+supervisor\.',text):
   raise ValueError('missing/ambiguous supervisor instance or defparam override')
@@ -73,10 +70,8 @@ def check(root):
  core=root/'safevision/rtl/video/v3_video_display_core.v'
  for p in [top,core]:
   if p.read_text(encoding='utf-8').count('.PIXEL_HZ(PIXEL_HZ)')!=1:raise ValueError('Clock parameter is not propagated once: '+str(p))
- # Packed storage serializes one MEM50 word into two WRITE100 halfwords.
- # The control SYS clock is mode dependent and is not a valid clock proxy.
- # Check the declared production wiring here; mapped/routed pin ownership is
- # independently mandatory in check_v3_native_clock_domains.
+
+
  from check_v3_native_clock_domains import source_profile,clean
  packed_profile=source_profile(root)
  if packed_profile['external']:
@@ -89,8 +84,8 @@ def check(root):
   for marker in ('.write_clk(EXTERNAL_CACHE_WRITE?cache_write_clk:sys_clk)',
                  '.write_rst_n(EXTERNAL_CACHE_WRITE?cache_write_rst_n:(sys_rst_n&&!media_reset))'):
    if cc.count(marker)!=1:raise ValueError('display cache does not select the explicit WRITE100/reset contract')
- # SPI25 is opt-in; the source, declared electrical profile and generated
- # clocks must agree before any physical build can be approved.
+
+
  budget_path=sdc.parent/'io_budget.json';sd=json.loads(budget_path.read_text(encoding='utf-8'))['sd']
  profile=sd.get('miso_sample_edge')=='falling_ref'
  if (t.count('.MID_REF_SAMPLE(1)')==1)!=profile:raise ValueError('SPI source and declared sampling profile disagree')

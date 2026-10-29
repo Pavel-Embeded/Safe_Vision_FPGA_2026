@@ -58,7 +58,7 @@ module tb_v3_hd_uart_link;
  expect_reply(0,0,3,0);send_command("A:BRIGHT=0-1",0);
  expect_reply(0,0,3,0);send_command("A:BRIGHT??",0);
  ck(commands==1 && rejected==5,"malformed commands have no effects");
- // A bounded burst tests queue capacity and UART's ready/valid byte cadence.
+
  for(i=0;i<100;i=i+1)begin expect_reply(0,0,i,i*32'h10204081);
  code=i;answer=i*32'h10204081;reply=1;@(negedge clk);end reply=0;
  expect_reply(1,3,8'hf3,32'h12345678);evtsrc=3;evtcode=8'hf3;evtts=32'h12345678;

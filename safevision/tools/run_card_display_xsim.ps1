@@ -1,6 +1,6 @@
-# A+B board regression with XSim 2018.3. Generated databases, waves and logs
-# belong in RunDir; they are never source artifacts. Memory/HDMI are contracts,
-# NOT simulations of the vendor-encrypted SDRAM/HDMI cores or external AC.
+
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',
@@ -67,7 +67,7 @@ try{
   $sim=@($sim|ForEach-Object{Join-Path $sv $_})
   Push-Location -LiteralPath $run
   try{
-   # The init probe restores production SPI rate and asserts product timeouts.
+
    $defines=if($c -in @('init','slowinit')){@()}else{@('-d','SIM_FAST_TO')}
    Write-XSimProject -Paths $rtl -Path 'rtl.prj'
    & (Join-Path $XSimBin 'xvlog.bat') @defines -i (Join-Path $sv 'rtl/include') --log rtl.log --file 'rtl.prj' > rtl.console.log 2>&1
@@ -110,8 +110,8 @@ try{
      $tcl+="log_wave /$top/sd_dclk /$top/dut/pl_sd_ready /$top/dut/pl_ec"
      $tcl+='log_wave /tb_safevision_real_sd_init/rises /tb_safevision_real_sd_init/minimum_period'
     }elseif($c -in @('card','top')){
-     # Selected protocol/control signals only; no clocks, scan counters, arrays
-     # or recursive whole-chip logging. Keep wave size manageable.
+
+
      foreach($name in @('app_wr_en','app_rd_en','app_wr_dm','adapter_write_idle','sk_state',
        'sk_frame_done','sk_frame_ok','pl_state','pl_frame_cnt','pl_slot','publish_toggle',
        'publish_slot','frame_ready','swap_state','active','underflows','overflows',

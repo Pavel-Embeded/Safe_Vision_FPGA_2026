@@ -1,6 +1,6 @@
-// Compare every public output of compact and legacy arbiter configurations.
-// Legal always-requested masters + delayed memory responses; sole-reader phase
-// exceeds saturation, then three contenders exercise fairness at the threshold.
+
+
+
 `timescale 1ns/1ps
 module arb_compact_case #(parameter integer N=4)(output reg done=0);
  reg clk=0;always #4 clk=~clk;reg rn=0,rd=0,wr=0,sd=0;

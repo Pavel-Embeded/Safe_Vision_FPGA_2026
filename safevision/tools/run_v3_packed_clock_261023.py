@@ -1,9 +1,6 @@
-"""Mandatory auxiliary qualification for the BASE packed-cache clock repair.
 
-The existing 303/221 matrix is retained. This gate additionally requires true
-SYS50/MEM50/WRITE100 native tests and normally completed semantic rejection of
-the old 1:1 clock wiring. Compile crashes, FATALs and missing finish never count.
-"""
+
+
 from pathlib import Path
 import argparse, concurrent.futures, hashlib, json, re, shutil, subprocess, sys
 
@@ -93,11 +90,11 @@ def main():
     ]
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
         negative_records = list(pool.map(lambda contract: negative(args.output, *contract), contracts))
-    # Recheck positive input identities after all native rejection runs.
+
     for record in positive:
         require(all(sha(ROOT / name) == digest for name, digest in record['inputs'].items()), 'source changed during auxiliary gate')
-        # Retain native raw logs/assets as a portable proof; XSim executables
-        # and regenerable xsim.dir are intentionally outside this payload.
+
+
         capture = Path(record['capture'])
         target = args.output / 'positive' / record['top']
         target.mkdir(parents=True)
@@ -112,8 +109,8 @@ def main():
          gate_tool='safevision/tools/run_v3_packed_clock_261023.py', gate_tool_sha256=sha(Path(__file__)),
          normal_semantic_negatives=negative_records, original_matrix=dict(positive=303, negative=221, retained=True),
          hardware_verified=False, STA_approved=False, bitstream_generated=False))
-    # Inventory all portable files. Generated simulator binary directories do
-    # not participate and need not be retained after this evidence is imported.
+
+
     files = {p.relative_to(args.output).as_posix(): sha(p) for p in args.output.rglob('*')
              if p.is_file() and 'xsim.dir' not in p.parts and p.suffix.lower() in ('.json', '.log', '.prj', '.mem', '.v')}
     save(args.output / 'files.sha256.json', files)

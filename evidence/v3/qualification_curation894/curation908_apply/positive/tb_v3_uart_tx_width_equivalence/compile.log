@@ -1,7 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq74/source/safevision/rtl/common/uart_tx.v" into library work
-INFO: [VRFC 10-311] analyzing module uart_tx
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq74/source/safevision/verification/models/v3_uart_tx_reference.sv" into library work
-INFO: [VRFC 10-311] analyzing module v3_uart_tx_reference
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq74/source/safevision/verification/unit/tb_v3_uart_tx_width_equivalence.sv" into library work
-INFO: [VRFC 10-311] analyzing module v3_tx_width_case
-INFO: [VRFC 10-311] analyzing module tb_v3_uart_tx_width_equivalence

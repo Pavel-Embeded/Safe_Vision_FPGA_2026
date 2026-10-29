@@ -1,4 +1,4 @@
-"""Native XSim regression. Explicit manifests, isolated ASCII work, fail closed."""
+
 import argparse,hashlib,json,os,re,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
@@ -63,8 +63,8 @@ def main():
             text=(folder/'sim.log').read_text(encoding='utf-8',errors='replace')
             errors=re.findall(r'errors\s*=\s*(\d+)',text)
             checks=len(re.findall(r'\[PASS\]',text))
-            # Legacy B benches use per-check markers and often a Chinese
-            # summary. The actual normal-finish source location binds the TB.
+
+
             marker=bool(re.search(r'\$finish called[^\n]*'+re.escape(top)+r'\.sv\b',text))
             bad=bool(re.search(r'(?im)(\[FAIL\]|\[SKIP\]|^\s*(?:\[[^]\n]+\]\s*)?(?:FAIL\b|FATAL\b|Fatal:|ERROR:|SKIP\b))',text))
             if not marker or '$finish called' not in text or bad or not checks or any(int(x) for x in errors):

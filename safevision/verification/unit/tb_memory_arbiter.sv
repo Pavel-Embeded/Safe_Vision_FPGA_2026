@@ -1,35 +1,13 @@
-// ============================================================================
-// tb_memory_arbiter.sv — 阶段 A：memory_arbiter 仲裁最坏场景
-// ----------------------------------------------------------------------------
-// 被测：
-//   rtl/memory/memory_arbiter.v     （固定优先级 + N 突发上限 + 防饥饿）
-//
-// 依据：
-//   设计手册 7.11（仲裁固定优先级）/ 7.13（防饥饿与带宽保障），
-//   以及 docs/interface_spec.md（mem_ctrl 之前的主设备接口约定）。
-//
-// 覆盖的 7 项断言要点：
-//   1) 最坏场景（显示读 + 帧写同时持续请求）下帧写仍能持续完成（>=10 个突发）
-//   2) 显示读通道持续供数（>=1000 word）
-//   3) 读 grant 连续突发数不超过 N（MAX_BURSTS 上限）
-//   4) 写 grant 连续突发数不超过 N
-//   5) SD grant 连续突发数不超过 N
-//   6) rd_starve_cnt == 0（显示读未被饿死）
-//   7) wr_starve_cnt == 0（帧写未被饿死）
-//
-// 说明：为不受 mem_ctrl 未完成的阻塞，TB 内联一个最简单的 SDRAM 行为模型
-//       （组合读、1 word/cycle），不写 verification/models/frame_memory_model.sv
-//       （被其它任务占用）。
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
 module tb_memory_arbiter;
 
-    // ------------------------------------------------------------------
-    // 时钟 / 复位
-    // ------------------------------------------------------------------
-    reg clk_b = 1'b0;          // sys_clk / mem_clk 100MHz
+
+    reg clk_b = 1'b0;
     always #5  clk_b = ~clk_b;
 
     reg rst_arb_n = 1'b0;
@@ -51,11 +29,9 @@ module tb_memory_arbiter;
         end
     endtask
 
-    localparam integer N_BURST = 4;      // 与 memory_arbiter 的 MAX_BURSTS 一致
+    localparam integer N_BURST = 4;
 
-    // ==================================================================
-    // 一、仲裁器 + 内联内存模型 + 三个主设备模型
-    // ==================================================================
+
     wire        mem_req, mem_wr, mem_ready, mem_rdata_valid;
     wire [31:0] mem_addr, mem_wdata, mem_rdata;
     wire [3:0]  mem_wstrb;
@@ -68,18 +44,18 @@ module tb_memory_arbiter;
 
     reg  arb_run = 1'b0;
 
-    // ---- 显示读主设备：持续请求（最坏场景）----
+
     wire        rd_req  = arb_run;
     wire [31:0] rd_addr = 32'h0000_2000;
     wire [15:0] rd_len  = 16'd16;
 
-    // ---- 帧写主设备：持续请求（最坏场景）----
+
     wire        wr_req  = arb_run;
     wire [31:0] wr_addr = 32'h0008_0000;
     reg  [31:0] wr_data = 32'hAAAA_5555;
     wire [15:0] wr_len  = 16'd16;
 
-    // ---- SD 调试主设备：偶发请求 ----
+
     reg         sd_req = 1'b0;
     reg         sd_wr  = 1'b0;
     wire [31:0] sd_addr = 32'h002C_0000;
@@ -115,16 +91,16 @@ module tb_memory_arbiter;
         .wr_starve_cnt(wr_starve_cnt), .rd_starve_cnt(rd_starve_cnt)
     );
 
-    // ---- 内联 SDRAM 行为模型（简单数组）----
+
     reg [31:0] mem [0:65535];
-    assign mem_ready       = 1'b1;                        // 1 word / cycle
+    assign mem_ready       = 1'b1;
     assign mem_rdata       = mem[mem_addr[18:2]];
     assign mem_rdata_valid = mem_req && mem_ready && !mem_wr;
     always @(posedge clk_b) begin
         if (mem_req && mem_wr && mem_ready) mem[mem_addr[18:2]] <= mem_wdata;
     end
 
-    // ---- 统计 ----
+
     integer rd_words = 0, wr_bursts = 0, sd_bursts = 0;
     integer rd_consec = 0, rd_consec_max = 0;
     integer wr_consec = 0, wr_consec_max = 0;
@@ -155,17 +131,13 @@ module tb_memory_arbiter;
         end
     end
 
-    // ==================================================================
-    // 二、测试流程
-    // ==================================================================
+
     integer i;
 
     initial begin
         for (i = 0; i < 65536; i = i + 1) mem[i] = i[31:0];
 
-        // --------------------------------------------------------------
-        // 阶段 A：仲裁器最坏场景
-        // --------------------------------------------------------------
+
         $display("==== 阶段 A：仲裁器 ====");
         rst_arb_n = 1'b0; arb_run = 1'b0;
         repeat (10) @(posedge clk_b);
@@ -185,9 +157,7 @@ module tb_memory_arbiter;
         check(rd_starve_cnt == 16'd0, "ARB: rd_starve_cnt == 0");
         check(wr_starve_cnt == 16'd0, "ARB: wr_starve_cnt == 0（帧写未饿死）");
 
-        // --------------------------------------------------------------
-        // 汇总
-        // --------------------------------------------------------------
+
         $display("========================================");
         $display("  PASS = %0d   FAIL = %0d", passes, errors);
         $display("========================================");
@@ -196,7 +166,7 @@ module tb_memory_arbiter;
         $finish;
     end
 
-    // 兜底看门狗
+
     initial begin
         #500000;
         $display("[FAIL] watchdog timeout");

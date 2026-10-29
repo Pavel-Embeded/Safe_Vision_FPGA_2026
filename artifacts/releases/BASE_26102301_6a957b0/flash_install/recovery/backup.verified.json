@@ -1,9 +1,0 @@
-{
-  "accepted": true,
-  "capacity_bytes": 2097152,
-  "jedec_id": "EF4015",
-  "two_full_reads_identical": true,
-  "original_flash_sha256": "0241f34a8af7288067684f9146f16c4579cd77d433b07d225d341ab076ba3857",
-  "read_console_sha256": "66eeb462689263b2490363640b09dcc892d245ab482bfd8161793d69ea664682",
-  "flash_written": false
-}

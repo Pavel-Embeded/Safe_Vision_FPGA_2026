@@ -1,9 +1,6 @@
-// Experimental eight-entry queue: this vendor mapping uses three RAM9K tiles.
-// It is not included in the production source list. Synchronous RAM
-// reads prefetch the next head on the consuming edge. The first write and a
-// one-entry pop/push use an explicit bypass, so no read-during-write behavior
-// is required from the RAM primitive. FWFT latency and full policy match the
-// legacy sync_fifo exactly, including rejecting writes when initially full.
+
+
+
 module v3_event_fifo #(parameter integer W=44)(
  input wire clk,rst_n,wr_en,input wire[W-1:0] din,
  output wire full,almost_full,input wire rd_en,output wire[W-1:0] dout,

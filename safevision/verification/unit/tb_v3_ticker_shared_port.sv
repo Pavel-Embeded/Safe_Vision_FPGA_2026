@@ -17,7 +17,7 @@ module tb_v3_ticker_shared_port;
  wire ready_a,ready_b;wire[15:0] seq_a,seq_b;wire[8:0] bin_a,bin_b;wire[6:0] peak_a,peak_b;
  reg[7:0] sample_div=0;reg[31:0] sample_number=0;
  wire pcm_valid=sample_div==0&&a.state==a.CAPTURE&&b.state==b.CAPTURE;
- // A deterministic, non-symmetric source exercises every FFT arithmetic path.
+
  wire signed[23:0] pcm=sample_number[7:0]<128?24'sd1200000:-24'sd1200000;
  always @(posedge clk)if(rst)begin sample_div<=sample_div+1'b1;if(pcm_valid)sample_number<=sample_number+1'b1;end
  v3_audio_spectrum #(.SHARED_TICKER(1),.SHARED_INIT_FILE("v3_spectrum_ticker.mem")) a(

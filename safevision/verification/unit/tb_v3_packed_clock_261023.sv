@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
-// Independent public-data oracle. BASE control SYS is deliberately 50 MHz;
-// only the dedicated packed-cache writer runs at 100 MHz. WRONG_WRITE is a
-// native negative control, completed by $finish after observing real errors.
+
+
 module packed_clock_case_261023 #(parameter integer WRONG_WRITE=0,PHASE=0)(
  output reg done=0,output integer errors=0,comparisons=0,detections=0);
  reg mem=0,sys=0,wr=0,pix=0,rst=0;
@@ -63,7 +62,7 @@ module packed_clock_case_261023 #(parameter integer WRONG_WRITE=0,PHASE=0)(
   end else begin
    require(write_edges>=2*mem_edges-3&&write_edges<=2*mem_edges+3,"positive control really uses WRITE100/MEM50");
    require(!sf&&!pf,"dedicated WRITE100 has no serializer or raster fault");
-   // Abort between LOW/HIGH writes; no pending HIGH may leak into the new epoch.
+
    @(negedge mem);valid=1;bank=7;column=319;data=32'hdeadbeef;
    wait(d.high_pending);#1;require(d.high_pending,"reset injection truly lands while HIGH is pending");
    rst=0;valid=0;coord=0;repeat(8)@(negedge mem);epoch=2;rst=1;

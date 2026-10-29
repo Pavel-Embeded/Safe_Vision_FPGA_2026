@@ -1,7 +1,6 @@
 `include "fault_code_defs.vh"
-// SYS-domain supervisor. All inputs below are already atomic snapshots or
-// synchronized event pulses. Idle media/memory engines do not arm watchdogs.
-// The fixed raster heartbeat remains required while a static image is shown.
+
+
 module v3_supervisor #(
  parameter integer CLK_HZ=100000000,BOOT_CYCLES=2000000000,BOOT_MS_OVERRIDE=0,PROGRESSIVE_LOAD=0,
  parameter integer FRAME_CYCLES=10000000,MEM_CYCLES=20000000,
@@ -18,13 +17,11 @@ module v3_supervisor #(
  output wire fault_valid,fatal_latched,output wire[31:0] fault_ts,
  output wire err_push,output reg[7:0] err_code,output reg[3:0] err_src,
  output reg[2:0] err_level,output reg[31:0] err_ts);
- // A shared 1 ms enable avoids five independent 100 MHz wide counters.
- // Heartbeats clear immediately; expiry occurs on a shared tick, within one
- // tick before the exact cycle interval. At CLK_HZ=1000 the unit is one clock.
- // Non-integral-kHz test clocks retain exact cycle counting (TICK_DIV=1).
+
+
  localparam integer TICK_DIV=(CLK_HZ>=1000 && CLK_HZ%1000==0)?CLK_HZ/1000:1;
- // Optional board load budget expressed in1ms ticks, avoiding32-bit
- // overflow from a60-second cycle constant. Legacy exact-cycle mode stays.
+
+
  localparam integer BOOT_LIMIT=BOOT_MS_OVERRIDE>0?BOOT_MS_OVERRIDE:(BOOT_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer FRAME_LIMIT=(FRAME_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer MEM_LIMIT=(MEM_CYCLES+TICK_DIV-1)/TICK_DIV;
@@ -34,22 +31,21 @@ module v3_supervisor #(
  reg[width_for(BOOT_LIMIT)-1:0] boot_timer;
  reg[width_for(FRAME_LIMIT)-1:0] frame_timer;
  reg[width_for(MEM_LIMIT)-1:0] mem_timer;
- // Published count is exact on this edge, including a late heartbeat clear.
- // The late clear only drives one FF; increment logic uses the prior published count.
+
+
  reg[width_for(PROGRESS_LIMIT)-1:0] progress_raw;reg progress_clear;
  wire[width_for(PROGRESS_LIMIT)-1:0] progress_timer=progress_clear?0:progress_raw;
  reg[width_for(WINDOW_LIMIT)-1:0] window_timer;
  reg[width_for(TICK_DIV-1)-1:0] ms_timer;
- // For unsigned32-bit a,b: (a>=b && a-b>=8) iff
- // {0,a}>={0,b}+33'd8. Keep the carry; b near0xffffffff must
- // never wrap the threshold into a false alarm. Snapshot timing is unchanged.
+
+
  reg[32:0] video_limit,audio_limit;
- // Force the documented carry chain on these measured constant-add paths;
- // the low three constant bits can otherwise shorten below min_ripple_len.
+
+
  (* use_ripple=1 *) wire[32:0] next_video_limit={1'b0,video_underflows}+33'd8;
  (* use_ripple=1 *) wire[32:0] next_audio_limit={1'b0,audio_underflows}+33'd8;
  reg[31:0] last_hd,ms_now;
- // Predict exactly the next counter state; no event receives an extra cycle.
+
  wire watch_tick;
  generate if(TICK_DIV==1)begin:every_cycle_tick
   assign watch_tick=1'b1;
@@ -66,8 +62,8 @@ module v3_supervisor #(
   else if(window_done || media_reset)window_last<=(WINDOW_LIMIT==1);
   else if(watch_tick)window_last<=window_timer==WINDOW_LIMIT-2;
  end
- // Four byte comparisons run in parallel. Preserve these small group nodes
- // so area mapping cannot turn a33-bit comparison into a serial LUT chain.
+
+
  (* keep="true" *) wire[3:0] video_gt,video_eq,audio_gt,audio_eq;
  genvar group;
  generate for(group=0;group<4;group=group+1)begin:compare_byte
@@ -82,12 +78,8 @@ module v3_supervisor #(
  endfunction
  wire video_threshold=!video_limit[32] && ge_groups(video_gt,video_eq);
  wire audio_threshold=!audio_limit[32] && ge_groups(audio_gt,audio_eq);
- // Production HD may place a boundary after the two window comparisons.
- // Only these sampled window events gain one SYS edge. Preserve their raw
- // observation timestamp; manual SAFE and all other event inputs bypass it.
- // Register byte comparisons on the raw observation edge; reduction and
- // priority share the following edge. Event latency and original timestamp
- // are identical to the validated one-edge window pipeline contract.
+
+
  reg[3:0] window_video_gt_q,window_video_eq_q,window_audio_gt_q,window_audio_eq_q;
  reg window_video_overflow_q,window_audio_overflow_q,window_valid_q;
  reg[31:0] window_ms_q;
@@ -99,18 +91,17 @@ module v3_supervisor #(
  end
  wire video_window_event=WINDOW_PIPELINE?(window_valid_q&&!window_video_overflow_q&&ge_groups(window_video_gt_q,window_video_eq_q)):(window_done&&video_threshold);
  wire audio_window_event=WINDOW_PIPELINE?(window_valid_q&&!window_audio_overflow_q&&ge_groups(window_audio_gt_q,window_audio_eq_q)):(window_done&&audio_threshold);
- // Only verified media/memory progress extends a long preload. Raster
- // heartbeats cannot hide an idle or stalled media loader.
+
+
  wire load_progress=PROGRESSIVE_LOAD && (progress_heartbeat || mem_heartbeat);
  reg initialized,fault_i_old,fault_b_old,failed_old,hd_fault_old;
  reg[10:0] pending,selection,new_events;
- // Duplicate the SAME next state, not a delayed sample of pending. The
- // original bank drives timestamp/priority loads; the preserved alert bank
- // drives only the short fault-enable OR, removing measured5ns routing fanout.
+
+
  (* preserve="true" *) reg[10:0] pending_alert;
  reg[15:0] rejected_old;reg[3:0] fallback_old;
- // For unsigned16 A,B,carry(A+~B) iff A>B; equality sums to65535.
- // Force the native carry path instead of a long distributed LUT comparator.
+
+
  (* use_ripple=1 *) wire[16:0] rejected_order_sum={1'b0,rejected_files}+{1'b0,~rejected_old};
  wire rejected_rise=rejected_order_sum[16];
  reg[7:0] media_first;reg[31:0] stamps[0:10];
@@ -124,17 +115,17 @@ module v3_supervisor #(
  .busy(recovery_busy),.media_reset(media_reset),.rescan_start(rescan_unused),
  .recovered(recovered),.safe_latched(recover_safe),.attempts(recovery_attempts),.state(recovery_state));
  assign window_done=watch_tick && window_last;
- // q holds priority(next pending) on the SAME edge as pending updates.
- // Thus every visible event, timestamp and fault edge remains identical.
+
+
  wire[10:0] pending_next=(pending & ~selection) | new_events;
  wire[10:0] priority_next;
  (* preserve="true" *) reg[10:0] priority_q;
  wire[10:0] priority_selection=priority_q;
- // Per-byte local loads retain identical one-hot selection, not delayed data.
+
  (* preserve="true" *) reg[43:0] priority_ts;
  always @(posedge clk or negedge rst_n)
   if(!rst_n)priority_ts<=0;else priority_ts<={4{priority_next}};
- // Preserve balanced four-event prefix groups: exact same-edge arbitration.
+
  (* keep="true" *) wire[1:0] priority_busy4;
  assign priority_busy4[0]=|pending_next[3:0];
  assign priority_busy4[1]=|pending_next[7:4];
@@ -241,16 +232,15 @@ module v3_supervisor #(
   err_level[1]=!((priority_selection[8] && fatal_latched) || priority_selection[9] || priority_selection[10]);
   err_level[0]=!((priority_selection[0] && cache_ready) || (priority_selection[8] && fatal_latched) || priority_selection[10]);
  end
- // Preserve a direct two-level OR tree instead of sharing the priority
- // encoder's deeper, high-fanout intermediate terms with fault-code enables.
+
+
  (* keep="true" *) wire[2:0] pending_groups;
  assign pending_groups[0]=|pending_alert[3:0];
  assign pending_groups[1]=|pending_alert[7:4];
  assign pending_groups[2]=|pending_alert[10:8];
  assign err_push=|pending_groups;
- // Keep the late recovery/FATAL inputs on the final OR stage.
- // Same busy predicate for ALL8 state encodings, including invalid6/7.
- // Keep its three state bits plus two latches in one5-input recovery cone.
+
+
  localparam[2:0] RECOVERY_IDLE=3'd0,RECOVERY_LOCKED=3'd5;
  (* keep="true" *) wire safe_recovery=(recovery_state!=RECOVERY_IDLE && recovery_state!=RECOVERY_LOCKED) || recover_safe || fatal_latched;
  (* keep="true" *) wire safe_ordinary=manual_safe || !cache_ready || (fault_valid && fault_level>=3);
@@ -260,10 +250,8 @@ module v3_supervisor #(
  .wdt_reason(8'd0),.media_fatal(fatal),.recover_ack(recovered),
  .fault_code(fault_code),.fault_level(fault_level),.fault_valid(fault_valid),
  .fatal(fatal_latched),.fault_ts(fault_ts),.media_rst_req(reset_unused));
- // Timestamp storage is private until pending becomes1. An empty slot
- // is overwritten on every active edge, including the event capture edge.
- // Resetting pending and the public error registers is sufficient; retain
- // full32-bit timestamps and exact arbitration without a352-bit reset fanout.
+
+
  integer stamp_i;
  always @(posedge clk)if(rst_n)
   for(stamp_i=0;stamp_i<11;stamp_i=stamp_i+1)
@@ -277,10 +265,7 @@ module v3_supervisor #(
   end else begin
    pending<=pending_next;
    pending_alert<=pending_next;
-   // An unoccupied slot has no observable timestamp. Track the current time
-   // until its first event captures pending=1, then hold through arbitration.
-   // Thus the timestamp on every valid event is exactly the original ms_now,
-   // including simultaneous clear/retrigger; wide CE no longer decodes events.
+
 
    if(!pending[0])media_first<=media_code;
    fault_i_old<=integrity_fault;fault_b_old<=bus_fault;failed_old<=media_failed;

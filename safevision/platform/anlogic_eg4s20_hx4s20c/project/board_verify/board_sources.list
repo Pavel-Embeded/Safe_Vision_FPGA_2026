@@ -1,4 +1,4 @@
-# Paths relative to safevision/. vendor/ is the separately resolved official HDMI directory.
+
 platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_top.v
 platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v
 platform/anlogic_eg4s20_hx4s20c/rtl/sdram_app_adapter.v

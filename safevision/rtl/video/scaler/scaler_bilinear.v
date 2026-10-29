@@ -1,6 +1,6 @@
-// Four RGB565 neighbors. Q0.8 fractions. Nearest is p00. Latency 3.
-// Separable rounded interpolation in difference form, one multiplier/channel
-// per axis: (A*256 + (B-A)*f + 128) >> 8. Register only the rounded channels.
+
+
+
 module scaler_bilinear(input wire clk,rst_n,valid_in,bilinear,
  input wire [15:0] p00,p10,p01,p11,input wire [7:0] fx,fy,
  output reg [15:0] pixel,output reg valid_out);

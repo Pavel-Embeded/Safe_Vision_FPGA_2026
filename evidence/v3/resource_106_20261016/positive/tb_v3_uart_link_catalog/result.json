@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_uart_link_catalog",
-  "suite": "catalog_uart_link",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "09476afce466a2f327d78b2bf8b758bd50e234bb7fa6f5c5507dec25d0885caf",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\publication_candidate\\sim\\catalog_uart_link\\tb_v3_uart_link_catalog"
-}

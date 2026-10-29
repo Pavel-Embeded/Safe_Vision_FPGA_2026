@@ -1,4 +1,4 @@
-"""Normal-ending negative controls; fatal/compile/tool failures never count."""
+
 import argparse,hashlib,json,re,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

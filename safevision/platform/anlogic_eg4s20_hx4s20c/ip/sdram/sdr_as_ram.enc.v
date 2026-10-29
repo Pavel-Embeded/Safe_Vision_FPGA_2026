@@ -1,36 +1,31 @@
 
 `timescale 1ns / 1ps
 
-//////////////////////////////////////////////////////////////////////////////////
-// Company: anlgoic
-// Author: 	xg 
-// description: sdram as ram top module
-//////////////////////////////////////////////////////////////////////////////////
 
 `include "global_def.v"
 
 module sdr_as_ram  #( parameter self_refresh_open=1)
-	( 
+	(
 	    input   		Sdr_clk,
 		input			Sdr_clk_sft,
         input   		Rst,
-			  			  
+
 		output			Sdr_init_done,
 		output			Sdr_init_ref_vld,
 		output	    	Sdr_busy,
-		
-		input			App_ref_req,		
-		
-        input						App_wr_en, 
-        input  [`ADDR_WIDTH-1:0]	App_wr_addr,  	////row[10:0],bank[1:0],col[7:0]
+
+		input			App_ref_req,
+
+        input						App_wr_en,
+        input  [`ADDR_WIDTH-1:0]	App_wr_addr,
 		input	[`DM_WIDTH-1:0]		App_wr_dm,
 		input	[`DATA_WIDTH-1:0]	App_wr_din,
-		
+
 		input						App_rd_en,
 		input	[`ADDR_WIDTH-1:0]	App_rd_addr,
 		output						Sdr_rd_en,	//synthesis keep
 		output	[`DATA_WIDTH-1:0]	Sdr_rd_dout,//synthesis keep
-		
+
 
 		output							SDRAM_CLK,
 		output  						SDR_RAS,
@@ -39,8 +34,8 @@ module sdr_as_ram  #( parameter self_refresh_open=1)
 		output		[`BA_WIDTH-1:0]		SDR_BA,
 		output		[`ROW_WIDTH-1:0]	SDR_ADDR,
 		output		[`DM_WIDTH-1:0]		SDR_DM,
-		inout		[`DATA_WIDTH-1:0]	SDR_DQ		
-		
+		inout		[`DATA_WIDTH-1:0]	SDR_DQ
+
 	);
 `pragma protect begin_protected
 `pragma protect version = 1

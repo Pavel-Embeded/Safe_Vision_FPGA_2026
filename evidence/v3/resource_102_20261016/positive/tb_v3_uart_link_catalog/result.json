@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_uart_link_catalog",
-  "suite": "catalog_uart_link",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "fe78508bb67f70dbd4ccd3f7d3812bfe8abd0a7437178eba8630f12548791788",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\gpio_output_register_validation\\catalog_uart_link\\tb_v3_uart_link_catalog"
-}

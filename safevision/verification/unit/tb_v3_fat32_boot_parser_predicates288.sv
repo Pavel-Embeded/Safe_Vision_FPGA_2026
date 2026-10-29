@@ -48,8 +48,8 @@ fat32_boot_parser255_reference b(.clk(clk),.rst_n(rst_n),.start(start),.sd_rd_re
   #27;rst_n=1;
   for(trial=0;trial<4096;trial++)begin
    for(k=0;k<512;k++)begin random_q=rnd(random_q);bytes[k]=random_q;end
-   // Legal and malformed fields, arbitrary32-bit wrap/carry, both FAT counts,
-   // all legal cluster sizes, interrupted reads and reset/restart epochs.
+
+
    if(1)begin
     bytes[11]=0;bytes[12]=2;bytes[13]=1<<(trial%8);bytes[14]=32;bytes[15]=0;bytes[16]=1+trial%2;
     bytes[17]=0;bytes[18]=0;bytes[19]=0;bytes[20]=0;bytes[22]=0;bytes[23]=0;
@@ -57,9 +57,8 @@ fat32_boot_parser255_reference b(.clk(clk),.rst_n(rst_n),.start(start),.sd_rd_re
     bytes[450]=trial%4?8'h0c:0;random_q=rnd(random_q);put32(454,random_q);random_q=rnd(random_q);put32(458,random_q);
     bytes[510]=8'h55;bytes[511]=8'haa;
    end
-   // Each group changes only one field of an otherwise valid header.
-   // Exhaust every8-bit value, preserving the old parser's exact error
-   // priority and public numeric results. Separate storage257 covers aborts.
+
+
    case(trial/256)
     0:bytes[11]=trial;1:bytes[17]=trial;2:bytes[13]=trial;3:bytes[16]=trial;
     4:bytes[510]=trial;5:bytes[511]=trial;6:bytes[22]=trial;7:bytes[19]=trial;
@@ -84,7 +83,7 @@ fat32_boot_parser255_reference b(.clk(clk),.rst_n(rst_n),.start(start),.sd_rd_re
     sd_timeout_err=0;sd_crc16_err=0;sd_err_code=8'h23;sd_err_detail=8'h45;
    end
    repeat(8)@(negedge clk);
-   // Cover asynchronous reset after both successful and failed operations.
+
    if(trial%5==0)begin #2;rst_n=0;#23;rst_n=1;end
   end
   if(!errors)$display("[PASS] public header contract:4096 targeted complete headers:all256 values of16 fields;exact public results,error priority and reset edges");

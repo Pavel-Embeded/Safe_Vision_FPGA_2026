@@ -9,9 +9,7 @@
   "defines": [
     "SIM_FAST_TO"
   ],
-  "assets": [
-    "safevision/verification/models/v3_file_streamer_frozen_timeout.freeze.json"
-  ],
+  "assets": [],
   "generator_dependencies": [],
   "generated_assets": [],
   "strict_generated_inputs": 1,

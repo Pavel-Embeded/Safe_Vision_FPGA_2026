@@ -1,11 +1,6 @@
 `include "safevision_defs.vh"
-// BGR24 byte stream -> canonical640x480 RGB565, aspect fit, black letterbox.
-// Supported source1..1920 x1..1080, either BMP orientation. No frame RAM:
-// a selected row is horizontally resampled, then replayed for upscaling.
-// Rational DDA gives exact floor(x*source/dest) without a divider/DSP.
-// Bottom-up Y uses ceil((j+1)*H/dh)-1 so its canonical pixels are identical
-// to top-down, including odd padding and noninteger downscaling ratios.
-// Backpressure is propagated; output remains stable until accepted.
+
+
 module v3_bmp_normalizer199_reference(
  input wire clk,rst_n,input wire[7:0] din,input wire din_valid,
  output wire din_ready,input wire din_sof,din_eof,
@@ -22,8 +17,8 @@ module v3_bmp_normalizer199_reference(
  reg[12:0] x_error,y_error;reg[9:0] store_x,out_x,out_row;
  reg[7:0] blue,green;reg[1:0] phase;reg[15:0] captured;
  reg after_row,eof_seen,have_row,initial_y;
- // Canonical line uses two native RAM9K tiles; no distributed tail.
- // Pixel precision and the existing synchronous read latency are unchanged.
+
+
  (* ram_style="bram" *) reg[15:0] row_pixels[0:639];
  wire[9:0] row_index=(out_x>=pad_x&&out_x<pad_x+dw)?out_x-pad_x:10'd0;
  reg[15:0] read_pixel;
@@ -92,7 +87,7 @@ module v3_bmp_normalizer199_reference(
        end
       endcase
      end
-     // Error wins over any row/pixel state transition on the same byte.
+
      if(din_eof&&(!last_row_byte||src_row!=h-1'b1))state<=FAILED;
     end
     STORE:if(store_x==dw-1'b1)state<=after_row?ROWEND:READ;

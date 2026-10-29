@@ -1,6 +1,6 @@
-// Internal implementation probe for stages1-15. Independent clock inputs allow
-// worst-case 100/125/25.175 or74.25MHz analysis without changing B's board top.
-// No board pinout/SDRAM pad timing/HDMI serializer is claimed by this probe.
+
+
+
 `ifndef A_DISPLAY_HD
 `define A_DISPLAY_HD 0
 `endif
@@ -14,7 +14,7 @@ module a_display_verify_top(
    if(!rst_n)control<=0;else if(control_shift)control<={control[58:0],control_bit};
  wire rr;wire [31:0] ra,rd;wire [15:0] len,level;reg ack,busy,data_valid;
  reg [15:0] remain;reg [31:0] addr,response;
- // In-domain registered burst responder solely keeps every A data path live.
+
  always @(posedge mem_clk or negedge rst_n)begin
   if(!rst_n)begin ack<=0;busy<=0;remain<=0;addr<=0;response<=0;data_valid<=0;end
   else begin

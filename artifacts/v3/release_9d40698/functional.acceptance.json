@@ -1,7 +1,0 @@
-{
-  "accepted": true,
-  "manifest": "evidence/v3/resource_113_20261016/acceptance.json",
-  "positive_native_tests": 113,
-  "strict_normal_ending_mutants": 28,
-  "committed_proof_dependencies": 996
-}

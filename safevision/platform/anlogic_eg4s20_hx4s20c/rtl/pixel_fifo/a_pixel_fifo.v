@@ -1,6 +1,6 @@
-// Official TD FIFO: 32-bit writes, 16-bit FWFT reads, low halfword first.
-// Address-width AW gives (2**AW-1) usable write words; counters are local-domain.
-// Common asynchronous high reset, with vendor per-domain synchronous release.
+
+
+
 module a_pixel_fifo #(parameter integer AW=10)(
     input wire rst,wr_clk,rd_clk,
     input wire [31:0] wr_data,input wire wr_en,output wire full,almost_full,

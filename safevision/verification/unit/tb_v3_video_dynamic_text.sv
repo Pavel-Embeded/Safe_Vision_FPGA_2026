@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Independent full-font observation of every dynamic character family.
+
 module tb_v3_video_dynamic_text_model #(parameter HD=0)();
  reg clk=0;always #5 clk=~clk;reg rst=0;
  reg[11:0] x=0,y=0;reg[95:0] cfg=0;reg[3:0] cache=15;

@@ -1,8 +1,6 @@
-# TD6.2.168116 board bring-up: synthesize/place/route/STA with real pins.
-# Target: safevision_a_board_top on HX4S20C, HDMI B output, package-in SDRAM.
-# No bitgen here. Program hardware only after this passes AND the pin audit
-# in docs is reviewed: HDMI TMDS polarity/negative-ball mapping and the
-# SDRAM AC path are not proven by this flow alone.
+
+
+
 if {![info exists board_mode] || $board_mode ni {base hd}} {error "Select base or hd"}
 set here [file dirname [file normalize [info script]]]
 set root [file normalize [file join $here .. .. .. .. ..]]
@@ -57,11 +55,8 @@ foreach f $paths {if {![file isfile $f]} {error "Missing source: $f"}}
 
 if {[catch {
     import_device eagle_s20.db -package EG4S20BG256
-    # read_hdl takes ONE include directory here (a Tcl list shifts the arguments
-    # and silently blanks -include_dir). The vendor encrypted HDMI/SDRAM cores
-    # resolve their own "global_def.v" from the directory that also holds the
-    # .enc.v files, which is why ip/sdram/ and the vendor include/ dir need no
-    # extra -include_dir entry.
+
+
     read_hdl -file [join $paths " "] \
         -include_dir [file join $root safevision rtl include] \
         -define "SAFEVISION_BOARD_HD=$hd" -top safevision_a_board_top

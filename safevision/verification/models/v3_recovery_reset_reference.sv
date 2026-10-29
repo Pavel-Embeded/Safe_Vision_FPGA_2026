@@ -1,5 +1,5 @@
-// SYS controller survives media reset. Reset is finite, then rescan is started.
-// Failure/timeout keeps SAFE; a new manual request is required for another try.
+
+
 module v3_recovery_reset_reference #(
     parameter integer RESET_CYCLES=32, SETTLE_CYCLES=32,
     parameter integer TIMEOUT_CYCLES=500000000, MAX_ATTEMPTS=3

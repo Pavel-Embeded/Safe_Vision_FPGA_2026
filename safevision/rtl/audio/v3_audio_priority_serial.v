@@ -1,8 +1,6 @@
-// Exact PCM24 crossfade with one time-multiplexed signed 18x18 multiplier.
-// Input accepted only in state 0; the production /256 sample cadence exceeds
-// the five-clock latency. All input samples and the next gain are captured.
-// For signed delta=tone-wav: delta=256*high+low, with signed high and unsigned
-// low. floor(delta*gain/256)=high*gain+floor(low*gain/256), exactly for negatives.
+
+
+
 module v3_audio_priority_serial #(parameter integer RAMP_N=240,FULL_SCALE=256)(
  input wire audio_clk,rst_n,sample_valid,alarm_req,
  input wire[23:0] wav_l,wav_r,tone_l,tone_r,

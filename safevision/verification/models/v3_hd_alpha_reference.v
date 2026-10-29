@@ -1,10 +1,6 @@
-// Exact arithmetic identity: B + floor(((F-B)*a+127)/255). Bias 255*32
-// (red/blue) or 255*64 (green) keeps the divider unsigned. The corresponding
-// subtraction vanishes modulo the output channel width; true output stays
-// in 0..31/63. Three clocks and invalid-cycle public output are preserved.
-// RGB565, foreground alpha 0..255. Exact rounded division by 255.
-// Fixed latency 3, throughput one pixel/clock. Difference form uses ONE signed
-// multiplier/channel: B*255 + (F-B)*alpha equals F*alpha+B*(255-alpha).
+
+
+
 module v3_hd_alpha_reference(
  input wire clk,rst_n,valid_in,
  input wire [15:0] front,back,input wire [7:0] alpha,

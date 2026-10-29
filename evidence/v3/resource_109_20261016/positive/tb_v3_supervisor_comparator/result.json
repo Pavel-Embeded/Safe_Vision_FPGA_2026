@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_supervisor_comparator",
-  "suite": "supervisor_comparator",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "52b329fb64498cca8d52cf3bd52e45482540841c1118dc7f6ce26d633e410aba",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\lookahead_comparator_oracle\\tb_v3_supervisor_comparator"
-}

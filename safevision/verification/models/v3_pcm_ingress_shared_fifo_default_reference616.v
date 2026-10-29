@@ -1,10 +1,6 @@
-// REF -> MEM single source, tagged four-track queue. One source track is active
-// at a time; valid/data remain held until the THIRD 16-bit word is accepted.
-// Full 512-byte PCM sector = 128 pairs = 384 FIFO words. Admit a sector only
-// at a group boundary and <=632/1023 words, reserving >=391 = 384+7 words.
-// MEM retains the tag at FIFO head until the ring accepts the entire pair.
-// This queue is valid for V3 bounded prefill (<~1.5k/track << ring CAP16384).
-// A generic permanently-full destination could cause head-of-line blocking.
+
+
+
 module v3_pcm_ingress_shared_fifo_original616(
  input wire rst,wr_clk,rd_clk,input wire[127:0] wr_data,input wire[3:0] wr_valid,
  output wire[3:0] wr_ready,output wire[8:0] wr_pairs,output wire sector_room,
@@ -30,10 +26,8 @@ module v3_pcm_ingress_shared_fifo_original616(
  wire fifo_wr_valid=wr_rst_n&&(|wr_valid);
  wire fifo_rd_ready=rd_rst_n&&((read_part!=2)||rd_ready[fifo_data[1:0]]);
  assign wr_ready=(wr_rst_n&&write_part==2&&fifo_wr_ready)?wr_valid:4'd0;
- // For every possible10-bit FIFO level w, floor((w+2)/3) equals
- // floor((683*w+1366)/2048). All1024 levels and4 partial-word states are
- // exhaustively checked at the public output. DSP mapping is requested;
- // TD may fold the constants into logic. No register/handshake cycle is added.
+
+
  (* dsp_style="yes" *) wire[20:0] pair_credit_product=words*10'd683+21'd1366;
  assign wr_pairs=pair_credit_product[19:11]+(write_part!=0);
  assign wr_words={1'b0,words};

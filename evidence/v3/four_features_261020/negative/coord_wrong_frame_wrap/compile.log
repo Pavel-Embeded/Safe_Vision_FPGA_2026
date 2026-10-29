@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/hb01/f11/negative/coord_wrong_frame_wrap/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_hd_coord_arith
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/video/video_timing/video_timing.v" into library work
-INFO: [VRFC 10-311] analyzing module video_timing
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_hd_coord_arith.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_hd_coord_arith

@@ -42,7 +42,7 @@ module emergency_control_case #(parameter integer POLICY=0,parameter real HALF=6
     integer i,epoch;
     initial begin
       #37;rst=1;
-      // Reset deliberately while a frame-boundary mailbox can be outstanding.
+
       for(i=0;i<7;i=i+1)send(i*13+5);
       #1.7;rst=0;valid=0;#39;rst=1;
       for(epoch=0;epoch<2;epoch=epoch+1)begin

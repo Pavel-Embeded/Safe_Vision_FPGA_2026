@@ -1,10 +1,6 @@
 `include "pixel_format_defs.vh"
-// B bmp_unpack emits file-order pixels. Positive-height BMP rows arrive from
-// bottom to top; B's sequential frame_writer alone cannot infer that order.
-// Keep its packing/CRC/handshake, and remap accepted write rows into raster
-// addresses. Header orientation is captured on the FIRST accepted pixel,
-// since start may precede bmp_parser's header result. All ports use mem_clk.
-// 12.5M clocks = 100ms at 125MHz; choose an explicit bound for other rates.
+
+
 module bmp_frame_write_bridge #(
     parameter [31:0] GAP_TIMEOUT=32'd12_500_000,
     parameter integer EXACT_SAMPLE_COMPARE=0,
@@ -41,8 +37,8 @@ module bmp_frame_write_bridge #(
             end
             if(din_valid && din_ready)begin
                 pair_phase<=~pair_phase;
-                // Register before native wr_req rises for the completed pair.
-                // The arbiter now sees a flop output, not row-multiply+base+mux.
+
+
                 if(pair_phase)wr_addr<=address_next;
             end
             if(wr_req && wr_ready)begin

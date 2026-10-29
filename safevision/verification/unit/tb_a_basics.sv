@@ -25,7 +25,7 @@ module tb_a_basics;
                 et=enable && rc==999;
                 if(enable) rc=(rc+1)%1000;
                 er=sig && !last; ef=!sig && last; last=sig;
-                // Independent run-length model: exactly four samples of new level.
+
                 if(sync==rl) stable=0;
                 else begin stable++; if(stable==4) begin rl=sync;stable=0;end end
                 if(sync_i==rli) stablei=0;
@@ -51,7 +51,7 @@ module tb_a_basics;
     initial begin
         cycle(); @(negedge clk);rst_n=1;enable=1;cycle();
         for(i=0;i<2100;i++) begin
-            // Count past two default wraps; bouncing input changes every 1/2/4/8 clocks.
+
             @(negedge clk);
             key=(i<40)?i[0]:(i/8)%2;sig=(i%7)<3;
             start=(i%17)==1;warning=(i%17)==5;emergency=(i%17)==9;clear=(i%17)==13;

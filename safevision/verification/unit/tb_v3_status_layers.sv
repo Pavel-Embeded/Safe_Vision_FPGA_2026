@@ -59,7 +59,7 @@ module tb_v3_status_layers;
    ch=line_text[(63-c)*8+:8];point(248+c*16+b*2,134);
    check(srgb==(font[ch*16+7][7-b]?16'h07e0:16'h1800),"independent two-times SAFE text");
   end
-  // A single input pixel must appear on the fourth edge, including de masking.
+
   @(negedge clk);de=0;repeat(4)@(posedge clk);#1;
   @(negedge clk);x=0;y=0;de=1;
   for(k=1;k<=4;k++)begin @(posedge clk);#1;check(ea==(k==4?224:0),"four-clock layer latency");end

@@ -1,5 +1,5 @@
-// Deterministic vendor-boundary idle and unchanged accepted beats.
-// This is a queue/interface test, not encrypted HDMI or electrical simulation.
+
+
 `timescale 1ns/1ps
 module tb_hdmi_video_bridge_idle;
  reg clk=0,rst_n=0,de=0,ready=0;always #5 clk=~clk;
@@ -22,7 +22,7 @@ module tb_hdmi_video_bridge_idle;
  initial begin
   repeat(3)begin @(posedge clk);idle_check;end
   @(negedge clk);rst_n=1;repeat(3)begin @(posedge clk);idle_check;end
-  // Drop a partial frame; queue must wait for a complete SOF after reset.
+
   sample(20,7,24'habcdef,1);idle_check;
   sample(0,0,24'h123456,1);
   if({valid,user,last,data}!=={1'b1,1'b1,1'b0,24'h123456})$fatal(1,"SOF beat");
@@ -34,7 +34,7 @@ module tb_hdmi_video_bridge_idle;
   sample(639,0,24'h987654,1);
   if({valid,user,last,data}!=={1'b1,1'b0,1'b1,24'h987654})$fatal(1,"EOL beat");
   @(negedge clk);de=0;@(posedge clk);idle_check;
-  // Restart with RAM containing old frame/line markers.
+
   @(negedge clk);rst_n=0;#0.2;idle_check;
   @(negedge clk);rst_n=1;ready=0;@(posedge clk);idle_check;
   sample(0,0,24'h654321,1);

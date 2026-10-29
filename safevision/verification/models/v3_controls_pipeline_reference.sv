@@ -1,5 +1,5 @@
-// Normal buttons are decoded on release, so a chord cannot leak a next/auto.
-// Emergency is never gated by menu or UART. Configuration has one driver.
+
+
 module v3_controls_pipeline_reference #(parameter integer CLK_HZ=100000000,DEBOUNCE=2000000,BOARD_CATALOG=0,SYSTEM_SAFE_ENABLE=0,
  HANDBOOK_PROFILE=0,DEFAULT_AUTO=0,RETAIN_CONFIG=0)(
  input wire clk,rst_n,next_async,auto_async,emergency_async,
@@ -94,12 +94,11 @@ module v3_controls_pipeline_reference #(parameter integer CLK_HZ=100000000,DEBOU
  CTRL_ID_MENU:decode_catalog=OP_MENU;
  CTRL_ID_FIELD:decode_catalog=OP_FIELD;
  default:;endcase end endfunction
- // The board catalog guarantees name/ID identity on command_valid.
- // Generic callers retain the complete original ASCII-name interface.
+
+
  wire[3:0] opcode=BOARD_CATALOG?decode_catalog(catalog_id):decode_name(command_name);
- // Exact two's-complement tests for all 2^32 input bit patterns. Command
- // decoding is independent of value validity, so one command's rejected
- // value cannot build a priority path to another command's enable.
+
+
  wire value_bright_ok=(~|command_value[31:7]) || (&command_value[31:7]);
  wire value_byte_ok=~|command_value[31:8];
  wire value_bit_ok=~|command_value[31:1];
@@ -158,8 +157,8 @@ module v3_controls_pipeline_reference #(parameter integer CLK_HZ=100000000,DEBOU
    contrast<=128;osd_alpha<=160;bilinear<=0;fit<=!HANDBOOK_PROFILE;scale_select<=HANDBOOK_PROFILE?0:1;fade_enabled<=1;
    volume<=HANDBOOK_PROFILE?70:80;period_select<=1;period_previous<=1;menu<=0;field<=0;auto_tick<=0;cycles<=0;seconds<=0;reply_value<=0;end
   else if(!rst_n)begin
-   // Warm SYS reset clears transactions and key history; configuration remains
-   // held until an explicit write. FPGA configuration/power-on reloads defaults.
+
+
    previous<=0;n_hold<=0;a_hold<=0;chord<=0;chord_used<=0;chord_fired<=0;n_long<=0;a_long<=0;
    next_request<=0;recover_request<=0;reply_valid<=0;reply_code<=0;reply_value<=0;
    period_previous<=period_select;menu<=0;field<=0;auto_tick<=0;cycles<=0;seconds<=0;

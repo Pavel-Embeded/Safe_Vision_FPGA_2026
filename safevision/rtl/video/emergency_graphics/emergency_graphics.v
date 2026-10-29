@@ -1,6 +1,6 @@
-// Four pixel-clock stages, aligned with the existing four-stage OSD layer.
-// Hardware-only geometry plus the shared BRAM font; no external frame memory.
-// Whole DE region remains Emergency even when arrows blink off.
+
+
+
 module emergency_graphics #(
     parameter integer HD=0,FLASH_FRAMES=30,
     parameter FONT_FILE="../../../assets/fonts/font8x16.mem"

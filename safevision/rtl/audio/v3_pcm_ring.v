@@ -1,9 +1,6 @@
-// MEM-domain four independent circular partitions in AUDIO_RING (256 KiB total).
-// Each stereo PCM pair is one 32-bit word. slot0..3 each owns 64 KiB (16384 pairs).
-// req is retained through ack; address/wdata remain stable through busy completion.
-// One-word transactions use the existing memory-arbiter SD client; refresh/backpressure
-// never advance pointers until a completed write or an actual read-data-valid beat.
-// Valid/ready ingress obeys backpressure. All media state resets together.
+
+
+
 module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800,DIRECT_POINTER_COMPARE=0)(
  input wire clk,rst_n,input wire [127:0] in_data,input wire [3:0] in_valid,output reg [3:0] in_ready,
  input wire commit_valid,input wire [1:0] commit_slot,input wire [7:0] commit_generation,
@@ -15,9 +12,8 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800,DIRECT_POINTER_COMP
  input wire ack,busy,input wire [31:0] rdata,input wire rvalid,
  output reg [31:0] overflow_count);
  localparam integer CAP=1<<PTR_W;
- // The extra pointer bit distinguishes full from empty after an address wrap.
- // Occupancy is their modular difference; no independent occupancy state can
- // diverge from the actual accepted write/read events.
+
+
  reg [PTR_W:0] wp[0:3],rp[0:3];wire [PTR_W:0] count[0:3];
  wire[3:0] pointer_empty,pointer_full;
  reg [1:0] active,owner,rr;reg [7:0] generation;reg enabled;
@@ -35,15 +31,14 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800,DIRECT_POINTER_COMP
  wire finish_write=(state==2)&&!busy&&!reading;
  generate for(genvar slot_index=0;slot_index<4;slot_index=slot_index+1)begin:parallel_pointers
   if(DIRECT_POINTER_COMPARE)begin:registered_level
-   // This state changes on exactly the same edges as the two pointers.
-   // Reset establishes value=wp-rp modulo2*CAP. The shared increment and
-   // decrement events preserve that identity without adding status latency.
+
+
    reg[PTR_W:0] value;
    always @(posedge clk or negedge rst_n)
     if(!rst_n)value<=0;
     else if(owner==slot_index && (take_read || finish_write))
-     // take_read implies reading=1; finish_write implies reading=0.
-     // The two events are exclusive, so this is one signed +/-1 adder.
+
+
      value<=value+{{PTR_W{reading}},1'b1};
    assign count[slot_index]=value;
   end else begin:arithmetic_level
@@ -75,9 +70,8 @@ module v3_pcm_ring #(parameter integer PTR_W=14,PREFETCH=800,DIRECT_POINTER_COMP
    case(state)
     0:begin
      if(commit_valid&&commit_ready)begin active<=commit_slot;generation<=commit_generation;enabled<=1;end
-     // Reserve our one output register before issuing the read. A ready/valid
-     // consumer may legally wait for valid before ready (the serialized FIFO
-     // accepts its final word last), so ready must not gate valid production.
+
+
      else if(!busy&&enabled&&!fallback[active]&&(DIRECT_POINTER_COMPARE?!pointer_empty[active]:count[active]!=0)&&!out_valid&&output_level<10'd240)begin
       owner<=active;reading<=1;seen_data<=0;req<=1;wr<=0;
       addr<=32'h00280000+({30'd0,active}<<16)+({{(30-PTR_W){1'b0}},rp[active][PTR_W-1:0]}<<2);state<=1;

@@ -1,4 +1,4 @@
-// Additional independent integration checks; source RTL remains unchanged.
+
 `timescale 1ns/1ps
 `include "pixel_format_defs.vh"
 module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output reg done=0);
@@ -92,7 +92,7 @@ module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output 
  .pix_active_slot(active_slot),.pix_generation(active_gen),.pix_frame_index(),.pix_active_valid(active_valid),.pix_frame_fault(fault),.pix_underflow_count(uc),.pix_missed_frame_count(miss),.mem_overflow_count(ov),.mem_fifo_pixels(level),.mem_dma_bytes(),.mem_dma_active(),.mem_dma_done(),.mem_fetch_state(fetch_state));
  wire mq,mw,mready;wire [31:0] ma,md;wire [3:0] strb;reg [31:0] response=0;reg response_valid=0;
  wire wr_ack,wr_busy;reg wr_req=0;integer write_beats=0,cycle=0;
- 
+
  assign mready=rst&&!starvation&&(cycle%23!=0);
  memory_arbiter arb(.clk(mc),.rst_n(rst),.video_fifo_level(level),.rd_req(rr),.rd_addr(raddr),.rd_len(rlen),.rd_ack(ra),.rd_busy(rb),.rd_data(rdata),.rd_data_valid(rv),
  .wr_req(wr_req),.wr_addr(32'h800000),.wr_data(32'h76543210),.wr_len(16'd4),.wr_ack(wr_ack),.wr_busy(wr_busy),

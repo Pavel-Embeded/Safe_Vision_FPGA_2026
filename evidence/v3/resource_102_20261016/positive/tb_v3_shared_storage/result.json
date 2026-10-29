@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_shared_storage",
-  "suite": "shared_storage",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "68a0e4a69a03b6d347ae3d25472c06eb2ef6e2548ae78b2f317786f433194661",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\shared_storage\\tb_v3_shared_storage"
-}

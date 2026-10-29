@@ -22,21 +22,21 @@ module tb_v3_memory_path_observer;
  task reset_epoch;begin rst_n=0;sa=0;pw=0;start=0;rv=0;hv=0;tick();rst_n=1;tick();end endtask
  initial begin
   reset_epoch();
-  // Inactive read streams must not consume the eventual verification window.
+
   rv=1;hv=1;rd=32'hdeadbeef;hd=32'hbadcafe;repeat(10)tick();rv=0;hv=0;
   ck(rc==0&&hc==0&&ro==0&&ho==0,"read window is not armed by unrelated earlier traffic");
-  // Reject high-address aliases, byte misalignment and fully masked padding.
+
   sa=1;pw=1;sd=-1;wd=-1;addr=32'h80000000;wa=0;dm=15;tick();
   addr=1;wa=320;dm=0;tick();sa=0;pw=0;
   ck(sc==0&&wc==0&&so==0&&wo==0,"full byte address, alignment, range and DQM filters");
-  // Bottom-up loading visits this physical row last; row ordering is irrelevant.
+
   for(i=0;i<320;i++)begin
    sa=1;pw=1;addr=i*4;wa=i;dm=0;sd=0;wd=0;tick();
    sa=0;pw=1;wa=i+1;dm=15;wd=-1;tick();pw=0;repeat(i%3)tick();
   end
   ck(sc==320&&wc==320&&so==0&&wo==0,"exactly320 zero source/real-write words; padding ignored");
   start=1;rd=0;tick();start=0;
-  // Word0 at the pre-valid edge; tail poison must not enter the real window.
+
   for(i=0;i<=320;i++)begin
    rd=(i==320)?32'h80000000:0;rv=(i!=0);hv=(i!=0);hd=0;tick();
   end
@@ -48,7 +48,7 @@ module tb_v3_memory_path_observer;
   reset_epoch();
   ck(sc==0&&wc==0&&rc==0&&hc==0&&so==0&&wo==0&&ro==0&&ho==0,"media reset clears counts and evidence together");
   start=1;tick();start=0;sa=1;pw=1;dm=0;
-  // A bit added only after raw storage must be distinguished at the host.
+
   for(i=0;i<=320;i++)begin
    addr=i*4;wa=i;sd=0;wd=0;rd=0;rv=i!=0;hv=i!=0;hd=(i==17)?32'h02000000:0;tick();
   end

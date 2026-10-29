@@ -1,41 +1,22 @@
-// ============================================================================
-// tb_frame_writer.sv — 阶段 9/10：frame_writer -> mem_ctrl -> SDRAM 写通路
-// ----------------------------------------------------------------------------
-// 被测：rtl/memory/frame_writer.v + rtl/memory/frame_address_gen.v
-//       + rtl/memory/mem_ctrl.v + models/frame_memory_model.sv
-//
-// 数据通路（单时钟 mem_clk）：
-//   TB 像素流 -> frame_writer -> (wr_req/addr/data) -> mem_ctrl -> frame_memory_model
-//   frame_memory_model 提供 backdoor 读 peek_word()，TB 用它抽查"写进去的 word"。
-//
-// 测试卷：
-//   T1 正常一帧(307200 px)：slot_valid 置位 + crc_ok + px_cnt=307200，
-//      并用 backdoor read 抽查 (0,0)/(639,0)/(0,479)/(639,479)/(320,240)/(100,50)
-//      的地址与内容（低半=先到像素）
-//   T2 像素数少一个(307199)：wr_error + DET_FS_SHORT，slot_valid 不置位
-//   T3 像素数多一个(307201)：wr_error + DET_BMP_SIZE，slot_valid 不置位
-//   T4 slot_valid 时序：只在 px_cnt==307200 且 crc_ok 之后才置位（monitor 全程监视）
-//   T5 越界写(非法 slot_base)：被拒绝 + DET_BMP_TRUNC，slot_valid 不置位
-//
-// 像素图案：pix(n) = 16'h1000 + (n & 0xFFF)，可与电脑端逐 word 对拍。
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
 module tb_frame_writer;
 
-    // ---- 冻结地址表（interface_spec §5）----
-    // 地址取自唯一的冻结地址表（rtl/include/pixel_format_defs.vh），别在 TB 里再抄一遍
+
     localparam [31:0] IMG0_BASE = `SV_IMG0_BASE;
     localparam [31:0] IMG2_BASE = `SV_IMG2_BASE;
     localparam [31:0] IMG3_BASE = `SV_IMG3_BASE;
-    localparam [31:0] BAD_BASE  = 32'h003F_0000;   // 0x3F0000 + 0xA0000 = 0x490000 > 4MiB
+    localparam [31:0] BAD_BASE  = 32'h003F_0000;
 
     localparam integer FRAME_W = 640;
     localparam integer FRAME_H = 480;
-    localparam integer FRAME_PIX = FRAME_W * FRAME_H;   // 307200
+    localparam integer FRAME_PIX = FRAME_W * FRAME_H;
 
-    // ---- 时钟：mem_clk 量级（周期 8ns）----
+
     reg clk   = 1'b0;
     reg rst_n = 1'b0;
     always #4 clk = ~clk;
@@ -53,7 +34,7 @@ module tb_frame_writer;
         end
     endtask
 
-    // 像素图案
+
     function [15:0] pix_of;
         input integer n;
         begin
@@ -61,9 +42,7 @@ module tb_frame_writer;
         end
     endfunction
 
-    // ------------------------------------------------------------------------
-    // DUT 互连
-    // ------------------------------------------------------------------------
+
     reg         fw_start;
     reg  [1:0]  fw_slot;
     reg  [31:0] fw_base;
@@ -127,10 +106,10 @@ module tb_frame_writer;
         .rst_n             (rst_n),
         .init_done         (mem_init_done),
         .req               (fw_wr_req),
-        .wr                (fw_wr_req),      // 本 TB 只有写
+        .wr                (fw_wr_req),
         .addr              (fw_wr_addr),
         .wdata             (fw_wr_data),
-        .wstrb             (4'hF),           // 整字写
+        .wstrb             (4'hF),
         .rdata             (mem_rdata),
         .rdata_valid       (mem_rdata_valid),
         .ready             (mem_ready),
@@ -160,11 +139,9 @@ module tb_frame_writer;
         .init_done  (sd_initdone)
     );
 
-    // ------------------------------------------------------------------------
-    // T4 monitor：slot_valid 只允许在"整帧 + CRC 通过"之后置位
-    // ------------------------------------------------------------------------
+
     reg     mon_en = 1'b0;
-    integer early_viol = 0;      // slot_valid 在帧未满或 CRC 未过时置位
+    integer early_viol = 0;
     integer wr_done_seen = 0;
 
     always @(posedge clk) begin
@@ -175,9 +152,7 @@ module tb_frame_writer;
         end
     end
 
-    // ------------------------------------------------------------------------
-    // 驱动任务
-    // ------------------------------------------------------------------------
+
     task do_start;
         input [1:0]  sel;
         input [31:0] base;
@@ -191,7 +166,7 @@ module tb_frame_writer;
         end
     endtask
 
-    // 送 n 个像素（严格 valid && ready 握手）
+
     task drive_pixels;
         input integer n;
         input integer base_idx;
@@ -202,14 +177,14 @@ module tb_frame_writer;
                 fw_din       = pix_of(base_idx + k);
                 fw_din_valid = 1'b1;
                 while (!fw_din_ready) @(negedge clk);
-                @(posedge clk);                  // 此拍被接收
+                @(posedge clk);
             end
             @(negedge clk);
             fw_din_valid = 1'b0;
         end
     endtask
 
-    // 等待结果（done 单拍脉冲 或 error）
+
     task wait_result;
         input integer maxc;
         integer c;
@@ -222,7 +197,7 @@ module tb_frame_writer;
         end
     endtask
 
-    // backdoor 抽查某像素所在 word 的地址与内容
+
     task chk_px;
         input integer x;
         input integer y;
@@ -232,20 +207,18 @@ module tb_frame_writer;
         reg   [31:0] widx, got, exp;
         reg   [15:0] lo, hi;
         begin
-            idx  = y * FRAME_W + x;                 // 像素线性下标
-            k    = idx / 2;                         // 所在 word 序号
-            widx = (base >> 2) + k;                 // word 地址
+            idx  = y * FRAME_W + x;
+            k    = idx / 2;
+            widx = (base >> 2) + k;
             u_sdram.peek_word(widx, got);
-            lo   = pix_of(k * 2);                   // 低半 = 先到像素
-            hi   = pix_of(k * 2 + 1);               // 高半 = 后到像素
+            lo   = pix_of(k * 2);
+            hi   = pix_of(k * 2 + 1);
             exp  = {hi, lo};
             check(got === exp, name);
         end
     endtask
 
-    // ------------------------------------------------------------------------
-    // 主流程
-    // ------------------------------------------------------------------------
+
     initial begin
         fw_start = 1'b0; fw_slot = 2'd0; fw_base = 32'd0;
         fw_din = 16'd0;  fw_din_valid = 1'b0;
@@ -253,19 +226,17 @@ module tb_frame_writer;
         repeat (4) @(negedge clk);
         rst_n = 1'b1;
 
-        // 等 SDRAM 初始化完成
+
         while (!sd_initdone) @(negedge clk);
         repeat (2) @(negedge clk);
         check(mem_init_done === 1'b1, "T0 SDRAM init_done");
         check(mem_error === 1'b0,     "T0 无 mem_error");
 
-        // ====================================================================
-        // T1 正常一帧写入（slot 0 / IMG0）
-        // ====================================================================
+
         $display("---- T1 正常一帧写入 ----");
         mon_en = 1'b1;
         do_start(2'd0, IMG0_BASE);
-        // 启动后先确认 slot_valid 还没有置位
+
         repeat (5) @(negedge clk);
         check(fw_slot_valid[0] === 1'b0, "T1 写入前 slot_valid[0]=0");
         drive_pixels(FRAME_PIX, 0);
@@ -280,7 +251,7 @@ module tb_frame_writer;
         check(fw_wr_error === 1'b0,      "T1 无写错误");
         check(fw_slot_valid[3:1] === 3'b000, "T1 其他槽未置位");
 
-        // backdoor read 抽查地址与内容（含四个角 + 中间点）
+
         chk_px(0,   0,   IMG0_BASE, "T1 抽查(0,0)");
         chk_px(639, 0,   IMG0_BASE, "T1 抽查(639,0)");
         chk_px(0,   479, IMG0_BASE, "T1 抽查(0,479)");
@@ -288,9 +259,7 @@ module tb_frame_writer;
         chk_px(320, 240, IMG0_BASE, "T1 抽查(320,240)");
         chk_px(100, 50,  IMG0_BASE, "T1 抽查(100,50)");
 
-        // ====================================================================
-        // T2 像素数少一个 -> DET_FS_SHORT
-        // ====================================================================
+
         $display("---- T2 像素数少一个 ----");
         do_start(2'd2, IMG2_BASE);
         drive_pixels(FRAME_PIX - 1, 0);
@@ -302,13 +271,11 @@ module tb_frame_writer;
         check(fw_slot_valid[2] === 1'b0,     "T2 slot_valid[2] 未置位");
         check(fw_px_cnt === 19'd307199,      "T2 px_cnt=307199");
 
-        // ====================================================================
-        // T3 像素数多一个 -> DET_BMP_SIZE
-        // ====================================================================
+
         $display("---- T3 像素数多一个 ----");
         do_start(2'd3, IMG3_BASE);
         drive_pixels(FRAME_PIX, 0);
-        // 再额外提供 1 个像素，但不等待接收（帧已满，ready 为低）
+
         @(negedge clk);
         fw_din       = pix_of(FRAME_PIX);
         fw_din_valid = 1'b1;
@@ -320,15 +287,11 @@ module tb_frame_writer;
         check(fw_err_detail === `DET_BMP_SIZE, "T3 细分码 DET_BMP_SIZE");
         check(fw_slot_valid[3] === 1'b0,      "T3 slot_valid[3] 未置位");
 
-        // ====================================================================
-        // T4 slot_valid 时序（monitor 监视整段 T1）
-        // ====================================================================
+
         $display("---- T4 slot_valid 时序 ----");
         check(early_viol === 0, "T4 slot_valid 未在整帧+CRC前提前置位");
 
-        // ====================================================================
-        // T5 越界写（非法 slot_base）被拒绝
-        // ====================================================================
+
         $display("---- T5 越界写被拒绝 ----");
         do_start(2'd1, BAD_BASE);
         repeat (8) @(negedge clk);
@@ -337,9 +300,7 @@ module tb_frame_writer;
         check(fw_slot_valid[1] === 1'b0,       "T5 slot_valid[1] 未置位");
         check(fw_slot_valid[0] === 1'b1,       "T5 合法槽的 slot_valid 未被误清");
 
-        // ====================================================================
-        // 汇总
-        // ====================================================================
+
         $display("========================================");
         $display("  断言总数 %0d，失败 %0d", total, errors);
         if (errors == 0) $display(" 全部通过 (PASS)");
@@ -348,7 +309,7 @@ module tb_frame_writer;
         $finish;
     end
 
-    // 全局兜底超时
+
     initial begin
         #500_000_000;
         $display("[FAIL] 全局超时，仿真未正常结束");

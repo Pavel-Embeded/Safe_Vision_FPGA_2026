@@ -1,7 +1,6 @@
-// One response for the latest accepted PIX NEXT. Startup commits and the old
-// current image cannot complete it. A target must be allocated AFTER request;
-// comparing its eight-bit ID with the baseline is safe even at255->0 wrap.
-// Cancellation clears the arm. A newer request supersedes an unfinished one.
+
+
+
 module v3_pixel_response_tracker(
  input wire clk,rst_n,request,cancel,source_output_valid,
  input wire busy,direct_target,target_is_next,initialized,

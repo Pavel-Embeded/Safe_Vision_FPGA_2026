@@ -1,10 +1,6 @@
-// One outstanding, non-droppable bundled-data mailbox. Common reset epoch:
-// assert reset in BOTH domains together; release synchronously in each domain.
-// src_data is captured on src_valid&&src_ready and held through the return ACK.
-// dst_data/valid are stable during backpressure. Synchronizers + settle edge
-// give payload time to settle; physical max-delay constraints remain required.
-// Data registers may merge equivalent/constant bits; synchronizer stages remain
-// preserved. Native CDC endpoint audits and8ns payload constraints are mandatory.
+
+
+
 module video_cdc_mailbox220_reference #(parameter integer WIDTH=32)(
     input wire src_clk,src_rst_n,input wire [WIDTH-1:0] src_data,
     input wire src_valid,output wire src_ready,

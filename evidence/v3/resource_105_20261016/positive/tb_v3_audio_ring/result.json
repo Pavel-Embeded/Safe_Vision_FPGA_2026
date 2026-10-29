@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_audio_ring",
-  "suite": "audio_complete",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "9e0e28761a54197998302ed4427d52315d435a086d081139f10ca4569a09b4c1",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_v3_audio_ring"
-}

@@ -1,16 +1,13 @@
-// Complete 921654-byte BMP stored explicitly across 1801 card-model sectors.
-// Every streamed byte and RGB565 pixel is checked independently. ENABLE_DISPLAY
-// additionally drives B frame_writer and the production safevision_core.
-// No physical SDRAM/HDMI/board behavior is modeled here.
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 `include "pixel_format_defs.vh"
 
 module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_HZ=50_000_000);
 
-    // ------------------------------------------------------------------------
-    // Clock / reset / bookkeeping
-    // ------------------------------------------------------------------------
+
     localparam [15:0] INIT_DIV=(CLK_HZ+799999)/800000-1;
     localparam [15:0] FAST_DIV=(CLK_HZ+49999999)/50000000-1;
     reg clk   = 1'b0;
@@ -27,87 +24,70 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         end
     endtask
 
-    // ------------------------------------------------------------------------
-    // Card / volume geometry (see file header for the layout arithmetic)
-    // ------------------------------------------------------------------------
-    localparam [31:0] VOL_BASE  = 32'd16;     // partition 0 start (card LBA)
-    localparam [7:0]  SPC       = 8'd32;      // sectors per cluster (2^5)
-    localparam [15:0] RSVD      = 16'd1;      // reserved sectors
-    localparam [7:0]  NFAT      = 8'd1;       // number of FATs
-    localparam [31:0] FATSZ     = 32'd1;      // FAT size in sectors
-    localparam [31:0] TOTSEC    = 32'd2048;   // total sectors (declared)
-    localparam [31:0] ROOTCLUS  = 32'd2;      // root directory cluster
-    localparam [31:0] FILE_CLUS = 32'd3;      // first cluster of SV0001.BMP
-    localparam [31:0] FILE_CLUS_LAST = 32'd59;// last cluster (57 clusters 3..59)
+
+    localparam [31:0] VOL_BASE  = 32'd16;
+    localparam [7:0]  SPC       = 8'd32;
+    localparam [15:0] RSVD      = 16'd1;
+    localparam [7:0]  NFAT      = 8'd1;
+    localparam [31:0] FATSZ     = 32'd1;
+    localparam [31:0] TOTSEC    = 32'd2048;
+    localparam [31:0] ROOTCLUS  = 32'd2;
+    localparam [31:0] FILE_CLUS = 32'd3;
+    localparam [31:0] FILE_CLUS_LAST = 32'd59;
 
     localparam integer W = 640;
     localparam integer H = 480;
-    localparam integer PIX_TOTAL = W * H;                       // 307200
-    localparam [31:0]  FILE_SIZE = 32'd921654;                  // 54 + 640*480*3
-    localparam integer FILE_BYTES = 54 + W * H * 3;             // 921654
+    localparam integer PIX_TOTAL = W * H;
+    localparam [31:0]  FILE_SIZE = 32'd921654;
+    localparam integer FILE_BYTES = 54 + W * H * 3;
 
-    // volume-relative LBAs (all < 64 so the card model maps them to vol[])
+
     localparam [31:0] VOL_DBR_LBA   = 32'd0;
     localparam [31:0] VOL_FAT_LBA   = 32'd1;
     localparam [31:0] VOL_ROOT_LBA  = 32'd2;
-    localparam [31:0] VOL_FILE0_LBA = 32'd34;   // data_start(2)+(3-2)*32 = 34
+    localparam [31:0] VOL_FILE0_LBA = 32'd34;
 
-    // ------------------------------------------------------------------------
-    // BMP header (54 bytes). height = -480 -> top-down, so file row order ==
-    // raster order and pixel n uses file bytes [54+3n .. 54+3n+2].
-    // ------------------------------------------------------------------------
+
     reg [7:0] bmp_hdr [0:53];
     initial begin
         integer k;
         for (k = 0; k < 54; k = k + 1) bmp_hdr[k] = 8'h00;
-        bmp_hdr[0]  = 8'h42; bmp_hdr[1]  = 8'h4D;                 // "BM"
+        bmp_hdr[0]  = 8'h42; bmp_hdr[1]  = 8'h4D;
         bmp_hdr[2]  = 8'h36; bmp_hdr[3]  = 8'h10;
-        bmp_hdr[4]  = 8'h0E; bmp_hdr[5]  = 8'h00;                 // bfSize 921654
-        bmp_hdr[10] = 8'h36;                                      // bfOffBits 54
-        bmp_hdr[14] = 8'h28;                                      // biSize 40
-        bmp_hdr[18] = 8'h80; bmp_hdr[19] = 8'h02;                 // width 640
+        bmp_hdr[4]  = 8'h0E; bmp_hdr[5]  = 8'h00;
+        bmp_hdr[10] = 8'h36;
+        bmp_hdr[14] = 8'h28;
+        bmp_hdr[18] = 8'h80; bmp_hdr[19] = 8'h02;
         bmp_hdr[22] = 8'h20; bmp_hdr[23] = 8'hFE;
-        bmp_hdr[24] = 8'hFF; bmp_hdr[25] = 8'hFF;                 // height -480
-        bmp_hdr[26] = 8'h01;                                      // planes 1
-        bmp_hdr[28] = 8'h18;                                      // bpp 24
+        bmp_hdr[24] = 8'hFF; bmp_hdr[25] = 8'hFF;
+        bmp_hdr[26] = 8'h01;
+        bmp_hdr[28] = 8'h18;
         bmp_hdr[34] = 8'h00; bmp_hdr[35] = 8'h10;
-        bmp_hdr[36] = 8'h0E; bmp_hdr[37] = 8'h00;                 // image 921600
+        bmp_hdr[36] = 8'h0E; bmp_hdr[37] = 8'h00;
     end
 
-    // ------------------------------------------------------------------------
-    // Unmapped card sectors fall back to the card model's default pattern
-    // sector[k] = (k & 0xFF) + 0x11. The MBR is written into that same buffer
-    // (card LBA 0 is outside the volume window), so a handful of offsets carry
-    // MBR bytes instead of the pattern. sector_byte(k) is the exact byte the
-    // card returns for offset k of ANY unmapped sector.
-    // ------------------------------------------------------------------------
+
     function [7:0] sector_byte;
         input integer k;
         begin
             case (k)
-                450:     sector_byte = 8'h0C;              // partition type
-                454:     sector_byte = VOL_BASE[7:0];      // partition start LBA
+                450:     sector_byte = 8'h0C;
+                454:     sector_byte = VOL_BASE[7:0];
                 455:     sector_byte = VOL_BASE[15:8];
                 456:     sector_byte = VOL_BASE[23:16];
                 457:     sector_byte = VOL_BASE[31:24];
-                458:     sector_byte = 8'h00;              // partition sector count
+                458:     sector_byte = 8'h00;
                 459:     sector_byte = 8'h00;
                 460:     sector_byte = 8'h01;
                 461:     sector_byte = 8'h00;
-                510:     sector_byte = 8'h55;              // MBR signature
+                510:     sector_byte = 8'h55;
                 511:     sector_byte = 8'hAA;
                 default: sector_byte = (k & 32'hFF) + 32'h11;
             endcase
         end
     endfunction
 
-    // ------------------------------------------------------------------------
-    // Byte the card returns for file offset j. Single source of truth.
-    //   j <  54            : BMP header (placed in vol, file first sector)
-    //   j <  512           : rest of the file's first sector (vol_zero -> 0)
-    //   j >= 512           : unmapped sector -> sector_byte(j & 511)
-    // ------------------------------------------------------------------------
-    // Distinct image coordinates and independent BGR channel arithmetic.
+
     function [7:0] filebyte;
         input integer j;
         integer n,x,y,c;
@@ -127,7 +107,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         input integer j;
         begin pixbyte=filebyte(54+j);end
     endfunction
-    // Expected RGB565 for raster pixel n (top-down BMP, 640*3 stride = 1920)
+
     function [15:0] exp565;
         input integer n;
         integer b3;
@@ -141,9 +121,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         end
     endfunction
 
-    // ========================================================================
-    // SPI bus + card model
-    // ========================================================================
+
     wire sd_ncs, sd_dclk, sd_mosi, sd_miso;
     wire [5:0]  o_cmd;
     wire [31:0] o_arg, o_acmd41_arg;
@@ -166,11 +144,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         .o_cmd_valid  (o_cmd_valid)
     );
 
-    // ========================================================================
-    // All nets declared up front (never let Verilog build an implicit 1-bit net
-    // for a signal used inside an always block - that silently hangs the chain).
-    // ========================================================================
-    // sd_initializer
+
     wire        sdhc, init_done, init_error;
     wire [7:0]  init_err_code;
     wire        init_cs_n, init_tx_valid;
@@ -178,7 +152,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     wire [15:0] init_clk_div;
     reg         init_start;
 
-    // mbr_parser
+
     reg         mp_start;
     wire        mp_done, mp_has;
     wire [7:0]  mp_ec, mp_ed;
@@ -187,7 +161,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     wire [15:0] mp_rd_len;
     wire        mp_rd_en, mp_data_ready;
 
-    // fat32_boot_parser
+
     reg         bp_start;
     wire        bp_done, bp_err;
     wire [7:0]  bp_ec, bp_ed, bp_spc, bp_nfat;
@@ -197,7 +171,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     wire [15:0] bp_rd_len;
     wire        bp_rd_en, bp_data_ready;
 
-    // fat32_directory_scanner + its walker
+
     reg         scan_en;
     wire        scan_done, dir_bad;
     wire [7:0]  dn_ec, dn_ed;
@@ -216,7 +190,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     wire [15:0] wd_rd_len;
     wire        wd_rd_en, wd_data_ready;
 
-    // file_index
+
     reg         idx_clear, idx_commit;
     wire        idx_done;
     wire [3:0]  file_cnt, file_valid;
@@ -228,7 +202,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     wire        sel_wav_valid;
     wire [15:0] bmp_seen, wav_seen;
 
-    // file_streamer + its walker
+
     reg         fst_start;
     reg  [31:0] fst_first_clus, fst_file_size;
     wire        fst_busy, fst_done, fst_error;
@@ -246,7 +220,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     wire [15:0] wf_rd_len;
     wire        wf_rd_en, wf_data_ready;
 
-    // bmp_parser
+
     wire        bp_ready;
     wire        bmp_check_done, bmp_check_error;
     wire [7:0]  bmp_ec, bmp_ed;
@@ -257,14 +231,14 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     wire [7:0]  bpo_data;
     wire        bpo_valid, bpo_sof, bpo_eof, bpo_ready;
 
-    // bmp_unpack
+
     wire [15:0] bpu_pixel;
     wire        bpu_valid;
     wire [9:0]  bpu_x, bpu_y;
     wire        bpu_sof, bpu_eof, bpu_done, bpu_error;
     wire [7:0]  bpu_ec, bpu_ed;
 
-    // sd_sector_reader (shared) + spi_master
+
     wire        rd_ready;
     wire [7:0]  rd_data;
     wire        rd_data_valid, rd_data_last;
@@ -276,11 +250,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     wire        spi_tx_ready, spi_busy, spi_rx_valid;
     wire [7:0]  spi_rx_data;
 
-    // ========================================================================
-    // Read-bus ownership: phase selects which front-half master owns the reader;
-    // within SCAN/STREAM the walker gets the bus while it is busy.
-    // (This mirrors top_stage6_fat32_mount.v's arbitration pattern.)
-    // ========================================================================
+
     localparam [1:0] PH_MBR = 2'd0, PH_BOOT = 2'd1, PH_SCAN = 2'd2, PH_STREAM = 2'd3;
     reg [1:0] phase = PH_MBR;
 
@@ -304,13 +274,10 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
                                  (phase == PH_SCAN) ? (scan_wk ? wd_data_ready : dn_data_ready) :
                                                       (strm_wk ? wf_data_ready : fst_data_ready);
 
-    // Volume base added exactly ONCE (interface_spec 3.2.1). mbr_parser reads
-    // card LBA 0 while mbr_vol_base is still 0, so it lands on the MBR too.
+
     wire [31:0] rd_addr_to_reader = bus_rd_addr + mp_vol_base;
 
-    // ========================================================================
-    // Module instances
-    // ========================================================================
+
     sd_initializer #(.CLK_DIV_INIT(INIT_DIV)) u_init (
         .clk(clk), .rst_n(rst_n), .start(init_start),
         .sdhc(sdhc), .init_done(init_done), .init_error(init_error),
@@ -478,23 +445,17 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         .sclk(sd_dclk), .mosi(sd_mosi), .miso(sd_miso)
     );
 
-    // ========================================================================
-    // Volume construction (tasks write directly into the card model)
-    // ========================================================================
+
     task mbr_set_card0;
         begin
-            // NOTE: do NOT wipe u_card.sector[]. The card model's default
-            // pattern (sector[k]=k+0x11) is what every unmapped sector - and
-            // therefore the bulk of the BMP file - returns. Wiping it here was
-            // a real bug: the file's later sectors came back as 0x00 and every
-            // pixel after #152 mismatched. mbr_parser only reads a few offsets,
-            // so we overlay just those and leave the pattern intact.
-            u_card.sector[450] = 8'h0C;      // FAT32 XINT13
-            u_card.sector[454] = VOL_BASE[7:0];    // partition start LBA (LE)
+
+
+            u_card.sector[450] = 8'h0C;
+            u_card.sector[454] = VOL_BASE[7:0];
             u_card.sector[455] = VOL_BASE[15:8];
             u_card.sector[456] = VOL_BASE[23:16];
             u_card.sector[457] = VOL_BASE[31:24];
-            u_card.sector[458] = 8'h00;      // partition sector count = 0x00010000
+            u_card.sector[458] = 8'h00;
             u_card.sector[459] = 8'h00;
             u_card.sector[460] = 8'h01;
             u_card.sector[461] = 8'h00;
@@ -506,15 +467,15 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     task build_volume;
         integer c, k;
         begin
-            // DBR (volume LBA 0)
+
             u_card.mk_fat32_dbr(16'd512, SPC, RSVD, NFAT, FATSZ, ROOTCLUS, TOTSEC, 1'b1);
-            // FAT (volume LBA 1): FAT[2]=EOC, FAT[3..58]=next, FAT[59]=EOC
+
             u_card.vol_zero(VOL_FAT_LBA);
-            u_card.vol_set_le(VOL_FAT_LBA, 16'd8, 32'h0FFF_FFFF, 3'd4);   // FAT[2]
+            u_card.vol_set_le(VOL_FAT_LBA, 16'd8, 32'h0FFF_FFFF, 3'd4);
             for (c = 3; c <= 58; c = c + 1)
                 u_card.vol_set_le(VOL_FAT_LBA, c * 4, c + 1, 3'd4);
-            u_card.vol_set_le(VOL_FAT_LBA, 16'd236, 32'h0FFF_FFFF, 3'd4); // FAT[59]
-            // Root directory (volume LBA 2): 4 entries, then 0x00 terminator
+            u_card.vol_set_le(VOL_FAT_LBA, 16'd236, 32'h0FFF_FFFF, 3'd4);
+
             u_card.vol_zero(VOL_ROOT_LBA);
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd0,   "SV0001  BMP", 8'h20, FILE_CLUS, FILE_SIZE);
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd32,  "SV0002  BMP", 8'h20, FILE_CLUS, FILE_SIZE);
@@ -526,20 +487,17 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
                     if(c*512+k<FILE_SIZE)
                         u_card.vol_set(VOL_FILE0_LBA+c,k[15:0],filebyte(c*512+k));
             end
-            // Negative control: corrupt a non-header sector's address mapping.
+
             if(MUTATE_LBA) begin
                 for(k=0;k<512;k=k+1)
                     u_card.vol_set(VOL_FILE0_LBA+100,k[15:0],filebyte(99*512+k));
             end
-            // MBR (card LBA 0 -> card model default sector[] area)
+
             mbr_set_card0;
         end
     endtask
 
-    // ========================================================================
-    // Monitors
-    // ========================================================================
-    // Directory-entry counter (scanner -> file_index)
+
     integer ent_count = 0;
     reg [87:0] ent0_name;
     reg [31:0] ent0_clus, ent0_size;
@@ -554,7 +512,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         end
     end
 
-    // file_streamer byte monitor: byte-for-byte against filebyte()
+
     integer fst_got = 0, fst_mism = 0, fst_sof_n = 0, fst_eof_n = 0;
     integer fst_first_bad = -1;
     always @(posedge clk) begin
@@ -573,7 +531,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         end
     end
 
-    // Pixel monitor: every RGB565 pixel against exp565()
+
     integer pix_n = 0, pix_bad = 0;
     integer pix_sof_n = 0;
     always @(posedge clk) begin
@@ -589,7 +547,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         end
     end
 
-    // Single-cycle pulses: latch them so checks after the fact are meaningful.
+
     reg idx_done_lat = 1'b0;
     reg bmp_cd_lat   = 1'b0;
     always @(posedge clk) begin
@@ -597,9 +555,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         if (rst_n && bmp_check_done) bmp_cd_lat   <= 1'b1;
     end
 
-    // ========================================================================
-    // Progress + watchdog
-    // ========================================================================
+
     initial begin
         forever begin
             #50_000_000;
@@ -619,9 +575,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         $finish;
     end
 
-    // ========================================================================
-    // Main sequence
-    // ========================================================================
+
     integer wait_cnt;
     reg     stop_after_scan;
     initial begin
@@ -634,14 +588,14 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         stop_after_scan = 1'b0;
         if ($test$plusargs("STOP_AFTER_SCAN")) stop_after_scan = 1'b1;
 
-        // Build the card contents after the card model's initial block has run
+
         #500;
         build_volume;
         #100;
         rst_n = 1'b1;
         repeat (10) @(posedge clk);
 
-        // ---- 1) SD initialization -----------------------------------------
+
         @(posedge clk); init_start = 1'b1;
         @(posedge clk); init_start = 1'b0;
         wait_cnt = 0;
@@ -651,7 +605,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         repeat (5) @(posedge clk);
         check(init_done === 1'b1, "1) SD 初始化成功（CMD0/CMD8/ACMD41/CMD58）");
 
-        // ---- 2) MBR -------------------------------------------------------
+
         phase = PH_MBR;
         @(posedge clk); mp_start = 1'b1;
         @(posedge clk); mp_start = 1'b0;
@@ -664,7 +618,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         check(mp_vol_base === VOL_BASE,       "5) 卷基址 = 分区起始 LBA = 16");
         check(u_card.o_arg === 32'd0,         "6) mbr_parser 读的是卡 0 号扇区");
 
-        // ---- 3) FAT32 mount ----------------------------------------------
+
         phase = PH_BOOT;
         @(posedge clk); bp_start = 1'b1;
         @(posedge clk); bp_start = 1'b0;
@@ -681,7 +635,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         check(bp_root_lba === 32'd2,          "14) 根目录起始 = 2（RootClus=2）");
         check(bp_tot_clus === 32'd63,         "15) total_clus = (2048-2)/32 = 63");
 
-        // ---- 4) root directory scan + file_index --------------------------
+
         phase = PH_SCAN;
         @(posedge clk); idx_clear = 1'b1;
         @(posedge clk); idx_clear = 1'b0;
@@ -719,7 +673,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
             $finish;
         end
 
-        // ---- 5) file_streamer -> bmp_parser -> bmp_unpack -----------------
+
         phase = PH_STREAM;
         @(posedge clk);
         fst_first_clus = sel_first_clus;
@@ -735,7 +689,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         end
         repeat (20) @(posedge clk);
 
-        // stream bytes
+
         check(fst_got  === FILE_SIZE,         "32) file_streamer 恰好输出 921654 字节");
         check(fst_mism === 0,                 "33) ★ 921654 字节逐字节与卡上文件一致（0 错）");
         check(fst_sof_n === 1,                "34) sof 恰好 1 次");
@@ -743,14 +697,14 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
         check(fst_done === 1'b1,              "36) file_streamer 结束");
         check(fst_error === 1'b0,             "37) file_streamer 无错");
 
-        // BMP header
+
         check(bmp_cd_lat === 1'b1,            "38) bmp_parser 头解析完成");
         check(bmp_check_error === 1'b0,       "39) BMP 头校验通过");
         check(bmp_width  === 16'd640,         "40) 解析宽度 = 640");
         check(bmp_top_down === 1'b1,          "41) top-down（负高度）");
         check(bmp_bpp === 8'd24,              "42) 位深 = 24");
 
-        // pixels
+
         check(bpu_error === 1'b0,             "43) bmp_unpack 无错");
         check(pix_n === PIX_TOTAL,            "44) 输出像素数 = 307200");
         check(pix_bad === 0,                  "45) ★ 307200 个 RGB565 像素逐个与卡上文件一致（0 错）");

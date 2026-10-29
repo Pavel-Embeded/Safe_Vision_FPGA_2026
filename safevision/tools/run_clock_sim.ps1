@@ -1,7 +1,7 @@
-# ASCII only: PowerShell 5.1 may read BOM-less scripts as ANSI.
-# Usage: powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_clock_sim.ps1 -ModelSimBin C:\path\to\win64
-# Inputs: reset_sync.v, clock_reset_ctrl.v, tb_clock_reset_ctrl.sv.
-# Output: simulator transcript on stdout; exit 0 only after all checks pass.
+
+
+
+
 param([string]$ModelSimBin = $env:MSIM_BIN)
 
 $ErrorActionPreference = 'Stop'

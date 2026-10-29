@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq309/source/safevision/rtl/hd/v3_row_integrity.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_row_integrity
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq309/source/safevision/verification/unit/tb_v3_slot_partition249.sv" into library work
-INFO: [VRFC 10-311] analyzing module slot_partition_case249
-INFO: [VRFC 10-311] analyzing module tb_v3_slot_partition_base249
-INFO: [VRFC 10-311] analyzing module tb_v3_slot_partition_hd249

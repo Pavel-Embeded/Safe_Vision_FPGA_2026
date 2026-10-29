@@ -1,4 +1,4 @@
-# Functional TD-model equivalence across the feedback-wiring repair.
+
 param(
     [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
     [string]$BeforeRef='021e4150d618cca5468309a208438ab701221de5',

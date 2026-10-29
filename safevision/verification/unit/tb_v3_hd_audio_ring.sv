@@ -12,7 +12,7 @@ module tb_v3_hd_audio_ring;
  .commit_valid(cv),.commit_slot(cs),.commit_generation(cg),.commit_ready(cr),.fallback(4'b0),.prefetched(pre),.levels(levels),
  .out_data(out),.out_valid(ov),.out_ready(ore),.output_level(10'd0),.req(req),.wr(wr),.addr(addr),.wdata(wd),.len(len),
  .ack(ack),.busy(busy),.rdata(rd),.rvalid(rv));
- // Independent SDRAM model: arbitrary grant stall and refresh-completion gaps.
+
  always @(posedge clk)begin
   ack<=0;rv<=0;cycle<=cycle+1;
   if(rst_n)begin
@@ -37,8 +37,8 @@ module tb_v3_hd_audio_ring;
  end
  always @(negedge clk)if(rst_n)begin
   for(integer j=0;j<4;j=j+1)begin in_data[j*32+:32]={16'(j),16'(sent[j])};in_valid[j]=(sent[j]<220);end
-  // Deliberately wait for valid before ready: this is legal ready/valid use
-  // and detects a producer that incorrectly waits for ready to issue a read.
+
+
   ore=ov&&(cycle%13!=0)&&(cycle%9!=0);
  end
  task commit(input [1:0] s,input [7:0] g);

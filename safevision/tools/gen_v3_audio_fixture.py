@@ -1,12 +1,12 @@
-"""Independent signed-PCM, RIFF/WAVE and fragmented FAT32 fixture generator.
-Only test inputs/reference vectors: not a model of the DUT state machines.
-"""
+
+
+
 import argparse, struct
 from pathlib import Path
 ap=argparse.ArgumentParser();ap.add_argument('--output',required=True);a=ap.parse_args()
 r=Path(a.output);r.mkdir(parents=True,exist_ok=True)
 def w(name,text):(r/name).write_text(text,encoding='utf-8')
-# Independent PCM oracle and FAT/root-directory/fragmented WAV disk.
+
 N=2000;disk=bytearray(128*512);gold=[]
 def lba(c):return 16+c-2
 for g in range(4):
@@ -27,7 +27,7 @@ for g in range(4):
   ent=bytearray(32);ent[:11]=f'SV{key:04d}  WAV'.encode();ent[11]=32
   struct.pack_into('<H',ent,26,chain[0] if i==24+g else 4)
   struct.pack_into('<I',ent,28,len(wav) if i==24+g else 44)
-  # populate unique four final descriptors without overwriting prior entries
+
   if i<24 or i==24+g:disk[16*512+i*32:16*512+(i+1)*32]=ent
 struct.pack_into('<I',disk,512+2*4,3);struct.pack_into('<I',disk,512+3*4,0xfffffff)
 w('audio_disk.mem','\n'.join(f'{b:02x}' for b in disk)+'\n')

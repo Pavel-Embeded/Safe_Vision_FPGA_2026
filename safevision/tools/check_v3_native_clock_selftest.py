@@ -1,8 +1,6 @@
-"""Exercise packed-clock gate against real TD captures and semantic negatives.
 
-The positive input must be an unchanged actual mapped/routed capture. Mutated
-inputs exist only in memory and are negative controls, never STA approvals.
-"""
+
+
 import argparse
 import hashlib
 import json
@@ -143,7 +141,7 @@ def main():
     pll_params = g.pll['params']
     if pll_params.count('.CLKC1_CPHASE(19)') != 1:
         raise AssertionError('positive actual PLL profile changed')
-    # Restrict the mutation to the actual system PLL block's parameter text.
+
     changed = pll_params.replace('.CLKC1_CPHASE(19)', '.CLKC1_CPHASE(18)')
     clean_gate = clean(gate)
     if clean_gate.count(pll_params) != 1:

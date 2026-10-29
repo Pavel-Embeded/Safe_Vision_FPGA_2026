@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_command_catalog",
-  "suite": "command_catalog",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "fd799ff43ad7919886674debcf346655b36aa20ac2492c9f8de903807f679539",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\command_catalog\\tb_v3_command_catalog"
-}

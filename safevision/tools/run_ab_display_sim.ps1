@@ -1,5 +1,5 @@
-# Original direct A/B chain plus the production assembly in BASE/HD.
-# Includes a near-vblank request to check slot ownership waits for A's ACK.
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$ModelSimBin=$env:MSIM_BIN,

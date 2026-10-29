@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
-// Mount every accepted FAT geometry through the public byte stream, then
-// compare the synthesized shift specialization with independent multiplication.
+
+
 module tb_v3_fat_geometry;
  reg clk=0,rst=0,start=0,valid=0;always #5 clk=~clk;
  reg[7:0] data=0;wire ready,rd_en,done,bad;wire[7:0] spc,nfat;
@@ -10,8 +10,8 @@ module tb_v3_fat_geometry;
  .fat_start_lba(fat),.root_clus(root),.root_dir_lba(root_lba),.data_start_lba(base),.total_sec(total),.total_clus(clusters),
  .sd_rd_addr(),.sd_rd_len(),.sd_rd_en(rd_en),.sd_rd_ready(1'b1),.sd_data(data),.sd_data_valid(valid),
  .sd_data_ready(ready),.sd_data_last(1'b0),.sd_rd_done(1'b0),.sd_timeout_err(1'b0),.sd_crc16_err(1'b0),.sd_err_code(8'd0),.sd_err_detail(8'd0));
- // Only the named, stateless production helpers are called here. Existing B
- // and audio regressions separately exercise the state machines using them.
+
+
  file_streamer fs(.clk(clk),.rst_n(rst),.start(1'b0));
  v3_file_streamer vfs(.clk(clk),.rst_n(rst),.start(1'b0),.stream_enable(1'b1));
  fat32_directory_scanner ds(.clk(clk),.rst_n(rst),.scan_en(1'b0));

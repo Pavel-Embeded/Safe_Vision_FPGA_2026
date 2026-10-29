@@ -1,4 +1,4 @@
-// Independent elapsed-clock bounds for the production shared-tick mechanism.
+
 `timescale 1ns/1ps
 module tb_v3_supervisor_tick;
  reg clk=0;always #5 clk=!clk;
@@ -16,7 +16,7 @@ module tb_v3_supervisor_tick;
  task check(input bit ok,input string name);begin checks++;if(!ok)begin errors++;$display("[FAIL] %s phase=%0d elapsed=%0d",name,p,elapsed);end end endtask
  task restart;begin @(negedge clk);rst_n=0;active=0;heartbeat=0;repeat(3)tick();@(negedge clk);rst_n=1;end endtask
  initial begin
-  // Exercise all 10 positions of a heartbeat/arm edge relative to the tick.
+
   for(p=0;p<10;p++)begin
    restart();repeat(p)tick();@(negedge clk);active=1;elapsed=0;
    while(!push && elapsed<140)begin tick();elapsed++;end
@@ -24,7 +24,7 @@ module tb_v3_supervisor_tick;
    check(elapsed>=111 && elapsed<=121,"expiry bounded by 120 clocks with less than one tick quantization");
   end
   restart();active=1;
-  // A heartbeat exactly on the nominal 120-clock expiry wins over timeout.
+
   for(n=0;n<720;n++)begin
    heartbeat=(n%120==119);tick();check(!push,"heartbeat at expiry does not enqueue a false watchdog event");
    @(negedge clk);

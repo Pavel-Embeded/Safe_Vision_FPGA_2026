@@ -29,7 +29,7 @@ module control_clock_case776 #(parameter HD=0,HZ=50000000)(input clk,output reg 
   check(dut.supervisor.CLK_HZ==HZ && dut.supervisor.FRAME_LIMIT==100 && dut.supervisor.MEM_LIMIT==200 && dut.supervisor.PROGRESS_LIMIT==500,"100ms frame200ms memory500ms progress watchdogs");
   check(dut.supervisor.BOOT_LIMIT==60000 && dut.supervisor.WINDOW_LIMIT==1000 && dut.supervisor.RECOVER_CYCLES==HZ/10*49,"60s boot1s window4.9s recovery");
   check(dut.response_timer.CLK_HZ==HZ && dut.response_timer.TICKS==HZ/1000,"response milliseconds use actual domain frequency");
-  // Seed only the counter boundary; start/finish/cancel still use public ports.
+
   force dut.response_timer.cancel=1'b0;force dut.response_timer.start=1'b1;force dut.response_timer.finish=1'b0;
   @(posedge dut.sys_clk);#1;check(dut.response_timer.active && dut.response_timer.cycles==0,"timer public start");
   @(negedge dut.sys_clk);force dut.response_timer.start=1'b0;dut.response_timer.cycles=HZ/1000-2;

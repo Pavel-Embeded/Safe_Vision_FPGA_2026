@@ -43,9 +43,8 @@ module tb_v3_diag_alias156;
   force dut.sdr_init_done=1'b1;force dut.adapter_init=1'b1;force dut.guard_fault=1'b1;
   force dut.adapter_fault=1'b0;force dut.memory_error=1'b0;
   force dut.guard_bad_addr=32'h00123400;force dut.guard_expected=32'h01234567;force dut.guard_actual=32'h89abcdef;
-  // This diagnostic-only injection forces the source count through its
-  // continuous output alias. Keep its redundant zero flag consistent; the
-  // live memory invariant remains enabled and all diagnostic checks remain.
+
+
   force dut.row_guard.source_first=1'b0;
   force dut.guard_words=32'h00025800;force dut.guard_rows=16'h17;
   force dut.diag_raw_first=32'h11223344;force dut.diag_raw_last=32'h55667788;
@@ -57,8 +56,8 @@ module tb_v3_diag_alias156;
   for(i=0;i<16;i++)command(i,0,0,expected[i]);
   command(0,1,0,32'h26102301);
   command(-1,0,3,0);command(16,0,3,0);command(32'h80000000,0,3,0);command(32'h10000004,0,3,0);
-  // Change the full selector on the SAME command acceptance edge, including
-  // every high bit and negative values. No earlier selector setup is assumed.
+
+
   for(alias_k=7;alias_k<32;alias_k=alias_k+1)begin
    command((32'd1<<alias_k)|32'd0,0,3,0);command((32'd1<<alias_k)|32'd1,0,3,0);
    command((32'd1<<alias_k)|32'd2,0,3,0);command((32'd1<<alias_k)|32'd3,0,3,0);
@@ -72,7 +71,7 @@ module tb_v3_diag_alias156;
   ck(settings_before==={dut.brightness,dut.contrast,dut.osd_alpha,dut.bilinear,dut.fit,dut.fade_enable,dut.volume,dut.period_select,dut.field,dut.menu,dut.auto_enabled},"all diagnostic selectors preserve user configuration");
   force dut.media_reset=1'b1;repeat(10)@(negedge dut.sys_clk);command(4,0,4,0);
   release dut.media_reset;repeat(30)@(negedge dut.sys_clk);command(4,0,0,expected[4]);
-  // A previous ordinary query leaves nonzero data in query banks.
+
   force dut.cmd_catalog_id=7'd27;query=1;
   @(negedge dut.sys_clk);cv=1;@(posedge dut.sys_clk);#0.001;
   ck(dut.b_reply && dut.b_reply_value===32'hc,"ordinary nonzero reply before asynchronous diagnostic");
@@ -81,8 +80,8 @@ module tb_v3_diag_alias156;
   @(posedge dut.sys_clk);#0.001;
   ck(dut.b_reply && dut.b_reply_code==0 && dut.b_reply_value===32'h38a64b19,"asynchronous diagnostic replaces prior query class and payload");
   @(negedge dut.sys_clk);release dut.diag_reply_valid;release dut.diag_reply_ok;release dut.diag_reply_value;
-  // Exercise the assembled supervisor->register->FIFO boundary through its
-  // public output under backpressure. Distinct stamps must stay with codes.
+
+
   for(event_i=0;event_i<8;event_i++)begin
    @(negedge dut.sys_clk);injected_event=1;
    injected_payload={32'h3ff83a00+event_i,8'h80+8'(event_i),4'(event_i)};

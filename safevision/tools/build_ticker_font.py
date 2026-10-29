@@ -1,4 +1,4 @@
-"""Build the small fixed-message ROM from the pinned open font."""
+
 import argparse
 import hashlib
 import json
@@ -10,7 +10,7 @@ MESSAGE='安全提示：遇紧急情况，请保持冷静，听从工作人员�
 FONT_BLOB='fafdfebf3103db4dc81d33ebd55b6786e08c9ebe'
 
 def source_copyright(raw):
-    # Read only the SFNT name table. The pinned Git blob is checked first.
+
     count=struct.unpack_from('>H',raw,4)[0]
     for i in range(count):
         tag,_,offset,length=struct.unpack_from('>4sIII',raw,12+16*i)
@@ -40,16 +40,16 @@ def main():
     assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==FONT_BLOB
     copyright_text=source_copyright(raw)
     assert len(MESSAGE)==32
-    # The CJK outline includes descenders: 14px fits the full outline in a
-    # 16px cell without cropping punctuation or the bottom character stroke.
+
+
     font=ImageFont.truetype(str(args.font),14)
     box=font.getbbox(MESSAGE,anchor='ls');baseline=-box[1]
     assert box[3]-box[1]<=16
     raster=Image.new('L',(512,16),0);draw=ImageDraw.Draw(raster)
     for i,char in enumerate(MESSAGE):draw.text((16*i+1,baseline),char,font=font,fill=255,anchor='ls')
     raster=raster.point(lambda value:255 if value>=96 else 0)
-    # Address is {screen_column[8:0],glyph_row[3:0]}; one pixel per word.
-    # This removes the wide row output and the variable16-way pixel mux.
+
+
     words=[int(bool(raster.getpixel((col,row))))for col in range(512)for row in range(16)]
     assert len(words)==8192 and any(words)
     asset=args.repo/'safevision/assets/fonts/v3_ticker16.mem'

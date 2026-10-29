@@ -1,4 +1,4 @@
-"""Bind one synthesis attribute while preserving the complete WAV-source body."""
+
 from pathlib import Path
 import argparse,hashlib,json,subprocess
 ROOT=Path(__file__).resolve().parents[2]

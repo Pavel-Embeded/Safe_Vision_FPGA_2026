@@ -1,10 +1,8 @@
-// A full board assembly example, reusing B's fixed-frame SDRAM bring-up.
-// The existing B safevision_top and its hardware behavior remain separate.
-// This example is not SD/FAT playback or C product policy/audio implementation.
-// BOOT_EMERGENCY selects a static demonstration command; production C attaches
-// to the valid/ready SYS interface of a_video_system_core instead.
+
+
+
 `include "pixel_format_defs.vh"
-// Default video mode; the TD flow overrides it with -define SAFEVISION_BOARD_HD.
+
 `ifndef SAFEVISION_BOARD_HD
 `define SAFEVISION_BOARD_HD 0
 `endif
@@ -38,8 +36,7 @@ module safevision_a_board_top #(
     reset_sync reset_mem(.clk(mem_clk), .async_rst_n(common_rst_n), .rst_n(mem_rst_n));
     reset_sync reset_pixel(.clk(pixel_clk), .async_rst_n(common_rst_n), .rst_n(pixel_rst_n));
 
-    // A single deterministic RGB565 raster frame in slot 0 for board bring-up.
-    // This source must not be mistaken for card/FAT32 playback.
+
     reg start = 1'b0, started = 1'b0;
     reg [9:0] src_x = 0, src_y = 0;
     reg src_valid = 1'b0;
@@ -78,8 +75,7 @@ module safevision_a_board_top #(
         .crc_ok(wr_crc_ok), .crc_value(), .px_cnt(wr_pixels),
         .wr_error(wr_error), .err_code(), .err_detail());
 
-    // The vendor adapter can hold accepted writes briefly before issuing its
-    // App_* burst. Allow 1024 mem cycles after wr_done to drain the final burst.
+
     reg [9:0] drain = 0;
     reg submit_toggle = 0;
     reg submitted = 0;
@@ -181,11 +177,7 @@ module safevision_a_board_top #(
         .mem_fifo_pixels(), .mem_dma_bytes(), .mem_dma_active(), .mem_dma_done(),
         .mem_fetch_state());
 
-    // Vendor example 7_lab_ex4_tf: axis valid tracks geometrical DE, not
-    // pixel_valid. This path cannot backpressure a fixed-rate scan. A low
-    // ready during DE is latched as a fault: no HDMI image is claimed then.
-    // HPD is not routed in the board-B pin file; settle at startup and rerun
-    // EDID after queue recovery. A carrier with HPD wires it to this input.
+
     wire hdmi_locked,hdmi_connected,hdmi_overflow;wire [31:0] dropped;
     a_hdmi_output #(.HD(HD)) hdmi(
         .pixel_clk(pixel_clk),.serial_clk(serial_clk),.rst_n(common_rst_n),

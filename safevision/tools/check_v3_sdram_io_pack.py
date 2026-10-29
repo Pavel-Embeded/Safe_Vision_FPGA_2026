@@ -1,8 +1,6 @@
-"""Audit the live SDRAM input cone after TD packs fabric FFs into SIP I/O.
 
-This checks mapped connectivity, not routed timing or physical SDRAM behavior.
-It does not suppress synthesis warnings and does not accept missing clocks.
-"""
+
+
 import argparse
 from collections import defaultdict, deque
 import hashlib

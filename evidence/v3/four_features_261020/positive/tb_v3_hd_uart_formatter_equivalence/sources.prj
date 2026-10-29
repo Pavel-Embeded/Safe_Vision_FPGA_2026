@@ -1,8 +1,0 @@
-"D:/Codex/svq390/source/safevision/rtl/common/sync_fifo.v"
-"D:/Codex/svq390/source/safevision/rtl/common/uart_rx.v"
-"D:/Codex/svq390/source/safevision/rtl/common/uart_tx.v"
-"D:/Codex/svq390/source/safevision/rtl/control/v3_command_parser.v"
-"D:/Codex/svq390/source/safevision/rtl/hd/v3_command_parser_catalog.v"
-"D:/Codex/svq390/source/safevision/rtl/hd/v3_uart_link.v"
-"D:/Codex/svq390/source/safevision/verification/models/v3_uart_formatter_reference.sv"
-"D:/Codex/svq390/source/safevision/verification/unit/tb_v3_hd_uart_formatter_equivalence.sv"

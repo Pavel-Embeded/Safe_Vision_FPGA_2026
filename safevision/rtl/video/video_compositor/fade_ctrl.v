@@ -1,5 +1,5 @@
-// The active pair and alpha are immutable between frame_start events.
-// Request is retained while busy. Target must be valid; safety aborts at vblank.
+
+
 module fade_ctrl #(parameter integer FRAMES=32)(
  input wire clk,rst_n,frame_start,request,safety,
  input wire [1:0] target,input wire [3:0] valid_slots,

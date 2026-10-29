@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_fat_geometry",
-  "suite": "fat_geometry",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "2c5a8011eba840b70e2f1b890adbbe98b133acebc31c109956ac01b6c3232e95",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\contract_fat_geometry\\tb_v3_fat_geometry"
-}

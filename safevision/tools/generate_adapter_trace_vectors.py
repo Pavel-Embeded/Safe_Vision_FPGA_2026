@@ -1,8 +1,8 @@
-"""Independent expected UART frames for two-direction telemetry diagnostic."""
+
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 V=ROOT/'safevision/verification/vectors'
-# The independent six-pattern fixture is also used in26101715's full coverage.
+
 patterns=[int(x,16) for x in (V/'adapter_path_patterns.hex').read_text().split()]
 frames=[]
 for scenario in range(3):

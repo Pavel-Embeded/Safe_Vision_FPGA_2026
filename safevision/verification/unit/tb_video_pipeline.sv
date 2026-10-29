@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
-// Drive before the sampling edge; check after NBA settling. The oracle is
-// indexed stimulus history, not a copy of the DUT shift-register recurrence.
+
+
 module vp_latency_checker #(
     parameter integer PW=24, XW=12, L=1, CHAIN=0, ID=0,
     parameter HS=1'b0, VS=1'b0
@@ -137,8 +137,8 @@ module vp_latency_checker #(
     integer n=0, drive=0, j;
     always @(negedge clk) begin
         rng={rng[30:0],rng[31]^rng[21]^rng[1]^rng[0]};
-        // Walking single-bit vectors isolate swaps and dropped sidebands;
-        // alternating/full/random patterns exercise bubbles and blanking.
+
+
         if (drive < W) stimulus = {{(W-1){1'b0}},1'b1} << drive;
         else if (drive < 2*W) stimulus = ~({{(W-1){1'b0}},1'b1} << (drive-W));
         else for (j=0;j<W;j=j+1) stimulus[j]=rng[(j+drive)%32];
@@ -163,7 +163,7 @@ module vp_latency_checker #(
             if (drive > 2500 && n > 100) done=1;
         end
     end
-    // Bypass must follow sub-cycle changes without waiting for a clock.
+
     generate if (L==0 && !CHAIN) begin : bypass_check
         always @(stimulus) begin
             #1;
@@ -190,7 +190,7 @@ module tb_video_pipeline;
     vp_latency_checker #(.PW(16),.XW(12),.L(0),.CHAIN(0),.ID(8),.HS(1'b1),.VS(1'b1)) c8(clk,rst_n,done[8],checks[8]);
     initial begin
         #20 rst_n=1;
-        // Mid-cycle resets with stale nonzero data in the pipeline.
+
         #1132 rst_n=0; #18 rst_n=1;
         #2902 rst_n=0; #18 rst_n=1;
         wait (&done);

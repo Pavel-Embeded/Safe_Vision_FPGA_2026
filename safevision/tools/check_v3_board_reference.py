@@ -1,4 +1,4 @@
-"""Check independent board-material pin contract against ADC and routed pads."""
+
 import argparse,json,re
 from pathlib import Path
 from v3_sources import ROOT,FLOW
@@ -17,9 +17,8 @@ def adc_pins(text):
 def check(root,area=None):
  ref=json.loads((root/FLOW/'board_reference.json').read_text(encoding='utf-8'))
  pins=ref['ports'];actual=adc_pins((root/FLOW/'v3_board.adc').read_text(encoding='utf-8-sig'))
- # Independent physical labels from HX4S20 manual2410 printed p19.
- # Checking ADC against a copied reference alone missed a shared KEY3/4 swap.
- # Keep the physical labels anchored even if both editable tables agree.
+
+
  key_contract=(('KEY1','A2','rst_n'),('KEY2','B2','btn_next'),
                ('KEY3','B1','btn_auto'),('KEY4','C1','btn_emergency'))
  expected=[dict(button=label,ball=ball,logical_port=port,active_level=0)for label,ball,port in key_contract]
@@ -42,7 +41,7 @@ def check(root,area=None):
  result={'accepted':True,'logical_ports':21,'physical_pads':25,'adc_checked':True,'physical_pad_table_checked':False,'hardware_verified':False,'physical_key_contract':expected,'key_contract_source':'HX4S20 manual2410 printed p19; KEY3=B1 and KEY4=C1'}
  if area is not None:
   if 'Device: EG4S20BG256' not in area:raise ValueError('wrong routed device')
-  # Internal SDRAM Sxx pads are package-internal and are not user BGA balls.
+
   rows=[]
   for m in re.finditer(r'^\s*(\S+)\s+(INPUT|OUTPUT|INOUT)\s+([A-RT]\d+)\s+(\w+)\s+(\w+)\s+(\d+|NA|N/A|-)\s+(\w+)\s+',area,re.M):
    rows.append({'name':m[1],'direction':m[2],'ball':m[3],'standard':m[4]})

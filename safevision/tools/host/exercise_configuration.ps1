@@ -58,8 +58,8 @@ try{
  if((Send 'B:DIAG=0') -ne 0x26101802){throw 'Unexpected firmware; no configuration writes sent'}
  $firmwareMatched=$true
  Healthy
- # This exercise starts immediately after configuration. It verifies defaults
- # before writing them, rather than concealing an incorrect boot setting.
+
+
  foreach($pair in @(@('A:BRTPC',80),@('A:BRIGHT',60),@('A:CONTRAST',128),@('A:SCALESEL',0),@('C:VOL',70),@('C:PERIOD',5),@('C:AUTO',1),@('C:MENU',0))){
   $actual=Signed (Send ($pair[0]+'?'));if($actual -ne $pair[1]){throw ('Wrong startup default '+$pair[0])}
   Log @{kind='default_case';name=$pair[0];actual=$actual;expected=$pair[1]}

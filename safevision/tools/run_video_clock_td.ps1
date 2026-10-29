@@ -5,8 +5,8 @@ param(
     [string]$RunDir = '',
     [ValidateSet('both','base','hd')][string]$Mode = 'both'
 )
-# ASCII-only runner. Exit 0 = internal paths met and no health warning;
-# exit 2 = internal timing met but TD health warnings remain; exit 1 = failure.
+
+
 $ErrorActionPreference = 'Stop'
 $RepoRoot = [IO.Path]::GetFullPath($RepoRoot)
 if (-not $ProjectDir) {
@@ -52,7 +52,7 @@ try {
             $svFlowLog = Join-Path $svModeOut 'flow.console.log'
             $svPostLog = Join-Path $svModeOut 'postroute.console.log'
             Invoke-SvTdStage "./$svMode.tcl" $svFlowLog
-            # Separate process after the synthesis process exits/releases license.
+
             Invoke-SvTdStage "./${svMode}_postroute.tcl" $svPostLog
             $svFinal = Join-Path $svModeOut 'postroute'
             foreach ($svName in @('final.timing','final.status','final.clock_summary',
@@ -87,10 +87,10 @@ try {
                 ($svPrefix + 'u_audio_pll/pll_inst.clkc[1]') = 12.288135593
                 ($svPrefix + 'u_audio_pll/pll_inst.clkc[0]') = 25.0
             }
-            # Reviewed TD6.2 footprint after the NORMAL feedback-wiring repair.
-            # Pixel-domain FF packing uses one fewer shared physical clock pin.
-            # Register bits remain 68/71 (BASE/HD); check both counts below so
-            # a lost register cannot be accepted as a mere packing change.
+
+
+
+
             $svExpectedLeaves = @{
                 'board_clk_50' = $svTotalLeaves
                 ($svPrefix + 'u_system_pll/pll_inst.clkc[0]') = $(if ($svMode -eq 'base') { 8 } else { 10 })
@@ -111,8 +111,8 @@ try {
                 $svFound = @($svClocks | Where-Object { $_.name -eq $svClockName })
                 if ($svFound.Count -ne 1) { throw "Missing clock: $svClockName" }
                 $svMHz = [double]($svFound[0].freq -replace 'MHz','')
-                # TD quantizes the period to ps (e.g. HD serial shows 370.920).
-                # This gate checks the STA profile, not hardware ppm/jitter.
+
+
                 if ([Math]::Abs($svMHz - $svExpected[$svClockName]) -gt 0.001 * $svExpected[$svClockName]) {
                     throw "Wrong STA frequency: $svClockName $svMHz MHz"
                 }

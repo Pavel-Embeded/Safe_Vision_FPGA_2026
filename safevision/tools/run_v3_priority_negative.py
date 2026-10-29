@@ -1,4 +1,4 @@
-"""Normal-ending signed/fraction controls for the actual V3 serial priority source."""
+
 from pathlib import Path
 import argparse,json,hashlib,subprocess,re,sys
 repo=Path(__file__).resolve().parents[2]

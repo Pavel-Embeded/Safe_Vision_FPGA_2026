@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
-// Literal VGA/HD geometry oracle plus indexed history checks. Real scan
-// timing drives a 16-bit RGB565 bundle. Invalid pixels must not alter sync.
+
+
 module vp_scan_checker #(
     parameter integer HD=0
 )(input wire clk, input wire rst_n, output reg done=0,
@@ -127,8 +127,8 @@ module vp_scan_checker #(
             #1;
             if (actual !== expected) $fatal(1,"scan HD=%0d reset failed",HD);
         end else if (!done) begin
-            // Inspect source BEFORE counters advance. Independent coordinate
-            // arithmetic establishes that the input scanner is correct too.
+
+
             pre=source;
             if (sx !== ix || sy !== iy || de !== (ix<HA && iy<VA) ||
                 hs !== ((ix>=HB && ix<HE)?(HD!=0):(HD==0)) ||
@@ -171,7 +171,7 @@ module tb_video_pipeline_timing;
     vp_scan_checker #(.HD(1)) hd(clk,rst_n,hd_done,hd_checks);
     initial begin
         #20 rst_n=1;
-        // Reset after a partial line; restart then check complete frames.
+
         #1132 rst_n=0; #18 rst_n=1;
         wait(base_done && hd_done);
         $display("PASS tb_video_pipeline_timing: BASE+HD full-frame checks=%0d",base_checks+hd_checks);

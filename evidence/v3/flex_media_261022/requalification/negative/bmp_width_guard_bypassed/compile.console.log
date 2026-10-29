@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/original618/negative/bmp_width_guard_bypassed/sim/tb_v3_bmp_header199/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module bmp_parser
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_bmp_header199.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_bmp_header199

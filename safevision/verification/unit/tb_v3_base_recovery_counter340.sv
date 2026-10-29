@@ -22,8 +22,8 @@ module recovery_counter_case #(parameter R=2,S=2,T=17,A=3)(output reg done_case=
  end endtask
  task accelerate_native_timeout;begin
   if(T>100000)begin
-   // Both counters are moved to the same reachable pre-terminal state.
-   // The prediction bit is still false there, then evolves normally.
+
+
    force golden.timer=T-3;force dut.wait_timer=T-3;
    @(posedge clk);@(negedge clk);release golden.timer;release dut.wait_timer;
   end
@@ -38,13 +38,13 @@ module recovery_counter_case #(parameter R=2,S=2,T=17,A=3)(output reg done_case=
   end
   @(negedge clk);request=1;repeat(R+S+8)@(negedge clk);request=0;
   if(st0!=5||a0!=A)begin errors++;$display("[FAIL] attempt bound errors=1");end
-  //1000 real input fault/completion episodes; no internal forcing here.
+
   for(n=0;n<1000;n++)begin
    reset_epoch();begin_request();
    case(n%4)0:done=1;1:failed=1;2:begin done=1;failed=1;end 3:fatal=1;endcase
    repeat(3)@(negedge clk);done=0;failed=0;fatal=0;
   end
-  // Arbitrary input coincidence and reset phases, with regular fresh epochs.
+
   reset_epoch();
   for(k=0;k<5000;k++)begin
    @(negedge clk);noise={noise[30:0],noise[31]^noise[21]^noise[1]^noise[0]};

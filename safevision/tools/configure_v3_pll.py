@@ -1,9 +1,6 @@
-"""Configure the unchanged official EG_PHY_PLL template for V3 only.
 
-No encrypted IP is edited. This records an explicit parameterization of the
-existing TD-generated primitive template; it does not fabricate an IPTool log.
-The resulting IPC can also be opened in TD's documented IP Catalog GUI.
-"""
+
+
 import hashlib,json,xml.etree.ElementTree as ET
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

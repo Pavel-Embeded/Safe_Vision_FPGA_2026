@@ -1,4 +1,4 @@
-"""Build a compact notice in the unused words of the FFT coefficient RAM."""
+
 from pathlib import Path
 import argparse,hashlib,json
 from PIL import Image,ImageDraw,ImageFont

@@ -86,8 +86,8 @@ module tb_v3_ticker_board;
    force dut.scrolling.ticker.position=p;
    for(i=0;i<21;i++)begin wanted[i]=underlying;wanted_xy[i]=0;end
    repeat(24)pixel(0,0,0);
-   // The existing coordinate reconstruction requires HTOTAL=800, including
-   // horizontal blanking. Keep that real production contract in this test.
+
+
    for(yy=454;yy<478;yy++)for(xx=0;xx<800;xx++)pixel(xx,yy,xx<640&&(xx%11)!=0);
   end
   $display("[PASS] original RGB outside ticker, UP reservation, full glyph rows, clipped sides and DE gaps");

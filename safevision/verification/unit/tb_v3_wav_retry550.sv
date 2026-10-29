@@ -47,7 +47,7 @@ module tb_v3_wav_retry550;
   check(fallback==0,"bad primary and bad directory fallback skipped in favour of real valid arbitrary-name WAV");
   check(requests>32,"real directory/FAT/data reads used rather than fabricated PCM");
   rst_n=0;descriptor_valid=0;phase=1;repeat(4)@(negedge clk);
-  // Invalidate the only usable WAV. Every retry cursor must reach directory end.
+
   disk[30*512]=8'h58;for(integer i=0;i<4;i=i+1)received[i]=0;requests=0;
   rst_n=1;send_descriptors();wait(indexed);guard=0;
   while(fallback!=15&&guard<300000)begin @(negedge clk);guard=guard+1;end

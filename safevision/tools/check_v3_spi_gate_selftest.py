@@ -1,4 +1,4 @@
-"""Fault-inject strict native SPI, clock and asynchronous IO evidence parsers."""
+
 import argparse,hashlib,json,re,sys
 from pathlib import Path
 from check_v3_spi_timing import check,check_cs
@@ -29,7 +29,7 @@ def main():
   test('falling REF capture mutation applied',bad!=exceptions);test('rising REF capture rejected',not edge_check(bad)['accepted'])
   test('legacy timing profile rejected for SPI25',not check(exceptions)['accepted'])
  for name,text in [('CS wrong launch edge',timing.replace('falling edge triggered by clock board_clk','rising edge triggered by clock board_clk')),('CS ordinary budget corrupted',timing.replace('Budget              : 10.000ns','Budget              : 9.000ns'))]:test(name,not check_cs(text)['accepted'])
- # A negative SMD path is deliberately independent of the SPI MCP parser.
+
  m=re.search(r'^Slack\s*:\s*[-+.0-9]+ns\s*\nBegin Point\s*:\s*led\[',exceptions,re.M);test('native asynchronous LED SMD path exists',bool(m))
  bad=exceptions[:m.start()]+re.sub(r'^(Slack\s*:\s*)[-+.0-9]+ns',r'\g<1>-0.001ns',exceptions[m.start():],count=1)
  test('ordinary SMD negative path caught',not exception_timing(bad)['accepted'])

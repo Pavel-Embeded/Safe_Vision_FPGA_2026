@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_directory_compact",
-  "suite": "directory_compact",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "b624bf92b3562982a03832ba5fddd4a3ca295dd9ffaeeead42457a34dd0af177",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_v3_directory_compact"
-}

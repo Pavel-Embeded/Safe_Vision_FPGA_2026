@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
-// Timer semantics use SAMPLE_DIV=8 to accelerate the 800-sample failure window;
-// Serial candidate requires >=6 clocks between accepted samples.
-// tb_v3_audio_system independently checks the production /256 physical cadence.
+
+
 module tb_v3_audio_underflow_serial;
  reg rc=0,mc=0,ac=0,pc=0,sc=0;always #10 rc=~rc;always #12.5 mc=~mc;
  always #40.69 ac=~ac;always #6.733 pc=~pc;always #5 sc=~sc;

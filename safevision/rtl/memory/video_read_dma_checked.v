@@ -1,7 +1,6 @@
-// Board integrity DMA. Two landing banks overlap fetch and pixel drain.
-// A bank becomes visible to the pixel FIFO only after its complete CRC matches
-// the signature of the accepted producer words. No unverified word is emitted.
-// The legacy DMA remains available for interfaces without a signature store.
+
+
+
 module video_read_dma_checked #(
     parameter integer BURST_WORDS=64,PIX_DEPTH=4094,LOW_WATER=3800,
     parameter integer FRAME_WORDS=153600,
@@ -106,7 +105,7 @@ module video_read_dma_checked #(
                         end else drain_index<=drain_index+1'b1;
                     end
                 end
-                // Last registered pixel reaches the FIFO one edge later.
+
                 if(settle!=0)begin
                     settle<=settle-1'b1;
                     if(settle==1)begin done<=1;active<=0;end

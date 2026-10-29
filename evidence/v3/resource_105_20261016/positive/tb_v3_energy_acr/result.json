@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_energy_acr",
-  "suite": "v3",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "e06420404b1e9e8bdbaf2388c4834e5fc25f1ed2c037833162f054afdadc8ae9",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\publication_remaining\\tb_v3_energy_acr\\tb_v3_energy_acr"
-}

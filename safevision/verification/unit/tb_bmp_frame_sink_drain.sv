@@ -1,5 +1,5 @@
-// Real async vendor FIFO + writer. Verify physical drain barrier and a failed
-// swap acknowledgement, including the result delivered back to the producer.
+
+
 `timescale 1ns/1ps
 module tb_bmp_frame_sink_drain;
  reg mc=0,wc=0;always #4 mc=~mc;always #10 wc=~wc;
@@ -39,8 +39,8 @@ module tb_bmp_frame_sink_drain;
    @(negedge mc);busy=1;repeat(20)@(negedge mc);saved_fd=fd;busy=0;
    wait(fd!=saved_fd);check(ok,"acknowledged frame returns successful completion");
    @(negedge wc);fa=0;repeat(30)@(negedge wc);
-   // Inject a bridge error AFTER a successful frame. A stale success level
-   // would make the player advance into an incompletely written slot.
+
+
    wait(mready);saved_sw=sw;saved_fd=fd;
    @(negedge wc);fa=1;wait(state==1);
    check(!ok,"new frame cannot inherit the previous frame's success level");

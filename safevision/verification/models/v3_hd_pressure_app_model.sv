@@ -1,8 +1,7 @@
-// Contract hypothesis for bounded4..68 read beats; real vendor IP validation remains required.
+
 `timescale 1ns/1ps
-// Application-port contract only. This is not the encrypted SDRAM controller
-// and does not establish SDRAM AC timing. Refresh delays responses by up to
-// eight MEM clocks every 7.8us; commands in a physical burst remain accepted.
+
+
 module v3_hd_pressure_app_model #(parameter integer REFRESH_CYCLES=312,READ_LAT=4)(
  input wire clk,rst,wr_en,rd_en,input wire[20:0] wr_addr,rd_addr,
  input wire[31:0] wr_data,input wire[3:0] wr_dm,

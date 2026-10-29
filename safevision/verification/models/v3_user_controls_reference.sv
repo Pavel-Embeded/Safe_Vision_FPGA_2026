@@ -1,5 +1,5 @@
-// Normal buttons are decoded on release, so a chord cannot leak a next/auto.
-// Emergency is never gated by menu or UART. Configuration has one driver.
+
+
 module v3_user_controls_reference #(parameter integer CLK_HZ=100000000,DEBOUNCE=2000000)(
  input wire clk,rst_n,next_async,auto_async,emergency_async,
  input wire command_valid,input wire [7:0] command_target,

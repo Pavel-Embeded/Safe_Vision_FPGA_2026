@@ -1,4 +1,4 @@
-"""Exercise the reviewed six-RAM source profile and native location readback."""
+
 from pathlib import Path
 import argparse,hashlib,json,shutil,sys,tempfile
 

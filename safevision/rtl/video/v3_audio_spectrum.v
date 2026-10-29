@@ -1,7 +1,6 @@
-// Real PCM spectrum, pixel clock only,512-point radix2 DIT FFT with periodic
-// Hann window. One scaled butterfly/DSP datapath; one read and one write port.
-// Capture pauses only this observer while FFT runs; HDMI audio is never stalled.
-// Completed32-band spectra are committed at a video frame boundary.
+
+
+
 module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  parameter TWIDDLE_FILE="v3_spectrum_twiddle.mem",parameter integer SHARED_TICKER=0,
  parameter SHARED_INIT_FILE="../../assets/fonts/v3_spectrum_ticker.mem",
@@ -25,8 +24,8 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  reg[4:0] band;
  reg pending_bank,display_bank;wire[6:0] band_height;
  (* ram_style="bram" *)reg[35:0] data_ram[0:511];
- // One true-dual-port9 RAM combines the immutable quarter-wave table and
- // two display banks. Coefficients occupy0..255, display words256..383.
+
+
  (* ram_style="bram" *)reg[8:0] shared_ram[0:1023];
  reg[15:0] initial_coefficients[0:511];integer init_index;
  initial begin
@@ -81,8 +80,8 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
   if(compute_enable)read_data<=data_ram[read_address];
   if(write_enable)data_ram[write_address]<=write_data;
  end
- // A tagged response is captured even if the next pixel takes both read ports.
- // No in-flight coefficient/history response can be lost on a display pause.
+
+
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin
    request_count<=0;response_count<=0;request_tag<=0;response_part<=0;
@@ -143,8 +142,8 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
    28:band_end=152;29:band_end=181;30:band_end=215;default:band_end=256;
   endcase
  end endfunction
- // Priority encoding with constant slices avoids a 32-bit barrel shifter.
- // This is bit-for-bit identical to 4*floor(log2(m))+fraction+12, clipped64.
+
+
  function[6:0] log_height;input[18:0] magnitude;begin
   if(|magnitude[18:13])log_height=7'd64;
   else casez(magnitude[12:0])
@@ -313,7 +312,7 @@ module v3_audio_spectrum #(parameter WIDTH=640,HEIGHT=480,
  wire[11:0] legend_y=y-(BASELINE+8),axis_x=x-(LEFT-24);
  wire legend_pixel=de&&x>=LEFT&&x<LEFT+256&&y>=BASELINE+8&&y<BASELINE+18&&dot(legend_char,{1'b0,legend_x[2:0]},legend_y[3:0]);
  wire axis_pixel=de&&x>=LEFT-24&&x<LEFT&&dot(axis_char,{1'b0,axis_x[2:0]},axis_y[3:0]);
- // Shared BRAM outputs and registered geometry describe the same input pixel.
+
  always @(posedge clk or negedge rst_n)
   if(!rst_n)begin plot_area<=0;plot_bar<=0;plot_ready<=0;title_delayed<=0;grid_delayed<=0;plot_dy<=0;plot_colour<=0;render_valid<=0;end
   else begin

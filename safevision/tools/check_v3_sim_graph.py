@@ -1,16 +1,13 @@
-"""Verify the HDL actually analyzed matches the currently selected sim graph.
 
-The runner already fingerprints its manifest and code. This independent check
-additionally verifies the compiler's observed ordered inputs, rather than only
-the intended input dictionary. Legacy suites retain their actual analyzed graph.
-"""
+
+
 from pathlib import Path
 import hashlib,json,re
 
 def read(p):return json.loads(p.read_text(encoding='utf-8-sig'))
 STRICT_RUNNER='safevision/tools/run_v3_sim_flexible.py'
 def strict_inputs(root,folder,manifest,top,before=None):
-    """Additional checks apply only to explicitly selected new FLEX suites."""
+
     root=Path(root).resolve();folder=Path(folder).resolve()
     assert manifest.get('strict_generated_inputs')==1,'strict manifest flag absent'
     assert manifest.get('native_runner')==STRICT_RUNNER,'strict FLEX runner not selected'
@@ -83,9 +80,8 @@ def check(root,folder,metadata,negative=None):
         strict=strict_inputs(root,folder,m,top,before)if m.get('strict_generated_inputs')==1 else {}
         return dict(accepted=True,top=top,suite=suite,ordered_analyzed_HDL=len(observed),manifest=manifest.relative_to(root).as_posix(),current_manifest_sha256=digest,binding='actual_compiler_and_current_manifest',**strict)
     assert metadata.get('legacy'),('modern suite lacks explicit current manifest',suite)
-    # The historical A runner captured all five benches as one conservative
-    # fingerprint set, then compiled one bench per native execution. Every
-    # analyzed dependency must be captured; unused captured benches add no proof.
+
+
     assert set(observed)<=set(hdl),'legacy analyzed dependency missing in captured inputs'
     assert any(Path(n).stem==top for n in observed),'legacy selected bench was not analyzed'
     return dict(accepted=True,top=top,suite=suite,ordered_analyzed_HDL=len(observed),additional_hashed_inputs=len(set(hdl)-set(observed)),binding='historical_actual_compiler_graph_covered_by_current_input_hashes')

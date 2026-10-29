@@ -34,7 +34,7 @@ module tb_v3_key_gestures478;
   ck(d.UI_DIV==100&&d.UI_DEBOUNCE==21&&d.HOLD_LIMIT==1001&&d.CHORD_LIMIT==2001,"shared tick and conservative minimum debounce/hold limits");
   ck(pct==80&&bri==60&&con==128&&vol==70&&aut&&!menu,"cold boot full defaults");
 
-  // A10ms bounce cannot complete the >=20ms stable window.
+
   bn=0;ticks(1000);bn=1;ticks(2300);ck(d.levels[0]==0&&!menu,"short bounce rejected");
   bn=0;ba=0;start_cycle=cycles;guard=0;
   while(!menu&&guard<203000)begin @(negedge clk);guard++;end
@@ -48,8 +48,8 @@ module tb_v3_key_gestures478;
   short_next();ck(con==136,"physical contrast increase8");short_auto();ck(con==128,"physical contrast decrease8");
   ba=0;start_cycle=cycles;guard=0;while(menu&&guard<103000)begin @(negedge clk);guard++;end
   ck(!menu&&cycles-start_cycle>=102000,"KEY3 long press exits after >=1s");release_both();ck(aut,"long exit does not leak an autoplay toggle");
-  // Physical actions are deliberately NOT perfectly simultaneous.
-  // Cover both press/release orders, release bounce, and chord one-shot.
+
+
   for(i=0;i<8;i=i+1)begin
    if(i[0])begin bn=0;ticks(1700);ba=0;end
    else begin ba=0;ticks(3700);bn=0;end
@@ -59,7 +59,7 @@ module tb_v3_key_gestures478;
    if(i[1])begin bn=1;ticks(700);bn=0;ticks(500);bn=1;ticks(3500);ba=1;end
    else begin ba=1;ticks(500);ba=0;ticks(700);ba=1;ticks(4500);bn=1;end
    ticks(4000);ck(menu&&aut,"staggered/bouncing release keeps menu without autoplay leak");
-   // Start from a known field using its public catalog command.
+
    @(negedge clk);id=38;target=67;value=0;command=1;@(negedge clk);command=0;ticks(10);
    short_next();ck(pct==85&&bri==70,"physical increase after staggered chord");
    short_auto();ck(pct==80&&bri==60,"physical decrease after staggered chord");

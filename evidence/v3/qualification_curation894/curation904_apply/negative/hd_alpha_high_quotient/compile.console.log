@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/hb02/f15/negative/hd_alpha_high_quotient/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module alpha_blend
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/models/v3_hd_alpha_reference.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_hd_alpha_reference
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_hd_alpha_equivalence.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_hd_alpha_equivalence

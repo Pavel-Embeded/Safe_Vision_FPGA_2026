@@ -1,4 +1,4 @@
-"""Reproduce four normally finishing source-wait semantic controls with XSim."""
+
 import argparse,concurrent.futures,hashlib,json,re,subprocess,sys
 from pathlib import Path
 

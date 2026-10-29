@@ -1,5 +1,5 @@
-# Actual A+B sources. Auto uses ModelSim when configured, otherwise XSim.
-# Generated logs and bounded VCD files remain in ignored/private RunDir.
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$ModelSimBin=$env:MSIM_BIN,
@@ -47,7 +47,7 @@ try{
   if($LASTEXITCODE){throw 'A+B RTL compile failed'}
   & (Join-Path $XSimBin 'xvlog.bat') --sv -d SIM_FAST_TO -i $inc @sv --log tb.log > tb.console.log 2>&1
   if($LASTEXITCODE){throw 'A+B verification compile failed'}
-  # Literal quotes survive the Vivado .bat wrapper's second cmd parsing pass.
+
   $generic=@();if(-not $isCard){$generic=@('-generic_top',('"HD='+$HD+'"'),'-generic_top',('"SUBMIT_LEAD='+$SubmitLead+'"'))}
   if($Top -eq 'tb_safevision_core'){$generic+=@('-generic_top',('"SWAPS='+$SwapCount+'"'))}
   & (Join-Path $XSimBin 'xelab.bat') "work.$Top" -s $Top --timescale '1ns/1ps' @generic --log elab.log > elab.console.log 2>&1

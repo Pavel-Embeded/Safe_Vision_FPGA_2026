@@ -1,4 +1,4 @@
-// Synthetic clock alignment hypotheses only. Not encrypted IP simulation.
+
 `timescale 1ns/1ps
 module sdram(input Clk,Clk_sft,Rst,output Sdr_init_done,Sdr_init_ref_vld,Sdr_busy,
  input App_wr_en,input[20:0]App_wr_addr,input[3:0]App_wr_dm,input[31:0]App_wr_din,

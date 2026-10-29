@@ -1,7 +1,6 @@
-// Board control fault injection, not real card/vendor-IP/SDRAM AC validation.
-// Uses actual board RTL and independent 50/100/125/pixel/serial clocks.
-// Producer completion and video/ready are injected deliberately; scan, mailbox,
-// ownership, AXIS queue and transmitter/PHY reset wiring remain actual RTL.
+
+
+
 `timescale 1ns/1ps
 module tb_safevision_board_recovery;
  reg clk=0;always #10 clk=~clk;
@@ -52,8 +51,7 @@ module tb_safevision_board_recovery;
  begin @(negedge dut.pixel_clk);video_de=de;video_x=x;video_y=y;video_rgb=rgb;
    @(posedge dut.pixel_clk);#0.002;end endtask
 
- // Check the actual asynchronous reset assertion and two serial-clock release
- // edges. No claimed physical PLL jitter/metastability simulation is implied.
+
  reg reset_watch_done=0;
  initial begin
    wait(dut.hdmi_resync===1);#0.001;
@@ -69,8 +67,8 @@ module tb_safevision_board_recovery;
  end
 
  initial begin
-   // Disable real frame writers, inject completion metadata/events at their
-   // documented boundary. The publisher/mailbox/ownership logic is not forced.
+
+
    force dut.pl_card_usable=card_available;
    force dut.pl_frame_active=1'b0;
    force dut.sk_wr_req=1'b0;force dut.fb_wr_req=1'b0;
@@ -167,8 +165,7 @@ module tb_safevision_board_recovery;
    check(dut.memory_ip.protocol_errors==0&&dut.memory_ip.write_bursts==0&&dut.memory_ip.read_bursts==0,
      "control injection scope performs no physical memory transaction");
 
-   // A lost SYS swap ACK can coexist with a committed PIX slot. Local player
-   // restart must not recycle that slot; only the common reset clears the fence.
+
    force dut.pl_fail_stage=4'd1;
    force dut.sk_ec=8'hf1;repeat(12)@(posedge clk);#0.001;
    check(dut.player.mem_ready===0,"F1 swap ambiguity fences new frame admission");

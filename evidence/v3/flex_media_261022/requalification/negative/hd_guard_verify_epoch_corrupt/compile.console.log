@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative318/n/hd_guard_verify_epoch_corrupt/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_row_integrity
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures312/source/safevision/verification/models/v3_hd_guard_reference.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_hd_guard_reference
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures312/source/safevision/verification/unit/tb_v3_hd_guard_480_320.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_hd_guard_480_320

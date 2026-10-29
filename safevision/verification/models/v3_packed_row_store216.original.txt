@@ -1,16 +1,6 @@
-// Production-only, monotonic raster storage. Four 640-pixel rows per stream
-// occupy five 512x16 RAM9K tiles (ten total). Adjacent rows are >=640 locations
-// apart, so their same-column reads always use different physical RAM tiles.
-// Each tile has exactly ONE SYS write port and ONE PIX synchronous read port.
-//
-// MEM50 and WRITE100 MUST be related phase-0 outputs of the same PLL. MEM
-// captures each complete word. On the following WRITE edge LOW is written;
-// the next WRITE edge writes the held HIGH. These paths are timed, not false
-// paths. A completed row is acknowledged back to MEM after the final HIGH.
-//
-// PIX accepts sx=0 at every valid run, then repeated/increment-by-one x only,
-// with unchanged sy until blanking. prepare_sy names the upcoming visible
-// source row. Blanking continuously preloads pixel 0 for both row neighbors.
+
+
+
 module v3_packed_row_store #(parameter integer HANDBOOK_PROFILE=0)(
  input wire mem_clk,mem_rst_n,write_clk,write_rst_n,pixel_clk,pixel_rst_n,
  input wire word_valid,input wire[2:0] word_bank,input wire[8:0] word_column,
@@ -39,7 +29,7 @@ module v3_packed_row_store #(parameter integer HANDBOOK_PROFILE=0)(
   if(!write_rst_n)begin seen_toggle<=0;high_pending<=0;high_data<=0;high_position<=0;
    high_stream<=0;high_last<=0;done_toggle<=0;write_fault<=0;end
   else if(high_pending)begin
-   if(new_packet)write_fault<=1; // The required 2:1 clock relationship was lost.
+   if(new_packet)write_fault<=1;
    high_pending<=0;if(high_last)done_toggle<=~done_toggle;
   end else if(new_packet)begin
    seen_toggle<=request_toggle;high_pending<=1;high_data<=packet_data[31:16];

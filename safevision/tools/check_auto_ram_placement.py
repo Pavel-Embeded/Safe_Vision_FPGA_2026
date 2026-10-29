@@ -1,4 +1,4 @@
-"""Preserve the proven board/clock budget while letting RAM placement vary."""
+
 from pathlib import Path
 import argparse,hashlib,json,re,subprocess
 ROOT=Path(__file__).resolve().parents[2]

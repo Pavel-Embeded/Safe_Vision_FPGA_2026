@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_status_layers",
-  "suite": "layers",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "db56d93294bec37c5ba9462338704b2b873d8360adb7db7adfa90440244dd5d3",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_106_20261016\\positive\\tb_v3_status_layers"
-}

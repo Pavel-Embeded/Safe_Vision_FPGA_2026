@@ -1,8 +1,7 @@
 `timescale 1ns/1ps
 `include "safevision_defs.vh"
-// Supplemental production-rate startup check. The unchanged full-card TB
-// supplies the FAT32/BMP card and top; this root restores the default divider.
-// Compile BOTH roots without SIM_FAST_TO. This is not the 50-frame card test.
+
+
 module tb_safevision_real_sd_init;
     defparam tb_safevision_card_display.dut.PLAYER_SPI_INIT_DIV = 16'd249;
     integer rises = 0;

@@ -1,4 +1,4 @@
-"""Native XSim regression. Explicit manifests, isolated ASCII work, fail closed."""
+
 import argparse,hashlib,json,os,re,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

@@ -13,14 +13,14 @@ module lane_lvds_10_1 #(
     output wire     O_serial_out
 );
 
-    reg      S_odd_even;     
-    reg      S_odd_even_1d;  
-    reg      S_odd_even_2d;  
-    reg      S_load_en;      
-    reg      S_load_en_1d;   
-    reg      S_load_en_2d;   
-    reg[9:0] S_shift_data;   
-    reg[1:0] S_oddr_data;    
+    reg      S_odd_even;
+    reg      S_odd_even_1d;
+    reg      S_odd_even_2d;
+    reg      S_load_en;
+    reg      S_load_en_1d;
+    reg      S_load_en_2d;
+    reg[9:0] S_shift_data;
+    reg[1:0] S_oddr_data;
 
 
     always @(posedge I_pixel_clk or posedge I_rst) begin
@@ -47,7 +47,7 @@ module lane_lvds_10_1 #(
         else
             if(S_load_en_2d)
                 S_shift_data <= I_data_in;
-            else 
+            else
                 S_shift_data <= S_shift_data << 2;
     end
 
@@ -153,5 +153,5 @@ module lane_lvds_10_1 #(
                 );
             end
     endgenerate
-    
+
 endmodule

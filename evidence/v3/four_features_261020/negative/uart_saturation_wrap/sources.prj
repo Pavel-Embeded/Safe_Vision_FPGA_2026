@@ -1,7 +1,0 @@
-"D:/Codex/svfeatures380/source/safevision/rtl/common/uart_rx.v"
-"D:/Codex/svfeatures380/source/safevision/rtl/common/uart_tx.v"
-"D:/Codex/svfeatures380/source/safevision/rtl/control/v3_command_parser.v"
-"D:/Codex/svnegative391/n/uart_saturation_wrap/mutant.v"
-"D:/Codex/svfeatures380/source/safevision/rtl/common/sync_fifo.v"
-"D:/Codex/svfeatures380/source/safevision/rtl/control/v3_command_parser_catalog.v"
-"D:/Codex/svfeatures380/source/safevision/verification/unit/tb_v3_drop_saturation280.sv"

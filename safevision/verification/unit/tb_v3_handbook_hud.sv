@@ -8,7 +8,7 @@ module tb_v3_handbook_hud;
  .osd_rgb565(osd),.emergency_rgb565(em),.hud_rgb565(hud),.safe_rgb565(srgb),.osd_alpha(oa),.emergency_alpha(ea),.hud_alpha(ha));
  reg[7:0]font[0:4095];reg[511:0]text;reg[7:0]ch;integer errors=0,comparisons=0,c,b,r,m;bit dot;
  task line(input integer yy,length,input bit is_menu,input[511:0]content);begin
-  // Decimal converter runs independently; wait a full seven-value refresh.
+
   repeat(100)@(negedge clk);
   for(c=0;c<length;c++)for(r=1;r<15;r+=3)for(b=0;b<8;b++)begin
    ch=content[(63-c)*8+:8];dot=font[ch*16+r][7-b];

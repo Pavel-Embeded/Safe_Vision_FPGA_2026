@@ -1,5 +1,5 @@
-﻿# Resolve the official HX4S20C HDMI lab source and copy only its HDL dependency
-# into an ASCII run directory. No vendor source is fabricated or decrypted.
+
+
 function Resolve-SafeVisionHdmiVendor {
  param([string]$VendorRoot,[string]$RepoRoot,[string]$RunDir)
  $candidates=@()
@@ -7,7 +7,7 @@ function Resolve-SafeVisionHdmiVendor {
  elseif($env:SAFEVISION_HDMI_VENDOR){$candidates+=$env:SAFEVISION_HDMI_VENDOR}
  else{
   $candidates+=Join-Path $RepoRoot '7_lab_ex_2026_nosoft/example/lab_ex4_tf/src/user_source/hdl_source'
-  # Local contest-package installation; other machines pass -VendorRoot.
+
   $package='D:\嵌赛FPGA文件\HX4S20_Contest_202606.zip\HX4S20_Contest_202606\HX4S20_Contest_202606\7_lab_ex_2026_nosoft'
   if(Test-Path -LiteralPath $package){
    $candidates+=@(Get-ChildItem -LiteralPath $package -Directory | ForEach-Object {Join-Path $_.FullName 'lab_ex4_tf/src/user_source/hdl_source'})

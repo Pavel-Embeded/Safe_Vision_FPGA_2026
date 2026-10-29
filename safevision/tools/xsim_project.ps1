@@ -1,5 +1,5 @@
-# Avoid Windows cmd.exe's 8191-character limit in Vivado's .bat wrappers.
-# The -f option is documented by xvlog -help (Vivado 2018.3).
+                                                                         
+                                                             
 function Write-XSimProject {
  param([string[]]$Paths,[string]$Path)
  $lines=@($Paths | Select-Object -Unique | ForEach-Object {

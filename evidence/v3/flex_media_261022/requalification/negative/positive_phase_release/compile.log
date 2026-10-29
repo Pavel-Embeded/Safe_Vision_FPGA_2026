@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/original618/negative/positive_phase_release/sim/tb_v3_reset_release_phase/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module reset_sync
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_reset_release_phase.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_reset_release_phase

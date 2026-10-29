@@ -1,35 +1,21 @@
-// ============================================================================
-// tb_sd_sector_reader.v — 阶段 5 验证：CMD17 单扇区读 + 逐字节比对
-// ----------------------------------------------------------------------------
-// 过关标准（手册 7.5）："512 Byte 一个字节都不能差"
-//
-// 验证内容：
-//   T1  初始化序列走通（CMD0 -> CMD8 -> CMD55+ACMD41 -> CMD58），sdhc = 1
-//   T2  CMD17 参数正确（LBA = 1000 原样送出）
-//   T3  512 Byte 逐字节与卡模型一致
-//   T4  CRC16 比对通过（crc16_err == 0）
-//   T5  反压（data_ready 周期拉低）下不丢字节
-//   T6  rd_len != 1（CMD18 未实现）被明确拒绝，不静默错读
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
 module tb_sd_sector_reader;
 
-    // ------------------------------------------------------------------------
-    // 时钟与复位
-    // ------------------------------------------------------------------------
+
     reg clk = 1'b0;
     reg rst_n = 1'b0;
-    always #5 clk = ~clk;          // 100 MHz
+    always #5 clk = ~clk;
 
-    // ------------------------------------------------------------------------
-    // SPI 四线
-    // ------------------------------------------------------------------------
+
     wire sclk, mosi, miso;
 
-    // 总线复用：初始化阶段归 sd_initializer，读阶段归 sd_sector_reader
-    reg  spi_sel;                  // 0 = sd_initializer, 1 = sd_sector_reader
+
+    reg  spi_sel;
 
     wire        init_cs_n, init_tx_valid;
     wire [7:0]  init_tx_data;
@@ -48,9 +34,7 @@ module tb_sd_sector_reader;
     wire        spi_rx_valid;
     wire        spi_busy;
 
-    // ------------------------------------------------------------------------
-    // DUT: spi_master
-    // ------------------------------------------------------------------------
+
     spi_master u_spi (
         .clk        (clk),
         .rst_n      (rst_n),
@@ -67,9 +51,7 @@ module tb_sd_sector_reader;
         .miso       (miso)
     );
 
-    // ------------------------------------------------------------------------
-    // DUT: sd_initializer
-    // ------------------------------------------------------------------------
+
     reg  init_start;
     wire init_done, init_error, sdhc;
     wire [7:0]  init_err_code, init_err_detail, init_retry;
@@ -95,9 +77,7 @@ module tb_sd_sector_reader;
         .spi_rx_valid (spi_rx_valid)
     );
 
-    // ------------------------------------------------------------------------
-    // DUT: sd_sector_reader
-    // ------------------------------------------------------------------------
+
     reg         rd_en;
     reg  [31:0] rd_addr;
     reg  [15:0] rd_len;
@@ -140,9 +120,7 @@ module tb_sd_sector_reader;
         .spi_rx_valid (spi_rx_valid)
     );
 
-    // ------------------------------------------------------------------------
-    // 卡模型
-    // ------------------------------------------------------------------------
+
     wire [5:0]  card_cmd;
     wire [31:0] card_arg;
     wire [7:0]  card_cmd_cnt;
@@ -153,7 +131,7 @@ module tb_sd_sector_reader;
         .cs_n         (spi_cs_n),
         .mosi         (mosi),
         .miso         (miso),
-        .i_dead       (1'b0),            // 理想卡：正常响应
+        .i_dead       (1'b0),
         .o_cmd        (card_cmd),
         .o_arg        (card_arg),
         .o_acmd41_arg (),
@@ -162,13 +140,11 @@ module tb_sd_sector_reader;
         .o_cmd_valid  (card_cmd_valid)
     );
 
-    // ------------------------------------------------------------------------
-    // 数据收集
-    // ------------------------------------------------------------------------
+
     reg [7:0] rx_buf [0:511];
     integer   got;
 
-    // 反压：每 16 拍拉低 1 拍，验证 data_ready 低时 DUT 保持数据不丢
+
     reg [3:0] stall_cnt;
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) stall_cnt <= 4'd0;
@@ -183,9 +159,7 @@ module tb_sd_sector_reader;
         end
     end
 
-    // ------------------------------------------------------------------------
-    // 主激励
-    // ------------------------------------------------------------------------
+
     integer errors;
     integer k;
     integer wait_cnt;
@@ -215,22 +189,20 @@ module tb_sd_sector_reader;
         rd_addr    = 32'd1000;
         rd_len     = 16'd1;
 
-        // ---- 复位 ----
+
         rst_n = 1'b0;
         repeat (20) @(posedge clk);
         rst_n = 1'b1;
         repeat (10) @(posedge clk);
 
-        // ====================================================================
-        // T1 初始化
-        // ====================================================================
+
         $display("\n==== T1: SD 初始化序列 ====");
         @(posedge clk);
         init_start = 1'b1;
         @(posedge clk);
         init_start = 1'b0;
 
-        // 等初始化完成（轮询 + 硬超时，防止状态机挂死导致仿真永不到头）
+
         wait_cnt = 0;
         while (!(init_done === 1'b1 || init_error === 1'b1) && wait_cnt < 2_000_000) begin
             @(posedge clk);
@@ -248,11 +220,9 @@ module tb_sd_sector_reader;
         $display("       err_code=0x%02x err_detail=0x%02x retry=%0d",
                  init_err_code, init_err_detail, init_retry);
 
-        // ====================================================================
-        // T2/T3/T4 单扇区读
-        // ====================================================================
+
         $display("\n==== T2~T4: CMD17 读 LBA=1000 ====");
-        spi_sel = 1'b1;                            // 总线交给 sd_sector_reader
+        spi_sel = 1'b1;
         repeat (5) @(posedge clk);
 
         @(posedge clk);
@@ -276,10 +246,10 @@ module tb_sd_sector_reader;
         check(u_card.o_cmd === `SD_CMD17,  "T2.2 卡侧收到的命令是 CMD17");
         check(got == 512,                "T3.1 收到 512 Byte");
         check(rd_timeout_err === 1'b0,   "T3.2 无超时");
-        // 注意：必须同时要求 got==512，否则"读失败但 crc16_err 未被置位"会假阳性通过
+
         check(rd_crc16_err === 1'b0 && got == 512, "T4.1 CRC16 比对通过");
 
-        // 逐字节比对
+
         begin : byte_cmp
             integer bad;
             bad = 0;
@@ -295,11 +265,7 @@ module tb_sd_sector_reader;
             if (bad != 0) $display("       共 %0d 个字节不符", bad);
         end
 
-        // ====================================================================
-        // T5 连续多次读（验证状态机每次都能干净回到 IDLE，无残留状态）
-        //    对应手册 7.5 过关自测："同一 LBA 连读 100 次，全部比对通过且无一次超时"
-        //    仿真里取 3 次即可暴露状态残留问题
-        // ====================================================================
+
         $display("\n==== T5: 连续多次读 ====");
         begin : repeat_rd
             integer r;
@@ -329,9 +295,7 @@ module tb_sd_sector_reader;
             check(bad_r == 0, "T5.1 连续 3 次读全部成功且 LBA 参数正确");
         end
 
-        // ====================================================================
-        // T6 rd_len != 1 必须被明确拒绝
-        // ====================================================================
+
         $display("\n==== T6: CMD18 未实现时的拒绝行为 ====");
         rd_addr = 32'd1000;
         rd_len = 16'd2;
@@ -346,7 +310,7 @@ module tb_sd_sector_reader;
         check(got == 0,                   "T6.2 拒绝时不产生任何数据字节");
         rd_len = 16'd1;
 
-        // ====================================================================
+
         $display("\n============================================");
         if (errors == 0) $display(" 全部通过 (PASS)");
         else             $display(" 失败项：%0d (FAIL)", errors);
@@ -354,7 +318,7 @@ module tb_sd_sector_reader;
         $finish;
     end
 
-    // 全局兜底超时
+
     initial begin
         #60_000_000;
         $display("[FAIL] 全局超时，仿真未正常结束");

@@ -1,8 +1,6 @@
-// One minimum filename per pass. Compare complete validated UTF16 names from
-// the scanner; retain cursor/best in two RAM banks. A second scan finds a
-// same-stem WAV regardless of its directory position. Fallback WAVs use stable
-// directory order and wrap to the first when fewer than four exist.
-// Cursors advance on successful and rejected BMPs through caller idx_clear.
+
+
+
 module v3_flexible_media_index(
  input wire clk,rst_n,idx_clear,idx_commit,input wire[15:0] cursor_key,
  input wire[1:0] resident_slot,input wire[87:0] ent_name,
@@ -17,7 +15,7 @@ module v3_flexible_media_index(
  reg[2:0] state;reg[1:0] phase;reg compare_best;
  reg best_valid,cursor_valid,best_bank,cursor_bank;
  reg[8:0] best_length,cursor_length,character;
- // ent_valid/ent_ready freezes raw scanner metadata throughout compare/copy.
+
  wire[8:0] current_length=phase==2 ? name_length-9'd4 : name_length;
  wire[31:0] current_cluster=ent_first_clus,current_size=ent_size;
  wire[15:0] current_index=ent_index;
@@ -35,8 +33,8 @@ module v3_flexible_media_index(
  wire bmp=upper(ent_name[23:16])==8'h42&&upper(ent_name[15:8])==8'h4d&&upper(ent_name[7:0])==8'h50;
  wire wav=upper(ent_name[23:16])==8'h57&&upper(ent_name[15:8])==8'h41&&upper(ent_name[7:0])==8'h56;
  wire legal=ent_attr!=8'h0f&&!ent_attr[3]&&!ent_attr[4]&&ent_name[87:80]!=8'he5&&ent_name[87:80]!=0&&ent_first_clus>=2&&ent_size!=0&&ent_index!=16'hffff;
- // The ordinal candidate supersedes the first candidate when it exists.
- // One 64-bit descriptor therefore represents both fallback cases exactly.
+
+
  reg[31:0] fallback_wav_cluster,fallback_wav_size;
  reg fallback_wav_valid,paired,commit_pending;
  reg[2:0] wav_ordinal;
@@ -73,7 +71,7 @@ module v3_flexible_media_index(
      IDLE:if(ent_valid)begin
       if(phase==1&&legal&&bmp)begin
        if(bmp_seen!=65535)bmp_seen<=bmp_seen+1'b1;
-       
+
        character<=0;compare_best<=0;
        if(cursor_valid)state<=WAIT_NAME;
        else if(best_valid)begin compare_best<=1;state<=WAIT_NAME;end
@@ -84,7 +82,7 @@ module v3_flexible_media_index(
        if(!fallback_wav_valid||wav_ordinal=={1'b0,resident_slot})begin
         fallback_wav_valid<=1;fallback_wav_cluster<=ent_first_clus;fallback_wav_size<=ent_size;
        end
-       
+
        if(!paired&&name_length>=4&&best_length>=4&&name_length==best_length)begin
         character<=0;compare_best<=1;state<=WAIT_NAME;
        end else release_entry();

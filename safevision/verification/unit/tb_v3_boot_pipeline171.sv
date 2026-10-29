@@ -40,7 +40,7 @@ v3_boot_reference171 original(.clk(clk),.rst_n(rst),.start(start),.sd_rd_ready(r
   repeat(6)@(negedge clk);toerr=0;crcerr=0;
   if(k%23==0)begin #2;rst=0;#1;rst=1;repeat(3)@(negedge clk);end
  end
- // Abort independent receiving epochs at every byte position, then remount.
+
  for(k=0;k<512;k++)begin
   #2;rst=0;#1;rst=1;repeat(3)@(negedge clk);start=1;@(negedge clk);start=0;
   repeat(3)@(negedge clk);

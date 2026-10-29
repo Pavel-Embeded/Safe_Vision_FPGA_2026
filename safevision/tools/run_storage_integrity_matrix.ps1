@@ -1,6 +1,6 @@
-# Deterministic boundary matrix; each member has independent XSim logs.
-# These are RTL/application-model tests. They do not certify SDRAM electrical
-# timing or replace board acceptance. Full card and native STA run separately.
+
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/storage_integrity_matrix'),
@@ -32,8 +32,8 @@ foreach($shape in @(@(0,0,0),@(1,0,1),@(1,7,3),@(0,32,8))){
  $ack=$shape[0];$gap=$shape[1];$source=$shape[2]
  Invoke-Member "integrity_ack${ack}_gap${gap}_source${source}" @{Case='integrity';AckFirst=$ack;ResponseGap=$gap;SourceGap=$source;HeaderLate=1}
 }
-# RD_LAT=1 also validates the single-stage contract-model pipeline; lengths
-# 1 and 64 are the runner's supported endpoints, not inferred silicon limits.
+
+
 Invoke-Member 'memory_base_lat1' @{Case='memory';HD=0;ReadLatency=1;WriteLoad=0}
 $manifest=[ordered]@{complete=$true;members=$completed;member_count=$completed.Count;
  hardware_verified=$false;encrypted_vendor_behavior_verified=$false}

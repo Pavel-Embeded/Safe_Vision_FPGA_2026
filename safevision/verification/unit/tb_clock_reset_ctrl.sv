@@ -1,21 +1,6 @@
-// ============================================================================
-// tb_clock_reset_ctrl.sv - board clock/reset-domain unit test
-// ----------------------------------------------------------------------------
-// DUT: platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v
-//      platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_reset_ctrl.v
-//
-// Checks asynchronous assertion, exactly two local rising edges before release,
-// independent PLL lock loss, and isolation of each local reset request. The
-// clocks intentionally have unrelated periods so a wrong clock-domain hookup
-// does not accidentally satisfy the release checks.
-//
-// Example (Icarus Verilog):
-//   iverilog -g2012 -s tb_clock_reset_ctrl -o tb_clock_reset_ctrl.vvp \
-//     platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v \
-//     platform/anlogic_eg4s20_hx4s20c/rtl/clock/clock_reset_ctrl.v \
-//     verification/unit/tb_clock_reset_ctrl.sv
-//   vvp tb_clock_reset_ctrl.vvp
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 
 module tb_clock_reset_ctrl;
@@ -131,8 +116,7 @@ module tb_clock_reset_ctrl;
         end
     endtask
 
-    // Call immediately after releasing the corresponding asynchronous source.
-    // The small delay observes nonblocking assignments from the sampled edge.
+
     task automatic expect_two_edges;
         input integer domain;
         input integer reset_index;
@@ -166,7 +150,7 @@ module tb_clock_reset_ctrl;
     endtask
 
     initial begin : stimulus
-        // Initial board reset must dominate already locked PLLs.
+
         #0.5;
         check(resets === 9'b0, "board reset holds all nine outputs low");
         #0.5;
@@ -174,7 +158,7 @@ module tb_clock_reset_ctrl;
         expect_all_two_edges();
         check(resets === 9'h1ff, "all domains released after board reset");
 
-        // Media restart must not reset its sys clock parent or any other client.
+
         @(negedge sys_clk); #0.2;
         media_reset_req = 1'b1;
         #0.1;
@@ -220,7 +204,7 @@ module tb_clock_reset_ctrl;
         audio_reset_req = 1'b0;
         expect_two_edges(AUDIO, R_AUDIO, "audio local restart");
 
-        // A lost lock resets only the corresponding clock tree and dependents.
+
         @(negedge pixel_clk); #0.2;
         video_pll_locked = 1'b0;
         #0.1;
@@ -279,7 +263,7 @@ module tb_clock_reset_ctrl;
         audio_pll_locked = 1'b1;
         expect_two_edges(AUDIO, R_AUDIO, "audio lock recovery");
 
-        // Exercise global asynchronous assertion once the whole design is on.
+
         @(negedge sys_clk); #0.2;
         board_rst_n = 1'b0;
         #0.1;
@@ -289,7 +273,7 @@ module tb_clock_reset_ctrl;
         expect_all_two_edges();
         check(resets === 9'h1ff, "all domains recover from board reset");
 
-        // Test reset_sync directly, including its STAGES parameter.
+
         @(negedge sync_clk); #0.2;
         sync_async_rst_n = 1'b1;
         @(posedge sync_clk); #0.1;

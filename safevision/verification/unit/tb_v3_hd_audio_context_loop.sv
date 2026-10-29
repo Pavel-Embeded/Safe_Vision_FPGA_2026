@@ -33,8 +33,8 @@ module tb_v3_hd_audio_context_loop;
  integer good_before,bad_hops;
  initial begin
   $readmemh("audio_disk_unaligned.mem",disk);$readmemh("audio_pcm_unaligned.mem",gold);
-  // Highest slot SV9999: plausible long RIFF but FAT chain 19->23->19 cycles.
-  // Other slots loop every 16 clusters, repeatedly resetting their OWN walk epochs.
+
+
   put32(16*512+27*32+28,120054);put32(33*512+4,120046);put32(33*512+50,120000);
   put32(512+23*4,19);
   for(integer i=0;i<4;i=i+1)received[i]=0;

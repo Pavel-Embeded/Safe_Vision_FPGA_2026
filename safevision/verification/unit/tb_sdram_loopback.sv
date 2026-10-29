@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
-// Application-level SDRAM checker regression for the integrated B soak top.
-// The local sdram model below does not model physical DQ timing, refresh or CAS.
+
+
 module tb_sdram_loopback;
     reg clk = 1'b0;
     reg rst_n = 1'b0;
@@ -13,7 +13,7 @@ module tb_sdram_loopback;
     sv_loopback_case #(256,  0, 0, 1, 2, 256,  3) high_dq_fault(clk, rst_n, done[3]);
     sv_loopback_case #(16,   0, 0, 1, 3, 0,    4) missing_read(clk, rst_n, done[4]);
     sv_loopback_case #(16,   0, 0, 1, 4, 0,    5) missing_init(clk, rst_n, done[5]);
-    // Board UART speed: exercise actual 1085 clocks/bit and report completion.
+
     sv_loopback_case #(16,  11, 1, 1, 0, 0,    6, 115200) board_baud(clk, rst_n, done[6]);
 
     reg [20:0] proof_addr = 0;
@@ -43,7 +43,7 @@ module tb_sdram_loopback;
             proof_addr = 21'h100000; #1;
             if (proof_pat !== 32'h255A3CC3) $fatal(1, "SIGNATURE_GOLDEN_TOP_FAILED");
 
-            // Independently invert all 2^21 signatures emitted by the RTL module.
+
             for (a = 0; a < 2097152; a = a + 1) begin
                 proof_addr = a[20:0]; #1;
                 pattern = proof_pat;
@@ -61,8 +61,7 @@ module tb_sdram_loopback;
             if (seen_zero !== 32'hFFFFFFFF || seen_one !== 32'hFFFFFFFF)
                 $fatal(1, "CONTIGUOUS_DQ_COVERAGE_FAILED");
 
-            // Negative control: the pre-signature expression aliased the old
-            // 2048-word sparse walk to exactly two patterns.
+
             old_unique = 0;
             for (i = 0; i < 1024; i = i + 1) begin
                 old_addr = (i << 11) & 21'h1FFFFF;
@@ -121,8 +120,8 @@ module sv_loopback_case #(
     defparam dut.u_sdram.FAULT_MODE = FAULT_MODE;
 
 `ifndef SIM_MODEL_SIM_STUB
-    // TD's functional PLL model starts with uninitialized lock counters.
-    // Pulse only the simulation model reset; this is not power-up AC coverage.
+
+
     initial begin
         #1; force dut.u_sys_pll.pll_inst.reset = 1'b1;
         #199; release dut.u_sys_pll.pll_inst.reset;
@@ -304,7 +303,7 @@ module sv_system_pll (
 endmodule
 `endif
 
-// Ordered application-side memory model only; not a physical SDRAM/timing model.
+
 module sdram #(
     parameter integer MODEL_SHIFT = 0,
     parameter integer MODEL_WORDS = 16,

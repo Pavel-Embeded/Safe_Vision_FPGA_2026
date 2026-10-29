@@ -48,8 +48,8 @@ fat32_boot_parser255_reference b(.clk(clk),.rst_n(rst_n),.start(start),.sd_rd_re
   #27;rst_n=1;
   for(trial=0;trial<1024;trial++)begin
    for(k=0;k<512;k++)begin random_q=rnd(random_q);bytes[k]=random_q;end
-   // Legal and malformed fields, arbitrary32-bit wrap/carry, both FAT counts,
-   // all legal cluster sizes, interrupted reads and reset/restart epochs.
+
+
    if(trial%3!=1)begin
     bytes[11]=0;bytes[12]=2;bytes[13]=1<<(trial%8);bytes[14]=32;bytes[15]=0;bytes[16]=1+trial%2;
     bytes[17]=0;bytes[18]=0;bytes[19]=0;bytes[20]=0;bytes[22]=0;bytes[23]=0;
@@ -74,7 +74,7 @@ fat32_boot_parser255_reference b(.clk(clk),.rst_n(rst_n),.start(start),.sd_rd_re
     sd_timeout_err=trial%11==1;sd_crc16_err=trial%13==1;sd_err_code=8'h23;sd_err_detail=8'h45;
    end
    repeat(8)@(negedge clk);
-   // Cover asynchronous reset after both successful and failed operations.
+
    if(trial%5==0)begin #2;rst_n=0;#23;rst_n=1;end
   end
   if(!errors)$display("[PASS] public header contract:1024 complete/invalid/aborted/reset epochs;field assembly and status edges");

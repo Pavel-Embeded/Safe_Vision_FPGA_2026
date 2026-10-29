@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "D:\Codex\svflex537\qualification811\coordinator_resume819\executed_coordinator.py", line 125, in execute
-    errors=normal(folder,top,True)
-           ^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Codex\svflex537\qualification811\coordinator_resume819\executed_coordinator.py", line 37, in normal
-    assert '$finish called'in log and marker
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError

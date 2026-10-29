@@ -1,24 +1,24 @@
-# ============================================================================
-# run_all.ps1 - SafeVision verification entry-point aggregator.
-# ----------------------------------------------------------------------------
-# WHY: the project has grown ~12 run_*.ps1 entry points across two toolchains
-#      (ModelSim and XSim/Vivado) plus two TD STA flows. Without an aggregator
-#      "my part is green" easily means "the machine I ran on could only run half
-#      of it". This script runs every entry that CAN run here and reports SKIP -
-#      never PASS - for entries whose toolchain is missing.
-#
-# CONTRACT (important):
-#   * Exit 0 ONLY when every entry point PASSed (SKIP counts as not-passed).
-#   * With -AllowSkip: exit 0 when FAIL=0, but the SKIP list is still printed
-#     and the final line still says INCOMPLETE. Use it for local work only,
-#     never as a release gate.
-#   * ASCII only: PowerShell 5.1 may read BOM-less scripts as ANSI.
-#
-# Usage:
-#   powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_all.ps1
-#   powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_all.ps1 -AllowSkip
-#   powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_all.ps1 -Only run_sim
-# ============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 param(
     [string]$RepoRoot   = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
     [string]$ModelSimBin = $env:MSIM_BIN,
@@ -66,7 +66,7 @@ function Show-Tool {
     }
 }
 
-# Name / script / required toolchain / what it covers
+
 $Entries = @(
     @{ N = 'B main regression (23 TBs / 604 assertions)';        S = 'run_sim.ps1';                     T = 'ModelSim' },
     @{ N = 'C control/safety/audio chain (7 TBs)';               S = 'run_c_sim.ps1';                   T = 'ModelSim' },
@@ -92,7 +92,7 @@ $Entries = @(
     @{ N = 'A physical board assembly STA including unresolved SDRAM hard-IP'; S = 'run_a_board_sta.ps1'; T = 'TD' }
 )
 
-# Fail closed: a misspelled selector must never produce an empty ALL PASS.
+
 foreach($selected in $Only){
  if(-not ($Entries | Where-Object {($_.S -eq $selected) -or (($_.S -replace '\.ps1$','') -eq $selected)})){
   throw "Unknown verification selector: $selected"
@@ -127,7 +127,7 @@ foreach ($e in $Entries) {
     $env:MSIM_BIN = $ModelSimBin
     Push-Location -LiteralPath $ToolsDir
     try {
-        # Forward only parameters declared by the selected child script.
+
         $tokens=$null;$parseErrors=$null
         $ast=[System.Management.Automation.Language.Parser]::ParseFile($script,[ref]$tokens,[ref]$parseErrors)
         if($parseErrors.Count){throw "Cannot parse verification script: $script"}

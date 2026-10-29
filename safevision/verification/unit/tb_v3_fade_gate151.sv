@@ -10,7 +10,7 @@ if({pixel,vo}!=={gold,go})begin errors++;if(errors<8)$display("[FAIL] three-edge
 task step;begin @(negedge clk);end endtask
 initial begin
 repeat(4)step();rst_n=1;valid=1;
-// Unused foreground may be uninitialized; zero fade must still return known back.
+
 front=16'hxxxx;back=16'hf123;alpha=8'hff;active=0;valid=1;repeat(8)step();
 for(f=0;f<64;f++)for(b=0;b<64;b++)for(a=0;a<256;a++)for(en=0;en<2;en++)begin
 front={f[4:0],f[5:0],f[4:0]};back={b[4:0],b[5:0],b[4:0]};alpha=a;active=en;valid=(a%3!=0);step();end

@@ -1,4 +1,4 @@
-// Official TD sim_release primitive models, not a replacement clock stub.
+
 `timescale 1ns/1ps
 module tb_v3_pll;
  reg refclk=0,reset=1;always #10 refclk=!refclk;

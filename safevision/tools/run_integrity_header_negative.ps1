@@ -1,5 +1,5 @@
-# Verify that the late-header test detects the actual previous release defect.
-# Historical RTL is compiled only in RunDir; repository files are never replaced.
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$RunDir=(Join-Path $RepoRoot 'safevision/build/out/integrity_header_negative'),

@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_row_integrity",
-  "suite": "v3",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "4dac6ef39a3df076fcae72fe180e20decacafe78a6c9a10b1334983536f7ea06",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_remaining\\tb_v3_row_integrity\\tb_v3_row_integrity"
-}

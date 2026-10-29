@@ -1,9 +1,0 @@
-{
-  "top": "tb_c_emergency_fsm",
-  "suite": "c",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "ed4fd2a6439758558ee72c270e5db3541d55e038bf37131a3dd7909f7c8c155d",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_c_emergency_fsm"
-}

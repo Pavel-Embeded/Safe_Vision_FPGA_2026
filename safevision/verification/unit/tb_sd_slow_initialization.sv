@@ -1,5 +1,5 @@
-// Production 100kHz SPI and production timeout constants. A card staying in
-// ACMD41 idle for >200ms must finish initialization instead of premature E1.
+
+
 `timescale 1ns/1ps
 module tb_sd_slow_initialization;
  reg clk=0;always #10 clk=~clk;reg rst_n=0;

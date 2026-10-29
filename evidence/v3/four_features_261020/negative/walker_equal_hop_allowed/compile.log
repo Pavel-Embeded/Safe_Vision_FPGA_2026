@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative178/n/walker_equal_hop_allowed/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_cluster_walker_ctx
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq177/source/safevision/verification/models/v3_cluster_walker_reference.sv" into library work
-INFO: [VRFC 10-311] analyzing module v3_cluster_walker_reference
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq177/source/safevision/verification/unit/tb_v3_walker_loop_equivalence.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_walker_loop_equivalence

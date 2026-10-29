@@ -1,5 +1,5 @@
-# TD 6.2.1 CLI: td_commands_prompt.exe base.tcl (also hd.tcl / basics.tcl).
-# Synthesizes, routes, checks design and reports INTERNAL timing. No bitgen.
+
+
 if {![info exists a_verify_mode] || $a_verify_mode ni {base hd basics}} {error "Invalid verify mode"}
 set script_dir [file dirname [file normalize [info script]]]
 set repo_root [file normalize [file join $script_dir .. .. .. .. ..]]

@@ -1,7 +1,6 @@
-// Exact fractions0/85/170, RGB565, nearest/bilinear, latency THREE.
-// Retiming: input capture -> horizontal -> vertical/output. The previous
-// horizontal -> vertical -> output organization exposed ERAM clk2q plus
-// interpolation on one edge. This preserves every output cycle and rounding.
+
+
+
 module v3_scaler_bilinear_thirds(input wire clk,rst_n,valid_in,bilinear,
  input wire[15:0] p00,p10,p01,p11,input wire[7:0] fx,fy,
  output reg[15:0] pixel,output reg valid_out);

@@ -34,7 +34,7 @@ module tb_v3_ui_timebase395;
   ck(d.UI_DIV==100&&d.UI_DEBOUNCE==21&&d.HOLD_LIMIT==1001&&d.CHORD_LIMIT==2001,"shared tick and conservative minimum debounce/hold limits");
   ck(pct==80&&bri==60&&con==128&&vol==70&&aut&&!menu,"cold boot full defaults");
   period_test(2);period_test(5);period_test(10);period_test(30);
-  // A10ms bounce cannot complete the >=20ms stable window.
+
   bn=0;ticks(1000);bn=1;ticks(2300);ck(d.levels[0]==0&&!menu,"short bounce rejected");
   bn=0;ba=0;start_cycle=cycles;guard=0;
   while(!menu&&guard<203000)begin @(negedge clk);guard++;end

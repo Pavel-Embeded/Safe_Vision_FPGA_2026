@@ -45,7 +45,7 @@ module tb_v3_hd_audio_context;
   #30;rst_n=1;wait(indexed);
   if(found!=15||fallback!=0)$fatal(1,"complete-root matching high keys found=%h fallback=%h",found,fallback);
   wait(received[0]>=2100&&received[1]>=2100&&received[2]>=2100&&received[3]>=2100);
-  // Pause every stream between sectors longer than the SIM_FAST_TO timeout.
+
   fill=0;repeat(250000)@(posedge clk);
   if(fallback!=0)$fatal(1,"intentional cache pause incorrectly timed out");
   fill=15;wait(received[0]>=2300&&received[3]>=2300);

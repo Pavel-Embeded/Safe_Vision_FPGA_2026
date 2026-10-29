@@ -43,7 +43,7 @@ module tb_v3_audio_descriptor_reset;
  integer pass;
  initial begin
   $readmemh("audio_disk.mem",disk);$readmemh("audio_pcm.mem",gold);
-  // Abandon the very first descriptor after only two of its four words.
+
   #30;rst_n=1;wait(d.descriptor_write&&d.context_index==1);@(negedge clk);rst_n=0;
   repeat(4)@(negedge clk);
   for(pass=0;pass<3;pass=pass+1)begin

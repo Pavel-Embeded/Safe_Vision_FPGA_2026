@@ -1,4 +1,4 @@
-"""Require public row-CRC mismatches for both direct-index implementations."""
+
 import argparse,concurrent.futures,hashlib,json,re,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

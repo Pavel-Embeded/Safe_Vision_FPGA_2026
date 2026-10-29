@@ -1,4 +1,4 @@
-// Independent A bring-up frontend; not a replacement for B's SDRAM board top.
+
 `include "video_mode_defs.vh"
 module a_graphics_frontend #(
     parameter integer HD=0, parameter FONT_FILE="../../../assets/fonts/font8x16.mem"

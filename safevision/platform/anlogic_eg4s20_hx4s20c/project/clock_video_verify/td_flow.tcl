@@ -1,7 +1,5 @@
-# TD 6.2.1 non-project synthesis/place/route/internal-STA flow.
-# Official command order: SWUG105 3.2.2 and 4.5; SWUG200 3.4.
-# Run through td_commands_prompt.exe with base.tcl or hd.tcl.
-# No bitgen: reset/request/probe I/O is unpinned and has no board timing budget.
+
+
 
 if {![info exists sv_verify_mode] ||
     ($sv_verify_mode ne "base" && $sv_verify_mode ne "hd")} {
@@ -35,8 +33,7 @@ if {$sv_verify_mode eq "hd"} {
     set video_ip sv_video_hd_pll.v
 }
 
-# Explicit source list. Only ONE video PLL file is included in each build.
-# The .vh mode table is found through TD6.2.1's -include_dir, not compiled alone.
+
 set hdl_sources [list \
     [file join $ip_dir sv_system_pll.v] \
     [file join $ip_dir $video_ip] \
@@ -76,11 +73,11 @@ if {[catch {
     optimize_rtl
     report_area -file rtl.area
 
-    # Official flow requires first SDC read before gate mapping.
+
     read_sdc [file join $script_dir verify_clock.sdc]
     optimize_gate
     legalize_phy_inst
-    # Official flow requires re-reading SDC after PHY legalization.
+
     read_sdc [file join $script_dir verify_clock.sdc]
     update_timing -mode basic
     report_timing_summary -file gate.timing
@@ -112,8 +109,8 @@ if {[catch {
     check_timing -verbose -file route.check_timing
     report_area -io_info -file route.area
     export_sdc -file route.derived.sdc
-    # Preserve actual GCLK -> PLL.fbclk and PAD -> PLL.refclk connectivity
-    # and Route Type in the TD console/log, in addition to health warnings.
+
+
     report_nets [get_nets -hier {*clk0_out*}] -connection
     report_nets [get_nets -hier {*clk0_buf*}] -connection
     report_nets [get_nets -hier {*board_clk*}] -connection

@@ -1,5 +1,5 @@
-# Board control fault injection. Vendor PLL/HDMI/SDRAM are simulation contracts;
-# this test does not model encrypted vendor logic or validate physical hardware.
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',

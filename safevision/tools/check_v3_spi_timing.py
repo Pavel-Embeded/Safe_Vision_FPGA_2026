@@ -1,10 +1,6 @@
-"""Explicit PI/PO native-path evidence; does not waive general zero-hit MCPs.
 
-TD 6.2 reports zero Total Paths for the specific PI/PO MCPs even while it prints
-the endpoint, full routed path, and applied edge budget. Validate those details
-independently. The only zero-count exception is one of these exact commands
-with complete routed endpoint/edge witnesses; all ordinary paths stay strict.
-"""
+
+
 import json,re,sys
 from pathlib import Path
 PATTERN=re.compile(r'^Slack\s*:\s*([-+.0-9]+)ns\s*\nBegin Point\s*:\s*(.*?)\nEnd Point\s*:\s*(.*?)\nCheck Type\s*:\s*(setup|hold)\s*\nProcess\s*:\s*(slow|fast)\s*\nBudget\s*:\s*([-+.0-9]+)ns(?:[ \t]*\{([^\n]*)\})?',re.M)
@@ -12,8 +8,8 @@ def check(text,mid_ref=False):
  errors=[];witness=[]
  if not re.search(r'^Confidence\s*:\s*Routed\s*$',text,re.M):errors.append('not routed')
  if not re.search(r'^Check Corner\s*:\s*Both \(Slow and Fast\)\s*$',text,re.M):errors.append('missing corners')
- # Find actual groups by line starts. A group header contains only the two
- # command lines and whitespace, never another path/group/report section.
+
+
  raw=list(re.finditer(r'^Path Group\s*:\s*\n((?:set_multicycle_path[^\n]*\n){2})\s*\nType\s*:\s*MCP\s*$',text,re.M))
  all_groups=list(re.finditer(r'^Path Group\s*:',text,re.M));commands=[]
  profiles=[('sd_fast',30.0,2,1,1,20.0),('sd_ident',5010.0,251,250,499,5000.0)] if mid_ref else [('sd_fast',40.0,2,2,3,40.0),('sd_ident',5000.0,250,250,499,5000.0)]
@@ -43,12 +39,11 @@ def check(text,mid_ref=False):
     if direction=='input':
      if mid_ref and 'falling edge triggered by clock board_clk ' not in finish:errors.append(f'{clock} input: capture is not falling REF')
      next_path=PATTERN.search(section,p.end());body=section[p.end():next_path.start() if next_path else len(section)]
-     # A slice can contain unrelated physical register names. Native TD prints
-     # the actual captured logical net on the final register timing row; require
-     # that first RX bit rather than trusting an arbitrary packed slice name.
+
+
      rx_alias=bool(re.search(r'\bnet:\s+(?:(?:player/)?u_spi|spi)/rx_sr\[0\](?:[,\s]|$)',body))
-     # An IO-register endpoint can carry the PAD name. That proves location,
-     # not which logical register occupies it; its RX alias is mandatory.
+
+
      named_rx=bool(re.fullmatch(r'(?:(?:player/)?u_spi|spi)/rx_sr_reg\[0\][^ ]*',end_name))
      if begin_name!='sd_miso' or not (rx_alias or named_rx):
       errors.append(f'{clock} input: wrong physical input/capture path')
@@ -67,7 +62,7 @@ def check(text,mid_ref=False):
  return {'accepted':not errors,'errors':errors,'witness':witness,'commands':commands,'scope':'only these exact native routed SPI IO MCP edge budgets'}
 
 def check_cs(text):
- """CS has ordinary IO constraints, never the MOSI enable MCP."""
+
  errors=[];paths=[]
  for p in PATTERN.finditer(text):
   slack,begin,finish,kind,corner,budget,edges=p.groups()

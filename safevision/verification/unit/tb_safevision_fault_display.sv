@@ -1,6 +1,6 @@
-// Full board scan under absent SDRAM initialization. Verify accepted HDMI AXIS
-// pixels and tags, then fault/manual changes at frame boundaries. Vendor HDMI
-// and physical memory remain contract models; this is not hardware acceptance.
+
+
+
 `timescale 1ns/1ps
 module tb_safevision_fault_display;
  reg clk=0;always #10 clk=~clk;

@@ -1,35 +1,13 @@
-// ============================================================================
-// tb_file_streamer.sv — 阶段 7：簇链 -> 字节流
-// ----------------------------------------------------------------------------
-// 被测：rtl/storage/file_streamer.v + rtl/storage/fat32_cluster_walker.v
-//       （挂在真实的 spi_master + sd_initializer + sd_sector_reader + 卡模型上）
-//
-// 测试卷（同 tb_fat32_directory_scanner）：
-//   BytsPerSec=512, SecPerClus=4, RsvdSecCnt=1, NumFATs=1, FATSz32=1, RootClus=2
-//     fat_start_lba = 1, data_start_lba = 2, root_dir_lba = 2
-//     簇 N 的扇区 = 2 + (N-2)*4     簇2 = LBA 2..5，簇3 = LBA 6..9
-//
-// ★ 数据来源很省事：LBA 2 及以上都不显式写，卡模型会回落到默认图案
-//   sector[k] = k + 0x11。所以"文件第 j 个字节的期望值"就是
-//   ((j % 512) + 0x11) & 0xFF —— 与具体 LBA 无关，跨簇也成立。
-//
-// 验证内容：
-//   T31 单簇文件（2048 B）：内容逐字节比对 + sof/eof 各一次
-//   T32 跨簇文件（4096 B）：内容逐字节比对
-//   T33 非整簇结尾（3000 B）：只发 3000 字节，一个不多
-//   T34 文件比簇链长（要 5000 只有 4096）-> EOC 提前 -> DET_FS_SHORT
-//   T35 簇链成环 -> DET_FS_LOOP
-//   T36 簇号越界 -> DET_DIR_OOB
-//   T37 下游反压：内容仍全对、bytes_rd 正确
-//   T38 file_size = 0：一个字节都不发，也不发 sof/eof
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
 module tb_file_streamer;
 
-    localparam [31:0] TOTSEC_BIG  = 32'd65536;   // -> total_clus = 16383
-    localparam [31:0] TOTSEC_TINY = 32'd18;      // -> total_clus = 4
+    localparam [31:0] TOTSEC_BIG  = 32'd65536;
+    localparam [31:0] TOTSEC_TINY = 32'd18;
 
     reg clk = 1'b0;
     reg rst_n = 1'b0;
@@ -52,11 +30,9 @@ module tb_file_streamer;
         end
     endtask
 
-    // ------------------------------------------------------------------------
-    // SPI 四线
-    // ------------------------------------------------------------------------
+
     wire sclk, mosi, miso;
-    reg  spi_sel;                     // 0 = sd_initializer, 1 = sd_sector_reader
+    reg  spi_sel;
 
     wire        init_cs_n, init_tx_valid;
     wire [7:0]  init_tx_data;
@@ -94,14 +70,8 @@ module tb_file_streamer;
         .spi_tx_ready(spi_tx_ready), .spi_rx_data(spi_rx_data), .spi_rx_valid(spi_rx_valid)
     );
 
-    // ------------------------------------------------------------------------
-    // sd_sector_reader：被 fat32_boot_parser / fat32_cluster_walker /
-    //                   file_streamer 三者分时占用
-    //   - mount 期间走 parser
-    //   - file_streamer 在"查下一个簇"时会进 F_WALK，此时总线的使用权交给 walker
-    //     用 walker 的 busy 做选择即可：walk 期间 file_streamer 不发读请求
-    // ------------------------------------------------------------------------
-    reg         rd_sel;               // 0 = parser, 1 = walker/file_streamer 侧
+
+    reg         rd_sel;
 
     wire        p_rd_en,  f_rd_en,  w_rd_en;
     wire [31:0] p_rd_addr, f_rd_addr, w_rd_addr;
@@ -115,7 +85,7 @@ module tb_file_streamer;
 
     wire        wk_busy;
 
-    // walker busy 时把总线给 walker，否则给 file_streamer；mount 期间给 parser
+
     wire        bus_wk = wk_busy && spi_sel;
     wire        fs_rd_en   = rd_sel ? (bus_wk ? w_rd_en   : f_rd_en)   : p_rd_en;
     wire [31:0] fs_rd_addr = rd_sel ? (bus_wk ? w_rd_addr : f_rd_addr) : p_rd_addr;
@@ -134,9 +104,7 @@ module tb_file_streamer;
         .spi_tx_ready(spi_tx_ready), .spi_rx_data(spi_rx_data), .spi_rx_valid(spi_rx_valid)
     );
 
-    // ------------------------------------------------------------------------
-    // fat32_boot_parser（只为了拿到 fat_start_lba / data_start_lba / total_clus）
-    // ------------------------------------------------------------------------
+
     reg  mnt_start;
     wire mnt_done, mnt_err;
     wire [7:0] mnt_ec, mnt_ed;
@@ -159,9 +127,7 @@ module tb_file_streamer;
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
 
-    // ------------------------------------------------------------------------
-    // DUT: fat32_cluster_walker
-    // ------------------------------------------------------------------------
+
     wire [31:0] wk_cur_clus, wk_next_clus, wk_hop;
     wire        wk_start, wk_rst_walk, wk_done, wk_eoc, wk_error;
     wire [7:0]  wk_ec, wk_ed;
@@ -180,9 +146,7 @@ module tb_file_streamer;
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
 
-    // ------------------------------------------------------------------------
-    // DUT: file_streamer
-    // ------------------------------------------------------------------------
+
     reg  fs_start;
     reg  [31:0] fs_first_clus, fs_file_size;
     reg  fs_ready;
@@ -211,13 +175,11 @@ module tb_file_streamer;
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
 
-    // ------------------------------------------------------------------------
-    // 字节流监视器：逐字节比对 + sof/eof 计数
-    // ------------------------------------------------------------------------
-    integer got_n;            // 收到的字节数
-    integer mism;             // 内容不符个数
-    integer sof_n, eof_n;     // sof / eof 出现次数
-    integer eof_at;           // eof 出现时已收字节数
+
+    integer got_n;
+    integer mism;
+    integer sof_n, eof_n;
+    integer eof_at;
 
     always @(posedge clk) begin
         if (fs_valid === 1'b1 && fs_ready === 1'b1) begin
@@ -241,9 +203,7 @@ module tb_file_streamer;
         end
     endtask
 
-    // ------------------------------------------------------------------------
-    // 卡模型
-    // ------------------------------------------------------------------------
+
     wire [31:0] card_arg;
 
     sd_spi_card_model u_card (
@@ -253,9 +213,7 @@ module tb_file_streamer;
         .o_cmd_cnt(), .o_acmd41_cnt(), .o_cmd_valid()
     );
 
-    // ------------------------------------------------------------------------
-    // 流程封装
-    // ------------------------------------------------------------------------
+
     task mk_vol;
         input [31:0] totsec;
         input [31:0] fat2;
@@ -302,9 +260,7 @@ module tb_file_streamer;
         end
     endtask
 
-    // ------------------------------------------------------------------------
-    // 激励
-    // ------------------------------------------------------------------------
+
     initial begin
         errors = 0;
         spi_sel = 1'b0;
@@ -322,7 +278,7 @@ module tb_file_streamer;
         rst_n = 1'b1;
         repeat (10) @(posedge clk);
 
-        // ---- 前置：SD 初始化 ----
+
         $display("\n==== 前置：SD 初始化 ====");
         @(posedge clk);
         init_start = 1'b1;
@@ -338,11 +294,9 @@ module tb_file_streamer;
         spi_sel = 1'b1;
         repeat (5) @(posedge clk);
 
-        // ====================================================================
-        // T31 单簇文件 2048 Byte
-        // ====================================================================
+
         $display("\n==== T31: 单簇文件 2048 B ====");
-        mk_vol(TOTSEC_BIG, 32'h0FFF_FFFF, 32'h0FFF_FFFF);   // 簇2 -> EOC
+        mk_vol(TOTSEC_BIG, 32'h0FFF_FFFF, 32'h0FFF_FFFF);
         do_mount;
         check(mnt_done === 1'b1, "T31.1 挂载成功");
         do_stream(32'd2, 32'd2048);
@@ -356,11 +310,9 @@ module tb_file_streamer;
         check(fs_bytes === 32'd2048,  "T31.9 bytes_rd = 2048");
         check(wk_hop === 32'd0,       "T31.10 单簇文件不需要跳簇");
 
-        // ====================================================================
-        // T32 跨簇文件 4096 Byte（簇2 -> 簇3）
-        // ====================================================================
+
         $display("\n==== T32: 跨簇文件 4096 B ====");
-        mk_vol(TOTSEC_BIG, 32'd3, 32'h0FFF_FFFF);           // FAT[2]=3, FAT[3]=EOC
+        mk_vol(TOTSEC_BIG, 32'd3, 32'h0FFF_FFFF);
         do_mount;
         do_stream(32'd2, 32'd4096);
         check(fs_done  === 1'b1,      "T32.1 读完了");
@@ -372,9 +324,7 @@ module tb_file_streamer;
         check(fs_bytes === 32'd4096,  "T32.7 bytes_rd = 4096");
         check(wk_hop === 32'd1,       "T32.8 正好跳了 1 次簇");
 
-        // ====================================================================
-        // T33 非整簇结尾：只要前 3000 字节
-        // ====================================================================
+
         $display("\n==== T33: 只取 3000 B（簇里还有货也不许多发）====");
         mk_vol(TOTSEC_BIG, 32'd3, 32'h0FFF_FFFF);
         do_mount;
@@ -386,9 +336,7 @@ module tb_file_streamer;
         check(eof_at == 3000,        "T33.5 eof 落在第 3000 个字节");
         check(fs_bytes === 32'd3000, "T33.6 bytes_rd = 3000");
 
-        // ====================================================================
-        // T34 文件比簇链长：要 5000，链上只有 4096
-        // ====================================================================
+
         $display("\n==== T34: 文件比簇链长 ====");
         mk_vol(TOTSEC_BIG, 32'd3, 32'h0FFF_FFFF);
         do_mount;
@@ -399,11 +347,9 @@ module tb_file_streamer;
         check(fs_ed    === `DET_FS_SHORT,     "T34.4 细分码 = 0x36(文件长度不足)");
         check(got_n == 4096,                  "T34.5 已经把链上的货都发完了");
 
-        // ====================================================================
-        // T35 簇链成环
-        // ====================================================================
+
         $display("\n==== T35: 簇链成环 ====");
-        mk_vol(TOTSEC_TINY, 32'd2, 32'h0FFF_FFFF);          // total_clus=4，FAT[2]=2 自环
+        mk_vol(TOTSEC_TINY, 32'd2, 32'h0FFF_FFFF);
         do_mount;
         check(o_tot_clus === 32'd4, "T35.1 小卷 total_clus = 4");
         do_stream(32'd2, 32'd100000);
@@ -411,28 +357,24 @@ module tb_file_streamer;
         check(fs_ed    === `DET_FS_LOOP,   "T35.3 细分码 = 0x34(簇链成环)");
         check(fs_ec    === `ERR_MEDIA_INVALID, "T35.4 主码 = 0x03");
 
-        // ====================================================================
-        // T36 簇号越界
-        // ====================================================================
+
         $display("\n==== T36: 簇号越界 ====");
-        mk_vol(TOTSEC_TINY, 32'd6, 32'h0FFF_FFFF);          // total_clus=4 -> 合法 2..5
+        mk_vol(TOTSEC_TINY, 32'd6, 32'h0FFF_FFFF);
         do_mount;
         do_stream(32'd2, 32'd100000);
         check(fs_error === 1'b1,           "T36.1 error 拉高");
         check(fs_ed    === `DET_DIR_OOB,   "T36.2 细分码 = 0x33(簇号越界)");
 
-        // ====================================================================
-        // T37 下游反压
-        // ====================================================================
+
         $display("\n==== T37: 下游反压 ====");
         mk_vol(TOTSEC_BIG, 32'h0FFF_FFFF, 32'h0FFF_FFFF);
         do_mount;
-        fs_ready = 1'b0;                 // 先按住
+        fs_ready = 1'b0;
         rd_sel   = 1'b1;
         clear_mon;
         @(posedge clk); fs_first_clus = 32'd2; fs_file_size = 32'd2048; fs_start = 1'b1;
         @(posedge clk); fs_start = 1'b0;
-        // 等第一个字节出现，再按住一段时间
+
         wait_cnt = 0;
         while (!(fs_valid === 1'b1) && wait_cnt < 4_000_000) begin
             @(posedge clk);
@@ -442,8 +384,8 @@ module tb_file_streamer;
         check(fs_valid === 1'b1,      "T37.1 反压期间 valid 保持");
         check(got_n == 0,             "T37.2 下游没收就不算送达");
         check(fs_sof === 1'b1,        "T37.3 反压期间 sof 保持");
-        @(negedge clk); // Change ready away from DUT/monitor sampling edge.
-        fs_ready = 1'b1;              // 放开
+        @(negedge clk);
+        fs_ready = 1'b1;
         wait_cnt = 0;
         while (!(fs_done === 1'b1) && wait_cnt < 8_000_000) begin
             @(posedge clk);
@@ -455,9 +397,7 @@ module tb_file_streamer;
         check(mism == 0,              "T37.6 反压不会错字节");
         check(fs_bytes === 32'd2048,  "T37.7 bytes_rd 与实收一致");
 
-        // ====================================================================
-        // T38 空文件
-        // ====================================================================
+
         $display("\n==== T38: file_size = 0 ====");
         do_stream(32'd2, 32'd0);
         check(fs_done === 1'b1,      "T38.1 空文件也能收工");
@@ -467,7 +407,7 @@ module tb_file_streamer;
         check(eof_n == 0,            "T38.5 不发 eof");
         check(fs_bytes === 32'd0,    "T38.6 bytes_rd = 0");
 
-        // ====================================================================
+
         $display("\n============================================");
         if (errors == 0) $display(" 全部通过 (PASS)");
         else             $display(" 失败项：%0d (FAIL)", errors);

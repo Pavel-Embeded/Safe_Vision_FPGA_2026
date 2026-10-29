@@ -1,9 +1,9 @@
 SAMPLE_Q_AUDIT='proc v3_exact_register_bits {stem} {\n set matches {}\n set expression [format {^sink/u_bridge/writer/%s\\[[0-9]+\\]$} $stem]\n foreach name [get_regs [format {sink/u_bridge/writer/%s*} $stem]] {\n  if {$name eq "sink/u_bridge/writer/$stem" || [regexp $expression $name]} {lappend matches $name}\n }\n return $matches\n}\nset v3_sample_src [v3_exact_register_bits crc_pair_q]\nset v3_sample_bus [v3_exact_register_bits wr_data_r]\nset v3_sample_fault [v3_exact_register_bits sample_mismatch]\nv3_expect_objects {exact_sample.source} $v3_sample_src\nv3_expect_objects {exact_sample.bus} $v3_sample_bus\nv3_expect_objects {exact_sample.fault} $v3_sample_fault\nif {[llength $v3_sample_src]!=32 || [llength $v3_sample_bus]!=32 || [llength $v3_sample_fault]!=1} {error "V3 exact-sample Q-net width changed"}\nforeach v3_sample_net $v3_sample_src {if {[lsearch -exact $v3_sample_bus $v3_sample_net]>=0} {error "V3 source/bus Q nets aliased"}}\nunset v3_sample_src v3_sample_bus v3_sample_fault v3_sample_net\n'
-"""Expand CDC constraints to the installed TD SDC dialect, plus Tcl audit.
 
-TD read_sdc is deferred and is not a general Tcl interpreter. Do not wrap a
-get_* expression in user procedures, variables or loops inside the SDC file.
-"""
+
+
+
+
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 FLOW=ROOT/'safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify'
@@ -31,23 +31,23 @@ def main():
  s+=['# Only metadata/completion first sampling stages; later local stages stay timed.',
   'set_false_path -to [get_regs {'+sink+'}]','set_false_path -to [get_regs {'+player+'}]']
  groups += [('sink_frame_first','get_regs',sink),('player_completion_first','get_regs',player),('spi_receive_input_boundary','get_pins','sd_miso_syn_*.ipad')]
- # REF50/MEM50 -> SYS100 are registered related-clock status buses.
- # Presence audits generate NO timing exception for these payloads.
+
+
  for name in ('ref','mem'):
   groups.append(('related_status.'+name,'get_regs',name+'_status_capture/data*'))
  groups.append(('related_status.mem_activity','get_regs','mem_activity/tag*'))
- # Presence audits only: none of these groups generates a timing exception.
+
  for name in ('packet_data','packet_position','packet_stream','packet_last','request_toggle','high_data','high_position','high_pending','seen_toggle'):
   groups.append(('related_clock_packet.'+name,'get_regs','video/cache/*store/'+name+'*'))
- # The PIX presentation fault is a sticky level through two SYS sampling
- # stages. Only stage1 is asynchronous; stage1->stage2 remains ordinary STA.
+
+
  groups += [('presentation_fault.first','get_regs','video/present_s1'),('presentation_fault.second','get_regs','video/present_s2')]
- # Presence only: preserve single FF outputs that drive asynchronous resets.
+
  groups += [('registered_reset.media','get_regs','supervisor/recovery/media_reset_q*'),('registered_reset.wav_kernel','get_regs','audio/source/kernel_release_q*')]
  groups += [('registered_owner.filesystem','get_regs','player/service_owner_q*')]
  groups += [('frame_safe.source','get_regs','video/frame_safe_boundary*choose_safe/raw_selected*'),('frame_safe.output','get_regs','video/frame_safe_boundary*choose_safe/output_selected*')]
- # Presence only: sampled source and bus words MUST remain independent
- # physical storage; a merged sampler would defeat the fault check.
+
+
  s += PHASE_SDC.rstrip('\n').splitlines()
  groups += [('header_extent.product','get_cells','player/u_bmp/mult0*'),('header_extent.capture','get_regs','player/u_bmp/header_trunc_q')]
  (FLOW/'v3_cdc.sdc').write_bytes(('\n'.join(s)+'\n').encode('utf-8'))

@@ -1,5 +1,5 @@
-// Elastic media stream only. Never put ready/stall in the fixed video scan.
-// One cycle when unstalled, one transfer/clock; all payload/last bits held on stall.
+
+
 module video_stream_slice #(parameter integer WIDTH=16)(
     input wire clk,rst_n,
     input wire [WIDTH-1:0] in_data,input wire in_last,in_valid,output wire in_ready,

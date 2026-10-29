@@ -1,7 +1,6 @@
-// Application protocol model, NOT the encrypted vendor controller or SDRAM AC.
-// Uses the project's measured M-11 minimum write shape. Tests byte masks,
-// delayed burst commit, consecutive addresses, command spacing and turnarounds.
-// Compile this INSTEAD OF vendor_ip_stub.sv; the same module names are required.
+
+
+
 `timescale 1ns/1ps
 module sv_system_pll(input wire refclk,reset,output wire extlock,
  output wire clk0_out,clk1_out,clk2_out);
@@ -14,17 +13,15 @@ module sdram #(parameter integer RD_LAT=4,OUTPUT_VALID_DELAY=0)(
  input wire [31:0] App_wr_din,input wire App_rd_en,input wire [20:0] App_rd_addr,
  output reg Sdr_rd_en=0,output reg [31:0] Sdr_rd_dout=0);
  reg [31:0] mem[0:2097151];
- // Optional observed26101701 data-before-valid contract; not vendor AC.
+
  reg base_read_enable=0;
  integer init_count=0,cycle=0,last_cmd=-1000,n=0,read_n=0;
  integer write_bursts=0,read_bursts=0,stored_words=0,protocol_errors=0;
  reg last_w=0,last_r=0;reg [20:0] previous_r;
  reg [20:0] wa[0:15];reg [31:0] wd[0:15];reg [3:0] dm[0:15];
  reg [RD_LAT-1:0] rv=0;reg [20:0] ra[0:RD_LAT-1];
- // The native controller sends DM continuously to DQM. Include its read
- // output suppression: 7 application/IO stages + 2 SDRAM DQM clocks.
- // This functional model represents masked high-Z bytes by the observed
- // pull-up value FF. It is still not a vendor silicon/AC simulation.
+
+
  reg [3:0] dqm_pipe[0:8];
  function [31:0] read_with_dqm(input [31:0] value,input [3:0] mask);
    integer byte_i;begin

@@ -1,11 +1,6 @@
-// FAT32 names: one complete validated UTF16 name in one 256x16 RAM.
-// The scanner stalls while busy. Bytes0..10 share one88-bit prefix register
-// for the short alias or the first five LFN words. After attr=0x0f confirms
-// an LFN, five shift/flush edges write those words; remaining words stream
-// directly into RAM on their high byte. No32-byte entry/multiplexer exists.
-// The same native RAM9K holds LFN words0..255 and expanded8.3 words256..267.
-// Alias bytes stream into that second bank; a one-edge stall inserts its dot.
-// ASCII a-z folds to A-Z; all other UTF16 code units retain their value.
+
+
+
 module v3_fat_name_store(
  input wire clk,rst_n,scan_start,byte_valid,input wire[4:0] byte_offset,
  input wire[7:0] data,input wire[7:0] read_address,
@@ -66,7 +61,7 @@ module v3_fat_name_store(
    end
    if(busy)begin
     if(flush_lfn)begin
-     // Prefix remains one byte-shift register; select one of its five words.
+
      flush_left<=flush_left-1'b1;
      if(flush_left==1)busy<=0;
     end else busy<=0;

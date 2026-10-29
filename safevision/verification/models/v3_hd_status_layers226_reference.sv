@@ -1,9 +1,6 @@
-// HEX payload nibble and type cross the existing override1 edge together.
-// ASCII expansion moves after that register; all four-pixel output tags stay exact.
-// Fixed four pixel clocks from raw scan to every layer. Text and glyph ROMs
-// each have two synchronous read ports shared by normal/SAFE presentation.
-// Compact font is lossless for the checked-in font: rows 0/15 and codes >=128
-// are blank; rows 1/2,...,13/14 are identical. Both ROMs fit one RAM9K tile.
+
+
+
 module v3_status_layers226_hd_reference #(
  parameter integer HD=0,HANDBOOK_PROFILE=0,USER_FEATURES=0,VOLUME_COLUMNS=0,VOLUME_SETTING=0,PIXEL_HZ=HD?74250000:25175000,PIPE_LATENCY=21,
  parameter integer RASTER_PREDECODE=0,
@@ -39,10 +36,8 @@ module v3_status_layers226_hd_reference #(
   end
  end
  function[7:0] hexchar;input[3:0] n;begin hexchar=n<10?8'd48+n:8'd55+n;end endfunction
- // One iterative double-dabble converter, six values in sixty clocks. No
- // combinational division/modulo. The converter is outside the pixel path.
- // cfg/slot/generation commit at vblank. The first visible glyph is thousands
- // of clocks later. All text ROM/glyph pipeline tags retain their four clocks.
+
+
  reg[2:0] decimal_select;reg[9:0] decimal_digits[0:6];reg[8:0] decimal_value;
  wire signed[8:0] brightness=HANDBOOK_PROFILE?{cfg_data[94],cfg_data[94:87]}:cfg_data[95:87];
  wire[8:0] percent_shifted=brightness+9'd100;
@@ -72,24 +67,20 @@ module v3_status_layers226_hd_reference #(
   begin case(place)2:decimal_char=8'd48+{2'd0,bcd[9:8]};1:decimal_char=8'd48+bcd[7:4];default:decimal_char=8'd48+bcd[3:0];endcase end
  endfunction
  wire[6:0] energy=cfg_data[54:48]>100?7'd100:cfg_data[54:48];
- // Origin x=8 is byte aligned: column bits pass through, index is x/8-1.
+
  wire[7:0] index=raw_x[10:3]-8'd1;
- // These two fields are selected only inside their8-character HEX windows.
- // Subtraction modulo8 is exact there; isolate the actual32-bit word first.
+
+
  wire[2:0] underflow_nibble=3'd0-index[2:0];
  wire[2:0] address_nibble=3'd2-index[2:0];
  wire[31:0] displayed_address=cfg_data[39:8];
 
- // Fixed-raster profile only: predict the coordinate which the timing core
- // publishes after THIS edge, then decode its row bands in parallel. The
- // character formatter still uses live cfg/index/decimal values at the next
- // edge, exactly as before. General coordinate clients retain direct decode.
+
  localparam integer RASTER_HT=HD?1650:800,RASTER_VT=HD?750:525;
  wire[6:0] band;wire[3:0] menu_row_pre;wire[11:0] menu_origin_pre;wire menu_gap_pre;
  generate if(RASTER_PREDECODE)begin:fixed_raster_bands
-  // At line end y advances by one. Shift constant comparison thresholds
-  // by one instead of placing a wide y+1 / coordinate mux in front of them.
-  // Band0 is false on reset row0; every later row is prepared before x=0.
+
+
   wire row_end=raw_x==RASTER_HT-1;
   wire[3:0] next_menu=raw_y>=239?8:raw_y>=219?7:raw_y>=199?6:raw_y>=179?5:raw_y>=159?4:raw_y>=139?3:raw_y>=119?2:raw_y>=99?1:0;
   wire next_gap=(raw_y>=95&&raw_y<99)||(raw_y>=115&&raw_y<119)||
@@ -107,8 +98,8 @@ module v3_status_layers226_hd_reference #(
    end
   end
   assign band=band_q;assign menu_row_pre=menu_q;
-  // Only origin[3:0] is used by the compact glyph row. (80+20*r) mod16
-  // is exactly {r[1:0],2'b00}; the separately prepared gap keeps full y range.
+
+
   assign menu_origin_pre={8'd0,menu_q[1:0],2'b00};assign menu_gap_pre=gap_q;
   // synthesis translate_off
   wire[11:0] next_y=(raw_x==RASTER_HT-1)?(raw_y==RASTER_VT-1?12'd0:raw_y+1'b1):raw_y;
@@ -129,8 +120,8 @@ module v3_status_layers226_hd_reference #(
   assign menu_origin_pre=80+menu_row_pre*20;
   assign menu_gap_pre=raw_y>=menu_origin_pre+16;
  end endgenerate
- // Formatting bands are independent of whether fault_code is zero.
- // Actual text eligibility below keeps the original zero-fault blank region.
+
+
  wire[3:0] format_line=band[0]?0:band[1]?1:band[2]?2:
   (cfg_data[55]&&band[3])?(4'd3+menu_row_pre):band[4]?12:band[5]?13:band[6]?14:0;
  wire hex_cache=band[1]&&index==15;
@@ -257,7 +248,7 @@ module v3_status_layers226_hd_reference #(
  end
  wire[3:0] normal_glyph_row=raw_y[3:0]-origin_y[3:0];
  wire normal_region=enabled&&raw_de&&raw_x>=8&&index<{2'b0,length};
- // SAFE text shares the same ROM storage, with separate read addresses/tags.
+
  wire[11:0] scaled_x=raw_x>>1,scaled_y=raw_y>>1;
  reg[11:0] safe_ox,safe_oy;reg[5:0] safe_length;reg[5:0] safe_text_offset;
  reg safe_enable;
@@ -300,11 +291,11 @@ module v3_status_layers226_hd_reference #(
  reg font_dot,safe_dot;
  wire[7:0] normal_effective=override_v1?(override_hex1?hexchar(override1[3:0]):override1):normal_code1;
  wire[3:0] nr=normal_row1-1'b1,sr=safe_row1-1'b1;
- // Parallel constant columns avoid a raw_y -> selected origin -> 13-bit
- // subtract -> offset-add chain on the shared synchronous text ROM port.
+
+
  wire[5:0] safe_text_column=({6{safe_row_a}}&safe_column_a)|({6{safe_row_b}}&safe_column_b)|
   ({6{safe_row_c}}&safe_column_c)|({6{safe_none}}&scaled_x[8:3]);
- // Synchronous, two-read-port ROMs. No reset on ROM outputs for RAM inference.
+
  always @(posedge pixel_clk)begin
   normal_code1<=text_rom[{line_id,index[5:0]}];safe_code1<=text_rom[{4'hf,safe_text_column}];
   normal_bits3<=glyph_rom[normal_addr2];safe_bits3<=glyph_rom[safe_addr2];
@@ -359,8 +350,8 @@ module v3_status_layers226_hd_reference #(
  end
  wire[15:0] column_rgb=column_colour_pipe[3]==2?16'hf800:column_colour_pipe[3]==1?16'hffe0:16'h07e0;
  wire bar_box=!USER_FEATURES&&raw_x>=80&&raw_x<282&&raw_y>=HEIGHT-22&&raw_y<HEIGHT-10;
- // Constant dark backing keeps text/scope visible even on a white BMP.
- // Reuse the retired bar's existing four-clock eligibility pipeline.
+
+
  wire user_panel=USER_FEATURES&&raw_de&&(
   (raw_x>=8&&raw_x<296&&raw_y>=56&&raw_y<72)||
   (raw_x>=8&&raw_x<112&&raw_y>=HEIGHT-24&&raw_y<HEIGHT-8)||
@@ -408,20 +399,14 @@ module v3_status_layers226_hd_reference #(
  assign safe_rgb565=de_pipe[3]?(uptime_pipe[3]?(font_dot?16'hffff:16'd0):safe_dot?16'h07e0:safe_geometry[3]):16'd0;
 endmodule
 
-// Output-gain VU estimate, separate from the handbook pre-volume energy bar.
-// One immutable frame snapshot; exact floor(min(E,100)*min(V,100)/100).
-// Seven serial shift/add clocks, at most100 subtract clocks. No DSP/BRAM.
-// Publishes during scan line0, long before the column first appears. It is
-// an amplitude/gain meter, not frequency analysis or an FFT spectrum.
+
 module v3_volume_column226_hd_reference #(parameter integer WIDTH=640,HEIGHT=480)(
  input wire clk,rst_n,frame_start,input wire[6:0] energy,volume,
  input wire[11:0] x,y,input wire de,
  output wire edge_pixel,fill_pixel,output wire[1:0] colour,
  output reg[6:0] level,output wire busy);
- // Two DSP stages replace serial shift/add and the14-bit subtract loop.
- // floor(p/100)=(p*5243)>>19 for all p=0..10000 (error<0.003).
- // Keep the original7-clock calculation interval and quotient-count wait:
- // level,busy and every raster output remain exact on each clock edge.
+
+
  reg[1:0] state;reg[3:0] bits_left;reg[6:0] energy_q,volume_q,target,remaining;
  reg[13:0] product_q;
  (* dsp_style="yes" *) wire[13:0] sample_product=energy_q*volume_q;
@@ -452,10 +437,7 @@ module v3_volume_column226_hd_reference #(parameter integer WIDTH=640,HEIGHT=480
  assign colour=rise>80?2'd2:rise>50?2'd1:2'd0;
 endmodule
 
-// Explicit user volume, independent of the pre-volume source energy. The VU
-// estimate beside it remains unchanged. Capture only in vertical blank; no
-// arithmetic, DSP, RAM or extra pixel latency. Fixed seven-row captions use
-// a small local bitmap so the existing two font ROM ports remain intact.
+
 module v3_volume_setting_column226_hd_reference #(parameter integer WIDTH=640,HEIGHT=480)(
  input wire clk,rst_n,frame_start,input wire[6:0] volume,
  input wire[11:0] x,y,input wire de,
@@ -465,8 +447,8 @@ module v3_volume_setting_column226_hd_reference #(parameter integer WIDTH=640,HE
   else if(frame_start)level<=volume>100?7'd100:volume;
  wire box=de&&x>=WIDTH-86&&x<=WIDTH-60&&y>=HEIGHT-171&&y<=HEIGHT-69;
  assign edge_pixel=box&&(x==WIDTH-86||x==WIDTH-60||y==HEIGHT-171||y==HEIGHT-69);
- // Inside the101-row box the true positive height fits seven bits; all other
- // coordinates are excluded independently. Modulo128 preserves that height.
+
+
  localparam[6:0] BASE_Y=HEIGHT-70;
  wire[6:0] rise=BASE_Y-y[6:0];
  wire gap=rise==10||rise==20||rise==30||rise==40||rise==50||rise==60||rise==70||rise==80||rise==90;

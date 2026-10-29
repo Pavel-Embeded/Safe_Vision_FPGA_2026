@@ -31,8 +31,8 @@ module hud_rgb_case192 #(parameter HD=0)(output reg done=0,output integer errors
   end
  end
  initial begin
-  // Controlled layer-boundary stimulus. Clocks, resets, DE tags and the actual
-  // production core selector/compositor/RGB register remain in the path.
+
+
   force dut.video.graphics.hud_rgb565=fg;force dut.video.graphics.hud_alpha=on?8'd224:8'd0;
   force dut.video.layer_em.pixel=bg;force dut.video.frame_safe_output=1'b0;force dut.video.missing_tags=21'd0;
   repeat(10)@(negedge clk);rst=1;wait(dut.pixel_rst_n&&dut.sys_rst_n);repeat(40)@(negedge dut.pixel_clk);checking=1;

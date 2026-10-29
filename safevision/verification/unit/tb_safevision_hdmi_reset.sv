@@ -1,5 +1,5 @@
-// Full-top EDID trigger regression. IP models are contracts, not DDC/HDMI
-// electrical simulation. Fault injection resets the actual top-level timer.
+
+
 `timescale 1ns/1ps
 module tb_safevision_hdmi_reset;
  reg clk=0,rst_n=0; always #10 clk=~clk;
@@ -21,8 +21,8 @@ module tb_safevision_hdmi_reset;
    triggers=triggers+1;
   end
  end
- // Called at a negative edge following reset release. Count interface cycles,
- // independently of the implementation's counter and saturation behavior.
+
+
  task settling_then_trigger;
   integer i;
   begin

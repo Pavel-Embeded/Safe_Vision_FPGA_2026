@@ -1,22 +1,6 @@
-// ============================================================================
-// tb_c_emergency_fsm.sv — 应急状态机单元验证（手册 8.2 / 表 8-1）
-// ----------------------------------------------------------------------------
-// 过关标准：表 8-1 的关键转移各跑一遍，并验证 payload mailbox 契约。
-//   E1  复位 -> NORMAL，载荷清零
-//   E2  火情 -> EMERGENCY（active=1 level=2 红 alarm=1）
-//   E3  fire 持续 + 方向有效 -> EVACUATION（direction 生效）
-//   E4  EVACUATION 中方向改变 -> 更新 direction
-//   E5  人工确认且稳定窗口通过 -> NORMAL，载荷清零
-//   E6  媒体故障且媒体链不可用 -> FAIL_SAFE（bram_req=1，dir=1 右箭头）
-//   E7  FAIL_SAFE + recover_ack + 自检通过 -> NORMAL
-//   E8  fatal -> FAIL_SAFE（不做可恢复承诺）
-//   E9  FAIL_SAFE 人工确认但媒体链未恢复 -> 保持（不自动退出）
-//   E10 媒体故障但四图可播 -> WARNING（level=1 黄）
-//   E11 告警消失且窗口计满 -> NORMAL
-//   E12 WARNING 中火情 -> EMERGENCY（高优先级覆盖）
-//   E14 WARNING 中媒体链完全失效 -> FAIL_SAFE
-//   E15 ★payload 只在 commit_toggle 翻转时改变（多位控制不逐位跨域，红线三）
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 
 module tb_c_emergency_fsm;
@@ -55,11 +39,11 @@ module tb_c_emergency_fsm;
         .state(state), .bram_req(bram_req)
     );
 
-    // A 侧确认模型：一级延迟跟随 commit_toggle
+
     always @(posedge clk or negedge rst_n)
         if (!rst_n) ack_tog <= 1'b0; else ack_tog <= commit_toggle;
 
-    // ★ mailbox 监测：payload 变化必须与 commit_toggle 翻转同拍
+
     reg [13:0] p_pay = 14'd0;
     reg        p_tog = 1'b0;
     integer    mailbox_violation = 0;
@@ -120,7 +104,7 @@ module tb_c_emergency_fsm;
               warning_level === 2'd0 && alarm_enable === 1'b0,
               "E1 复位 -> NORMAL，载荷清零");
 
-        // E2 火情 -> EMERGENCY（方向无效，保持）
+
         fire_in = 1; direction_valid = 0;
         @(posedge clk); #1; fire_in = 0;
         check(state === S_EMERGENCY, "E2 fire_in -> EMERGENCY");
@@ -128,20 +112,20 @@ module tb_c_emergency_fsm;
         check(emergency_active === 1'b1 && warning_level === 2'd2 && alarm_enable === 1'b1,
               "E2b EMERGENCY 载荷 active=1 level=2(红) alarm=1");
 
-        // E3 方向有效 -> EVACUATION
+
         direction_in = 2'd2; direction_valid = 1;
         @(posedge clk); #1;
         check(state === S_EVACUATION, "E3 fire 持续+方向有效 -> EVACUATION");
         ncyc(6);
         check(direction === 2'd2, "E3b EVACUATION 载荷 direction=2(双向)");
 
-        // E4 方向改变
+
         direction_in = 2'd1;
         @(posedge clk); #1;
         ncyc(6);
         check(direction === 2'd1, "E4 EVACUATION 方向改变 -> direction 更新=1");
 
-        // E5 人工确认 -> NORMAL
+
         confirm = 1; confirm_stable = 1; direction_valid = 0;
         @(posedge clk); #1; confirm = 0; confirm_stable = 0;
         check(state === S_NORMAL, "E5 人工确认且稳定窗口通过 -> NORMAL");
@@ -149,7 +133,7 @@ module tb_c_emergency_fsm;
         check(emergency_active === 1'b0 && alarm_enable === 1'b0 && direction === 2'd0,
               "E5b NORMAL 载荷清零 (active=0 alarm=0 dir=0)");
 
-        // E6 媒体故障且媒体链不可用 -> FAIL_SAFE
+
         media_fault = 1; media_ok = 0; fault_code_in = 8'h03;
         @(posedge clk); #1; media_fault = 0; media_ok = 1; fault_code_in = 8'h00;
         check(state === S_FAIL_SAFE && bram_req === 1'b1,
@@ -158,24 +142,24 @@ module tb_c_emergency_fsm;
         check(emergency_active === 1'b1 && direction === 2'd1 && alarm_enable === 1'b1,
               "E6b FAIL_SAFE 载荷 active=1 dir=1(右箭头) alarm=1");
 
-        // E7 recover -> NORMAL
+
         recover_ack = 1; media_selftest_ok = 1;
         @(posedge clk); #1; recover_ack = 0; media_selftest_ok = 0;
         check(state === S_NORMAL, "E7 FAIL_SAFE recover_ack+自检 -> NORMAL");
         ncyc(6);
         check(emergency_active === 1'b0, "E7b NORMAL 载荷清零");
 
-        // E8 fatal -> FAIL_SAFE
+
         fatal = 1;
         @(posedge clk); #1; fatal = 0;
         check(state === S_FAIL_SAFE, "E8 fatal -> FAIL_SAFE");
-        // E9 人工确认但未恢复 -> 保持
+
         ncyc(6);
         confirm = 1; confirm_stable = 1;
         @(posedge clk); #1; confirm = 0; confirm_stable = 0;
         check(state === S_FAIL_SAFE, "E9 FAIL_SAFE 确认但媒体链未恢复 -> 保持（不自动退出）");
 
-        // ================= Run B =================
+
         do_reset();
         media_fault = 1; media_ok = 1; fault_code_in = 8'h03;
         @(posedge clk); #1; media_fault = 0; fault_code_in = 8'h00;

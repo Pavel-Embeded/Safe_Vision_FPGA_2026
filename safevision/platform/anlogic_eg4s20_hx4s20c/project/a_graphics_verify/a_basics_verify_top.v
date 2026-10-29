@@ -1,4 +1,4 @@
-// Stage-1 modules genuinely instantiated for synthesis/internal STA at 50 MHz.
+
 module a_basics_verify_top(input wire board_clk,board_rst_n,key_async,
     input wire start,warning,emergency,clear,enable,
     output wire [14:0] probe);

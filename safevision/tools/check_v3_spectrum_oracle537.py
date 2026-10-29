@@ -1,21 +1,6 @@
-"""Read-only, portable verification of the reviewed 512-point spectrum assets.
 
-Run from any working directory:
-    python safevision/tools/check_v3_spectrum_oracle537.py [--repo REPOSITORY]
-Or import ``check(repository_root)``; invalid assets raise ValueError.
 
-Requires NumPy. The reviewed vectors were generated with NumPy 2.3.5 and this
-checker was tested with that version: ``python -m pip install numpy==2.3.5``.
-Other versions are accepted only if they reproduce the same reviewed samples,
-rounded FFT components and dominant bins. No RTL FFT algorithm is copied here:
-the oracle is numpy.fft.fft, with independently specified signal cases.
 
-The tool writes no files and never regenerates ROMs, testbenches or vectors.
-It checks both pinned file hashes (LF/CRLF portable) and mathematical semantics.
-The 12-LSB allowance belongs to the separate RTL simulation; stored oracle
-components themselves must be the correctly rounded independent FFT results.
-This asset check alone is not RTL simulation, timing or hardware acceptance.
-"""
 import argparse
 import hashlib
 import json
@@ -35,8 +20,8 @@ CASES = (
 )
 ALGORITHM = ("Independent numpy.fft.fft of mean-removed, quantized periodic Hann "
              "input; forward normalization1/N; no RTL FFT copied")
-# Reviewed file contents, not values supplied by reference.json. Canonical
-# hashes normalise CRLF to LF only; no other edit or whitespace is ignored.
+
+
 PINNED = {
     ROM: "e71d7316644d9d2d17630a8a722c7377d9582f19b124d926c93795350fae12e3",
     ASSETS + "spectrum_samples539.mem": "acf2578149ec00ecb8698127f2f63e995fb78af58272740621532af0f4016015",
@@ -93,11 +78,8 @@ def _signals(np):
 
 
 def check(root=ROOT):
-    """Return accepted evidence after checking every reviewed asset value.
 
-    Raises ValueError/OSError on corruption; raises RuntimeError when NumPy is
-    unavailable. Does not trust reference.json to define cases or tolerances.
-    """
+
     try:
         import numpy as np
     except ImportError as exc:
@@ -127,8 +109,8 @@ def check(root=ROOT):
     require(not any(coefficients[128:]), "quarter-wave zero padding corrupted")
     cosines = np.rint(32767 * np.cos(phase)).astype(np.int64)
     sines = np.rint(-32767 * np.sin(phase)).astype(np.int64)
-    # Check all 256 complete complex coefficients reconstructed by symmetry,
-    # including exact zero/one endpoints, against independent trig evaluation.
+
+
     for k in range(256):
         sine = 32767 if k == 128 else coefficients[(-k if k & 128 else k) & 127]
         cosine = 32767 if k == 0 else coefficients[(k if k & 128 else -k) & 127]

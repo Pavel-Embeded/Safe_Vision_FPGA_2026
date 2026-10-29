@@ -35,8 +35,8 @@ module tb_v3_fs_compact;
   comparisons=comparisons+1;
   if(!condition)begin errors=errors+1;if(errors<10)$display("[FAIL] %s geom=%0d track=%0d count=%0d",label_text,spc,track,received[track]);end
  end endtask
- // An independent card producer and fragmented-cluster oracle. Changes only
- // on accepted bytes; downstream bubbles never alter SD or output identity.
+
+
  always @(posedge clk)if(rst_n)begin
   cycle=cycle+1;
   if(valid&&ready&&context_enable&&stream_enable)begin
@@ -76,12 +76,12 @@ module tb_v3_fs_compact;
       context_in=contexts[track];context_load=1;@(negedge clk);context_load=0;
       ck(bytes_rd==received[track]&&!rd_en&&!wk_start&&!valid&&!error,"restore rebuilds safe idle commands and per-track byte count");
      end else begin
-      // A new track gets the same reset that the source's Q_RESET provides.
+
       rst_n=0;@(negedge clk);rst_n=1;
       start=1;context_enable=1;stream_enable=1;@(negedge clk);start=0;
      end
      context_enable=1;stream_enable=1;guard=0;
-     // Do not pause before the first live byte of this dispatch.
+
      i=received[track];
      while(!done&&!(idle&&!valid&&received[track]>i))begin
       @(negedge clk);guard=guard+1;

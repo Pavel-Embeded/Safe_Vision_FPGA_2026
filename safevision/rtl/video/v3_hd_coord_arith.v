@@ -1,6 +1,6 @@
-// Fixed-rate raster coordinates, exactly equivalent to the existing 21 tags.
-// A stage-19 sample is the current pre-edge raw raster minus 19 pixels.
-// At startup it is masked for the first 19 writes, matching the cleared tags.
+
+
+
 module v3_hd_coord_arith #(parameter integer HT=1650,VT=750)(
  input wire clk,rst_n,input wire[11:0]raw_x,raw_y,
  output reg[23:0]xy19,xy20);

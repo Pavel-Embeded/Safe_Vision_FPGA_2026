@@ -1,4 +1,4 @@
-"""Shared explicit V3 source/project resolver; never scans RTL for synthesis."""
+
 import hashlib,json,re,shutil,xml.etree.ElementTree as ET
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
@@ -30,9 +30,8 @@ def sources(root,mode):
   result.append(path)
  return result
 def native_rom_sidecars(root,write=False):
- # TD may resolve parameter default paths relative to HDL before applying
- # the Tcl working directory. Keep a checked generated copy beside each
- # BASE/HD declaration; fonts/ remains the single editable source of truth.
+
+
  canonical=root/'safevision/assets/fonts/v3_four_features_text.mem'
  raw=canonical.read_bytes();result=[]
  for mode in ('video','hd'):
@@ -50,19 +49,30 @@ def native_rom_sidecars(root,write=False):
 
 def scope(root):
  files=set(sources(root,'base')+sources(root,'hd')+assets(root))
+ files.add(Path('safevision/assets/fonts/OFL-NotoSansSC.txt'))
+ from check_source_tree import SUITES
+ files.add(Path('safevision/tools/run_v3_sim_flexible.py'))
+ for suite in SUITES:
+  manifest=Path('safevision/build/manifests')/(suite+'_sim.json')
+  files.add(manifest)
+  data=json.loads((root/manifest).read_text('utf-8-sig'))
+  files.update(Path(n) for key in ('sources','assets','generator_dependencies') for n in data.get(key,[]))
+  files.update(Path(n) for n in data.get('generators',{}).values())
+  for top in data['tops']:
+   tests=data.get('test_sources',{}).get(top,['safevision/verification/unit/'+top+'.sv'])
+   files.update(Path(n) for n in ([tests] if isinstance(tests,str) else tests))
  files.update(native_rom_sidecars(root))
  for rel in ('safevision/rtl/include','safevision/assets/fonts',str(FLOW)):
   files.update(p.relative_to(root) for p in (root/rel).rglob('*') if p.is_file() and p.suffix in ('.vh','.mem','.sdc','.tcl','.adc','.json','.list','.v','.al'))
  files.update(Path('safevision/tools')/n for n in ('v3_source_profiles.py','v3_sources.py','v3_final_sta.py','check_board_timing.py','check_v3_board.py','check_v3_rom_netlist.py','check_v3_spi_timing.py','check_v3_io_scope.py','run_v3_board.ps1','run_v3_board.py','configure_v3_pll.py','run_v3_pll.py','gen_v3_cdc.py'))
  files.update(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll')/n for n in ('sv_v3_memory_pll.ipc','sv_v3_memory_pll.provenance.json'))
- files.update(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor')/n for n in ('source.sha256.json','NOTICE.md'))
+ files.update(Path('safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor')/n for n in ('source.sha256.json',))
  files.update(Path('safevision/tools')/n for n in ('v3_resource_policy.py','check_v3_board_reference.py','check_v3_command_catalog.py'))
- files.update(Path('safevision/tools')/n for n in ('v3_functional_release.py','audit_v3_resource_checkpoint.py','audit_v3_raw_logs.py'))
+ files.update(Path('safevision/tools')/n for n in ('v3_functional_release.py','check_source_tree.py'))
  files.add(Path('safevision/tools/check_v3_volume_reciprocal.py'))
  files.add(Path('safevision/tools/check_v3_clock_contract.py'))
  files.add(Path('safevision/tools/check_v3_sample_netlist.py'))
  files.add(Path('safevision/tools/check_v3_native_clock_domains.py'))
- files.add(Path('safevision/tools/check_bmp_header_phase.py'))
  files.add(Path('safevision/tools/v3_checkpoint_flow.py'))
  if '.PACKED_EXTERNAL(1)'in (root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig'):
   files.add(Path('safevision/tools/build_ticker_shared32_lossless.py'))
@@ -78,8 +88,8 @@ def snapshot(root):
  check_clocks(root)
  physical_constraint_files(root)
  for mode in ('base','hd'):build_parameters(root,mode)
- # TD read_sdc is deferred and has a restricted parser. User Tcl wrappers can
- # silently discard a collection; normal Tcl object auditing is separate.
+
+
  allowed={'create_clock','derive_clocks','create_generated_clock','set_input_delay','set_output_delay','set_multicycle_path','set_false_path','set_max_delay','set_clock_uncertainty','set_clock_latency','set_case_analysis'}
  for name in ('v3_board.sdc','v3_cdc.sdc'):
   for line in (root/FLOW/name).read_text(encoding='utf-8-sig').splitlines():
@@ -88,8 +98,8 @@ def snapshot(root):
    if line.split()[0] not in allowed or '$' in line:raise ValueError('production SDC must be expanded supported statements: '+name+': '+line)
  vendor=root/'safevision/platform/anlogic_eg4s20_hx4s20c/ip/hdmi_vendor'
  provenance=json.loads((vendor/'source.sha256.json').read_text(encoding='utf-8'))
- # Vendor source must retain its exact copied bytes. Its encrypted behavior is
- # outside XSim coverage; preserving the dependency never substitutes for that.
+
+
  entries=provenance if isinstance(provenance,list) else provenance.get('files',[])
  if len(entries)!=3:raise ValueError('incomplete vendor dependency provenance')
  if isinstance(entries,dict):entries=[{'path':k,'sha256':v} for k,v in entries.items()]
@@ -100,11 +110,11 @@ def snapshot(root):
   if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=entry['sha256']:raise ValueError('vendor dependency changed or missing: '+str(p))
  return {p.as_posix():hashlib.sha256((root/p).read_bytes()).hexdigest() for p in scope(root)}
 def physical_constraint_files(root,mode=None):
- """Resolve mode-specific internal placement; board pins always remain shared."""
+
  if mode not in (None,'base','hd'):raise ValueError('unknown physical mode')
  common=root/FLOW/'v3_physical.adc'
  extras=[common]+[root/FLOW/('v3_physical_'+m+'.adc')for m in ('base','hd')]
- # Validate even inactive mode files before a source snapshot or GUI export.
+
  for extra in extras:
   if not extra.exists():continue
   statements=[s.strip() for s in extra.read_text(encoding='utf-8-sig').splitlines() if s.strip() and not s.lstrip().startswith('#')]
@@ -124,7 +134,7 @@ def physical_constraint_files(root,mode=None):
  return files
 
 def required_media_bram_locations(root,mode):
- """Only the explicitly reviewed BASE six-RAM layout requires readback."""
+
  physical_constraint_files(root,mode)
  if mode!='base':return {}
  path=root/FLOW/'v3_physical_base.adc'
@@ -136,7 +146,7 @@ def required_media_bram_locations(root,mode):
  return dict(BASE_MEDIA_BRAM_LOCATIONS)if all(line in text.splitlines()for line in lines)else {}
 
 def build_parameters(root,mode=None):
- """Resolve reviewed common and optional mode-specific native TD parameters."""
+
  if mode not in (None,'base','hd'):raise ValueError('unknown build mode')
  required={('rtl','min_control_set'),('rtl','min_ripple_len'),('rtl','infer_fsm'),('gate','map_mode'),('place','effort'),('place','post_place_opt'),('route','timing'),('route','fix_hold')}
  allowed={
@@ -169,11 +179,11 @@ def build_parameters(root,mode=None):
    if pair in seen or pair not in allowed or value not in allowed[pair]:raise ValueError('duplicate/unapproved build parameter: '+line)
    seen.add(pair);values[pair]=value
   if index==0 and not required.issubset(seen):raise ValueError('missing common build parameters')
- # Canonical stage order is shared with the GUI strategy serialization.
+
  return [(stage,key,value) for stage in ('rtl','gate','place','route') for (s,key),value in values.items() if s==stage]
 
 def native_parameters(root,folder,stages=('rtl','gate','place','route')):
- """Bind every shared parameter to the tool's actual registered-value table."""
+
  result=[]
  for stage,name,value in build_parameters(root,folder.name if folder.name in ('base','hd') else None):
   if stage not in stages:continue
@@ -189,7 +199,7 @@ def native_parameters(root,folder,stages=('rtl','gate','place','route')):
    path=folder/'gate.hidden.params';text=path.read_text(encoding='utf-8')
    report_name=path.name;hits=re.findall(r'^gate '+re.escape(name)+r' (on|off)$',text,re.M)
   elif (stage,name)==('place','seed'):
-   # Exact one-value direct native query; missing/duplicated/malformed data fail.
+
    direct=re.fullmatch(r'place seed ([0-9]+)\r?\n',text)
    hits=[direct[1]] if direct else []
   else:hits=re.findall(r'^\s*'+re.escape(name)+r'\s*\|\s*(\w+)\s*\|',text,re.M)
@@ -197,7 +207,7 @@ def native_parameters(root,folder,stages=('rtl','gate','place','route')):
   result.append({'stage':stage,'parameter':name,'actual':hits[0],'report_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'native_report':report_name})
  return result
 def gui_project(root,mode):
- """Generate portable .al from the same ordered HDL manifest as CLI."""
+
  native_rom_sidecars(root,write=True)
  project_dir=root/FLOW/mode
  project_dir.mkdir(parents=True,exist_ok=True)
@@ -235,11 +245,11 @@ def gui_project(root,mode):
  ET.SubElement(p,'Project_Settings')
  ET.indent(p,space='    ');out=project_dir/('safevision_v3_'+mode+'.al')
  ET.ElementTree(p).write(out,encoding='utf-8',xml_declaration=True)
- # Pin generated project bytes across Windows/native rebuild and Git checkout.
+
  out.write_bytes(out.read_bytes().replace(b'\r\n',b'\n'))
  for rel in assets(root):shutil.copyfile(root/rel,project_dir/rel.name)
- # Also place the documented default relative font location used by the GUI
- # when TD switches to a synthesis/physical run folder.
+
+
  return out
 def check_gui(root,mode):
  path=root/FLOW/mode/('safevision_v3_'+mode+'.al');tree=ET.parse(path)

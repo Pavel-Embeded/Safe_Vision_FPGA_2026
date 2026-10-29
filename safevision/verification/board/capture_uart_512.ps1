@@ -1,26 +1,26 @@
-# ============================================================================
-# capture_uart_512.ps1 - capture the 512 bytes sent by top_stage5_sector_rd
-# ----------------------------------------------------------------------------
-# ASCII only: PowerShell 5.1 reads a BOM-less .ps1 as ANSI, so non-ASCII
-# comments can swallow the following quote and break parsing. Keep it ASCII.
-#
-# Usage (from the repo root):
-#   powershell -ExecutionPolicy Bypass -File .\safevision\verification\board\capture_uart_512.ps1 -Port COM5
-#   powershell -ExecutionPolicy Bypass -File .\safevision\verification\board\capture_uart_512.ps1 -Port COM5 -TimeoutSec 60
-#
-# What it does:
-#   1. lists the available COM ports
-#   2. opens <Port> at 115200 8N1, no flow control, and flushes stale input
-#   3. waits up to -TimeoutSec for exactly 512 bytes
-#   4. saves them as raw binary (NOT text) and compares byte by byte with -Ref
-#   5. exit 0 only if all 512 bytes match
-#
-# *** ORDER MATTERS ***
-# The design sends the 512 bytes only ONCE, about 50 ms after reset, and the
-# burst lasts about 45 ms (115200 baud). If the LED already shows the done code
-# then the burst is long gone. So: start this script FIRST, and only then press
-# the board reset key (KEY_1) to run it again.
-# ============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 param(
     [Parameter(Mandatory = $true)][string]$Port,
     [int]$Baud = 115200,

@@ -8,7 +8,7 @@ module setting_case88 #(parameter HD=0)(output reg done=0,output integer errors=
  integer setting=0,vu=0,h,k,v,ix,iy,e;reg check_pixels=0;reg be,bf,ve,vf,caption;
  reg[15:0]cr[0:3];reg[7:0]ca[0:3];
  task ck(input bit ok,input string msg);begin comparisons++;if(!ok)begin errors++;if(errors<10)$display("[FAIL] setting HD=%0d %s x=%0d y=%0d level=%0d",HD,msg,x,y,setting);end end endtask
- // Independent literal glyph specification, indexed in reading order.
+
  function bit glyph(input byte ch,input integer row,col);
   string bitmap;begin
    case(ch)

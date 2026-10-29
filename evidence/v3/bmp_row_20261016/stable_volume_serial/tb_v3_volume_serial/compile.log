@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/rtl/audio/v3_audio_volume.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_audio_volume
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_volume_serial.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_volume_serial

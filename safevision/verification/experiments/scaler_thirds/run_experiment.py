@@ -1,4 +1,4 @@
-"""Isolated functional experiment, never part of production required suites."""
+
 import argparse,json,shutil,subprocess,sys
 from pathlib import Path
 

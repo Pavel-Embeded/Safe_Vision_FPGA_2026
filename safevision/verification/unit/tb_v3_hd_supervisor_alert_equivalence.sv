@@ -16,8 +16,8 @@ module tb_v3_hd_supervisor_alert_equivalence;
  .video_underflows(vu),.audio_underflows(au),.hdmi_drops(drops),.rejected_files(rejected),.audio_fallback(fallback),
  .safe_active(b[0]),.media_reset(b[1]),.recovery_busy(b[2]),.recovery_attempts(b[4:3]),.recovery_state(b[7:5]),.fault_code(b[15:8]),.fault_level(b[18:16]),.fault_valid(b[19]),.fatal_latched(b[20]),.fault_ts(b[52:21]),
  .err_push(b[53]),.err_code(b[61:54]),.err_src(b[65:62]),.err_level(b[68:66]),.err_ts(b[100:69]));
- // Both designs use the same already independently miter-tested recovery32
- // component, so this test isolates the event bank, priority and timestamps.
+
+
  task compare;begin comparisons++;
   if(a[100:0]!==b[100:0] || (rst && dut.pending_alert!==dut.pending))begin errors++;
    if(errors<9)$display("[FAIL] alert same-edge got=%h want=%h pending=%h alert=%h",a[100:0],b[100:0],dut.pending,dut.pending_alert);
@@ -25,8 +25,8 @@ module tb_v3_hd_supervisor_alert_equivalence;
  end endtask
  initial begin
   #2;compare();#39;rst=1;
-  // All combinations of simultaneous level/rising-edge sources, varying
-  // priorities, clear/relatch, FATAL, counters and asynchronous reset phases.
+
+
   for(k=0;k<100000;k=k+1)begin
    @(negedge clk);rng=rng*1664525+1013904223;
    in=k<8192?k:rng[20:0];code=rng[31:24];vu=rng;au=~rng;drops=rng^32'h4143;

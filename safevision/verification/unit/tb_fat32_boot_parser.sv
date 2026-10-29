@@ -1,21 +1,6 @@
-// ============================================================================
-// tb_fat32_boot_parser.v — 阶段 6 第一块：FAT32 挂载与 BPB 解析
-// ----------------------------------------------------------------------------
-// 验证内容：
-//   T11 正常挂载：读 0 号扇区、校验 BPB、算出 data_start_lba / root_dir_lba /
-//        total_clus 等全部派生地址
-//   T12 签名不是 0x55AA        -> 明确报错，不是硬着头皮解析
-//   T13 不是 FAT32（判别位不成立）-> 报 DET_FAT_NOT32
-//   T14 每扇区字节数不是 512     -> 报 DET_FAT_BPB
-//   T15 修复卷内容后重新 start 能挂载成功（错误可恢复）
-//
-// 计算基准（测试用卷参数）：
-//   BytsPerSec=512, SecPerClus=8, RsvdSecCnt=32, NumFATs=2, FATSz32=1024,
-//   RootClus=2, TotSec32=0x10000(65536)
-//     data_start_lba = 32 + 2*1024            = 2080
-//     root_dir_lba   = 2080 + (2-2)*8         = 2080
-//     total_clus     = (65536 - 2080) / 8     = 7932
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
@@ -41,11 +26,9 @@ module tb_fat32_boot_parser;
         end
     endtask
 
-    // ------------------------------------------------------------------------
-    // SPI 四线 + 总线复用
-    // ------------------------------------------------------------------------
+
     wire sclk, mosi, miso;
-    reg  spi_sel;                     // 0 = sd_initializer, 1 = sd_sector_reader
+    reg  spi_sel;
 
     wire        init_cs_n, init_tx_valid;
     wire [7:0]  init_tx_data;
@@ -71,9 +54,7 @@ module tb_fat32_boot_parser;
         .sclk(sclk), .mosi(mosi), .miso(miso)
     );
 
-    // ------------------------------------------------------------------------
-    // sd_initializer
-    // ------------------------------------------------------------------------
+
     reg  init_start;
     wire init_done, init_error, sdhc;
     wire [7:0] init_ec, init_ed, init_rc;
@@ -87,9 +68,7 @@ module tb_fat32_boot_parser;
         .spi_tx_ready(spi_tx_ready), .spi_rx_data(spi_rx_data), .spi_rx_valid(spi_rx_valid)
     );
 
-    // ------------------------------------------------------------------------
-    // sd_sector_reader ← 由 fat32_boot_parser 驱动
-    // ------------------------------------------------------------------------
+
     wire        fs_rd_en;
     wire [31:0] fs_rd_addr;
     wire [15:0] fs_rd_len;
@@ -111,9 +90,7 @@ module tb_fat32_boot_parser;
         .spi_tx_ready(spi_tx_ready), .spi_rx_data(spi_rx_data), .spi_rx_valid(spi_rx_valid)
     );
 
-    // ------------------------------------------------------------------------
-    // DUT: fat32_boot_parser
-    // ------------------------------------------------------------------------
+
     reg  mnt_start;
     wire mnt_done, mnt_err;
     wire [7:0] mnt_ec, mnt_ed;
@@ -137,9 +114,7 @@ module tb_fat32_boot_parser;
         .sd_err_code(fs_rd_ec), .sd_err_detail(fs_rd_ed)
     );
 
-    // ------------------------------------------------------------------------
-    // 卡模型
-    // ------------------------------------------------------------------------
+
     wire [5:0]  card_cmd;
     wire [31:0] card_arg;
     wire [7:0]  card_cmd_cnt;
@@ -151,9 +126,7 @@ module tb_fat32_boot_parser;
         .o_cmd_cnt(card_cmd_cnt), .o_acmd41_cnt(), .o_cmd_valid()
     );
 
-    // ------------------------------------------------------------------------
-    // 激励
-    // ------------------------------------------------------------------------
+
     initial begin
         errors    = 0;
         spi_sel   = 1'b0;
@@ -165,13 +138,11 @@ module tb_fat32_boot_parser;
         rst_n = 1'b1;
         repeat (10) @(posedge clk);
 
-        // ---- 先在卡上造一个合法 FAT32 卷 ----
+
         u_card.mk_fat32_dbr(16'd512, 8'd8, 16'd32, 8'd2,
                             32'd1024, 32'd2, 32'd65536, 1'b1);
 
-        // ====================================================================
-        // 初始化 SD 卡
-        // ====================================================================
+
         $display("\n==== 前置：SD 初始化 ====");
         @(posedge clk);
         init_start = 1'b1;
@@ -187,18 +158,16 @@ module tb_fat32_boot_parser;
         check(init_done === 1'b1, "P1 SD 初始化成功");
         check(sdhc === 1'b1,      "P2 识别为 SDHC（块寻址）");
 
-        spi_sel = 1'b1;          // 总线交给 sd_sector_reader
+        spi_sel = 1'b1;
         repeat (5) @(posedge clk);
 
-        // ====================================================================
-        // T11 正常挂载
-        // ====================================================================
+
         $display("\n==== T11: 正常 FAT32 挂载 ====");
         @(posedge clk);
         mnt_start = 1'b1;
         @(posedge clk);
         mnt_start = 1'b0;
-        repeat (10) @(posedge clk);          // 等 NBA 结算
+        repeat (10) @(posedge clk);
 
         wait_cnt = 0;
         while (!(mnt_done === 1'b1 || mnt_err === 1'b1) && wait_cnt < 2_000_000) begin
@@ -221,11 +190,9 @@ module tb_fat32_boot_parser;
         check(o_tot_clus === 32'd7932,     "T11.12 total_clus = (65536-2080)/8 = 7932");
         if (mnt_err) $display("       (意外) err_code=0x%02x err_detail=0x%02x", mnt_ec, mnt_ed);
 
-        // ====================================================================
-        // T12 签名被破坏
-        // ====================================================================
+
         $display("\n==== T12: 签名不是 0x55AA ====");
-        u_card.vol_set(32'd0, 16'd511, 8'h00);          // 破坏签名的第二个字节
+        u_card.vol_set(32'd0, 16'd511, 8'h00);
         @(posedge clk);
         mnt_start = 1'b1;
         @(posedge clk);
@@ -243,12 +210,10 @@ module tb_fat32_boot_parser;
         check(mnt_ec === `ERR_MEDIA_INVALID,    "T12.3 对外主码 = 0x03(媒体文件非法)");
         check(mnt_ed === `DET_FAT_BPB,          "T12.4 内部细分码 = 0x31(BPB 非法)");
 
-        // ====================================================================
-        // T13 不是 FAT32（判别位不成立）
-        // ====================================================================
+
         $display("\n==== T13: 不是 FAT32 ====");
         u_card.mk_fat32_dbr(16'd512, 8'd8, 16'd32, 8'd2,
-                            32'd1024, 32'd2, 32'd65536, 1'b0);   // as_fat32=0
+                            32'd1024, 32'd2, 32'd65536, 1'b0);
         @(posedge clk);
         mnt_start = 1'b1;
         @(posedge clk);
@@ -264,9 +229,7 @@ module tb_fat32_boot_parser;
         check(mnt_err === 1'b1,              "T13.1 非 FAT32 被拒绝");
         check(mnt_ed === `DET_FAT_NOT32,     "T13.2 内部细分码 = 0x32(非 FAT32)");
 
-        // ====================================================================
-        // T14 每扇区字节数不是 512
-        // ====================================================================
+
         $display("\n==== T14: BytsPerSec != 512 ====");
         u_card.mk_fat32_dbr(16'd1024, 8'd8, 16'd32, 8'd2,
                             32'd1024, 32'd2, 32'd65536, 1'b1);
@@ -285,9 +248,7 @@ module tb_fat32_boot_parser;
         check(mnt_err === 1'b1,         "T14.1 BytsPerSec=1024 被拒绝");
         check(mnt_ed === `DET_FAT_BPB,  "T14.2 内部细分码 = 0x31(BPB 非法)");
 
-        // ====================================================================
-        // T15 修复后重新挂载成功（错误可恢复）
-        // ====================================================================
+
         $display("\n==== T15: 修复卷内容后重新挂载 ====");
         u_card.mk_fat32_dbr(16'd512, 8'd8, 16'd32, 8'd2,
                             32'd1024, 32'd2, 32'd65536, 1'b1);
@@ -308,7 +269,7 @@ module tb_fat32_boot_parser;
         check(mnt_ec   === `ERR_NONE,   "T15.3 错误码已清零");
         check(o_data_lba === 32'd2080,  "T15.4 派生地址再次算对");
 
-        // ====================================================================
+
         $display("\n============================================");
         if (errors == 0) $display(" 全部通过 (PASS)");
         else             $display(" 失败项：%0d (FAIL)", errors);

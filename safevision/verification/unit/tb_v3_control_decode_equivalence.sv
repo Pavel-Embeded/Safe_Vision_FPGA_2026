@@ -57,8 +57,8 @@ module tb_v3_control_decode_equivalence;
  end endtask
  initial begin
   repeat(4)@(negedge clk);rst_n=1;
-  // Exhaust signed16 values for the four independent range predicates while
-  // cycling command names and mixed transactions, then randomize all32 bits.
+
+
   for(i=0;i<1000000;i=i+1)begin
    @(negedge clk);rng=rng^(rng<<13);rng=rng^(rng>>17);rng=rng^(rng<<5);
    command_valid=(i%37!=0);command_query=rng[6];cached=rng[7];transition_busy=rng[8];frame_commit=(i%79==0);

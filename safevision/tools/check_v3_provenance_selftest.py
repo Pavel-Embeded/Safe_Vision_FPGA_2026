@@ -1,4 +1,4 @@
-"""Verify commit and ROM gates detect byte corruption without touching sources."""
+
 import argparse,hashlib,json,subprocess,sys
 from pathlib import Path
 from run_v3_board import source_commit_binding
@@ -23,8 +23,8 @@ def main():
  text=a.native_netlist.read_text(encoding='utf-8-sig');native=check_roms(text,ROOT)
  check('native mapped ROM compares all 3072 bytes',sum(x['bytes_compared'] for x in native)==3072)
  for entry in native:
-  # Rename just one mapped graphics instance out of the production hierarchy;
-  # its asset must then have no eligible physical implementation.
+
+
   bad=text.replace(entry['mapped_instance'],'\\removed_rom_for_negative_control',1)
   try:check_roms(bad,ROOT);detected=False
   except ValueError:detected=True

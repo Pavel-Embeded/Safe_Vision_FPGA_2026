@@ -67,7 +67,7 @@ function Ticker {
   $expectedPosition=([int][Math]::Floor($dt*0.0299823633))%1024
   $actualPosition=($pos-$script:lastTickPosition+1024)%1024
   $positionError=($actualPosition-$expectedPosition+1536)%1024-512
-  # The FPGA snapshot lies in the raw TX/ACK interval, including USB latency.
+
   $minimumMs=$sampleStartMs-$script:lastTickMs
   $maximumMs=$sampleMs-$script:lastTickStartMs
   $minimumPixels=[Math]::Max(0,[Math]::Floor($minimumMs*0.0299823633)-4)

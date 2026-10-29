@@ -1,10 +1,10 @@
 `timescale 1ns/1ps
 `include "pixel_format_defs.vh"
-// Actual SPI/FAT32/streamer/parser/FIFO/row-mapping path; no forced DUT signals.
-// Distinct Pillow-decoded references check all four complete resident frames.
+
+
 module tb_v3_max_card241;
- reg clk=0;always #12.5 clk=~clk; // real MEM 40MHz
- reg refclk=0;always #10 refclk=~refclk; // real independent REF 50MHz
+ reg clk=0;always #12.5 clk=~clk;
+ reg refclk=0;always #10 refclk=~refclk;
  reg rst=0,run=0;
  wire cs,sclk,mosi,miso,ready,active,td,mr,fd,ok;
  wire[31:0] word;wire valid;wire[1:0] slot;wire[3:0] state,stage,cv;
@@ -29,10 +29,8 @@ module tb_v3_max_card241;
  .sd_ready(),.card_usable(mounted),.cache_valid(cv),.cache_count(count),.cache_keys(keys),
  .rejected_files(rejected),.frame_cnt(frames),.ext_rd_en(1'b0),.ext_rd_addr(32'd0),.ext_rd_len(16'd1),.ext_data_ready(1'b1),
  .last_reject_error(last_reject_error),.last_reject_key(last_reject_key),.progress_count(progress_count));
- // Match the ACTUAL production top:500ms at board MEM50. This test
- // retains asynchronous MEM40 as a landing stress clock, so the same native
- // cycle budget is625ms here. Source byte/pixel and complete-raster checks
- // are unchanged; the20ms REF no-progress timeout remains deliberately tight.
+
+
  bmp_frame_sink #(.GAP_TIMEOUT(25000000),.WRITE_TO_N(25000000),.SWAP_TO_N(5000000),
  .RESIDENT_LOAD(1),.REQUIRE_WRITE_DRAIN(1),.REQUIRE_READBACK(1)) sink(
  .clk(clk),.rst_n(rst),.wr_clk(refclk),.px_word(word),.px_word_valid(valid),.px_word_ready(ready),
@@ -52,7 +50,7 @@ module tb_v3_max_card241;
  .lookup_crc(),.lookup_valid(),.bad_addr(),.bad_expected(),.bad_actual(),.source_words(),.checked_rows());
  reg[31:0] memory[0:1048575],exp0[0:153599],exp1[0:153599],exp2[0:153599],exp3[0:153599];
  reg[6:0] stalls=0;always @(posedge clk)stalls<=stalls+1'b1;
- // Multi-cycle backpressure, including a 24-clock pause at every 128 clocks.
+
  reg write_pending=0;reg[3:0] write_delay=0;reg[31:0] pending_addr=0,pending_data=0;
  integer read_left=0,read_index=0;
  assign write_drained=!write_pending;
@@ -73,7 +71,7 @@ module tb_v3_max_card241;
    if(addr[1:0]!=0 || len!=1 || addr>=`SV_AUDIO_RING_BASE)begin
     errors=errors+1;$display("[FAIL] write address/length %h %0d",addr,len);
    end
-   // Grant precedes physical completion by seven clocks, as in the adapter.
+
    pending_addr<=addr;pending_data<=data;write_pending<=1;write_delay<=6;writes=writes+1;
   end
   if(write_pending)begin

@@ -124,8 +124,8 @@ module tb_v3_direct_row_base;
   lookup_slot_index=rng[1:0];lookup_row_index=rng[11:2];
   lookup_addr=`SV_SLOT_BASE(lookup_slot_index)+lookup_row_index*32'd1280;
  end
- // Independent bounded-burst responder. Both DUT and reference receive
- // identical payloads, with deterministic gaps and a natural ACK edge.
+
+
  always @(posedge clk)begin
   if(!rst_n)begin rd_ack<=0;rd_busy<=0;rd_valid<=0;rd_data<=0;remaining<=0;cycle<=0;next_address<=0;end
   else begin

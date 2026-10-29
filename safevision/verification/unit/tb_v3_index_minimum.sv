@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
-// Reference chooses the minimum numeric filename from the complete directory.
-// Each consumed candidate advances the cursor, including rejected BMP bodies.
+
+
 module tb_v3_index_minimum;
  reg clk=0;always #5 clk=~clk;
  reg rst_n=0,clear=0,commit=0,valid=0;reg[87:0] name=0;
@@ -32,7 +32,7 @@ module tb_v3_index_minimum;
      if(number>cursor_number && number<expected)expected=number;
      name=filename(number);cluster=8000+number;size=921654+(number%10)*32;valid=1;
      @(negedge clk);valid=0;repeat((i+round)%4)@(negedge clk);
-     // WAV and malformed BMP names cannot alter the minimum BMP candidate.
+
      name=filename(number);name[23:0]=24'h574156;valid=1;@(negedge clk);valid=0;
     end
     repeat(4)@(negedge clk);commit=1;@(negedge clk);commit=0;
@@ -44,7 +44,7 @@ module tb_v3_index_minimum;
      ck(selected && count==1 && mask==1,"one physical candidate slot");
      ck(key==bcd(expected) && fc==8000+expected && sz==921654+(expected%10)*32,"minimum key and entire 32-bit payload equal reference");
      cursor_number=expected;
-     // A synthetic bad-body predicate models rejection after index selection.
+
      if(expected%7!=0)legal=legal+1;
      repeat(3)@(negedge clk);
      name=filename(1);cluster=1;size=1;valid=1;@(negedge clk);valid=0;

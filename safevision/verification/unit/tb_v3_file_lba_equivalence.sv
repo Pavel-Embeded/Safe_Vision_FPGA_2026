@@ -56,15 +56,15 @@ module tb_v3_file_lba_equivalence;
  always@(posedge clk)begin #1;if(rst_n)begin comparisons++;if({a_context_out,a_idle_between_sectors,a_busy,a_done,a_error,a_err_code,a_err_detail,a_bytes_rd,a_dbg_state,a_data,a_valid,a_sof,a_eof,a_wk_cur_clus,a_wk_start,a_wk_rst_walk,a_sd_rd_addr,a_sd_rd_len,a_sd_rd_en,a_sd_data_ready}!=={b_context_out,b_idle_between_sectors,b_busy,b_done,b_error,b_err_code,b_err_detail,b_bytes_rd,b_dbg_state,b_data,b_valid,b_sof,b_eof,b_wk_cur_clus,b_wk_start,b_wk_rst_walk,b_sd_rd_addr,b_sd_rd_len,b_sd_rd_en,b_sd_data_ready})begin errors++;if(errors<12)$display("[FAIL] complete public file-stream/context interface at cycle%0d",comparisons);end end end
  initial begin
  repeat(4)@(negedge clk);rst_n=1;context_enable=1;stream_enable=1;
- // Empty-file starts isolate LBA algebra over all256 SPC encodings and
- // arbitrary32-bit cluster/base values, including modular wrap and invalid SPC.
+
+
  for(k=0;k<65536;k++)begin
   first_clus=rand32();data_start_lba=rand32();sec_per_clus=k%256;file_size=0;
   case(k%8)0:first_clus=0;1:first_clus=1;2:first_clus=2;3:first_clus=32'hffffffff;default:;endcase
   start=1;@(negedge clk);start=0;repeat(3)@(negedge clk);
  end
- // Complete stream state machine under backpressure, fragmented WALK results,
- // transaction errors, legal/illegal contexts and intentional service pauses.
+
+
  for(k=0;k<400000;k++)begin
   first_clus=rand32();
   ready=rand32();

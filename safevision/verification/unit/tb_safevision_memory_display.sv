@@ -1,6 +1,6 @@
-// Actual board memory profile (50MHz/8ns), adapter, DMA, FIFO and pixel scan.
-// Preload the memory model to isolate display bandwidth from SD loading time.
-// Every image pixel is compared at the accepted HDMI AXIS boundary.
+
+
+
 `timescale 1ns/1ps
 `include "pixel_format_defs.vh"
 module tb_safevision_memory_display #(parameter integer HD=0,RD_LAT=4,WR_LOAD=0);
@@ -30,23 +30,23 @@ module tb_safevision_memory_display #(parameter integer HD=0,RD_LAT=4,WR_LOAD=0)
    write_data=32'hfeca0000+write_index;write_req=1;
    do @(posedge dut.mem_clk);while(!dut.prod_wr_ack);
    @(negedge dut.mem_clk);write_req=0;
-   // The writer's data stays stable until physical word acceptance/busy end.
+
    wait(!dut.prod_wr_busy);write_offers=write_offers+1;write_index=write_index+1;
    if(write_index==153600)write_index=0;
-   // At most 0.5 million words/s (2 MB/s RGB565) before arbitration stalls:
-   // comparable to a 25 Mbit/s SD/BMP producer; accepted writes cannot vanish.
+
+
    repeat(100)@(negedge dut.mem_clk);
   end
  end
  reg stream_valid=0,stream_done=0;reg[31:0]stream_word=0;
  initial if(WR_LOAD==2)begin
-  // Drive the real board sink/FIFO/frame writer with a fast queued pixel
-  // source. A grant-based completion corrupts words under DMA contention.
+
+
   force dut.pl_slot=0;force dut.pl_top_down=1;
   force dut.pl_px_word_valid=stream_valid;force dut.pl_px_word=stream_word;
   wait(dut.active);force dut.pl_frame_active=1;
-  // Frame-active is synchronized before the sink leaves its idle drain mode.
-  // Real BMP headers provide this delay; this direct source waits explicitly.
+
+
   wait(dut.sk_state==4'd1);
   for(write_index=0;write_index<153600;write_index=write_index+1)begin
    @(negedge clk);stream_word=32'hfeca0000+write_index;stream_valid=1;

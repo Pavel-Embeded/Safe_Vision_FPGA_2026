@@ -1,4 +1,4 @@
-"""Bind a dedicated full32glyph implementation without rebasing pixel gold."""
+
 from pathlib import Path
 import argparse,hashlib,json,subprocess
 ROOT=Path(__file__).resolve().parents[2]

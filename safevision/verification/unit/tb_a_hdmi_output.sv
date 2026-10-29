@@ -1,5 +1,5 @@
-// A wrapper wiring/stream test; encoder is explicitly a CONTRACT model.
-// Serializer and ODDR are the actual vendor sources, not that model.
+
+
 `timescale 1ns/1ps
 module hdmi_output_case #(parameter integer HD=0)(output reg done=0);
  localparam integer WIDTH=HD?1280:640,HEIGHT=HD?720:480,HT=HD?1650:800;

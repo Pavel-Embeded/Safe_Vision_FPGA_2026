@@ -1,4 +1,4 @@
-"""Run legal-boundary and expected-rejection XSim tests. Python stdlib only."""
+
 import argparse
 import hashlib
 import json
@@ -36,8 +36,8 @@ for path in rtl + benches:
 
 def run_tool(name, arguments, console):
     command = subprocess.list2cmdline([str(args.xsim_bin/(name+'.bat'))]+[str(x) for x in arguments])
-    # Vivado's Windows .bat wrapper tokenizes an unquoted '=' as a separator.
-    # Only these locally generated numeric generic values need forced quoting.
+
+
     if name == 'xelab':
         for argument in arguments:
             value = str(argument)

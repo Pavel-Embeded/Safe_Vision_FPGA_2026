@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_directory_sv_names",
-  "suite": "directory_sv",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "298ebd7a40fd52862be67954f46444281badbb1c4bc3b2d7043f33cde756da14",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_109_20261016\\positive\\tb_v3_directory_sv_names"
-}

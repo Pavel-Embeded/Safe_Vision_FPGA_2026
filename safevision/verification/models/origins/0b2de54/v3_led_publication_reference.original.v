@@ -1,6 +1,6 @@
-// SafeVision V3 production board assembly. Legacy safevision_top is kept as
-// a separately buildable baseline. Every external producer retains data until
-// acceptance; every telemetry bus crosses an acknowledged atomic mailbox.
+
+
+
 `define SAFEVISION_MEM_CLK_HZ 50000000
 `define SAFEVISION_SDRAM_CLK_HZ `SAFEVISION_MEM_CLK_HZ
 `define SAFEVISION_REFRESH_ROWS 4096
@@ -14,16 +14,14 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  output wire sd_ncs,sd_dclk,sd_mosi,input wire sd_miso,
  output wire HDMI_D0_P,HDMI_D1_P,HDMI_D2_P,HDMI_CLK_P,HDMI_DDC_SCL,
  inout wire HDMI_DDC_SDA);
- // Official PLL counters, rounded to the nearest counter cycle per second.
- // BASE: 50MHz*17*4/(3*45); HD: 50MHz*1*89/(4*15).
- // These are configured nominal frequencies, not measured oscillator values.
+
+
  localparam integer PIXEL_HZ=HD?74166667:25185185;
  wire sys_clk,mem_clk,mem_clk_sft,pixel_clk,serial_clk,audio_clk;
  wire sys_lock,video_lock,audio_lock,ref_rst_n,common_rst_n,control_common_rst_n;
  wire sys_rst_n,mem_rst_n,pixel_rst_n,audio_rst_n,config_rst_n;
- // Configuration retains user settings across KEY1/media reset. The six
- // configuration-initialized flops start a fresh epoch only when FPGA is
- // configured/powered; this is SRAM state, not nonvolatile user storage.
+
+
  reg[5:0] config_power_count=6'd0;
  always @(posedge clk)if(!(&config_power_count))config_power_count<=config_power_count+1'b1;
  (* keep="true" *) wire config_common_rst_n=(&config_power_count)&&sys_lock;
@@ -41,13 +39,13 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  sv_audio_pll sound_pll(.refclk(clk),.reset(1'b0),.extlock(audio_lock),.clk0_out(),.clk1_out(audio_clk));
  assign control_common_rst_n=ref_rst_n && config_common_rst_n;
  assign common_rst_n=control_common_rst_n && video_lock && audio_lock;
- // Video/audio loss must not clear the surviving SYS fault records/UART.
+
  reset_sync reset_sys(.clk(sys_clk),.async_rst_n(control_common_rst_n),.rst_n(sys_rst_n));
  reset_sync #(.RELEASE_FALLING(1)) reset_mem(.clk(mem_clk),.async_rst_n(control_common_rst_n),.rst_n(mem_rst_n));
  reset_sync reset_pixel(.clk(pixel_clk),.async_rst_n(control_common_rst_n && video_lock),.rst_n(pixel_rst_n));
  reset_sync reset_audio(.clk(audio_clk),.async_rst_n(control_common_rst_n && audio_lock),.rst_n(audio_rst_n));
- // Recovery assertions belong to one common media epoch. SYS safety, fixed
- // PIX raster, ROM, alarm and HDMI PHY remain on their global reset epoch.
+
+
  (* keep="true" *) wire media_common_rst_n=control_common_rst_n && !media_reset;
  reset_sync reset_media_ref(.clk(clk),.async_rst_n(media_common_rst_n),.rst_n(ref_media_rst_n));
  reset_sync #(.RELEASE_FALLING(1)) reset_media_mem(.clk(mem_clk),.async_rst_n(media_common_rst_n),.rst_n(mem_media_rst_n));
@@ -109,9 +107,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  wire writer_accepted=writer_busy && mem_req && mem_wr && mem_ready;
  wire write_drained=adapter_idle && !writer_busy;
  bmp_frame_sink #(.FIFO_AW(8),.REQUIRE_WRITE_DRAIN(1),.REQUIRE_READBACK(1),.RESIDENT_LOAD(1),
- // REF reader permits 200ms token waits, including FAT reads between image
- // sectors. A 4ms pixel timeout rejected those legal stalls. Keep a bounded
- // 500ms inactivity limit, consistent with WRITE_TO_N and the SYS watchdog.
+
+
  .GAP_TIMEOUT(25000000),.WRITE_TO_N(25000000),.SWAP_TO_N(5000000)) sink(
  .clk(mem_clk),.rst_n(mem_media_rst_n),.wr_clk(clk),.px_word(px_word),.px_word_valid(px_valid),
  .px_word_ready(px_ready),.frame_active(frame_active),.top_down(top_down),.slot(load_slot),
@@ -158,24 +155,23 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  .mem_wdata(mem_wdata),.mem_wstrb(mem_wstrb),.mem_ready(mem_ready),.mem_rdata(mem_rdata),.mem_rdata_valid(mem_valid),
  .wr_starve_cnt(),.rd_starve_cnt());
 
- // Atomic media status and real transaction counters, all reset on the same
- // media epoch as their producers. No independently synchronized bus bits.
+
  wire[203:0] ref_status_data={1'b0,init_seq,init_r1,cache_keys,last_reject_error,last_reject_key,rejected_files,player_progress,player_frames,player_code,player_detail,player_state,
  player_stage,cache_ref,cache_count,(sd_ready && card_usable)};
  wire[203:0] ref_status_sys;wire ref_status_valid;
- // Related REF50 -> SYS100: actual setup/hold remain enabled.
+
  v3_related_status_capture #(.WIDTH(204)) ref_status_capture(
  .clk(sys_clk),.rst_n(sys_media_rst_n),.source_data(ref_status_data),
  .data(ref_status_sys),.valid(ref_status_valid));
- // Internal progress token; the high32 status bits were never an exposed
- // UART transaction-count query. Preserve layout and every activity event.
+
+
  wire[31:0] mem_transactions;
  v3_mem_activity_tag mem_activity(.clk(mem_clk),.rst_n(mem_media_rst_n),
  .activity((mem_req && mem_ready) || mem_valid),.token(mem_transactions));
  wire[47:0] mem_status_data={mem_transactions,approved,guard_fault,adapter_fault,memory_error,
  (mem_req || rd_busy || writer_busy || aux_busy),sink_code};
  wire[47:0] mem_status_sys;wire mem_status_valid;
- // Related MEM50 -> SYS100: actual setup/hold remain enabled.
+
  v3_related_status_capture #(.WIDTH(48)) mem_status_capture(
  .clk(sys_clk),.rst_n(sys_media_rst_n),.source_data(mem_status_data),
  .data(mem_status_sys),.valid(mem_status_valid));
@@ -214,7 +210,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  video_level_sync frame_heartbeat_sync(.clk(sys_clk),.rst_n(sys_rst_n),.async_level(frame_toggle),.level(frame_toggle_sys));
  always @(posedge sys_clk or negedge sys_rst_n)if(!sys_rst_n)previous_frame_toggle<=0;else previous_frame_toggle<=frame_toggle_sys;
  wire err_push;wire[7:0] err_code;wire[3:0] err_src;wire[2:0] err_level;wire[31:0] err_ts;
- // 4.9s WAIT plus finite reset/settle leaves margin inside the 5s SAFE goal.
+
  v3_supervisor #(.RECOVER_CYCLES(490000000)) supervisor(.clk(sys_clk),.rst_n(sys_rst_n),.manual_safe(manual_safe),.recover_request(recover_request),.cache_ready(cached),
  .media_failed(ref_status_sys[15:12]==10 || mem_status_sys[7:0]!=0),
  .media_code((mem_status_sys[7:0]!=0)?mem_status_sys[7:0]:ref_status_sys[31:24]),
@@ -272,9 +268,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  .pcm_valid(pcm_valid),.left(pcm_left),.right(pcm_right),.acr_valid(acr_valid),.N(acr_n),.CTS(acr_cts));
 
  wire[3:0] evt_src;wire[15:0] evt_value;wire evt_valid,evt_ready,evt_full;wire[31:0] evt_ts;wire[15:0] evt_drops;
- // Capture each supervisor event atomically before the FIFO's write mux.
- // No event/metadata is filtered; the timestamp remains the original stamp.
- // One SYS cycle is added to enqueue latency, not to detection or SAFE.
+
+
  reg event_push_pipe;reg[43:0] event_payload;
  always @(posedge sys_clk or negedge sys_rst_n)begin
   if(!sys_rst_n)begin event_push_pipe<=0;event_payload<=0;end
@@ -309,13 +304,13 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  localparam[6:0] B_QUERY_UARTOVERRUN=7'd30;
  localparam[6:0] B_QUERY_UARTDROP=7'd28;
  localparam[6:0] B_QUERY_LATENCY=7'd39;
- // DIAG=0..15 is a read-only selector, never a configuration write.
- // Each returned MEM word crosses a tagged handshake only on demand.
+
+
  wire diag_request_ready,diag_reply_valid,diag_reply_ok;
  wire[3:0] diag_mem_selector;wire[31:0] diag_reply_value;
  reg[31:0] diag_mem_value;
- // Passive first-row windows. ID18 DIAG10..13 are zero/nonzero flags.
- // Only bit0 is used;320-word completeness counts remain separate.
+
+
  wire[31:0] diag_raw_first,diag_raw_last,diag_source_first,diag_write_first;
  wire[8:0] diag_source_count,diag_write_count,diag_raw_count,diag_host_count;
  reg diag_command_seen,diag_response_seen;reg[3:0] diag_command_dm,diag_response_dm;
@@ -360,9 +355,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  .mem_selector(diag_mem_selector),.mem_value(diag_mem_value),
  .reply_valid(diag_reply_valid),.reply_ok(diag_reply_ok),.reply_value(diag_reply_value));
  localparam[6:0] B_QUERY_DIAG=7'd36;
- // Decode once, then form a balanced parallel data reduction. Every
- // status/counter is sampled LIVE on the original command acceptance edge.
- // No input-setup assumption, selector pipeline, or reply latency change.
+
+
  reg[24:0] b_query_select;
  always @*begin b_query_select=0;case(cmd_catalog_id)
   B_QUERY_STATUS:b_query_select[0]=1'b1;
@@ -424,30 +418,26 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
   ({32{b_query_select[24]}} & ({16'd0,response_latency_ms}));
  reg[31:0] b_query_group0,b_query_group1,b_query_group2,b_query_group3,b_query_group4;
  wire[31:0] b_query_data=b_query_group0 | b_query_group1 | b_query_group2 | b_query_group3 | b_query_group4;
- // The ordinary one-hot query groups are zero for DIAG. Form DIAG's
- // small local mux independently, then combine mutually exclusive classes.
- // This removes the DIAG-priority control from the whole normal data mux.
- // Sampling edge, live values, response latency and codes remain unchanged.
+
+
  wire b_diag_selected=cmd_catalog_id==B_QUERY_DIAG;
- // Four fast diagnostic banks capture LIVE values on the same acceptance
- // edge as before. Move their OR behind registers, as for ordinary queries.
+
+
  (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || cmd_value==0}} & 32'h26101802);
  (* keep="true" *) wire[31:0] b_diag_next1=({32{!cmd_query && cmd_value==1}} & ref_status_sys[31:0]);
  (* keep="true" *) wire[31:0] b_diag_next2=({32{!cmd_query && cmd_value==2}} & {20'd0,ref_status_sys[203:192]});
  (* keep="true" *) wire[31:0] b_diag_next3=({32{!cmd_query && cmd_value==3}} & ref_status_sys[79:48]);
  reg[31:0] b_diag_group0,b_diag_group1,b_diag_group2,b_diag_group3;
  wire[31:0] b_diag_data=b_diag_group0 | b_diag_group1 | b_diag_group2 | b_diag_group3;
- // Capture every selected group on the ORIGINAL acceptance edge. The OR
- // moves after those registers; UART consumes at the same following edge.
- // No selector setup assumption, stale live counter or extra reply cycle.
+
+
  reg b_reply;reg b_reply_query;reg b_reply_fast;reg[7:0] b_reply_code;reg signed[31:0] b_reply_direct;
  wire signed[31:0] b_reply_value=b_reply_query?b_query_data:(b_reply_fast?b_diag_data:b_reply_direct);
  always @(posedge sys_clk or negedge sys_rst_n)begin
  if(!sys_rst_n)begin b_reply<=0;b_reply_query<=0;b_reply_fast<=0;b_diag_group0<=0;b_diag_group1<=0;b_diag_group2<=0;b_diag_group3<=0;b_reply_code<=0;b_reply_direct<=0;b_query_group0<=0;b_query_group1<=0;b_query_group2<=0;b_query_group3<=0;b_query_group4<=0;end
  else begin b_reply<=0;
- // Async replies select DIRECT with both registered bank classes cleared.
- // Holding unselected banks removes needless clear-data muxes; next B command
- // still captures ALL live groups at its original edge. Reset still clears.
+
+
  if(diag_reply_valid)begin b_reply_fast<=0;b_reply_query<=0;b_reply<=1;b_reply_code<=diag_reply_ok?0:4;b_reply_direct<=diag_reply_value;end
  else if(cmd_valid && cmd_target==66)begin b_reply_fast<=b_diag_selected;b_reply_query<=cmd_query&&!b_diag_selected;b_reply<=1;b_reply_code<=0;
  b_reply_direct<=0;
@@ -471,8 +461,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  .reply_valid(controls_reply || b_reply),.reply_code(b_reply?b_reply_code:controls_reply_code),.reply_value(b_reply?b_reply_value:controls_reply_value),
  .evt_valid(evt_valid),.evt_code(evt_value[7:0]),.evt_src(evt_src),.evt_ts(evt_ts),.evt_ready(evt_ready),
  .parser_rejected(uart_rejected),.rx_framing(uart_framing),.rx_overrun(uart_overrun),.reply_dropped(uart_reply_dropped));
- // The 50 MHz oscillator survives a SYS PLL failure. This independent latch
- // and bounded reporter preserve a usable fatal indication when SYS stops.
+
+
  reg seen_sys_lock,seen_video_lock,seen_audio_lock;
  (* keep="true" *) reg sys_loss_ref,video_loss_ref,audio_loss_ref;
  (* async_reg="true" *) reg[2:0] locks_meta,locks_sync;
@@ -503,10 +493,8 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD)(
  end end
  uart_tx #(.CLK_FREQ(50000000),.BAUD(115200)) fatal_uart(.clk(clk),.rst_n(ref_rst_n),
  .tx_valid(fatal_sending),.tx_data(fatal_byte),.tx_ready(fatal_ready),.txd(fatal_uart_txd));
- // Related SYS100 -> REF50 publication: launch intermediate values on
- // falling SYS edges (5ns from REF rising edges). Ordinary setup/hold stays
- // enabled. The REF output register and independent FATAL transmitter remain
- // alive when SYS PLL stops; no data-path false path or clock waiver is used.
+
+
  reg normal_uart_half;reg[3:0] status_half;
  always @(negedge sys_clk or negedge sys_rst_n)begin
   if(!sys_rst_n)begin normal_uart_half<=1'b1;status_half<=4'd0;end

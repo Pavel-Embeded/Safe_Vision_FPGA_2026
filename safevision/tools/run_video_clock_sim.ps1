@@ -1,7 +1,7 @@
-# ASCII only for Windows PowerShell 5.1.
-# Usage from the repository after copying to safevision/tools:
-# powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_video_clock_sim.ps1
-# Override -XSimBin if Vivado is installed elsewhere.
+
+
+
+
 param(
     [string]$RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path,
     [string]$XSimBin = 'D:\Xilinx\Vivado\2018.3\bin',
@@ -55,8 +55,8 @@ function Invoke-XSimCase {
 
     $caseDir = Join-Path $RunDir $Name
     New-Item -ItemType Directory -Force -Path $caseDir | Out-Null
-    # Vivado 2018.3 MinGW stalls when TEMP/TMP contains non-ASCII characters.
-    # Keep this process's compiler temporary files under its own case directory.
+
+
     $caseTempDir = Join-Path $caseDir 'tmp'
     if ($caseTempDir -match '[^\x00-\x7f]') {
         throw "XSim 2018.3 requires an ASCII RunDir: $RunDir"
@@ -68,7 +68,7 @@ function Invoke-XSimCase {
     try {
         $env:TEMP = $caseTempDir
         $env:TMP = $caseTempDir
-        # RTL and vendor models compile as Verilog; only testbenches use SV.
+
         & $xvlog -i $includeDir --log xvlog_verilog.log @VerilogSources
         if ($LASTEXITCODE -ne 0) { throw "$Name Verilog compile failed ($LASTEXITCODE)" }
         & $xvlog --sv -i $includeDir --log xvlog_sv.log @SvSources
@@ -111,8 +111,8 @@ Invoke-XSimCase -Name 'clock_video_subsystem' -Top 'tb_clock_video_subsystem' `
                       $clockGenRtl, $subsystemRtl) -SvSources @($IntegrationTb) `
     -PassMarker 'PASS tb_clock_video_subsystem:'
 
-# Negative parameter tests require the exact rejection diagnostic, rather than
-# treating every tool exit or every FATAL as a successful negative test.
+
+
 & $PythonExe (Join-Path $RepoRoot 'safevision/tools/run_video_clock_params.py') `
     --repo-root $RepoRoot --xsim-bin $XSimBin --td-root $TdRoot `
     --run-dir (Join-Path $RunDir 'parameters')

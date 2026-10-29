@@ -1,8 +1,7 @@
 `timescale 1ns/1ps
 `include "safevision_defs.vh"
 
-// A-side integration test explicitly requests a 50 ms timeout.
-// B RTL and its default remain unchanged. frame_start is B-domain synced.
+
 module tb_frame_swap_real_frame;
     localparam [31:0] A_INTEGRATION_TIMEOUT_N = 32'd5_000_000;
     reg clk = 1'b0;
@@ -44,8 +43,7 @@ module tb_frame_swap_real_frame;
         else tick <= tick + 1;
     end
 
-    // Rising edge N receives the pulse after exactly N 100 MHz periods.
-    // 1,666,667 periods = 16.66667 ms, rounded to the nearest sys_clk.
+
     always @(negedge clk) begin
         if (!rst_n) frame_start = 1'b0;
         else frame_start = (tick == 1_666_666 || tick == 3_333_333);

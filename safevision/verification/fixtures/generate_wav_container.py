@@ -1,4 +1,4 @@
-"""Independent Python struct/wave oracle; no RTL header parsing code reused."""
+
 from pathlib import Path
 import argparse,io,json,random,struct,wave
 def chunk(name,data):return name+struct.pack('<I',len(data))+data+(b'\0' if len(data)&1 else b'')
@@ -15,14 +15,14 @@ def main():
   before=[chunk(b'JUNK',rng.randbytes(i%35)),chunk(b'LIST',rng.randbytes((i*7)%19))]
   after=[chunk(b'fact',rng.randbytes((i*11)%21)),chunk(b'JUNK',b'')] if i%2 else []
   data=riff(before+[chunk(b'fmt ',fmt+rng.randbytes(extra_len)),chunk(b'data',payload)]+after)
-  # Standard-library independent acceptance and channel/sample oracle for legal input.
+
   with wave.open(io.BytesIO(data),'rb') as w:
    assert (w.getnchannels(),w.getsampwidth(),w.getframerate(),w.readframes(10000))==(2,2,48000,payload)
-  if i%3==0:data+=rng.randbytes(i%17) # physical bytes outside the RIFF container
+  if i%3==0:data+=rng.randbytes(i%17)
   pairs=list(struct.unpack('<'+'I'*(len(payload)//4),payload));cases.append((f'legal_fmt{16+extra_len}_tail{i%2}',data,pairs,0))
  for size in [0,1,2,3,5,6,7,9,15]:
   data=riff([chunk(b'fmt ',fmt),chunk(b'data',bytes(size))]);cases.append((f'partial_or_empty_{size}',data,[],1))
- # A large declared chunk that previously wrapped 44+size to a small number.
+
  for claim in [0xfffffffc,0xfffffff8,0xffffffff,0xffffffe0]:
   data=riff([chunk(b'fmt ',fmt)])+b'data'+struct.pack('<I',claim)+bytes(range(1,9))
   data=data[:4]+struct.pack('<I',len(data)-8)+data[8:];cases.append((f'overflow_{claim:x}',data,[],1))

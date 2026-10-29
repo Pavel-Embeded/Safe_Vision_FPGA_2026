@@ -1,9 +1,6 @@
-// REF-clock complete-directory WAV matching for four resident BMP identifiers.
-// cache_keys: slot0 in [15:0], four BCD digits from SVdddd.BMP.
-// Geometry and all sector LBAs are volume-relative: parent adds vol_base once.
-// Four independent byte/parser/cluster contexts pause only BETWEEN sectors.
-// Shared SD ownership is held to rd_done/error; FIFO room reserves a full sector.
-// Missing/invalid WAV sets fallback[slot], never blocks a media-ready decision.
+
+
+
 module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_n,mounted,cache_ready,
  input wire [63:0] cache_keys,input wire [7:0] sec_per_clus,
  input wire [31:0] fat_start_lba,data_start_lba,root_dir_lba,root_clus,total_clus,
@@ -15,15 +12,15 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  output wire data_ready,input wire data_last,rd_done,timeout_err,crc16_err,
  input wire [7:0] err_code,err_detail,
  input wire external_service_ready,output wire[444:0] core_cmd,input wire[836:0] core_rsp);
- // One shared file/parser/walker execution kernel. Only immutable sector-boundary
- // contexts are saved. A 16bit single-port context RAM avoids four arithmetic FSMs.
+
+
  localparam FS_BITS=136,WP_BITS=111,CTX_BITS=FS_BITS+WP_BITS+32;
  localparam CTX_WORDS=(CTX_BITS+15)/16,CTX_PAD=CTX_WORDS*16;
  localparam Q_SCAN=0,Q_CHOOSE=1,Q_RESET=2,Q_START=3,Q_RUN=4,Q_SAVE0=5,Q_SAVE=6,
             Q_LOAD1=7,Q_LOAD2=8,Q_APPLY=9,Q_DESC1=10,Q_DESC2=11;
  reg [3:0] state;reg kernel_progress;reg [1:0] active,rr;reg [3:0] saved;
- // Immutable four-track descriptors share unused words of the existing context
- // RAM. Only one 64-bit working register is needed during scan and file START.
+
+
  reg[63:0] track_descriptor;reg[3:0] descriptor_pending;
  reg scan_start,scan_seen;
  wire scan_done,dir_bad;wire [7:0] scan_code;wire [87:0] name;wire [31:0] fc,size;wire ev;
@@ -32,9 +29,8 @@ module v3_wav_source #(parameter integer EXTERNAL_SERVICE=0)(input wire clk,rst_
  name[55:48]>=8'h30&&name[55:48]<=8'h39&&name[47:40]>=8'h30&&name[47:40]<=8'h39;
  wire [15:0] key={name[67:64],name[59:56],name[51:48],name[43:40]};
  reg [5:0] context_index;
- // Q_RESET is entered only from the completed four-word descriptor.
- // Preserve its next-state predicate in one FF; no binary-state decode
- // drives an asynchronous kernel reset. Global assertion remains immediate.
+
+
  (* preserve="true",keep="true" *) reg kernel_release_q;
  always@(posedge clk or negedge rst_n)
   if(!rst_n)kernel_release_q<=1;
@@ -59,7 +55,7 @@ wire [15:0] context_q;
    if(key==cache_keys[descriptor_i*16+:16]&&!found[descriptor_i])descriptor_matches[descriptor_i]=1;
  end
  wire descriptor_capture=ev&&entry_ready&&valid_name&&fc>=2&&size>=44&&|descriptor_matches;
- // Contexts occupy words 0..71; four descriptors occupy 128..143.
+
  wire[7:0] ram_address=descriptor_write?{4'b1000,descriptor_slot,context_index[1:0]}:
   state==Q_DESC1?{4'b1000,active,context_index[1:0]}:context_address;
  wire [2:0] en,ready,dr,dv,dl,done,toerr,crcerr;
@@ -70,11 +66,11 @@ wire [15:0] context_q;
  wire [31:0] sample;wire sample_valid;
  wire pause_boundary=state==Q_RUN&&kernel_progress&&pauseable&&!fvalid&&!sample_valid;
  wire run_kernel=(state==Q_RUN||state==Q_START)&&!pause_boundary;
- // The kernel registers themselves are the LOAD shift chain: no staging copy.
+
  wire [CTX_PAD-1:0] export_context={context_padding,hop_count,fs_context,wp_context};
  wire [CTX_PAD-1:0] next_context={(state==Q_SAVE)?export_context[15:0]:context_q,export_context[CTX_PAD-1:16]};
  wire [15:0] save_word=export_context[15:0];
- // Single physical port: SAVE and LOAD are disjoint states, so no RDW-copy bank.
+
  a_pixel_fifo_eram #(.MODE("SP"),.DATAWIDTH_A(16),.DATAWIDTH_B(16),
  .ADDRWIDTH_A(8),.ADDRWIDTH_B(8),.REGMODE_A("NOREG")) context_ram(
  .clka(clk),.rsta(!rst_n),.cea(state==Q_SAVE||state==Q_LOAD1||descriptor_write||state==Q_DESC1),
@@ -83,8 +79,8 @@ wire [15:0] context_q;
  .clkb(clk),.rstb(!rst_n),.ceb(1'b0),.oceb(1'b0),.web(1'b0),.dib(16'd0),.addrb(8'd0),.dob());
  assign pcm_data={128'd0}|({96'd0,sample}<<(active*32));
  assign pcm_valid=(state==Q_RUN)?(sample_valid?(4'b1<<active):4'b0):4'b0;
- // Eligibility is independent of round-robin choice. Four parallel
- // winners avoid a serial dynamic-index priority path into state enables.
+
+
  wire[3:0] requests=found&~fallback&slot_fill&sector_room;
  (* keep="true" *) wire eligible=|requests;
  wire p0=rr==0,p1=rr==1,p2=rr==2,p3=rr==3;
@@ -132,7 +128,7 @@ wire [15:0] context_q;
     Q_RUN:begin
      if(fvalid&&(parser_ready||waverr))kernel_progress<=1;
      if(waverr||ferr)fallback[active]<=1;
-     // Never freeze an unconsumed byte or sample; never abandon a live sector.
+
      if((fdone&&!fbusy&&!sample_valid)||((waverr||ferr)&&pauseable&&!fvalid&&!sample_valid))begin
       saved[active]<=0;state<=Q_CHOOSE;
      end else if(kernel_progress&&pauseable&&!fvalid&&!sample_valid)state<=Q_SAVE0;
@@ -324,7 +320,7 @@ v3_file_streamer_compact_ctx fs(.clk(clk),.rst_n(EXTERNAL_SERVICE?1'b0:kernel_rs
  .file_size(track_descriptor[63:32]),.track_id({6'd0,active}),.din(bytes_data),.din_valid(fvalid&&!waverr&&run_kernel),
  .din_ready(parser_ready),.din_eof(fend),.sample(sample),.pcm_valid(sample_valid),
  .pcm_ready(pcm_ready[active]&&run_kernel),.wav_error(waverr));
- // Directory, file data and shared walker are mutually serialized sectors.
+
  reg [1:0] phase,owner;reg [4:0] arm_wait;reg [1:0] pick;reg want;
  always @*begin pick=0;want=0;
   if(states[2]==1)begin pick=2;want=1;end

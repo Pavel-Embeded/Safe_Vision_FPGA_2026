@@ -61,8 +61,8 @@ module tb_v3_ingress_shared;
   read_clock_run=1;random_read=1;
   for(integer n=0;n<4000;n=n+1)send((n*7+(n>>3))%4);
   wait(read_count==written);repeat(15)@(negedge wc);
-  // Cancel an unaccepted producer on reset; no old epoch pair is required to
-  // survive. A fresh payload is established before the next legal handshake.
+
+
   for(integer partial=1;partial<=2;partial=partial+1)begin
    fork
     begin send(partial);end

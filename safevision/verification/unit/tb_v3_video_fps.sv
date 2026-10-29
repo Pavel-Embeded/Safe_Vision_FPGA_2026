@@ -11,8 +11,8 @@ module tb_v3_video_fps;
  reg[7:0] font[0:4095];integer errors=0,comparisons=0,i,row,bitno,character,place;
  initial begin
   $readmemh("font8x16.mem",font);repeat(5)@(negedge clk);
-  // Twenty regularly spaced frame pulses plus one exactly at second rollover.
-  // Only the measurement interval is shortened; no internal DUT state is used.
+
+
   for(i=0;i<10000;i=i+1)begin
    rst=1;fs=(i%500==0)||(i==9999);@(posedge clk);#1;@(negedge clk);
   end

@@ -1,5 +1,5 @@
-// Reproduces the board's first-block CRC: zeros expected, all FF returned.
-// Actual adapter; functional controller model includes read DQM suppression.
+
+
 `timescale 1ns/1ps
 module tb_sdram_read_dqm #(parameter integer RD_LAT=11);
  `include "crc32_word.vh"
@@ -25,7 +25,7 @@ module tb_sdram_read_dqm #(parameter integer RD_LAT=11);
    if(dout!==0)bad_words=bad_words+1;
  end
  initial begin
-   // Preserve a nonzero neighbour to detect accidental dummy-beat overwrite.
+
    memory.mem[21'h28040]=32'h12345678;
    repeat(5)@(negedge clk);rst_n=1;wait(idone);
    for(i=0;i<64;i=i+1)begin

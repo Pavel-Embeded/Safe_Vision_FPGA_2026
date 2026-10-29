@@ -1,38 +1,14 @@
-// ============================================================================
-// tb_common_fifo.sv — 公共 FIFO / 切分缓冲 / 健康度 / 带宽 / 错误上报 单元测试
-// ----------------------------------------------------------------------------
-// 被测（5 个 RTL）：
-//   rtl/common/rv_skid_buffer.v
-//   rtl/common/sync_fifo.v
-//   rtl/memory/fifo_health_monitor.v
-//   rtl/memory/memory_bandwidth_monitor.v
-//   rtl/common/error_report.v
-//
-// 依据：手册 7.8 阶段 8（FIFO 与水位）+ 7.12 阶段 12（带宽实测）+ 7.16.2
-//       （错误处理必须有计数器）+ docs/interface_spec.md §3.5。
-//
-// 覆盖内容：
-//   A  skid buffer ：反压期间 data 保持；单拍吞吐不丢（无气泡、顺序正确）
-//   B  sync_fifo   ：写满不溢出、读空不产生假数据、data_count 正确、
-//                    almost_full 恰在阈值处拉高、
-//                    ★「让读侧停 100 拍，写入不丢数据且 overflow 为 0」（手册 7.8 原话）
-//   C  health_mon  ：min_level 记录正确、clr 重启统计、人为 underflow/overflow 计数正确
-//   D  带宽监测    ：固定字节数跑一个窗口，带宽与手算 4B/拍*125MHz=500MB/s 一致
-//   E  error_report：连续压 10 条（>深度 8），已存事件不丢、evt_full / drop_cnt 正确
-//
-// 说明：TB 里的"字节源/消费者"严格遵守 valid/ready 约定：valid=1 且 ready=0 时
-//       data 保持不动；反压期间绝不改数据，否则就是 TB 自己在作弊。
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 
 module tb_common_fifo;
 
-    // ========================================================================
-    // 公共
-    // ========================================================================
+
     reg clk   = 1'b0;
     reg rst_n = 1'b0;
-    always #5 clk = ~clk;                 // 100 MHz 仿真节拍
+    always #5 clk = ~clk;
 
     integer errors   = 0;
     integer pass_cnt = 0;
@@ -54,9 +30,7 @@ module tb_common_fifo;
         end
     endtask
 
-    // ========================================================================
-    // A. rv_skid_buffer
-    // ========================================================================
+
     reg  [7:0] sk_in_data;
     reg        sk_in_valid;
     wire       sk_in_ready;
@@ -90,9 +64,7 @@ module tb_common_fifo;
         end
     end
 
-    // ========================================================================
-    // B. sync_fifo（主 FIFO，带健康度监视器）
-    // ========================================================================
+
     reg  [15:0] f_din;
     reg         f_wr;
     wire        f_full, f_afull, f_empty, f_aempty;
@@ -142,7 +114,7 @@ module tb_common_fifo;
     integer    mism;
     integer    wx, rx;
 
-    // ---- 写一个（不检查 almost_full）----
+
     task fifo_push1;
         input [15:0] d;
         begin
@@ -153,7 +125,7 @@ module tb_common_fifo;
         end
     endtask
 
-    // ---- 读一个（FWFT：队首就在 dout 上）----
+
     task fifo_pop1;
         output [15:0] d;
         begin
@@ -164,7 +136,7 @@ module tb_common_fifo;
         end
     endtask
 
-    // ---- 写一个，almost_full 时先等（真正的反压手段）----
+
     task fifo_push_wait;
         input [15:0] d;
         begin
@@ -176,7 +148,7 @@ module tb_common_fifo;
         end
     endtask
 
-    // ---- 读一个，空时先等 ----
+
     task fifo_pop_wait;
         output [15:0] d;
         begin
@@ -188,9 +160,7 @@ module tb_common_fifo;
         end
     endtask
 
-    // ========================================================================
-    // C. fifo_health_monitor（独立实例，电平由 TB 直接驱动）
-    // ========================================================================
+
     reg  [15:0] m_lvl;
     reg         m_empty, m_full, m_rd, m_wr, m_clr;
     wire [15:0] m_min, m_uf, m_of, m_cur;
@@ -210,9 +180,7 @@ module tb_common_fifo;
         .cur_level    (m_cur)
     );
 
-    // ========================================================================
-    // D. memory_bandwidth_monitor
-    // ========================================================================
+
     reg  [31:0] bw_wrb, bw_rdb;
     reg         bw_wrv, bw_rdv;
     reg  [31:0] bw_win;
@@ -234,9 +202,7 @@ module tb_common_fifo;
         .window_done   (bw_done)
     );
 
-    // ========================================================================
-    // E. error_report
-    // ========================================================================
+
     reg         er_push;
     reg  [7:0]  er_code;
     reg  [3:0]  er_src;
@@ -275,11 +241,9 @@ module tb_common_fifo;
         end
     endtask
 
-    // ========================================================================
-    // 主激励
-    // ========================================================================
+
     initial begin
-        // ---- 全部输入置默认 ----
+
         sk_in_valid = 0; sk_in_data = 0; sk_out_ready = 0;
         sk_n = 0; sk_mon_en = 0; sk_ov_cnt = 0;
         f_wr = 0; f_din = 0; f_rd = 0; fh_clr = 0;
@@ -293,16 +257,14 @@ module tb_common_fifo;
         rst_n = 1'b1;
         repeat (2) @(negedge clk);
 
-        // ====================================================================
-        // A1  skid buffer：反压期间 data 保持
-        // ====================================================================
+
         sk_mon_en = 0; sk_n = 0; sk_ov_cnt = 0;
         sk_in_valid = 1'b1; sk_in_data = 8'h11; sk_out_ready = 1'b0;
         @(negedge clk);
         check(sk_out_valid && (sk_out_data == 8'h11),
               "skid-A1: 首字节进入输出寄存器");
 
-        sk_in_data = 8'h22;               // 第二字节，等待被接收
+        sk_in_data = 8'h22;
         @(negedge clk);
         check(sk_out_valid && (sk_out_data == 8'h11),
               "skid-A1: 下游反压第 1 拍 out_data 保持");
@@ -319,9 +281,7 @@ module tb_common_fifo;
               "skid-A1: 取出顺序正确 0x11 -> 0x22");
         check(sk_out_valid == 1'b0, "skid-A1: 排空后 out_valid 归零");
 
-        // ====================================================================
-        // A2  skid buffer：单拍吞吐不丢、无气泡
-        // ====================================================================
+
         sk_out_ready = 1'b0;
         repeat (2) @(negedge clk);
         sk_n = 0; sk_ov_cnt = 0; sk_mon_en = 1'b1;
@@ -329,7 +289,7 @@ module tb_common_fifo;
         for (i = 0; i < 8; i = i + 1) begin
             @(negedge clk);
             sk_in_data = 8'h30 + i + 1;
-            if (i == 7) sk_in_valid = 1'b0;    // 第 8 个已在本拍被接收
+            if (i == 7) sk_in_valid = 1'b0;
         end
         @(negedge clk);
         sk_mon_en = 0;
@@ -342,9 +302,7 @@ module tb_common_fifo;
               "skid-A2: 连续输出顺序 0x30..0x37 正确");
         sk_out_ready = 1'b0;
 
-        // ====================================================================
-        // B1  sync_fifo：空标志 / data_count / 写读计数
-        // ====================================================================
+
         check(f_empty && (f_cnt == 7'd0),
               "fifo-B1: 复位后 empty=1、data_count=0");
         for (i = 0; i < 10; i = i + 1) fifo_push1(16'h0100 + i);
@@ -356,9 +314,7 @@ module tb_common_fifo;
         @(negedge clk);
         check(f_cnt == 7'd7, "fifo-B1: 读 3 个后 data_count=7");
 
-        // ====================================================================
-        // B2  sync_fifo：almost_full 恰在阈值 48 处拉高
-        // ====================================================================
+
         for (i = 0; i < 40; i = i + 1) fifo_push1(16'h0200 + i);
         @(negedge clk);
         check(f_cnt == 7'd47, "fifo-B2: 写到 47 时 data_count=47");
@@ -368,9 +324,7 @@ module tb_common_fifo;
         check((f_cnt == 7'd48) && f_afull,
               "fifo-B2: 到达阈值 48 时 almost_full 拉高");
 
-        // ====================================================================
-        // B3  sync_fifo：写满不溢出；满时继续写只计 overflow
-        // ====================================================================
+
         for (i = 0; i < 16; i = i + 1) fifo_push1(16'h0300 + i);
         @(negedge clk);
         check((f_cnt == 7'd64) && f_full,
@@ -378,7 +332,7 @@ module tb_common_fifo;
 
         @(negedge clk);
         f_din = 16'hDEAD; f_wr = 1'b1;
-        repeat (4) @(negedge clk);        // 满时连续想写 4 次
+        repeat (4) @(negedge clk);
         f_wr = 1'b0;
         @(negedge clk);
         check((f_cnt == 7'd64) && f_full,
@@ -386,10 +340,7 @@ module tb_common_fifo;
         check(fh_of == 16'd4,
               "fifo-B3: 满时写 4 次 -> overflow_cnt=4");
 
-        // ====================================================================
-        // B4  sync_fifo：FIFO 顺序 / 排空 / 空读不产生假数据
-        // ====================================================================
-        // 期望序列：0x103..0x109, 0x200..0x227, 0xFFFF, 0x300..0x30F = 64 个
+
         k = 0;
         for (i = 3; i < 10; i = i + 1) begin exp[k] = 16'h0100 + i; k = k + 1; end
         for (i = 0; i < 40; i = i + 1) begin exp[k] = 16'h0200 + i; k = k + 1; end
@@ -407,7 +358,7 @@ module tb_common_fifo;
         check(f_empty && (f_cnt == 7'd0), "fifo-B4: 排空后 empty=1、data_count=0");
         check(fh_min == 16'd0, "fifo-B4: 见底后 min_level=0（历史最低水位正确）");
 
-        // 空读 4 次
+
         for (i = 0; i < 4; i = i + 1) begin
             @(negedge clk);
             f_rd = 1'b1;
@@ -428,11 +379,9 @@ module tb_common_fifo;
               "fifo-B4: 空读之后写入的字节能被正确读出（指针未被偷走）");
         check(f_empty && (f_cnt == 7'd0), "fifo-B4: 再读一次后重新为空");
 
-        // ====================================================================
-        // B6  sync_fifo：★「让读侧停 100 拍，写入不丢数据且 overflow 为 0」
-        // ====================================================================
+
         f_wr = 1'b0; f_rd = 1'b0; f_din = 16'd0; fh_clr = 1'b0;
-        rst_n = 1'b0;                     // 重新复位，让故障计数从 0 起算
+        rst_n = 1'b0;
         repeat (3) @(negedge clk);
         rst_n = 1'b1;
         repeat (2) @(negedge clk);
@@ -440,14 +389,14 @@ module tb_common_fifo;
         check((fh_of == 16'd0) && (fh_uf == 16'd0),
               "fifo-B6: 重现复位后 underflow / overflow 计数归零");
 
-        f_rd = 1'b0;                      // 读侧先停住
+        f_rd = 1'b0;
         fork
             begin
-                // 写侧：只写 64 个，almost_full 时自动等（这是真正的反压手段）
+
                 for (wx = 0; wx < 64; wx = wx + 1) fifo_push_wait(16'h2000 + wx);
             end
             begin
-                // 读侧：先停 100 拍，再一直读到收满 64 个
+
                 repeat (100) @(negedge clk);
                 for (rx = 0; rx < 64; rx = rx + 1) fifo_pop_wait(b6_dat[rx]);
             end
@@ -467,9 +416,7 @@ module tb_common_fifo;
               "fifo-B6: 停 100 拍期间写入的 64 个字节全部按序读出（不丢数据）");
         check(f_empty && (f_cnt == 7'd0), "fifo-B6: 收工后 FIFO 为空");
 
-        // ====================================================================
-        // C   fifo_health_monitor：min_level / clr / 计数
-        // ====================================================================
+
         m_lvl = 16'd0; m_empty = 1'b1; m_full = 1'b0;
         m_rd = 1'b0; m_wr = 1'b0; m_clr = 1'b0;
         @(negedge clk); m_clr = 1'b1;
@@ -498,12 +445,10 @@ module tb_common_fifo;
         @(negedge clk);
         check(m_of == 16'd5, "monitor-C: 满时写 5 次 -> overflow_cnt=5");
 
-        // ====================================================================
-        // D   memory_bandwidth_monitor：4 B/拍 @125MHz => 500 MB/s
-        // ====================================================================
+
         bw_win = 32'd1000; bw_wrb = 32'd2; bw_rdb = 32'd4;
-        // ★ 有效信号必须在复位释放前就拉高：否则窗口的第 0 拍没有流量，
-        //   统计结果会恰好少一个周期的字节数（实测踩过的坑）。
+
+
         bw_wrv = 1'b1; bw_rdv = 1'b1;
         rst_n = 1'b0;
         repeat (3) @(negedge clk);
@@ -527,9 +472,7 @@ module tb_common_fifo;
         check(bw_rdmb == 32'd500, "bw-D: 第二个窗口带宽保持一致");
         bw_wrv = 1'b0; bw_rdv = 1'b0;
 
-        // ====================================================================
-        // E   error_report：连压 10 条（> 深度 8）
-        // ====================================================================
+
         er_push = 1'b0; er_code = 8'd0; er_src = 4'd0; er_ts = 32'd0;
         rst_n = 1'b0;
         repeat (3) @(negedge clk);
@@ -557,9 +500,7 @@ module tb_common_fifo;
               "error-E: 队首 evt_value = 首条 err_code（已存事件未被覆盖）");
         check(er_valid, "error-E: 队列非空，evt_valid 仍为 1");
 
-        // ====================================================================
-        // 汇总
-        // ====================================================================
+
         $display("--------------------------------------------------");
         $display("[SUMMARY] tb_common_fifo : PASS=%0d FAIL=%0d", pass_cnt, errors);
         if (errors == 0) $display("[RESULT] ALL PASS");

@@ -13,29 +13,29 @@ module tb_v3_pixel_response_tracker;
  task request;begin req=1;cycle(0);req=0;end endtask
  initial begin
   repeat(3)@(negedge clk);rst=1;
-  // A NEXT may be accepted while initial media presentation is still pending.
+
   request();target=1;busy=1;direct=1;valid=1;cycle(0);
   busy=0;current=1;initialized=1;cycle(0);
   target=2;busy=1;direct=0;is_next=1;alpha=0;cycle(0);
   alpha=8;valid=0;cycle(0);valid=1;cycle(1);cycle(0);
   busy=0;current=2;alpha=0;cycle(0);
-  // Before allocation, the old committed target still says is_next=1.
+
   request();cycle(0);target=3;busy=1;direct=1;cycle(0);
   busy=0;current=3;cycle(1);cycle(0);
-  // Cancel before any target pixels, return to old image, and retry.
+
   request();target=4;busy=1;direct=0;alpha=8;valid=0;cycle(0);
   cancel=1;valid=1;cycle(0);cancel=0;busy=0;is_next=0;cycle(0);
   request();cycle(0);target=5;busy=1;direct=0;is_next=1;alpha=8;cycle(1);cycle(0);
-  // Every generation, including wrap, gets one response. Cancelled allocations
-  // interleave; a repeated historical ID must not suppress a fresh request.
+
+
   for(k=0;k<1024;k++)begin
    busy=0;current=target;request();cycle(0);
    target=target+1'b1;busy=1;direct=0;is_next=1;alpha=0;cycle(0);
    if(k%3==0)begin cancel=1;cycle(0);cancel=0;busy=0;is_next=0;cycle(0);end
    else begin alpha=8;valid=1;cycle(1);cycle(0);end
   end
-  // Latest-request semantics also prevent an old direct target responding
-  // during blanking after a newer NEXT has already replaced its measurement.
+
+
   busy=0;current=target;is_next=1;request();cycle(0);request();cycle(0);
   target=target+1'b1;busy=1;direct=0;alpha=8;cycle(1);cycle(0);
   busy=0;current=target;request();target=target+1'b1;busy=1;alpha=8;

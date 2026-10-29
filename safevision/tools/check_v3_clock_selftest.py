@@ -1,4 +1,4 @@
-"""Reject nominal PLL/counter/SDC drift; this does not sign off physical clocks."""
+
 import argparse,json,shutil,tempfile
 from pathlib import Path
 from check_v3_clock_contract import ROOT,check
@@ -14,8 +14,8 @@ def main():
   ('input_constraint_drift',files[4],'-period 20.000','-period 20.100'),
   ('feedback_mode_drift',files[0],'.FEEDBK_MODE("NORMAL")','.FEEDBK_MODE("OTHER")')]
  rows=[];scratch_parent=a.output.parent.resolve();scratch_parent.mkdir(parents=True,exist_ok=True)
- # Use the requested output directory to avoid the long Windows sandbox TEMP
- # prefix. Verify the generated cleanup target remains below that directory.
+
+
  with tempfile.TemporaryDirectory(prefix='clocks_',dir=scratch_parent) as temp:
   if not Path(temp).resolve().is_relative_to(scratch_parent):raise ValueError('Temporary directory escaped output')
   for label,name,old,new in controls:

@@ -1,6 +1,6 @@
-// $<A|B|C>:<NAME>[=<decimal>|?]*HH CR LF. XOR covers target through argument.
-// No command side effect until checksum and complete terminator are accepted.
-// 32-character body, 100ms timeout. Numeric configuration uses signed decimal.
+
+
+
 module v3_command_parser_reference #(parameter integer TIMEOUT=10000000)(
  input wire clk,rst_n,rx_valid,input wire [7:0] rx_data,
  output reg command_valid,output reg [7:0] target,

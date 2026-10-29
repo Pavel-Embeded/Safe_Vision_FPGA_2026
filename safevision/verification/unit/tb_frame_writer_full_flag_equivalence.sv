@@ -1,11 +1,7 @@
 `timescale 1ns/1ps
 `include "safevision_defs.vh"
 
-// Default 640x480 geometry. A per-edge invariant checks the registered full
-// predicate against the original counter equality, including stalls, frame
-// completion, overflow, rejected starts, new frames and asynchronous reset.
-// Every accepted write is also checked against an independent pixel/address
-// oracle; neither the writer's counter nor its full flag drives that oracle.
+
 module tb_frame_writer_full_flag_equivalence;
     localparam integer PIXELS = 640*480;
     localparam integer WORDS = PIXELS/2;
@@ -62,7 +58,7 @@ module tb_frame_writer_full_flag_equivalence;
         end
     endtask
 
-    // Fixed seed and actual backpressure; a stalled word must remain stable.
+
     always @(negedge clk)begin
         if(!rst_n)begin ready_lfsr=32'h13579bdf;wr_ready=0;end
         else begin
@@ -97,8 +93,8 @@ module tb_frame_writer_full_flag_equivalence;
             end
         end else previous_stall=0;
     end
-    // Sample after nonblocking updates, so a one-cycle late flag is rejected
-    // immediately at the final pixel, rather than hidden by the test driver.
+
+
     always @(posedge clk)begin
         #1;
         invariant_edges=invariant_edges+1;
@@ -153,8 +149,7 @@ module tb_frame_writer_full_flag_equivalence;
               "exact-length frame completes once with CRC and valid slot");
         check(stalled_edges>1000,"word stability checked under deterministic backpressure");
 
-        // A rejected start did not clear px_cnt in the original implementation.
-        // Retaining full here is essential to exact reachable-state equivalence.
+
         phase_active=0;
         @(negedge clk);slot_base=32'h003f0000;start=1;
         @(posedge clk);#2;

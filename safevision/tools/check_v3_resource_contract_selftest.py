@@ -1,4 +1,4 @@
-"""Negative release-contract controls, not FPGA functional/STA acceptance."""
+
 import argparse,copy,json,tempfile
 from pathlib import Path
 from v3_sources import ROOT,FLOW,native_parameters

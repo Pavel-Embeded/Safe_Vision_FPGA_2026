@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_coords_fade",
-  "suite": "v3",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "7afd682f0422698fe68f708b52639e3286953bee562d80cf3e110a48067eceef",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_remaining\\tb_v3_coords_fade\\tb_v3_coords_fade"
-}

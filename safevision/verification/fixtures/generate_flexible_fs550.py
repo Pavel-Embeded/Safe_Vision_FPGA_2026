@@ -1,8 +1,6 @@
-"""Independent arbitrary-name FAT32 card: LFN, failed BMP, aspect fit and PCM.
 
-Generated files stay in the isolated XSim output. Pillow decodes the source BMP;
-integer floor-coordinate mapping supplies every canonical output RGB565 word.
-"""
+
+
 import argparse, io, json, struct
 from pathlib import Path
 from PIL import Image
@@ -33,7 +31,7 @@ def generate(out,bad_primary=False):
   b=bytearray(32);b[:11]=raw_alias;b[11]=32;struct.pack_into('<H',b,26,c);struct.pack_into('<I',b,28,len(blob))
   record=dict(name=name,cluster=c,size=len(blob),key=len(entries)+1);file_records.append(record);entries.append(b)
   return record
- # The first lexicographic candidate is rejected without consuming cache slot0.
+
  broken=add('000 broken picture.bmp','BROKEN~1BMP',b'XX'+bytes(52))
  pcm=[];waves=[];N=600
  for track in range(4):
@@ -42,7 +40,7 @@ def generate(out,bad_primary=False):
   fmt=struct.pack('<HHIIHH',1,2,48000,192000,4,16)
   body=b'WAVEfmt '+struct.pack('<I',16)+fmt+b'JUNK'+struct.pack('<I',1)+b'x\0data'+struct.pack('<I',len(payload))+payload
   waves.append(b'RIFF'+struct.pack('<I',len(body))+body)
- # First three WAVs intentionally differ from the exact-name later companions.
+
  add('First unrelated.wav','FIRST~1 WAV',waves[2])
  add('Second unrelated.wav','SECOND~1WAV',waves[3])
  add('Third unrelated.wav','THIRD~1 WAV',waves[1])
@@ -77,7 +75,7 @@ def generate(out,bad_primary=False):
  assert len(directory)<32*512
  card[3*512:3*512+len(directory)]=directory
  (out/'resident_card.mem').write_text(''.join(f'{b:02x}\n' for b in card),encoding='ascii')
- # Slot1 uses the second directory WAV; slot2 uses the third; exact names win.
+
  tracks=[2 if bad_primary else 0,3,1,2]
  (out/'lifecycle_pcm.mem').write_text(''.join(f'{pcm[t*N+n]:08x}\n' for t in tracks for n in range(N)),encoding='ascii')
  keys=sum(r['key']<<(16*i) for i,r in enumerate(image_records[:4]))

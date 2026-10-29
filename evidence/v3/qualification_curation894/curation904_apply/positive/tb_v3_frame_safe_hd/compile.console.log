@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq74/source/safevision/rtl/video/v3_frame_safe_select.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_frame_safe_select
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq74/source/safevision/verification/unit/tb_v3_frame_safe.sv" into library work
-INFO: [VRFC 10-311] analyzing module v3_frame_safe_test
-INFO: [VRFC 10-311] analyzing module tb_v3_frame_safe_base
-INFO: [VRFC 10-311] analyzing module tb_v3_frame_safe_hd

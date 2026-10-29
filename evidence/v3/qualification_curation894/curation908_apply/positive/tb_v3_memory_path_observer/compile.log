@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate852/safevision/rtl/memory/v3_memory_path_observer.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_memory_path_observer
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate852/safevision/verification/unit/tb_v3_memory_path_observer.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_memory_path_observer

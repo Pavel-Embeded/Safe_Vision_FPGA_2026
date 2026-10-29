@@ -37,7 +37,7 @@ module tb_frame_integrity #(parameter integer ACK_FIRST=0,RESPONSE_GAP=2,SOURCE_
      end
    end else if(busy&&!drop)begin
      if(pending>0)begin
-       // Variable latency and gaps exercise the non-backpressured response.
+
        if(delay_count==RESPONSE_GAP)begin
          valid<=1;data<=memory[physical_index(target_addr)+index];
          index=index+1;pending=pending-1;delay_count=0;
@@ -78,8 +78,8 @@ module tb_frame_integrity #(parameter integer ACK_FIRST=0,RESPONSE_GAP=2,SOURCE_
  endtask
  integer n,corrupt;
  initial begin
-   // Constants independently produced by Python zlib.crc32 on little-endian
-   // words 0x76540000..0x7654007f; no DUT CRC function in the oracle.
+
+
    for(n=0;n<4;n=n+1)begin
      reset_all;build(n[0],n[1],128);verify_frame;
      check(pass&&!gfault&&blocks==2&&words==128,"complete top/bottom image in either slot verifies");
@@ -94,9 +94,8 @@ module tb_frame_integrity #(parameter integer ACK_FIRST=0,RESPONSE_GAP=2,SOURCE_
      check(gba==((corrupt/64)*256),"readback reports first bad block address");
      reset_all;build(0,0,128);verify_frame;
      memory[corrupt]=memory[corrupt]^32'h00010000;play;
-     // A fast response can detect a bad second block while the previously
-     // verified bank is still draining. Fault priority may truncate THAT good
-     // bank; the safety guarantee is that no pixel from the bad bank escapes.
+
+
      check(dfault&&!ddone&&pixels<=(corrupt<64?0:128),"retention/read corruption emits no pixel from bad block");
      check(dba==((corrupt/64)*256),"playback reports first bad block address");
    end

@@ -1,9 +1,6 @@
-"""Declaration-aware native bus and every actual SYS reset clone proof.
 
-Uses unmodified TD883 raw captures and semantic parser controls only. These
-checks never approve STA or bitstreams. Original3-positive/24-refusal gate
-remains independent and mandatory.
-"""
+
+
 from pathlib import Path
 import argparse,hashlib,importlib,json,re,sys,xml.etree.ElementTree as ET
 

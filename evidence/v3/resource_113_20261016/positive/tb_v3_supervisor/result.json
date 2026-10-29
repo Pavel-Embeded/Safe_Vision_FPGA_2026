@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_supervisor",
-  "suite": "v3_board",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "974bb9657d146e99ecaf7d5444a49d3a7a836889cb8c43eaca7bfff996d02e61",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\catalog_carry_remaining\\tb_v3_supervisor\\tb_v3_supervisor"
-}

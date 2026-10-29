@@ -1,4 +1,4 @@
-"""Bind the exact REF-domain admission register; PCM paths remain identical."""
+
 from pathlib import Path
 import argparse,hashlib,json,subprocess
 ROOT=Path(__file__).resolve().parents[2]
@@ -15,8 +15,8 @@ def check(root):
  raw=subprocess.check_output(['git','-C',str(root),'cat-file','blob',PARENT+':'+SOURCE])
  if hashlib.sha256(raw).hexdigest()!=PARENT_SHA:raise ValueError('frozen audio assembly changed')
  if (root/SOURCE).read_text('utf-8-sig')!=transform(raw.decode('utf-8-sig')):raise ValueError('audio source changed beyond admission register')
- # The complete-body comparison proves every hard sector-room, FIFO ready,
- # PCM tag, reset epoch, data path and output handshake remains in place.
+
+
  return dict(accepted=True,parent_commit=PARENT,parent_source_sha256=PARENT_SHA,source_sha256=hashlib.sha256((root/SOURCE).read_bytes()).hexdigest(),tool_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),scope='Exact complete-body transformation; one REF cycle of admission lookahead only. Native PCM, admission/reset tests and strict routed STA are separate.',admission_delay_ref_cycles=1,added_state_bits=4,current_sector_room_retained=True,pcm_data_tag_handshake_unchanged=True,global_and_media_reset_epochs_unchanged=True,library_default_bypass=True,production_selected_by='PREFILL_PIPELINE defaults to DIRECT_RING_COMPARE',clock_or_timing_constraints_changed=False,hardware_verified=False)
 def main():
  p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,default=ROOT);p.add_argument('--output',type=Path,required=True);a=p.parse_args()

@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 `include "safevision_defs.vh"
-// Feed 65536 physical entries through the real byte handshake. No forced DUT
-// state/counter: the generic zero-reserved diagnostic key must never wrap.
+
+
 module tb_v3_directory_limit550;
  reg clk=0,rst_n=0,start=0;always #5 clk=~clk;
  wire scan_done,bad,en,dr,ev,ws,wr;wire[7:0] ec,ed;wire[31:0] addr,cur;wire[15:0] idx;

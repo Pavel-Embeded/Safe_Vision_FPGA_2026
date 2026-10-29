@@ -1,9 +1,0 @@
-{
-  "top": "tb_a_basics",
-  "suite": "legacy_a",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": true,
-  "original_runner_result_sha256": "e11f9505d5403d37418f5e9c94049647efc08733d04705b413502458af518d7a",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_106_20261016\\positive\\tb_a_basics"
-}

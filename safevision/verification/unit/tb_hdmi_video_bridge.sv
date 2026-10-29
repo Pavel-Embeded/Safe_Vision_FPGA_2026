@@ -17,7 +17,7 @@ module hdmi_bridge_case #(parameter integer HD=0)(output reg done=0);
  always @(negedge clk)if(rst&&!done)begin
   cycle=cycle+1;
   if(!injected&&y==1&&x==200)begin stall=32;injected=1;end
-  // At most three short stalls per HD line: below the 16-item queue bound.
+
   if(stall>0)begin ready=0;stall=stall-1;end else ready=(cycle%601>=3);
  end
  always @(posedge clk)if(rst&&!done)begin

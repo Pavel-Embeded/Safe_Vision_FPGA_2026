@@ -21,8 +21,8 @@ module handbook_packed_case #(parameter PHASE=0)(output reg done=0,output intege
   @(negedge pix);cv=0;prepare=1;prepared=row;@(negedge pix);prepare=0;repeat(8)@(negedge pix);
   for(x=0;x<640;x+=step)begin sx=x;sy=row;cv=1;@(posedge pix);#1;
    expected={p(0,row,x),p(0,row,x),p(1,row,x),p(1,row,x)};comparisons+=4;
-   // fx=fy=0: only the current column is consumed by either scaler. Both
-   // vertical aliases must return the same physical source row.
+
+
    if({a00,a01,b00,b01}!==expected||pf||sf)begin errors++;if(errors<8)$display("[FAIL] packed decimation phase=%0d mode=%0d row=%0d sx=%0d want=%h got=%h",PHASE,mode,row,x,expected,{a00,a01,b00,b01});end
    @(negedge pix);
   end cv=0;repeat(4)@(negedge pix);
@@ -30,8 +30,8 @@ module handbook_packed_case #(parameter PHASE=0)(output reg done=0,output intege
  initial begin
   #100;rst=1;
   for(m=2;m<=3;m++)begin mode=m;step=m==2?2:4;
-   // More than four display rows proves bank wrap and prevents aliases from
-   // passing with a single preloaded pattern. Includes the bottom source row.
+
+
    for(r=0;r<480;r+=step)begin fill(r);line(r);end
   end
   @(negedge pix);prepare=1;prepared=0;@(negedge pix);prepare=0;repeat(8)@(negedge pix);

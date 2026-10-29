@@ -1,7 +1,6 @@
 `include "fault_code_defs.vh"
-// SYS-domain supervisor. All inputs below are already atomic snapshots or
-// synchronized event pulses. Idle media/memory engines do not arm watchdogs.
-// The fixed raster heartbeat remains required while a static image is shown.
+
+
 module v3_hd_supervisor_reference #(
  parameter integer CLK_HZ=100000000,BOOT_CYCLES=2000000000,
  parameter integer FRAME_CYCLES=10000000,MEM_CYCLES=20000000,
@@ -18,10 +17,8 @@ module v3_hd_supervisor_reference #(
  output wire fault_valid,fatal_latched,output wire[31:0] fault_ts,
  output wire err_push,output reg[7:0] err_code,output reg[3:0] err_src,
  output reg[2:0] err_level,output reg[31:0] err_ts);
- // A shared 1 ms enable avoids five independent 100 MHz wide counters.
- // Heartbeats clear immediately; expiry occurs on a shared tick, within one
- // tick before the exact cycle interval. At CLK_HZ=1000 the unit is one clock.
- // Non-integral-kHz test clocks retain exact cycle counting (TICK_DIV=1).
+
+
  localparam integer TICK_DIV=(CLK_HZ>=1000 && CLK_HZ%1000==0)?CLK_HZ/1000:1;
  localparam integer BOOT_LIMIT=(BOOT_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer FRAME_LIMIT=(FRAME_CYCLES+TICK_DIV-1)/TICK_DIV;
@@ -35,16 +32,15 @@ module v3_hd_supervisor_reference #(
  reg[width_for(PROGRESS_LIMIT)-1:0] progress_timer;
  reg[width_for(WINDOW_LIMIT)-1:0] window_timer;
  reg[width_for(TICK_DIV-1)-1:0] ms_timer;
- // For unsigned32-bit a,b: (a>=b && a-b>=8) iff
- // {0,a}>={0,b}+33'd8. Keep the carry; b near0xffffffff must
- // never wrap the threshold into a false alarm. Snapshot timing is unchanged.
+
+
  reg[32:0] video_limit,audio_limit;
- // Force the documented carry chain on these measured constant-add paths;
- // the low three constant bits can otherwise shorten below min_ripple_len.
+
+
  (* use_ripple=1 *) wire[32:0] next_video_limit={1'b0,video_underflows}+33'd8;
  (* use_ripple=1 *) wire[32:0] next_audio_limit={1'b0,audio_underflows}+33'd8;
  reg[31:0] last_hd,ms_now;
- // Predict exactly the next counter state; no event receives an extra cycle.
+
  wire watch_tick;
  generate if(TICK_DIV==1)begin:every_cycle_tick
   assign watch_tick=1'b1;
@@ -61,8 +57,8 @@ module v3_hd_supervisor_reference #(
   else if(window_done || media_reset)window_last<=(WINDOW_LIMIT==1);
   else if(watch_tick)window_last<=window_timer==WINDOW_LIMIT-2;
  end
- // Four byte comparisons run in parallel. Preserve these small group nodes
- // so area mapping cannot turn a33-bit comparison into a serial LUT chain.
+
+
  (* keep="true" *) wire[3:0] video_gt,video_eq,audio_gt,audio_eq;
  genvar group;
  generate for(group=0;group<4;group=group+1)begin:compare_byte
@@ -151,9 +147,8 @@ module v3_hd_supervisor_reference #(
   err_level[0]=!((priority_selection[0] && cache_ready) || (priority_selection[8] && fatal_latched) || priority_selection[10]);
  end
  assign err_push=|pending;
- // Keep the late recovery/FATAL inputs on the final OR stage.
- // Same busy predicate for ALL8 state encodings, including invalid6/7.
- // Keep its three state bits plus two latches in one5-input recovery cone.
+
+
  localparam[2:0] RECOVERY_IDLE=3'd0,RECOVERY_LOCKED=3'd5;
  (* keep="true" *) wire safe_recovery=(recovery_state!=RECOVERY_IDLE && recovery_state!=RECOVERY_LOCKED) || recover_safe || fatal_latched;
  (* keep="true" *) wire safe_ordinary=manual_safe || !cache_ready || (fault_valid && fault_level>=3);
@@ -171,10 +166,8 @@ module v3_hd_supervisor_reference #(
    failed_old<=0;hd_fault_old<=0;rejected_old<=0;fallback_old<=0;for(i=0;i<11;i=i+1)stamps[i]<=0;
   end else begin
    pending<=(pending & ~selection) | new_events;
-   // An unoccupied slot has no observable timestamp. Track the current time
-   // until its first event captures pending=1, then hold through arbitration.
-   // Thus the timestamp on every valid event is exactly the original ms_now,
-   // including simultaneous clear/retrigger; wide CE no longer decodes events.
+
+
    for(i=0;i<11;i=i+1)if(!pending[i])stamps[i]<=ms_now;
    if(!pending[0])media_first<=media_code;
    fault_i_old<=integrity_fault;fault_b_old<=bus_fault;failed_old<=media_failed;

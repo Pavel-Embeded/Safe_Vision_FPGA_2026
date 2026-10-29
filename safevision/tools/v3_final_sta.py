@@ -1,9 +1,6 @@
-"""Fresh-process STA of one frozen routed database; no place/route or DB writes.
 
-TD 6.2 report_clock_summary mutates temporary clock metadata. Formal timing,
-exceptions and zero-defect health are collected first. Clock-tree inspection
-and its post-check are separately preserved; detailed results must stay exact.
-"""
+
+
 import hashlib,json,re,shutil,subprocess
 from pathlib import Path
 from datetime import datetime,timezone
@@ -47,7 +44,7 @@ def reassess(exe,folder,sdc_paths,audit_path=None,env=None,route_process_exit_co
  commands+=[' report_timing_summary -ep_num 200 -path_num 3 -file route.timing',' report_timing_status -file route.status',
  ' report_timing_exception -ep_num 200 -path_num 8 -file route.exceptions',' check_timing -verbose -file route.check',' export_sdc -file route.derived.sdc',
  ' report_cells -bram -file route.bram.adc -export_adc',
- # All formal reports above use the exact same pre-clock-summary clock graph.
+
  ' report_clock_summary -levels 20 -expand_buckets -debug -file route.clocks',
  ' check_timing -verbose -file after_clock_report.check',
  ' report_timing_summary -ep_num 200 -path_num 3 -file after_clock_report.timing',

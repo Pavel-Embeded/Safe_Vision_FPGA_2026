@@ -1,5 +1,5 @@
-// Same-domain demo status. FSM mode mapping is private to the stage-1 exercise.
-// Indices 0..37; text padded to a fixed width for mode strings.
+
+
 module osd_status_text(input wire [7:0] char_index,
     input wire [1:0] mode, input wire [3:0] fps_tens,fps_ones,
     input wire sd_ok, output reg [7:0] char_code);

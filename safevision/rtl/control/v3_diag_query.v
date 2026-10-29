@@ -1,6 +1,6 @@
-// Read-only on-demand MEM snapshot. One outstanding query, tagged return.
-// Request data remains fixed until acknowledged; the selected MEM word is
-// sampled on the response acceptance edge. Reset abandons pending telemetry.
+
+
+
 module v3_diag_query(
  input wire sys_clk,sys_rst_n,mem_clk,mem_rst_n,
  input wire request_valid,input wire[3:0] request_selector,

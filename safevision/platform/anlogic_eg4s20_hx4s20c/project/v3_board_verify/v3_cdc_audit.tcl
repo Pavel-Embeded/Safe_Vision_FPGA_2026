@@ -1,4 +1,4 @@
-# Normal Tcl only. Not read_sdc. Object matches are not timing closure.
+
 set ::v3_audit_log [open constraint.objects.tsv w]
 puts $::v3_audit_log "label\tmatched_objects"
 proc v3_expect_objects {label objects} {

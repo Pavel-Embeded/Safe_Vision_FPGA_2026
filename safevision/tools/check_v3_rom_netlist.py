@@ -1,4 +1,4 @@
-"""Check every graphics/catalog ROM data bit, including ninth-bit descriptors."""
+
 import argparse,hashlib,json,re,sys
 from pathlib import Path
 def check_roms(text,root):
@@ -42,8 +42,8 @@ def check_roms(text,root):
   spectrum=(root/'safevision/rtl/video/v3_audio_spectrum.v').read_text(encoding='utf-8-sig')
   shared=bool(re.search(r'reg\s*\[8:0\]\s+shared_ram\s*\[0:1023\]',spectrum))
   if shared:
-   # One physical DP9 RAM: quarter coefficients are split into two nine-bit
-   # words each. Both display banks and every unused word start at zero.
+
+
    words=[0]*1024
    for i,v in enumerate(values[:128]):words[2*i]=v&511;words[2*i+1]=(v>>9)&127
    if packed_ticker:
@@ -68,7 +68,7 @@ def check_roms(text,root):
    parity=sum(((v>>8)&1)<<i for i,v in enumerate(words)).to_bytes(128,'little')
    reviewed_widths=['9','9']
   else:
-   # TD maps each logical16 word into physical18; bits8/17 are in INITP.
+
    expected=b''.join(bytes((v&255,(v>>9)&255))for v in values)
    parity=sum((((v>>8)&1)|(((v>>17)&1)<<1))<<(2*i)for i,v in enumerate(values)).to_bytes(128,'little')
    reviewed_widths=['18','18']

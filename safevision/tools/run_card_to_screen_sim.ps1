@@ -1,6 +1,6 @@
-# Full card -> FAT32 -> BMP -> B write -> shared memory -> A display.
-# All 921654 file bytes are explicit card contents; all 307200 output pixels
-# are checked. The front-only tb_card_to_screen remains independently runnable.
+
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$ModelSimBin=$env:MSIM_BIN,

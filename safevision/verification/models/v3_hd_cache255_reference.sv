@@ -1,8 +1,6 @@
 `include "pixel_format_defs.vh"
-// Eight source rows: four for current and four for fade target. Each row is
-// split into even/odd pixel banks; each bank has one memory write port and one
-// synchronous pixel read port. A row is published only after its producer CRC
-// matches the complete landed row. Five bounded bursts permit SDRAM refresh.
+
+
 module v3_hd_cache255_reference #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_PROFILE=0)(
  input wire mem_clk,mem_rst_n,pixel_clk,pixel_rst_n,
  input wire write_clk,write_rst_n,prepare_valid,input wire[9:0] prepare_sy,
@@ -35,8 +33,8 @@ module v3_hd_cache255_reference #(parameter integer TIMEOUT=4000000,PACKED_ROWS=
   .src_valid(reply_pending),.src_ready(reply_ready),
   .dst_clk(pixel_clk),.dst_rst_n(pixel_rst_n),.dst_data(response_data),
   .dst_valid(response_valid),.dst_ready(response_ready));
- // Descriptor: [23:22] current slot, [21:20] target slot, [19] dual,
- // [18:9] row0, [8:0] row1 (all rows are 0..479).
+
+
  reg[DESC_W-1:0] descriptor;
  wire[25:0] descriptor_extended=descriptor;wire[25:0] response_extended=response_data;
  wire[1:0] memory_scale=HANDBOOK_PROFILE?descriptor_extended[25:24]:0;reg[2:0] state;reg first_half_announced;
@@ -44,8 +42,8 @@ module v3_hd_cache255_reference #(parameter integer TIMEOUT=4000000,PACKED_ROWS=
  reg[2:0] item,bank;reg[1:0] slot;reg[9:0] row;
  reg[1:0] tag_slot[0:7];reg[9:0] tag_row[0:7];reg[7:0] tag_valid;
  reg[8:0] word_column;reg[6:0] burst_count;reg[31:0] crc,expected,timer;
- // Dual-stream order is A0,B0,A1,B1: publish the nearer row for BOTH
- // streams before spending bus time on the farther interpolation neighbor.
+
+
  wire stream=descriptor[19]&&item[0];
  wire row_select=descriptor[19]?item[1]:item[0];
  wire[1:0] wanted_slot=stream?descriptor[21:20]:descriptor[23:22];
@@ -57,13 +55,8 @@ module v3_hd_cache255_reference #(parameter integer TIMEOUT=4000000,PACKED_ROWS=
  assign dma_busy=state!=IDLE;
  assign dma_progress=state==READ && rd_valid;
  wire writing=state==READ && rd_valid;
- // CRC is the same linear IEEE transform, expressed as bounded byte XORs.
- // Keep only the two half-word partials to avoid a serial area-mapped XOR chain
- // from the SDRAM BRAM output through CRC comparison into tag publication.
- // expected holds the inverse32-step CRC state of the looked-up row CRC.
- // Complete it serially in32 MEM clocks. A row has320 accepted words, so
- // it is ready before the last beat even at one word per clock. No external
- // handshake, fault edge, signature or CRC accumulator timing is changed.
+
+
  reg[5:0] expected_steps;
  wire[31:0] inverse_unpoly=expected^(expected[31]?32'hedb88320:32'd0);
  wire[31:0] inverse_step={inverse_unpoly[30:0],expected[31]};
@@ -139,9 +132,8 @@ module v3_hd_cache255_reference #(parameter integer TIMEOUT=4000000,PACKED_ROWS=
    case(state)
     IDLE:if(cmd_valid&&cmd_ready)begin descriptor<=cmd;item<=0;state<=SELECT;first_half_announced<=0;end
     SELECT:if(item==item_count)state<=REPLY;
-     // Response bit18 (request row0[9], always zero for 480 rows) marks an
-     // early pair publication. Both row fields contain the validated row0.
-     // A later bit18=0 response preserves the complete-descriptor contract.
+
+
      else if(item==(descriptor[19]?2:1)&&!first_half_announced)begin
       if(!reply_pending)begin
        reply<={memory_scale,descriptor[23:19],1'b1,descriptor[17:9],descriptor[17:9]};

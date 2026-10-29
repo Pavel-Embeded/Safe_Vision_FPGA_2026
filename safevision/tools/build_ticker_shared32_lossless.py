@@ -1,4 +1,4 @@
-"""Pack the existing32-glyph bitmap into the unused9-bit FFT RAM words."""
+
 from pathlib import Path
 import argparse,hashlib,json
 ROOT=Path(__file__).resolve().parents[2]
@@ -39,7 +39,7 @@ def build(root):
  for value in range(256):
   if (value>>3)!=value//8:raise ValueError('8-bit division identity differs')
  rom=''.join(f'{v:03x}\n'for v in merged).encode('ascii')
- header='// Full32-character bitmap, deduplicated and cropped only across zero pixels.\nfunction [17:0] packed_ticker_descriptor;\n input [4:0] index;\n begin case(index)\n'
+ header='function [17:0] packed_ticker_descriptor;\n input [4:0] index;\n begin case(index)\n'
  header+=''.join(f"  5'd{i}:packed_ticker_descriptor=18'h{v:05x};\n"for i,v in enumerate(descriptors))
  header+="  default:packed_ticker_descriptor=18'd0;\n endcase end\nendfunction\n";header=header.encode('ascii')
  provenance=dict(schema=1,message=meta['message'],message_characters=32,unique_glyphs=len(unique),cell_size=[16,16],stored_y_first=1,stored_y_count=14,font_start_word=384,font_payload_words=len(payload),font_word_bits=8,source_bitmap_sha256=digest(original),source_shared16_sha256=digest(source_bytes),combined_sha256=digest(rom),descriptor_sha256=digest(header),decoded_bit_comparisons=compared,all_pixels_preserved=True,coefficient_and_display_prefix_preserved=merged[:384]==legacy[:384],division_domain=list(range(256)),division_rule='floor(n/8) = n >> 3 for n in0..255',descriptors=descriptors,font_license='SIL Open Font License 1.1',font_source_provenance='safevision/assets/fonts/v3_ticker16.provenance.json')

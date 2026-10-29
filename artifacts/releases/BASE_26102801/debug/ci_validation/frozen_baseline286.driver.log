@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "D:\Codex\sv_scroll261028\frozen_baseline286.py", line 29, in <module>
-    assert completed.returncode == 0, str(log)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: D:\Codex\sv_scroll261028\frozen_baseline286\test_current_base_ci.py.log

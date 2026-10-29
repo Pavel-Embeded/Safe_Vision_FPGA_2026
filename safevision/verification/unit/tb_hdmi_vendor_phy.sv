@@ -1,5 +1,5 @@
-// Actual official PHY + actual EG ODDR simulation primitive, no serializer stub.
-// Searches a fixed startup offset, then compares EVERY bit of all 1024 words.
+
+
 `timescale 1ns/1ps
 module hdmi_phy_fixture #(parameter integer HD=0)(output reg done=0);
     localparam real SH=HD?1.347:3.972;

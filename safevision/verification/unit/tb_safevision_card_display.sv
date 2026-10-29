@@ -1,19 +1,18 @@
-// Complete synthesized board RTL with a 50 MHz SD, 100 MHz SYS, 40 MHz MEM and BASE/720p pixel clocks.
-// SD card: real BMP byte stream in a synthetic FAT32 volume. FIFO: actual
-// vendor ERAM/FIFO Verilog. Memory: strict application contract model, not AC.
-// HDMI: vendor core/PHY contract stubs; pixel checks stop at accepted AXIS data.
+
+
+
 `timescale 1ns/1ps
 `include "pixel_format_defs.vh"
 module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=4,BMP_TOP_DOWN=0);
     localparam integer SCREEN_W=HD?1280:640,SCREEN_PIX=HD?921600:307200;
     localparam integer W = 640;
     localparam integer H = 480;
-    localparam integer FRAME_PIX = W*H;                       // 307200
-    localparam integer FILE_BYTES = 54 + FRAME_PIX*3;         // 921654
-    localparam integer FILE_SECTORS = (FILE_BYTES + 511)/512; // 1801
+    localparam integer FRAME_PIX = W*H;
+    localparam integer FILE_BYTES = 54 + FRAME_PIX*3;
+    localparam integer FILE_SECTORS = (FILE_BYTES + 511)/512;
     localparam integer CLK_HZ = 50_000_000;
 
-    // 卷几何（与 tb_card_to_screen 同布局）
+
     localparam [31:0] VOL_BASE = 32'd16;
     localparam [7:0]  SPC      = 8'd32;
     localparam [15:0] RSVD     = 16'd1;
@@ -22,28 +21,23 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
     localparam [31:0] TOTSEC   = 32'd8192;
     localparam [31:0] ROOTCLUS = 32'd2;
     localparam [31:0] FILE_CLUS = 32'd3;
-    localparam integer FILE_CLUS_N = (FILE_SECTORS + 31)/32;  // 57
-    localparam [31:0] FILE_CLUS_LAST = FILE_CLUS + FILE_CLUS_N - 1;  // 59
+    localparam integer FILE_CLUS_N = (FILE_SECTORS + 31)/32;
+    localparam [31:0] FILE_CLUS_LAST = FILE_CLUS + FILE_CLUS_N - 1;
     localparam [31:0] VOL_FAT_LBA   = 32'd1;
     localparam [31:0] VOL_ROOT_LBA  = 32'd3;
     localparam [31:0] VOL_FILE0_LBA = 32'd35;
 
-    localparam [31:0] SLOT1_WORD = `SV_IMG1_BASE >> 2;        // 163840
-    localparam [31:0] SLOT0_WORD = `SV_IMG0_BASE >> 2;        // 0
+    localparam [31:0] SLOT1_WORD = `SV_IMG1_BASE >> 2;
+    localparam [31:0] SLOT0_WORD = `SV_IMG0_BASE >> 2;
 
-    // ---------------------------------------------------------------- 期望值
-    // ★ 唯一真相：写卡用它、算期望也用它
+
     function [23:0] px24;
         input integer x;
         input integer y;
         reg [7:0] red,green,blue;
         begin
-            // Narrow EACH channel before concatenation. An unsized multiply
-            // inside a concat silently discarded R/G in the old test pattern.
-            // Every channel varies in x and y, so row order and channel order
-            // are independently visible to the memory and AXIS scoreboards.
-            // Mix coordinate high bits into visible RGB565 blue bits too;
-            // otherwise a +256 row/column error could repeat the same color.
+
+
             red=x^y;green=x+y;
             blue=(x*3)^(y*5)^((x>>8)<<6)^((y>>8)<<5);
             px24={red,green,blue};
@@ -68,7 +62,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
         default:image_mask24=0;
       endcase
     endfunction
-    // Independently precomputed RGB565 masks, not the file-byte conversion.
+
     function [15:0] image_mask565(input integer image_id);
       case(image_id)
         1:image_mask565=16'h59f8;
@@ -82,28 +76,28 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
     initial begin
         integer i;
         for (i = 0; i < 54; i = i + 1) bmp_hdr[i] = 8'h00;
-        bmp_hdr[0]  = 8'h42; bmp_hdr[1] = 8'h4D;                 // "BM"
+        bmp_hdr[0]  = 8'h42; bmp_hdr[1] = 8'h4D;
         bmp_hdr[2]  = (FILE_BYTES) & 8'hFF;
         bmp_hdr[3]  = (FILE_BYTES >> 8) & 8'hFF;
         bmp_hdr[4]  = (FILE_BYTES >> 16) & 8'hFF;
         bmp_hdr[5]  = (FILE_BYTES >> 24) & 8'hFF;
-        bmp_hdr[10] = 54;                                        // bfOffBits
-        bmp_hdr[14] = 40;                                        // biSize
+        bmp_hdr[10] = 54;
+        bmp_hdr[14] = 40;
         bmp_hdr[18] = W & 8'hFF;  bmp_hdr[19] = (W >> 8) & 8'hFF;
-        // Signed biHeight selects bottom-up or top-down on the same media.
+
         bmp_hdr[22] = (BMP_TOP_DOWN ? -H : H) & 8'hFF;
         bmp_hdr[23] = ((BMP_TOP_DOWN ? -H : H) >> 8) & 8'hFF;
         bmp_hdr[24] = ((BMP_TOP_DOWN ? -H : H) >> 16) & 8'hFF;
         bmp_hdr[25] = ((BMP_TOP_DOWN ? -H : H) >> 24) & 8'hFF;
-        bmp_hdr[26] = 1;                                         // biPlanes
-        bmp_hdr[28] = 24;                                        // biBitCount
+        bmp_hdr[26] = 1;
+        bmp_hdr[28] = 24;
         bmp_hdr[34] = (FRAME_PIX*3) & 8'hFF;
         bmp_hdr[35] = ((FRAME_PIX*3) >> 8) & 8'hFF;
         bmp_hdr[36] = ((FRAME_PIX*3) >> 16) & 8'hFF;
         bmp_hdr[37] = ((FRAME_PIX*3) >> 24) & 8'hFF;
     end
 
-    // 卡上文件第 j 个字节（行序自底向上，通道 B,G,R）
+
     function [7:0] filebyte;
         input integer j;
         input integer image_id;
@@ -124,7 +118,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
         end
     endfunction
 
-    // 光栅像素 k（k = y*W + x）的期望 RGB565
+
     function [15:0] exp565_k;
         input integer k;
         begin
@@ -134,8 +128,8 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
 
     task mbr_set_card0;
         begin
-            u_card.sector[450] = 8'h0C;             // FAT32 LBA (XINT13)
-            u_card.sector[454] = VOL_BASE[7:0];     // 分区起始 LBA（小端）
+            u_card.sector[450] = 8'h0C;
+            u_card.sector[454] = VOL_BASE[7:0];
             u_card.sector[455] = VOL_BASE[15:8];
             u_card.sector[456] = VOL_BASE[23:16];
             u_card.sector[457] = VOL_BASE[31:24];
@@ -152,13 +146,12 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
         integer c, s, o, j, image_id, first_cluster, last_cluster, file_lba;
         begin
             u_card.mk_fat32_dbr(16'd512, SPC, RSVD, NFAT, FATSZ, ROOTCLUS, TOTSEC, 1'b1);
-            // Four DIFFERENT files use separate 57-cluster chains. The third
-            // crosses cluster 127/128 into FAT sector 2; all remain bounded by
-            // this explicitly synthetic small FAT32 volume.
+
+
             u_card.vol_zero(VOL_FAT_LBA);
             u_card.vol_zero(VOL_FAT_LBA+1);
             u_card.vol_set_le(VOL_FAT_LBA, 16'd8, 32'h0FFF_FFFF, 3'd4);
-            // 根目录：4 条目录项
+
             u_card.vol_zero(VOL_ROOT_LBA);
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd0,  "SV0001  BMP", 8'h20, FILE_CLUS, FILE_BYTES);
             u_card.mk_dir_entry(VOL_ROOT_LBA, 16'd32, "SV0002  BMP", 8'h20, FILE_CLUS+FILE_CLUS_N, FILE_BYTES);
@@ -171,8 +164,8 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
             for(c=first_cluster;c<last_cluster;c=c+1)
                 u_card.vol_set_le(VOL_FAT_LBA+c/128,(c%128)*4,c+1,3'd4);
             u_card.vol_set_le(VOL_FAT_LBA+last_cluster/128,(last_cluster%128)*4,32'h0FFF_FFFF,3'd4);
-            // Each payload has independent bytes and addresses, so re-reading
-            // the wrong file cannot pass the memory or full-frame scoreboard.
+
+
             for (s = 0; s < FILE_SECTORS; s = s + 1) begin
                 u_card.vol_used[file_lba + s] = 1'b1;
                 for (o = 0; o < 512; o = o + 1) begin
@@ -186,9 +179,6 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
     endtask
 
 
- // SD_HALF_NS=1 stresses producer/FIFO backpressure at 10x source-clock rate.
- // The contract PLL keeps MEM=40MHz and real BASE/HD scan frequencies.
- // This is a functional stress configuration, never a physical PLL model.
  reg clk=0;always #(SD_HALF_NS) clk=~clk;
  reg rst_n=0,btn_next=1,btn_auto=1;
  wire sd_ncs,sd_dclk,sd_mosi,sd_miso,uart_txd;
@@ -213,9 +203,8 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
  always @(posedge dut.mem_clk)if(dut.mem_rst_n)begin
    if(dut.publish_toggle!=pub_d)begin
      publish_count=publish_count+1;
-     // Observe one edge after the publisher changed. The shared engine may
-     // already be reading the OLD active slot; read-busy is not an undrained
-     // write. Check actual outstanding writes, including the final quiet gap.
+
+
      if(dut.adapter.wcnt!=0||dut.app_wr_en||dut.prod_wr_busy||
         dut.adapter.state==1||dut.adapter.state==2)unsafe_publish=unsafe_publish+1;
    end
@@ -304,8 +293,8 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
    wait(full_frames>=2);
    check(pixel_bad==0&&tag_bad==0,"two full BASE/720p AXIS frames: RGB and SOF/EOL pixel-exact");
    before_frames=full_frames;
-   // A second, DIFFERENT image must reach the other slot and the screen;
-   // otherwise a stale buffer could pass a repeated-identical-image test.
+
+
    file_pattern=1;build_volume;
    @(negedge clk);btn_next=0;repeat(70000)@(negedge clk);btn_next=1;
    wait(dut.pl_frame_cnt==2);
@@ -332,8 +321,8 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
    check(dut.pl_frame_cnt>=4&&!dut.integrity_fault&&!dut.playback_fault,"two additional automatic frames pass readback and playback CRC");
    check(dut.underflows==0&&dut.overflows==0&&pixel_bad==0&&tag_bad==0,"automatic swaps retain exact pixels and no underflow");
    check(publish_count>=4&&unsafe_publish==0&&active_writes==0,"automatic mode preserves inactive-slot ownership and publication barriers");
-   // Corrupt one physical stored word AFTER publication. The runtime checker
-   // must report the bad block and the board must enter its BRAM safety scene.
+
+
    injecting_fault=1;compare_axis=0;
    auto_count=(dut.core.display.pix_active_slot==1)?SLOT1_WORD:0;
    dut.memory_ip.mem[auto_count+7]=dut.memory_ip.mem[auto_count+7]^32'h00010000;
@@ -341,13 +330,13 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
    check(dut.playback_bad_addr==auto_count*4,"runtime fault reports first corrupt block byte address");
    wait(dut.safety_active&&dut.safety_level==2);
    check(!dut.tx_reset&&!dut.hdmi_backpressure,"runtime CRC fault switches to red Exit without resetting HDMI");
-   // KEY1/common reset starts a new ownership/signature epoch. A complete
-   // source image must be written and checked again before normal playback.
+
+
    @(negedge clk);rst_n=0;recovered_epoch=1;repeat(100)@(negedge clk);rst_n=1;
    wait(dut.pl_frame_cnt==1);
    check(dut.integrity_pass&&!dut.integrity_fault&&!dut.playback_fault&&dut.sk_frame_ok,"common reset recovers by re-verifying the new complete image");
-   // Re-enable the pixel scoreboard: publication alone does not prove that
-   // the read DMA, FIFO and HDMI stream recovered from the previous fault.
+
+
    before_frames=full_frames;injecting_fault=0;
    wait(full_frames>=before_frames+2);
    check(pixel_bad==0&&tag_bad==0,"two complete post-reset frames have exact RGB and SOF/EOL");

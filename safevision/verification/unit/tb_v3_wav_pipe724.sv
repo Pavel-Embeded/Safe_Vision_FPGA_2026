@@ -9,9 +9,8 @@ module tb_v3_wav_pipe724;
  v3_wav_bounds_reference reference(.clk(clk),.rst_n(rst),.start(start),.context_load(load),.context_enable(enable),.context_in(ctx),.context_out(bc),.first_clus(32'd2),.file_size(size),.track_id(8'd0),.din(din),.din_valid(dv),.din_eof(eof),.din_ready(br),.sample(bsample),.pcm_valid(bv),.pcm_ready(ready),.wav_error(be));
  integer comparisons=0,errors=0,k;reg[31:0] r=32'h753c4ab1,t=32'h18397455,u=32'h19a92371,a,l;
  reg[63:0] assembled64,limit64;reg want_pad,want_size,want_overflow;
- // Derive the restored prefix state using independent64-bit arithmetic.
- // The old111-bit state is arbitrary; only new sideband invariants are
- // established, as any correctly saved mode1 context necessarily does.
+
+
  function[33:0] consistent_bound(input[110:0] f,input[31:0] file_bytes);
   reg[31:0] lim,w;reg[63:0] sum,mask;reg carry,gt;integer st,idx,n;
   begin
@@ -40,7 +39,7 @@ module tb_v3_wav_pipe724;
   for(jj=0;jj<4;jj++)begin
    @(negedge clk);load=0;enable=1;dv=1;din=value[jj*8+:8];
    #1;compare();@(posedge clk);#1;compare();
-   // Keep a whole accepted-byte gap at the critical middle boundary.
+
    if(jj==1)begin @(negedge clk);enable=0;dv=0;@(posedge clk);#1;compare();end
   end
  end endtask
@@ -71,8 +70,8 @@ module tb_v3_wav_pipe724;
    end
    @(negedge clk);load=1;enable=0;start=0;dv=0;eof=0;ready=0;
    size=k%4==0?a+7:(k%4==1?a+8:(k%4==2?a+9:t));din=a[31:24];
-   // Every4th context is arbitrary111-bit state. Other cases explicitly
-   // execute chunk-size or RIFF-size acceptance on the following edge.
+
+
    case(k%4)
     0:ctx={1'b0,1'b0,4'd2,4'd7,{a[23:0],8'd0},l,u,2'd2,1'b0,1'b1,1'b1};
     1:ctx={1'b0,1'b0,4'd1,4'd7,{a[23:0],8'd0},l,u,2'd0,1'b0,1'b0,1'b0};

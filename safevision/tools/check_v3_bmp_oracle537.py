@@ -1,10 +1,6 @@
-"""Read-only independent verification of all BMP542 pixels and bounds551 inputs.
 
-Python standard library only. No RTL, testbench, fixture generator, simulator or
-reference.json claim is used as the numerical oracle. The eight complete cases
-and all38 malformed/valid headers are fixed below. This checks fixture truth;
-simulation, routed timing and the actual display remain separate gates.
-"""
+
+
 import argparse
 import hashlib
 import json
@@ -22,10 +18,8 @@ CASES = (
 )
 WIDTH, HEIGHT = 640, 480
 PIXELS = len(CASES) * WIDTH * HEIGHT
-# name,w,signed_height,bpp,planes,compression,pixel_offset,DIB,signature,
-# supplied_header_bytes,bfSize,directory_size,expected_first_diagnostic.
-# Full input values are fixed, including the intentionally wrapped bfSize in
-# the INT_MIN-height case. Parsed signed geometry must reject it before size.
+
+
 BOUNDS = (
     ('minimum_24', 1, 1, 24, 1, 0, 54, 40, 'BM', 54, 58, 58, 0),
     ('minimum_32', 1, 1, 32, 1, 0, 54, 40, 'BM', 54, 58, 58, 0),
@@ -74,7 +68,7 @@ def require(condition, message):
 
 
 def words(path, digits):
-    """Strict width/count is checked by the caller; newline style is portable."""
+
     with path.open('r', encoding='ascii') as stream:
         for line_number, line in enumerate(stream, 1):
             token = line.strip()
@@ -100,8 +94,8 @@ def check_pixels(root):
     iterator = iter(words(folder / 'bmp542_expected.mem', 4))
     compared, black, case_results = 0, 0, []
     for case_index, (width, height, top, bpp, offset) in enumerate(CASES):
-        # Unbounded Python integers and direct division, independent of the
-        # hardware's iterative subtraction/DDA and its register bit widths.
+
+
         if width * HEIGHT >= height * WIDTH:
             draw_width, draw_height = WIDTH, max(1, height * WIDTH // width)
         else:
@@ -144,7 +138,7 @@ def canonical_header(row):
 
 
 def classify_header(header, supplied, directory_size):
-    """Parse file bytes independently; preserve documented first-error priority."""
+
     if supplied < 54:
         return 0x3b
     if header[:2] != b'BM':
@@ -158,7 +152,7 @@ def classify_header(header, supplied, directory_size):
     if planes != 1 or bpp not in (24, 32) or compression != 0:
         return 0x3a
     stride = ((width * (bpp // 8) + 3) // 4) * 4
-    extent = offset + stride * abs(height)  # No32-bit overflow/wrap permitted.
+    extent = offset + stride * abs(height)
     if offset < 54 or bfsize > directory_size or extent > directory_size or extent > bfsize:
         return 0x3b
     return 0

@@ -1,10 +1,6 @@
-// Actual HDMI left PCM, after volume/priority. All ports use pixel_clk:
-// the existing audio FIFO already performs AUDIO -> PIXEL CDC.
-// Two banks: capture 128 samples (2.67ms at 48k); freeze a completed bank
-// until vblank, then swap. Display RAM is never written during a frame.
-// Each word stores previous/current signed8 samples so steep edges remain
-// connected without a third RAM port; each sample spans two screen columns. Only monitoring samples may be skipped;
-// this module never backpressures the audio path. Full-scale = +/-32 pixels.
+
+
+
 module v3_pcm_waveform #(parameter WIDTH=640,HEIGHT=480)(
  input wire clk,rst_n,frame_start,pcm_valid,input wire[23:0] pcm_left,
  input wire[11:0] x,y,input wire de,

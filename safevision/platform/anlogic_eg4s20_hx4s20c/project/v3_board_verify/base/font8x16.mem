@@ -1,5 +1,5 @@
-// SafeVision original 5x7 drawings expanded to 8x16. ASCII 32..126.
-// Row 0/15 blank; each drawn row repeated twice; bit7 is left.
+
+
 00
 00
 00

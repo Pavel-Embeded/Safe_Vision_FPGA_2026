@@ -1,5 +1,5 @@
-// Cycle-exact saturating CTS interval counter with one-edge-ahead carries.
-// 48 sample intervals, N=6144, first interval discarded as in the reference.
+
+
 module hdmi_acr(input wire pixel_clk,rst_n,sample_valid,
  output reg valid,output reg[19:0]cts,output wire[19:0]n);
  assign n=20'd6144;

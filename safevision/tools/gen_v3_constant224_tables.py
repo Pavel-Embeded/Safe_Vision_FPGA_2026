@@ -1,4 +1,4 @@
-"""Reproduce constant224 blend bitplanes; --check never rewrites tested RTL."""
+
 import argparse
 from pathlib import Path
 import re
@@ -7,8 +7,8 @@ import re
 def tables(bits):
     maximum = (1 << bits) - 1
     width = 4 * (1 << bits)
-    # kind 0=black, 1=channel maximum, 2/3=palette gray. Alpha 0 is
-    # handled by the module's exact background bypass. This table is alpha224.
+
+
     results = [(foreground * 224 + background * 31 + 127) // 255
                for foreground in (0, maximum, maximum // 2, maximum // 2)
                for background in range(1 << bits)]

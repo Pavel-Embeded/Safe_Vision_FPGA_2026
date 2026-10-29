@@ -228,7 +228,7 @@ module tb_v3_hd_command_catalog;
   frame("A:ALPHA=1",1);frame("X:VOL=1",0);frame("C:BAD_NAME=2",0);frame("A:PRESENTATIONX?",0);
   emit(36);emit("A");emit(58);emit("B");repeat(12000)@(negedge clk);
   frame("A:CONTRAST=128",0);
-  // Abort in the middle of the actual multi-cycle name matcher.
+
   emit(36);emit("C");emit(58);@(negedge clk);data="V";rv=1;@(negedge clk);rv=0;#1;rst=0;#2;rst=1;
   frame("C:VOL=73",0);repeat(100)@(negedge clk);
   if(errors==0)$display("[PASS] exact finite-name recognition, unknowns, all consumers, payload/syntax parity, busy-input changes and reset/timeout recovery");
@@ -240,9 +240,7 @@ module tb_v3_hd_command_catalog;
  initial begin #20000000;$display("[FAIL] catalog oracle watchdog errors=1");$finish;end
 endmodule
 
-// Independent cycle-by-cycle comparison with the original parser. Only '$'
-// and target bytes are needed to exercise every timer deadline without name
-// catalog latency differences; repeated '$' restarts and reset interrupt waits.
+
 module parser_timeout_contract #(parameter integer TIMEOUT=2)(input wire clk,start,output reg done=0,output reg[31:0]errors=0);
  reg rst=0,rv=0;reg[7:0]data=0;wire cv,ocv,q,oq,pv,opv;
  wire[7:0]target,otarget,code,ocode;wire[95:0]name,oname;wire signed[31:0]value,ovalue;wire[31:0]rejected,orejected;wire[6:0]id;

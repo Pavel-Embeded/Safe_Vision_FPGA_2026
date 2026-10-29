@@ -1,23 +1,12 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""Extract per-path detail from TD route.timing.
 
-Block model: each path starts at a line 'Slack               : <val>ns'.
-Within a block: 'Begin Point', 'End Point', 'Check Type', 'Data Path Delay'
-and a cell table (lines with LUT/route rows).
 
-Usage:
-  python extract_sta_paths.py <route.timing> [--neg] [--ends SUBSTR ...] [--cells]
-  --neg          : only negative-slack setup blocks
-  --ends S1 S2   : only blocks whose End Point contains any of the substrings
-  --cells        : print the cell/net table of each matched block
-"""
 import re
 import sys
 
 def load_blocks(path):
     txt = open(path, 'r', errors='replace').read()
-    # split on 'Slack               : ' block headers (exactly this report style)
+
     idxs = [m.start() for m in re.finditer(r'^Slack\s+:\s*[-\d.]+ns\s*$', txt, re.M)]
     blocks = []
     for i, s in enumerate(idxs):
@@ -34,7 +23,7 @@ def slack_of(block):
     return float(m.group(1)) if m else None
 
 def cell_table(block):
-    """Return the cell/net detail lines (rows of the path table)."""
+
     rows = []
     for ln in block.splitlines():
         s = ln.strip()

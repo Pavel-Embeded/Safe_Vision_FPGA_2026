@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
-"""Fail-closed TD routed-STA gate; outputs an auditable JSON in the run folder.
 
-The gate requires FULL reported timing closure: any negative setup, hold,
-recovery or removal path, or any required clock/constraint health failure,
-rejects the build. There is no waiver path - the shipped configuration closes
-with 0 negative paths (see docs/B链-构建与复现.md).
-"""
+
 import argparse
 import hashlib
 import json
@@ -20,8 +15,8 @@ PATH_RE = re.compile(
     rf"^Slack\s*:\s*({NUMBER})ns\s*\n"
     r"Begin Point\s*:\s*(.*?)\nEnd Point\s*:\s*(.*?)\n"
     r"Check Type\s*:\s*(\S+)", re.MULTILINE)
-# Match this actual hierarchy, including synthesized boundary cells. A substring
-# such as core/fake_memory_ip/sdram is deliberately not eligible.
+
+
 SDRAM_POINT = re.compile(r"^memory_ip/sdram(?:[./\[]|_syn_\d+(?:[./\[]|$))")
 HEALTH_REQUIRED = (
     "no clock", "invalid constraint", "pll/clock buffer clock constraints",
@@ -36,8 +31,8 @@ def read_report(path):
         text = raw.decode("utf-16")
     else:
         text = raw.decode("utf-8-sig", errors="strict")
-    # Native Windows TD reports use CRLF. Normalize the parsed text only;
-    # provenance and approvals still hash the original report bytes.
+
+
     return text.replace("\r\n", "\n").replace("\r", "\n")
 
 
@@ -85,8 +80,8 @@ def assess(timing, check):
             errors.append(f"Missing health check: {name}")
         elif health[name] != 0:
             errors.append(f"Health check {name} = {health[name]}")
-    # Check detailed diagnostics too, so disagreement with the table of
-    # contents fails closed instead of concealing a PLL/constraint problem.
+
+
     health_details = (
         ("invalid constraints", r"invalid constraints?"),
         ("combinational loops", r"combinational loops?"),
@@ -99,8 +94,8 @@ def assess(timing, check):
             errors.append(f"Missing health detail: {description}")
         elif any(int(value) != 0 for value in counts):
             errors.append(f"Nonzero health detail: {description} = {','.join(counts)}")
-    # Local/standalone PLL clocks are reported separately by TD. They are not
-    # silently reclassified as PLL-frequency errors; reject real ambiguity.
+
+
     for description in ("leaf clock pins driven by multiple clocks",
                         "clocks created on internal clock network",
                         "unexpandable clock sets"):
@@ -119,7 +114,7 @@ def assess(timing, check):
                       "offset": match.start()})
     if not paths:
         errors.append("No detailed timing paths were parsed")
-    # A malformed path block must not disappear from classification.
+
     blocks = len(re.findall(r"^Slack\s*:", timing, re.MULTILINE))
     if blocks != len(paths):
         errors.append(f"Incomplete path parsing: {len(paths)}/{blocks} blocks")
@@ -128,8 +123,8 @@ def assess(timing, check):
         if p["check_type"] not in ("setup", "hold", "recovery", "removal"):
             errors.append(f"Unsupported timing check type: {p['check_type']}")
             break
-    # Verify group summaries against details. This also rejects truncated
-    # violation lists: every reported violating endpoint must appear in detail.
+
+
     groups = []
     sections = list(re.finditer(r"^Path Group\s*:\s*(.*?)\s*$", timing, re.MULTILINE))
     if not sections:
@@ -172,7 +167,7 @@ def assess(timing, check):
         errors.append("Nonnegative global HWNS disagrees with min path/TNS violations")
     if period is not None and period < 0:
         errors.append(f"Global period WNS is negative: {period} ns")
-    # Every reported negative path is a failure - there is no waiver.
+
     for p in negative:
         errors.append(f"Negative {p['check_type']} {p['slack_ns']} ns: {p['begin']} -> {p['end']}")
     if setup is not None and setup < 0:

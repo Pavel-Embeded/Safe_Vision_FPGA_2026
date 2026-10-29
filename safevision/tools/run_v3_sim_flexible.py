@@ -1,10 +1,6 @@
-"""Native FLEX-only XSim runner with immutable generator/runtime input receipts.
 
-Historical run_v3_sim.py remains byte-for-byte unchanged. This runner requires
-the explicit strict manifest flag, snapshots all original inputs before and
-after generation, and captures copied/generated runtime assets before and after
-native compilation/execution. An integrity failure is never an HDL detection.
-"""
+
+
 import argparse,hashlib,json,os,re,shutil,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

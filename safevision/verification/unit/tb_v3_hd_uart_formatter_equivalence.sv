@@ -10,14 +10,14 @@ module tb_v3_hd_uart_formatter_equivalence;
  task check;begin #1;comparisons++;if(a.byte_tx!==b.byte_tx)begin errors++;if(errors<12)$display("[FAIL] formatter packet=%h position=%0d checksum=%h got=%h expected=%h",pattern,pos,sum,a.byte_tx,b.byte_tx);end end endtask
  initial begin
   force a.packet=pattern;force b.packet=pattern;force a.position=pos;force b.position=pos;force a.checksum=sum;force b.checksum=sum;
-  // All32 positions, both packet kinds, each nibble value on every lane.
-  // Checksums independently enumerate all256 values at every byte position.
+
+
   for(kind=0;kind<2;kind++)for(p=0;p<32;p++)begin
    pos=p;
    for(lane=0;lane<12;lane++)for(n=0;n<16;n++)begin pattern=0;pattern[48]=kind;pattern[lane*4+:4]=n;sum=8'ha5;check();end
    for(c=0;c<256;c++)begin pattern={kind[0],48'h123456789abc};sum=c;check();end
   end
-  // Concurrent nonzero lanes exercise selector independence as well.
+
   for(k=0;k<100000;k++)begin pattern={rand32(),rand32()};pos=rand32();sum=rand32();check();end
   if(errors==0)$display("[PASS] ACK/EVT all32positions,all12nibble lanes,all16values,all256checksums plus100000 concurrent payload vectors");
   $display("[TB] tb_v3_hd_uart_formatter_equivalence done errors=%0d comparisons=%0d",errors,comparisons);$finish;

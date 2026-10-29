@@ -1,9 +1,0 @@
-{
-  "top": "tb_c_priority_arbiter",
-  "suite": "c",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "d342737787c347da3f7d9966b0ac1cd331a9a6ff4d36b3ddccb6fa97becb48c8",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_109_20261016\\positive\\tb_c_priority_arbiter"
-}

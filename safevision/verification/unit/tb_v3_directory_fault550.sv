@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
-// A real second-root-sector CRC/timeout follows already published candidates.
-// Partial-directory sort results must never reach the resident image cache.
+
+
 module tb_v3_directory_fault550;
  reg clk=0,rst_n=0,run=0;always #10 clk=~clk;
  reg crc_bad=1,token_bad=0;wire cs,sclk,mosi,miso;wire[5:0] cmd;wire[31:0] arg;

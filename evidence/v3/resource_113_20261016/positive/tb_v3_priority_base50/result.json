@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_priority_base50",
-  "suite": "audio_priority_phase",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "44b904cb41674cbd4e8b5e23655bbbc0ada01fb6d078cc44e2c4a65089e0c44a",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\prefill_remaining\\tb_v3_priority_base50\\tb_v3_priority_base50"
-}

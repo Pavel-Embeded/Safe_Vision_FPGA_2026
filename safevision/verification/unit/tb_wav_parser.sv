@@ -1,21 +1,6 @@
-// ============================================================================
-// tb_wav_parser.sv — 阶段 8 媒体格式层（WAV 侧）：wav_parser
-// ----------------------------------------------------------------------------
-// 被测：rtl/media/wav_parser.v
-// 本 TB 不挂 SPI / SD：wav_parser 是纯字节流消费者，用合成字节源驱动即可，
-// 每一条负向分支都能在几千个周期内跑完，比挂真实卡快得多。
-//
-// 注意：本机 ModelSim 代码页问题会让中文 $display 显示成乱码（全项目都一样），
-//       不影响 [PASS]/[FAIL] 统计；断言名统一加 ASCII 前缀（T10..T16）便于阅读。
-//
-//   T10 合法 WAV：fmt 与 data 之间故意插一个【奇数 size 的未知块】验证跳过+偶对齐
-//   T11 样本打包顺序：左声道先到（低 16 位）、右声道后到（高 16 位）
-//   T12 非 PCM（format code = 3）-> 0x72
-//   T13 单声道（ch = 1）        -> 0x74
-//   T14 采样率 44100            -> 0x73
-//   T15 8 bit                   -> 0x74
-//   T16 非 RIFF/WAVE            -> 0x71
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
@@ -44,13 +29,11 @@ module tb_wav_parser;
         end
     endtask
 
-    // ========================================================================
-    // wav_parser：合成字节源 + DUT
-    // ========================================================================
+
     reg [7:0] w_mem [0:1023];
     integer   w_len;
     reg       w_go;
-    reg       w_flush;          // 冲掉上一次残留（出错后 reader 不再收字节，源会卡在 valid=1）
+    reg       w_flush;
     reg       w_valid, w_eof;
     reg [7:0] w_data;
     integer   w_idx;
@@ -158,9 +141,7 @@ module tb_wav_parser;
         end
     endtask
 
-    // 造一个 WAV：
-    //   unk_size > 0 时在 fmt 与 data 之间插一个 "LIST" 未知块（可为奇数 size）
-    //   PCM 固定 4 对样本：左低 16 位、右高 16 位
+
     task build_wav;
         input [15:0] code, ch, bits;
         input [31:0] rate;
@@ -170,52 +151,52 @@ module tb_wav_parser;
         begin
             for (i = 0; i < 1024; i = i + 1) w_mem[i] = 8'h00;
 
-            w_mem[0] = bad_riff ? 8'h58 : 8'h52;   // 'R' / 故意错成 'X'
-            w_mem[1] = 8'h49;                      // 'I'
-            w_mem[2] = 8'h46;                      // 'F'
-            w_mem[3] = 8'h46;                      // 'F'
-            w_mem[8]  = 8'h57; w_mem[9]  = 8'h41;  // 'W','A'
-            w_mem[10] = 8'h56; w_mem[11] = 8'h45;  // 'V','E'
+            w_mem[0] = bad_riff ? 8'h58 : 8'h52;
+            w_mem[1] = 8'h49;
+            w_mem[2] = 8'h46;
+            w_mem[3] = 8'h46;
+            w_mem[8]  = 8'h57; w_mem[9]  = 8'h41;
+            w_mem[10] = 8'h56; w_mem[11] = 8'h45;
 
-            // fmt 块
-            w_mem[12] = 8'h66; w_mem[13] = 8'h6D;  // 'f','m'
-            w_mem[14] = 8'h74; w_mem[15] = 8'h20;  // 't',' '
-            wr_le32(16, 32'd16);                   // fmt 块大小
+
+            w_mem[12] = 8'h66; w_mem[13] = 8'h6D;
+            w_mem[14] = 8'h74; w_mem[15] = 8'h20;
+            wr_le32(16, 32'd16);
             wr_le16(20, code);
             wr_le16(22, ch);
             wr_le32(24, rate);
-            wr_le32(28, rate * ch * bits / 8);     // byte_rate
-            wr_le16(32, ch * bits / 8);            // block_align
+            wr_le32(28, rate * ch * bits / 8);
+            wr_le16(32, ch * bits / 8);
             wr_le16(34, bits);
 
             p = 36;
             if (unk_size > 0) begin
-                w_mem[p]   = 8'h4C; w_mem[p+1] = 8'h49;  // 'L','I'
-                w_mem[p+2] = 8'h53; w_mem[p+3] = 8'h54;  // 'S','T'
+                w_mem[p]   = 8'h4C; w_mem[p+1] = 8'h49;
+                w_mem[p+2] = 8'h53; w_mem[p+3] = 8'h54;
                 wr_le32(p+4, unk_size);
                 for (i = 0; i < unk_size; i = i + 1) w_mem[p+8+i] = 8'hA5;
                 p = p + 8 + unk_size;
-                if (unk_size % 2 != 0) begin      // RIFF 块按偶数对齐
+                if (unk_size % 2 != 0) begin
                     w_mem[p] = 8'h00;
                     p = p + 1;
                 end
             end
 
-            // data 块
-            w_mem[p]   = 8'h64; w_mem[p+1] = 8'h61;  // 'd','a'
-            w_mem[p+2] = 8'h74; w_mem[p+3] = 8'h61;  // 't','a'
+
+            w_mem[p]   = 8'h64; w_mem[p+1] = 8'h61;
+            w_mem[p+2] = 8'h74; w_mem[p+3] = 8'h61;
             wr_le32(p+4, 32'd16);
             w_mem[p+8]  = 8'h00; w_mem[p+9]  = 8'h01;
-            w_mem[p+10] = 8'h00; w_mem[p+11] = 8'h02;   // l=0x0100 r=0x0200
+            w_mem[p+10] = 8'h00; w_mem[p+11] = 8'h02;
             w_mem[p+12] = 8'hF0; w_mem[p+13] = 8'hFF;
-            w_mem[p+14] = 8'hFF; w_mem[p+15] = 8'h7F;   // l=0xFFF0 r=0x7FFF
+            w_mem[p+14] = 8'hFF; w_mem[p+15] = 8'h7F;
             w_mem[p+16] = 8'h01; w_mem[p+17] = 8'h00;
-            w_mem[p+18] = 8'h00; w_mem[p+19] = 8'h80;   // l=0x0001 r=0x8000
+            w_mem[p+18] = 8'h00; w_mem[p+19] = 8'h80;
             w_mem[p+20] = 8'hCD; w_mem[p+21] = 8'hAB;
-            w_mem[p+22] = 8'h34; w_mem[p+23] = 8'h12;   // l=0xABCD r=0x1234
+            w_mem[p+22] = 8'h34; w_mem[p+23] = 8'h12;
 
             w_len = p + 24;
-            wr_le32(4, w_len - 8);                 // RIFF 声明的文件大小
+            wr_le32(4, w_len - 8);
         end
     endtask
 
@@ -224,9 +205,8 @@ module tb_wav_parser;
         begin
             wav_clear_mon;
             wav_file_size = w_len;
-            // The previous successful parser drains physical trailing bytes in
-            // W_END. Flush first, start the NEW parser epoch with valid=0,
-            // then arm its byte source. All control changes are on falling edges.
+
+
             @(negedge clk);w_flush=1;w_go=0;wav_start=0;
             @(negedge clk);w_flush=0;wav_start=1;
             @(negedge clk);wav_start=0;w_go=1;
@@ -240,9 +220,7 @@ module tb_wav_parser;
         end
     endtask
 
-    // ========================================================================
-    // 激励
-    // ========================================================================
+
     initial begin
         errors       = 0;
         checks       = 0;
@@ -261,9 +239,7 @@ module tb_wav_parser;
         rst_n = 1'b1;
         repeat (10) @(posedge clk);
 
-        // ====================================================================
-        // T10 合法 WAV + fmt/data 之间插一个【奇数 size 的未知块】
-        // ====================================================================
+
         $display("\n==== T10: 合法 WAV（含未知块跳过）====");
         build_wav(16'd1, 16'd2, 16'd16, 32'd48000, 5, 1'b0);
         wav_run(20000);
@@ -280,18 +256,14 @@ module tb_wav_parser;
         check(w_end_n == 1,                  "T10.10 pcm_end 1 次");
         check(w_track_o === 8'h01,           "T10.11 track_id 透传");
 
-        // ====================================================================
-        // T11 样本打包顺序：左声道先到 = 低 16 位
-        // ====================================================================
+
         $display("\n==== T11: 左右声道打包顺序 ====");
         check(wl[0] === 16'h0100 && wr[0] === 16'h0200, "T11.1 样本0 l=0100 r=0200");
         check(ws[0] === 32'h0200_0100,       "T11.2 sample = {r,l} = 0x02000100");
         check(wl[1] === 16'hFFF0 && wr[1] === 16'h7FFF, "T11.3 样本1 l=FFF0 r=7FFF");
         check(ws[3] === 32'h1234_ABCD,       "T11.4 样本3 sample = {r,l}（左低右高）");
 
-        // ====================================================================
-        // T12 非 PCM（format code = 3，浮点）
-        // ====================================================================
+
         $display("\n==== T12: 非 PCM ====");
         build_wav(16'd3, 16'd2, 16'd16, 32'd48000, 0, 1'b0);
         wav_run(20000);
@@ -301,9 +273,7 @@ module tb_wav_parser;
         check(w_n == 0,                      "T12.4 一个样本都不出");
         check(w_fallback === 1'b1,           "T12.5 请求回退提示音");
 
-        // ====================================================================
-        // T13 单声道
-        // ====================================================================
+
         $display("\n==== T13: 单声道 ====");
         build_wav(16'd1, 16'd1, 16'd16, 32'd48000, 0, 1'b0);
         wav_run(20000);
@@ -311,9 +281,7 @@ module tb_wav_parser;
         check(w_ed === 8'h74,                "T13.2 细分码 = 0x74（非立体声）");
         check(w_n == 0,                      "T13.3 无样本输出");
 
-        // ====================================================================
-        // T14 采样率 44100
-        // ====================================================================
+
         $display("\n==== T14: 采样率 44100 ====");
         build_wav(16'd1, 16'd2, 16'd16, 32'd44100, 0, 1'b0);
         wav_run(20000);
@@ -321,25 +289,21 @@ module tb_wav_parser;
         check(w_ed === 8'h73,                "T14.2 细分码 = 0x73（采样率非 48k）");
         check(w_rate === 32'd44100,          "T14.3 回读采样率供日志");
 
-        // ====================================================================
-        // T15 8 bit
-        // ====================================================================
+
         $display("\n==== T15: 8 bit ====");
         build_wav(16'd1, 16'd2, 16'd8, 32'd48000, 0, 1'b0);
         wav_run(20000);
         check(w_error === 1'b1,              "T15.1 报错");
         check(w_ed === 8'h74,                "T15.2 细分码 = 0x74（非 16 bit）");
 
-        // ====================================================================
-        // T16 非 RIFF / WAVE
-        // ====================================================================
+
         $display("\n==== T16: 非 RIFF ====");
         build_wav(16'd1, 16'd2, 16'd16, 32'd48000, 0, 1'b1);
         wav_run(20000);
         check(w_error === 1'b1,              "T16.1 报错");
         check(w_ed === 8'h71,                "T16.2 细分码 = 0x71（非 RIFF/WAVE）");
 
-        // ====================================================================
+
         $display("\n============================================");
         if (errors == 0) $display(" 全部通过 (PASS)");
         else             $display(" 失败项：%0d (FAIL)", errors);

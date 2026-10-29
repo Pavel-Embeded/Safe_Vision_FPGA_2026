@@ -1,113 +1,25 @@
-# Source and evidence allowlist. Large vendor packages and personal references stay outside Git.
-/*
-!/.gitignore
-!/.gitattributes
-!/README.md
-!/.github/
-!/docs/
-!/safevision/
-!/evidence/
-
-# ---- 本地生成的大体积文档（不进仓库，避免仓库膨胀）----
-# docs/SafeVision技术栈详解 是一份面向零基础的图文讲解（PDF 约 1.9 MB + 自包含 HTML）。
-# 它是【本地生成的讲解材料】，不是交付物的一部分；HTML 源文件与 PDF 都留在本地。
-# 需要重新生成时按 HTML 里的方式重跑一次无头浏览器渲染即可（不进版本管理）。
-/docs/SafeVision技术栈详解-零基础版.pdf
-/docs/SafeVision技术栈详解.html
-
-# Regenerable simulation and synthesis output.
-/safevision/verification/work/
-/safevision/verification/work_*/
 /safevision/build/out/
-/safevision/platform/**/generated/
-*.wlf
-transcript
-modelsim.ini
-*.qpg
-*.mkf
-*.bit
-*.fs
-*.ngd
-*.prj
-*.sdc.bak
-
-# ---- 安路 TD 运行期文件 ----
-# ★★ 注意：*.al 故意【不】在这里 —— 它是 TD 的【工程文件】（设计文件表、顶层模块、
-#    约束集、综合/布线 Run 设置），属于必须版本管理的【源文件】。早先误把它当生成物
-#    忽略了，后果是整个工程文件静默进不了仓库、队友无法打开工程。
-#    这里只忽略 TD 的运行期垃圾：锁文件、日志、以及每个 Run 的产物目录。
-*.lock.f
-/safevision/log/
-*.logw
-#   TD 每次综合/布线会生成 <工程名>_Runs/<run>/（run.bat / *.tcl / settings.cfg /
-#   *.prj / .temp.f / run.log ...），全部可再生，不进仓库。
+/safevision/verification/work*/
 /safevision/**/*_Runs/
-#   TD 导出报告的默认落点是工程目录下的 report.txt，同样是可再生的中间输出；
-#   要留证的正式报告请按 evidence/reports/INDEX.md 的命名规则复制进 evidence/reports/。
-#   （report2.txt / report3.txt ... 是同一类中间输出，一并忽略）
-/safevision/platform/**/project/report*.txt
-
-# Evidence logs, reports, waveforms and media are intentionally allowed.
+/safevision/platform/**/generated/
+__pycache__/
+*.pyc
 *.log
 *.vcd
-!evidence/**/*.log
-!evidence/**/*.vcd
-# Reproducible preflight run transcripts are local diagnostics, not curated evidence.
-/evidence/sim/soak_preflight_*.log
-
-# Never commit licenses, credentials, caches or editor debris.
+*.wdb
+*.jou
+*.bit
+*.db
+*.zip
+*.bundle
 *.lic
 *.key
-*.pem
-*.tmp
-*.bak
-Thumbs.db
-Desktop.ini
-.vscode/
-.idea/
-__pycache__/
-
-# A Clock/Video Timing GUI duplicates and temporary sessions.
-/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/al_ip/
-/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/.recent_user_depot*
-/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/.lock.f
-/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/log/
-/safevision/platform/anlogic_eg4s20_hx4s20c/project/clock_video_verify/td_*.logw
-
-# A Clock/Timing generated evidence stays local; source constraints are tracked.
-/evidence/clock_video_20261002/
-/evidence/a_only_push_20261002/
-/evidence/A_clock_video_runs/
-# Locally installed official HDMI dependencies and GUI preparation audits.
-/safevision/platform/anlogic_eg4s20_hx4s20c/project/vendor_hdmi/
-/safevision/platform/anlogic_eg4s20_hx4s20c/project/vendor_hdmi_manifest.json
-/safevision/platform/anlogic_eg4s20_hx4s20c/project/gui_*.manifest.json
-/safevision/platform/anlogic_eg4s20_hx4s20c/project/font8x16.mem
-
-# Curated BASE delivery only; no runtime scratch or failed HD builds.
-!/artifacts/
-!/SAFEVISION_CURRENT.md
-/artifacts/*
-!/artifacts/releases/
-!/artifacts/board_validation/
-!/artifacts/test_media/
-/artifacts/releases/*
-!/artifacts/releases/BASE_26102004_5cff94e/
-/artifacts/board_validation/*
-!/artifacts/board_validation/four_features_BASE_KEYFIX_5cff94e/
-/artifacts/test_media/*
-!/artifacts/test_media/four_features_261020/
-!artifacts/releases/BASE_26102004_5cff94e/*.bit
-!artifacts/releases/BASE_26102004_5cff94e/native/**/*.log
-!artifacts/board_validation/four_features_BASE_KEYFIX_5cff94e/**/*.log
-!/evidence/v3/**/*.log
-
-# Approved BASE 26102301 publication. Local history archives remain ignored.
-!/artifacts/releases/BASE_26102301_6a957b0/
-!artifacts/releases/BASE_26102301_6a957b0/**/*.bit
-!artifacts/releases/BASE_26102301_6a957b0/**/*.log
-!artifacts/releases/BASE_26102301_6a957b0/*.bit
-
-# Approved BASE with retained successful history and raw verification.
-!/artifacts/releases/BASE_26102801/
-!/artifacts/releases/BASE_26102801/**
+*.lock.f
+*.ngd
+*.fs
+*.wlf
+*.qpg
+*.mkf
+*.prj
+*.sdc.bak
+/safevision/platform/**/project/report*.txt

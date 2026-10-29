@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/post_fps_cluster_regression/source/safevision/rtl/video/v3_status_layers.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_status_layers
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/post_fps_cluster_regression/source/safevision/verification/unit/tb_v3_video_fps.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_video_fps

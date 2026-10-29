@@ -9,8 +9,8 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
   .x(x),.y(y),.de(de),.panel_pixel(panel),.text_pixel(dot),.edge_pixel(edge_bit),
   .position(position),.frames(frames),.loops(loops));
  reg reference_pixels[0:8191];reg qp[0:20],qt[0:20],qe[0:20];
- // Independent registered raster models the existing final video coordinates.
- // The production renderer predicts five columns from this observed raster.
+
+
  reg[11:0] final_x[0:20],final_y[0:20];reg final_de[0:20];
  wire short_dot;integer j,consecutive=0,short_checks=0;
  reg[11:0] previous_x=0,previous_y=0;
@@ -36,8 +36,8 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
  end endtask
  task tick(input integer px,py,input bit active,start_frame);begin
   @(negedge clk);x=px;y=py;de=active;fs=start_frame;
-  // Signed screen-space construction is independent of the RTL's unsigned
-  // sum/subtract and packed character/row ROM addressing.
+
+
   want_panel=active&&px>=120&&px<WIDTH-8&&py>=HEIGHT-24&&py<HEIGHT-4;
   want_edge=want_panel&&py==HEIGHT-24;
   source_column=(px-120)-((WIDTH-128)-model_position);
@@ -89,8 +89,8 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
       tick(xx,yy,xx<640&&yy<480,xx==0&&yy==480);
    $display("[PASS] two complete production BASE rasters and blanking");
   end
-  // Every phase of the entry, full traversal, exit and blank interval.
-  // BASE also checks the complete line, including the reserved UP region.
+
+
   for(ph=0;ph<PERIOD;ph=ph+1)begin
    for(yy=HEIGHT-25;yy<HEIGHT-2;yy=yy+1)
     for(xx=(FULL_RASTER?0:117);xx<(FULL_RASTER?WIDTH:WIDTH-5);xx=xx+1)
@@ -100,8 +100,8 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
   $display("[PASS] all scroll positions, character columns, rows, borders and disabled DE samples");
   ck(short_checks>10000,"production lookahead has substantial independent visible-pixel coverage");
   $display("[PASS] five-column lookahead across every phase checks=%0d",short_checks);
-  // Counter boundary injection changes only verification state, followed by
-  // ordinary public frame pulses. It is not a long-running hardware claim.
+
+
   @(negedge clk);fs=0;dut.frame_count=8'hff;model_frames=255;
   tick(0,HEIGHT,0,1);
   ck(frames==0,"modulo256 frame counter wraps without losing a frame");

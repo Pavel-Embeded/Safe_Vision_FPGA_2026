@@ -1,8 +1,6 @@
 `include "pixel_format_defs.vh"
-// Eight source rows: four for current and four for fade target. Each row is
-// split into even/odd pixel banks; each bank has one memory write port and one
-// synchronous pixel read port. A row is published only after its producer CRC
-// matches the complete landed row. Five bounded bursts permit SDRAM refresh.
+
+
 module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_PROFILE=0)(
  input wire mem_clk,mem_rst_n,pixel_clk,pixel_rst_n,
  input wire write_clk,write_rst_n,prepare_valid,input wire[9:0] prepare_sy,
@@ -36,19 +34,19 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
   .src_valid(reply_pending),.src_ready(reply_ready),
   .dst_clk(pixel_clk),.dst_rst_n(pixel_rst_n),.dst_data(response_data),
   .dst_valid(response_valid),.dst_ready(response_ready));
- // Descriptor: [23:22] current slot, [21:20] target slot, [19] dual,
- // [18:9] row0, [8:0] row1 (all rows are 0..479).
+
+
  reg[DESC_W-1:0] descriptor;
  wire[25:0] descriptor_extended=descriptor;wire[25:0] response_extended=response_data;
  wire[1:0] memory_scale=HANDBOOK_PROFILE?descriptor_extended[25:24]:0;reg[2:0] state;reg first_half_announced;
  localparam IDLE=0,SELECT=1,QUERY1=2,QUERY2=3,ISSUE=4,READ=5,RETIRE=6,REPLY=7;
  reg[2:0] item,bank;reg[1:0] slot;reg[9:0] row;
- // These registers and lookup_addr change on the same SELECT edge.
+
  assign lookup_slot_index=slot;assign lookup_row_index=row;
  reg[1:0] tag_slot[0:7];reg[9:0] tag_row[0:7];reg[7:0] tag_valid;
  reg[8:0] word_column;reg[6:0] burst_count;reg[31:0] crc,expected,timer;
- // Dual-stream order is A0,B0,A1,B1: publish the nearer row for BOTH
- // streams before spending bus time on the farther interpolation neighbor.
+
+
  wire stream=descriptor[19]&&item[0];
  wire row_select=descriptor[19]?item[1]:item[0];
  wire[1:0] wanted_slot=stream?descriptor[21:20]:descriptor[23:22];
@@ -60,22 +58,16 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
  assign dma_busy=state!=IDLE;
  assign dma_progress=state==READ && rd_valid;
  wire writing=state==READ && rd_valid;
- // CRC is the same linear IEEE transform, expressed as bounded byte XORs.
- // Keep only the two half-word partials to avoid a serial area-mapped XOR chain
- // from the SDRAM BRAM output through CRC comparison into tag publication.
- // expected holds the inverse32-step CRC state of the looked-up row CRC.
- // Complete it serially in32 MEM clocks. A row has320 accepted words, so
- // it is ready before the last beat even at one word per clock. No external
- // handshake, fault edge, signature or CRC accumulator timing is changed.
+
+
  reg[5:0] expected_steps;
  wire[31:0] inverse_unpoly=expected^(expected[31]?32'hedb88320:32'd0);
  wire[31:0] inverse_step={inverse_unpoly[30:0],expected[31]};
  wire final_crc_mismatch=(crc^rd_data)!=expected;
  wire[31:0] row_crc_input=crc^rd_data;
  wire[31:0] row_crc_next;
- // Share bounded XOR subexpressions across all32 CRC result bits.
- // The IEEE polynomial, per-word state edge and full throughput are identical;
- // exact64 input-basis vectors prove the linear transform for every input.
+
+
  (* keep="true" *) wire p0=row_crc_input[0]^row_crc_input[22];
  (* keep="true" *) wire p1=row_crc_input[2]^row_crc_input[7];
  (* keep="true" *) wire p2=row_crc_input[1]^row_crc_input[23];
@@ -149,9 +141,8 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
  wire packed_row_done,packed_serializer_fault,packed_pixel_fault;
  reg row_store_done;
  (* async_reg="true" *) reg pixel_fault_meta,pixel_fault_sync;
- // Private tag data is eligible only after the independently reset valid
- // bits publish the complete tag on the SAME edge. Removing reset from these
- // payloads does not change any public output or warm-reset invalidation.
+
+
  wire tag_publish_now=state==READ && rd_valid && burst_count==63 &&
   word_column==319 && !final_crc_mismatch && !PACKED_ROWS;
  wire tag_publish_packed=state==RETIRE && !rd_busy && !fault &&
@@ -178,9 +169,8 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
    case(state)
     IDLE:if(cmd_valid&&cmd_ready)begin descriptor<=cmd;item<=0;state<=SELECT;first_half_announced<=0;end
     SELECT:if(item==item_count)state<=REPLY;
-     // Response bit18 (request row0[9], always zero for 480 rows) marks an
-     // early pair publication. Both row fields contain the validated row0.
-     // A later bit18=0 response preserves the complete-descriptor contract.
+
+
      else if(item==(descriptor[19]?2:1)&&!first_half_announced)begin
       if(!reply_pending)begin
        reply<={memory_scale,descriptor[23:19],1'b1,descriptor[17:9],descriptor[17:9]};

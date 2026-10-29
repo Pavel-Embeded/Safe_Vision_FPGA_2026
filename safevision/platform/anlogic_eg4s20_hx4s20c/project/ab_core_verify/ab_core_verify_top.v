@@ -1,6 +1,6 @@
-// Internal implementation probe for stages1-15. Independent clock inputs allow
-// worst-case 100/125/25.175 or74.25MHz analysis without changing B's board top.
-// No board pinout/SDRAM pad timing/HDMI serializer is claimed by this probe.
+
+
+
 `ifndef AB_CORE_HD
 `define AB_CORE_HD 0
 `endif

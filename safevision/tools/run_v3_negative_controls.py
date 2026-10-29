@@ -1,9 +1,6 @@
-"""Prove selected regressions detect intentional RTL corruption.
 
-Only isolated source copies are mutated. Compile/tool failure is NOT detection:
-each mutant must compile, run normally through $finish, and report RTL failures.
-The original source tree is checked for byte-for-byte preservation afterwards.
-"""
+
+
 import argparse,hashlib,json,re,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

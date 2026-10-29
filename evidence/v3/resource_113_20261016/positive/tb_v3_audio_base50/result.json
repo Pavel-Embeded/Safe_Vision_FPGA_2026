@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_audio_base50",
-  "suite": "audio_modes",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "2de7d9fc4e6b216c1133c0b75615535c5bb526ffcd6a54d495225e49f84be0eb",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\prefill_remaining\\tb_v3_audio_base50\\tb_v3_audio_base50"
-}

@@ -1,6 +1,6 @@
-// Exact signed PCM24 * min(volume,100) / 100, truncating toward zero.
-// One shared arithmetic core handles L then R. Capture all inputs at accept.
-// General latency 74 clocks, bypass one edge; production cadence is /256.
+
+
+
 module v3_audio_volume_reference(input wire clk,rst_n,valid_in,input wire[23:0] left_in,right_in,
  input wire[6:0] volume,output reg valid_out,output reg[23:0] left_out,right_out,
  output wire busy);

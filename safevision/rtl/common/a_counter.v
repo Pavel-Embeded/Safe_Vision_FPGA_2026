@@ -1,4 +1,4 @@
-// Stage 1 exercise; single clock, low active async reset / sync release.
+
 module a_counter #(
     parameter integer MODULO=1000,
     parameter integer WIDTH=10

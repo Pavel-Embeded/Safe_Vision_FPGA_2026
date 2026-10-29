@@ -1,7 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq74/source/safevision/rtl/audio/v3_audio_priority_serial.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_audio_priority_serial
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq74/source/safevision/verification/unit/tb_v3_priority_serial.sv" into library work
-INFO: [VRFC 10-311] analyzing module v3_priority_serial_oracle
-INFO: [VRFC 10-311] analyzing module tb_v3_priority_serial
-INFO: [VRFC 10-311] analyzing module tb_v3_priority_serial_gain
-INFO: [VRFC 10-311] analyzing module tb_v3_priority_serial_one

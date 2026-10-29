@@ -1,10 +1,6 @@
 `timescale 1ns/1ps
 
-// Measures period and both half-periods from the TD EG4 PLL model outputs.
-// The official model rounds each VCO half cycle to its 100 fs time precision.
-// Output-divider accumulation plus this TB's 1 ps sampling precision requires
-// up to 10 ps tolerance. These are functional-model checks, not jitter or
-// board oscillator measurements.
+
 module tb_clock_measure #(
     parameter real EXPECT_NS = 10.0,
     parameter integer MODE = 0,
@@ -152,9 +148,7 @@ module tb_clock_video_probe #(
         end
     endtask
 
-    // Count actual serial rising edges between successive pixel rising edges.
-    // A 1 ps sampling delay includes an exactly coincident serial edge and
-    // avoids race dependence on simulator scheduling of the two PLL outputs.
+
     integer serial_rise_count = 0;
     integer last_pixel_serial_count = -1;
     integer ratio_windows = 0;

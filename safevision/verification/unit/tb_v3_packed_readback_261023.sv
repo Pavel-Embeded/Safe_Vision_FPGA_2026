@@ -3,7 +3,7 @@ module tb_v3_packed_readback_261023;
  localparam HD=0;
  localparam HA=HD?1280:640,VA=HD?720:480,HT=HD?1650:800,VT=HD?750:525;
  reg sys=0,mem=0,pix=0,rst=0,cache_write=1;
- // BASE control is 50 MHz; the separate packed writer always remains 100 MHz.
+
  always #(HD?5:10) sys=~sys;always #10 mem=~mem;always #5 cache_write=~cache_write;
  generate if(HD)always #6.734 pix=~pix;else always #19.86 pix=~pix;endgenerate
  reg media_reset=0,cfg_valid=0,next_request=0,safety=0;
@@ -46,8 +46,8 @@ module tb_v3_packed_readback_261023;
  initial begin for(s=0;s<4;s=s+1)for(r=0;r<480;r=r+1)begin state=32'hffffffff;
   for(c=0;c<320;c=c+1)state=crcword(state,source_word(slot_base(s)+r*1280+c*4));
   crcs[s*480+r]=~state;end end
- // Real production read chain, with refresh/quiet gaps and the measured
- // MEM50 data-before-valid contract. The encrypted IP itself remains a model.
+
+
  wire media_mem_rst=rst&&!media_reset;
  wire mr,mw,mready,mvalid;wire[31:0] ma,mwd,mrd;wire[3:0] ms;
  memory_arbiter #(.COMPACT_CONSEC_COUNTER(1),.HIGH_WATER(640),.CRITICAL_WATER(320)) arbiter(
@@ -158,8 +158,8 @@ module tb_v3_packed_readback_261023;
  function[7:0] dec_ascii(input integer n,input integer place);
   begin dec_ascii=place==2?48+n/100:place==1?48+(n/10)%10:48+n%10;end
  endfunction
- // Independent glyph oracle: official font bytes plus human-readable content,
- // geometric regions, and per-channel rounded /255 blending. No DUT internals.
+
+
  function[15:0] normal_golden(input[15:0] background,input integer xx,yy,slot,gen,fps);
   reg[511:0] text;reg[7:0] code,bits;integer oy,len,category,row,index,period,brightness,energy;
   bit enabled,dot,panel,selected,border,bar_edge,bar_fill;reg[15:0] result,front;
@@ -308,8 +308,8 @@ module tb_v3_packed_readback_261023;
   end
  endtask
  integer wait_count;
- // Progress is informational; acceptance still requires the existing complete
- // frame comparisons, zero errors and the normal $finish marker.
+
+
  always begin #50000000;
   $display("INFO full-video HD=%0d t=%t generation=%0d target=%0d busy=%b",HD,$time,gen,target_gen,busy);
  end

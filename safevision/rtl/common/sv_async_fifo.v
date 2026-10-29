@@ -1,6 +1,6 @@
-// Equal-width specialization of the installed TD asynchronous FIFO template.
-// Common asynchronous-high reset; vendor synchronizes release in both domains.
-// FWFT: rd_valid/data stable until rd_ready; wr_valid must remain until wr_ready.
+
+
+
 module sv_async_fifo #(parameter integer WIDTH=32, AW=9)(
  input wire rst,wr_clk,rd_clk,input wire [WIDTH-1:0] wr_data,
  input wire wr_valid,output wire wr_ready,output wire [AW-1:0] wr_level,

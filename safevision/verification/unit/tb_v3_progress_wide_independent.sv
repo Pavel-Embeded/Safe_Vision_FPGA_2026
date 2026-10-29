@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
-// Independent source-gap test. The producer is an actual BMP parser and
-// normalizer; FIFO, sink, bridge, writer and row verification are real RTL.
-// Only the card-byte delivery and accepted SDRAM storage are testbench models.
+
+
 module tb_v3_progress_wide_independent;
  localparam integer SW=16384,SH=51,DATA_BYTES=SW*SH*4,FILE_BYTES=54+DATA_BYTES;
  localparam integer RAW_PERIOD=16,GAP=4096,FRAME_DEADLINE=262144;
@@ -37,8 +36,8 @@ module tb_v3_progress_wide_independent;
    end
   end
  endfunction
- // Independent rational-fit reference: floor(640*51/16384)=1. The single
- // visible row is raster239; its source is the last file-order row (50).
+
+
  function automatic[15:0] expected_pixel(input integer x,y);
   integer sx;reg[7:0]r,g,b;
   begin
@@ -104,8 +103,8 @@ module tb_v3_progress_wide_independent;
    end
   end
  end
- // Same three MEM registers and transition detector as the reviewed TOP.
- // The source token changes only for a genuinely accepted input byte.
+
+
  reg[2:0] progress_sync=0;
  always @(posedge memclk or negedge rst_n)
   if(!rst_n)progress_sync<=0;else progress_sync<={progress_sync[1:0],raw_count[0]};
@@ -123,8 +122,8 @@ module tb_v3_progress_wide_independent;
   .state_o(sink_state),.err_code(sink_error),.err_detail(),.frame_cnt(),.px_written(),
   .write_drained(write_drained),.verify_done(verify_done),.verify_pass(verify_pass),.source_begin(begin_frame),.source_slot(source_slot),.source_top_down(source_td),.source_progress(source_tick));
  wire old_ready,old_done,old_ok,old_req;wire[3:0]old_state;wire[7:0]old_error;
- // Controlled legacy witness: the optional input is X and must be ignored.
- // Its pixel-only timeout is expected to reject this otherwise legal stream.
+
+
  bmp_frame_sink #(.FIFO_AW(8),.GAP_TIMEOUT(GAP),.WRITE_TO_N(FRAME_DEADLINE),.SWAP_TO_N(GAP),
   .REQUIRE_WRITE_DRAIN(1),.REQUIRE_READBACK(0),.RESIDENT_LOAD(1),.SOURCE_PROGRESS_AWARE(0)) legacy(
   .clk(memclk),.rst_n(rst_n),.wr_clk(refclk),.px_word(packed_word),.px_word_valid(packed_valid&&packed_ready),.px_word_ready(),
@@ -170,8 +169,8 @@ module tb_v3_progress_wide_independent;
     if(sink.source_wait_credit)saved_credit_count<=saved_credit_count+1;
    end
    previous_read_busy<=external_read_busy;
-   // Causal event accounting: one or more accepted bytes may coalesce into
-   // one wait credit, but no credit can be minted or reused without a byte.
+
+
    if(sink_state!=1||!sink.fa_sync[2])uncovered_bytes<=0;
    else if(sink.source_wait_credit)begin
     ck(uncovered_bytes>0,"wait credit has a preceding real source event");

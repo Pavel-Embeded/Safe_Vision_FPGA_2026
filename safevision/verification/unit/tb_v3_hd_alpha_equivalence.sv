@@ -29,8 +29,8 @@ module tb_v3_hd_alpha_equivalence;
  end endtask
  initial begin
   repeat(3)@(negedge clk);rst=1;
-  // Exhaust every 6-bit green F/B and8-bit alpha. Red/blue mappings are
-  // bijections of their5-bit inputs, so their full combinations also occur.
+
+
   for(f=0;f<64;f=f+1)for(b=0;b<64;b=b+1)for(a=0;a<256;a=a+1)begin
    front={f[4:0],f[5:0],(f[4:0]^5'h15)};
    back={b[4:0],b[5:0],(b[4:0]^5'h0a)};alpha=a;valid=1;@(negedge clk);

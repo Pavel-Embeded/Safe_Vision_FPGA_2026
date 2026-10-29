@@ -1,4 +1,4 @@
-"""Create deterministic 640x480, 24-bit BI_RGB BMPs; never format a card."""
+
 import argparse
 import hashlib
 import json

@@ -21,8 +21,8 @@ module tb_v3_uart_tx_width_equivalence;
  always@(posedge clk)begin #1;if(rst)begin comparisons+=20;if(same!==10'h3ff)begin errors++;if(errors<12)$display("[FAIL] UART ready/serial pin edge differs mask=%h at%0d",same,k);end end end
  initial begin
  repeat(4)@(negedge clk);rst=1;
- // First700k cycles include a complete65536-divider frame; then phase-varied
- // asynchronous resets, busy submissions, continuous and back-to-back traffic.
+
+
  for(k=0;k<2000000;k++)begin
   rng=rng*1664525+1013904223;valid=k<700000?1:rng[3:0]!=0;data=rng[31:24];
   rst=k<700000||k%100003!=0;@(negedge clk);

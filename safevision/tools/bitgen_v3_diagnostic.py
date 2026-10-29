@@ -1,9 +1,6 @@
-"""Local hardware-diagnosis candidate, with strict routed STA and fresh tests.
 
-This deliberately DOES NOT mark the113/28 production release gate as passed.
-The production run_v3_board.py --bitgen policy remains unchanged. This tool
-requires the separate14-case board-fix regression and3 semantic mutants.
-"""
+
+
 import argparse,hashlib,json,re,sys
 from pathlib import Path
 from run_v3_board import invoke,source_commit_binding

@@ -1,6 +1,6 @@
-// Logical NEXT acceptance to the first real output contribution of its target.
-// Milliseconds are rounded down and saturate at65535. Cancellation does not
-// publish a success. The previous completed measurement remains readable.
+
+
+
 module v3_response_timer #(parameter integer CLK_HZ=100000000)(
  input wire clk,rst_n,start,finish,cancel,output reg[15:0] latency_ms);
  localparam integer TICKS=CLK_HZ/1000>0?CLK_HZ/1000:1;

@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_status_layers",
-  "suite": "layers",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "ed2c49659d7f6d87ade24b56e2307b4fe0e6f828534d095cecb9777540aa5784",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\layers\\tb_v3_status_layers"
-}

@@ -8,10 +8,8 @@ module paired_rows_case275 #(parameter PHASE=0)(output reg done=0,output integer
  v3_packed_row_store #(.HANDBOOK_PROFILE(1)) dut(mem,rst,wr,rst,pix,rst,valid,bank,column,data,actual[128],actual[129],cv,sx,sy,mode,prepare,prepared,actual[127:112],actual[111:96],actual[95:80],actual[79:64],actual[63:48],actual[47:32],actual[31:16],actual[15:0],actual[130]);
  v3_packed_row_store216_reference #(.HANDBOOK_PROFILE(1)) oracle(mem,rst,wr,rst,pix,rst,valid,bank,column,data,expected[128],expected[129],cv,sx,sy,mode,prepare,prepared,expected[127:112],expected[111:96],expected[95:80],expected[79:64],expected[63:48],expected[47:32],expected[31:16],expected[15:0],expected[130]);
  reg check=0;integer b,c,m,r,x;reg[2:0] reset_settled=0;
- // Layout-independent output contract: all control/reset edges are exact.
- // Pixel payload becomes meaningful only after the documented>=3-clock
- // blanking preload. Old221 also compared unpublished RAM read-port values
- // during reset; those depend on the physical layout and are not pixel data.
+
+
  always @(posedge pix)if(!rst)reset_settled<=0;else reset_settled<={reset_settled[1:0],1'b1};
 
  always@(negedge pix)if(check)begin comparisons++;
@@ -25,9 +23,8 @@ module paired_rows_case275 #(parameter PHASE=0)(output reg done=0,output integer
    @(negedge mem);valid=0;repeat(8)@(negedge mem);
   end
   @(posedge pix);#1;check=1;
-  // Exhaust all four scale encodings and all ten-bit public coordinate
-  // values, including clamped/out-of-raster inputs. Both streams contain
-  // distinct data; all five tiles, edges and bank aliases are visited.
+
+
   for(m=0;m<4;m++)begin mode=m;
    for(r=0;r<1024;r++)begin
     @(posedge pix);#1;cv=0;prepare=1;prepared=r;repeat(8)begin @(posedge pix);#1;end

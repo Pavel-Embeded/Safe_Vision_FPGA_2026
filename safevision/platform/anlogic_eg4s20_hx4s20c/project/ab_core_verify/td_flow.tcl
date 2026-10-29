@@ -1,4 +1,4 @@
-# TD6.2.168116 internal synthesis/route/STA. No bitgen; probe I/O has no board budget.
+
 if {![info exists ab_core_mode] || $ab_core_mode ni {base hd}} {error "Select base or hd"}
 set here [file dirname [file normalize [info script]]]
 set root [file normalize [file join $here .. .. .. .. ..]]

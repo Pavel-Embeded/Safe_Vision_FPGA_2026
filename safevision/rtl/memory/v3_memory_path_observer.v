@@ -1,9 +1,6 @@
-// Passive first-row observer. No output controls storage, approval or playback.
-// Slot0 raster row0 is word[0..WORDS-1], independent of BMP row direction.
-// Diagnostic26101718: bit0 is a sticky nonzero flag; bits31:1 are0.
-// Legacy*_or ports carry the OR of nonzero predicates, not a32-bit data OR.
-// A zero flag with full count proves every observed bit was zero;
-// nonzero ORs are not a checksum and do not prove equality between streams.
+
+
+
 module v3_memory_path_observer #(
  parameter integer WORDS=320,
  parameter integer READ_DATA_LEADS_VALID=1
@@ -25,13 +22,13 @@ module v3_memory_path_observer #(
    source_count<=0;write_count<=0;raw_count<=0;host_count<=0;
    previous_raw<=0;verify_started<=0;
   end else begin
-   // Sample also when valid is low: the observed first word precedes valid.
+
    previous_raw<=physical_read_data;
    if(verify_start)verify_started<=1;
    if(source_accept && source_in_row && source_count<WORDS)begin
     source_or<=source_or|{31'd0,|source_data};source_count<=source_count+1'b1;
    end
-   // Fully masked neighbour padding is not an actual row-word write.
+
    if(physical_write && physical_word_addr<WORDS && physical_dm==0 && write_count<WORDS)begin
     write_or<=write_or|{31'd0,|physical_write_data};write_count<=write_count+1'b1;
    end

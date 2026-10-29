@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/original618/negative/parser_digit_seen/sim/tb_v3_parser_digit_seen/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_command_parser
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate618/safevision/verification/unit/tb_v3_parser_digit_seen.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_parser_digit_seen

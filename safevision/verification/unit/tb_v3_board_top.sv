@@ -1,7 +1,6 @@
-// Full production TOP and real self-authored RTL. Only encrypted/physical IP
-// is replaced by explicit protocol/clock contracts. Interface forces inject
-// producers to exercise TOP wiring, not the already tested media algorithms.
-// In particular, DMA IDLE must release Video's critical-water reservation.
+
+
+
 `timescale 1ns/1ps
 module tb_v3_board_top;
  reg clk=0;always #10 clk=!clk;
@@ -9,8 +8,8 @@ module tb_v3_board_top;
  safevision_v3_top #(.HD(0)) dut(.clk(clk),.rst_n(rst_n),
  .btn_next(1'b1),.btn_auto(1'b1),.btn_emergency(1'b1),.uart_rxd(1'b1),.uart_txd(txd),.led(led),
  .sd_ncs(),.sd_dclk(),.sd_mosi(),.sd_miso(1'b1),.HDMI_D0_P(),.HDMI_D1_P(),.HDMI_D2_P(),.HDMI_CLK_P(),.HDMI_DDC_SCL(scl),.HDMI_DDC_SDA(sda));
- // Same ROM data, simulation cwd path only; no functional parameter changes.
- // Same measured MEM50/+8ns data-before-valid relation as real board.
+
+
  defparam dut.memory_ip.OUTPUT_VALID_DELAY=1;
  defparam dut.uart.g_catalog.parser.CATALOG_FILE="v3_command_catalog.mem";
  defparam dut.video.FONT_FILE="font8x16.mem";
@@ -52,8 +51,8 @@ module tb_v3_board_top;
  #8680.56;check(txd===1,"ref-clock fatal UART stop");end endtask
  reg[7:0] byte_rx;reg[11:0] x_before;integer w_before,a_before,read_before,pixel_count,pixel_stall,pixel_goal;reg blocked_once;
  initial begin
- // Force only module-boundary producer/control signals. The actual TOP
- // arbiter level expression, handshakes, mem_ctrl and adapter remain untouched.
+
+
  force dut.dma_busy=test_dma;
  force dut.writer_req=test_writer;force dut.writer_addr=test_waddr;force dut.writer_data=test_wdata;force dut.writer_len=16'd1;
  force dut.audio_req=test_audio;force dut.audio_wr=1'b1;force dut.audio_addr=test_aaddr;force dut.audio_wdata=test_adata;force dut.audio_len=16'd1;
@@ -66,20 +65,20 @@ module tb_v3_board_top;
  check(dut.sys_rst_n && dut.pixel_rst_n && dut.mem_media_rst_n && dut.adapter_init,"all TOP clock/reset and SDRAM-init contracts release");
  check(dut.PIXEL_HZ==25185185 && dut.video.PIXEL_HZ==25185185 && dut.video.graphics.PIXEL_HZ==25185185,"BASE official PLL nominal frequency reaches HUD counter");
  check(dut.arbiter.video_fifo_level==1024,"idle DMA advertises no reservation");
- // Critical video owns even the gaps between row-fetch requests.
+
  @(negedge dut.mem_clk);test_dma=1;test_writer=1;test_audio=1;w_before=writer_grants;a_before=audio_grants;
  mtick(120);check(writer_grants==w_before && audio_grants==a_before,"active DMA bubbles reserve bus against writer and audio");
  check(dut.arbiter.video_fifo_level==0,"active DMA uses critical reserve");
  @(negedge dut.mem_clk);test_writer=0;test_audio=0;test_dma=0;
- // aux captures the blocked request at its producer boundary before grant;
- // retire that legitimate transaction before measuring the next 8 requests.
+
+
  deadline=0;while(dut.audio_busy && deadline<1500)begin mtick(1);deadline++;end
  mtick(120);w_before=accepted_writes;a_before=audio_grants;
- // Both paths were eliminated by a constant 0 watermark in the faulty TOP.
+
  for(i=0;i<8;i++)write_word(0,i*4,32'h9a050000+i);
  for(i=0;i<8;i++)write_word(1,32'h280000+i*4,32'h52c90000+i);
  check(accepted_writes-w_before==8 && audio_grants-a_before==8,"both real top write channels remain live");
- // Store a whole video burst using the actual producer-side write interface.
+
  for(i=8;i<64;i++)write_word(0,i*4,32'h9a050000+i);
  @(negedge dut.mem_clk);test_dma=1;test_read=1;test_raddr=0;read_before=video_words;
  deadline=0;while(!dut.rd_ack && deadline<1000)begin mtick(1);deadline++;end
@@ -95,9 +94,8 @@ module tb_v3_board_top;
  mtick(80);@(negedge dut.mem_clk);test_dma=0;
  write_word(1,32'h280020,32'hf00d0055);
  check(dut.memory_ip.protocol_errors==0 && !dut.adapter_fault && !dut.memory_error,"no hidden adapter/App protocol error");
- // Exercise the real producer FIFO at its production depth. A high-priority
- // video reservation blocks image grants long enough to fill it; then verify every
- // accepted packed word reaches memory exactly once. This covers FIFO_AW=8.
+
+
  release dut.writer_req;release dut.writer_addr;release dut.writer_data;release dut.writer_len;
  force dut.px_word=pixel_word;force dut.px_valid=pixel_valid;
  force dut.frame_active=pixel_frame;force dut.load_slot=2'd0;force dut.top_down=1'b1;
@@ -121,7 +119,7 @@ module tb_v3_board_top;
  @(negedge dut.sys_clk);test_media_reset=1;stick(80);
  pixel_frame=0;release dut.px_word;release dut.px_valid;release dut.frame_active;release dut.load_slot;release dut.top_down;
  @(negedge dut.sys_clk);test_media_reset=0;mtick(180);
- // Commit descriptor must be immutable until AUDIO accepts the matching epoch.
+
  @(negedge dut.sys_clk);test_slot=2;test_generation=8'h5a;test_commit=1;stick(1);
  @(negedge dut.sys_clk);test_commit=0;stick(12);
  check(dut.audio_commit_valid && dut.audio_commit_slot==2 && dut.audio_commit_gen==8'h5a,"frame commit slot/generation retained under audio backpressure");
@@ -132,15 +130,15 @@ module tb_v3_board_top;
  check(!dut.audio_commit_valid && dut.raw_x!=x_before && dut.pixel_rst_n,"media reset cancels old descriptor while fixed raster continues");
  check(dut.cache_sys==0 && dut.safe_active,"media reset invalidates approved cache and selects SAFE");
  @(negedge dut.sys_clk);test_media_reset=0;mtick(160);
- // A sink-only error must keep its actual code rather than reuse player=00.
+
  force dut.mem_status_sys=48'h000000000002;force dut.ref_status_sys=192'd0;stick(40);
  check(dut.fault_code==8'h02 && dut.fault_level==3,"sink-only media failure preserves its nonzero cause code");
  release dut.mem_status_sys;release dut.ref_status_sys;
- // Audio PLL failure must survive in C while the video clock remains usable.
+
  force dut.audio_lock=1'b0;repeat(10)@(negedge clk);stick(12);
  check(dut.fatal_latched && dut.fault_level==4 && dut.pixel_rst_n,"audio PLL loss preserves SYS FATAL and video SAFE capability");
  release dut.audio_lock;stick(6);check(dut.fatal_latched,"restored lock cannot silently clear FATAL");
- // SYS PLL failure cannot run SYS UART; independent REF latch/reporter owns TX.
+
  force dut.sys_lock=1'b0;repeat(10)@(negedge clk);
  check(dut.sys_loss_ref && led==15,"SYS PLL loss visible independently on ref-domain LEDs");
  force dut.fatal_delay=26'd24999999;@(posedge clk);#1;release dut.fatal_delay;

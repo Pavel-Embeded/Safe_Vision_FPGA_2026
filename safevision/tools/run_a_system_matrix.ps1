@@ -1,4 +1,4 @@
-# All four complete A+B image/emergency cases; actual B media RTL, memory model.
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$ModelSimBin=$env:MSIM_BIN,

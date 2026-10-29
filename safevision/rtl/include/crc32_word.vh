@@ -1,5 +1,5 @@
-// IEEE CRC-32, reflected 0xedb88320, little-endian bytes in a 32-bit word.
-// Caller starts with ffffffff and complements the final state (zlib convention).
+
+
 function [31:0] crc32_word;
     input [31:0] crc,data;
     integer bit_index;

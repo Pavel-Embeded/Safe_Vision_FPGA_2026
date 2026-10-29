@@ -37,8 +37,7 @@
     "safevision/verification/fixtures/audio_disk.mem",
     "safevision/verification/fixtures/audio_pcm.mem",
     "safevision/verification/fixtures/audio_disk_unaligned.mem",
-    "safevision/verification/fixtures/audio_pcm_unaligned.mem",
-    "safevision/verification/models/v3_wav_fallback_reference55.freeze.json"
+    "safevision/verification/fixtures/audio_pcm_unaligned.mem"
   ],
   "generators": {},
   "generator_dependencies": [

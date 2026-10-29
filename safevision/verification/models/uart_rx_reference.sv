@@ -1,4 +1,4 @@
-// 16x oversampling, midpoint majority vote. Fractional tick avoids divider drift.
+
 module uart_rx_reference #(parameter integer CLK_HZ=100000000,BAUD=115200)(
  input wire clk,rst_n,rxd,ready,output reg [7:0] data,output reg valid,
  output reg [31:0] frame_errors,overruns);

@@ -1,4 +1,4 @@
-"""Prove release rejection on raw-log, source, vector and approval drift."""
+
 import argparse,json,os,shutil,subprocess,sys
 from pathlib import Path
 from v3_sources import ROOT

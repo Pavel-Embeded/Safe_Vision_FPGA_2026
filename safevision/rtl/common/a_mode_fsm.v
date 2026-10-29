@@ -1,6 +1,6 @@
-// Stage 1 demonstration ONLY, not C's safety controller.
-// Requests are synchronous. Emergency > warning > clear > start.
-// WARNING/EMERGENCY latch until clear with both fault inputs low.
+
+
+
 module a_mode_fsm(input wire clk, input wire rst_n,
     input wire start, input wire warning, input wire emergency, input wire clear,
     output reg [1:0] mode);

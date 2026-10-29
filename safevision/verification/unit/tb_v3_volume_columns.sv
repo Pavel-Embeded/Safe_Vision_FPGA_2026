@@ -8,7 +8,7 @@ module volume_column_case #(parameter HD=0)(output reg done=0,output integer err
  reg[98:0]cfg=0;wire[15:0]rgb;wire[7:0]alpha;
  v3_status_layers #(.HD(HD),.HANDBOOK_PROFILE(1),.VOLUME_COLUMNS(1),
 `ifdef HD_STATUS
- .RASTER_PREDECODE(0), // ROI coordinate jumps; exact raster recurrence is tested separately.
+ .RASTER_PREDECODE(0),
 `endif
  .FONT_FILE("font8x16.mem"),.COMPACT_FONT_FILE("font8x16_compact.mem"),.TEXT_FILE("v3_handbook_status_text.mem")) hud(
  .pixel_clk(clk),.pixel_rst_n(rst),.raw_x(x),.raw_y(y),.raw_de(de),.frame_start(fs),.cfg_data(cfg),
@@ -18,7 +18,7 @@ module volume_column_case #(parameter HD=0)(output reg done=0,output integer err
  task ck(input bit ok,input string msg);begin comparisons++;if(!ok)begin errors++;if(errors<8)$display("[FAIL] HD=%0d %s",HD,msg);end end endtask
  task snapshot(input integer a,b);begin
   @(negedge clk);x=0;y=0;de=0;en=a;vol=b;cfg[54:48]=a;cfg[67:61]=b;fs=1;
-  @(negedge clk);fs=0;en=0;vol=0; // Controls after snapshot must not change the result.
+  @(negedge clk);fs=0;en=0;vol=0;
   n=0;while(busy&&n<112)begin @(negedge clk);n++;end
   expected=((a>100?100:a)*(b>100?100:b))/100;
   ck(!busy,"bounded serial gain/division completion");ck(lev===expected[6:0],"independent exact gain including input clamps");

@@ -1,4 +1,4 @@
-"""Exhaust exact /100 over the superset of legal absolute PCM24*gain values."""
+
 import argparse,hashlib,json,time
 from pathlib import Path
 import numpy as np

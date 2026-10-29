@@ -1,4 +1,4 @@
-"""Native TD V3 builder. Both requested modes must pass before any bitgen."""
+
 import argparse,hashlib,json,os,re,subprocess,sys
 from pathlib import Path
 from datetime import datetime,timezone
@@ -10,7 +10,7 @@ from v3_resource_policy import load as load_resource_policy
 from v3_functional_release import acceptance as functional_acceptance,unchanged as proof_unchanged,DEFAULT_MANIFEST
 def save(path,value):path.write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 def source_commit_binding(root,source_repo,ref,paths):
- """Tie the actual build bytes to committed Git blobs, including text filters."""
+
  def git(*args,**kwargs):return subprocess.run(['git','-C',str(source_repo),*args],capture_output=True,**kwargs)
  revision=git('rev-parse',ref+'^{commit}')
  if revision.returncode:return {'verified':False,'commit':None,'reason':'source Git commit is unavailable'}
@@ -28,8 +28,8 @@ def source_commit_binding(root,source_repo,ref,paths):
   if hashed.returncode or hashed.stdout.decode('ascii').strip()!=blobs[name]:errors.append('build bytes differ from source commit: '+name)
  return {'verified':not errors,'commit':commit,'source_repository':str(source_repo),'dependencies_compared':len(paths),'errors':errors}
 def invoke(exe,tcl,log,env,cwd=None):
- # Dense EG4S20 routing can require more than one hour. Extending the wall
- # budget never changes native completion, source, resource or STA gates.
+
+
  with log.open('w',encoding='utf-8') as f:p=subprocess.run([str(exe),tcl.as_posix()],cwd=cwd if cwd is not None else log.parent,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=10800)
  text=log.read_text(encoding='utf-8',errors='replace')
  if p.returncode or re.search(r'V3 TD FAILED|\bERROR:|HDL-\d+ ERROR|multiple drivers?|HDL-5105 CRITICAL-WARNING',text,re.I):raise RuntimeError('TD failed: '+str(log))

@@ -1,37 +1,14 @@
-// ============================================================================
-// tb_frame_swap_ctrl.sv — 阶段 B/C1/C2：双缓冲 · 帧交换握手 · 跨域
-// ----------------------------------------------------------------------------
-// 被测：
-//   rtl/memory/frame_buffer_manager.v   （冻结地址表 / active 原子切换）
-//   rtl/memory/frame_swap_ctrl.v        （交换握手 FSM + 超时保护）
-//   rtl/memory/frame_swap_cdc.v         （B 域 -> A 域 payload 跨域）
-//
-// 依据：
-//   设计手册 7.14（帧交换握手与原子切换）/ 7.15（跨域 payload 稳定性）。
-//
-// 覆盖的 23 项断言要点：
-//   B  FBM：冻结地址表 IMG0..IMG3 / line_stride + frame_bytes / 查表口 / slot_valid 置位（4 项）
-//   B  SWAP：状态序列 IDLE->WAIT_VBLANK->COMMIT->WAIT_ACK / 回到 IDLE / 无超时错误 /
-//            active_slot 原子切换 + 基地址 + generation 更新 / 只在 frame_start 那拍改 /
-//            swap_req 发生翻转 / swap_req 保持电平（toggle 非单拍）（7 项）
-//   B  CDC：mailbox 载荷被 A 侧捕获 / payload 在 req 翻转前已稳定 /
-//           ack 之前 payload 未被修改（3 项）
-//   C1 TIMEOUT：无 frame_start -> swap_error 拉高 / 进入 SAFE /
-//               当前显示块保持为 0 / 超时后持续保持（4 项）
-//   C2 TIMEOUT2：无 swap_ack -> swap_error 拉高 / 提交已生效（槽 3）/
-//                超时后显示块不变并停在 SAFE（3 项）
-//   合计 23 项。
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
 module tb_frame_swap_ctrl;
 
-    // ------------------------------------------------------------------
-    // 时钟 / 复位
-    // ------------------------------------------------------------------
-    reg clk_b = 1'b0;          // sys_clk / mem_clk 100MHz
-    reg clk_a = 1'b0;          // pixel_clk 25MHz
+
+    reg clk_b = 1'b0;
+    reg clk_a = 1'b0;
     always #5  clk_b = ~clk_b;
     always #20 clk_a = ~clk_a;
 
@@ -55,15 +32,11 @@ module tb_frame_swap_ctrl;
         end
     endtask
 
-    // ------------------------------------------------------------------
-    // 状态编码（与 frame_swap_ctrl 一致，供 TB 断言用）
-    // ------------------------------------------------------------------
+
     localparam [2:0] S_IDLE = 3'd0, S_REQ = 3'd1, S_WAIT_VBLANK = 3'd2,
                      S_COMMIT = 3'd3, S_WAIT_ACK = 3'd4, S_SAFE = 3'd5;
 
-    // ==================================================================
-    // 一、帧缓存 / 帧交换 / 跨域
-    // ==================================================================
+
     reg         frame_ready = 1'b0;
     reg         wr_fidx     = 1'b0;
     reg  [1:0]  wr_slot     = 2'd0;
@@ -90,7 +63,7 @@ module tb_frame_swap_ctrl;
     reg         frame_start_a = 1'b0;
     reg         swap_ack_a    = 1'b0;
 
-    // FBM 装载口
+
     reg  [1:0]  wr_slot_sel  = 2'd0;
     reg         wr_slot_set  = 1'b0;
     reg         slot_valid_set = 1'b0;
@@ -143,10 +116,7 @@ module tb_frame_swap_ctrl;
         .frame_start_a(frame_start_a), .swap_ack_a(swap_ack_a)
     );
 
-    // ---- A 侧（像素域）行为模型 ----
-    //   a_mode = 0：完整应答（给 frame_start，再 toggle swap_ack）
-    //   a_mode = 1：只给 frame_start，不给 swap_ack
-    //   a_mode = 2：完全不响应
+
     reg  [1:0] a_mode = 2'd2;
     reg  [2:0] a_state = 3'd0;
     reg  [7:0] a_delay = 8'd0;
@@ -156,15 +126,15 @@ module tb_frame_swap_ctrl;
             a_state <= 3'd0; a_delay <= 8'd0;
             frame_start_a <= 1'b0; swap_ack_a <= 1'b0;
         end else begin
-            frame_start_a <= 1'b0;                    // 单拍脉冲默认低
+            frame_start_a <= 1'b0;
             case (a_state)
             3'd0: if ((a_mode != 2'd2) && req_evt_a) begin a_delay <= 8'd2; a_state <= 3'd1; end
             3'd1: if (a_delay == 8'd0) begin
-                      frame_start_a <= 1'b1;          // 进入垂直消隐 -> 帧边界
+                      frame_start_a <= 1'b1;
                       a_delay <= 8'd3; a_state <= 3'd2;
                   end else a_delay <= a_delay - 8'd1;
             3'd2: if (a_delay == 8'd0) begin
-                      if (a_mode == 2'd0) swap_ack_a <= ~swap_ack_a;  // toggle 回执
+                      if (a_mode == 2'd0) swap_ack_a <= ~swap_ack_a;
                       a_state <= 3'd0;
                   end else a_delay <= a_delay - 8'd1;
             default: a_state <= 3'd0;
@@ -172,10 +142,7 @@ module tb_frame_swap_ctrl;
         end
     end
 
-    // ==================================================================
-    // 二、监视器（断言用）
-    // ==================================================================
-    // (1) active_slot 只允许在 frame_start 触发的那一拍改变
+
     reg [1:0] aslot_q = 2'd0;
     reg [2:0] state_q = S_IDLE;
     reg       aslot_ok = 1'b1;
@@ -186,7 +153,7 @@ module tb_frame_swap_ctrl;
         end else begin
             if (active_slot !== aslot_q) begin
                 aslot_changes <= aslot_changes + 1;
-                // 变化发生在上一拍：那一拍状态应从 WAIT_VBLANK 进入 COMMIT
+
                 if (!(state_q == S_WAIT_VBLANK && state_o == S_COMMIT)) aslot_ok <= 1'b0;
             end
             aslot_q <= active_slot;
@@ -194,7 +161,7 @@ module tb_frame_swap_ctrl;
         end
     end
 
-    // (2) swap_req 是 toggle 电平，不是单拍脉冲
+
     reg       sr_q = 1'b0;
     integer   sr_changes = 0;
     always @(posedge clk_b or negedge rst_b_n) begin
@@ -205,7 +172,7 @@ module tb_frame_swap_ctrl;
         end
     end
 
-    // (3) payload 在 req 翻转【前】就稳定（翻转那一拍 payload 与上一拍相同）
+
     reg [1:0] slot_p = 2'd0;
     reg [7:0] gen_p  = 8'd0;
     reg       sr_p   = 1'b0;
@@ -219,7 +186,7 @@ module tb_frame_swap_ctrl;
         end
     end
 
-    // (4) ack 之前 payload 不许改
+
     reg       win = 1'b0;
     reg [1:0] win_slot = 2'd0;
     reg [7:0] win_gen  = 8'd0;
@@ -240,7 +207,7 @@ module tb_frame_swap_ctrl;
         end
     end
 
-    // (5) 状态序列观察
+
     reg saw_wv = 1'b0, saw_cm = 1'b0, saw_wa = 1'b0, ack_seen = 1'b0;
     always @(posedge clk_b or negedge rst_b_n) begin
         if (!rst_b_n) begin
@@ -253,16 +220,13 @@ module tb_frame_swap_ctrl;
         end
     end
 
-    // ==================================================================
-    // 三、测试流程
-    // ==================================================================
+
     integer i;
     reg [1:0] sr_snap;
 
     initial begin
-        // --------------------------------------------------------------
-        // 阶段 B：正常帧交换一轮
-        // --------------------------------------------------------------
+
+
         $display("==== 阶段 B：正常帧交换 ====");
         rst_b_n = 1'b0; rst_a_n = 1'b0; a_mode = 2'd0;
         frame_ready = 1'b0; wr_slot = 2'd0; wr_gen = 8'd0; wr_fidx = 1'b0; wr_crc = 1'b1;
@@ -270,7 +234,7 @@ module tb_frame_swap_ctrl;
         rst_b_n = 1'b1; rst_a_n = 1'b1;
         repeat (5) @(posedge clk_b);
 
-        // FBM 地址表核对
+
         check(slot_base0 == 32'h0000_0000 && slot_base1 == 32'h000A_0000 &&
               slot_base2 == 32'h0014_0000 && slot_base3 == 32'h001E_0000,
               "FBM: 冻结地址表 IMG0..IMG3");
@@ -280,17 +244,17 @@ module tb_frame_swap_ctrl;
         check(slot_base_o == 32'h0014_0000, "FBM: 查表口返回 IMG2");
         sel_slot = 2'd0; #1;
 
-        // 装载侧置 slot 有效
+
         slot_valid_id = 2'd1; slot_valid_set = 1'b1;
         @(posedge clk_b);
         #1 slot_valid_set = 1'b0;
         check(slot_valid[1] == 1'b1, "FBM: slot_valid[1] 置位");
 
-        // 提交一帧：frame_ready 只给一拍，保证只有一轮握手
+
         wr_slot = 2'd1; wr_gen = 8'd1; wr_fidx = 1'b1; wr_crc = 1'b1;
         frame_ready = 1'b1;
         @(posedge clk_b);
-        #1 frame_ready = 1'b0;      // 只给一拍，避免多轮握手
+        #1 frame_ready = 1'b0;
 
         for (i = 0; i < 800 && !ack_seen; i = i + 1) @(posedge clk_b);
         repeat (3) @(posedge clk_b);
@@ -308,14 +272,12 @@ module tb_frame_swap_ctrl;
         check(mb_pre_ok == 1'b1,               "CDC: payload 在 req 翻转前已稳定");
         check(win_ok == 1'b1,                  "CDC: ack 之前 payload 未被修改");
 
-        // toggle 电平（不是单拍脉冲）：翻转后应长时间保持
+
         sr_snap = swap_req;
         repeat (30) @(posedge clk_b);
         check(swap_req === sr_snap,            "SWAP: swap_req 保持电平（toggle 而非单拍脉冲）");
 
-        // --------------------------------------------------------------
-        // 阶段 C1：不给 frame_start -> 超时 -> 保持显示块
-        // --------------------------------------------------------------
+
         $display("==== 阶段 C1：超时（无 frame_start）====");
         rst_b_n = 1'b0; rst_a_n = 1'b0; a_mode = 2'd2;
         frame_ready = 1'b0;
@@ -326,19 +288,17 @@ module tb_frame_swap_ctrl;
         wr_slot = 2'd2; wr_gen = 8'd5; wr_fidx = 1'b1; wr_crc = 1'b1;
         frame_ready = 1'b1;
         @(posedge clk_b);
-        #1 frame_ready = 1'b0;      // 只给一拍，避免多轮握手
+        #1 frame_ready = 1'b0;
 
         for (i = 0; i < 400 && !swap_error; i = i + 1) @(posedge clk_b);
-        repeat (3) @(posedge clk_b);        // 等 state_o 追上 state
+        repeat (3) @(posedge clk_b);
         check(swap_error == 1'b1,              "TIMEOUT: 无 frame_start 时 swap_error 拉高");
         check(state_o == S_SAFE,               "TIMEOUT: FSM 进入 SAFE");
         check(active_slot == 2'd0,             "TIMEOUT: 当前显示块保持为 0（未切换）");
         repeat (30) @(posedge clk_b);
         check(active_slot == 2'd0,             "TIMEOUT: 超时后显示块持续保持");
 
-        // --------------------------------------------------------------
-        // 阶段 C2：给 frame_start 但不给 swap_ack -> 超时 -> 显示块不再变
-        // --------------------------------------------------------------
+
         $display("==== 阶段 C2：超时（无 swap_ack）====");
         rst_b_n = 1'b0; rst_a_n = 1'b0; a_mode = 2'd1;
         frame_ready = 1'b0;
@@ -349,7 +309,7 @@ module tb_frame_swap_ctrl;
         wr_slot = 2'd3; wr_gen = 8'd7; wr_fidx = 1'b0; wr_crc = 1'b1;
         frame_ready = 1'b1;
         @(posedge clk_b);
-        #1 frame_ready = 1'b0;      // 只给一拍，避免多轮握手
+        #1 frame_ready = 1'b0;
 
         for (i = 0; i < 600 && !swap_error; i = i + 1) @(posedge clk_b);
         check(swap_error == 1'b1,              "TIMEOUT2: 无 swap_ack 时 swap_error 拉高");
@@ -358,9 +318,7 @@ module tb_frame_swap_ctrl;
         check(active_slot == 2'd3 && state_o == S_SAFE,
                                                "TIMEOUT2: 超时后显示块保持不变，停在 SAFE");
 
-        // --------------------------------------------------------------
-        // 汇总
-        // --------------------------------------------------------------
+
         $display("========================================");
         $display("  PASS = %0d   FAIL = %0d", passes, errors);
         $display("========================================");
@@ -369,7 +327,7 @@ module tb_frame_swap_ctrl;
         $finish;
     end
 
-    // 兜底看门狗
+
     initial begin
         #500000;
         $display("[FAIL] watchdog timeout");

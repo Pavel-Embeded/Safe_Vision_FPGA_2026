@@ -26,8 +26,8 @@ module tb_video_bus_reservation;
    wait(wa);@(negedge clk);wr=0;wait(!wb);repeat(4)@(negedge clk);
    if(writes!=1)$fatal(1,"idle scan must allow startup image write");
    level=2000;wr=1;
-   // Writer becomes urgent while the DMA prepares its next checked block.
-   // Request gaps must not start an uninterruptible physical write tail.
+
+
    for(i=0;i<100;i=i+1)begin @(negedge clk);if(wa||wb||mreq)$fatal(1,"write stole low-water request gap");end
    rr=1;wait(ra);@(negedge clk);rr=0;wait(!rb);repeat(4)@(negedge clk);
    if(reads!=64||writes!=1)$fatal(1,"reserved video burst not completed exactly");

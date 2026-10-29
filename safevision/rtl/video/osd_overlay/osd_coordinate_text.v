@@ -1,5 +1,5 @@
-// Stage-6 coordinate label: X:hhh Y:hhh (12-bit hexadecimal, 11 cells).
-// Display the configured text origin, stable during a frame.
+
+
 module osd_coordinate_text(input wire [7:0] char_index,
     input wire [11:0] x_value,y_value,output reg [7:0] char_code);
     function [7:0] hex_digit;

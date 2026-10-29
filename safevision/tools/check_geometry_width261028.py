@@ -1,11 +1,6 @@
-"""Exhaust legal geometry inputs and justify the reduced temporary width.
 
-This is integer-domain evidence in addition to native HDL pixel/FSM tests.
-For N>=0,D>0, every executed subtraction has S>=D and produces S-D>=0.
-Thus no intermediate remainder exceeds N. Checking the initial numerator bound
-over all dimensions proves that dropping the unreachable upper seven bits is
-exact throughout the subtractive quotient loop.
-"""
+
+
 from pathlib import Path
 import argparse,hashlib,json,platform,time
 import numpy as np
@@ -32,7 +27,7 @@ def check(root):
   assert text.count(anchor)==1,anchor
  assert text.count('geometry_scratch-geometry_divisor')==2
  h=np.arange(1,16385,dtype=np.uint32)[None,:];pairs=0;maximum=0;maximum_quotient=0;digest=hashlib.sha256()
- # Both legal16-bit height representations produce the same positive H.
+
  raw_negative=np.uint32(65536)-h
  decoded_negative=(((~raw_negative)&np.uint32(65535))+np.uint32(1))&np.uint32(65535)
  assert np.array_equal(decoded_negative,h)
@@ -40,7 +35,7 @@ def check(root):
  for first in range(1,16385,128):
   w=np.arange(first,min(first+128,16385),dtype=np.uint32)[:,None]
   wide=w*480>=h*640
-  # Replay the actual17-bit shape expression independently of full products.
+
   actual_wide=((((w<<1)+w)&np.uint32(131071))>=((h<<2)&np.uint32(131071)))
   assert np.array_equal(actual_wide,wide)
   numerator=np.where(actual_wide,h*640,w*480)
@@ -48,14 +43,14 @@ def check(root):
   assert np.all(w*480<2**25) and np.all(h*640<2**25)
   divisor=np.where(wide,w,h)
   quotient=numerator//divisor;remainder=numerator%divisor
-  # These host formulas do not truncate to the candidate width.
+
   assert np.all(divisor>0)
   assert np.all(numerator<=480*16384) and np.all(numerator<2**23)
   assert np.all(numerator==quotient*divisor+remainder)
   assert np.all(remainder<divisor)
   assert np.all(quotient<=640)
   assert np.array_equal(numerator&((1<<23)-1),numerator)
-  # First and terminal executed subtractions bound every monotone remainder.
+
   first_remainder=np.where(quotient>0,numerator-divisor,numerator)
   last_before=np.where(quotient>0,remainder+divisor,numerator)
   assert np.all(first_remainder<=numerator)

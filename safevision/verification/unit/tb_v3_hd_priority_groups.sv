@@ -7,8 +7,8 @@ module tb_v3_hd_priority_groups;
   comparisons++;if(!ok)begin errors++;if(errors<8)$display("[FAIL] %s pending=%h expected=%h",message,stimulus,expected);end
  end endtask
  initial begin
-  // Isolate the encoder input without forcing its outputs or registers.
-  // A mathematical first-set-bit search is independent of the prefix layout.
+
+
   force a.pending=stimulus;force a.selection=11'd0;force a.new_events=11'd0;
   #12;rst=1;
   for(i=0;i<2048;i++)begin

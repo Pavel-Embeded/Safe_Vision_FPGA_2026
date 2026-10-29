@@ -1,21 +1,10 @@
-// Vendored from Anlogic example package (lab_ex4_tf / lab_ex5_i2s).
-// Source: example/lab_ex4_tf/src/user_source/hdl_source/SD/sdram.v
+
+
 // Copyright (c) Anlogic Inc. Not our code. See README.md in this folder.
-//
-// This is the APPLICATION-level SDRAM controller instantiated by the example
-// top (top_tf_hdmi_audio.v, instance U3). It is NOT the pin-level PHY shell.
-// The real controller logic lives in the encrypted sdr_*.enc.v files.
-//
-// Only change vs the original: the `include path was rewritten from
-// "../user_source/hdl_source/include/global_def.v" to "global_def.v" so that
-// the file is self-contained inside this folder.
+
 
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: anlgoic
-// Author: 	xg
-// description:  top module
-//////////////////////////////////////////////////////////////////////////////////
+
 
 `define DEBUG
 
@@ -50,7 +39,6 @@ module sdram(
 	input [`ADDR_WIDTH-1:0]		App_rd_addr,
 	output 						Sdr_rd_en,
 	output [`DATA_WIDTH-1:0]	Sdr_rd_dout	//synthesis keep
-
 
 
 );
@@ -100,7 +88,7 @@ sdr_as_ram  #( .self_refresh_open(1'b1))
 
 assign SDR_CKE=1'b1;
 
-//`ifndef SIMULATION
+
 	EG_PHY_SDRAM_2M_32 sdram(
 		.clk(SDRAM_CLK),
 		.ras_n(SDR_RAS),
@@ -116,6 +104,6 @@ assign SDR_CKE=1'b1;
 		.dm3(SDR_DM[3]),
 		.cke(1'b1)
 		);
-//`endif
+
 
 endmodule

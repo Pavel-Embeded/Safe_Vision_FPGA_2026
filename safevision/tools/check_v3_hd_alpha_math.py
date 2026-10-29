@@ -1,11 +1,11 @@
-"""Independent exhaustive integer proof for the HD3-cycle blend partition."""
+
 from pathlib import Path
 import argparse,hashlib,json
 ROOT=Path(__file__).resolve().parents[2]
 def check(root):
  target=root/'safevision/rtl/hd/alpha_blend.v';raw=target.read_bytes();s=raw.decode('utf-8')
- # Tie the proof to the exact intended HDL operators, then compare with an
- # independent integer division oracle, including every carry boundary.
+
+
  required=("wire[13:0] sr_next=pr+14'd8287,sb_next=pb+14'd8287;",
  "wire[14:0] sg_next=pg+15'd16447;",
  "br2<=br+sr_next[12:8];bg2<=bg+sg_next[13:8];bb2<=bb+sb_next[12:8];",

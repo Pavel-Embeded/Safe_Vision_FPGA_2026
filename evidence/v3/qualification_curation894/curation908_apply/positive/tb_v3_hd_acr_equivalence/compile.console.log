@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq56/source/safevision/rtl/hd/hdmi_acr.v" into library work
-INFO: [VRFC 10-311] analyzing module hdmi_acr
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq56/source/safevision/verification/models/hd_acr_reference.sv" into library work
-INFO: [VRFC 10-311] analyzing module hd_acr_reference
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svq56/source/safevision/verification/unit/tb_v3_hd_acr_equivalence.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_hd_acr_equivalence

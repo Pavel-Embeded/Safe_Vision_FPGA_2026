@@ -1,10 +1,6 @@
-// Exact arithmetic identity: B + floor(((F-B)*a+127)/255). Bias 255*32
-// (red/blue) or 255*64 (green) keeps the divider unsigned. The corresponding
-// subtraction vanishes modulo the output channel width; true output stays
-// in 0..31/63. Three clocks and invalid-cycle public output are preserved.
-// RGB565, foreground alpha 0..255. Exact rounded division by 255.
-// Fixed latency 3, throughput one pixel/clock. Difference form uses ONE signed
-// multiplier/channel: B*255 + (F-B)*alpha equals F*alpha+B*(255-alpha).
+
+
+
 module alpha_blend(
  input wire clk,rst_n,valid_in,
  input wire [15:0] front,back,input wire [7:0] alpha,
@@ -15,9 +11,8 @@ module alpha_blend(
  wire signed[5:0] db=$signed({1'b0,front[4:0]})-$signed({1'b0,back[4:0]});
  reg signed[13:0] pr,pb;reg signed[14:0] pg;
  reg[4:0] br,bb;reg[5:0] bg;
- // Stage2 registers only the final channel base and one exact carry.
- // x=256H+L, floor(x/255)=H+(L>=255-H). Bias vanishes mod32/64.
- // Stage3 now increments5/6 bits instead of dividing and adding back.
+
+
  reg[4:0] br2,bb2;reg[5:0] bg2;reg cr,cg,cb;reg v1,v2;
  wire[13:0] sr_next=pr+14'd8287,sb_next=pb+14'd8287;
  wire[14:0] sg_next=pg+15'd16447;

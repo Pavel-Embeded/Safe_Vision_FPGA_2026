@@ -1,23 +1,10 @@
-// ============================================================================
-// video_pipeline.v - A stage 10: fixed-rate pixel/tag latency alignment
-// Verilog-2001. All ports use clk (pixel_clk), never sys_clk/mem_clk.
-// latency = LATENCY cycles; throughput = one complete bundle per clock.
-// LATENCY=0 is a combinational bypass. No enable/ready/stall is permitted.
-//
-// Count convention: a bundle stable before edge E appears after edge
-// E+LATENCY-1 for LATENCY>=1. A source register launched after E is sampled
-// at E+1 and appears after E+LATENCY. Cascaded latencies therefore add.
-// pixel_valid is media availability, de is scan timing: keep them separate.
-// Invalid/blank pixels still advance every tag. This module neither replaces
-// missing pixels nor performs CDC, frame swaps, OSD or HDMI serialization.
-// rst_n asserts asynchronously; caller releases it synchronously to clk.
-// Reset flushes all stages: black pixel, zero coordinates/events/valid/de,
-// inactive hsync/vsync, hblank=vblank=1. LATENCY=0 uses the same reset bundle.
-// ============================================================================
+
+
+
 module video_pipeline #(
-    parameter integer PIXEL_WIDTH = 24, // use 16 for B's RGB565, no conversion
-    parameter integer XY_WIDTH = 12,    // video_timing outputs are 12 bits
-    parameter integer LATENCY = 1,      // number of registers per signal
+    parameter integer PIXEL_WIDTH = 24,
+    parameter integer XY_WIDTH = 12,
+    parameter integer LATENCY = 1,
     parameter [0:0] HSYNC_ACTIVE = 1'b0,
     parameter [0:0] VSYNC_ACTIVE = 1'b0
 )(
@@ -31,11 +18,11 @@ module video_pipeline #(
     input wire de_in,
     input wire pixel_valid_in,
     input wire line_start_in,
-    input wire frame_start_in,        // vertical-blank event from video_timing
-    input wire active_frame_start_in, // first visible pixel, a distinct event
+    input wire frame_start_in,
+    input wire active_frame_start_in,
     input wire hblank_in,
     input wire vblank_in,
-    // Every output has latency = LATENCY cycles, including all event tags.
+
     output wire [PIXEL_WIDTH-1:0] pixel_out,
     output wire [XY_WIDTH-1:0] x_out,
     output wire [XY_WIDTH-1:0] y_out,

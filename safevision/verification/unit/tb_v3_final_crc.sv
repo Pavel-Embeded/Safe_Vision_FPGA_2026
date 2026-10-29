@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
-// Reuse the complete real-SPI, four-slot fixture. Alter only the behavioral
-// card CRC of the FINAL sector of the first legal BMP (absolute LBA16+75).
-// The missing last nine RGB565 words must prevent all cache publication.
+
+
 module tb_v3_final_crc;
  tb_v3_resident u();
  integer errors=0,corruptions=0,guard=0;

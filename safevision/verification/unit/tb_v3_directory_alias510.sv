@@ -39,8 +39,8 @@ module tb_v3_directory_alias510;
  end
  reg[31:0]c,z;reg[87:0]raw;
  initial begin
-  // Three-digit aliases immediately follow nonzero four-digit IDs. This
-  // catches a stale high nibble that a clean-reset-only test would miss.
+
+
   names[0]="SV9876  BMP";names[1]="SV001   BMP";names[2]="SV0001  WAV";
   names[3]="SV002   BMP";names[4]="SV0002  WAV";names[5]="SV003   BMP";
   names[6]="SV0003  WAV";names[7]="SV004   BMP";names[8]="SV0004  WAV";

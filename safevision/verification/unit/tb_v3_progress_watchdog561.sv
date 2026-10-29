@@ -177,7 +177,7 @@ module progress_supervisor_case561 #(parameter HD=0,HZ=1000)(output reg done=0,o
   reset();@(negedge clk);cached=1;media_active=1;media_hb=0;mem_hb=1;tick(120*DIV+8);
   check(opt_fault_valid&&opt_fault_code==3&&boot_events==0,"memory progress cannot hide an active stalled media engine");
 
-  // Frozen default0 equivalence also covers mixed faults, requests and resets.
+
   reset();
   for(i=0;i<1800;i=i+1)begin
    @(negedge clk);random_state={random_state[30:0],random_state[31]^random_state[21]^random_state[1]^random_state[0]};
@@ -217,7 +217,7 @@ module progress_recovery_case561 #(parameter TIMEOUT=7)(output reg done_all=0,ou
    check(state==4&&busy&&safe,"continuous valid progress keeps long recovery alive");
   end
   @(negedge clk);progress=0;
-  // Start a fresh inactivity epoch by one known pulse.
+
   progress=1;tick(1);@(negedge clk);progress=0;
   for(i=1;i<=TIMEOUT;i=i+1)begin tick(1);check(state==(i<TIMEOUT?4:5),"exact inactivity deadline after final progress pulse");end
   check(!busy&&safe&&attempts==1&&!recovered,"timed-out recovery locks SAFE and retains attempt count");

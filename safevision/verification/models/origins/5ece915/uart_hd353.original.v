@@ -1,8 +1,6 @@
-// SYS-domain UART command/response transport. Configuration has a separate
-// owner (v3_user_controls); this module owns framing and byte transport only.
-// Reply: $C:ACK=HH,XXXXXXXX*HH\r\n (code byte, signed value as 32-bit hex, XOR).
-// The 128-entry queue holds the replies to a 1000-byte command burst, even
-// when transmit is slower than receive. Any exceeded bound is counted.
+
+
+
 module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATALOG=0,TX_PIPELINE=BOARD_CATALOG)(
  input wire clk,rst_n,rxd,output wire txd,
  output wire command_valid,output wire[7:0] command_target,
@@ -16,8 +14,8 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  uart_rx #(.CLK_HZ(CLK_HZ),.BAUD(BAUD)) rx(
  .clk(clk),.rst_n(rst_n),.rxd(rxd),.ready(1'b1),.data(byte_rx),.valid(byte_valid),
  .frame_errors(rx_framing),.overruns(rx_overrun));
- // Default preserves arbitrary-name byte-parser behavior. The board opts
- // into the finite exact-name ROM catalog; its UART divider is >=32.
+
+
  generate if(BOARD_CATALOG)begin:g_catalog
  v3_command_parser_catalog #(.TIMEOUT(CLK_HZ/10)) parser(
  .clk(clk),.rst_n(rst_n),.rx_valid(byte_valid),.rx_data(byte_rx),
@@ -42,13 +40,8 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  reg sending;reg[4:0] position;reg[48:0] payload;reg[7:0] checksum;
  wire tx_ready;reg[7:0] byte_tx;
  reg format_hex;reg[3:0] format_nibble;reg[7:0] format_literal;
- // Board timing boundary: BRAM payload -> byte formatter -> register;
- // registered byte -> checksum and serializer. UART busy time hides refill.
- // First byte is the constant dollar sign and uses the original one-edge
- // freshness bypass. All later bytes have two-stage formatting hidden by
- // the serializer busy interval (>=10SYS edges). Exact TXD timing remains.
- // Two SYS edges are added before each new response; line baud, byte order,
- // checksum,128 replies and event backpressure retain their contracts.
+
+
  wire[7:0] byte_stage;wire byte_fresh;
  wire[48:0] packet;
  wire send_valid=sending && (!TX_PIPELINE || byte_fresh);
@@ -57,8 +50,8 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  generate if(TX_PIPELINE)begin:g_tx_pipeline
   (* preserve="true" *) reg[7:0] data_q;reg[1:0] fresh_q;
   reg select_hex_q;reg[3:0] nibble_q;reg[7:0] literal_q;
-  // Four high padding bits are constant in both ACK and event records.
-  // Keep45 meaningful bits between the BRAM output and byte formatting.
+
+
   (* preserve="true" *) reg[44:0] message_q;
   assign packet={message_q[44],4'd0,message_q[43:0]};
   assign byte_stage=data_q;assign byte_fresh=(position==0)?fresh_q[0]:fresh_q[1];
@@ -99,7 +92,7 @@ module v3_uart_link #(parameter integer CLK_HZ=100000000,BAUD=115200,BOARD_CATAL
  always @*begin
   format_hex=0;format_nibble=0;format_literal=8'h3f;
   if(packet[48])case(position)
-   // $C:EVT=SS,CC,TTTTTTTT*HH CR LF
+
    0:format_literal=36;1:format_literal=67;2:format_literal=58;3:format_literal=69;4:format_literal=86;5:format_literal=84;6:format_literal=61;
    7:begin format_hex=1;format_nibble=packet[47:44];end 8:begin format_hex=1;format_nibble=packet[43:40];end 9:format_literal=44;
    10:begin format_hex=1;format_nibble=packet[39:36];end 11:begin format_hex=1;format_nibble=packet[35:32];end 12:format_literal=44;

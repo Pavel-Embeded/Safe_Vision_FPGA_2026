@@ -26,7 +26,7 @@ module setting_wave_control_case198 #(parameter HD=0)(output reg done=0,output i
   ck(dut.video.graphics.RASTER_PREDECODE==HD,"production core actually enables HD row predecode");
   for(k=0;k<3;k++)begin
    v=k==0?0:k==1?100:70;setvolume(v);diag();
-   repeat(8)@(negedge dut.sys_clk); // Control-only checks;full raster is a separate mandatory suite.
+   repeat(8)@(negedge dut.sys_clk);
   end
   done=1;
  end

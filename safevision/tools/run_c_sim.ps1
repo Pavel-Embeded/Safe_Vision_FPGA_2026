@@ -1,25 +1,25 @@
-# ============================================================================
-# run_c_sim.ps1 - SafeVision C-chain (control / safety / audio) regression
-# ----------------------------------------------------------------------------
-# C chain (per handbook ch.8 + module_registry):
-#     rtl/control/  input_sync, key_debounce, priority_arbiter,
-#                   control_event_queue, playback_fsm
-#     rtl/safety/   watchdog, fault_manager, emergency_fsm
-#     rtl/audio/    audio_scheduler, alarm_tone_gen, audio_priority_arbiter
-# Shared deps: rtl/common/sync_fifo.v, rtl/common/error_report.v
-# Unit TBs (verification/unit/tb_c_*.sv): 7 testbenches, each printing
-#   [PASS]/[FAIL] and a final "[TB] <name> done, errors=<n>" line.
-#
-# Usage (PowerShell):
-#     powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_c_sim.ps1
-#     powershell -ExecutionPolicy Bypass -File .\safevision\tools\run_c_sim.ps1 -ModelSimBin D:\path\to\win64
-#   The ModelSim win64 directory comes from -ModelSimBin or the MSIM_BIN env
-#   var when the parameter is omitted (same convention as run_sim.ps1 /
-#   run_clock_sim.ps1). No machine-specific path is hard-coded here.
-#
-# NOTE: keep this file ASCII-only. PowerShell 5.1 reads .ps1 as ANSI when there
-#       is no BOM, so multi-byte (Chinese) comments can break parsing.
-# ============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 param([string]$ModelSimBin = $env:MSIM_BIN)
 
 $ErrorActionPreference = 'Stop'
@@ -93,16 +93,16 @@ try {
     & $vlog -sv $inc $tbFiles
     if ($LASTEXITCODE -ne 0) { Write-Output 'COMPILE FAILED (TB)'; exit 1 }
 
-    # Scratch area for do-file and logs. NOTE: on some ModelSim installs the
-    # vsim built-in optimizer path fails with
-    #   "vopt returned success but vsim could not find a design to simulate".
-    # We therefore run an explicit two-step flow: vopt -> vsim <optname>, which
-    # is equivalent and also works on normal installs.
-    # A few installs also flake on license checkout ("License request for
-    # qhsimvl feature failed"), so each TB is retried up to 3 times. The retry
-    # only rides out transient license hiccups; it never relaxes an assertion.
-    # Sim calls use Start-Process (not the & pipeline) so that native stderr is
-    # not turned into a terminating PowerShell error under 'Stop'.
+
+
+
+
+
+
+
+
+
+
     $scratch = $env:TEMP + '\safevision_c_sim'
     New-Item -ItemType Directory -Path $scratch -Force | Out-Null
     $doFile = $scratch + '\run.do'

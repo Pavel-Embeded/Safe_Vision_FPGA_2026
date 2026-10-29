@@ -1,5 +1,5 @@
-# Functional serializer check with the official HDL and Anlogic ODDR model.
-# Does not simulate the encrypted HDMI packet/TMDS encoder.
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$VendorRoot,

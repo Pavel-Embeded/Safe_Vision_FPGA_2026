@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svformal175/variant/safevision/rtl/audio/v3_audio_volume.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_audio_volume
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svformal175/variant/safevision/verification/models/v3_audio_volume_reference.sv" into library work
-INFO: [VRFC 10-311] analyzing module v3_audio_volume_reference
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svformal175/variant/safevision/verification/unit/tb_v3_volume_dsp_equivalence.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_volume_dsp_equivalence

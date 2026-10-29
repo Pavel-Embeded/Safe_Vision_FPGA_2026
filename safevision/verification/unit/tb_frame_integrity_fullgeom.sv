@@ -1,13 +1,6 @@
-// Real-geometry check for frame_integrity_guard.
-// The shipped tb_frame_integrity uses a scaled geometry (WORDS=128, ROW_WORDS=64,
-// BLOCKS=2) where ROW_WORDS == BLOCK_WORDS, so a row-index / block-index mix-up
-// is invisible. The board uses WORDS=153600, ROW_WORDS=320, BLOCKS=2400 with
-// ROW_WORDS != BLOCK_WORDS. This TB drives the real geometry against an ideal
-// memory in BOTH row orders:
-//   top_down=0 (bottom-up, the BASE profile) and top_down=1 (top-down).
-// The previous version only exercised top_down=0, and its row-end correction
-// (-ROW_WORDS*8+4) is only valid for bottom-up: for top_down=1 rows are adjacent
-// and the walk must be a plain +4. That path was never covered before.
+
+
+
 `timescale 1ns/1ps
 module tb_fullgeom;
     localparam integer WORDS      = 153600;
@@ -15,7 +8,7 @@ module tb_fullgeom;
     localparam integer BLOCK_WORDS= 64;
     localparam [31:0]  SLOT1      = 32'h000A_0000;
 
-    reg clk = 0; always #12.5 clk = ~clk;         // 40 MHz
+    reg clk = 0; always #12.5 clk = ~clk;
     reg rst_n = 0;
     reg        frame_begin = 0;
     reg [1:0]  frame_slot  = 0;
@@ -42,17 +35,17 @@ module tb_fullgeom;
         .bad_addr(bad_addr), .bad_expected(bad_expected), .bad_actual(bad_actual),
         .source_words(source_words), .checked_blocks(checked_blocks));
 
-    // ---- ideal memory: exactly what was written comes back ----
+
     reg [31:0] mem [0:600000];
     wire [31:0] rd_word = rd_addr >> 2;
 
     integer wcount, col, r;
     reg [31:0] cur_addr;
     function [31:0] pixdata(input [31:0] a);
-        pixdata = a ^ 32'h5A5A_1234;              // address-dependent, block-unique
+        pixdata = a ^ 32'h5A5A_1234;
     endfunction
 
-    // ---- write-side driver: same address walk the guard expects ----
+
     task drive_frame;
         begin
             @(posedge clk);
@@ -65,7 +58,7 @@ module tb_fullgeom;
                 mem[cur_addr >> 2] <= pixdata(cur_addr);
                 if (col == ROW_WORDS-1) begin
                     col = 0;
-                    // bottom-up: jump back one row; top-down: rows are adjacent
+
                     cur_addr = top_down ? (cur_addr + 4)
                                         : (cur_addr - ROW_WORDS*8 + 4);
                 end else begin
@@ -78,12 +71,12 @@ module tb_fullgeom;
         end
     endtask
 
-    // ---- read-side responder ----
+
     always @(posedge clk) begin
         rd_ack   <= 1'b0;
         rd_valid <= 1'b0;
         if (rd_req && !rd_ack && !rd_valid) begin
-            rd_ack <= 1'b1;                        // ack one cycle after req
+            rd_ack <= 1'b1;
         end else if (rd_ack) begin
             for (r = 0; r < BLOCK_WORDS; r = r + 1) begin
                 @(posedge clk);
@@ -103,7 +96,7 @@ module tb_fullgeom;
             @(posedge clk); verify_start <= 1; @(posedge clk); verify_start <= 0;
             fork : waitdone
                 begin : w1  wait (verify_done == 1'b1); end
-                begin : w2  #60_000_000; end          // 60 ms guard
+                begin : w2  #60_000_000; end
             join_any
             disable waitdone;
             repeat (4) @(posedge clk);
@@ -128,8 +121,8 @@ module tb_fullgeom;
     endtask
 
     initial begin
-        do_pass(0);   // bottom-up (BASE profile)
-        do_pass(1);   // top-down   (previously never exercised at real geometry)
+        do_pass(0);
+        do_pass(1);
         $display("");
         $display("  TOTAL RESULT: %0d error(s) over both row orders", errors);
         $display("=================================================");

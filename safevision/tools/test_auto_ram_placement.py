@@ -1,4 +1,4 @@
-"""Reject altered OE, pins, clocks and timing bytes using isolated fixtures."""
+
 from pathlib import Path
 import argparse,hashlib,json,subprocess
 from check_auto_ram_placement import check_source,TIMING_AND_PIN_SHA,ADC

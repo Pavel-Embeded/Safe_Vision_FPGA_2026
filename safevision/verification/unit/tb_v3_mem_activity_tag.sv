@@ -6,11 +6,11 @@ module mem_activity_case #(parameter integer PHASE=0)(output reg done=0,output i
  integer produced=0,observed=0,epoch,i;reg[31:0] random_bits=32'h1d872fa5;
  v3_mem_activity_tag producer(.clk(mem_clk),.rst_n(rst),.activity(activity),.token(token));
  v3_related_status_capture #(.WIDTH(32)) capture(.clk(sys_clk),.rst_n(rst),.source_data(token),.data(snapshot),.valid(valid));
- // Independent source event journal, independent of the encoded token.
+
  always @(posedge mem_clk or negedge rst)
   if(!rst)produced=0;else if(activity)produced=produced+1;
- // Actual receiver protocol used by the board supervisor: compare every
- // continuously sampled status word. Count its pulses, not source levels.
+
+
  always @(posedge sys_clk or negedge rst)begin
   if(!rst)begin seen<=0;observed<=0;end
   else if(valid)begin

@@ -1,24 +1,12 @@
-// 字探针 v4 的行为验证（scratch，不属于正式套件）。
-//
-// v4 语义（对照 `SAFEVISION_DIAG_WORDPROBE`）：
-//   ① 反向校验：末块（BLOCKS-1）→ 第 0 块。
-//   ② **首块失败后不停下**，把 2400 块全部校验完；`fail_cnt` = 坏块总数，
-//      `checked_blocks` = 通过块数。二者互补（fail_cnt + checked_blocks == BLOCKS）。
-//   ③ `bad_addr` = **第一处**失败块基址；`bad_expected/bad_actual` = 该块原始读回字 0/1。
-//   ④ `last_read_word` = 整个校验过程**最后一次**读回的第 0 个字
-//      （反向校验 ⇒ 最后读的是第 0 块 ⇒ 应等于槽基址 word 0）。
-//
-// 三个用例：
-//   A. 破坏第 0 块 word 5（不影响 word 0）⇒ fail_cnt=1、checked_blocks=2399、
-//      bad_addr=SLOT1、last_read_word=pixdata(SLOT1)。
-//   B. 破坏末块 word 0 ⇒ fail_cnt=1、bad_addr=LASTB、EXP=被破坏后的字。
-//   C. 破坏 3 块（末块 / 中间块 / 第 0 块）⇒ fail_cnt=3、bad_addr=LASTB（反向首块）。
+
+
+
 `timescale 1ns/1ps
 module tb_wordprobe_check;
     localparam integer WORDS=153600, ROW_WORDS=320, BLOCK_WORDS=64;
-    localparam integer BLOCKS=WORDS/BLOCK_WORDS;               // 2400
+    localparam integer BLOCKS=WORDS/BLOCK_WORDS;
     localparam [31:0] SLOT1=32'h000A_0000;
-    localparam [31:0] LASTB=SLOT1+(BLOCKS-1)*BLOCK_WORDS*4;     // 末块基址 0x00135F00
+    localparam [31:0] LASTB=SLOT1+(BLOCKS-1)*BLOCK_WORDS*4;
 
     reg clk=0; always #12.5 clk=~clk;
     reg rst_n=0, frame_begin=0, accepted=0, verify_start=0, verify_allow=1;
@@ -51,7 +39,7 @@ module tb_wordprobe_check;
     integer errors=0;
     reg [31:0] cur_addr;
 
-    // 读侧响应器：req 后一拍 ack，然后连续给 64 个字
+
     always @(posedge clk) begin
         rd_ack<=1'b0; rd_valid<=1'b0;
         if(rd_req&&!rd_ack&&!rd_valid) rd_ack<=1'b1;
@@ -96,7 +84,7 @@ module tb_wordprobe_check;
         end
     endtask
 
-    // 把一个块内的所有字都改掉（模拟"该块读回全错"）
+
     task corrupt_block(input [31:0] blkbase);
         integer k;
         begin
@@ -107,7 +95,7 @@ module tb_wordprobe_check;
     initial begin
         rst_n=0; repeat(5)@(posedge clk); rst_n=1; repeat(2)@(posedge clk);
 
-        // ================= 用例 A：只破坏第 0 块 word 5 =================
+
         write_frame;
         mem[(SLOT1>>2)+5] = mem[(SLOT1>>2)+5] ^ 32'h0000_0001;
         verify_and_wait;
@@ -128,7 +116,7 @@ module tb_wordprobe_check;
         if(bad_actual!==pixdata(SLOT1+4))   begin errors=errors+1; $display("  [FAIL] GOT"); end
         if(last_read_word!==pixdata(SLOT1)) begin errors=errors+1; $display("  [FAIL] last_read_word"); end
 
-        // ================= 用例 B：只破坏末块 word 0 =================
+
         do_reset;
         write_frame;
         mem[(LASTB>>2)] = mem[(LASTB>>2)] ^ 32'h0000_0001;
@@ -144,12 +132,12 @@ module tb_wordprobe_check;
         if(bad_addr!==LASTB) begin errors=errors+1; $display("  [FAIL] bad_addr"); end
         if(last_read_word!==pixdata(SLOT1)) begin errors=errors+1; $display("  [FAIL] last_read_word"); end
 
-        // ================= 用例 C：破坏 3 块 =================
+
         do_reset;
         write_frame;
-        corrupt_block(SLOT1+100*BLOCK_WORDS*4);      // 中间块
-        corrupt_block(SLOT1+200*BLOCK_WORDS*4);      // 中间块
-        corrupt_block(LASTB);                        // 反向首块
+        corrupt_block(SLOT1+100*BLOCK_WORDS*4);
+        corrupt_block(SLOT1+200*BLOCK_WORDS*4);
+        corrupt_block(LASTB);
         verify_and_wait;
         $display("");
         $display("===== CASE C: corrupt 3 blocks (200, 100, 2399) =====");

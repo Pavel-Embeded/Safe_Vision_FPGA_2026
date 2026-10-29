@@ -1,4 +1,4 @@
-# Compile only real portable memory RTL plus these explicit TBs. No mock sdram module.
+
 param(
     [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
     [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',

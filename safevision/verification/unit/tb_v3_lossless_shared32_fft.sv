@@ -65,7 +65,7 @@ module tb_v3_lossless_shared32_fft;
   for(phase=0;phase<1024;phase++)begin
    force ticker.position=phase;
    @(negedge clk);fs=1;de=0;@(negedge clk);fs=0;
-   // Exercise spectrum-port ownership on real raster rows as well as caption rows.
+
    if(phase%16==0)for(py=346;py<418;py++)for(px=0;px<800;px++)pixel(px,py,px<640);
    for(py=454;py<478;py++)for(px=0;px<800;px++)pixel(px,py,px<640&&px%17!=0);
   end

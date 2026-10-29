@@ -1,4 +1,4 @@
-"""Require normal data-check failures for admission, reset and FIFO-credit mutants."""
+
 import argparse,concurrent.futures,hashlib,json,re,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

@@ -1,9 +1,6 @@
-// V3-only 50 MHz memory / +8 ns SDRAM profile. Legacy MEM40 is unchanged.
-// Official TD EG_PHY_PLL template parameters: FIN50, REF1, FB2, C0DIV10 =>
-// VCO1000 MHz; SYS100, MEM50 at 0deg, SDRAM50 at 144deg (=8 ns).
-// Configured by tools/configure_v3_pll.py from the checked-in TD template.
-// This is explicit template parameterization, not a claimed IPTool GUI run.
-// Actual frequencies/phase must match native derive_clocks before release.
+
+
+
 `timescale 1ns/100fs
 module sv_v3_memory_pll(input wire refclk,reset,output wire extlock,
  output wire clk0_out,clk1_out,clk2_out);

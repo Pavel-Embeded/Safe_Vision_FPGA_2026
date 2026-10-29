@@ -1,10 +1,6 @@
-"""Bind packed-cache clocks to actual PLL pins in mapped and routed evidence.
 
-Clock names and nominal frequencies alone do not prove clock ownership.  This
-checker follows real Q/BRAM pins through net aliases and GCLKs, and checks the
-same routed instance pins in TD's XML clock tree.  It is an additional gate;
-ordinary setup/hold/recovery/removal STA remains independently mandatory.
-"""
+
+
 import argparse
 import hashlib
 import json
@@ -26,7 +22,7 @@ def net(text):
 
 
 def bits(text):
-    """Expand only emitted flat net concatenations and constant bus slices."""
+
     out = []
     for part in text.strip().strip('{}').split(','):
         name = net(part)
@@ -43,9 +39,8 @@ def bits(text):
 class Native:
     def __init__(self, text):
         text = clean(text)
-        # TD may emit a whole declared bus at a physical Q port, for example
-        # .q(\\reset_cache_write/release_pipe ). Resolve that real declaration;
-        # a bare bus is not one scalar Q and its two FFs remain independent.
+
+
         self.widths = {}
         for declaration in re.finditer(r'^\s*(?:wire|input|output|inout)\s*\[(\d+):(\d+)\]\s+(\\?[^\s;]+)\s*;', text, re.M):
             name = net(declaration[3])
@@ -70,8 +65,8 @@ class Native:
                 self.union(a, b)
         for m in re.finditer(r'^\s*assign\s+([^=;]+)=([^;]+);', text, re.M):
             left, right = self.expand(m[1]), self.expand(m[2])
-            # Do not turn expressions, constants or unequal-width assignments
-            # into aliases. Such clock drivers will remain unresolved below.
+
+
             if len(left) == len(right) and all(re.fullmatch(r'[A-Za-z_$][A-Za-z_0-9/$.[\]:-]*', x) for x in left + right):
                 for a, b in zip(left, right):
                     self.union(a, b)
@@ -100,7 +95,7 @@ class Native:
             raise ValueError('WRITE100 and MEM50 PLL outputs are aliased')
 
     def expand(self, text):
-        """Expand explicit slices and bare buses from their actual declarations."""
+
         result = []
         for name in bits(text):
             if name in self.widths:
@@ -150,11 +145,8 @@ class Native:
         return found[0]
 
     def reset_drivers(self, name, text):
-        """Bind every TD high-fanout SYS-reset replica, including its D/SR.
 
-        A logical Q may disappear only when actual, precisely named stage-1
-        replicas replace it. No representative replica substitutes for others.
-        """
+
         if name != 'reset_sys/release_pipe[1]':
             c, position = self.ff_driver(name)
             return [(name, c, position)]
@@ -242,7 +234,7 @@ def source_profile(repo):
 
 
 def check_texts(gate, route, clock_xml, *, packed=True, external_reset=False, sys_output=None):
-    """Pure parser contract; old routed artifacts can be tested unchanged."""
+
     if not packed:
         if PREFIX in gate or PREFIX in route:
             raise ValueError('packed cache exists in native netlist despite disabled source scope')

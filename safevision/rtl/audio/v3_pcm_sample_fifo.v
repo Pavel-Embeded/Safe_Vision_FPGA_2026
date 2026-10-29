@@ -1,6 +1,6 @@
-// Atomic {generation8,stereoPCM32} over official TD16x1024 FIFO (two9k tiles).
-// Three lossless words per pair; output remains held until AUDIO accepts it.
-// wr_pairs is conservative ceil(words/3)+pending, used for the240pair watermark.
+
+
+
 module v3_pcm_sample_fifo(input wire rst,wr_clk,rd_clk,input wire[39:0] wr_data,
  input wire wr_valid,output wire wr_ready,output wire[8:0] wr_pairs,
  output wire[39:0] rd_data,output wire rd_valid,input wire rd_ready);
@@ -9,7 +9,7 @@ module v3_pcm_sample_fifo(input wire rst,wr_clk,rd_clk,input wire[39:0] wr_data,
  v3_audio_reset_release rd_reset(.clk(rd_clk),.assert_reset(rst),.rst_n(rd_rst_n));
  reg[1:0] write_part;wire holding=write_part!=0;
  wire fifo_ready,fifo_valid;wire[9:0] words;wire[15:0] fifo_data;
- // Exact ceil(words/3) for every10-bit FIFO level; no credit latency.
+
  wire[20:0] pair_credit_product=words*10'd683+21'd1366;
  wire[8:0] pair_credit=pair_credit_product[19:11];
  wire fifo_write=wr_rst_n&&wr_valid&&(write_part!=0||words<=10'd1020);
@@ -24,7 +24,7 @@ module v3_pcm_sample_fifo(input wire rst,wr_clk,rd_clk,input wire[39:0] wr_data,
   if(!wr_rst_n)write_part<=0;
   else if(fifo_write&&fifo_ready)begin if(write_part==2)write_part<=0;else write_part<=write_part+1'b1;end
  end
- // The generation word remains at FIFO head during AUDIO backpressure.
+
  assign rd_data={fifo_data[7:0],low_words};assign rd_valid=rd_rst_n&&read_part==2&&fifo_valid;
  always @(posedge rd_clk or negedge rd_rst_n)begin
   if(!rd_rst_n)begin read_part<=0;low_words<=0;end

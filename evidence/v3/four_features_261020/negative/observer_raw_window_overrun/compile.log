@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/memory_flags_26101718/negative/observer_raw_window_overrun/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_memory_path_observer
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_memory_path_observer.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_memory_path_observer

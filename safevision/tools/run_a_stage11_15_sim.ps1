@@ -1,5 +1,5 @@
-# A stages11-15: compile the actual official FIFO and all B portable sources.
-# Requires XSim2018.3+; does not simulate physical SDRAM or HDMI PHY.
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$XSimBin='D:\Xilinx\Vivado\2018.3\bin',

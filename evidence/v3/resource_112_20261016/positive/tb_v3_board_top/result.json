@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_board_top",
-  "suite": "v3_board_top",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "1840b934c409d4d5416a12857f31f00ee723a05120875474bd3fa7f946a02d2b",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_candidate\\sim_r3\\v3_board_top\\tb_v3_board_top"
-}

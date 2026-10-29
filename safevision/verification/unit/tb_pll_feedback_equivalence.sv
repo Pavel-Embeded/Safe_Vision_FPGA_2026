@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
 
-// Compile the pre-change wrappers as *_before with the same official TD models.
-// The runner extracts them from an explicit Git ref; no copied vendor IP here.
+
 module pll_equiv_monitor #(
     parameter integer ID=0,
     parameter real PERIOD_NS=10.0
@@ -17,7 +16,7 @@ module pll_equiv_monitor #(
         absr=(v<0.0)?-v:v;
     endfunction
     always @(before_clk or after_clk) begin
-        #0.001; // Let both zero-delay wrapper connections settle.
+        #0.001;
         if (ready) begin
             if(before_clk !== after_clk)
                 $fatal(1,"PLL edge equivalence id=%0d at %0t",ID,$time);
@@ -60,7 +59,7 @@ module tb_pll_feedback_equivalence;
         #0.001;
         if(old_lock !== new_lock) $fatal(1,"PLL lock/reset equivalence at %0t",$time);
     end
-    // C1 and C2 of the system PLL must retain their 180 degree separation.
+
     always @(new_clk[1] or new_clk[2]) begin
         #0.001;
         if(ready && (new_clk[1]^new_clk[2]) !== 1'b1)
@@ -83,7 +82,7 @@ module tb_pll_feedback_equivalence;
     endtask
     initial begin
         exercise();
-        exercise(); // A complete reset/relock cycle as well as power-up.
+        exercise();
         for(i=0;i<11;i=i+1) begin
             if(counts[i]<500) $fatal(1,"Insufficient clock coverage id=%0d count=%0d",i,counts[i]);
             total=total+counts[i];

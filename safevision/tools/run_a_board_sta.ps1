@@ -1,4 +1,4 @@
-﻿# Full A + B board example, real vendor HDMI/SDRAM, strict STA, no bitgen.
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$TdRoot='D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116',

@@ -1,8 +1,6 @@
-// Compact sector-switchable PCM WAV parser. All state uses REF clk.
-// Context is exactly 111 bits. Header assembly and PCM assembly share word;
-// PCM valid holds that word until ready. No metadata copy or second PCM copy.
-// RIFF/container bounds use widened sums; all legal extension/padding bytes are
-// consumed. Data chunks must contain nonempty whole stereo PCM16 frames.
+
+
+
 module v3_wav_parser_compact_ctx(
  input wire clk,rst_n,start,context_load,context_enable,
  input wire[110:0] context_in,output wire[110:0] context_out,
@@ -17,7 +15,7 @@ reg[3:0] state,index;
 reg[31:0] word,riff_left,left;
 reg[1:0] kind;
 reg pad,fmt_seen,data_seen;
-wire[1:0] phase=index[1:0]; // Named observation point used by split-sample TB.
+wire[1:0] phase=index[1:0];
 wire[31:0] assembled={din,word[31:8]};
 wire[32:0] riff_end={1'b0,assembled}+33'd8;
 wire[33:0] padded_end={2'd0,assembled}+34'd1+assembled[0];
@@ -77,7 +75,7 @@ always@(posedge clk or negedge rst_n)begin
      end
      W_FMT:begin
       left<=left-1'b1;
-      // A single assembly word is checked immediately after each field.
+
       if(index<8||index>=14)word<=assembled;
       if(index==1&&assembled[31:16]!=16'd1)reject_now=1;
       if(index==3&&assembled[31:16]!=16'd2)reject_now=1;
@@ -113,7 +111,7 @@ always@(posedge clk or negedge rst_n)begin
     end else if(chunk_end_now&&riff_left<9)reject_now=1;
     if(din_eof&&!(chunk_end_now&&riff_left==1))reject_now=1;
    end
-   // Never publish a PCM pair on a byte already known to violate a bound.
+
    if(reject_now)begin wav_error<=1;pcm_valid<=0;state<=W_ERR;end
   end
  end

@@ -1,9 +1,6 @@
-// C->A atomic control: {active,direction[1:0],level[1:0]}.
-// direction: 0 left, 1 right, 2 both, 3 reserved (graphics uses safe both).
-// Valid/ready is SYS synchronous. A producer with commit_toggle first converts
-// the toggle into a retained valid transaction; never synchronize bits alone.
-// IMMEDIATE=0 applies one queued command at each RAW vblank frame_start.
-// IMMEDIATE=1 applies after the mailbox settles, allowing a partial-frame cut.
+
+
+
 module emergency_control_bridge #(parameter integer IMMEDIATE=0)(
     input wire sys_clk,sys_rst_n,pixel_clk,pixel_rst_n,
     input wire ctrl_valid,output wire ctrl_ready,

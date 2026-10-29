@@ -1,5 +1,5 @@
-// EXPLICIT PORT/STREAM CONTRACT MODEL ONLY. Not HDMI/TMDS/audio packet encoding.
-// Select only in run_hdmi_output_contract_sim.ps1; never compile in TD hardware.
+
+
 `ifdef SAFEVISION_HDMI_CONTRACT_MODEL
 module hdmi_1_4b_transmitter_core_wrapper #(
  parameter DEVICE="EG",HTOTAL=800,HSA=96,HFP=16,HBP=48,HACTIVE=640,

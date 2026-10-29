@@ -1,9 +1,0 @@
-{
-  "top": "tb_a_graphics_frontend",
-  "suite": "legacy_a",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": true,
-  "original_runner_result_sha256": "864d300762ea879b8791e93080cbd87ac6999dff8d7b0f380b73ed39b8142f2f",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_109_20261016\\positive\\tb_a_graphics_frontend"
-}

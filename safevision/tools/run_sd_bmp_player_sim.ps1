@@ -1,8 +1,8 @@
-# SD card -> BMP -> frame-slot playback engine (sd_bmp_player).
-# Uses the real sd_spi_card_model with a full 921654-byte 640x480 BMP in a FAT32
-# volume, and compares every written word against the same function that wrote
-# the card image. Slow by nature: one frame is ~236 ms of simulated time, so
-# this script keeps the SPI divider at its fastest simulation setting.
+
+
+
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$ModelSimBin=$env:MSIM_BIN,
@@ -29,7 +29,7 @@ try{
     'rtl/media/bmp_parser.v','rtl/media/bmp_unpack.v',
     'rtl/memory/frame_address_gen.v','rtl/memory/frame_writer.v',
     'rtl/top/safevision_core/bmp_frame_write_bridge.v',
-    # ---- Plan A sink: official a_pixel_fifo + the mem-side frame controller ----
+
     'platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v',
     'platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v',
     'platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v',

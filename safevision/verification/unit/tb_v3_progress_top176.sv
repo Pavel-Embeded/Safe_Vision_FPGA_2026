@@ -13,8 +13,8 @@ module tb_v3_progress_top176;
  reg[31:0]old_transactions=0,old_bytes=0;reg[3:0]old_state=0;
  wire expected_mem=dut.mem_status_valid && old_transactions!=dut.mem_status_sys[47:16];
  wire expected_media=dut.ref_status_valid && (old_bytes!=dut.ref_status_sys[79:48]||old_state!=dut.ref_status_sys[15:12]);
- // Original conditional observer behavior. Data goes through the production
- // capture instances; no capture-valid, observer or progress output is forced.
+
+
  always@(posedge dut.sys_clk or negedge dut.sys_media_rst_n)begin
   if(!dut.sys_media_rst_n)begin old_transactions<=0;old_bytes<=0;old_state<=0;end
   else begin

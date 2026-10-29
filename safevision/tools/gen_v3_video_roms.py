@@ -1,9 +1,6 @@
-"""Reproduce the two V3 video ROMs; --check performs a read-only audit.
 
-Compression is accepted only when expansion exactly reproduces all 4,096 bytes
-of the checked-in source font. A different font must therefore either satisfy
-the same lossless format or cause this command to fail before writing assets.
-"""
+
+
 from __future__ import annotations
 
 import argparse

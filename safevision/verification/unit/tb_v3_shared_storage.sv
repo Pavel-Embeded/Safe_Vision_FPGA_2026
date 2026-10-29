@@ -1,10 +1,10 @@
 `timescale 1ns/1ps
 `include "pixel_format_defs.vh"
-// Actual SPI/FAT32/streamer/parser/FIFO/row-mapping path; no forced DUT signals.
-// Distinct Pillow-decoded references check all four complete resident frames.
+
+
 module tb_v3_shared_storage;
- reg clk=0;always #10 clk=~clk; // actual V3 MEM 50MHz
- reg refclk=0;always #10 refclk=~refclk; // real independent REF 50MHz
+ reg clk=0;always #10 clk=~clk;
+ reg refclk=0;always #10 refclk=~refclk;
  reg rst=0,run=0;
  wire cs,sclk,mosi,miso,ready,active,td,mr,fd,ok;
  wire[31:0] word;wire valid;wire[1:0] slot;wire[3:0] state,stage,cv;
@@ -79,7 +79,7 @@ module tb_v3_shared_storage;
  .lookup_crc(),.lookup_valid(),.bad_addr(),.bad_expected(),.bad_actual(),.source_words(),.checked_rows());
  reg[31:0] memory[0:1048575],exp0[0:153599],exp1[0:153599],exp2[0:153599],exp3[0:153599];
  reg[6:0] stalls=0;always @(posedge clk)stalls<=stalls+1'b1;
- // Multi-cycle backpressure, including a 24-clock pause at every 128 clocks.
+
  reg write_pending=0;reg[3:0] write_delay=0;reg[31:0] pending_addr=0,pending_data=0;
  integer read_left=0,read_index=0;
  assign write_drained=!write_pending;
@@ -100,7 +100,7 @@ module tb_v3_shared_storage;
    if(addr[1:0]!=0 || len!=1 || addr>=`SV_AUDIO_RING_BASE)begin
     errors=errors+1;$display("[FAIL] write address/length %h %0d",addr,len);
    end
-   // Grant precedes physical completion by seven clocks, as in the adapter.
+
    pending_addr<=addr;pending_data<=data;write_pending<=1;write_delay<=6;writes=writes+1;
   end
   if(write_pending)begin

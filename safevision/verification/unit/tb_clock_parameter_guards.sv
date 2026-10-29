@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-// Every case is intentionally invalid. A specific RTL rejection is required.
+
 module tb_clock_parameter_guards #(parameter integer CASE_ID = 0);
     reg clk = 1'b0;
     reg rst_n = 1'b0;

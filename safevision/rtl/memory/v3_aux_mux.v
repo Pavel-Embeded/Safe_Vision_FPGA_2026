@@ -1,6 +1,6 @@
-// Own exactly one complete auxiliary burst, including all delayed read
-// responses. Verification has priority; audio data is held by its producer
-// until the physical acceptance edge, never consumed at an arbiter grant.
+
+
+
 module v3_aux_mux(input wire clk,rst_n,
  input wire verify_req,input wire[31:0] verify_addr,input wire[15:0] verify_len,
  output wire verify_ack,verify_busy,verify_valid,output wire[31:0] verify_data,
@@ -29,8 +29,8 @@ module v3_aux_mux(input wire clk,rst_n,
    end
    REQUEST:if(sd_ack)state<=TRANSFER;
    TRANSFER:if(!sd_busy)state<=RETIRE;
-   // The producer observes busy falling and withdraws/replaces its request.
-   // One retire edge prevents regrant of that old level on the same edge.
+
+
    RETIRE:state<=IDLE;
    default:state<=IDLE;
   endcase

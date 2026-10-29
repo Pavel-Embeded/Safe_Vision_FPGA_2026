@@ -1,6 +1,6 @@
-// Fixed Chinese bitmap strip. Position changes only on frame_start; media
-// resets never enter this module. Three one-bit tags retain the production
-// 21-clock raw-raster contract without delaying the existing video stream.
+
+
+
 module v3_scrolling_ticker #(
  parameter integer WIDTH=640,HEIGHT=480,MESSAGE_CHARS=32,
  parameter integer FRAMES_PER_PIXEL=2,PIXEL_LATENCY=21,
@@ -24,11 +24,11 @@ module v3_scrolling_ticker #(
  assign position={{(12-POSITION_W){1'b0}},phase};
  localparam integer STEP_W=FRAMES_PER_PIXEL>1?$clog2(FRAMES_PER_PIXEL):1;
  reg[STEP_W-1:0] frame_divider;
- // Modulo256 diagnostic counts are sufficient for cadence/loop witnesses.
- // Zero extension prunes32 bundled-data registers across the status CDC.
+
+
  reg[7:0] frame_count,loop_count;
  assign frames={8'd0,frame_count};assign loops={8'd0,loop_count};
- // No pixel, line, FIFO or SD event may advance the scroll phase.
+
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin phase<=0;frame_divider<=0;frame_count<=0;loop_count<=0;end
   else if(frame_start)begin
@@ -41,8 +41,7 @@ module v3_scrolling_ticker #(
   end
  end
 
- // Coordinates outside the viewport are rejected by box. Within it,
- // WIDTH+PERIOD bounds the sum; negative offsets wrap above TEXT_WIDTH.
+
  localparam integer ARITH_W=$clog2(WIDTH+PERIOD);
  wire[ARITH_W-1:0] translated=x[ARITH_W-1:0]+position;
  wire[ARITH_W-1:0] source_x=translated-(VIEW_RIGHT-SOURCE_AHEAD);
@@ -63,7 +62,7 @@ module v3_scrolling_ticker #(
  wire[3:0] packed_xmin=packed_desc[7:4],packed_width=packed_desc[3:0];
  wire[3:0] packed_column=packed_column0-packed_xmin,packed_row=packed_row0-4'd1;
  wire[7:0] packed_linear=({packed_column,4'b0}-{3'b0,packed_column,1'b0})+{4'b0,packed_row};
- // Direct byte address and bit select; all original glyph pixels retained.
+
  wire[4:0] packed_quotient=packed_linear[7:3];
  wire[3:0] packed_bit={1'b0,packed_linear[2:0]};
  wire[9:0] packed_word_address=packed_base+{5'b0,packed_quotient};

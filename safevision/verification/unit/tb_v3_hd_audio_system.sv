@@ -70,7 +70,7 @@ module tb_v3_hd_audio_system;
  initial begin
   $readmemh("audio_disk.mem",disk);$readmemh("audio_pcm.mem",gold);
   #100;rst_n=1;commit();
-  // Identify first nonzero PCM to ignore explicit startup silence.
+
   search_first=1;wait(checking);wait(seen>=1200);checking=0;
   if(under!=0)$fatal(1,"false underflow in primed/commit window %0d",under);
   $display("[INFO] generation=%0d stereo_pairs=%0d underflows=%0d",gen,seen,under);

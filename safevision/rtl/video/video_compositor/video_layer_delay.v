@@ -1,4 +1,4 @@
-// Fixed-rate layer alignment: pixel and its mask always advance together.
+
 module video_layer_delay #(parameter integer LATENCY=0)(
     input wire clk,rst_n,input wire [23:0] rgb_in,input wire valid_in,
     output wire [23:0] rgb_out,output wire valid_out

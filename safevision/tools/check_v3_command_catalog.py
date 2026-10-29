@@ -1,4 +1,4 @@
-"""Fail if any board command, decoder literal or exact ROM byte is omitted."""
+
 import argparse,hashlib,json,re
 from pathlib import Path
 from v3_sources import ROOT
@@ -39,9 +39,8 @@ def check(root):
  decoded={int(i):bytes.fromhex(v).lstrip(b'\0').decode('ascii') for i,v in re.findall(r"7'd(\d+):catalog_name=96'h([0-9a-fA-F]{24})",parser)}
  if decoded!=dict(enumerate(ordered,1)):raise ValueError('catalog output decoder differs from ROM/consumers')
  if not any(signature in top_text for signature in ('v3_uart_link #(.BOARD_CATALOG(1)) uart(', 'v3_uart_link #(.CLK_HZ(SYS_HZ),.BOARD_CATALOG(1)) uart(')):raise ValueError('board must opt into verified command catalog')
- # Recognize only the reviewed explicit clock plan, preserving every catalog
- # flag/ID/ROM check above. A changed clock with old UART or timer constants
- # must be rejected rather than silently accepted as an alternative spelling.
+
+
  if '.CLK_HZ(SYS_HZ)'in top_text:
   for marker in (
    'localparam integer SYS_HZ=HD?100000000:50000000;',

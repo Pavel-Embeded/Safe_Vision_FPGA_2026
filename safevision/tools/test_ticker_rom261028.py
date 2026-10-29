@@ -1,4 +1,4 @@
-"""Check mapped glyph bits and refuse five independent netlist corruptions."""
+
 import argparse,hashlib,json,re
 from pathlib import Path
 from check_v3_rom_netlist import check_roms

@@ -1,4 +1,4 @@
-"""Fail-closed V3 routed timing, resource, exception and I/O-scope gate."""
+
 import argparse,hashlib,json,re,sys
 from pathlib import Path
 from datetime import datetime,timezone
@@ -42,7 +42,7 @@ def no_delay_ports(text,kind):
  return ports
 
 def constraint_objects(text,audit_source):
- """Require every named mapped collection, including related-clock payloads."""
+
  errors=[];objects=[]
  for line in text.splitlines()[1:]:
   name,count=line.rsplit('\t',1);count=int(count);objects.append({'label':name,'matched_objects':count})
@@ -53,7 +53,7 @@ def constraint_objects(text,audit_source):
  return objects,errors
 
 def exception_timing(text):
- """TD emits MCP/SMD paths separately from the main timing summary."""
+
  from check_board_timing import PATH_RE,point_name
  errors=[];paths=[]
  if not re.search(r'^Confidence\s*:\s*Routed\s*$',text,re.M):errors.append('exception report is not routed')
@@ -69,14 +69,13 @@ def exception_timing(text):
  return {'accepted':not errors,'errors':errors,'path_count':len(paths),'paths':paths}
 
 def exception_paths(text,sdc_sources,mid_ref=False):
- """A row-count threshold can hide missing constraints; match each command."""
+
  from collections import Counter
  rows=[];errors=[]
  errors.extend(exception_timing(text)['errors'])
  expected=[m[0] for source in sdc_sources for m in re.finditer(r'^set_(?:max_delay|multicycle_path)\b[^\n]*',source,re.M)]
- # A documented TD PI/PO summary-counter defect has a narrow workaround:
- # complete routed native endpoint/clock/edge-budget witnesses for all eight
- # exact SPI commands. Empty or general zero-hit constraints never qualify.
+
+
  spi=spi_edge_witness(text,mid_ref=mid_ref) if any('-to [get_clocks sd_ident] 499' in command for command in expected) else None
  if spi and not spi['accepted']:errors.extend('SPI edge witness: '+error for error in spi['errors'])
  witnessed=set(spi['commands']) if spi and spi['accepted'] else set()
@@ -140,7 +139,7 @@ def check(folder,repo):
   if frozen.get(str(path.resolve()))!=hashlib.sha256(path.read_bytes()).hexdigest():errors.append('fresh-STA frozen input mismatch: '+str(path))
  timing=read_report(folder/'route.timing');health=read_report(folder/'route.check');area=read_report(folder/'route.area');exc=read_report(folder/'route.exceptions')
  sta=assess(timing,health);errors.extend(sta['errors']);result['sta']=sta
- # V3 formal health is captured before the diagnostic clock-tree expansion.
+
  errors.extend(clock_definition_health(health))
  try:
   from v3_source_profiles import native_acknowledgement

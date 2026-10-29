@@ -1,5 +1,5 @@
-// PCM is already in pixel_clk. Measure 48 sample intervals (N/128) for CTS.
-// Initial window is discarded. ACR repeats every ~1ms for N=6144, Fs=48kHz.
+
+
 module hdmi_acr(input wire pixel_clk,rst_n,sample_valid,
  output reg valid,output reg [19:0] cts,output wire [19:0] n);
  assign n=20'd6144;

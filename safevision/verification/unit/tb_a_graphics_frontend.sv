@@ -23,7 +23,7 @@ module graphics_frame_checker #(parameter integer HD=0,COORD=0)(input wire clk,r
                 rx=0;ry=0;cycles=0;
                 for(j=0;j<4;j++) q[j]={24'd0,24'd0,{2{!HD}},5'b00000,2'b11};
             end else begin
-                // Oracle uses independent integer scan counters, never DUT hierarchy.
+
                 hs=((rx>=W+(HD?110:16)) && (rx<W+(HD?110:16)+(HD?40:96)))?HD:!HD;
                 vs=((ry>=H+(HD?5:10)) && (ry<H+(HD?5:10)+(HD?5:2)))?HD:!HD;
                 den=rx<W && ry<H;

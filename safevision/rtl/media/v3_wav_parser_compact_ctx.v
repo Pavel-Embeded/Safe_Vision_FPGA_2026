@@ -1,8 +1,6 @@
-// Compact sector-switchable PCM WAV parser. All state uses REF clk.
-// Context is exactly 111 bits. Header assembly and PCM assembly share word;
-// PCM valid holds that word until ready. No metadata copy or second PCM copy.
-// RIFF/container bounds use widened sums; all legal extension/padding bytes are
-// consumed. Data chunks must contain nonempty whole stereo PCM16 frames.
+
+
+
 module v3_wav_parser_compact_ctx #(parameter integer PIPELINED_BOUNDS=0)(
  input wire clk,rst_n,start,context_load,context_enable,
  input wire[110:0] context_in,output wire[110:0] context_out,
@@ -10,8 +8,8 @@ module v3_wav_parser_compact_ctx #(parameter integer PIPELINED_BOUNDS=0)(
  input wire[7:0] din,input wire din_valid,din_eof,output wire din_ready,
  output wire[31:0] sample,output reg pcm_valid,input wire pcm_ready,
  output reg wav_error,
- // Mode1 sideband is part of the same atomic sector-boundary context.
- // Appended optional ports preserve every legacy positional connection.
+
+
  input wire[33:0] bound_context_in,output wire[33:0] bound_context_out);
 localparam[3:0] W_IDLE=0,W_HDR=1,W_CHUNK=2,W_FMT=3,W_SKIP=4,
  W_DATA=5,W_PAD=6,W_END=7,W_ERR=8;
@@ -20,14 +18,12 @@ reg[3:0] state,index;
 reg[31:0] word,riff_left,left;
 reg[1:0] kind;
 reg pad,fmt_seen,data_seen;
-wire[1:0] phase=index[1:0]; // Named observation point used by split-sample TB.
+wire[1:0] phase=index[1:0];
 wire[31:0] assembled={din,word[31:8]};
 wire[32:0] riff_end={1'b0,assembled}+33'd8;
 wire[33:0] padded_end={2'd0,assembled}+34'd1+assembled[0];
-// a+1+a[0] > r iff r==0 || a>(r-1) || (a[0] && a==(r-1)).
-// Reuse the existing remaining-byte decrement, instead of adding padding to
-// the newly assembled header word before a wide comparison. No state/latency
-// or111-bit context change; the widened legacy expressions remain debug views.
+
+
 (* use_ripple=1 *) wire[31:0] riff_after_byte=riff_left-32'd1;
 (* use_ripple=1 *) wire[31:0] file_payload_limit=file_size-32'd8;
 wire[3:0] chunk_gt,chunk_eq,file_gt,file_eq;
@@ -49,14 +45,8 @@ assign sample=word;
 assign din_ready=!pcm_valid&&(state==W_HDR||state==W_CHUNK||state==W_FMT||state==W_SKIP||
  state==W_PAD||state==W_END||state==W_DATA);
 assign context_out={pcm_valid,wav_error,state,index,word,riff_left,left,kind,pad,fmt_seen,data_seen};
-// Independent rejection classes are combined in parallel. A sequential
-// chain of blocking reject assignments previously synthesized an18-level
-// priority path. No error is delayed: PCM is still suppressed on the exact
-// invalid byte, and context save/restore remains exactly111 bits.
-// Mode1 compares one little-endian size byte on each accepted byte.
-// At index4 capture the settled limit. At index7 only an8-bit comparison
-// remains. Size/RIFF publication and PCM suppression retain their old edge.
-// A header's file_size must remain stable; the source holds its descriptor.
+
+
 wire fast_padded_overrun,fast_riff_oversize;
 generate if(PIPELINED_BOUNDS)begin:bytewise_bounds
  reg[31:0] limit_q;reg carry_q,greater_q;

@@ -1,4 +1,4 @@
-"""Audit TD PLL parameters and documented frequency limits; leave vendor RTL intact."""
+
 import json
 import re
 import xml.etree.ElementTree as ET
@@ -9,8 +9,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 IP_DIR = ROOT / "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll"
 FIN = Fraction(50_000_000)
-# DS301 v2.7.6 section 3 refers EG4S20 DC/AC to the EAGLE family.
-# DS300 v3.9.4 table 2-14 and tables 3-17/3-18 (pages 37, 98).
+
+
 INPUT_MIN_HZ, INPUT_MAX_HZ = 10_000_000, 400_000_000
 VCO_MIN_HZ, VCO_MAX_HZ = 300_000_000, 1_200_000_000
 OUTPUT_MIN_HZ, OUTPUT_MAX_HZ = 4_000_000, 400_000_000
@@ -96,10 +96,10 @@ def profile(name):
 
 
 def best_frequency(target, video):
-    # Enumerate the full legal integer space. Use exact rational arithmetic.
-    # Equal VCOs are deduplicated; their divider factorizations do not affect Fi.
+
+
     vcos = set()
-    for ref in range(1, 6):  # FIN/ref >= 10 MHz
+    for ref in range(1, 6):
         for fb in range(1, 129):
             for c0 in range(1, 129):
                 value = FIN * fb * c0 / ref

@@ -1,7 +1,6 @@
-// FWFT RGB565 consumer, one registered output stage (all labels latency=1).
-// Scan is NEVER stopped. One underflow event per affected media frame;
-// discard the remainder visually, stop reads, and recover after vblank + flush.
-// Coordinates include blanking. Outside the image viewport emits BACKGROUND.
+
+
+
 module frame_reader #(
     parameter integer IMAGE_W=640,IMAGE_H=480,ORIGIN_X=0,ORIGIN_Y=0,
     parameter [23:0] BACKGROUND=24'h000000,UNDERFLOW_COLOR=24'h000000,

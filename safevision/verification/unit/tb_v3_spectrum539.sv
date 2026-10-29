@@ -58,8 +58,8 @@ module tb_v3_spectrum539;
  reg scan_stress=1; reg monitor_trace,monitor_grid;reg[15:0] monitor_colour;
  integer monitor_dx,monitor_dy,monitor_band,monitor_level,monitor_peak;integer live_pixel_checks=0;
  always @(posedge clk)if(rst_n&&scan_stress&&c<18&&c%2==1&&dut.state!=0&&dut.state!=19)begin
-  // Random computing pixels are either within the graph or de=0. Text-region
-  // raster is independently checked exhaustively below with exactly one clock.
+
+
   monitor_trace=0;monitor_grid=0;
   monitor_colour=y<368?16'hf800:y<384?16'hffe0:y<400?16'h07e0:16'h05bf;
   if(de&&x>=368&&x<624&&y>=348&&y<=416)begin
@@ -93,12 +93,11 @@ integer scan_x=0,scan_y=0;reg[31:0] noise_state=32'h537a1234;
  initial begin
   for(i=0;i<32;i++)paused_states[i]=0;
   $readmemh("spectrum_samples539.mem",samples);$readmemh("spectrum_expected539.mem",expected);$readmemh("spectrum_peaks539.mem",peaks);
-  // Exhaustive comparison to the original arithmetic definition, independent
-  // of the priority slices in the synthesizable implementation.
+
+
   for(i=0;i<524288;i++)check(dut.log_height(i[18:0])==reference_height(i[18:0]),"all19-bit logarithmic height inputs");
-  // Exhaust every18-bit signed absolute input, and independent integer
-  // addition/subtraction checks including minimum negative input. All work is
-  // under reset, before the real continuous PCM/raster end-to-end cases.
+
+
   force dut.read_data=arithmetic_read;
   force dut.ar=arithmetic_a;force dut.ai=arithmetic_a;
   force dut.tr=arithmetic_b;force dut.ti=arithmetic_b;
@@ -123,8 +122,8 @@ integer scan_x=0,scan_y=0;reg[31:0] noise_state=32'h537a1234;
    for(k=0;k<32;k=k+1)immutable[k]=dut.spectrum_ram[{dut.display_bank,k[4:0]}];
    case_feed_index=0;feed_case=1;
    for(i=0;i<512;i=i+1)begin
-    // An independent fractional scheduler runs continuously even during
-    // transform/publish. The next512 stream words are this reviewed test case.
+
+
     do @(posedge clk);while(!pcm_valid);
     check(dut.state==0&&dut.sample_index==i,"every continuous real48k PCM sample accepted in order regardless of raster");
     #1;monitored_accepts++;
@@ -141,8 +140,8 @@ integer scan_x=0,scan_y=0;reg[31:0] noise_state=32'h537a1234;
    end
    for(k=0;k<32;k=k+1)check(dut.spectrum_ram[{dut.display_bank,k[4:0]}]===immutable[k],"display level and peak bank immutable while transforming");
    check(seq==c,"no publish before video frame boundary");
-   // Publish immediately after a PCM pulse, leaving a full sample period
-   // for the next case to select its payload before CAPTURE can accept it.
+
+
    do @(negedge clk);while(!pcm_valid);
    @(negedge clk);#1;frame_start=1;@(negedge clk);#1;frame_start=0;check(seq==c+1&&ready,"one frame commit per complete transform");
    for(k=0;k<32;k=k+1)begin
@@ -163,14 +162,14 @@ integer scan_x=0,scan_y=0;reg[31:0] noise_state=32'h537a1234;
    end
   end
   stream_enabled=0;pcm_valid=0;scan_stress=0;
-  // Fixed renderer colours must be from the production constant-blend palette.
+
   de=1;x=370;y=328;@(negedge clk);check(colour==16'hffff,"spectrum title uses supported white palette colour");
   de=0;x=0;y=350;@(negedge clk);check(colour==16'hf800,"red high-frequency plot colour");
   y=370;@(negedge clk);check(colour==16'hffe0,"yellow plot colour");
   y=390;@(negedge clk);check(colour==16'h07e0,"green plot colour");
   y=410;@(negedge clk);check(colour==16'h05bf,"cyan plot colour");
-  // Pixel-by-pixel independent glyph and grid oracle, with exactly one
-  // clock from each input coordinate to the checked output pixel.
+
+
   de=1;
   for(ry=0;ry<10;ry++)for(rx=0;rx<64;rx++)begin
    case(rx/8)0:reference_char="S";1:reference_char="P";2:reference_char="E";3:reference_char="C";4:reference_char="T";5:reference_char="R";6:reference_char="U";default:reference_char="M";endcase
@@ -206,8 +205,8 @@ integer scan_x=0,scan_y=0;reg[31:0] noise_state=32'h537a1234;
    check(grid_pixel==(ry==0||ry==24||ry==44||ry==64),"all horizontal dB grid pixels");
    if(rx%8<6&&old_peak>0&&ry==old_peak)check(colour==16'hffe0,"all held peak pixels are palette yellow");
   end
-  // Reset never exposes the uninitialised distributed RAM, including when an
-  // earlier completed spectrum and a partial subsequent capture exist.
+
+
   rst_n=0;repeat(3)@(negedge clk);rst_n=1;de=1;x=370;y=410;
   repeat(3)@(negedge clk);check(!ready&&!trace_pixel&&seq==0,"reset masks retained display RAM");
   scan_stress=1;

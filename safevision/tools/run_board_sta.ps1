@@ -1,7 +1,7 @@
-# HX4S20C routed STA + bitgen for the board (base / hd modes).
-# Requires FULL reported timing closure: any negative setup/hold/recovery/removal
-# path, or any required clock/constraint health failure, fails the build.
-# This generates local candidates only; it never programs hardware.
+
+
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$TdRoot='D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116',
@@ -12,8 +12,8 @@ param(
  [string]$Python='python'
 )
 $ErrorActionPreference='Stop'
-# The checker intentionally returns exit 1 for a rejected report. Handle that
-# explicitly even when a PowerShell 7 profile enables native-command exceptions.
+
+
 $PSNativeCommandUseErrorActionPreference=$false
 $RepoRoot=(Resolve-Path -LiteralPath $RepoRoot).Path
 $RunDir=$ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($RunDir)
@@ -25,8 +25,8 @@ if(-not(Test-Path -LiteralPath $tdExe)){throw "TD executable missing: $tdExe"}
 $pythonExe=$Python
 if(-not(Test-Path -LiteralPath $pythonExe)){
  $command=Get-Command $Python -ErrorAction SilentlyContinue
- # Windows' App Execution Alias exists as a file but is not an installed
- # interpreter. Do not select it instead of the bundled runtime fallback.
+
+
  if($command -and $command.Source -notmatch '[\\/]WindowsApps[\\/]'){$pythonExe=$command.Source}
  elseif($Python -eq 'python'){$pythonExe=Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'}
 }
@@ -54,7 +54,7 @@ try{
  . (Join-Path $PSScriptRoot 'resolve_hdmi_vendor.ps1')
  $env:SAFEVISION_HDMI_VENDOR=Resolve-SafeVisionHdmiVendor -VendorRoot $VendorRoot -RepoRoot $RepoRoot -RunDir $RunDir
  $records=@();$rejected=@()
- # Classify ALL requested modes before generating any bitstream.
+
  foreach($m in $Mode){
   $modeOut=Join-Path $RunDir $m
   New-Item -ItemType Directory -Force -Path $modeOut | Out-Null

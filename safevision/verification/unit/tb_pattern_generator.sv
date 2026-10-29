@@ -16,7 +16,7 @@ module tb_pattern_generator;
                     2: expected=(((px/32)+(py/32))%2)?24'hffffff:0;
                     3: expected=(px>=100 && px<400 && py>=200 && py<300)?24'h00ff00:0;
                     4: begin
-                        // Reflect x about the center gap for a left arrow.
+
                         xx=dir?px:(w-1-px); dy=py-h/2;
                         inside_arrow=(xx>=w/2-64 && xx<w/2+16 && dy>=-16 && dy<16);
                         if(xx>=w/2 && xx<w/2+64) begin

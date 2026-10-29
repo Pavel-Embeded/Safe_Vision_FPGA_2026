@@ -11,13 +11,13 @@ module hdmi_phy_wrapper#(
     input wire[9:0] I_tmds_channel_1,
     input wire[9:0] I_tmds_channel_2,
     input wire[9:0] I_tmds_channel_clk,
-    
+
     output wire     O_tmds_ch0_p,
     output wire     O_tmds_ch1_p,
     output wire     O_tmds_ch2_p,
     output wire     O_tmds_clk_p
 );
-    
+
     wire[9:0] S_tmds_data_ch0;
     wire[9:0] S_tmds_data_ch1;
     wire[9:0] S_tmds_data_ch2;
@@ -69,7 +69,7 @@ module hdmi_phy_wrapper#(
 
 
     lane_lvds_10_1 #(
-        .DEVICE ( DEVICE )    
+        .DEVICE ( DEVICE )
     )u0_lane_lvds_8_1(
         .I_pixel_clk  ( I_pixel_clk     ),
         .I_serial_clk ( I_serial_clk    ),
@@ -81,44 +81,41 @@ module hdmi_phy_wrapper#(
 
 
     lane_lvds_10_1 #(
-        .DEVICE ( DEVICE )    
+        .DEVICE ( DEVICE )
     )u1_lane_lvds_8_1(
         .I_pixel_clk  ( I_pixel_clk     ),
         .I_serial_clk ( I_serial_clk    ),
         .I_rst        ( I_rst           ),
-        
+
         .I_data_in    ( S_tmds_data_ch1 ),
         .O_serial_out ( O_tmds_ch1_p    )
     );
 
 
     lane_lvds_10_1 #(
-        .DEVICE ( DEVICE )    
+        .DEVICE ( DEVICE )
     )u2_lane_lvds_8_1(
         .I_pixel_clk  ( I_pixel_clk     ),
         .I_serial_clk ( I_serial_clk    ),
         .I_rst        ( I_rst           ),
-        
+
         .I_data_in    ( S_tmds_data_ch2 ),
         .O_serial_out ( O_tmds_ch2_p    )
     );
 
 
     lane_lvds_10_1 #(
-        .DEVICE ( DEVICE )    
+        .DEVICE ( DEVICE )
     )u3_lane_lvds_8_1(
         .I_pixel_clk  ( I_pixel_clk     ),
         .I_serial_clk ( I_serial_clk    ),
         .I_rst        ( I_rst           ),
-        
+
         .I_data_in    ( S_tmds_data_clk ),
         .O_serial_out ( O_tmds_clk_p    )
     );
 
 
 endmodule
-
-
-
 
 

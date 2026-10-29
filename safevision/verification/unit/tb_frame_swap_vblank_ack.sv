@@ -24,7 +24,7 @@ module tb_frame_swap_vblank_ack;
         .clk_a(clk_a),.rst_a_n(rst_n),.swap_req_evt_a(req_a),.swap_req_lvl_a(),
         .mb_frame_index_a(),.mb_slot_id_a(),.mb_generation_a(),.mb_crc_ok_a(),
         .mb_valid_a(mb_valid_a),.frame_start_a(frame_start_a),.swap_ack_a(ack_a));
-    // Legal A consumer: capture request, switch and acknowledge on its own vblank edge.
+
     always @(posedge clk_a or negedge rst_n) begin
         if(!rst_n) begin ack_a<=0; pending_a<=0; end
         else begin

@@ -1,4 +1,4 @@
-"""Fail if current RTL/assets drift from the video evidence index."""
+
 import hashlib
 import json
 from pathlib import Path

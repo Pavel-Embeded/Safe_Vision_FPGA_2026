@@ -1,8 +1,0 @@
-{
-  "accepted": true,
-  "top_sha256": "624cb7e28b9039d87deab6fb5a19ea8912f27f9a45850c590abf4e89a0123447",
-  "candidate_sha256": "fbd7f0a939709032ff248a930bebb11e47d431784698147d893c7bcd2e1bbc98",
-  "reference_sha256": "d362c0a91019ebf4815a4452102f7c8d0b0764a98e816d1f25c344605d896ec9",
-  "candidate_fragment_matches_real_top": true,
-  "reference_fragment_matches_frozen_original": true
-}

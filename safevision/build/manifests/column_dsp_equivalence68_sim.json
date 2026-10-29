@@ -14,7 +14,6 @@
     ]
   },
   "assets": [
-    "safevision/verification/models/v3_volume_column_reference67.freeze.json",
     "safevision/verification/models/origins/b2269a5/volume_column67.original.v",
     "safevision/assets/fonts/v3_four_features_text.mem",
     "safevision/assets/audio/v3_spectrum_twiddle.mem"

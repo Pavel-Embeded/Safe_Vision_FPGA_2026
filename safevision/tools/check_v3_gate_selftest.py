@@ -1,4 +1,4 @@
-"""Deliberate report corruption tests; these do not sign off any FPGA build."""
+
 import argparse,json,re,sys,tempfile
 from pathlib import Path
 from check_v3_board import resource_gate,no_delay_ports,constraint_objects,exception_paths
@@ -19,8 +19,8 @@ def main():
   try:resource_gate(mutant);detected=False
   except ValueError:detected=True
   check('reject '+name+' resource row',detected)
- # This controlled health fixture only supplies parser metadata. The timing
- # paths themselves are an unchanged native routed PLL probe report.
+
+
  health='\n'.join('%d. checking %s(0) (HIGH)'%(i,n) for i,n in enumerate(HEALTH_REQUIRED,1))
  health+='\nThere are 0 invalid constraints.\nThere are 0 combinational loops.\nThere are 0 clock pins that have no clock constraints.\nThere are 0 clocks whose clock frequency does not match the PLL setting.\n'
  health+='\n'.join('There are 0 %s.'%n for n in ('leaf clock pins driven by multiple clocks','clocks created on internal clock network','unexpandable clock sets'))
@@ -39,8 +39,8 @@ def main():
  try:no_delay_ports(good.replace('There are 1','There are 2'),'input');detected=False
  except ValueError:detected=True
  check('reject truncated unbudgeted-port detail',detected)
- # The fixture labels come from the current production audit, rather than a
- # historical count. This is gate-parser testing, not mapped-object evidence.
+
+
  audit=(ROOT/FLOW/'v3_cdc_audit.tcl').read_text(encoding='utf-8-sig')
  labels=re.findall(r'^v3_expect_objects \{([^}]+)\}',audit,re.M)
  check('current audit contains all 50 groups',len(labels)==50)
@@ -59,7 +59,7 @@ def main():
  commands=[m[0] for source in sources for m in re.finditer(r'^set_(?:max_delay|multicycle_path)\b[^\n]*',source,re.M)]
  check('current path audit contains all 26 commands',len(commands)==26)
  fixture='\n'.join('1 1 0 0 '+command for command in commands)+'\n'
- # Native detailed witnesses stay mandatory for the narrow PI/PO zero-counter case.
+
  native_spi=a.native_spi_exceptions.read_text(encoding='utf-8-sig')
  details=re.sub(r'^\s*\d+\s+\d+\s+\d+\s+\d+\s+set_(?:max_delay|multicycle_path)[^\n]*$','',native_spi,flags=re.M)
  fixture+=details

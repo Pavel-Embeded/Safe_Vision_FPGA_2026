@@ -21,7 +21,7 @@ module tb_v3_supervisor_comparator;
  endtask
  initial begin
   #1;rst_n=1;force dut.video_limit=limit;force dut.audio_limit=limit;
-  // Every pair of byte values at each of the four positions, equal neighbors.
+
   for(k=0;k<4;k=k+1)for(i=0;i<256;i=i+1)for(j=0;j<256;j=j+1)begin
    base=(32'h9abcdef0 & ~(32'hff<<(8*k))) | (j<<(8*k));
    v=(base & ~(32'hff<<(8*k))) | (i<<(8*k));probe(v,base);
@@ -30,7 +30,7 @@ module tb_v3_supervisor_comparator;
    rng=rng^(rng<<13);rng=rng^(rng>>17);rng=rng^(rng<<5);base=rng;
    rng=rng^(rng<<13);rng=rng^(rng>>17);rng=rng^(rng<<5);probe(rng,base);
   end
-  // All threshold carry-out boundary values, including exact delta7/8/9.
+
   for(i=0;i<32;i=i+1)begin base=32'hffffffff-i;probe(32'hffffffff,base);probe(0,base);probe(base+7,base);probe(base+8,base);probe(base+9,base);end
   release dut.video_limit;release dut.audio_limit;
   if(errors==0)$display("[PASS] native byte-pair exhaustive plus independent32-bit predicate oracle");

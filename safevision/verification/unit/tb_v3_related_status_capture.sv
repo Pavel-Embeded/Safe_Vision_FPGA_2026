@@ -2,8 +2,8 @@
 module tb_v3_related_status_capture;
  reg sys_clk=0,ref_clk=0,mem_clk=0,rst_n=0;
  always #5 sys_clk=~sys_clk;
- initial begin #5;forever #10 ref_clk=~ref_clk;end // coincident SYS/REF rising edges
- // MEM and REF share a50MHz rate; choose a distinct deterministic phase.
+ initial begin #5;forever #10 ref_clk=~ref_clk;end
+
  initial begin #3;forever #10 mem_clk=~mem_clk;end
  reg[203:0] ref_source=0;reg[47:0] mem_source=0;
  wire[203:0] ref_data;wire[47:0] mem_data;wire ref_valid,mem_valid;
@@ -27,7 +27,7 @@ module tb_v3_related_status_capture;
    errors=errors+1;$display("[FAIL] reset clears payload and validity");end
  end
  initial begin
-  // Trigger a real initial assertion even in simulators starting atX.
+
   #1;rst_n=1;#1;rst_n=0;
   for(i=0;i<16;i=i+1)begin
    #37;@(negedge sys_clk);rst_n=1;

@@ -1,31 +1,6 @@
-// ============================================================================
-// tb_framebuffer_loopback_core.sv — 阶段 10 帧缓存回环核心
-// ----------------------------------------------------------------------------
-// 被测：rtl/memory/framebuffer_loopback_core.v
-//       + mem_ctrl / memory_arbiter / frame_writer / frame_address_gen /
-//         video_read_dma / sync_fifo（全部在核心里被例化）
-// 后端：verification/models/frame_memory_model.sv（顶替加密 SDRAM IP）
-//
-// 数据通路（mem 域单时钟 8ns=125MHz）：
-//   LFSR 像素源 -> frame_writer -> memory_arbiter(写) -> mem_ctrl -> 模型
-//   mem_ctrl <- memory_arbiter(读) <- video_read_dma <- 像素 FIFO <- 自检器
-//
-// 断言要点：
-//   T1 回环通过 ok=1                T2 无错误码
-//   T3 写入像素数 = 307200          T4 读回像素数 = 307200
-//   T5 逐像素比对零错 (bad=0)        T6 frame_writer 抽样 CRC 通过
-//   T7 slot_valid 置位              T8 报告 = 208 Byte
-//   T9 报告字节逐字节正确
-//   T10 地址斜坡探针：写进 SDRAM 的值 = 它自己的字地址（A 段 32 + B 段 4）
-//   T11 地址斜坡探针：段内写地址严格连续，且两段基址 = 0x1000 / 0x1035
-//
-// ★ 报告是按"发射顺序"拼的，期望值必须用 2 位十六进制（CRC=01 / SV=01），
-//   别写成 CRC=1 / SV=1（那是 1 位，对不上）。
-// ★ 探针期望值（T9 里逐字节写死）：`AM=FFFFFFFF`（32 个回读全等于期望）、
-//   `AF=FF`（无首个不符）、`AV=00000000`、`C0..C3`=1004/1005/1006/1007（非零偏移处
-//   4 个回读 = 该处真实内容）、`B0..B3`=1035/1036/1037/1038（非 16 对齐基址）——
-//   因为"写进去的值就是它的字地址"（见核心文件头）。
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
@@ -33,7 +8,7 @@ module tb_framebuffer_loopback_core;
 
     reg clk   = 1'b0;
     reg rst_n = 1'b0;
-    always #4 clk = ~clk;          // 8 ns -> 125 MHz
+    always #4 clk = ~clk;
 
     integer errors = 0;
     integer total  = 0;
@@ -48,14 +23,14 @@ module tb_framebuffer_loopback_core;
         end
     endtask
 
-    // ---- 核心 <-> 后端 ----
+
     wire        c_req, c_wr;
     wire [31:0] c_addr, c_wdata;
     wire [3:0]  c_wstrb;
     wire [31:0] c_rdata;
     wire        c_rvalid, c_ready, c_initdone;
 
-    // ---- 报告 / 状态 ----
+
     wire        rep_valid;
     wire        rep_ready;
     wire [7:0]  rep_data;
@@ -63,7 +38,7 @@ module tb_framebuffer_loopback_core;
     wire [7:0]  err_code;
     wire [18:0] wr_px, rd_px, bad_px;
 
-    assign rep_ready = 1'b1;       // TB 恒可收，报告直接流出
+    assign rep_ready = 1'b1;
 
     framebuffer_loopback_core u_core (
         .clk               (clk),
@@ -103,7 +78,7 @@ module tb_framebuffer_loopback_core;
         .init_done  (c_initdone)
     );
 
-    // ---- 报告捕获：按发射顺序左移拼成 208 Byte 向量 ----
+
     localparam integer RPT_LEN = 208;
     reg [8*RPT_LEN-1:0] got_vec;
     integer rep_n = 0;
@@ -130,15 +105,7 @@ module tb_framebuffer_loopback_core;
         "DONE",       8'h0D, 8'h0A
     };
 
-    // ------------------------------------------------------------------------
-    // 地址斜坡探针监视（T10/T11）：在核心的 mem 事务口上"旁听"探针的写访问
-    //   期望：值 == 字地址（A 段 0x1000+ / B 段 0x1035+ 都是"值 = 自己的地址"），
-    //         且**段内**地址严格连续（步长 1 个 word）。
-    //   ★ 只在前 36 个写访问上判（探针 A 32 个 + 探针 B 4 个），之后的整帧写入
-    //     写的是 LFSR 像素值，不适用本条。
-    //   ★ 注意：A 段末尾 0x101F 与 B 段首字 0x1035 **并不连续**（B 是刻意取非
-    //     16 对齐的基址），所以连续性必须分两段各判一次，不能跨段累加。
-    // ------------------------------------------------------------------------
+
     integer wacc = 0;
     reg     prb_val_bad  = 1'b0;
     reg     prb_a_bad    = 1'b0;
@@ -149,7 +116,7 @@ module tb_framebuffer_loopback_core;
     always @(posedge clk) begin
         if (rst_n && c_req && c_ready && c_wr) begin
             if (wacc < 36) begin
-                if (c_wdata !== c_addr) prb_val_bad <= 1'b1;      // 值 = 字地址
+                if (c_wdata !== c_addr) prb_val_bad <= 1'b1;
                 if (wacc == 0)  prb_a_first <= c_addr;
                 if (wacc == 32) prb_b_first <= c_addr;
                 if ((wacc > 0) && (wacc < 32)) begin
@@ -174,7 +141,7 @@ module tb_framebuffer_loopback_core;
             @(negedge clk);
             guard = guard + 1;
         end
-        // 等报告发完（避免在只发了几个字节时就检查）
+
         guard = 0;
         while ((rep_n < RPT_LEN) && (guard < 200_000)) begin
             @(negedge clk);

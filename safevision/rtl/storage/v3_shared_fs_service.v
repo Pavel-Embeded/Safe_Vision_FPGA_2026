@@ -1,11 +1,10 @@
 `include "safevision_defs.vh"
-// One physical scanner/file/walker, shared only between disjoint lifetimes.
-// All ports use REF clk. Ownership changes reset rst_n for at least one REF edge.
-// No arbitration/CDC lives in this module: callers retain their sector owners.
+
+
 module v3_shared_fs_service #(parameter integer FLEX_FILES=0)(input wire clk,rst_n,
  input wire[7:0] sec_per_clus,input wire[31:0] fat_start_lba,data_start_lba,root_dir_lba,root_clus,total_clus,
  input wire[444:0] core_cmd,output wire[836:0] core_rsp,
- // Optional full-name sideband appends to the verified legacy port order.
+
  input wire[7:0] name_address,output wire[15:0] name_data,output wire[8:0] name_length);
 wire c_kernel_rst_n;
 wire c_scan_start;
@@ -83,8 +82,8 @@ wire [31:0] w_sd_rd_addr;
 wire [15:0] w_sd_rd_len;
 wire w_sd_rd_en;
 wire w_sd_data_ready;
-// One combinational LBA converter serves disjoint scanner/file lifetimes.
-// Scanner owns it only in D_WALK; neither caller takes an extra clock edge.
+
+
 wire directory_lba_active;
 localparam integer SHARED_TO_W=$clog2(`SD_TO_DATA+32'd2);
 reg[SHARED_TO_W-1:0] shared_timeout;
@@ -94,9 +93,7 @@ always @(posedge clk or negedge rst_n)
  else if(|timeout_resets)shared_timeout<=0;
  else if(|timeout_ticks)shared_timeout<=shared_timeout+1'b1;
 
-// Requests are captured only after the caller has registered its cluster.
-// Two REF stages separate multiplication and LBA addition. Callers wait in
-// bounded LBA states; context save is still allowed only between SD sectors.
+
 wire[31:0] file_lba_cluster,directory_lba_cluster;
 wire file_lba_request,directory_lba_request,file_lba_valid,directory_lba_valid;
 wire[31:0] shared_cluster=directory_lba_active?directory_lba_cluster:file_lba_cluster;
@@ -104,9 +101,8 @@ wire shared_spc_legal=(sec_per_clus!=0)&&((sec_per_clus&(sec_per_clus-8'd1))==0)
 (* use_ripple=1 *) wire[31:0] shared_lba_bias=data_start_lba-(shared_spc_legal?{23'd0,sec_per_clus,1'b0}:32'd0);
 wire[31:0] shared_lba;
 generate if(FLEX_FILES)begin:registered_lba
- // Keep both products in REF registers: the owner MUX follows the DSPs.
- // The sampled owner1 selects the same input epoch as bias_q/legal_q; valid
- // and owner publication retain their original two-edge contract.
+
+
  wire[7:0] product_factor=sec_per_clus;
  (* use_dsp=1, keep="true" *) reg[31:0] directory_product_q,file_product_q;
  reg[31:0] bias_q,lba_q;reg legal_q;

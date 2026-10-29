@@ -21,7 +21,7 @@ module tb_v3_audio_packet;
   repeat(600)@(negedge wc);
   if(ready)$fatal(1,"packet FIFO failed to apply group backpressure");
   read_clock=1;wait(head>=200);
-  // Drop an in-flight three-word group by the SAME global assertion epoch.
+
   wait(dut.holding&&dut.write_part==1);reset_epoch();wait(head>=200);
   produce=0;wait(!valid);wait(head==tail);repeat(20)@(negedge rc);
   if(head!=tail)$fatal(1,"packet stale tail after drain");

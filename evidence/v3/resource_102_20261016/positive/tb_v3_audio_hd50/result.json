@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_audio_hd50",
-  "suite": "audio_modes",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "b155c1a7c5b7d14d9742f880c7af70bddc4e670b061ed682b103af0991574092",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\contract_audio_modes\\tb_v3_audio_hd50"
-}

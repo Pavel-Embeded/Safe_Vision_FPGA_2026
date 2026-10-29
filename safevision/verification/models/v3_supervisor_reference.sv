@@ -1,7 +1,6 @@
 `include "fault_code_defs.vh"
-// SYS-domain supervisor. All inputs below are already atomic snapshots or
-// synchronized event pulses. Idle media/memory engines do not arm watchdogs.
-// The fixed raster heartbeat remains required while a static image is shown.
+
+
 module v3_supervisor_reference #(
  parameter integer CLK_HZ=100000000,BOOT_CYCLES=2000000000,
  parameter integer FRAME_CYCLES=10000000,MEM_CYCLES=20000000,
@@ -18,10 +17,8 @@ module v3_supervisor_reference #(
  output wire fault_valid,fatal_latched,output wire[31:0] fault_ts,
  output wire err_push,output reg[7:0] err_code,output reg[3:0] err_src,
  output reg[2:0] err_level,output reg[31:0] err_ts);
- // A shared 1 ms enable avoids five independent 100 MHz wide counters.
- // Heartbeats clear immediately; expiry occurs on a shared tick, within one
- // tick before the exact cycle interval. At CLK_HZ=1000 the unit is one clock.
- // Non-integral-kHz test clocks retain exact cycle counting (TICK_DIV=1).
+
+
  localparam integer TICK_DIV=(CLK_HZ>=1000 && CLK_HZ%1000==0)?CLK_HZ/1000:1;
  localparam integer BOOT_LIMIT=(BOOT_CYCLES+TICK_DIV-1)/TICK_DIV;
  localparam integer FRAME_LIMIT=(FRAME_CYCLES+TICK_DIV-1)/TICK_DIV;

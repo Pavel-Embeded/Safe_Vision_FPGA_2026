@@ -1,8 +1,7 @@
 `timescale 1ns/1ps
 `include "pixel_format_defs.vh"
-// Verification-only sink: actual B frame writer + production A/B assembly.
-// The front test independently compares source-card bytes and decoded pixels;
-// this sink separately checks the memory/display half against accepted pixels.
+
+
 module ab_frame_sink(
     input wire mem_clk,rst_n,start,top_down,input wire [15:0] pixel,
     input wire pixel_valid,output wire pixel_ready,input wire [9:0] pixel_x,pixel_y,
@@ -107,7 +106,7 @@ module ab_frame_sink(
         end
       end
     end
-    // Scope only handshake and first displayed line; no 0.76-second clock dump.
+
     initial if($test$plusargs("WAVES"))begin
       wait(submit_pending);
       $dumpfile("card_display.vcd");

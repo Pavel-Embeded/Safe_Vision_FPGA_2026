@@ -1,4 +1,4 @@
-// Exact pre-optimization board query block retained as a reference.
+
 module v3_board_query_reference(input wire sys_clk,sys_rst_n,cmd_valid,
  input wire[7:0] cmd_target,
  input wire[95:0] cmd_name,

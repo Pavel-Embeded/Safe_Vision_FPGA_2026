@@ -1,9 +1,6 @@
-// MEM-domain four independent circular partitions in AUDIO_RING (256 KiB total).
-// Each stereo PCM pair is one 32-bit word. slot0..3 each owns 64 KiB (16384 pairs).
-// req is retained through ack; address/wdata remain stable through busy completion.
-// One-word transactions use the existing memory-arbiter SD client; refresh/backpressure
-// never advance pointers until a completed write or an actual read-data-valid beat.
-// Valid/ready ingress obeys backpressure. All media state resets together.
+
+
+
 module v3_pcm_ring_cycle_miter #(parameter integer PTR_W=14,PREFETCH=800)(
  input wire clk,rst_n,input wire [127:0] in_data,input wire [3:0] in_valid,output wire [3:0] in_ready,
  input wire commit_valid,input wire [1:0] commit_slot,input wire [7:0] commit_generation,

@@ -1,5 +1,5 @@
-// Two-flop synchronization then consecutive-sample debounce.
-// Default: 10 ms at 50 MHz. RESET_LEVEL is the logical idle level.
+
+
 module a_debounce #(
     parameter integer STABLE_CYCLES=500000,
     parameter RESET_LEVEL=1'b0

@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
-// Independent modulo-32 mathematical oracle at every REF edge. This complements
-// the unchanged public file/directory start and timeout contract regressions.
+
+
 module tb_v3_lba_dual883;
  reg clk=0,rst=0;always #5 clk=~clk;
  reg[31:0] directory_cluster=0,file_cluster=0,base=0;

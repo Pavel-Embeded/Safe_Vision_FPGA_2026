@@ -86,7 +86,7 @@ module tb_video_read_dma_integration #(parameter integer STREAMING=0);
         repeat(5)@(negedge clk);rst_n=1;
         @(negedge clk);start=1;
         @(negedge clk);start=0;
-        // Flush a partly received burst, restart, then score the complete frame.
+
         repeat(20)@(negedge clk);rst_n=0;
         repeat(5)@(negedge clk);rst_n=1;
         @(negedge clk);start=1;

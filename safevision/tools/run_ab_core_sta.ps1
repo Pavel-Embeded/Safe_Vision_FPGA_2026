@@ -1,4 +1,4 @@
-# Internal probe STA only. Generated reports/dbs stay in RunDir.
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$TdRoot='D:\Anlogic\TD_6.2.1_Engineer_6.2.168.116',

@@ -4,7 +4,7 @@ module tb_v3_led_stopped_reset;
  always #10 refclk=~refclk;
  always #5 if(sys_enable)sysclk=~sysclk;else sysclk=0;
  wire[3:0] got,want;wire gu,wu;integer errors=0,comparisons=0,k;
- // SAFE can be combinationally asserted while the SYS cache remains reset.
+
  v3_led_publication_candidate dut(refclk,sysclk,srst,rrst,1'b1,1'b0,1'b0,1'b1,1'b0,1'b0,1'b0,gu,got);
  v3_led_publication_reference reference(refclk,sysclk,srst,rrst,1'b1,1'b0,1'b0,1'b1,1'b0,1'b0,1'b0,wu,want);
  always @(posedge refclk)begin

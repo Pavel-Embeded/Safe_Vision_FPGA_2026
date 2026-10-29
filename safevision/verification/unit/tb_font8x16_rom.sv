@@ -16,7 +16,7 @@ module tb_font8x16_rom;
     endtask
     initial begin
         $readmemh("font8x16.mem",golden);
-        // Independent glyph landmarks, distinguish mirrored/shifted/swapped glyphs.
+
         check(golden["F"*16+1]===8'h7c && golden["F"*16+7]===8'h78 &&
               golden["F"*16+13]===8'h40,"F geometry");
         check(golden["R"*16+9]===8'h50 && golden["R"*16+11]===8'h48,"R geometry");

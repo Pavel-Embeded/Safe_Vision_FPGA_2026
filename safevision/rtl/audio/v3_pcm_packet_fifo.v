@@ -1,7 +1,6 @@
-// Lossless 48-bit PCM packet crossing through one official TD 16-bit FIFO.
-// The audio writer reserves room for all three words before accepting a pair.
-// Both packers and the vendor FIFO share one global reset assertion epoch.
-// Media reset must NOT reset this path: the ROM alarm cadence remains active.
+
+
+
 module v3_pcm_packet_fifo(input wire rst,wr_clk,rd_clk,input wire[47:0] wr_data,
  input wire wr_valid,output wire wr_ready,output reg[47:0] rd_data,output reg rd_valid);
  wire wr_rst_n,rd_rst_n;

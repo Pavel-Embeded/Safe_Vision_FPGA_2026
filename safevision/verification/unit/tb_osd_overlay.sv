@@ -25,7 +25,7 @@ module tb_osd_overlay;
             else begin
                 dx=integer'(x)-integer'(ox);dy=integer'(y)-integer'(oy);
                 inside_region=en && tags[6] && dx>=0 && dy>=0 && dx<8*len && dy<16;
-                index=(dx & 2047)/8; // raw index is don't-care outside the region
+                index=(dx & 2047)/8;
                 case(index%6)
                     0:expected_code="F";1:expected_code="P";2:expected_code="S";
                     3:expected_code=":";4:expected_code="6";default:expected_code="0";
@@ -43,12 +43,12 @@ module tb_osd_overlay;
     endtask
     initial begin
         $readmemh("font8x16.mem",font);sample();@(negedge clk);rst_n=1;sample();
-        // Raster sweep includes every bit of FPS:60 at a non-aligned origin.
+
         for(i=0;i<6000;i++) begin
             @(negedge clk); x=i%100;y=i/100;bg=24'h183456;tags=9'b111100000;
             sample();
         end
-        // Every cycle changes data/config; invalid pixels still advance tags.
+
         for(i=0;i<8000;i++) begin
             @(negedge clk);
             x=$random(random_seed);y=$random(random_seed);bg=$random(random_seed);fg=$random(random_seed);
@@ -59,7 +59,7 @@ module tb_osd_overlay;
             if(i==103 || i==1103) rst_n=1;
             sample();
         end
-        // No wrap around at the 12-bit coordinate limit, zero-length text.
+
         @(negedge clk);rst_n=1;ox=4095;oy=4095;x=0;y=0;len=255;en=1;tags=9'h1ff;repeat(5)sample();
         @(negedge clk);ox=0;oy=0;x=0;y=0;len=0;repeat(5)sample();
         #2;rst_n=0;#1;checks++;

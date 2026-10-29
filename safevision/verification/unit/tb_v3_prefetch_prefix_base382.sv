@@ -12,8 +12,8 @@ module tb_v3_prefetch_prefix_base382;
  end endtask
  initial begin
   force d.rfbase=address[20:0];force d.rfbase_high_zero=high_zero;force d.rfbase_high_ones=high_ones;force d.read_words=step;
-  // All2048 high prefixes; every legal increment; both sides and equality of
-  // the only possible low-prefix carry boundary, plus both interval ends.
+
+
   for(h=0;h<2048;h++)for(n=0;n<=16;n++)for(k=0;k<5;k++)begin
    case(k)0:low=0;1:low=2097151;2:low=(2097152-n-1)&2097151;3:low=(2097152-n)&2097151;default:low=(2097152-n+1)&2097151;endcase
    address=(h<<21)|low;step=n;check();

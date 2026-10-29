@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
-// Two production clock profiles use one PCM/CTS oracle. This file is kept
-// separate from the legacy MEM40 protocol stress bench.
+
+
 module v3_audio_priority_phase_scenario #(
  parameter real PIX_HALF_NS=6.733,
  parameter integer CTS_MIN=74100, CTS_MAX=74400,
@@ -69,8 +69,8 @@ module v3_audio_priority_phase_scenario #(
    if(n!=6144||cts!=expected_cts||cts<CTS_MIN||cts>CTS_MAX)$fatal(1,"measured HDMI ACR N=%0d CTS=%0d",n,cts);
   end
  end
- // Independent queue checks captured PCM24 through every priority pipeline phase.
- // It deliberately does not assign a new generation to a previously captured pair.
+
+
  reg[23:0] queued_l[0:7],queued_r[0:7];integer due[0:7];
  integer qw=0,qr=0,qn=0,priority_cycle=0,priority_comparisons=0;
  integer reference_gain=0,reference_error=0,total_gain,step_gain;
@@ -107,7 +107,7 @@ module v3_audio_priority_phase_scenario #(
  initial begin
   $readmemh("audio_disk.mem",disk);$readmemh("audio_pcm.mem",gold);
   #100;rst_n=1;commit();
-  // Identify first nonzero PCM to ignore explicit startup silence.
+
   search_first=1;wait(checking);wait(seen>=1200);checking=0;
   if(under!=0)$fatal(1,"false underflow in primed/commit window %0d",under);
   $display("[INFO] generation=%0d stereo_pairs=%0d underflows=%0d",gen,seen,under);
@@ -120,9 +120,8 @@ module v3_audio_priority_phase_scenario #(
   if(d.u_priority.gain!=256||over!=0||acrs<20)$fatal(1,"independent alarm/HDMI reset boundary");
   media_reset=0;alarm=0;slot=0;gen=3;commit();
   search_first=1;wait(checking);wait(seen>=300);checking=0;
-  // Enter media recovery, commit a fresh epoch, and change the alarm request
-  // at each serial calculation phase. The HDMI stream remains fully checked
-  // after each new first matching sample, while the capture queue runs throughout.
+
+
   for(injected_phase=1;injected_phase<=5;injected_phase=injected_phase+1)begin
    @(negedge ac);while(d.u_priority.state!=injected_phase)@(negedge ac);
    reset_phases[injected_phase-1]=1;alarm_phases[injected_phase-1]=1;

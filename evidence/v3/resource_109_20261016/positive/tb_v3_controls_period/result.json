@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_controls_period",
-  "suite": "v3",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "383f038b4eb5ebd66dc6451e6b51d931f0971cd34d28fe0cfbf51e13c2feb0eb",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\publication_remaining\\tb_v3_controls_period\\tb_v3_controls_period"
-}

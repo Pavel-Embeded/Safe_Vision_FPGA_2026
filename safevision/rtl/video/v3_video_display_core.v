@@ -1,8 +1,6 @@
 `include "video_mode_defs.vh"
-// V3 presentation clock is never stopped. Geometry, hard SAFE and output tags
-// use global pixel reset only. media_reset flushes fetch/control epochs without
-// resetting scan. cfg is committed in vertical blank; audio/video target and
-// final generation are atomic bundled descriptors across clock domains.
+
+
 module v3_video_display_core #(
  parameter integer HD=0,HANDBOOK_PROFILE=0,USER_FEATURES=0,FLEX_SPECTRUM=0,VOLUME_COLUMNS=0,VOLUME_SETTING=0,FADE_FRAMES=32,MEM_TIMEOUT=4000000,TRANSITION_TIMEOUT_FRAMES=300,PACKED_CACHE=0,
  parameter FONT_FILE="font8x16.mem",
@@ -25,8 +23,8 @@ module v3_video_display_core #(
  output wire[31:0] lookup_addr,input wire[31:0] lookup_crc,input wire lookup_valid,
  output wire[11:0] raw_x,raw_y,output wire raw_de,raw_hs,raw_vs,frame_start,
  output wire[11:0] x,y,output reg[23:0] rgb,output wire hs,vs,de,
- // Packed storage needs WRITE100 even when BASE controls use SYS50.
- // Appended optional ports preserve all legacy positional connections.
+
+
  input wire cache_write_clk,cache_write_rst_n,
  input wire font_request,input wire[8:0] font_index,output wire[7:0] font_word,
  input wire font_index_hi,output wire[8:0] font_word9,
@@ -157,8 +155,8 @@ module v3_video_display_core #(
   else begin
    if(row_pending&&row_request_ready)row_pending<=0;
    if(frame_start)begin pending_row<=0;row_pending<=(slots[current]&&initialized)||(busy&&direct_target&&slots[target]);end
-   // Two output lines of lookahead use all four source-row banks. This lets
-   // bounded physical SDRAM command/quiet/refresh gaps overlap scan time.
+
+
    else if(line_start&&raw_y<VA-2&&initialized&&slots[current])begin
     next_y=raw_y+2;
     if(next_y>=image_top(scale_mode)&&next_y<image_top(scale_mode)+image_height(scale_mode))begin
@@ -214,8 +212,8 @@ module v3_video_display_core #(
   .alpha(busy&&!direct_target?fade_alpha:8'd0),.pixel(fade_pixel),.valid_out(fv));
  color_adjust adjust(.clk(pixel_clk),.rst_n(pixel_rst_n),.valid_in(fv),.pixel_in(fade_pixel),
   .brightness(HANDBOOK_PROFILE?{cfg[94],cfg[94:87]}:cfg[95:87]),.contrast(cfg[86:79]),.pixel_out(adjusted),.valid_out(cv));
- // Four layers, in this order: background, status/menu OSD, warning graphic,
- // energy/config HUD. Transparent layers use alpha=0, never priority mux.
+
+
  wire frame_safe_raw,frame_safe_output;
  wire[15:0] osd_pixel4,em_pixel4,hud_pixel4,safe_pixel4;
  wire[7:0] osd_alpha4,em_alpha4,hud_alpha4;
@@ -339,7 +337,7 @@ module v3_video_display_core #(
  end
 endmodule
 
-// Same three-edge fade contract; BASE keeps its existing selected implementation.
+
 module v3_frame_fade_blend(
  input wire clk,rst_n,valid_in,fade_active,
  input wire [15:0] front,back,input wire [7:0] alpha,
@@ -350,15 +348,14 @@ module v3_frame_fade_blend(
  wire signed[5:0] db=$signed({1'b0,front[4:0]})-$signed({1'b0,back[4:0]});
  reg signed[13:0] pr,pb;reg signed[14:0] pg;
  reg[4:0] br,bb;reg[5:0] bg;
- // Stage2 registers only the final channel base and one exact carry.
- // x=256H+L, floor(x/255)=H+(L>=255-H). Bias vanishes mod32/64.
- // Stage3 now increments5/6 bits instead of dividing and adding back.
+
+
  reg[4:0] br2,bb2;reg[5:0] bg2;reg cr,cg,cb;reg v1,v2;
  wire[13:0] sr_next=pr+14'd8287,sb_next=pb+14'd8287;
  wire[14:0] sg_next=pg+15'd16447;
  wire[4:0] rr=br2+cr,rb=bb2+cb;wire[5:0] rg=bg2+cg;
- // Preserve unqualified products so the fade control gates their result,
- // rather than entering the pixel subtractor and multiplier operand paths.
+
+
  wire[7:0] selected_alpha=fade_active?alpha:8'd0;
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin pr<=0;pg<=0;pb<=0;br<=0;bg<=0;bb<=0;

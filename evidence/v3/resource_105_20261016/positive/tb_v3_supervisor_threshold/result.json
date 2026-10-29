@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_supervisor_threshold",
-  "suite": "supervisor_threshold",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "53d1d53f7645b407fcff78582d511e62f2537d4ec42b6241da0e32fa0133e235",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\idle_stamp_candidate\\sim\\supervisor_threshold\\tb_v3_supervisor_threshold"
-}

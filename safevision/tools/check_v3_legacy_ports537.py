@@ -1,8 +1,6 @@
-"""Check that optional ports append to the verified BASE public interfaces.
 
-Read-only source/API check. This grants no RTL, STA or hardware approval.
-Historical headers are recovered from the actual Git blobs, not copied lists.
-"""
+
+
 from pathlib import Path
 import argparse,hashlib,json,re,subprocess,sys
 ROOT=Path(__file__).resolve().parents[2]
@@ -38,7 +36,7 @@ def headers(raw):
    while text[offset].isspace():offset+=1
    _,offset=paren(text,offset)
    while text[offset].isspace():offset+=1
-  if text[offset:offset+1]!='(':continue # Portless utility modules.
+  if text[offset:offset+1]!='(':continue
   ports,_=paren(text,offset);depth=0;start=0;items=[]
   for k,c in enumerate(ports+','):
    if c in '[(':depth+=1

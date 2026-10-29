@@ -1,6 +1,6 @@
-// Pixel vblank -> stable base mailbox -> mem DMA -> official async pixel FIFO.
-// Each new frame discards old prefetched pixels. Quiesce the external B read
-// channel BEFORE resetting FIFO/DMA; shared arbiter and SDRAM are not reset.
+
+
+
 module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_STREAMING=0,DMA_CHECKED=0)(
     input wire pixel_clk,pixel_rst_n,mem_clk,mem_rst_n,
     input wire frame_start,frame_enable,input wire [31:0] frame_base,
@@ -15,9 +15,8 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_ST
     output wire [31:0] crc_lookup_addr,bad_addr,bad_expected,bad_actual,output wire integrity_fault
 );
     localparam integer CAPACITY=2*((1<<FIFO_AW)-1);
-    // A 720p line consumes its 640 media pixels faster than memory supplies
-    // them. Fill most of the FIFO during blanking, retaining one complete
-    // outstanding burst plus the registered watermark/packer guard.
+
+
     localparam integer LOW_WATER=DMA_STREAMING ? CAPACITY-2*BURST_WORDS-16 : CAPACITY/2;
     localparam [2:0] IDLE=0,QUIET=1,CLEAR=2,RELEASE=3,LAUNCH=4,RUN=5;
     reg [2:0] state;reg [3:0] phase_count;reg [1:0] quiet_count;
@@ -26,18 +25,16 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_ST
     wire [31:0] begin_base;
     wire common_reset_n=pixel_rst_n&&mem_rst_n;
     wire pixel_local_reset_n,mem_local_reset_n;
-    // Register the complete B response beat before the DMA landing RAM. The
-    // external interface is non-backpressured; valid and all 32 data bits get
-    // the SAME one-cycle delay. This removes arbiter response-count logic from
-    // the RAM write enable path without changing a word or its ordering.
+
+
     reg [31:0] response_data;
     reg response_valid;
     always @(posedge mem_clk or negedge mem_local_reset_n)begin
         if(!mem_local_reset_n)begin response_data<=0;response_valid<=0;end
         else begin response_data<=rd_data;response_valid<=rd_data_valid;end
     end
-    // Joining reset permissions only forms an ASYNC assertion source. Its
-    // release must be synchronized again in EACH domain, never used as data CE.
+
+
     reset_sync fetch_pixel_reset(.clk(pixel_clk),.async_rst_n(common_reset_n),.rst_n(pixel_local_reset_n));
     reset_sync fetch_mem_reset(.clk(mem_clk),.async_rst_n(common_reset_n),.rst_n(mem_local_reset_n));
     always @(posedge pixel_clk or negedge pixel_local_reset_n)begin
@@ -76,18 +73,15 @@ module a_frame_fetch_bridge #(parameter integer FIFO_AW=10,BURST_WORDS=64,DMA_ST
             default:state<=IDLE;
         endcase
     end
-    // mem_local_reset_n already asserts immediately if EITHER upstream domain
-    // resets. Use its local release only; pixel release must not feed mem CEs.
+
+
     (* keep="true" *) wire fifo_reset=!mem_local_reset_n || state==IDLE || state==CLEAR;
     wire dma_reset_n=mem_local_reset_n && state!=IDLE && state!=CLEAR;
     wire dma_req,dma_we;wire [15:0] dma_pixel;
     wire [31:0] packed_word;wire packed_valid,packer_ready,half_pending;
     wire fifo_ready,fifo_full,fifo_afull;wire [FIFO_AW-1:0] fifo_words;
-    // Level is REGISTERED one mem_clk before use: cuts the wr_addr_diff ->
-    // arbiter cur_addr/consec_cnt comb chain (mem->mem budget). Consumers
-    // (video_read_dma V_CHECK watermark, arbiter video_fifo_level) are
-    // heuristics with huge slack (FIFO 2*(2^AW-1), burst BURST_WORDS,
-    // +4 guard), so one cycle of lag is inside the margin.
+
+
     wire [15:0] guarded_level_next=({{(15-FIFO_AW){1'b0}},fifo_words,1'b0})+
                                (half_pending?16'd1:16'd0)+16'd4;
     reg [15:0] guarded_level;

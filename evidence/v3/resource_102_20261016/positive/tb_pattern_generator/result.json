@@ -1,9 +1,0 @@
-{
-  "top": "tb_pattern_generator",
-  "suite": "legacy_a",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": true,
-  "original_runner_result_sha256": "cc2b61f09e0c4143f8c1feec1e0084819b47d657835449009e0b7e07a0cf05db",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\system_legacy_a"
-}

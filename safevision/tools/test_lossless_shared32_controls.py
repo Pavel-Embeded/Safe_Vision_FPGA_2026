@@ -1,4 +1,4 @@
-"""Require normally completed HDL detections for packed caption corruptions."""
+
 import argparse,concurrent.futures,hashlib,json,re,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]

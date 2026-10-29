@@ -1,6 +1,6 @@
-// $<A|B|C>:<NAME>[=<decimal>|?]*HH CR LF. XOR covers target through argument.
-// No command side effect until checksum and complete terminator are accepted.
-// 32-character body, 100ms timeout. Numeric configuration uses signed decimal.
+
+
+
 module v3_command_catalog_before_counter #(parameter integer TIMEOUT=10000000,parameter CATALOG_FILE="../../assets/control/v3_command_catalog.mem")(
  input wire clk,rst_n,rx_valid,input wire [7:0] rx_data,
  output reg command_valid,output wire [7:0] target,
@@ -10,32 +10,28 @@ module v3_command_catalog_before_counter #(parameter integer TIMEOUT=10000000,pa
  reg [2:0] state;reg [7:0] checksum,received;
  localparam integer TIMER_W=TIMEOUT>1?$clog2(TIMEOUT):1;
  reg [TIMER_W-1:0] timer;reg [23:0] number;
- reg [5:0] length;// Only presence of a digit is required. A modulo-16 digit counter would
- // reject legal leading-zero values and permit a minus after 16 digits.
+ reg [5:0] length;
+
  reg [3:0] names;reg digit_seen;reg negative,argument;
  reg [7:0] dest;reg ask;
- // Payload is meaningful only with command_valid. It stays in the assembly
- // bank through the validated LF edge, avoiding a duplicate 137-bit bank.
+
+
  reg[95:0] catalog_name;
  assign target=dest;assign name=catalog_name;assign query=ask;
- // UART leaves at least304 SYS edges between bytes. Register decimal
- // sign conversion before the consumer's range/command decode. At the
- // validated LF edge, number/sign have been stable for several full bytes;
- // only command_valid qualifies this payload, as specified by the interface.
+
+
  (* preserve="true" *) reg signed[31:0] value_reg;
  always @(posedge clk or negedge rst_n)
   if(!rst_n)value_reg<=0;
   else value_reg<=negative?-$signed({8'd0,number}):$signed({8'd0,number});
  assign value=value_reg;
- // Payload names are exact for the finite board command catalog. Unknown
- // names become zero, which is unequal to every consumer command literal.
- // No hashes are used. Minimum name-byte spacing is 74 SYS edges;
- // UART RX guarantees at least304 at its supported minimum clock/baud ratio.
+
+
  localparam integer CATALOG_N=36,CATALOG_AW=6;
  reg[CATALOG_N-1:0] possible;
  reg[1:0] scan_state;reg[CATALOG_AW-1:0] scan_index;
  reg[3:0] held_position;reg[7:0] held_character;
- // Limit only this measured high-fanout command decode bank.
+
  (* max_fanout=8 *) reg[6:0] command_id;
  assign catalog_id=command_id;
  wire name_byte=rx_valid&&state==1&&length>=2&&length<32&&!argument&&!ask&&names<12&&rx_data>=65&&rx_data<=90;
@@ -97,8 +93,8 @@ module v3_command_catalog_before_counter #(parameter integer TIMEOUT=10000000,pa
   7'd35:catalog_name=96'h0057415646414c4c4241434b;
   7'd36:catalog_name=96'h000000000000000044494147;
   default:;endcase end
- // The previous number must be <1,000,000 before another digit is accepted;
- // hence the largest legal result is 9,999,999 and fits exactly in 24 bits.
+
+
  wire[23:0] decimal_next=number*24'd10+{20'd0,rx_data[3:0]};
  function [4:0] hex;
  input[7:0] c;begin

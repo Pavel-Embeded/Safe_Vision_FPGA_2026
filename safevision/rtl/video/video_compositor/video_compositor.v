@@ -1,6 +1,6 @@
-// All latency parameters describe the upstream delay from the RAW scan.
-// Align each layer to MAX, then register selection once: output latency MAX+1.
-// No ready/stall. Priority Emergency > OSD > Normal > safe background.
+
+
+
 module video_compositor #(
     parameter integer NORMAL_LATENCY=1,OSD_LATENCY=4,EMERGENCY_LATENCY=0,
     parameter [23:0] SAFE_COLOR=24'h000000,

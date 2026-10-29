@@ -1,6 +1,6 @@
-// Four stages: region -> font address -> synchronous font read -> color.
-// Character provider is combinational with char_index for the CURRENT input.
-// All config/text inputs are pixel_clk domain; CDC belongs to the caller.
+
+
+
 module osd_overlay #(
     parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
     parameter HSYNC_ACTIVE=1'b0, VSYNC_ACTIVE=1'b0
@@ -18,8 +18,8 @@ module osd_overlay #(
     wire [12:0] dy={1'b0,y_in}-{1'b0,origin_y};
     wire region=osd_enable && de_in && x_in>=origin_x && y_in>=origin_y &&
                 dx < {2'b00,char_count,3'b000} && dy<13'd16;
-    // Outside region the index is don't-care. Do not put the wide region
-    // comparator in front of the text lookup: region1 masks the result later.
+
+
     assign char_index=dx[10:3];
     reg region1,region2,region3,dot4;
     reg [7:0] code1;

@@ -1,9 +1,6 @@
-"""Deterministic card image. Pillow independently decodes BMP reference frames.
 
-The small FAT32 geometry tests RTL protocols, not a real formatted card.
-Four early broken files precede four distinct images on descending cluster chains.
-Generated megabyte fixtures stay in the isolated simulation directory.
-"""
+
+
 import argparse,io,json,struct
 from pathlib import Path
 from PIL import Image
@@ -12,7 +9,7 @@ def generate(out):
     out=Path(out);out.mkdir(parents=True,exist_ok=True)
     card=bytearray(8192*512)
     def le(pos,val,n=4):card[pos:pos+n]=val.to_bytes(n,'little')
-    # DBR: FAT at LBA1..2, data/root at LBA3, 32 sectors per cluster.
+
     card[0:3]=b'\xeb\x58\x90';card[3:11]=b'SVTEST  '
     le(11,512,2);card[13]=32;le(14,1,2);card[16]=1;le(32,8192)
     le(36,2);le(44,2);card[510:512]=b'\x55\xaa'
@@ -20,7 +17,7 @@ def generate(out):
     def entry(i,name,clus,size):
         p=3*512+i*32;card[p:p+11]=name.encode('ascii');card[p+11]=0x20
         le(p+20,clus>>16,2);le(p+26,clus&65535,2);le(p+28,size)
-    # Invalid signatures with legal names and a finite stream.
+
     le(512+3*4,0x0fffffff)
     for i in range(4):entry(i,f'SV{i+1:04d}  BMP',3,54)
     for image in range(4):
@@ -39,7 +36,7 @@ def generate(out):
             c=base+56-sector//32;lba=3+(c-2)*32+sector%32
             payload=data[sector*512:sector*512+512]
             card[lba*512:lba*512+len(payload)]=payload
-        # A separate BMP decoder supplies the expected raster and RGB channels.
+
         decoded=Image.open(io.BytesIO(data)).convert('RGB')
         pixels=list(decoded.get_flattened_data() if hasattr(decoded,'get_flattened_data') else decoded.getdata())
         words=[]

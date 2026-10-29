@@ -35,13 +35,13 @@ module tb_bmp_frame_write_bridge;
       #80;@(negedge clk);rst_n=1;
       for(d=0;d<2;d=d+1)begin
         direction=d;words=0;base=d?`SV_IMG3_BASE:`SV_IMG0_BASE;slot=d?3:0;
-        // Parser metadata can change after start and before its first pixel.
+
         top_down=!d;@(negedge clk);start=1;@(negedge clk);start=0;top_down=d;
         for(n=0;n<307200;n=n+1)begin
           send(n);
           if(n==63)begin
-            // Match native frame_writer: a stray start during an active frame
-            // must not reset only the adapter's address/packing state.
+
+
             @(negedge clk);start=1;@(negedge clk);start=0;
             repeat(70000)@(negedge clk);
           end

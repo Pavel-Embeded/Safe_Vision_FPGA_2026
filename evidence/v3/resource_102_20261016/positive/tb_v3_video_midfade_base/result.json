@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_video_midfade_base",
-  "suite": "video_v3_midfade",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "c72885acb5da9621deda8a9cde1153982b9849fb1b721afc8f3420a949b4afa5",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\resource_promotion_regression\\video_v3_midfade\\tb_v3_video_midfade_base"
-}

@@ -1,7 +1,6 @@
-// Official APUG092 HDMI 1.4b transmitter and EG DDR 10:1 PHY.
-// C supplies PCM24 stereo + ACR20 already in PIXEL domain. This A wrapper
-// does not implement C sample-rate scheduling or an audio-domain CDC.
-// Vendor source is an explicit external dependency, not a behavioral stub.
+
+
+
 module a_hdmi_output #(
     parameter integer HD=0,QUEUE_AW=4,EDID_SETTLE_CYCLES=100000
 )(
@@ -28,9 +27,8 @@ module a_hdmi_output #(
         .axis_ready(ready),.resync(resync),.overflow_sticky(overflow_sticky),
         .dropped_frames(dropped_frames),.queue_level(queue_level));
     wire tx_reset=!prn||hpd_reset||resync;
-    // Resync/HPD assert the fast PHY reset asynchronously, then release it
-    // on serial_clk through two stages. Recovery to the vendor ODDR stays
-    // timed; only assertion into this release synchronizer is an exception.
+
+
     wire serial_rst_n;
     reset_sync reset_serial(.clk(serial_clk),.async_rst_n(!tx_reset),.rst_n(serial_rst_n));
     wire [9:0] c0,c1,c2,cc;

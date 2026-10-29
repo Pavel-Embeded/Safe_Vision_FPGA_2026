@@ -6,8 +6,8 @@ module hdstatus_case233 #(parameter HD=0)(output reg done=0,output integer error
  reg[11:0]x=0,y=0;reg de=0,fs=0;reg[98:0]cfg=0;reg[31:0]up=0,uf=0;
  reg[3:0]cache=0;reg[1:0]slot=0;reg[7:0]gen=0;reg busy=0,safe=0,pv=0;reg[23:0]pcm=0;
  wire[87:0]a,b;
- // Exact production recurrence, including horizontal/vertical blanking.
- // The fixed-raster predecoder assertions remain active in BOTH modules.
+
+
  always @(posedge clk or negedge rst)
   if(!rst)begin x<=0;y<=0;end
   else if(x==HT-1)begin x<=0;y<=y==VT-1?0:y+1'b1;end
@@ -25,9 +25,8 @@ module hdstatus_case233 #(parameter HD=0)(output reg done=0,output integer error
  end end
  task stimulus;begin
   n++;r=rnd(r);pv=(n%31==0);pcm={r[15:0],8'd0};
-  // Deliberately change inputs every seven pixels, rather than relying on
-  // the production vblank stability contract. This checks the retimed
-  // decoder against the original public edges, including decimal commits.
+
+
   if(n%7==0)begin cfg={r,rnd(r),rnd(r^32'h1234),r[2:0]};up=rnd(r);uf=rnd(r^32'habcd);cache=r[7:4];slot=r[1:0];gen=r[15:8];busy=r[20];safe=r[21];end
  end endtask
  initial begin

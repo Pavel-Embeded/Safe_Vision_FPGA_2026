@@ -1,9 +1,9 @@
-# bmp_frame_sink unit test: the Plan A mem-side frame receiver on its own.
-# Runs the sink with TWO free-running clocks (wr_clk = 50 MHz, clk = 125 MHz) so the
-# real asynchronous boundary is actually exercised, unlike tb_sd_bmp_player which
-# clocks player and sink together. Covers the error path, both swap-timeout variants,
-# the FIFO-drain-before-ready rule and (critically) two consecutive frames with
-# different top_down so a stale row order cannot hide.
+
+
+
+
+
+
 param(
  [string]$RepoRoot=(Resolve-Path (Join-Path $PSScriptRoot '../..')).Path,
  [string]$ModelSimBin=$env:MSIM_BIN,
@@ -25,7 +25,7 @@ try{
     'rtl/common/crc16_ccitt.v',
     'rtl/memory/frame_address_gen.v','rtl/memory/frame_writer.v',
     'rtl/top/safevision_core/bmp_frame_write_bridge.v',
-    # official a_pixel_fifo (write 50 MHz / read 125 MHz) + the Plan A sink
+
     'platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_ip.v',
     'platform/anlogic_eg4s20_hx4s20c/ip/a_pixel_fifo/a_pixel_fifo_eram.v',
     'platform/anlogic_eg4s20_hx4s20c/rtl/pixel_fifo/a_pixel_fifo.v',

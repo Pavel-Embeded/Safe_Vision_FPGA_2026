@@ -1,7 +1,6 @@
-// Decode one-hot on the same command capture edge. Legal and invalid opcodes
-// retain all response/configuration cycles; no additional pipeline stage.
-// Normal buttons are decoded on release, so a chord cannot leak a next/auto.
-// Emergency is never gated by menu or UART. Configuration has one driver.
+
+
+
 module v3_user_controls #(parameter integer UI_TIMEBASE=0,CLK_HZ=100000000,DEBOUNCE=2000000,BOARD_CATALOG=0,SYSTEM_SAFE_ENABLE=0,
  HANDBOOK_PROFILE=0,DEFAULT_AUTO=0,RETAIN_CONFIG=0,COMMAND_PIPELINE=HANDBOOK_PROFILE)(
  input wire clk,rst_n,next_async,auto_async,emergency_async,
@@ -96,18 +95,14 @@ module v3_user_controls #(parameter integer UI_TIMEBASE=0,CLK_HZ=100000000,DEBOU
  CTRL_ID_MENU:decode_catalog=OP_MENU;
  CTRL_ID_FIELD:decode_catalog=OP_FIELD;
  default:;endcase end endfunction
- // The board catalog guarantees name/ID identity on command_valid.
- // Generic callers retain the complete original ASCII-name interface.
+
+
  wire value_bright_ok=(~|command_value[31:7]) || (&command_value[31:7]);
  wire value_byte_ok=~|command_value[31:8];
  wire value_bit_ok=~|command_value[31:1];
  wire value_volume_ok=(~|command_value[31:7]) && command_value[6:0]<=7'd100;
- // Decode A/C target on the original command-pipeline capture edge:
- // R(target==A/C)=(R(target)==A/C), for all256 target encodings.
- // Pipeline the finite decoded command and validated nine-bit argument.
- // Values outside signed9 bits become an invalid sentinel, never a wrapped
- // legal command. Four range predicates retain the full32-bit input checks.
- // Adds one SYS edge in handbook mode; legacy callers retain exact latency.
+
+
  function[6:0] offset_to_percent;input signed[8:0] offset;reg signed[8:0] shifted;begin
   shifted=offset+9'sd100;
   if(offset < -9'sd100)offset_to_percent=0;
@@ -117,7 +112,7 @@ module v3_user_controls #(parameter integer UI_TIMEBASE=0,CLK_HZ=100000000,DEBOU
  wire[3:0] opcode_in=BOARD_CATALOG?decode_catalog(catalog_id):decode_name(command_name);
  wire[3:0] opcode;wire[15:0] operation;wire command_valid_eff,command_query_eff;
  wire alpha_write_eff;
- // Register target-qualified one-hot operations on the original capture edge.
+
  wire[15:0] qualified_operation=(16'h1<<opcode_in)&(({16{command_target==8'd65}}&16'h183f)|({16{command_target==8'd67}}&16'h67c0));
  wire[6:0] bright_percent_eff;wire signed[8:0] percent_offset_eff;
  wire[7:0] command_target_eff;wire signed[31:0] command_value_eff;
@@ -127,9 +122,8 @@ module v3_user_controls #(parameter integer UI_TIMEBASE=0,CLK_HZ=100000000,DEBOU
   reg valid_q,query_q;reg[7:0] target_q;reg[3:0] opcode_q;
   reg[15:0] operation_q;
   reg alpha_write_q;
-  // ALPHA is fully validated at the existing capture edge. The response
-  // decoder remains unchanged, while the configuration data mux receives
-  // one registered enable instead of the entire command-priority network.
+
+
   always @(posedge clk or negedge rst_n)
    if(!rst_n)alpha_write_q<=0;
    else alpha_write_q<=command_valid&&!command_query&&qualified_operation[OP_ALPHA]&&value_byte_ok;
@@ -148,10 +142,8 @@ end
   assign opcode=opcode_q;assign operation=operation_q;assign bright_percent_eff=offset_to_percent(argument_q);assign percent_offset_eff=$signed({1'b0,argument_q[6:0],1'b0})-9'sd100;assign command_valid_eff=valid_q;assign command_query_eff=query_q;
   assign target_a_eff=target_a_q;assign target_c_eff=target_c_q;
   assign command_target_eff=target_q;assign command_value_eff={{23{argument_q[8]}},argument_q};
-  // Every accepted control value is in-128..255. The clipped9-bit
-  // argument uses-256 for ALL out-of-domain values; that sentinel is
-  // invalid for every operation. Derive the four exact validity classes
-  // after capture instead of registering redundant32-bit predicates.
+
+
   assign value_bright_qualified=(argument_q[8]==argument_q[7]);assign value_byte_qualified=!argument_q[8];
   assign value_bit_qualified=!(|argument_q[8:1]);assign value_volume_qualified=!argument_q[8]&&(argument_q[7:0]<=8'd100);
  end else begin:command_direct
@@ -163,11 +155,7 @@ end
   assign value_bit_qualified=value_bit_ok;assign value_volume_qualified=value_volume_ok;
  end endgenerate
 
- // Exact two's-complement tests for all 2^32 input bit patterns. Command
- // decoding is independent of value validity, so one command's rejected
- // value cannot build a priority path to another command's enable.
- // Board-only shared millisecond enable. Every physical clock continues.
- // Exact-cycle callers and accelerated/nonintegral debounce profiles keepDIV1.
+
  localparam integer UI_DIV=UI_TIMEBASE&&CLK_HZ>=1000&&CLK_HZ%1000==0&&DEBOUNCE>=CLK_HZ/1000&&DEBOUNCE%(CLK_HZ/1000)==0?CLK_HZ/1000:1;
  localparam integer UI_SECOND=CLK_HZ/UI_DIV;
  localparam integer HOLD_LIMIT=UI_DIV==1?CLK_HZ:UI_SECOND+1;
@@ -206,9 +194,8 @@ end
   0:if(HANDBOOK_PROFILE)begin
      next_pct=inc?((brightness_pct<95)?brightness_pct+7'd5:7'd100):((brightness_pct>5)?brightness_pct-7'd5:7'd0);
      brightness_pct<=next_pct;
-     // 2*(pct+5)-100 = 2*pct-90; likewise decrement uses -110.
-     // Compute arithmetic before the saturation mux, avoiding two serial
-     // carry paths from the released button to the brightness register.
+
+
      brightness<=inc?((brightness_pct<95)?button_bright_up:9'sd100):
                      ((brightness_pct>5)?button_bright_down:-9'sd100);
      brightness_raw<=0;
@@ -234,7 +221,7 @@ end
   7:osd_alpha<=inc?((osd_alpha<239)?osd_alpha+16:255):((osd_alpha>16)?osd_alpha-16:0);
  endcase
  end endtask
- // Mutually exclusive captured operations permit a balanced masked-OR query.
+
  wire query_known=|(operation&16'h79ff);
  wire[31:0] query_word=
   ({32{operation[OP_BRIGHT]}}&{{23{brightness[8]}},brightness}) |
@@ -257,8 +244,8 @@ end
    contrast<=128;osd_alpha<=160;bilinear<=0;fit<=!HANDBOOK_PROFILE;scale_select<=HANDBOOK_PROFILE?0:1;fade_enabled<=1;
    volume<=HANDBOOK_PROFILE?70:80;period_select<=1;period_previous<=1;menu<=0;field<=0;auto_tick<=0;cycles_raw<=0;seconds_raw<=0;timer_clear_q<=1;auto_started<=0;reply_value<=0;end
   else if(!rst_n)begin
-   // Warm SYS reset clears transactions and key history; configuration remains
-   // held until an explicit write. FPGA configuration/power-on reloads defaults.
+
+
    previous<=0;n_hold<=0;a_hold<=0;chord<=0;chord_used<=0;chord_fired<=0;n_long<=0;a_long<=0;
    next_request<=0;recover_request<=0;reply_valid<=0;reply_code<=0;reply_value<=0;
    period_previous<=period_select;menu<=0;field<=0;auto_tick<=0;cycles_raw<=0;seconds_raw<=0;timer_clear_q<=1;auto_started<=0;
@@ -292,8 +279,8 @@ end
     end a_long<=0;
    end
    if(levels[1:0]==0 && previous[1:0]==0)begin chord_used<=0;chord_fired<=0;end
-   // Encode the published zero state on the original edge. Late cache/
-   // commit decisions only feed one FF; timer values and auto_tick remain exact.
+
+
    timer_clear_q<=timer_clear;
    if(UI_DIV==1)begin
    if(cycles==CLK_HZ-1)begin
@@ -303,8 +290,8 @@ end
    end else begin cycles_raw<=cycles+1'b1;seconds_raw<=seconds;end
    end else if(timer_clear_q)begin cycles_raw<=0;seconds_raw<=0;auto_started<=0;end
    else if(ui_tick)begin
-    // Start at the first common tick after clear. The first period is never
-    // shortened; thereafter the integer2/5/10/30-second interval is exact.
+
+
     if(!auto_started)begin auto_started<=1;cycles_raw<=0;seconds_raw<=0;end
     else if(cycles_raw==UI_SECOND-1)begin
      cycles_raw<=0;
@@ -347,7 +334,7 @@ end
      default:reply_code<=3;
     endcase
    end
-   // Last assignment preserves UART-over-button priority on the same edge.
+
    if(COMMAND_PIPELINE&&alpha_write_eff)osd_alpha<=command_value_eff[7:0];
   end
  end

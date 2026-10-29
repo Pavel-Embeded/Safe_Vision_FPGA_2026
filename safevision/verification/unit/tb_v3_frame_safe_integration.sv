@@ -29,8 +29,8 @@ module tb_v3_frame_safe_integration;
   begin request=0;wait(!d.frame_safe_raw&&!d.frame_safe_output);wait(de&&x==0&&y==0&&rgb==24'h0000ff);end
  endtask
  initial begin
-  // Isolate the mux boundary with two valid constant sources. Full-frame
-  // independent golden tests separately cover real rendering/cache/color.
+
+
   force d.raw_x=rx;force d.raw_y=ry;force d.raw_de=rd;
   force d.safe_p2=request;force d.media_p2=0;force d.fault_p2=0;force d.presentation_fault_p=0;
   force d.enabled=1;force d.missing_tags=0;

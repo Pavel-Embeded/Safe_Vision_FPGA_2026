@@ -1,11 +1,11 @@
-// Combinational RGB888; x/y are raw scan coordinates, no pixel clock divider.
+
 module pattern_generator #(
     parameter integer H_ACTIVE=640, V_ACTIVE=480,
     parameter integer RECT_X0=100, RECT_X1=400, RECT_Y0=200, RECT_Y1=300
 )(input wire rst_n, input wire de, input wire [11:0] x, y,
   input wire [2:0] pattern_select, input wire arrow_right,
   output reg [23:0] rgb);
-    // Compile-time geometry only. No variable divide/modulo in the pixel path.
+
     localparam integer CX=H_ACTIVE/2, CY=V_ACTIVE/2;
     localparam integer U=(H_ACTIVE>=320 && V_ACTIVE>=240)?16:2;
     wire shaft=(x>=CX-4*U && x<CX+U && y>=CY-U && y<CY+U);

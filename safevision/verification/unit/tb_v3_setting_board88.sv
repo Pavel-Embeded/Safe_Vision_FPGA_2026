@@ -26,8 +26,8 @@ module setting_board_case88 #(parameter HD=0)(output reg done=0,output integer e
   ck(dut.video.graphics.RASTER_PREDECODE==HD,"production core actually enables HD row predecode");
   for(k=0;k<3;k++)begin
    v=k==0?0:k==1?100:70;setvolume(v);diag();
-   // No coordinate,clock,frame or mailbox force. A pending older packet can
-   // occupy frame1;frame2 commits the new cfg;frame3 captures the new columns.
+
+
    repeat(3)@(posedge dut.video.frame_start);repeat(116)@(negedge dut.pixel_clk);
    ck(dut.video.cfg[67:61]==v&&dut.video.cfg[54:48]==eng,"real config mailbox with continuous source-valid and actual raster");
    ck(dut.video.graphics.setting_level==v,"explicit percent maps0..100 regardless of quiet source");

@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_checked_sector",
-  "suite": "v3",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "e8f37c34d340e4485a308d2a35a2585e2ad5880fec3998345b29217535a7d6c8",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_remaining\\tb_v3_checked_sector\\tb_v3_checked_sector"
-}

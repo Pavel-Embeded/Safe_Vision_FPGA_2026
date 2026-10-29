@@ -36,7 +36,7 @@ module v3_priority_serial_oracle #(parameter integer RAMP=240,COUNT=262144,
    valid=1;@(negedge clk);valid=0;
    ck(gain==reference_gain,"ramp gain at accepted sample");gains_seen[gain]=1;
    for(c=0;c<5;c=c+1)begin
-    // Input/SAFE policy changes while busy may not relabel a captured sample.
+
     rng=random32(rng);wl=rng[23:0];rng=random32(rng);wr=rng[23:0];
     rng=random32(rng);tl=rng[23:0];rng=random32(rng);tr=rng[23:0];alarm=~alarm;
     @(negedge clk);

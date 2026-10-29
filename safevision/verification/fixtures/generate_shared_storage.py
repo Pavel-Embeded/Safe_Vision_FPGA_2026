@@ -1,4 +1,4 @@
-"""Four independently decoded BMPs plus fragmented exact PCM WAV companions."""
+
 from pathlib import Path
 import argparse,importlib.util,struct,json
 R=Path(__file__).resolve().parents[3]

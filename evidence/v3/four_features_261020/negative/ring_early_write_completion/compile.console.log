@@ -1,8 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svnegative318/n/ring_early_write_completion/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_pcm_ring
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures312/source/safevision/verification/models/v3_pcm_ring_reference.sv" into library work
-INFO: [VRFC 10-311] analyzing module v3_pcm_ring_reference
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures312/source/safevision/verification/models/v3_pcm_ring_cycle_miter.sv" into library work
-INFO: [VRFC 10-311] analyzing module v3_pcm_ring_cycle_miter
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svfeatures312/source/safevision/verification/unit/tb_v3_pcm_ring_equivalence.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_pcm_ring_equivalence

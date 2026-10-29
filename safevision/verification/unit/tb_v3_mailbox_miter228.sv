@@ -26,8 +26,8 @@ module mailbox_case228 #(parameter W=103,SC=5,DC=7)(output reg done=0,output int
  always@(posedge d)begin #0.2;comparisons++;if({sv,sd}!=={rv,rd})begin errors++;if(errors<8)$display("[FAIL] destination public edge differs W=%0d",W);end end
  initial begin
   #100;rst=1;
-  // Reset during idle, request crossing, settling, valid backpressure and
-  // acknowledgment phases. Private payload may be X, public outputs cannot.
+
+
   for(epoch=0;epoch<12;epoch++)begin
    for(cycle=0;cycle<3000+epoch*19;cycle++)@(negedge s);
    #1.3;rst=0;#0.3;comparisons++;if(sd!==0||sv!==0||sr!==0)begin errors++;$display("[FAIL] public asynchronous reset lost");end

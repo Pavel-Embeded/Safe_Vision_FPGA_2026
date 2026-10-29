@@ -24,8 +24,8 @@ module feature_board198 #(parameter HD=0)(output reg done=0,output integer error
    for(i=20;i>0;i--)begin q[i]=q[i-1];vq[i]=vq[i-1];panel_frame[i]=panel_frame[i-1];end
    panel_frame[0]=frames[3:0];
    vq[0]=dut.raw_de&&dut.raw_x>=W-304&&dut.raw_x<W-16&&dut.raw_y>=H-160&&dut.raw_y<H-36;
-   // The public analyzer outputs register this raw coordinate on this edge.
-   // Read after NBA, then compare its HUD output after the full21-clock path.
+
+
    #0.001;
    if(vq[20])ck(dut.video.rgb===q[20],"actual PCM spectrum pixels -> HUD palette -> finalRGB, exact public pipeline");
    if(vq[20]&&panel_frame[20]==3&&panel_file!=0)begin $fdisplay(panel_file,"%06h",dut.video.rgb);panel_pixels++;end
@@ -35,8 +35,8 @@ module feature_board198 #(parameter HD=0)(output reg done=0,output integer error
  end
 
  initial begin
-  // Isolate the HUD against a known previous-layer background. Actual audio,
-  // PCM CDC, FFT renderer, scan tags, palette and finalRGB remain unforced.
+
+
   force dut.video.layer_em.pixel=16'd0;force dut.video.frame_safe_output=1'b0;force dut.video.missing_tags=21'd0;
   repeat(10)@(negedge clk);rst=1;wait(dut.pixel_rst_n);wait(frames>=4);wait(dut.raw_fs);repeat(25)@(negedge dut.pixel_clk);
   ck(captured_total>=1536&&comparisons>30000,"multiple512-sample real PCM blocks and complete raster regions checked");

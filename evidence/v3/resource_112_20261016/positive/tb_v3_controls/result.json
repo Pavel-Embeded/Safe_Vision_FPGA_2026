@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_controls",
-  "suite": "v3",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "f73a592687f195eea0be05e51bd2abeb372e70882cb164062d4e2e9d296edede",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_decode_remaining\\tb_v3_controls\\tb_v3_controls"
-}

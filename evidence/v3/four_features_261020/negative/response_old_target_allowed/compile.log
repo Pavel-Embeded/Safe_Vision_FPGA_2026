@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/runs/hb01/f2/negative/response_old_target_allowed/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_pixel_response_tracker
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/2026-10-15/github-plugin-github-openai-curated-remote/work/repo/safevision/verification/unit/tb_v3_pixel_response_tracker.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_pixel_response_tracker

@@ -1,4 +1,4 @@
-# Paths relative to safevision/. Required by both production GUI and CLI.
+
 assets/fonts/font8x16.mem
 assets/fonts/font8x16_compact.mem
 assets/fonts/v3_status_text.mem

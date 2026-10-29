@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_control_decode_equivalence",
-  "suite": "control_decode_equivalence",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "0edfa862de7d47b65b4a370488043ecef0a9d235e73d9e8ef87b556bd4b76eb0",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\control_catalog_candidate\\sim\\control_decode_equivalence\\tb_v3_control_decode_equivalence"
-}

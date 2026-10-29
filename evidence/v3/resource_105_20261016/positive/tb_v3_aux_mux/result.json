@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_aux_mux",
-  "suite": "v3_board",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "bd89eff17365bc73d40180d8d7747289316b7fb79e2f209c21853a61504a5fbc",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\idle_stamp_remaining\\tb_v3_aux_mux\\tb_v3_aux_mux"
-}

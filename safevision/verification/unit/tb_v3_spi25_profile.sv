@@ -3,8 +3,8 @@ module tb_v3_spi25_profile;
  reg clk=0;always #10 clk=!clk;
  reg rst_n=0,tx_valid=0,miso=1;reg[15:0] divider=0;reg[7:0]tx=0,model=0;
  wire ready,rx_valid,busy,sclk,mosi;wire[7:0]rx;
- // Declared 5ns forwarded-clock FPGA tCO model, not a board measurement.
- // Card/trace 18ns is additional; native STA must independently bound tCO.
+
+
  wire card_sclk;assign #5 card_sclk=sclk;
  integer checks=0,errors=0,bit_index=7,rises=0,falls=0,half_ns=20,card_delay=18;
  integer expected_mid=1,seed=32'h19382,a,b,k;reg active=0;reg[7:0]observed_tx=0;
@@ -29,14 +29,14 @@ module tb_v3_spi25_profile;
   bit_index--;if(bit_index>=0)miso<=#(card_delay)model[bit_index];
  end
  always @(negedge clk)if(rst_n && dut.sample_pending)begin
-  // Every real sample is a falling REF edge, 10ns after SCLK rises.
+
   check(active && sclk && $time-last_rise==10,"sample edge phase");
  end
  task transfer(input integer d,input integer delay_ns,input[7:0]outbyte,input[7:0]inbyte,input bit legal);begin
   wait(ready);@(negedge clk);divider=d;card_delay=delay_ns;half_ns=(d+1)*20;
   tx=outbyte;model=inbyte;bit_index=7;rises=0;falls=0;have_fall=0;have_rise=0;observed_tx=0;miso=inbyte[7];active=1;tx_valid=1;
   @(negedge clk);tx_valid=0;
-  // The divider is latched at acceptance; changing it midbyte must not alter rate.
+
   divider=16'd249;
   wait(rx_valid);#1;
   check(rises==8 && falls==8,"eight bit clocks");check(observed_tx===outbyte,"MOSI byte order");
@@ -45,14 +45,14 @@ module tb_v3_spi25_profile;
  end endtask
  initial begin
   repeat(4)@(negedge clk);rst_n=1;
-  // All byte patterns at 25MHz, with maximum transfer response delay.
+
   for(k=0;k<256;k++)transfer(0,18,k[7:0],~k[7:0],1);
-  // Delay extremes and lower rates including real 100kHz identification.
+
   for(k=0;k<32;k++)begin a=$random(seed);b=$random(seed);transfer(0,0,a[7:0],b[7:0],1);end
   transfer(1,18,8'h96,8'h69,1);transfer(249,54,8'ha5,8'h5a,1);
-  // Alternate bits guarantee a stale bit is visible if the card exceeds 30ns.
+
   transfer(0,38,8'ha5,8'h55,0);
-  // Abort at an active high phase, then prove a fresh full byte has no residue.
+
   wait(ready);@(negedge clk);divider=0;tx=8'h81;model=8'h69;miso=0;active=0;tx_valid=1;
   @(negedge clk);tx_valid=0;wait(sclk);#3;rst_n=0;#2;check(!sclk && !rx_valid,"asynchronous abort");
   repeat(3)@(negedge clk);rst_n=1;transfer(0,18,8'hc3,8'h96,1);

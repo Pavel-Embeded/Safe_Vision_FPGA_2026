@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
-// Arithmetic induction step for the implementation's extended pointers.
-// Public transaction traces and real full-capacity address wrap are separately
-// checked by pcm_ring_equivalence (no internal state injection there).
+
+
 module tb_v3_ring_pointer_count300;
  reg clk=0,rst=0,ack=0,busy=0,rv=0;
  wire[63:0]levels;wire[3:0]pre;
@@ -18,9 +17,8 @@ module tb_v3_ring_pointer_count300;
  endtask
  initial begin
   #1;rst=1;
-  // Every possible 15-bit write pointer, both event directions, eight read
-  // offsets that straddle low-address/full-buffer/extended-pointer boundaries.
-  // All four banks are checked before and after the selected event.
+
+
   for(d=0;d<2;d++)for(v=0;v<32768;v++)for(c=0;c<8;c++)begin
    owner=(v+c)%4;step=d?-1:1;
    random_state=random_state*32'd1664525+32'd1013904223;

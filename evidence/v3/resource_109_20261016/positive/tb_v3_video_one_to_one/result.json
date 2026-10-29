@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_video_one_to_one",
-  "suite": "video_v3_one_to_one",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "fc8b84b23000e2b56e076aebb3c345723ae64b3bc71ad1f13b50f1581aea2a0a",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\runs\\retimed_video_frames\\tb_v3_video_one_to_one\\tb_v3_video_one_to_one"
-}

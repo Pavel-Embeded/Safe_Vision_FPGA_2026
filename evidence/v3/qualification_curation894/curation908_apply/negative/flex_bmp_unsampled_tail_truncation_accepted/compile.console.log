@@ -1,6 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate803/safevision/rtl/media/bmp_parser.v" into library work
-INFO: [VRFC 10-311] analyzing module bmp_parser
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/qualification811/negative/flex_bmp_unsampled_tail_truncation_accepted/inputs/mutant.v" into library work
-INFO: [VRFC 10-311] analyzing module v3_bmp_normalizer
-INFO: [VRFC 10-2263] Analyzing SystemVerilog file "D:/Codex/svflex537/candidate803/safevision/verification/unit/tb_v3_flexible_bmp_bounds551.sv" into library work
-INFO: [VRFC 10-311] analyzing module tb_v3_flexible_bmp_bounds551

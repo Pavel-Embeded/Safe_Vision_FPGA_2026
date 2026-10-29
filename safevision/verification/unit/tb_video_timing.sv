@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
 
-// Independent numeric checks for the three video_timing configurations.
-// Expected windows below are literal reference values, not DUT parameters.
+
 module tb_video_timing;
     reg clk = 1'b0;
     reg rst_n = 1'b0;
@@ -35,8 +34,7 @@ module tb_video_timing;
         .hblank(hd_hblank), .vblank(hd_vblank)
     );
 
-    // Zero front/back porches are legal. Mixed sync polarity detects a
-    // mistaken shared polarity bit, and short periods exercise every edge.
+
     video_timing #(
         .H_ACTIVE(3), .H_FRONT(0), .H_SYNC(2), .H_BACK(0),
         .V_ACTIVE(2), .V_FRONT(0), .V_SYNC(1), .V_BACK(0),
@@ -61,15 +59,14 @@ module tb_video_timing;
                             input [31:0] expected);
         begin
             errors = errors + 1;
-            $display("FAIL %0s cycle=%0d got=%08h expected=%08h", 
+            $display("FAIL %0s cycle=%0d got=%08h expected=%08h",
                      mode_name, tick, got, expected);
             if (errors >= 8)
                 $fatal(1, "Too many video_timing mismatches");
         end
     endtask
 
-    // Tuple order: x, y, hsync, vsync, de, line_start, frame_start,
-    // active_frame_start, hblank, vblank. A case-inequality catches X/Z.
+
     task automatic check_vga(input integer tick);
         reg [11:0] ex, ey;
         reg [31:0] got, expected;
@@ -155,15 +152,14 @@ module tb_video_timing;
     endtask
 
     initial begin
-        // First allow a rising edge to establish the initial async reset.
+
         repeat (3) @(negedge clk);
         #1;
         check_reset();
         rst_n = 1'b1;
         #1;
 
-        // Interrupt an active scan, then prove reset takes effect before the
-        // next pixel-clock edge. At tick 2500 both full-size modes are active.
+
         for (cycle = 0; cycle < 2500; cycle = cycle + 1) begin
             check_vga(cycle);
             check_hd(cycle);
@@ -178,8 +174,7 @@ module tb_video_timing;
         rst_n = 1'b1;
         #1;
 
-        // Exactly two complete 1650x750 frames. VGA is checked throughout,
-        // so it crosses five complete 800x525 frames. Tiny crosses six here.
+
         for (cycle = 0; cycle < 2*1650*750; cycle = cycle + 1) begin
             check_vga(cycle);
             check_hd(cycle);

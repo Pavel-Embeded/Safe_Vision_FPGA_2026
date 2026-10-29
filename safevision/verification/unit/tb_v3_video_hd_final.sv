@@ -125,8 +125,8 @@ module tb_v3_video_hd_final_model #(parameter HD=0)();
  function[7:0] dec_ascii(input integer n,input integer place);
   begin dec_ascii=place==2?48+n/100:place==1?48+(n/10)%10:48+n%10;end
  endfunction
- // Independent glyph oracle: official font bytes plus human-readable content,
- // geometric regions, and per-channel rounded /255 blending. No DUT internals.
+
+
  function[15:0] normal_golden(input[15:0] background,input integer xx,yy,slot,gen,fps);
   reg[511:0] text;reg[7:0] code,bits;integer oy,len,category,row,index,period,brightness,energy;
   bit enabled,dot,panel,selected,border,bar_edge,bar_fill;reg[15:0] result,front;
@@ -254,7 +254,7 @@ module tb_v3_video_hd_final_model #(parameter HD=0)();
   if(underflow!=0||fault||presentation_fault)begin $display("[FAIL] normal DMA underflow=%d fault=%b",underflow,fault);errors=errors+1;end
   safety=1;wait_frame();compare_frame(1,0,0,0);
   media_reset=1;repeat(200)@(posedge sys);media_reset=0;wait_frame();compare_frame(1,0,0,0);
-  // CRC negative control: approved row signature is intentionally corrupted.
+
   safety=0;corrupt_crc=1;wait(tv);allow_audio=1;wait(fault);wait_frame();compare_frame(1,0,0,0);
   $display("[PASS] media-reset SAFE continuity and corrupt CRC detection");
   $display("[TB] tb_v3_video_final_hd_fast done frames=%0d comparisons=%0d errors=%0d",frames,comparisons,errors);

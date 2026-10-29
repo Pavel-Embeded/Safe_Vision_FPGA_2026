@@ -1,9 +1,6 @@
 `include "pixel_format_defs.vh"
-// Producer signatures are computed BEFORE storage. Four resident slots, one
-// CRC32 per raster row (1920 entries = 61440 bits at 640x480). Readback uses
-// bounded 64-word transactions; CRC state spans all five bursts in a row.
-// One synchronous signature read port is shared by mutually exclusive preload
-// verification and display lookup; lookup_valid is suppressed while verifying.
+
+
 module v3_row_integrity #(
  parameter integer ROW_WORDS=320,ROWS=480,BURST=64,
  parameter integer TIMEOUT=40000000,DIRECT_LOOKUP=0
@@ -19,13 +16,13 @@ module v3_row_integrity #(
  input wire[1:0] lookup_slot_index,input wire[9:0] lookup_row_index);
  `include "crc32_word.vh"
  localparam IDLE=0,RETIRE=1,REQUEST=2,COLLECT=3,CHECK=4,DONE=5;
- // Pad each slot to a power of two. Unused rows are never eligible.
- // 480 rows still occupy eight RAM9K blocks; slot indexing is wiring.
+
+
  localparam integer INDEX_W=(ROWS<2)?1:$clog2(ROWS);
  localparam integer SLOT_ROWS=1<<INDEX_W;
  reg[31:0] signatures[0:4*SLOT_ROWS-1];
  reg[2:0] state;reg[1:0] slot_q;reg building,complete,dir;
- // Counts stop at frame/burst/deadline bounds; retain32-bit public ports.
+
  localparam integer FRAME_WORDS=ROWS*ROW_WORDS;
  localparam integer SOURCE_W=$clog2(FRAME_WORDS+1),ADDR_W=$clog2(`SV_IMG3_BASE+FRAME_WORDS*4+4);
  localparam integer TIMER_W=$clog2(TIMEOUT)+1;
@@ -40,18 +37,16 @@ module v3_row_integrity #(
  reg[COL_W-1:0] column;reg[ROW_W-1:0] verify_row,producer_row;
  reg[OFFSET_W-1:0] row_offset;reg[BURST_W-1:0] burst_count;
  function[1:0] addr_slot;input[31:0] addr;begin
- // The reviewed slot bases are0,5,10,15 times2^17. Classification
- // therefore depends only on the upper15 bits; low17 bits cannot affect
- // ANY32-bit input result. Factor the high-prefix OR instead of mapping
- // three independent32-bit carry comparisons. Keep the generic-map fallback.
+
+
  if(`SV_IMG0_BASE==32'h00000000&&`SV_IMG1_BASE==32'h000a0000&&
     `SV_IMG2_BASE==32'h00140000&&`SV_IMG3_BASE==32'h001e0000)
   addr_slot=(|addr[31:21]) ? 2'd3 : addr[20:17]>=4'd15 ? 2'd3 :
    addr[20:17]>=4'd10 ? 2'd2 : addr[20:17]>=4'd5 ? 2'd1 : 2'd0;
  else addr_slot=addr>=`SV_IMG3_BASE?3:addr>=`SV_IMG2_BASE?2:addr>=`SV_IMG1_BASE?1:0;
  end endfunction
- // Slot pitch is512 source rows. Preserve even out-of-raster row aliases
- // produced by the10-bit cache descriptor; bank4 still rejects exactly.
+
+
  localparam integer USE_DIRECT=DIRECT_LOOKUP&&ROW_WORDS==320&&ROWS==480&&
   `SV_IMG0_BASE==32'h00000000&&`SV_IMG1_BASE==32'h000a0000&&
   `SV_IMG2_BASE==32'h00140000&&`SV_IMG3_BASE==32'h001e0000;
@@ -63,16 +58,8 @@ module v3_row_integrity #(
  wire source_beat=building && accepted && !fault && write_addr==wanted && source_slot==slot_q;
  wire signature_write=source_beat && column==ROW_WORDS-1;
  wire capture=rd_valid && (state==COLLECT || (state==REQUEST && rd_ack));
- // The production sink withholds the next frame until readback completes.
- // Its WRITE and FLUSH phases therefore share one CRC state register;
- // every row and verification epoch initializes that register to FFFFFFFF.
- // Continuous accepted/capture throughput remains one word per clock.
- // Public counters, signatures, requests and completion edges are unchanged.
- // Mutually exclusive build/readback phases share the linear CRC network.
- // CRC_word first XORs state with data; factor selection before that network.
- // Source construction and verification are separate registered phases.
- // Select the shared CRC input by phase, keeping the last-cycle rvalid
- // path out of its XOR network. Source/capture qualifying edges are unchanged.
+
+
  wire verifying=state!=IDLE && state!=DONE;
  wire[31:0] crc_delta=crc_state^(verifying?rd_data:write_data);
  wire[31:0] next_source_crc;
@@ -147,22 +134,19 @@ module v3_row_integrity #(
  assign next_source_crc[31]=^{crc_delta[1],crc_delta[19],crc_delta[21],crc_delta[25],p0,p3,p11,p23};
 
  wire[31:0] next_verify_crc=next_source_crc;
- // Divide only the bounded row offset. Factoring out the constant power
- // of two avoids several synthesized 32-bit /1280 and %1280 dividers.
- // Out-of-range queries are still rejected using the FULL 32-bit offset.
+
+
  function integer stride_shift;input integer n;integer v;begin
   stride_shift=0;v=n;while((v%2)==0)begin stride_shift=stride_shift+1;v=v/2;end
  end endfunction
  localparam integer OFFSET_BITS=$clog2(ROWS*ROW_WORDS*4),LOW=stride_shift(ROW_WORDS*4);
  localparam integer ODD=(ROW_WORDS*4)>>LOW;
  wire[OFFSET_BITS-LOW-1:0] query_high=query_offset[OFFSET_BITS-1:LOW];
- // A valid source beat already matches wanted. Count physical raster rows
- // rather than dividing its address again; arbitrary source addresses retain
- // the full32-bit wanted/slot checks and can never write a signature.
+
+
  wire[9:0] source_row=(source_words==0)?(top_down?0:ROWS-1):producer_row;
- // For valid rows, high=5*row and row<512. The inverse of5 modulo512
- // is205, so only nine low bits are needed for the exact signature index.
- // Alignment/range/remainder checks still reject every invalid address.
+
+
  wire[9:0] legacy_query_row;wire query_multiple;
  generate if(!USE_DIRECT&&ODD==5)begin:bounded_inverse5
   wire[11:0] digits=query_high;
@@ -171,10 +155,8 @@ module v3_row_integrity #(
   always @*begin case(digit_sum)
    0,5,10,15,20,25,30,35,40,45:divisible=1;default:divisible=0;
   endcase end
-  // In Z/(2^9), 5^-1=(1-4)*(1+16)*(1+256)=205.
-  // Truncate each stage at nine bits: only a7-bit subtract, a5-bit
-  // add and one XOR remain. This is exact for ALL512 low-bit inputs,
-  // not an approximation of division; range/multiple tests remain full.
+
+
   (* keep="true",use_ripple=1 *) wire[8:0] q_minus={digits[8:2]-digits[6:0],digits[1:0]};
   (* keep="true",use_ripple=1 *) wire[8:0] q_plus={q_minus[8:4]+q_minus[4:0],q_minus[3:0]};
   wire[8:0] quotient={q_plus[8]^q_plus[0],q_plus[7:0]};
@@ -185,25 +167,19 @@ module v3_row_integrity #(
  wire legacy_query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_multiple;
  wire query_ok=USE_DIRECT?(!direct_slot_sum[2]&&lookup_row_index[8:0]<ROWS):legacy_query_ok;
  wire[9:0] query_row=USE_DIRECT?{1'b0,lookup_row_index[8:0]}:legacy_query_row;
- // The write-enable includes source_slot==slot_q, so selecting slot_q
- // here is exactly equal on EVERY memory-write edge, including invalid
- // source-address cases (which never assert signature_write).
+
+
  wire[10:0] source_index={slot_q,source_row[INDEX_W-1:0]};
  wire[10:0] query_index=query_ok?({query_slot,query_row[INDEX_W-1:0]}):0;
  assign rd_len=BURST;
- // The same read port serves mutually exclusive preload verification and
- // display lookup. A second independent read inferred a 2048x32 distributed
- // RAM replica in TD, costing about 10k LUTs; it was never needed concurrently.
 
- // One shared address arithmetic path for the single physical read port.
- // Invalid queries retain the old exact address0, including lookup_crc when
- // lookup_valid is low. Truncation to11 bits remains at the same boundary.
+
  wire[1:0] signature_read_slot=verifying?slot_q:query_ok?query_slot:2'd0;
  wire[9:0] signature_read_row=verifying?verify_row:query_ok?query_row:10'd0;
  wire[10:0] signature_read_index={signature_read_slot,signature_read_row[INDEX_W-1:0]};
  reg[31:0] signature_read;
  assign expected_crc=signature_read;assign lookup_crc=signature_read;
- // No bulk reset: validity suppresses stale RAM after every reset epoch.
+
  always @(posedge clk)begin
   if(signature_write)signatures[source_index]<=~next_source_crc;
   signature_read<=signatures[signature_read_index];
@@ -228,8 +204,8 @@ module v3_row_integrity #(
      source_count<=source_words+1'b1;
      if(column==ROW_WORDS-1)begin
       column<=0;crc_state<=32'hffffffff;
-      // No live source transaction follows the final word. Avoid computing an
-      // unused below-base pointer after the bottom-up last row.
+
+
       if(source_words!=FRAME_WORDS-1)begin
        producer_row<=dir?source_row+1'b1:source_row-1'b1;
        expected_addr<=dir?wanted+4:wanted-(ROW_WORDS*8)+4;

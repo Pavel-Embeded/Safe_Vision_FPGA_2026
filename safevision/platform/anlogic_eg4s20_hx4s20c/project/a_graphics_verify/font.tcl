@@ -1,4 +1,4 @@
-# Export the standalone ROM's mapped netlist to check all BRAM INIT bytes.
+
 set script_dir [file dirname [file normalize [info script]]]
 set repo_root [file normalize [file join $script_dir .. .. .. .. ..]]
 if {[info exists ::env(SAFEVISION_REPO)]} {set repo_root [file normalize $::env(SAFEVISION_REPO)]}

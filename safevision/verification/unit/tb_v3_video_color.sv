@@ -7,8 +7,8 @@ module tb_v3_video_color;
  function integer channel(input integer expanded,bright,gain);
   integer numerator;begin
    numerator=(expanded-128)*gain+(bright+128)*128;
-   // Clamp the signed numerator before division; this is independent of the
-   // DUT's arithmetic-shift width and signed-expression context.
+
+
    channel=numerator<0?0:numerator>=255*128?255:numerator/128;
   end
  endfunction
@@ -36,9 +36,8 @@ module tb_v3_video_color;
  end
  initial begin
   repeat(5)@(negedge clk);rst=1;
-  // Every legal channel value at every contrast and signed brightness value.
-  // The arithmetic is separable, so red/blue enumerate all32 values twice
-  // while green enumerates all64; cross-channel coupling is not assumed.
+
+
   for(bright=-256;bright<256;bright=bright+1)
    for(gain=0;gain<256;gain=gain+1)for(value=0;value<64;value=value+1)begin
     brightness=bright;contrast=gain;valid=value%5!=1;

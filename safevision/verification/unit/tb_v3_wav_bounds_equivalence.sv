@@ -27,8 +27,8 @@ module tb_v3_wav_bounds_equivalence;
    end
    @(negedge clk);load=1;enable=0;start=0;dv=0;eof=0;ready=0;
    size=k%4==0?a+7:(k%4==1?a+8:(k%4==2?a+9:t));din=a[31:24];
-   // Every4th context is arbitrary111-bit state. Other cases explicitly
-   // execute chunk-size or RIFF-size acceptance on the following edge.
+
+
    case(k%4)
     0:ctx={1'b0,1'b0,4'd2,4'd7,{a[23:0],8'd0},l,u,2'd2,1'b0,1'b1,1'b1};
     1:ctx={1'b0,1'b0,4'd1,4'd7,{a[23:0],8'd0},l,u,2'd0,1'b0,1'b0,1'b0};

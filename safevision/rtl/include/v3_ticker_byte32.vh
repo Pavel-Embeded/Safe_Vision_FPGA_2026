@@ -1,4 +1,3 @@
-// Full32-character bitmap, deduplicated and cropped only across zero pixels.
 function [17:0] packed_ticker_descriptor;
  input [4:0] index;
  begin case(index)

@@ -1,4 +1,4 @@
-// sig must already be synchronous to clk. Both events are registered pulses.
+
 module a_edge_detect(input wire clk, input wire rst_n, input wire sig,
                      output reg rise, output reg fall);
     reg previous;

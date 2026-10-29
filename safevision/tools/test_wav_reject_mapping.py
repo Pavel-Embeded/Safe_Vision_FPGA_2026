@@ -1,4 +1,4 @@
-"""Exercise complete-parser identity refusal in an isolated temporary fixture."""
+
 from pathlib import Path
 import argparse,hashlib,json,subprocess
 from check_wav_reject_mapping import check_parser,SOURCE,NAMES

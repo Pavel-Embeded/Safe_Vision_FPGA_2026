@@ -17,7 +17,7 @@ module tb_v3_checked_sector;
  wire[5:0] cmd;wire cv;
  sd_spi_card_model card(.sclk(sclk),.cs_n(cs),.mosi(mosi),.miso(miso),.i_dead(1'b0),
  .o_cmd(cmd),.o_arg(),.o_acmd41_arg(),.o_cmd_cnt(),.o_acmd41_cnt(),.o_cmd_valid(cv));
- // Corrupt the BEHAVIORAL CARD'S checksum, never the DUT or its state.
+
  always @(posedge cv)if(cmd==17 && corrupt)begin #1;card.crc_val=card.crc_val^16'h1;injected=injected+1;end
  task ck;input c;input[511:0] msg;begin checks=checks+1;
  if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end end endtask

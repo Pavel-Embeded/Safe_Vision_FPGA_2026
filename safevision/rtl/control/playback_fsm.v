@@ -1,4 +1,4 @@
-// Eight externally visible states. Recovery reset and work phases are distinct.
+
 module playback_fsm #(parameter integer SLOTS=4,WAIT_TIMEOUT=500000000,
  RESET_CYCLES=32,SETTLE_CYCLES=32)(
  input wire clk,rst_n,boot_ready,sd_mount_ok,scan_done,four_img_ok,preload_ok,

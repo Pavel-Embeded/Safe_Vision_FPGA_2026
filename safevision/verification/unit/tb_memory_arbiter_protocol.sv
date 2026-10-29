@@ -63,7 +63,7 @@ module tb_memory_arbiter_protocol;
             if(mem_valid && !(rd_valid||sd_valid)) $fatal(1,"a legitimate memory response was lost");
         end
     end
-    // Producers advance only after an accepted write and hold their word otherwise.
+
     always @(negedge clk) if(running) begin
         wr_data=golden(base+commands*4);
         sd_wdata=golden(base+commands*4);
@@ -82,7 +82,7 @@ module tb_memory_arbiter_protocol;
             endcase
             wait((ch==1&&rd_ack)||(ch==2&&wr_ack)||(ch==3&&sd_ack));
             @(negedge clk);rd_req=0;wr_req=0;sd_req=0;
-            if(ch==3) sd_wr=!iswrite; // command mode must have been latched at grant.
+            if(ch==3) sd_wr=!iswrite;
             watchdog=0;
             while((ch==1&&rd_busy)||(ch==2&&wr_busy)||(ch==3&&sd_busy)) begin
                 @(negedge clk);watchdog=watchdog+1;
@@ -102,7 +102,7 @@ module tb_memory_arbiter_protocol;
         burst(3,0,1,32'h9000,0);burst(3,0,7,32'ha000,0);
         burst(3,1,1,32'hb000,0);burst(3,1,16,32'hc000,0);
         burst(1,0,2,32'hd000,1);burst(3,0,16,32'he000,1);
-        // Reset cancels both outstanding commands and modeled responses.
+
         @(negedge clk);rd_addr=32'hf000;rd_len=32;rd_req=1;
         wait(rd_ack);
         @(negedge clk);rd_req=0;rst_n=0;

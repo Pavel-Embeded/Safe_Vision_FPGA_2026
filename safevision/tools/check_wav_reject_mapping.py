@@ -1,4 +1,4 @@
-"""Bind synthesis-only WAV rejection boundaries to the complete frozen parser."""
+
 from pathlib import Path
 import argparse,hashlib,json,subprocess
 

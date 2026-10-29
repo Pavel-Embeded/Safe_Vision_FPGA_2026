@@ -9,9 +9,8 @@ module tb_v3_registered_recovery_reset;
  always@(ar)if($realtime>20)begin comparisons++;if($realtime!=last_clk&&$realtime!=last_reset)begin errors++;$display("[FAIL] media reset changed away from a registered boundary");end end
  always@(posedge clk)begin #0.001;if(rst)begin comparisons++;
  if({ab,ar,as_,ac,al,aa,ast}!=={bb,br,bs,bc,bl,ba,bst})begin errors++;if(errors<12)$display("[FAIL] recovery request/fatal/retry/reset/ack cycle contract");end end end
- // Emulate bounded clock-to-Q skew of binary START(3)->WAIT(4).
- // No functional clock occurs while the state bits traverse RESET(1).
- // The preserved output FF must ignore this asynchronous decode hazard.
+
+
  always@(posedge clk)if(rst&&a.state==3&&skew_checks==0)begin
   #0.2;force a.state=3'd3;#0.2;force a.state=3'd1;
   #0.2;force a.state=3'd4;#0.2;release a.state;skew_checks++;

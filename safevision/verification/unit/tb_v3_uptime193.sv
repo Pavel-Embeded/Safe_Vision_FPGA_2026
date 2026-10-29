@@ -8,7 +8,7 @@ module tb_v3_uptime193;
    if(seconds!==want)begin errors++;if(errors<5)$display("[FAIL] tick %0d sec=%0d/%0d",n,seconds,want);end
    for(k=0;k<8;k++)begin comparisons++;if(bcd[k*4+:4]!==4'(t%10))errors++;t=t/10;end
   end
-  // Configuration saturation; not reachable through any warm/media reset.
+
   @(negedge clk);dut.seconds=99999998;dut.bcd=32'h99999998;dut.ticks=0;
   repeat(21)@(posedge clk);#1;comparisons++;if(seconds!==99999999||bcd!==32'h99999999)errors++;
   if(!errors)$display("[PASS] exact seven-clock seconds,all decimal carries through10142s,no reset input,saturation");

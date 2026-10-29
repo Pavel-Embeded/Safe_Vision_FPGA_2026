@@ -1,4 +1,4 @@
-"""Auditable user-approved resource policy; device capacities cannot be enlarged."""
+
 import json
 from v3_sources import FLOW
 CAPACITY={'lut':19600,'reg':19600,'bram':64,'bram32k':16,'dsp':29,'pll':4}

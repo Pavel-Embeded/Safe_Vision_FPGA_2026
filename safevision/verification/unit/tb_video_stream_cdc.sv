@@ -40,7 +40,7 @@ module tb_video_stream_cdc;
     initial begin
         reset_epoch();wait(received==goal);repeat(12)@(negedge dc);
         if(sent!=received||d_valid)$fatal(1,"mailbox didn't drain");
-        // Abort accepted/in-flight data by COMMON reset, then swap clock ratio.
+
         goal=2500;wait(sent>1510);reset_epoch();sp=13;dp=2;goal=1500;
         wait(received==goal);repeat(12)@(negedge dc);
         if(sent!=received||d_valid)$fatal(1,"CDC reset/new clock ratio didn't drain");

@@ -1,6 +1,6 @@
-// Application-boundary regression. STRICT_BURST commits complete groups of4,
-// confirmed by26101722. This is a contract model, not encrypted IP simulation.
-// Sparse writes, turnarounds and cache coherency were absent from the old TB.
+
+
+
 `timescale 1ns/1ps
 module tb_bram_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=4,FAST_READ=0,PREFETCH_READ=0);
  reg clk=0; always #4 clk=~clk;
@@ -88,9 +88,8 @@ module tb_bram_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=4,FAS
   read_word(2048,v);check(v===32'h11112222,"first contiguous segment");
   read_word(2200,v);check(v===32'h55556666,"jump starts a new physical write segment");
   read_word(2201,v);check(v===32'h77778888,"jump segment tail");
-  // Continuous accepted requests isolate the adapter's word-rate budget.
-  // A 640-pixel row in 720p needs 320 words every 22.22us, i.e. 14.4M words/s.
-  // The bound below uses 40MHz MEM, independent of this test's faster clock.
+
+
   for(k=0;k<4096;k=k+1)mem[12000+k]=32'h9abc0000+k;
   repeat(3)@(negedge clk);stream_compare=1;stream_received=0;
   req=1;wr=0;stream_start_cycle=cycles;
@@ -130,7 +129,7 @@ module tb_bram_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=4,FAS
   write_word(4096,32'haabbccdd,4'b0101);repeat(100)@(negedge clk);read_word(4096,v);
   check(v===32'h12bb56dd,"byte masks preserved");
   read_word(4097,v);check(v===32'hd00df00d,"masked padding leaves neighbour unchanged");
-  // Dense bursts and two complete cache fills, including a 16-word boundary.
+
   for(k=0;k<64;k=k+1)write_word(5000+k,32'h55aa0000+k,15);
   mismatch=0;
   for(k=0;k<64;k=k+1)begin read_word(5000+k,v);if(v!==32'h55aa0000+k)mismatch=mismatch+1;end
@@ -145,9 +144,8 @@ module tb_bram_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=4,FAS
   end
   for(k=0;k<64;k=k+1)begin read_word(6000+k,v);if(v!==gold[k])mismatch=mismatch+1;end
   check(mismatch==0,"200 reproducible sparse/masked writes and interleaved reads match independent scoreboard");
-  // Keep req continuously asserted across successive accepted words, as the
-  // real arbiter does. Each next address appears only after its predecessor
-  // handshake; a registered check must not reuse the previous word's result.
+
+
   @(negedge clk);req=1;wr=1;strb=15;
   for(k=0;k<64;k=k+1)begin
     addr=7000+k;data=32'h34560000+k;n=0;
@@ -158,8 +156,8 @@ module tb_bram_adapter_streaming #(parameter integer STRICT_BURST=1,RD_LAT=4,FAS
   req=0;mismatch=0;
   for(k=0;k<64;k=k+1)begin read_word(7000+k,v);if(v!==32'h34560000+k)mismatch=mismatch+1;end
   check(mismatch==0,"continuous req holds 64 successive accepted word transactions correctly");
-  // Cancel before the acceptance edge, then present a different read. The
-  // abandoned precheck must not create a write or leak into the next request.
+
+
   @(negedge clk);req=1;wr=1;addr=7200;data=32'hfeedbeef;strb=15;
   @(posedge clk);@(negedge clk);req=0;repeat(3)@(negedge clk);
   read_word(7200,v);check(v===32'hd00df00d,"cancelled unaccepted write leaves memory unchanged and clears its precheck");

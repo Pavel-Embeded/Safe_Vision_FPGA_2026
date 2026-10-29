@@ -131,8 +131,8 @@ module tb_v3_hd_handbook_video_model #(parameter HD=0)();
  function[7:0] dec_ascii(input integer n,input integer place);
   begin dec_ascii=place==2?48+n/100:place==1?48+(n/10)%10:48+n%10;end
  endfunction
- // Independent glyph oracle: official font bytes plus human-readable content,
- // geometric regions, and per-channel rounded /255 blending. No DUT internals.
+
+
  function[15:0] normal_golden(input[15:0] background,input integer xx,yy,slot,gen,fps);
   reg[511:0] text;reg[7:0] code,bits;integer oy,len,category,row,index,period,brightness,energy;
   bit enabled,dot,panel,selected,border,bar_edge,bar_fill;reg[15:0] result,front;
@@ -281,8 +281,8 @@ module tb_v3_hd_handbook_video_model #(parameter HD=0)();
   end
  endtask
  integer wait_count;
- // Progress is informational; acceptance still requires the existing complete
- // frame comparisons, zero errors and the normal $finish marker.
+
+
  always begin #50000000;
   $display("INFO full-video HD=%0d t=%t generation=%0d target=%0d busy=%b",HD,$time,gen,target_gen,busy);
  end
@@ -292,8 +292,8 @@ module tb_v3_hd_handbook_video_model #(parameter HD=0)();
   #100;rst=1;update_cfg();wait(gen==1);wait_frame();wait_frame();
   for(geometry=0;geometry<4;geometry++)begin
    cfg[97:96]=geometry;cfg[69]=geometry==1;
-   // Clamp extremes and ordinary offsets all pass through the same new CFG
-   // layout, including AUTO at bit95 beside the signed brightness byte.
+
+
    cfg[94:87]=geometry==0?60:geometry==1?-100:geometry==2?100:0;
    cfg[86:79]=geometry==0?128:geometry==1?64:geometry==2?255:152;
    for(filter=0;filter<2;filter++)begin

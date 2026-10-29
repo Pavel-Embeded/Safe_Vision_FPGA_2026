@@ -30,7 +30,7 @@ module tb_memory_arbiter_backpressure;
         @(negedge clk); rd_req=1;
         wait(rd_ack);
         @(negedge clk); rd_req=0;
-        // A real target can deassert ready before accepting an already posted req.
+
         repeat(3) @(negedge clk);
         mem_ready=1;
         repeat(5) @(negedge clk);

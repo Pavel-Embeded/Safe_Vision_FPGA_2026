@@ -1,7 +1,6 @@
-// Fixed four pixel clocks from raw scan to every layer. Text and glyph ROMs
-// each have two synchronous read ports shared by normal/SAFE presentation.
-// Compact font is lossless for the checked-in font: rows 0/15 and codes >=128
-// are blank; rows 1/2,...,13/14 are identical. Both ROMs fit one RAM9K tile.
+
+
+
 module v3_status_layers #(
  parameter integer HD=0,HANDBOOK_PROFILE=0,VOLUME_COLUMNS=0,PIXEL_HZ=HD?74250000:25175000,PIPE_LATENCY=21,
  parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
@@ -35,10 +34,8 @@ module v3_status_layers #(
   end
  end
  function[7:0] hexchar;input[3:0] n;begin hexchar=n<10?8'd48+n:8'd55+n;end endfunction
- // One iterative double-dabble converter, six values in sixty clocks. No
- // combinational division/modulo. The converter is outside the pixel path.
- // cfg/slot/generation commit at vblank. The first visible glyph is thousands
- // of clocks later. All text ROM/glyph pipeline tags retain their four clocks.
+
+
  reg[2:0] decimal_select;reg[9:0] decimal_digits[0:6];reg[8:0] decimal_value;
  wire signed[8:0] brightness=HANDBOOK_PROFILE?{cfg_data[94],cfg_data[94:87]}:cfg_data[95:87];
  wire[8:0] percent_shifted=brightness+9'd100;
@@ -68,7 +65,7 @@ module v3_status_layers #(
   begin case(place)2:decimal_char=8'd48+{2'd0,bcd[9:8]};1:decimal_char=8'd48+bcd[7:4];default:decimal_char=8'd48+bcd[3:0];endcase end
  endfunction
  wire[6:0] energy=cfg_data[54:48]>100?7'd100:cfg_data[54:48];
- // Origin x=8 is byte aligned: column bits pass through, index is x/8-1.
+
  wire[7:0] index=raw_x[10:3]-8'd1;
  reg[11:0] origin_y;reg[5:0] length;reg[1:0] category;reg[3:0] line_id,menu_row;
  reg enabled,override_valid;reg[7:0] override_code;
@@ -157,7 +154,7 @@ module v3_status_layers #(
  end
  wire[3:0] normal_glyph_row=raw_y[3:0]-origin_y[3:0];
  wire normal_region=enabled&&raw_de&&raw_x>=8&&index<{2'b0,length};
- // SAFE text shares the same ROM storage, with separate read addresses/tags.
+
  wire[11:0] scaled_x=raw_x>>1,scaled_y=raw_y>>1;
  reg[11:0] safe_ox,safe_oy;reg[5:0] safe_length;reg[5:0] safe_text_offset;
  reg safe_enable;
@@ -185,7 +182,7 @@ module v3_status_layers #(
  wire[7:0] normal_effective=override_v1?override1:normal_code1;
  wire[3:0] nr=normal_row1-1'b1,sr=safe_row1-1'b1;
  wire[5:0] safe_text_column=safe_text_offset+safe_index;
- // Synchronous, two-read-port ROMs. No reset on ROM outputs for RAM inference.
+
  always @(posedge pixel_clk)begin
   normal_code1<=text_rom[{line_id,index[5:0]}];safe_code1<=text_rom[{4'hf,safe_text_column}];
   normal_bits3<=glyph_rom[normal_addr2];safe_bits3<=glyph_rom[safe_addr2];
@@ -260,11 +257,7 @@ module v3_status_layers #(
  assign safe_rgb565=de_pipe[3]?(safe_dot?16'h07e0:safe_geometry[3]):16'd0;
 endmodule
 
-// Output-gain VU estimate, separate from the handbook pre-volume energy bar.
-// One immutable frame snapshot; exact floor(min(E,100)*min(V,100)/100).
-// Seven serial shift/add clocks, at most100 subtract clocks. No DSP/BRAM.
-// Publishes during scan line0, long before the column first appears. It is
-// an amplitude/gain meter, not frequency analysis or an FFT spectrum.
+
 module v3_volume_column #(parameter integer WIDTH=640,HEIGHT=480)(
  input wire clk,rst_n,frame_start,input wire[6:0] energy,volume,
  input wire[11:0] x,y,input wire de,

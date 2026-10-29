@@ -1,8 +1,6 @@
-// Exact fixed-alpha RGB565 palette blend. The two production layers use
-// alpha 0/224 only; configurable OSD keeps the generic alpha_blend module.
-// foreground 0=white, 1=green, 2/3=gray; EMERGENCY selects constant red.
-// Combinational truth tables cover every 5/6-bit background channel, with
-// the same independent round((224*F+31*B)/255) result. Three clocks latency.
+
+
+
 module v3_constant224_blend #(parameter integer EMERGENCY=0)(
  input wire clk,rst_n,valid_in,enabled,input wire[1:0] foreground,
  input wire[15:0] back,output reg[15:0] pixel,output reg valid_out
@@ -38,10 +36,6 @@ module v3_constant224_blend #(parameter integer EMERGENCY=0)(
 endmodule
 
 
-// Full production HUD palette: white,green,gray,cyan,yellow,red,and black.
-// Component foregrounds are R/B={0,15,31},G={0,31,45,63}. Exact alpha224
-// rounded RGB565; no DSP/BRAM. Decode and table lookup use separate existing
-// pipeline stages, preserving three-edge public latency and one pixel/clock.
 module v3_hud_palette224(input wire clk,rst_n,valid_in,enabled,
  input wire[15:0]foreground,back,output reg[15:0]pixel,output reg valid_out);
  function[4:0] map5;input[4:0] background;input[1:0] kind;reg[127:0] plane;begin

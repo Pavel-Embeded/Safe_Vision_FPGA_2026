@@ -1,3 +1,3 @@
-# BASE uses the reviewed SDRAM output-enable location without the optional PHY bound.
-# Board pin assignments are exclusively defined in v3_board.adc.
+
+
 set_inst_assignment {memory_ip/u2_ram/u2_wrrd/sdr_t_reg} {location = x19y31z1;}

@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
 
-// CASE_ID 0..6: legal boundary geometries, checked against literal windows.
-// CASE_ID 7..31: invalid parameters; the RTL must stop before the watchdog.
+
 module tb_video_timing_params #(parameter integer CASE_ID = 0);
     reg clk = 1'b0;
     reg rst_n = 1'b0;
@@ -49,7 +48,7 @@ module tb_video_timing_params #(parameter integer CASE_ID = 0);
             #100;
             $fatal(1, "FAIL invalid video geometry/polarity accepted: CASE_ID=%0d", CASE_ID);
         end else begin
-            // These references are literal numbers, independent of DUT internals.
+
             case (CASE_ID)
                 0: begin htotal=2; vtotal=2; hactive=1; vactive=1; hsync_at=1; vsync_at=1; end
                 1: begin htotal=4096; vtotal=3; hactive=4095; vactive=2; hsync_at=4095; vsync_at=2; end

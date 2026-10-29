@@ -1,5 +1,5 @@
-// RGB565 adjustment: contrast is unsigned Q1.7; brightness signed RGB888 units.
-// Clamp BEFORE selecting channel bits. Latency 2 clocks.
+
+
 module color_adjust(input wire clk,rst_n,valid_in,input wire [15:0] pixel_in,
  input wire signed [8:0] brightness,input wire [7:0] contrast,
  output reg [15:0] pixel_out,output reg valid_out);

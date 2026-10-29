@@ -1,6 +1,6 @@
-// HANDBOOK_PROFILE: manual pp93-96, pre-volume LEFT PCM, x1.5 display gain.
-// N=1024 stereo sample pairs; abs(-32768)=32768 (unsigned 16-bit).
-// Block mean absolute energy, 0..100%, fast attack and 1/8 release.
+
+
+
 module audio_energy #(parameter integer LOG_N=10,HANDBOOK_PROFILE=0)(input wire clk,rst_n,sample_valid,
  input wire signed [15:0] pcm_l,pcm_r,output reg [6:0] energy,
  output reg update);
@@ -14,8 +14,8 @@ module audio_energy #(parameter integer LOG_N=10,HANDBOOK_PROFILE=0)(input wire 
  wire[8:0] boosted={1'b0,raw}+{2'b0,raw[7:1]};
  wire [6:0] level=HANDBOOK_PROFILE?((boosted>100)?7'd100:boosted[6:0]):((raw>100)?7'd100:raw[6:0]);
  reg [6:0] delta;
- // Handbook: floor(diff/8), including100->88. A minimum one step
- // below8 avoids a permanently nonzero residual on true silence.
+
+
  always @*begin
   delta=HANDBOOK_PROFILE?((energy-level)>>3):((energy-level+7'd7)>>3);
   if(HANDBOOK_PROFILE&&energy>level&&delta==0)delta=1;

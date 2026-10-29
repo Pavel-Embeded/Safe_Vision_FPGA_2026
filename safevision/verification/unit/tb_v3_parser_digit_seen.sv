@@ -41,7 +41,7 @@ module tb_v3_parser_digit_seen;
   repeat(4)@(negedge clk);rst_n=1;
   frame("A:BRIGHT=0000000000000000",1,0);
   frame("A:BRIGHT=-0000000000000000",1,0);
-  // Prefix is nine characters: 23 digits fill the exact 32-character body.
+
   frame("A:BRIGHT=00000000000000000000001",1,1);
   frame("A:BRIGHT=-0000000000000000000001",1,-1);
   frame("A:BRIGHT=0000000000000000-1",0,0);

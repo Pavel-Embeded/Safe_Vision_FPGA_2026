@@ -1,10 +1,6 @@
 `include "pixel_format_defs.vh"
-// Stage1-15 display core; pixel output latency = 5 cycles from raw scan.
-// B owns the external rd_* burst target/arbiter and the slot mailbox source.
-// C configuration crosses as one atomic mailbox. Emergency RGB/valid already
-// belong to pixel_clk and the RAW scan; the stage16 generator is external.
-// rst_n asserts a COMMON epoch; each business domain releases synchronously.
-// BASE displays stored640x480; HD centers that image in1280x720 (no scaling).
+
+
 module a_video_display_core #(
     parameter integer HD=0,FIFO_AW=10,BURST_WORDS=64,
     parameter FONT_FILE="../../../assets/fonts/font8x16.mem",

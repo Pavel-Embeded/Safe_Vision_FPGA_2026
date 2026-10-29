@@ -76,7 +76,7 @@ module tb_v3_hd_guard_255_320;
   repeat(2)@(negedge clk);
  end
  lookup=`SV_SLOT_BASE(slot)+326400;repeat(3)@(negedge clk);ck(!lv,"out-of-range signature lookup rejected");
- // Failure at word73 crosses the 64-word transaction boundary in each row.
+
  reset;build(2,0);corrupt=1;verify;
  ck(done && !pass && fault && !approved[2],"negative CRC control catches corruption beyond first burst");
  corrupt=0;reset;slot=1;begin_frame=1;@(negedge clk);begin_frame=0;

@@ -1,5 +1,5 @@
-// Transparent four-stage font layer; coordinates refer to RAW input timing.
-// Preserve the existing osd_overlay ports/behavior for earlier A stages.
+
+
 module osd_text_layer #(parameter FONT_FILE="../../../assets/fonts/font8x16.mem")(
     input wire clk,rst_n,de,input wire [11:0] x,y,origin_x,origin_y,
     input wire enable,input wire [7:0] char_count,char_code,input wire [23:0] foreground,

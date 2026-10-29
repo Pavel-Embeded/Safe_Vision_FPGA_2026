@@ -16,9 +16,8 @@ module status_case231 #(parameter HD=0)(output reg done=0,output integer errors=
  end end
  task stimulus;begin
   n++;r=rnd(r);pv=(n%31==0);pcm={r[15:0],8'd0};
-  // Deliberately change inputs every seven pixels, rather than relying on
-  // the production vblank stability contract. This checks the retimed
-  // decoder against the original public edges, including decimal commits.
+
+
   if(n%7==0)begin cfg={r,rnd(r),rnd(r^32'h1234),r[2:0]};up=rnd(r);uf=rnd(r^32'habcd);cache=r[7:4];slot=r[1:0];gen=r[15:8];busy=r[20];safe=r[21];end
  end endtask
  initial begin
@@ -26,8 +25,8 @@ module status_case231 #(parameter HD=0)(output reg done=0,output integer errors=
   for(frame=0;frame<2;frame++)for(py=0;py<H;py++)for(px=0;px<W;px++)begin
    @(negedge clk);x=px;y=py;de=1;fs=px==0&&py==0;stimulus();
   end
-  // Exercise reset with previous font/scope work pending, then every pixel
-  // in the complete top/menu/fault/time areas once more.
+
+
   @(negedge clk);rst=0;repeat(8)@(negedge clk);rst=1;
   for(py=0;py<280;py++)for(px=0;px<400;px++)begin @(negedge clk);x=px;y=py;de=1;fs=0;stimulus();end
   @(negedge clk);de=0;pv=0;repeat(8)@(negedge clk);

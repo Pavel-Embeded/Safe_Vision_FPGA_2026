@@ -1,7 +1,6 @@
-# Run in a FRESH TD process after base.tcl or hd.tcl.
-# Re-import the routed DB and rebuild the original SDC on the routed graph.
-# TD6.2.168116 caches read_sdc in a live synthesis process: clearing/re-reading
-# there can silently drop user clocks. A fresh process avoids that cache.
+
+
+
 if {![info exists sv_verify_mode] ||
     ($sv_verify_mode ne "base" && $sv_verify_mode ne "hd")} {
     puts stderr "Set sv_verify_mode to base or hd before sourcing postroute.tcl"

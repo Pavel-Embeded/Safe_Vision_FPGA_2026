@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_priority_difference",
-  "suite": "c",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "8d2fa2c427db505d6f9e8f9bed4c1b41294c5c6209e298d03ed0612a06ee1691",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_v3_priority_difference"
-}

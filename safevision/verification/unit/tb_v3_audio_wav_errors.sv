@@ -37,7 +37,7 @@ module tb_v3_audio_wav_errors;
   #30;rst_n=1;wait(indexed);repeat(20)@(posedge clk);
   if(fallback!=15||received[0]!=0||received[3]!=0)$fatal(1,"directory CRC must reject scan before playback");
   rst_n=0;scenario=1;
-  // Missing SV9999.WAV; malformed 44.1kHz SV9000.WAV; CRC-failed first sector SV1000.WAV.
+
   disk[16*512+27*32]=8'he5;disk[32*512+24]=8'h44;disk[32*512+25]=8'hac;
   for(integer i=0;i<4;i=i+1)received[i]=0;
   #30;rst_n=1;wait(indexed);wait(fallback==14);wait(received[0]>=300);

@@ -1,19 +1,6 @@
-// ============================================================================
-// tb_c_fault_manager.sv — 故障首因 / 等级 / 媒体复位隔离单元验证（表 8-4）
-// ----------------------------------------------------------------------------
-// 为加快仿真：CLK_HZ=1000（MS_DIV=1）。
-//   过关标准：
-//   F1  复位 -> fault_valid=0、fatal=0、fault_code=0
-//   F2  一条故障 -> 主码/等级锁存，fault_valid=1
-//   F3  ★首因粘滞：后续不同故障不覆盖首因（码与等级保持）
-//   F4  media_fatal -> fatal 锁存，等级升级为 FATAL（码不覆盖）
-//   F5  ★FATAL 只由全局复位清除：recover_ack 不能清
-//   F6  INFO 等级（可选资源缺失）-> level=0，仍置 fault_valid
-//   F7  recover_ack（无 FATAL）-> 清首因，且【同拍】给 media_rst_req
-//   F8  看门狗超时 -> 用 wdt_reason 锁存，等级 SAFE
-//   F9  media_rst_req 为单拍脉冲（只复位媒体链，不牵连安全画面）
-//   F10 从干净态 media_fatal -> 等级 FATAL、fatal=1
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 
 module tb_c_fault_manager;
@@ -107,34 +94,34 @@ module tb_c_fault_manager;
         check(fault_valid === 1'b0 && fatal === 1'b0 && fault_code === 8'h00,
               "F1 复位 -> fault_valid=0 fatal=0 code=0");
 
-        // F2 首条故障
+
         push_err(8'h03, LV_WARNING);
         check(fault_valid === 1'b1 && fault_code === 8'h03 && fault_level === LV_WARNING,
               "F2 首条故障 -> 主码/等级锁存");
         check(fault_ts !== 32'd0, "F2b 锁存了故障时刻");
 
-        // F3 首因粘滞
+
         push_err(8'h07, LV_DEGRADED);
         check(fault_code === 8'h03 && fault_level === LV_DEGRADED,
               "F3 首因粘滞：后续故障不覆盖首因码，严重等级升级");
 
-        // F4 media_fatal -> fatal 锁存 + 等级升级
+
         pulse_mfatal();
         check(fatal === 1'b1 && fault_level === LV_FATAL && fault_code === 8'h03,
               "F4 media_fatal -> fatal=1，等级升级 FATAL（码不覆盖）");
 
-        // F5 FATAL 不可由 recover_ack 清除
+
         pulse_ra();
         check(fault_valid === 1'b1 && fatal === 1'b1,
               "F5 FATAL 只由全局复位清除：recover_ack 不清");
 
-        // F6 INFO 等级
+
         do_reset();
         push_err(8'h07, LV_INFO);
         check(fault_valid === 1'b1 && fault_level === LV_INFO,
               "F6 INFO 等级（可选资源缺失）-> level=0 仍置 fault_valid");
 
-        // F7 recover_ack 清除 + 同拍 media_rst_req
+
         @(negedge clk); recover_ack = 1; @(posedge clk); #1;
         check(fault_valid === 1'b0 && fault_code === 8'h00 && media_rst_req === 1'b1,
               "F7 recover_ack -> 清首因 + 同拍 media_rst_req");
@@ -142,21 +129,20 @@ module tb_c_fault_manager;
         @(posedge clk); #1;
         check(media_rst_req === 1'b0, "F9 media_rst_req 单拍脉冲（只复位媒体链）");
 
-        // F8 看门狗超时路径
+
         do_reset();
         pulse_wdt(8'h02);
         check(fault_valid === 1'b1 && fault_code === 8'h02 && fault_level === LV_SAFE,
               "F8 看门狗超时 -> 用 wdt_reason 锁存，等级 SAFE");
 
-        // F10 干净态 media_fatal
+
         do_reset();
         pulse_mfatal();
         check(fault_valid === 1'b1 && fault_level === LV_FATAL && fatal === 1'b1
               && fault_code === 8'h00,
               "F10 干净态 media_fatal -> 等级 FATAL 且 fatal=1");
 
-        // 1000 independent injections, with different event/clear offsets.
-        // A harmless first cause must never mask later SAFE/FATAL severity.
+
         for(trial=0;trial<1000;trial=trial+1)begin
             do_reset();ncyc(trial%7+1);push_err(8'h03,LV_WARNING);first_ts=fault_ts;
             ncyc(trial%5+1);push_err(8'h09,LV_SAFE);

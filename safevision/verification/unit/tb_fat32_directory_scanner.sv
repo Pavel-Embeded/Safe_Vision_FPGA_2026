@@ -1,33 +1,13 @@
-// ============================================================================
-// tb_fat32_directory_scanner.v — 阶段 6 第二块：根目录遍历 fat32_directory_scanner
-// ----------------------------------------------------------------------------
-// 测试卷（刻意做小，卡模型只支持 LBA 0..63）：
-//   BytsPerSec=512, SecPerClus=4, RsvdSecCnt=1, NumFATs=1, FATSz32=1,
-//   RootClus=2
-//     fat_start_lba  = 1
-//     data_start_lba = 1 + 1*1 = 2
-//     root_dir_lba   = 2 + (2-2)*4 = 2      <- 根目录就在 2 号扇区
-//     簇 N 占用的扇区 = 2 + (N-2)*4          <- 簇2 = LBA 2..5，簇3 = LBA 6..9
-//   大卷：TotSec32=65536 -> total_clus = (65536-2)/4 = 16383
-//   小卷：TotSec32=18    -> total_clus = (18-2)/4    = 4      （判环/越界用）
-//
-// 验证内容：
-//   T21 单扇区正常扫描 + 四类跳过规则（LFN / 卷标 / 删除项 / 子目录）
-//   T22 空目录（首槽就是 0x00）
-//   T23 簇内无 0x00 -> 去 FAT 查到 EOC 正常收工（跨扇区背靠背，64 条）
-//   T24 根目录跨簇（簇2 满 + 簇3 有货），验证簇链跟随与槽位号连续
-//   T25 簇链成环 -> DET_FS_LOOP
-//   T26 簇号越界 -> DET_DIR_OOB
-//   T27 下游反压（ent_ready 按住不放）不丢项、不乱序
-//   T28 恢复合法卷后重扫成功（错误可恢复）
-// ============================================================================
+
+
+
 `timescale 1ns / 1ps
 `include "safevision_defs.vh"
 
 module tb_fat32_directory_scanner;
 
-    localparam [31:0] TOTSEC_BIG  = 32'd65536;   // -> total_clus = 16383
-    localparam [31:0] TOTSEC_TINY = 32'd18;      // -> total_clus = 4
+    localparam [31:0] TOTSEC_BIG  = 32'd65536;
+    localparam [31:0] TOTSEC_TINY = 32'd18;
 
     reg clk = 1'b0;
     reg rst_n = 1'b0;
@@ -49,11 +29,9 @@ module tb_fat32_directory_scanner;
         end
     endtask
 
-    // ------------------------------------------------------------------------
-    // SPI 四线 + 总线复用（与 tb_fat32_boot_parser 同构）
-    // ------------------------------------------------------------------------
+
     wire sclk, mosi, miso;
-    reg  spi_sel;                     // 0 = sd_initializer, 1 = sd_sector_reader
+    reg  spi_sel;
 
     wire        init_cs_n, init_tx_valid;
     wire [7:0]  init_tx_data;
@@ -79,9 +57,7 @@ module tb_fat32_directory_scanner;
         .sclk(sclk), .mosi(mosi), .miso(miso)
     );
 
-    // ------------------------------------------------------------------------
-    // sd_initializer
-    // ------------------------------------------------------------------------
+
     reg  init_start;
     wire init_done, init_error, sdhc;
     wire [7:0] init_ec, init_ed, init_rc;
@@ -95,13 +71,8 @@ module tb_fat32_directory_scanner;
         .spi_tx_ready(spi_tx_ready), .spi_rx_data(spi_rx_data), .spi_rx_valid(spi_rx_valid)
     );
 
-    // ------------------------------------------------------------------------
-    // sd_sector_reader ← 由 fat32_boot_parser / fat32_directory_scanner 分时占用
-    //   注：两者共用一个读口会互相打架，本 TB 里让 fat32_directory_scanner 独占、
-    //       fat32_boot_parser 只在 do_mount 期间用——两者不会同时发请求。
-    //       真实顶层会加一个 rd 仲裁器，那是后续阶段的事。
-    // ------------------------------------------------------------------------
-    reg         rd_sel;               // 0 = fat32_boot_parser 发起, 1 = 目录遍历侧
+
+    reg         rd_sel;
 
     wire        m_rd_en,  d_rd_en,  w_rd_en;
     wire [31:0] m_rd_addr, d_rd_addr, w_rd_addr;
@@ -113,22 +84,22 @@ module tb_fat32_directory_scanner;
     wire [7:0]  rd_ec, rd_ed;
     wire        mnt_data_ready, dir_data_ready, wk_data_ready;
 
-    // ---- fat32_cluster_walker：跳簇逻辑与 file_streamer 共用同一个模块 ----
+
     wire [31:0] wk_cur_clus, wk_next_clus;
     wire        wk_start, wk_rst_walk, wk_busy, wk_done, wk_eoc, wk_error;
     wire [7:0]  wk_ec, wk_ed;
 
-    // walker busy 时把总线让给它；遍历目录的 scanner 这时不发读请求
+
     wire        bus_wk = wk_busy && rd_sel;
 
     wire        fs_rd_en   = rd_sel ? (bus_wk ? w_rd_en   : d_rd_en)   : m_rd_en;
     wire [31:0] fs_rd_addr = rd_sel ? (bus_wk ? w_rd_addr : d_rd_addr) : m_rd_addr;
     wire [15:0] fs_rd_len  = rd_sel ? (bus_wk ? w_rd_len  : d_rd_len)  : m_rd_len;
 
-    // 数据选择：谁在收就听谁的 data_ready
+
     wire rd_data_ready = rd_sel ? (bus_wk ? wk_data_ready : dir_data_ready) : mnt_data_ready;
 
-    // fat32_directory_scanner 的候选目录项输出
+
     wire [87:0] ent_name;
     wire [7:0]  ent_attr;
     wire [31:0] ent_first_clus, ent_size;
@@ -150,9 +121,7 @@ module tb_fat32_directory_scanner;
         .spi_tx_ready(spi_tx_ready), .spi_rx_data(spi_rx_data), .spi_rx_valid(spi_rx_valid)
     );
 
-    // ------------------------------------------------------------------------
-    // DUT: fat32_boot_parser
-    // ------------------------------------------------------------------------
+
     reg  mnt_start;
     wire mnt_done, mnt_err;
     wire [7:0] mnt_ec, mnt_ed;
@@ -175,9 +144,7 @@ module tb_fat32_directory_scanner;
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
 
-    // ------------------------------------------------------------------------
-    // DUT: fat32_directory_scanner
-    // ------------------------------------------------------------------------
+
     reg  scan_start;
     reg  ent_ready;
 
@@ -215,9 +182,7 @@ module tb_fat32_directory_scanner;
         .sd_err_code(rd_ec), .sd_err_detail(rd_ed)
     );
 
-    // ------------------------------------------------------------------------
-    // 目录项收集（模拟 file_index 侧：下游一直 ready）
-    // ------------------------------------------------------------------------
+
     reg [87:0] got_name [0:127];
     reg [15:0] got_idx  [0:127];
     reg [31:0] got_clus [0:127];
@@ -238,9 +203,7 @@ module tb_fat32_directory_scanner;
         end
     end
 
-    // ------------------------------------------------------------------------
-    // 卡模型
-    // ------------------------------------------------------------------------
+
     wire [5:0]  card_cmd;
     wire [31:0] card_arg;
 
@@ -251,16 +214,13 @@ module tb_fat32_directory_scanner;
         .o_cmd_cnt(), .o_acmd41_cnt(), .o_cmd_valid()
     );
 
-    wire [31:0] last_lba = card_arg;       // 最近一条命令的块号
+    wire [31:0] last_lba = card_arg;
 
-    // ------------------------------------------------------------------------
-    // 建卷 / 流程封装
-    // ------------------------------------------------------------------------
-    // 一份"微型 FAT32 卷"：DBR(0) + FAT 表(1) + 数据区从 2 开始
+
     task mk_vol;
         input [31:0] totsec;
-        input [31:0] fat2;          // FAT[2] 的值
-        input [31:0] fat3;          // FAT[3] 的值
+        input [31:0] fat2;
+        input [31:0] fat3;
         begin
             u_card.mk_fat32_dbr(16'd512, 8'd4, 16'd1, 8'd1,
                                 32'd1, 32'd2, totsec, 1'b1);
@@ -291,7 +251,7 @@ module tb_fat32_directory_scanner;
             got_n  = 0;
             @(posedge clk); scan_start = 1'b1;
             @(posedge clk); scan_start = 1'b0;
-            repeat (10) @(posedge clk);      // 等 scan_done 被清零
+            repeat (10) @(posedge clk);
             wait_cnt = 0;
             while (!(scan_done === 1'b1) && wait_cnt < 4_000_000) begin
                 @(posedge clk);
@@ -301,9 +261,7 @@ module tb_fat32_directory_scanner;
         end
     endtask
 
-    // ------------------------------------------------------------------------
-    // 激励
-    // ------------------------------------------------------------------------
+
     initial begin
         errors     = 0;
         spi_sel    = 1'b0;
@@ -319,9 +277,7 @@ module tb_fat32_directory_scanner;
         rst_n = 1'b1;
         repeat (10) @(posedge clk);
 
-        // ====================================================================
-        // 前置：SD 初始化（卡模型用默认"理想卡"）
-        // ====================================================================
+
         $display("\n==== 前置：SD 初始化 ====");
         @(posedge clk);
         init_start = 1'b1;
@@ -338,12 +294,10 @@ module tb_fat32_directory_scanner;
         spi_sel = 1'b1;
         repeat (5) @(posedge clk);
 
-        // ====================================================================
-        // T21 单扇区扫描 + 四类跳过规则
-        // ====================================================================
+
         $display("\n==== T21: 正常扫描 + 跳过规则 ====");
-        mk_vol(TOTSEC_BIG, 32'h0FFF_FFFF, 32'h0FFF_FFFF);   // 簇2 -> EOC
-        // 根目录簇2 = LBA 2..5；只在 2 号扇区放货，其余清零（首字节 0x00 收工）
+        mk_vol(TOTSEC_BIG, 32'h0FFF_FFFF, 32'h0FFF_FFFF);
+
         u_card.vol_zero(32'd2);
         u_card.vol_zero(32'd3);
         u_card.vol_zero(32'd4);
@@ -352,7 +306,7 @@ module tb_fat32_directory_scanner;
         u_card.mk_dir_entry(32'd2, 16'd32,  "SV0001  BMP", 8'h20, 32'd100, 32'd307266);
         u_card.mk_dir_entry(32'd2, 16'd64,  "MYLABEL    ", 8'h08, 32'd0,   32'd0);
         u_card.mk_dir_entry(32'd2, 16'd96,  "SV0009  BMP", 8'h20, 32'd900, 32'd307266);
-        u_card.vol_set(32'd2, 16'd96, 8'hE5);                       // 该槽改成"已删除"
+        u_card.vol_set(32'd2, 16'd96, 8'hE5);
         u_card.mk_dir_entry(32'd2, 16'd128, "SUBDIR     ", 8'h10, 32'd50,  32'd0);
         u_card.mk_dir_entry(32'd2, 16'd160, "SV0002  BMP", 8'h20, 32'd200, 32'd307266);
 
@@ -376,9 +330,7 @@ module tb_fat32_directory_scanner;
         check(got_idx [1] === 16'd5,       "T21.15 第2条槽位 = 5（中间跳过3条）");
         check(last_lba === 32'd2,          "T21.16 见到 0x00 后没有再读后面的扇区");
 
-        // ====================================================================
-        // T22 空目录
-        // ====================================================================
+
         $display("\n==== T22: 空目录 ====");
         mk_vol(TOTSEC_BIG, 32'h0FFF_FFFF, 32'h0FFF_FFFF);
         u_card.vol_zero(32'd2);
@@ -392,9 +344,7 @@ module tb_fat32_directory_scanner;
         check(dir_bad === 1'b0,       "T22.3 不算异常");
         check(dir_ec  === `ERR_NONE,  "T22.4 无错误码");
 
-        // ====================================================================
-        // T23 簇内没有 0x00 -> 查 FAT 得 EOC（跨扇区背靠背 + 高 16 位首簇）
-        // ====================================================================
+
         $display("\n==== T23: 簇满 + FAT=EOC ====");
         mk_vol(TOTSEC_BIG, 32'h0FFF_FFFF, 32'h0FFF_FFFF);
         u_card.mk_dir_fill(32'd2, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
@@ -411,16 +361,14 @@ module tb_fat32_directory_scanner;
         check(got_clus[0] === 32'h0001_0002,   "T23.6 首簇高16位(0x0001)拼装正确");
         check(got_size[0] === 32'd512,         "T23.7 文件大小拼装正确");
 
-        // ====================================================================
-        // T24 根目录跨簇：簇2(64条) -> FAT 指到簇3 -> 簇3 第2槽 0x00
-        // ====================================================================
+
         $display("\n==== T24: 根目录跨簇 ====");
-        mk_vol(TOTSEC_BIG, 32'd3, 32'h0FFF_FFFF);   // FAT[2]=3, FAT[3]=EOC
+        mk_vol(TOTSEC_BIG, 32'd3, 32'h0FFF_FFFF);
         u_card.mk_dir_fill(32'd2, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
         u_card.mk_dir_fill(32'd3, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
         u_card.mk_dir_fill(32'd4, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
         u_card.mk_dir_fill(32'd5, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
-        u_card.vol_zero(32'd6);                      // 簇3 起始扇区
+        u_card.vol_zero(32'd6);
         u_card.mk_dir_entry(32'd6, 16'd0, "SV0007  BMP", 8'h20, 32'd700, 32'd307266);
         do_mount;
         do_scan;
@@ -432,11 +380,9 @@ module tb_fat32_directory_scanner;
         check(got_idx [64] === 16'd64,          "T24.6 槽位号跨簇继续累加");
         check(last_lba === 32'd6,               "T24.7 卡侧确实读到簇3首个扇区(LBA 6)");
 
-        // ====================================================================
-        // T25 簇链成环
-        // ====================================================================
+
         $display("\n==== T25: 簇链成环 ====");
-        mk_vol(TOTSEC_TINY, 32'd2, 32'h0FFF_FFFF);   // total_clus=4；FAT[2]=2 自环
+        mk_vol(TOTSEC_TINY, 32'd2, 32'h0FFF_FFFF);
         u_card.mk_dir_fill(32'd2, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
         u_card.mk_dir_fill(32'd3, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
         u_card.mk_dir_fill(32'd4, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
@@ -449,11 +395,9 @@ module tb_fat32_directory_scanner;
         check(dir_ec    === `ERR_MEDIA_INVALID, "T25.4 主码 = 0x03(媒体文件非法)");
         check(dir_ed    === `DET_FS_LOOP,     "T25.5 细分码 = 0x34(簇链成环)");
 
-        // ====================================================================
-        // T26 簇号越界
-        // ====================================================================
+
         $display("\n==== T26: 簇号越界 ====");
-        mk_vol(TOTSEC_TINY, 32'd6, 32'h0FFF_FFFF);   // total_clus=4 -> 合法簇 2..5
+        mk_vol(TOTSEC_TINY, 32'd6, 32'h0FFF_FFFF);
         u_card.mk_dir_fill(32'd2, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
         u_card.mk_dir_fill(32'd3, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
         u_card.mk_dir_fill(32'd4, "DUMMY0  BMP", 8'h20, 32'h0001_0002, 32'd512);
@@ -464,9 +408,7 @@ module tb_fat32_directory_scanner;
         check(dir_ed  === `DET_DIR_OOB,       "T26.2 细分码 = 0x33(目录项越界)");
         check(dir_ec  === `ERR_MEDIA_INVALID, "T26.3 主码 = 0x03");
 
-        // ====================================================================
-        // T27 下游反压：ent_ready 按住不放
-        // ====================================================================
+
         $display("\n==== T27: 下游反压 ====");
         mk_vol(TOTSEC_BIG, 32'h0FFF_FFFF, 32'h0FFF_FFFF);
         u_card.vol_zero(32'd2);
@@ -476,7 +418,7 @@ module tb_fat32_directory_scanner;
 
         rd_sel   = 1'b1;
         got_n    = 0;
-        ent_ready = 1'b0;                 // 按住下游
+        ent_ready = 1'b0;
         @(posedge clk); scan_start = 1'b1;
         @(posedge clk); scan_start = 1'b0;
         wait_cnt = 0;
@@ -490,8 +432,8 @@ module tb_fat32_directory_scanner;
         check(got_n == 0,                "T27.3 下游没确认就不算送达");
         check(ent_name === "SV0001  BMP","T27.4 反压期间名字不变");
 
-        @(negedge clk); // Change ready away from DUT/monitor sampling edge.
-        ent_ready = 1'b1;                 // 放开
+        @(negedge clk);
+        ent_ready = 1'b1;
         wait_cnt = 0;
         while (!(scan_done === 1'b1) && wait_cnt < 2_000_000) begin
             @(posedge clk);
@@ -503,9 +445,7 @@ module tb_fat32_directory_scanner;
         check(got_name[0] === "SV0001  BMP", "T27.7 顺序没乱：第1条");
         check(got_name[1] === "SV0002  BMP", "T27.8 顺序没乱：第2条");
 
-        // ====================================================================
-        // T28 恢复合法卷后重扫成功
-        // ====================================================================
+
         $display("\n==== T28: 恢复后重扫 ====");
         mk_vol(TOTSEC_BIG, 32'h0FFF_FFFF, 32'h0FFF_FFFF);
         u_card.vol_zero(32'd2);
@@ -518,7 +458,7 @@ module tb_fat32_directory_scanner;
         check(got_n == 1,               "T28.4 抛出 1 条");
         check(got_clus[0] === 32'd300,  "T28.5 首簇正确");
 
-        // ====================================================================
+
         $display("\n============================================");
         if (errors == 0) $display(" 全部通过 (PASS)");
         else             $display(" 失败项：%0d (FAIL)", errors);

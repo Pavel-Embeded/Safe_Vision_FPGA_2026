@@ -1,12 +1,12 @@
-// Exact source coordinates, fixed latency 2. HD fit is precisely 2/3 in BOTH
-// axes. For n=0..1023, floor(n*683/1024)==floor(2*n/3); the remainder is 0,1,2,
-// giving Q0.8 fractions 0,85,170. No 22-bit divide/modulo or truncated step.
+
+
+
 module scaler_coords #(parameter integer HD=0,HANDBOOK_PROFILE=0)(input wire clk,rst_n,de,
  input wire[11:0] x,y,input wire fit,input wire[1:0] scale_select,
  output reg valid,output reg[9:0] sx,sy,output reg[7:0] fx,fy);
  generate if(HANDBOOK_PROFILE)begin:handbook_coords
-  // 0=centred 1:1;1=aspect fit;2=320x240;3=160x120. Ratios
-  // are exact for the supported 640x480 source. All modes have two clocks.
+
+
   wire small_mode=scale_select[1];
   wire quarter=scale_select==3;
   wire aspect_fit=HD&&scale_select==1;

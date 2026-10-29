@@ -1,19 +1,6 @@
-// ============================================================================
-// clock_reset_ctrl.v — PLL 锁定许可与分域复位（SafeVision A · 板级平台）
-// ----------------------------------------------------------------------------
-// 依据：手册 V2.0 §6.3/§6.4/§10；docs/interface_spec.md v1.9。
-//
-// 本模块不产生、分频或切换时钟。sys/mem/video/audio 时钟必须来自经过
-// TD 配置、约束与 STA 验证的安路 PLL IP。一个 PLL 同时提供多个时钟时，
-// 对应的 locked 输入可连接同一个锁定信号。
-//
-// 局部复位隔离：
-//   media_reset_req         仅重启 sys_clk 域媒体业务；
-//   memory_client_reset_req 仅重启 mem_clk 域内存客户端，保留 SDRAM IP；
-//   hdmi_reinit_req         仅重启 HDMI 前级/串行路径，保留视频时序；
-//   audio_reset_req         仅重启音频消费链，保留视频与故障通道。
-// 请求为保持电平。跨域发起请求须先按接口规范完成 CDC，不能直接接单拍。
-// ============================================================================
+
+
+
 module clock_reset_ctrl (
     input  wire board_rst_n,
     input  wire sys_clk,
@@ -50,7 +37,7 @@ module clock_reset_ctrl (
     assign video_async_rst_n = board_rst_n & video_pll_locked;
     assign audio_async_rst_n = board_rst_n & audio_pll_locked;
 
-    // 基础域复位：业务局部请求不得破坏时钟域基础设施。
+
     reset_sync u_sys_reset (
         .clk(sys_clk), .async_rst_n(sys_async_rst_n), .rst_n(sys_rst_n)
     );
@@ -64,7 +51,7 @@ module clock_reset_ctrl (
         .clk(serial_clk), .async_rst_n(video_async_rst_n), .rst_n(serial_rst_n)
     );
 
-    // 局部请求重新断言复位；audio_rst_n 是音频消费域的唯一复位输出。
+
     reset_sync u_audio_reset (
         .clk(audio_clk),
         .async_rst_n(audio_async_rst_n & ~audio_reset_req),

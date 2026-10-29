@@ -1,8 +1,6 @@
-// Pixel-domain media-fault display policy. All asynchronous inputs are levels;
-// only their first synchronizer stages are excepted by board_cdc.sdc.
-// The source selection is latched at vblank. A transient underflow keeps the
-// safety scene for the following frame and recovers after one healthy frame.
-// Boot and media faults do not reset video timing, the HDMI core or the PHY.
+
+
+
 module board_display_guard (
     input wire pixel_clk,rst_n,frame_start,active_frame,frame_fault,
     input wire media_fault_async,storage_fault_async,manual_async,

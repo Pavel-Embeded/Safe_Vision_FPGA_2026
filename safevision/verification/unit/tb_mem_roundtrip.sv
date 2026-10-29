@@ -1,16 +1,6 @@
-// Integration round-trip probe: memory_arbiter + mem_ctrl + REAL sdram_app_adapter
-// + the project's SDRAM contract model.
-//
-// Motivation: the board writes a full frame (W=153600, all accepted) then the
-// frame_integrity_guard readback rejects at block 0. Every unit test in the repo
-// exercises one layer alone with an IDEAL memory. This TB exercises the exact
-// seam the board uses:
-//   write: 153600 single-word bursts (frame_writer len=1) via the WR channel
-//   read : 2400 x 64-word bursts (guard's readback) via the SD channel
-// through the real adapter (FAST_READ=1, PREFETCH_READ=1) and a contract model.
-//
-// The write address walk is the bridge's bottom-up row order, so the guard's
-// signature indexing is reproduced even though the guard itself is not present.
+
+
+
 `timescale 1ns/1ps
 `include "safevision_defs.vh"
 
@@ -21,10 +11,10 @@ module tb_mem_roundtrip;
     localparam integer BLOCKS    = WORDS/BLOCK;
     localparam [31:0]  SLOT1     = 32'h000A_0000;
 
-    reg clk = 0; always #12.5 clk = ~clk;      // 40 MHz board mem_clk
+    reg clk = 0; always #12.5 clk = ~clk;
     reg rst_n = 0;
 
-    // ---------------- arbiter ----------------
+
     wire        mem_req, mem_wr, mem_ready, mem_rvalid;
     wire [31:0] mem_addr, mem_wdata, mem_rdata;
     wire [3:0]  mem_wstrb;
@@ -32,14 +22,14 @@ module tb_mem_roundtrip;
     wire [31:0] rd_data;
     wire        sd_ack, sd_busy, sd_rdata_valid;
     wire [31:0] sd_rdata;
-    reg  [15:0] video_level = 16'd3500;        // display FIFO mid-water
+    reg  [15:0] video_level = 16'd3500;
 
     reg         wr_req = 0; reg [31:0] wr_addr = 0, wr_data = 0;
     wire [15:0] wr_len = 16'd1;
     reg         sd_req = 0; wire sd_wr = 1'b0;
     reg  [31:0] sd_addr = 0; reg [15:0] sd_len = BLOCK; wire [31:0] sd_wdata = 0;
 
-    // ---- concurrent display read load (video read channel, slot 0) ----
+
     localparam [31:0] SLOT0 = 32'h0000_0000;
     reg         d_req = 0; reg [31:0] d_addr = 0;
     wire [15:0] d_len = BLOCK;
@@ -57,7 +47,7 @@ module tb_mem_roundtrip;
             end
             while (rd_busy) @(posedge clk);
             dblk = (dblk + 1) % BLOCKS;
-            repeat (200) @(posedge clk);       // realistic duty: ~0.24 words/cycle
+            repeat (200) @(posedge clk);
         end
     end
 
@@ -74,7 +64,7 @@ module tb_mem_roundtrip;
         .mem_wstrb(mem_wstrb), .mem_ready(mem_ready), .mem_rdata(mem_rdata),
         .mem_rdata_valid(mem_rvalid), .wr_starve_cnt(), .rd_starve_cnt());
 
-    // ---------------- mem_ctrl ----------------
+
     wire        a_req, a_wr, a_ready, a_rvalid, a_init, mem_error;
     wire [31:0] a_addr, a_wdata, a_rdata;
     wire [3:0]  a_wstrb;
@@ -85,7 +75,7 @@ module tb_mem_roundtrip;
         .sdram_wstrb(a_wstrb), .sdram_rdata(a_rdata), .sdram_rdata_valid(a_rvalid),
         .sdram_ready(a_ready), .sdram_init_done(a_init));
 
-    // ---------------- REAL adapter ----------------
+
     wire        s_init, s_refvld, s_busy, a_widle, a_pfault;
     wire        aw_en, ar_en, s_rd_en;
     wire [20:0] aw_addr, ar_addr;
@@ -99,23 +89,23 @@ module tb_mem_roundtrip;
         .App_wr_en(aw_en), .App_wr_addr(aw_addr), .App_wr_dm(aw_dm), .App_wr_din(aw_din),
         .App_rd_en(ar_en), .App_rd_addr(ar_addr), .Sdr_rd_en(s_rd_en), .Sdr_rd_dout(s_rd_dout));
 
-    // ---------------- SDRAM contract model (board_memory_contract_model) ----------------
+
     sdram #(.RD_LAT(11)) u_sdram(.Clk(clk), .Clk_sft(clk), .Rst(~rst_n),
         .Sdr_init_done(s_init), .Sdr_init_ref_vld(s_refvld), .Sdr_busy(s_busy),
         .App_wr_en(aw_en), .App_wr_addr(aw_addr), .App_wr_dm(aw_dm), .App_wr_din(aw_din),
         .App_rd_en(ar_en), .App_rd_addr(ar_addr), .Sdr_rd_en(s_rd_en), .Sdr_rd_dout(s_rd_dout));
 
-    // ---------------- data function + shadow expectation ----------------
+
     function [31:0] dataof(input [31:0] a);
         dataof = (a * 32'd2654435761) + 32'd1013904223;
     endfunction
 
-    reg [31:0] shadow [0:400000];      // indexed by word address (covers SLOT1..+WORDS)
+    reg [31:0] shadow [0:400000];
 
     integer errors = 0;
     integer wr_words = 0, rd_blocks = 0, rd_words = 0;
 
-    // ---------------- write one word (frame_writer len=1 protocol) ----------------
+
     task write_word(input [31:0] a);
         begin
             wr_addr = a; wr_data = dataof(a); wr_req = 1'b1;
@@ -127,7 +117,7 @@ module tb_mem_roundtrip;
         end
     endtask
 
-    // ---------------- read back one 64-word block via SD channel ----------------
+
     reg [31:0] got [0:BLOCK-1];
     integer bi, k, first_bad_block, bad_word;
     reg [31:0] bad_got, bad_exp;
@@ -154,9 +144,9 @@ module tb_mem_roundtrip;
     initial begin
         first_bad_block = -1; bad_word = -1;
         rst_n = 0; repeat (20) @(posedge clk); rst_n = 1;
-        repeat (200) @(posedge clk);            // let SDRAM init (100) settle
+        repeat (200) @(posedge clk);
 
-        // ---- build the expected image with the bridge's bottom-up walk ----
+
         cur = SLOT1 + (WORDS-ROW_WORDS)*4; col = 0;
         for (n = 0; n < WORDS; n = n + 1) begin
             shadow[cur >> 2] = dataof(cur);
@@ -164,7 +154,7 @@ module tb_mem_roundtrip;
             else                    begin col = col + 1; cur = cur + 4; end
         end
 
-        // ---- write the frame, one word per burst ----
+
         $display("[TB] writing %0d words ...", WORDS);
         cur = SLOT1 + (WORDS-ROW_WORDS)*4; col = 0;
         for (n = 0; n < WORDS; n = n + 1) begin
@@ -172,12 +162,12 @@ module tb_mem_roundtrip;
             if (col == ROW_WORDS-1) begin col = 0; cur = cur - ROW_WORDS*8 + 4; end
             else                    begin col = col + 1; cur = cur + 4; end
         end
-        // drain barrier: wait for the adapter's buffered tail to land
+
         while (!(a_widle && !wr_busy)) @(posedge clk);
         repeat (20) @(posedge clk);
         $display("[TB] write done: %0d words, adapter write_idle=%0d", wr_words, a_widle);
 
-        // ---- read back every block via the SD channel, compare ----
+
         for (bi = 0; bi < BLOCKS; bi = bi + 1) begin
             read_block(SLOT1 + bi*BLOCK*4);
             rd_blocks = rd_blocks + 1;
@@ -211,7 +201,7 @@ module tb_mem_roundtrip;
         $finish;
     end
 
-    // watchdog
+
     initial begin
         #2_000_000_000;
         $display("[TB] WATCHDOG: still running at %0d ns (wr_words=%0d rd_blocks=%0d)",

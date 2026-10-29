@@ -1,5 +1,5 @@
-// CRC-state feedback enable spacing at the fastest legal pixel rate.
-// New word data remains a one-cycle path; writer RTL is unchanged.
+
+
 `timescale 1ns/1ps
 `include "safevision_defs.vh"
 module writer_crc_case #(parameter integer STRIDE=1)(output reg done=0);
@@ -35,7 +35,7 @@ module writer_crc_case #(parameter integer STRIDE=1)(output reg done=0);
   if(!rst_n)last_capture=-100;
   else begin
    if(dut.crc_src_pend!==0&&dut.crc_src_pend!==1)$fatal(1,"unknown CRC enable");
-   // A new-frame clear selects constant zero, not the feedback data.
+
    if(dut.crc_src_pend&&!(dut.state==0&&start))begin
     if(cycle-last_capture<2)$fatal(1,"CRC feedback captured on adjacent edges");
     if(last_capture>=0&&cycle-last_capture<min_gap)min_gap=cycle-last_capture;
@@ -76,7 +76,7 @@ module writer_crc_case #(parameter integer STRIDE=1)(output reg done=0);
  initial begin
   repeat(3)@(negedge clk);rst_n=1;
   full_frame;
-  // Reset while a new pair is pending, before CRC feedback capture.
+
   score=0;begin_frame;send_pixels(2);
   if(dut.crc_src_pend!==1)$fatal(1,"pending reset coverage");
   rst_n=0;#0.2;

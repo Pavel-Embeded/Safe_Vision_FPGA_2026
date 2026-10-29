@@ -1,9 +1,0 @@
-{
-  "top": "tb_v3_pv_hd73",
-  "suite": "audio_priority_volume",
-  "accepted_native_runner": true,
-  "source_overrides": [],
-  "legacy": false,
-  "original_runner_result_sha256": "987b2df76d0e82f2543d3872d579ad1f6baba86f6b37abe7caff21ced0f74937",
-  "original_runtime_folder": "D:\\Codex\\2026-10-15\\github-plugin-github-openai-curated-remote\\work\\repo\\evidence\\v3\\resource_102_20261016\\positive\\tb_v3_pv_hd73"
-}

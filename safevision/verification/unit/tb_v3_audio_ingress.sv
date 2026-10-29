@@ -26,12 +26,12 @@ module tb_v3_audio_ingress;
   for(integer k=0;k<126;k=k+1)send(k);
   wait(!dut.holding);repeat(5)@(negedge wc);
   if(!room||dut.words!=252)$fatal(1,"precondition full-sector reservation words=%0d room=%b",dut.words,room);
-  // Reader stopped: the COMPLETE128pair next SD sector must still fit.
+
   for(integer k=126;k<254;k=k+1)send(k);
   wait(!dut.holding);repeat(5)@(negedge wc);
   if(dut.words!=508||room||pairs!=254)$fatal(1,"128pair sector capacity was reduced words=%0d pairs=%0d",dut.words,pairs);
   read_clock=1;re=1;wait(head>=100);re=0;repeat(20)@(negedge rc);re=1;wait(head==tail);
-  // Reset with a half pair physically in transit; no stale output may survive.
+
   fork begin send(300);end begin wait(dut.holding&&dut.write_part);rst=1;end join_any disable fork;
   reset_epoch();re=1;
   for(integer k=0;k<200;k=k+1)send(k+400);

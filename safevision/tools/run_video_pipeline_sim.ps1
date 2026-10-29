@@ -3,10 +3,10 @@ param(
     [string]$XSimBin = 'D:\Xilinx\Vivado\2018.3\bin',
     [string]$RunDir = (Join-Path $RepoRoot 'safevision/build/out/video_pipeline_sim')
 )
-# Verilog-2001 RTL and SystemVerilog TB are compiled separately.
-# Logs and simulator artifacts remain in RunDir, never in the source list.
+
+
 $ErrorActionPreference = 'Stop'
-# Resolve caller paths before changing to each simulator working directory.
+
 $RepoRoot = (Resolve-Path -LiteralPath $RepoRoot).Path
 $XSimBin = (Resolve-Path -LiteralPath $XSimBin).Path
 $RunDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($RunDir)

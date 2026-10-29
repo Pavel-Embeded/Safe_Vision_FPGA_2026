@@ -1,16 +1,6 @@
-// Production-only, monotonic raster storage. Four 640-pixel rows per stream
-// occupy two native RAM32K blocks per stream (four total). Adjacent rows
-// use independent read ports; all eight rows and pixel latency are retained.
-// Each tile has exactly ONE SYS write port and ONE PIX synchronous read port.
-//
-// MEM50 and WRITE100 MUST be related phase-0 outputs of the same PLL. MEM
-// captures each complete word. On the following WRITE edge LOW is written;
-// the next WRITE edge writes the held HIGH. These paths are timed, not false
-// paths. A completed row is acknowledged back to MEM after the final HIGH.
-//
-// PIX accepts sx=0 at every valid run, then repeated/increment-by-one x only,
-// with unchanged sy until blanking. prepare_sy names the upcoming visible
-// source row. Blanking continuously preloads pixel 0 for both row neighbors.
+
+
+
 module v3_packed_row_store #(parameter integer HANDBOOK_PROFILE=0)(
  input wire mem_clk,mem_rst_n,write_clk,write_rst_n,pixel_clk,pixel_rst_n,
  input wire word_valid,input wire[2:0] word_bank,input wire[8:0] word_column,
@@ -38,7 +28,7 @@ module v3_packed_row_store #(parameter integer HANDBOOK_PROFILE=0)(
   if(!write_rst_n)begin seen_toggle<=0;high_pending<=0;high_data<=0;high_position<=0;
    high_stream<=0;high_last<=0;done_toggle<=0;write_fault<=0;end
   else if(high_pending)begin
-   if(new_packet)write_fault<=1; // The required 2:1 clock relationship was lost.
+   if(new_packet)write_fault<=1;
    high_pending<=0;if(high_last)done_toggle<=~done_toggle;
   end else if(new_packet)begin
    seen_toggle<=request_toggle;high_pending<=1;high_data<=packet_data[31:16];
@@ -65,11 +55,8 @@ module v3_packed_row_store #(parameter integer HANDBOOK_PROFILE=0)(
  wire[9:0] read_row1=shrink?read_row0:read_row0==479?10'd479:read_row0+1'b1;
  wire[9:0] read_column=coord_valid?(sx>=640-raster_step?10'd639:sx+raster_step):10'd0;
  wire[1:0] rb0=row_bank(read_row0),rb1=row_bank(read_row1);
- // Four rows per stream remain resident. Pair rows0/2 and1/3
- // in native BRAM32K, so adjacent row reads use independent ports. The
- // two rows inside one tile use separate1024-word pages. Four BRAM32K
- // macros consume16 of the64 physical9K-equivalent RAM tiles; the two
- // resource names are configurations of the SAME physical pool.
+
+
  wire[2:0] tile0={2'b0,rb0[0]},tile1={2'b0,rb1[0]};
  reg[2:0] tile0_q,tile1_q;
  wire[15:0] qa[0:1],qb[0:1];

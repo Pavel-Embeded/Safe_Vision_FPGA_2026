@@ -1,7 +1,6 @@
 `include "pixel_format_defs.vh"
-// Pixel-domain consumer of B's EXISTING frame_swap_cdc mailbox.
-// req_evt and the CDC mailbox register update share an edge, so capture on
-// the following edge. Commit/ACK only at raw vertical blank frame_start.
+
+
 module frame_slot_commit(
     input wire clk,rst_n,frame_start,req_evt,mb_valid,mb_crc_ok,
     input wire [1:0] mb_slot,input wire [7:0] mb_generation,input wire mb_frame_index,

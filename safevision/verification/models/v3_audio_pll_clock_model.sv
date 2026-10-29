@@ -1,4 +1,4 @@
-// Clock contract only. This does not simulate the vendor PLL, jitter or locks.
+
 `timescale 1ns/1ps
 module sv_audio_pll(input wire refclk,reset,output wire extlock,
  output wire clk0_out,clk1_out);

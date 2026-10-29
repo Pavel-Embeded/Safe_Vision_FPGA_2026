@@ -41,8 +41,8 @@ module tb_v3_handbook_controls;
   cmd(67,"FIELD",5,0,0,0);tap(1);ck(vol==80,"volume ten percent step");for(i=0;i<20;i++)tap(0);ck(vol==0,"volume lower clamp");for(i=0;i<20;i++)tap(1);ck(vol==100,"volume upper clamp");
   for(i=0;i<4;i++)begin cmd(65,"SCALESEL",i,0,0,0);cmd(65,"SCALESEL",0,1,0,i);ck(scale==i&&fit==(i==1),"all four geometries and compatibility flag");end
   cmd(65,"SCALESEL",4,0,3,0);ck(scale==3,"scale invalid value rejected");
-  // Independently check the physical coefficient, not merely the percentage
-  // echo. The strict +1 offset mutant must be detected at every legal value.
+
+
   for(i=0;i<=100;i++)begin
    cmd(65,"BRTPC",i,0,0,0);
    ck(bright==2*i-100&&pct==i&&!raw,"all101 percentage values map to the exact signed RGB888 offset");

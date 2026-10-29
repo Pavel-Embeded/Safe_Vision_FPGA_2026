@@ -8,8 +8,7 @@
   ],
   "defines": [],
   "assets": [
-    "safevision/verification/assets/direct_row_crc113.mem",
-    "safevision/verification/models/direct_row_lookup112.freeze.json"
+    "safevision/verification/assets/direct_row_crc113.mem"
   ],
   "generator_dependencies": [],
   "generated_assets": [],

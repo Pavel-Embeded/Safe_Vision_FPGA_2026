@@ -23,7 +23,7 @@ module tb_v3_audio_prefill_pipeline;
    @(posedge clk);sampled=stimulus;#1;verify(sampled);
    if(i%257==0)begin
     #3;media_reset=1;sampled=0;#1;verify(sampled);resets++;
-    // Change inputs while held in reset: a later admission must never survive.
+
     stimulus=~stimulus;#1;verify(0);
     @(negedge clk);media_reset=0;
     repeat(3)@(posedge clk);#1;sampled=stimulus;verify(sampled);

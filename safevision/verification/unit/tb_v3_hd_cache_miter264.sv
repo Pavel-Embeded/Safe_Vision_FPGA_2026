@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
-// Independent row-landing oracle. This short test is also the negative-control
-// entry point: disabling the DUT CRC comparison must produce errors, then a
-// normal $finish, rather than being mistaken for a successful test.
+
+
 module tb_v3_hd_cache_miter264;
  reg mem=0,pix=0,rst=0;always #12.5 mem=~mem;always #6.734 pix=~pix;
  reg req=0;wire ready;reg[23:0] desc=0;wire rv;wire[23:0] reply;
@@ -96,9 +95,8 @@ module tb_v3_hd_cache_miter264;
   repeat(3)@(negedge pix);
  end endtask
  task check_pixels(input integer row);integer col,next_col,step;reg[127:0] expected,observed;begin
-  // 193 is coprime with 640: the second row visits every column exactly once,
-  // with jumps, backwards moves and both edge columns. Generic mode must not
-  // inherit the production packed branch's monotonic scan restriction.
+
+
   for(step=0;step<640;step=step+1)begin
    col=row==1?(step*193+17)%640:step;
    @(negedge pix);sx=col;sy=row;cv=1;

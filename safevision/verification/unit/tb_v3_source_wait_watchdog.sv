@@ -54,7 +54,7 @@ module tb_v3_source_wait_watchdog;
   if(heartbeat_enable)ck(beats>basebeats+4,"raw source events continued throughout the protected fault");
  end endtask
  initial begin
-  // Valid raw input can take many pixel deadlines while source rows are skipped.
+
   case_id=1;fresh();heartbeat_enable=1;repeat(LIMIT*3)@(negedge clk);
   ck(ec==0&&state==1,"accepted raw progress sustains a long pre-pixel wait");
   for(i=0;i<8;i++)word(i);
@@ -63,33 +63,33 @@ module tb_v3_source_wait_watchdog;
   for(i=8;i<WORDS;i++)word(i);
   guard=0;while(frames==0&&ec==0&&guard<4000)begin @(negedge clk);guard++;end
   ck(frames==1&&okay&&writes==WORDS&&ec==0,"the complete frame passes its unchanged publication path");
-  // An empty source which stops making progress still has its original deadline.
+
   case_id=2;fresh();timeout_expected("stopped source progress expires normally");
-  // A real pending write cannot borrow time from raw input activity.
+
   case_id=3;fresh();heartbeat_enable=1;ack_enable=0;word(0);timeout_expected("a held memory request times out despite continuing source bytes");
-  // An accepted word whose physical adapter tail never drains is also bounded.
+
   case_id=4;fresh();heartbeat_enable=1;word(0);
   guard=0;while(writes==0&&guard<100)begin @(negedge clk);guard++;end
   ck(writes==1,"one word was accepted before physical drain stalled");drained=0;
   timeout_expected("adapter pending state blocks source-wait credit");
-  // The final word has frame_full set, so the independent sink deadline matters.
+
   case_id=5;fresh();heartbeat_enable=1;last_hold=1;
   for(i=0;i<WORDS;i++)word(i);
   guard=0;while(!(req&&writes==WORDS-1)&&guard<4000)begin @(negedge clk);guard++;end
   ck(req&&writes==WORDS-1,"the last physical write remains pending");
   timeout_expected("last-word bus stall still expires");
-  // Raw input must not reset the drain/readback state timer.
+
   case_id=6;fresh();heartbeat_enable=1;vdone=0;
   for(i=0;i<WORDS;i++)word(i);
   guard=0;while(state!=4&&ec==0&&guard<4000)begin @(negedge clk);guard++;end
   ck(state==4,"a complete frame enters physical drain and readback wait");
   timeout_expected("stalled readback remains bounded despite continuing source bytes");
-  // A real end/abort of an incomplete frame has priority over any source credit.
+
   case_id=7;fresh();heartbeat_enable=1;word(0);@(negedge wrclk);active=0;
   guard=0;while(!done&&guard<LIMIT+40)begin @(negedge clk);guard++;end
   ck(done&&!okay&&!swap&&frames==0,"an incomplete source frame is acknowledged as failed even with source events");
-  // Queue the event one edge before expiry: its qualified MEM credit is present
-  // exactly when the old counter equals LIMIT. It must win in opt-in mode.
+
+
   case_id=8;fresh();guard=0;
   while(dut.to_cnt<LIMIT-1&&ec==0&&guard<LIMIT+10)begin @(negedge clk);guard++;end
   ck(dut.to_cnt==LIMIT-1&&ec==0,"deadline test reaches the edge before expiry");

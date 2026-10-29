@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 module tb_frame_swap_default_timeout;
     reg clk=0;
-    always #5 clk=~clk; // B contract sys_clk = 100 MHz.
+    always #5 clk=~clk;
     reg rst_n=0,frame_ready=0,frame_start=0,swap_ack=0;
     wire swap_error,active_commit;
     wire [2:0] state_o;
@@ -22,7 +22,7 @@ module tb_frame_swap_default_timeout;
         repeat(8) @(negedge clk); rst_n=1;
         repeat(100) @(negedge clk); frame_ready=1;
         @(negedge clk); frame_ready=0;
-        // The request can arrive just after a 60 Hz frame boundary.
+
         wait(tick==1666667);
         @(negedge clk); frame_start=1;
         @(negedge clk); frame_start=0;

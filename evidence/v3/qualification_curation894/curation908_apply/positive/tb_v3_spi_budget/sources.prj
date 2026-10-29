@@ -1,6 +1,0 @@
-"D:/Codex/svflex537/source/safevision/rtl/control/v3_supervisor.v"
-"D:/Codex/svflex537/source/safevision/rtl/control/media_recovery_ctrl.v"
-"D:/Codex/svflex537/source/safevision/rtl/safety/fault_manager.v"
-"D:/Codex/svflex537/source/safevision/rtl/memory/v3_aux_mux.v"
-"D:/Codex/svflex537/source/safevision/rtl/storage/spi_master.v"
-"D:/Codex/svflex537/source/safevision/verification/unit/tb_v3_spi_budget.sv"

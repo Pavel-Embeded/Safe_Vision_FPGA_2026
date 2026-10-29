@@ -1,25 +1,20 @@
-// Portable stage-15 A/B assembly: RGB scan/display + B arbitration/swap.
-// Front-end BMP parser/unpacker/frame_writer run together in mem_clk; their
-// ready/valid stream must NOT cross clocks directly. Frame-ready control enters
-// this core in sys_clk through a bundled-data mailbox if produced in mem_clk.
-// Unified memory transaction port attaches to B mem_ctrl / board SDRAM adapter.
-// C config is sys_clk; emergency is pixel_clk with RAW scan coordinates.
-// rst_n is a common assertion epoch; release is synchronized per domain.
-// This module does not implement SD playback sequencing, HDMI PHY or pinout.
+
+
+
 module safevision_core #(
     parameter integer HD=0,FIFO_AW=10,BURST_WORDS=64,MAX_BURSTS=4,STARVE_LIMIT=64,
     parameter [31:0] SWAP_TIMEOUT_N=32'd5_000_000,
     parameter FONT_FILE="../../../assets/fonts/font8x16.mem",
     parameter integer EMERGENCY_LATENCY=0,DMA_STREAMING=0,DMA_CHECKED=0
 )(
-    // SYS domain: producer retains payload until swap_state_o returns IDLE.
+
     input wire frame_ready,wr_frame_index,input wire [1:0] wr_slot_id,
     input wire [7:0] wr_generation,input wire wr_crc_ok,
     output reg active_commit,output wire [1:0] active_next,
     output wire [7:0] generation_next,output wire frame_index_next,swap_error,
     output wire [2:0] swap_state_o,
     output wire frame_start_evt_b,swap_ack_evt_b,
-    // MEM domain: byte addresses, lengths in 32-bit words. Frame writer len=1.
+
     input wire wr_req,input wire [31:0] wr_addr,wr_data,input wire [15:0] wr_len,
     output wire wr_ack,wr_busy,
     input wire sd_req,sd_wr,input wire [31:0] sd_addr,sd_wdata,input wire [15:0] sd_len,
@@ -53,9 +48,8 @@ module safevision_core #(
     wire [31:0] rd_addr,rd_data;wire [15:0] rd_len;
     wire b_commit;
     reg commit_pending,ack_pending;
-    // The B FSM can encounter a vblank before A's mailbox has settled when a
-    // request arrives at the boundary. Publish slot ownership only after BOTH
-    // B's decision and A's ACK. Either event may arrive first; neither is lost.
+
+
     always @(posedge sys_clk or negedge srn)begin
         if(!srn)begin active_commit<=0;commit_pending<=0;ack_pending<=0;end
         else begin
@@ -76,9 +70,8 @@ module safevision_core #(
       .generation(mb_generation_b),.crc_ok(mb_crc_ok_b),.swap_error(swap_error),
       .active_commit(b_commit),.active_next(active_next),
       .generation_next(generation_next),.frame_index_next(frame_index_next),.state_o(swap_state_o));
-    // Priority uses a one-cycle MEM-domain water-level snapshot. DMA admission
-    // still uses its live guarded FIFO level; this register changes neither
-    // burst lengths nor the safety space check and breaks the priority path.
+
+
     reg [15:0] arbitration_level;
     always @(posedge mem_clk or negedge mrn)
         if(!mrn)arbitration_level<=DMA_CHECKED?16'hffff:16'd0;
