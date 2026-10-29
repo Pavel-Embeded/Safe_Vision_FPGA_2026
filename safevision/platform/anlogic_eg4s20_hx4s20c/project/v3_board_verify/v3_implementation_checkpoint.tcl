@@ -11,6 +11,9 @@ if {[catch {
  source [file join $here v3_build_parameters.tcl]
  set mode_parameters [file join $here v3_build_parameters_${board_mode}.tcl]
  if {[file isfile $mode_parameters]} {source $mode_parameters}
+ set place_hidden [open place.hidden.params w]
+ foreach key {ce_weight cn_opt_effort critical_hfn_opt enhanced_beeline_opt} {puts $place_hidden "place $key [get_param place $key]"}
+ close $place_hidden
  # Remove the pre-map clock objects before rebuilding mapped collections.
  clear_sdc
  read_sdc [file join $here v3_board.sdc]

@@ -118,7 +118,7 @@ def media_bram_locations(text,expected):
 
 def check(folder,repo):
  errors=[];files=['route.timing','route.check','route.area','route.exceptions','constraint.objects.tsv','route.derived.sdc','route.db','route.netlist.v','gate.hidden.params','gate.netlist.v','route.clocks','route.hidden.params','final_sta.tcl','final_sta.manifest.json','after_clock_report.check','after_clock_report.timing','after_clock_report.exceptions','inprocess.route.timing','inprocess.route.check','inprocess.route.exceptions']
- files.extend(('checkpoint.synthesis.json','synthesis.console.log','implementation.console.log','gate.db'))
+ files.extend(('checkpoint.synthesis.json','synthesis.console.log','implementation.console.log','gate.db','place.hidden.params'))
  from v3_sources import build_parameters,required_media_bram_locations
  mode=folder.name if folder.name in ('base','hd') else None
  required_bram=required_media_bram_locations(repo,mode)

@@ -145,6 +145,8 @@ def build_parameters(root,mode=None):
   ('gate','map_mode'):{'auto','area_prior','logic_level_prior','balance_explore'},
   ('gate','pack_effort'):{'low','medium','high'},
   ('gate','bdd_opt'):{'on','off'},('gate','lut4_map'):{'on','off'},
+  ('place','ce_weight'):{'on'},('place','cn_opt_effort'):{'high'},
+  ('place','critical_hfn_opt'):{'on'},('place','enhanced_beeline_opt'):{'3'},
   ('place','effort'):{'low','medium','high'},
   ('place','opt_timing'):{'medium','off'},
   ('place','seed'):{'0','1','7','13','31'},
@@ -177,7 +179,10 @@ def native_parameters(root,folder,stages=('rtl','gate','place','route')):
   if stage not in stages:continue
   report_name='place.seed.params' if (stage,name)==('place','seed') else stage+'.params'
   path=folder/report_name;text=path.read_text(encoding='utf-8',errors='replace')
-  if stage=='route'and name=='post_route_opt':
+  if stage=='place'and name in('ce_weight','cn_opt_effort','critical_hfn_opt','enhanced_beeline_opt'):
+   path=folder/'place.hidden.params';text=path.read_text(encoding='utf-8');report_name=path.name
+   hits=re.findall(r'^place '+re.escape(name)+r' (\w+)$',text,re.M)
+  elif stage=='route'and name=='post_route_opt':
    path=folder/'route.hidden.params';text=path.read_text(encoding='utf-8');report_name=path.name
    hits=re.findall(r'^route post_route_opt (auto|medium|high|ultra)$',text,re.M)
   elif stage=='gate'and name in ('bdd_opt','lut4_map'):

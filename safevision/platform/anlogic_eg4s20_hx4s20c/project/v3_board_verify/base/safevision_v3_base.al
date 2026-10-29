@@ -1002,6 +1002,10 @@
                     <pr_strategy>6</pr_strategy>
                     <seed>1</seed>
                     <opt_timing>off</opt_timing>
+                    <ce_weight>on</ce_weight>
+                    <cn_opt_effort>high</cn_opt_effort>
+                    <critical_hfn_opt>on</critical_hfn_opt>
+                    <enhanced_beeline_opt>3</enhanced_beeline_opt>
                 </PlaceProperty>
                 <RouteProperty>
                     <effort>routability</effort>

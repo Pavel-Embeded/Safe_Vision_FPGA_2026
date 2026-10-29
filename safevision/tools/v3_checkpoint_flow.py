@@ -18,7 +18,7 @@ RUN_AFTER="""   if a.synth_only:
     record['checkpoint_handoff']=create_receipt(folder,record['source_commit'],checkpoint_hash)
     save(manifest,record)"""
 CHECK_FILES_BEFORE=' from v3_sources import build_parameters,required_media_bram_locations'
-CHECK_FILES_AFTER=" files.extend(('checkpoint.synthesis.json','synthesis.console.log','implementation.console.log','gate.db'))\n"+CHECK_FILES_BEFORE
+CHECK_FILES_AFTER=" files.extend(('checkpoint.synthesis.json','synthesis.console.log','implementation.console.log','gate.db','place.hidden.params'))\n"+CHECK_FILES_BEFORE
 CHECK_BEFORE=" if errors:return result\n integrity="
 CHECK_AFTER=""" if errors:return result
  from v3_checkpoint_flow import verify_receipt
@@ -29,6 +29,11 @@ SCOPE_BEFORE=" files.add(Path('safevision/tools/check_bmp_header_phase.py'))"
 SCOPE_AFTER=SCOPE_BEFORE+"\n files.add(Path('safevision/tools/v3_checkpoint_flow.py'))"
 SNAPSHOT_BEFORE='def snapshot(root):\n'
 SNAPSHOT_AFTER=SNAPSHOT_BEFORE+' from v3_checkpoint_flow import validate\n validate(root)\n'
+
+HIDDEN_ALLOWED_BEFORE="  ('place','effort'):{'low','medium','high'},"
+HIDDEN_ALLOWED_AFTER="  ('place','ce_weight'):{'on'},('place','cn_opt_effort'):{'high'},\n  ('place','critical_hfn_opt'):{'on'},('place','enhanced_beeline_opt'):{'3'},\n  ('place','effort'):{'low','medium','high'},"
+HIDDEN_READ_BEFORE="  if stage=='route'and name=='post_route_opt':"
+HIDDEN_READ_AFTER="  if stage=='place'and name in('ce_weight','cn_opt_effort','critical_hfn_opt','enhanced_beeline_opt'):\n   path=folder/'place.hidden.params';text=path.read_text(encoding='utf-8');report_name=path.name\n   hits=re.findall(r'^place '+re.escape(name)+r' (\\w+)$',text,re.M)\n  elif stage=='route'and name=='post_route_opt':"
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def blob(root,name):return subprocess.check_output(['git','-C',str(root),'cat-file','blob',PARENT+':'+name]).decode('utf-8-sig')
@@ -52,12 +57,15 @@ if {[catch {
  source [file join $here v3_build_parameters.tcl]
  set mode_parameters [file join $here v3_build_parameters_${board_mode}.tcl]
  if {[file isfile $mode_parameters]} {source $mode_parameters}
+ set place_hidden [open place.hidden.params w]
+ foreach key {ce_weight cn_opt_effort critical_hfn_opt enhanced_beeline_opt} {puts $place_hidden "place $key [get_param place $key]"}
+ close $place_hidden
 '''+tail
 def validate(root):
  expected={
   'safevision/tools/run_v3_board.py':transform(blob(root,'safevision/tools/run_v3_board.py'),[(RUN_BEFORE,RUN_AFTER)]),
   'safevision/tools/check_v3_board.py':transform(blob(root,'safevision/tools/check_v3_board.py'),[(CHECK_FILES_BEFORE,CHECK_FILES_AFTER),(CHECK_BEFORE,CHECK_AFTER)]),
-  'safevision/tools/v3_sources.py':transform(blob(root,'safevision/tools/v3_sources.py'),[(SCOPE_BEFORE,SCOPE_AFTER),(SNAPSHOT_BEFORE,SNAPSHOT_AFTER)]),
+  'safevision/tools/v3_sources.py':transform(blob(root,'safevision/tools/v3_sources.py'),[(SCOPE_BEFORE,SCOPE_AFTER),(SNAPSHOT_BEFORE,SNAPSHOT_AFTER),(HIDDEN_ALLOWED_BEFORE,HIDDEN_ALLOWED_AFTER),(HIDDEN_READ_BEFORE,HIDDEN_READ_AFTER)]),
   FLOW+'v3_implementation_checkpoint.tcl':implementation_text(blob(root,FLOW+'v3_td_flow.tcl'))}
  for name,text in expected.items():
   if(root/name).read_text('utf-8-sig')!=text:raise ValueError('unreviewed checkpoint-flow change: '+name)

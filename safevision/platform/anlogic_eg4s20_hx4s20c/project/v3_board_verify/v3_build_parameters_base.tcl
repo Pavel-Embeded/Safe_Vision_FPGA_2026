@@ -20,3 +20,10 @@ set_param route post_route_opt auto
 
 # Pack small control sets to reduce physical control/routing pressure.
 set_param rtl min_control_set 2
+
+# Values emitted by native strategy5 and confirmed by independent readback.
+# Set them explicitly so strategy6 never depends on an earlier tool session.
+set_param place ce_weight on
+set_param place cn_opt_effort high
+set_param place critical_hfn_opt on
+set_param place enhanced_beeline_opt 3
