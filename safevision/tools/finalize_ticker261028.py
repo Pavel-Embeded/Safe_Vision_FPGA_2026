@@ -34,6 +34,9 @@ def main():
   design=source_commit_binding(root,root,record['source_commit'],hardware);require(design['verified'],'design commit mismatch')
   gate=check(folder,frozen);require(gate['gate_accepted']and gate['timing_passed']and gate['status']=='PASS','strict native timing gate failed: '+str(gate['errors']))
   save(out/'base.gate.json',gate)
+  if functional['production_profile'].get('wav_rejection_mapping_boundaries'):
+   subprocess.run([sys.executable,'-B',str(root/'safevision/tools/test_wav_reject_mapping.py'),'--source',str(frozen),'--output',str(out/'wav_mapping_controls')],check=True)
+   wav_controls=read(out/'wav_mapping_controls/verification.json');require(wav_controls['accepted']and len(wav_controls['controls'])==7 and all(row['rejected']for row in wav_controls['controls']),'WAV mapping source-identity refusal controls failed')
   auto_native=None
   if functional['production_profile'].get('automatic_media_ram_placement'):
    from check_auto_ram_placement import check_native as auto_check_native
@@ -88,6 +91,8 @@ def main():
    names.add('safevision/tools/check_dedicated_font.py')
   if functional['production_profile'].get('automatic_media_ram_placement'):
    names|={'safevision/tools/check_auto_ram_placement.py','safevision/tools/test_auto_ram_placement.py'}
+  if functional['production_profile'].get('wav_rejection_mapping_boundaries'):
+   names|={'safevision/tools/check_wav_reject_mapping.py','safevision/tools/test_wav_reject_mapping.py'}
   commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD']).decode().strip()
   binding=source_commit_binding(root,root,commit,names);require(binding['verified'],'approval inputs are not committed: '+str(binding.get('errors')))
   all_inputs={name:sha(root/name)for name in names}
