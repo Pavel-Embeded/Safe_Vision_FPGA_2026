@@ -48,6 +48,9 @@ def offline(root,release,out):
  functional=audit(root,proof/'regression',proof/'ticker',proof/'board',proof/'controls')
  require(index.get('production_profile')==functional['production_profile']and read(release/'functional.audit.json')['production_profile']==functional['production_profile'],'release production profile differs from current local32 proof')
  native=replay(root,proof/'native')
+ if functional['production_profile'].get('automatic_media_ram_placement'):
+  from check_auto_ram_placement import check_native as auto_check_native
+  auto_check_native(root,proof/'native/base')
  require(native['gate']['sta']['negative_path_count']==0,'native replay contains negative paths')
  return dict(accepted=True,index=index,functional=functional,native=native,bit_sha256=index['bit_sha256'],fresh_TD_build_performed=False,hardware_test_performed=False)
 

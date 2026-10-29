@@ -410,22 +410,31 @@ def audit(root,regression,ticker,board,controls):
  optional={str(FLOW/'v3_build_parameters_base.tcl').replace('\\','/')}
  optional|=layout_files
  require((allowed-optional)<=changes and changes<=allowed,'unexpected physical changes: '+repr((changes-allowed)|((allowed-optional)-changes)))
+ auto_proof=None
  if changes&layout_files:
-  require(changes&layout_files==layout_files,'partial media-RAM layout/readback profile')
   from v3_sources import required_media_bram_locations
-  locations=required_media_bram_locations(root,'base')
-  expected={'player/normalized_bmp$u_unpack/ramread0_syn_5':'X8Y18Z0','player/normalized_bmp$u_unpack/ramread0_syn_15':'X8Y18Z1','row_guard/ramread0_syn_6':'X8Y9Z0','row_guard/ramread0_syn_23':'X8Y9Z1','sink/u_fifo/fifo/ram_inst/ramread0_syn_6':'X8Y18Z3','sink/u_fifo/fifo/ram_inst/ramread0_syn_16':'X8Y18Z2'}
-  if len(locations)==45:
-   reference=root/'safevision/verification/assets/bram_layout261028/route25.adc'
-   require(sha(reference)=='ac2e2bd6056c95056a0c57668af7ef615525757a6b90310870f74c5696fe8dd4','native layout reference changed')
-   full=dict(re.findall(r'set_inst_assignment \{([^}]+)\} \{LOCATION = ([^;]+);\}',reference.read_text('utf-8-sig')))
-   require(len(full)==46 and set(expected)<=set(full),'reference native macro inventory differs')
-   del full['scrolling$ticker/ramread0_syn_5']
-   full['video/graphics/spectrum$analyzer/ramread0_syn_5']=full.pop('video/graphics/spectrum$analyzer/ramread0_syn_6')
-   require(locations==full and len(set(full.values()))==45,'full shared-font macro layout differs from the verified reference')
-  else:require(locations==expected,'reviewed BASE six-RAM layout differs')
-  require(not required_media_bram_locations(root,'hd'),'HD layout changed')
-  production_profile['base_media_bram_locations']=locations
+  if not required_media_bram_locations(root,'base'):
+   from check_auto_ram_placement import check_source as auto_check
+   auto_proof=auto_check(root)
+   require(auto_proof==read(controls.parent/'auto_ram_numeric/result.json')and auto_proof['accepted']and not auto_proof['timing_constraints_or_clocks_changed'],'automatic RAM source/clock proof differs')
+   require(changes&layout_files in(layout_files,layout_files-{str(FLOW/'v3_physical_base.adc').replace('\\','/')}),'partial automatic RAM profile')
+   production_profile['automatic_media_ram_placement']=True
+  else:
+   require(changes&layout_files==layout_files,'partial media-RAM layout/readback profile')
+   from v3_sources import required_media_bram_locations
+   locations=required_media_bram_locations(root,'base')
+   expected={'player/normalized_bmp$u_unpack/ramread0_syn_5':'X8Y18Z0','player/normalized_bmp$u_unpack/ramread0_syn_15':'X8Y18Z1','row_guard/ramread0_syn_6':'X8Y9Z0','row_guard/ramread0_syn_23':'X8Y9Z1','sink/u_fifo/fifo/ram_inst/ramread0_syn_6':'X8Y18Z3','sink/u_fifo/fifo/ram_inst/ramread0_syn_16':'X8Y18Z2'}
+   if len(locations)==45:
+    reference=root/'safevision/verification/assets/bram_layout261028/route25.adc'
+    require(sha(reference)=='ac2e2bd6056c95056a0c57668af7ef615525757a6b90310870f74c5696fe8dd4','native layout reference changed')
+    full=dict(re.findall(r'set_inst_assignment \{([^}]+)\} \{LOCATION = ([^;]+);\}',reference.read_text('utf-8-sig')))
+    require(len(full)==46 and set(expected)<=set(full),'reference native macro inventory differs')
+    del full['scrolling$ticker/ramread0_syn_5']
+    full['video/graphics/spectrum$analyzer/ramread0_syn_5']=full.pop('video/graphics/spectrum$analyzer/ramread0_syn_6')
+    require(locations==full and len(set(full.values()))==45,'full shared-font macro layout differs from the verified reference')
+   else:require(locations==expected,'reviewed BASE six-RAM layout differs')
+   require(not required_media_bram_locations(root,'hd'),'HD layout changed')
+   production_profile['base_media_bram_locations']=locations
  require(len(sources)==(224 if packed else 223 if dedicated_profile else 217)+int(header_phase)+2*int(checkpoint),'current physical inventory changed')
  summary=read(regression/'summary.json');require(summary.get('complete')and summary.get('accepted'),'full native campaign incomplete/failed')
  expected_jobs={('legacy','a'),('legacy','b')}|{('positive',r['top'])for r in matrix['positive']if not r['legacy']}|{('negative',r['mutation'])for r in matrix['negative']}
@@ -568,7 +577,7 @@ def audit(root,regression,ticker,board,controls):
   extra,prefill_controls,prefill_proof=prefill_pipeline(root,controls.parent);additions+=extra
   production_profile.update(registered_prefill_admission=True,prefill_delay_ref_cycles=1)
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,decimal_dsp_proof=decimal_proof,audio_request_boundary_proof=request_proof,prefill_pipeline_proof=prefill_proof,dedicated_font_proof=dedicated_proof,prefill_pipeline_controls=prefill_controls,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls)+len(prefill_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,decimal_dsp_proof=decimal_proof,audio_request_boundary_proof=request_proof,prefill_pipeline_proof=prefill_proof,dedicated_font_proof=dedicated_proof,auto_ram_placement_proof=auto_proof,prefill_pipeline_controls=prefill_controls,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)

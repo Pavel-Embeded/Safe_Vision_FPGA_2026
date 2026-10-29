@@ -34,6 +34,13 @@ def main():
   design=source_commit_binding(root,root,record['source_commit'],hardware);require(design['verified'],'design commit mismatch')
   gate=check(folder,frozen);require(gate['gate_accepted']and gate['timing_passed']and gate['status']=='PASS','strict native timing gate failed: '+str(gate['errors']))
   save(out/'base.gate.json',gate)
+  auto_native=None
+  if functional['production_profile'].get('automatic_media_ram_placement'):
+   from check_auto_ram_placement import check_native as auto_check_native
+   auto_native=auto_check_native(root,folder);save(out/'automatic_ram.audit.json',auto_native)
+   require(auto_native['accepted'],'automatic native RAM inventory failed')
+   subprocess.run([sys.executable,'-B',str(root/'safevision/tools/test_auto_ram_placement.py'),'--source',str(frozen),'--output',str(out/'automatic_ram_controls')],check=True)
+   auto_controls=read(out/'automatic_ram_controls/verification.json');require(auto_controls['accepted']and len(auto_controls['controls'])==7 and all(row['rejected']for row in auto_controls['controls']),'automatic RAM/pin/clock refusal controls failed')
   checkpoint_control=out/'source_profile_controls'
   subprocess.run([sys.executable,'-B',str(root/'safevision/tools/test_v3_checkpoint_profile.py'),'--source',str(frozen),'--native',str(folder),'--output',str(checkpoint_control)],check=True)
   checkpoint_verdict=read(checkpoint_control/'verification.json')
@@ -44,6 +51,7 @@ def main():
   # Rechecking uses the unchanged real routed directory, not a reconstructed DB.
   protected={Path(row['path']):row['sha256']for row in gate['reports']}
   protected[folder/'build.manifest.json']=sha(folder/'build.manifest.json')
+  if auto_native:protected[folder/'route.bram.adc']=auto_native['ram_readback_sha256']
   for p,digest in protected.items():require(p.resolve().is_relative_to(folder.resolve())and sha(p)==digest,'native evidence changed')
   exe=Path(record['td_executable']);require(sha(exe)==record['td_executable_sha256'],'TD executable changed')
   names=set(hardware)
@@ -78,6 +86,8 @@ def main():
    names|={'safevision/tools/check_prefill_pipeline.py','safevision/tools/test_prefill_pipeline_controls.py'}
   if functional.get('dedicated_font_proof'):
    names.add('safevision/tools/check_dedicated_font.py')
+  if functional['production_profile'].get('automatic_media_ram_placement'):
+   names|={'safevision/tools/check_auto_ram_placement.py','safevision/tools/test_auto_ram_placement.py'}
   commit=subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD']).decode().strip()
   binding=source_commit_binding(root,root,commit,names);require(binding['verified'],'approval inputs are not committed: '+str(binding.get('errors')))
   all_inputs={name:sha(root/name)for name in names}
