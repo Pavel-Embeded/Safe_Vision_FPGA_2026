@@ -1,33 +1,33 @@
 """Test UART evidence checks with synthetic fixtures; never a board result."""
 import copy,json,tempfile,unittest
 from pathlib import Path
-from audit_ticker_uart261028 import audit,xor,DEFAULTS,CRITICAL,COUNTERS
+from audit_ticker_uart261028 import audit,xor,DEFAULTS,CRITICAL,COUNTERS,cadence_window
 
-def fixture():
+def fixture(ticker_delay=2):
  events=[];now=0;live={};ticks=[];moves=[]
  def emit(kind,**fields):
   events.append(dict(kind=kind,elapsed_ms=now,**fields))
- def transaction(body,value):
+ def transaction(body,value,ack_delay=2):
   nonlocal now
   now+=2;emit('tx',body=body,hex=(b'$'+body.encode()+('*%02X\r\n'%xor(body.encode())).encode()).hex())
   packet='C:ACK=00,%08X'%value;frame='$'+packet+('*%02X'%xor(packet.encode()))
-  now+=2;emit('rx',hex=(frame+'\r\n').encode().hex(),text=frame+'\r\n')
+  now+=ack_delay;emit('rx',hex=(frame+'\r\n').encode().hex(),text=frame+'\r\n')
   emit('ack',body=body,code=0,value=value,frame=frame);live[body]=value
-  return now-2
+  return now-ack_delay
  def health():
   values={'CACHE':15,'FAULT':0,'LEVEL':0,'WAVFALLBACK':0,**{q:0 for q in CRITICAL}}
   for q,v in values.items():transaction('B:'+q+'?',v)
   emit('health',values=values)
  def ticker():
-  # ACK is four ms after the initial fixture time. The phase is measured
-  # from that same monotonic clock, including across the modulo768 wrap.
-  t=now+4;position=int(t*.0299823633)%1024
-  transaction('B:DIAG=101',0x544B1000|position)
+  # Independent ground truth: sampling is one ms after TX. USB delivery
+  # may arrive much later; that delay must not change the actual phase.
+  latch=now+3;position=int(latch*.0299823633)%1024
+  tx=transaction('B:DIAG=101',0x544B1000|position,ticker_delay);t=now
   if ticks:
-   before=ticks[-1];dt=t-before['sample_ms'];expected=int(dt*.0299823633)%1024
-   actual=(position-before['position'])%1024
-   emit('ticker_rate',interval_ms=dt,expected_pixels=expected,actual_pixels=actual,position_error=(actual-expected+512)%1024-512)
-  sample=dict(position=position,sample_ms=t,period_pixels=1024);ticks.append(sample);emit('ticker',**sample)
+   before=ticks[-1]
+   rate=cadence_window(before['transaction_start_ms'],before['transaction_end_ms'],tx,t,before['position'],position)
+   emit('ticker_rate',**rate)
+  sample=dict(position=position,sample_ms=t,transaction_start_ms=tx,transaction_end_ms=t,period_pixels=1024);ticks.append(sample);emit('ticker',**sample)
  emit('opened',baud=115200,expected_id='26102801')
  transaction('B:DIAG=0',0x26102801);health();ticker()
  transaction('C:AUTO=0',0);transaction('B:SLOT?',0);transaction('B:GEN?',254)
@@ -133,5 +133,48 @@ class UartControls(unittest.TestCase):
  def test_health_rewrite(self):
   rows=copy.deepcopy(self.events);next(v for v in rows if v['kind']=='health')['values']['INTEGRITY']=1
   with self.assertRaisesRegex(ValueError,'health receipt'):self.check(rows)
+ def test_known_late_ack_measurement(self):
+  result=cadence_window(3645650,3645665,3650985,3651265,255,415)
+  self.assertEqual(result['observed_advance_pixels'],160)
+  self.assertLess(result['position_error'],-4)
+ def test_delayed_usb_capture(self):
+  events,summary=fixture(ticker_delay=280)
+  self.assertTrue(self.check(events,summary)['accepted'])
+ def test_near_timeout_usb_capture(self):
+  events,summary=fixture(ticker_delay=1999)
+  self.assertTrue(self.check(events,summary)['accepted'])
+ def test_known_clock_latency_sweep(self):
+  state=0x6182f5ab
+  for n in range(10000):
+   state=(state*1664525+1013904223)&0xffffffff
+   t0=n*10000;t1=t0+2+state%1998
+   state=(state*1664525+1013904223)&0xffffffff
+   t2=t1+5000+state%100;t3=t2+2+(state>>8)%1998
+   p0=int((t0+1)*.0299823633)%1024;p1=int((t2+1)*.0299823633)%1024
+   self.assertIsInstance(cadence_window(t0,t1,t2,t3,p0,p1),dict)
+ def test_actual_stall_reset_and_wrong_speeds(self):
+  for advance in(0,75,300,901):
+   with self.subTest(advance=advance),self.assertRaisesRegex(ValueError,'cadence'):
+    cadence_window(1000,1015,6015,6030,123,(123+advance)%1024)
+ def coherent_phase(self,advance):
+  rows=copy.deepcopy(self.events);samples=[v for v in rows if v['kind']=='ticker']
+  before,after=samples[-2:];old=0x544B1000|after['position'];position=(before['position']+advance)%1024
+  self.reply(rows,'B:DIAG=101',old,0x544B1000|position);after['position']=position
+  rate=[v for v in rows if v['kind']=='ticker_rate'][-1]
+  rate.update(actual_pixels=advance,observed_advance_pixels=advance,position_error=(advance-rate['expected_pixels']+512)%1024-512)
+  return rows
+ def test_coherent_stalled_phase(self):
+  with self.assertRaisesRegex(ValueError,'cadence'):self.check(self.coherent_phase(0))
+ def test_coherent_half_speed_phase(self):
+  with self.assertRaisesRegex(ValueError,'cadence'):self.check(self.coherent_phase(75))
+ def test_fabricated_transaction_start(self):
+  with self.assertRaisesRegex(ValueError,'detached'):self.check(self.mutate('ticker','transaction_start_ms',0))
+ def test_fabricated_timing_window(self):
+  rows=copy.deepcopy(self.events);sample=[v for v in rows if v['kind']=='ticker'][-1]
+  sample['transaction_end_ms']+=1000;sample['sample_ms']+=1000
+  with self.assertRaisesRegex(ValueError,'detached'):self.check(rows)
+ def test_rate_window_rewrite(self):
+  rows=copy.deepcopy(self.events);[v for v in rows if v['kind']=='ticker_rate'][-1]['advance_max_pixels']+=1000
+  with self.assertRaisesRegex(ValueError,'rate receipt'):self.check(rows)
 
 if __name__=='__main__':unittest.main()

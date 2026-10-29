@@ -13,6 +13,17 @@ def xor(data):
  for b in data:n^=b
  return n
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def cadence_window(before_start,before_end,after_start,after_end,before_position,after_position):
+ # Sampling instants are contained in the two raw TX/ACK transactions.
+ require(0<=before_start<=before_end<=after_start<=after_end and after_end>before_end,'detached or overlapping ticker transaction window')
+ low_ms=after_start-before_end;high_ms=after_end-before_start
+ low=max(0,math.floor(low_ms*.0299823633)-4);high=math.ceil(high_ms*.0299823633)+4
+ actual=(after_position-before_position)%1024
+ observed=actual+1024*math.ceil((low-actual)/1024)
+ require(low<=observed<=high,'ticker cadence/reset failure')
+ dt=after_end-before_end;expected=math.floor(dt*.0299823633)%1024
+ return dict(interval_ms=dt,expected_pixels=expected,actual_pixels=actual,position_error=(actual-expected+512)%1024-512,interval_min_ms=low_ms,interval_max_ms=high_ms,advance_min_pixels=low,advance_max_pixels=high,observed_advance_pixels=observed)
+
 def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
  events=[json.loads(s)for s in(folder/'trace.jsonl').read_text('utf-8-sig').splitlines()if s]
  require(events and events[0]['kind']=='opened'and events[-1]['kind']=='closed'and events[-1]['exit_code']==0,'missing normal serial open/close')
@@ -70,15 +81,14 @@ def audit(folder,minimum_seconds=7200,transitions=100,recoveries=10):
   require(v['FAULT']==0 or(v['FAULT']==7 and v['WAVFALLBACK']>0),'unexpected media fault')
  tick=[e for e in events if e['kind']=='ticker'];rates=[e for e in events if e['kind']=='ticker_rate']
  tickacks=[e for e in replies if e['body']=='B:DIAG=101']
+ ticktx=[e for e in sent if e['body']=='B:DIAG=101']
  require(len(tick)==len(tickacks)and len(rates)==len(tick)-1 and len(tick)>2,'ticker observation inventory mismatch')
- for sample,ack in zip(tick,tickacks):
+ for sample,tx,ack in zip(tick,ticktx,tickacks):
   require(sample['position']==ack['value']&4095 and sample['period_pixels']==1024,'ticker sample differs from ACK')
-  require(0<=sample['sample_ms']-ack['elapsed_ms']<=100 and 0<=sample['elapsed_ms']-sample['sample_ms']<=100,'ticker time is detached from its raw reply')
+  require(sample['sample_ms']==sample['transaction_end_ms']==ack['elapsed_ms']and sample['transaction_start_ms']==tx['elapsed_ms']and sample['elapsed_ms']>=sample['sample_ms'],'ticker time is detached from its raw transaction')
  for before,after,rate in zip(tick,tick[1:],rates):
-  dt=after['sample_ms']-before['sample_ms'];expected=math.floor(dt*.0299823633)%1024
-  actual=(after['position']-before['position'])%1024;error=(actual-expected+512)%1024-512
-  require(dt>0 and abs(error)<=4,'ticker cadence/reset failure')
-  require((rate['interval_ms'],rate['expected_pixels'],rate['actual_pixels'],rate['position_error'])==(dt,expected,actual,error),'ticker rate receipt differs')
+  expected=cadence_window(before['transaction_start_ms'],before['transaction_end_ms'],after['transaction_start_ms'],after['transaction_end_ms'],before['position'],after['position'])
+  require(all(rate[k]==v for k,v in expected.items()),'ticker rate receipt differs')
  moves=[e for e in events if e['kind']=='transition'];restores=[e for e in events if e['kind']=='recovery'];monitor=[e for e in events if e['kind']=='monitor'];complete=[e for e in events if e['kind']=='complete'];starts=[e for e in events if e['kind']=='monitor_started']
  require(len(moves)==transitions and len([e for e in sent if e['body']=='C:NEXT=1'])==transitions,'transition count differs')
  require([e['index']for e in moves]==list(range(transitions)),'transition index differs')

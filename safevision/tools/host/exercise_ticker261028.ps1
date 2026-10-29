@@ -33,6 +33,7 @@ function Send([string]$body){
  if($sum -ne [Convert]::ToInt32($m.Groups[4].Value,16)){throw ('Bad ACK checksum: '+$body)}
  $code=[Convert]::ToInt32($m.Groups[2].Value,16);$value=[Convert]::ToUInt32($m.Groups[3].Value,16)
  Log @{kind='ack';body=$body;code=$code;value=$value;frame=$m.Value.TrimEnd("`r","`n")}
+ $script:lastAckMs=$script:loggedAtMs
  if($code -ne 0){throw ('Rejected '+$body+' code='+$code)}
  return $value
 }
@@ -60,17 +61,23 @@ function Defaults {
 function Ticker {
  $position=Send 'B:DIAG=101'
  if(($position -shr 12) -ne 0x544B1 -or ($position -band 0xFFF) -ge 1024){throw 'Invalid ticker signature/position'}
- $sampleMs=$timer.ElapsedMilliseconds;$pos=$position -band 4095
+ $sampleMs=$script:lastAckMs;$sampleStartMs=$script:lastTxMs;$pos=$position -band 4095
  if($null -ne $script:lastTickMs){
   $dt=$sampleMs-$script:lastTickMs
   $expectedPosition=([int][Math]::Floor($dt*0.0299823633))%1024
   $actualPosition=($pos-$script:lastTickPosition+1024)%1024
   $positionError=($actualPosition-$expectedPosition+1536)%1024-512
-  if([Math]::Abs($positionError) -gt 4){throw 'Ticker stopped, reset unexpectedly or ran at the wrong cadence'}
-  Log @{kind='ticker_rate';interval_ms=$dt;expected_pixels=$expectedPosition;actual_pixels=$actualPosition;position_error=$positionError}
+  # The FPGA snapshot lies in the raw TX/ACK interval, including USB latency.
+  $minimumMs=$sampleStartMs-$script:lastTickMs
+  $maximumMs=$sampleMs-$script:lastTickStartMs
+  $minimumPixels=[Math]::Max(0,[Math]::Floor($minimumMs*0.0299823633)-4)
+  $maximumPixels=[Math]::Ceiling($maximumMs*0.0299823633)+4
+  $observedPixels=$actualPosition+1024*[Math]::Ceiling(($minimumPixels-$actualPosition)/1024.0)
+  if($minimumMs -lt 0 -or $dt -le 0 -or $observedPixels -gt $maximumPixels){throw 'Ticker stopped, reset unexpectedly or ran at the wrong cadence'}
+  Log @{kind='ticker_rate';interval_ms=$dt;expected_pixels=$expectedPosition;actual_pixels=$actualPosition;position_error=$positionError;interval_min_ms=$minimumMs;interval_max_ms=$maximumMs;advance_min_pixels=$minimumPixels;advance_max_pixels=$maximumPixels;observed_advance_pixels=$observedPixels}
  }
- $script:lastTickMs=$sampleMs;$script:lastTickPosition=$pos
- Log @{kind='ticker';position=$pos;sample_ms=$sampleMs;period_pixels=1024}
+ $script:lastTickMs=$sampleMs;$script:lastTickStartMs=$sampleStartMs;$script:lastTickPosition=$pos
+ Log @{kind='ticker';position=$pos;sample_ms=$sampleMs;transaction_start_ms=$sampleStartMs;transaction_end_ms=$sampleMs;period_pixels=1024}
  return $pos
 }
 $matched=$false;$restored=$false;$script:lastTickMs=$null;$latencies=New-Object 'System.Collections.Generic.List[int]'
