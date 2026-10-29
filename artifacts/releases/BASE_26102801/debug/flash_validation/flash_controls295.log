@@ -1,0 +1,18 @@
+.................F
+======================================================================
+FAIL: test_wrong_flash_identification_refused (__main__.FlashEvidenceControls.test_wrong_flash_identification_refused)
+----------------------------------------------------------------------
+ValueError: Reload capture is detached from Flash installation
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Codex\sv_scroll261028\wav_reject_barrier_source\safevision\tools\test_ticker_flash261028.py", line 97, in test_wrong_flash_identification_refused
+    with self.assertRaisesRegex(ValueError, 'EF4015'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: "EF4015" does not match "Reload capture is detached from Flash installation"
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.771s
+
+FAILED (failures=1)

@@ -1,0 +1,15 @@
+RUN-1002 : start command "read_device_id -cable 0"
+EG4S20BG256
+RUN-1003 : finish command "read_device_id -cable 0" in  0.086535s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+RUN-1004 : used memory is 25 MB, reserved memory is 10 MB, peak memory is 25 MB
+RUN-1002 : start command "download -bit D:/Codex/sv_scroll261028/wav_reject_barrier_source/artifacts/releases/BASE_26102801/SafeVision_BASE_75b34e6.bit -mode refresh -spd 7 -cable 0"
+PRG-2014 : Chip validation success: EG4S20BG256
+RUN-1002 : start command "program -cable 0 -spd 1"
+RUN-1003 : finish command "program -cable 0 -spd 1" in  0.171263s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+RUN-1004 : used memory is 25 MB, reserved memory is 10 MB, peak memory is 25 MB
+RUN-1003 : finish command "download -bit D:/Codex/sv_scroll261028/wav_reject_barrier_source/artifacts/releases/BASE_26102801/SafeVision_BASE_75b34e6.bit -mode refresh -spd 7 -cable 0" in  0.272071s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+RUN-1004 : used memory is 25 MB, reserved memory is 10 MB, peak memory is 25 MB
+SV_FLASH_REFRESH_DONE

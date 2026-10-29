@@ -1,0 +1,18 @@
+{
+  "verified": true,
+  "path": "D:\\Codex\\sv_scroll261028\\clean_offline285\\proof",
+  "archive_sha256": "97f589adf002ab96a09dc9dbf6ce4b68f6ec569e6b95b998827de6c412b1689a",
+  "files": 10380,
+  "bytes": 571305522,
+  "protected_sha256": {
+    "D:\\Codex\\sv_scroll261028\\wav_reject_barrier_source\\artifacts\\releases\\BASE_26102801\\qualification.zip": "97f589adf002ab96a09dc9dbf6ce4b68f6ec569e6b95b998827de6c412b1689a",
+    "D:\\Codex\\sv_scroll261028\\wav_reject_barrier_source\\artifacts\\releases\\BASE_26102801\\release.index.json": "34dc8e393ca3e99a979840a3cff6c3ed07f25d10533ccf0c5f7378fde45885aa",
+    "D:\\Codex\\sv_scroll261028\\wav_reject_barrier_source\\artifacts\\releases\\BASE_26102801\\SafeVision_BASE_75b34e6.bit": "1a0cf8cccdb1487b34f70e20eaa333dc106826dbc1d821be99b6a828b80b4083",
+    "D:\\Codex\\sv_scroll261028\\board_ticker274\\programming\\programming.json": "33f8afb5896319dfa05d9b0090eb5c1e8f06612e426640fc82037006edfa1cee",
+    "D:\\Codex\\sv_scroll261028\\board_ticker274\\programming\\download.console.log": "939462ebaf58d739cba8dbd525685ac0b727f1ddce2e1d3fcdf7ec10329c9b17",
+    "D:\\Codex\\sv_scroll261028\\clean_offline285\\verification.json": "0173031af23e35f9b897443905364d3e3241a639aa79bc40d8a65a878104eb9f",
+    "D:\\Codex\\sv_scroll261028\\native228\\base\\build.manifest.json": "3dbfd55afa417799e17943fce5052cea527d9ce01248ad7adee6523779709da2"
+  },
+  "deleted": true,
+  "deleted_at_utc": "2026-10-29T10:30:15.3620830Z"
+}

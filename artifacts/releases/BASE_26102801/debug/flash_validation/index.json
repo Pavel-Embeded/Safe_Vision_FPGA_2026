@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "actual_saved_flash_replay_passed": true,
+  "flash_controls_total": 21,
+  "flash_controls_passed": true,
+  "initial_test_failure": {
+    "log": "flash_controls295.log",
+    "reason": "The deliberately changed JEDEC text did not match the actual spacing; the fixture was corrected and all18controls rerun"
+  },
+  "workflow_sha256": "6b544430324cbc650545832d1a6330557e658bca99e31ec4fd2e5f81fd7c0cee",
+  "files_sha256": {
+    "flash_controls295.log": "02af4bafd19c84dae7c764c37459cfba62119e0e53f40c93302341be25a4694f",
+    "flash_controls296.log": "4b8098453265806975c2e5e637ac6beff12e909634088ce44bc4e20e4871d0f8",
+    "workflow_checks297.py": "f4d43234789397a1880e218154775f91a5d3112fa0906e487f3d44793b49a336",
+    "workflow_checks297.json": "1888714a390994ef279c727b10f1d896e8c4ea5b56665a12a068f30b964be7b6",
+    "workflow_checks297.driver.log": "0cf27e9432cf5e51d0a5260317c62dc445c5fb96e959fae350a21f6e1e923433",
+    "verification294.json": "6ec951e6a4211acb4e1f340cfa50783407781e4a69aa1036044c647195f2c817",
+    "install_flash292.driver.log": "64219d10773c74e1607cd161ddd4e323157d67733c6667624e22e7ca0b333c83",
+    "stage_flash294.driver.log": "2968166f566e872baa25bc447fb5ebe3ac6b5f023767571e9ac101999a86b557",
+    "flash_controls300.log": "5aefe563499077c9fd91eacf5a211713847b41a1cd0a5e8e98680994abbc14ff",
+    "flash_recheck300.json": "6ec951e6a4211acb4e1f340cfa50783407781e4a69aa1036044c647195f2c817"
+  },
+  "initial_passing_controls_total": 18,
+  "latest_controls_log": "flash_controls300.log"
+}

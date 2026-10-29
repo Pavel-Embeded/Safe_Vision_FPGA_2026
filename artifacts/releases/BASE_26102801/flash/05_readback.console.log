@@ -1,0 +1,33 @@
+RUN-1002 : start command "read_device_id -cable 0"
+EG4S20BG256
+RUN-1003 : finish command "read_device_id -cable 0" in  0.086653s wall, 0.015625s user + 0.000000s system = 0.015625s CPU (18.0%)
+
+RUN-1004 : used memory is 25 MB, reserved memory is 10 MB, peak memory is 25 MB
+RUN-1002 : start command "read_flash -start_addr 0x000000 -length 2097152 -output D:/Codex/sv_scroll261028/flash_install292/after_flash_a.bin -level 1 -total 1 -cable 0"
+PRG-2501 : GenScanChainDeviceIdSvf: check type of chip successfully.(EG4S20BG256)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+PRG-1002 : Readback Flash: Generate file D:/Codex/sv_scroll261028/flash_install292/after_flash_a.bin.
+RUN-1003 : finish command "read_flash -start_addr 0x000000 -length 2097152 -output D:/Codex/sv_scroll261028/flash_install292/after_flash_a.bin -level 1 -total 1 -cable 0" in  21.059943s wall, 0.796875s user + 0.359375s system = 1.156250s CPU (5.5%)
+
+RUN-1004 : used memory is 513 MB, reserved memory is 518 MB, peak memory is 570 MB
+SV_FLASH_READ_A_DONE
+RUN-1002 : start command "read_flash -start_addr 0x000000 -length 2097152 -output D:/Codex/sv_scroll261028/flash_install292/after_flash_b.bin -level 1 -total 1 -cable 0"
+PRG-2501 : GenScanChainDeviceIdSvf: check type of chip successfully.(EG4S20BG256)
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
+PRG-1002 : Readback Flash: Generate file D:/Codex/sv_scroll261028/flash_install292/after_flash_b.bin.
+RUN-1003 : finish command "read_flash -start_addr 0x000000 -length 2097152 -output D:/Codex/sv_scroll261028/flash_install292/after_flash_b.bin -level 1 -total 1 -cable 0" in  21.314869s wall, 0.984375s user + 0.375000s system = 1.359375s CPU (6.4%)
+
+RUN-1004 : used memory is 514 MB, reserved memory is 525 MB, peak memory is 571 MB
+SV_FLASH_READ_B_DONE

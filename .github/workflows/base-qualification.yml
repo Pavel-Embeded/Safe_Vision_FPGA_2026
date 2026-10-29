@@ -128,6 +128,13 @@ jobs:
         run: python -B safevision/tools/test_ticker_archive261028.py
       - name: Reject inconsistent UART evidence using synthetic fixtures
         run: python -B safevision/tools/test_ticker_uart261028.py
+      - name: Verify Flash installation and reject corrupted evidence
+        shell: pwsh
+        run: |
+          python -B safevision/tools/test_ticker_flash261028.py
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -B safevision/tools/verify_ticker_flash261028.py --output "$env:RUNNER_TEMP/safevision-flash-audit.json"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Verify debug archives, retained evidence and documentation links
         shell: pwsh
         run: |
@@ -176,3 +183,4 @@ jobs:
             ${{ runner.temp }}/safevision-base-audit/baseline-replay.log
             ${{ runner.temp }}/safevision-base-audit/supplementary/summary.json
             ${{ runner.temp }}/safevision-records.json
+            ${{ runner.temp }}/safevision-flash-audit.json

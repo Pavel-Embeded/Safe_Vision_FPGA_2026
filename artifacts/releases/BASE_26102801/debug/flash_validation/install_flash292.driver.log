@@ -1,0 +1,13 @@
+START 01_probe
+PASS 01_probe
+START 02_backup
+PASS 02_backup
+START 03_program
+PASS 03_program
+START 04_verify
+PASS 04_verify
+START 05_readback
+PASS 05_readback
+START 06_refresh
+PASS 06_refresh
+FLASH PROGRAM + VERIFY + TWO FULL READBACKS + REFRESH PASS
