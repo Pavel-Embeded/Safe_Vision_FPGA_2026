@@ -28,7 +28,14 @@ def source_list(root,flow,mode):
  return hd if mode=='hd'else common
 def native_acknowledgement(root,folder,mode):
  from v3_sources import sources
- log=folder.parent/(mode+'.console.log');text=log.read_text(encoding='utf-8',errors='replace')
+ log=folder.parent/(mode+'.console.log')
+ if(folder/'checkpoint.synthesis.json').is_file():
+  # The implementation process imports gate.db and never invokes read_hdl.
+  # Use its exact, checksum-linked synthesis process; reject a forged handoff.
+  from v3_checkpoint_flow import verify_receipt
+  verify_receipt(folder)
+  log=folder/'synthesis.console.log'
+ text=log.read_text(encoding='utf-8',errors='replace')
  matches=re.findall(r'^RUN-1002 : start command "read_hdl -file (.*?) -include_dir [^\r\n]*? -top safevision_v3_top"$',text,re.M)
  if len(matches)!=1:raise ValueError('missing/ambiguous actual native read_hdl command')
  actual=[str(Path(p).resolve()).casefold()for p in matches[0].split()]

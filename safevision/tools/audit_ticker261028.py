@@ -385,7 +385,7 @@ def audit(root,regression,ticker,board,controls):
  if checkpoint:
   from v3_checkpoint_flow import validate
   require(validate(root)['accepted'],'checkpoint source transform differs')
-  allowed.add('safevision/tools/run_v3_board.py')
+  allowed|={'safevision/tools/run_v3_board.py','safevision/tools/v3_source_profiles.py'}
  packed='.PACKED_EXTERNAL(1)'in top
  selected=top.count('.EXTERNAL_FONT(1)')==1 and top.count('.SHARED_TICKER(TICKER_ENABLE)')==1 and top.count('.SHARED_PACKED_FONT(TICKER_ENABLE)')==1 and top.count('.PACKED_EXTERNAL(1)')==1 and '.EXTERNAL_FONT(0)'not in top and '.SHARED_TICKER(0)'not in top if packed else top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top
  require(selected and top.count('.MESSAGE_CHARS(32)')==1 and '.MESSAGE_CHARS(16)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'32character/shared-status/lookahead/packed-reply production profile differs')

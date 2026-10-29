@@ -35,6 +35,9 @@ HIDDEN_ALLOWED_AFTER="  ('place','ce_weight'):{'on'},('place','cn_opt_effort'):{
 HIDDEN_READ_BEFORE="  if stage=='route'and name=='post_route_opt':"
 HIDDEN_READ_AFTER="  if stage=='place'and name in('ce_weight','cn_opt_effort','critical_hfn_opt','enhanced_beeline_opt'):\n   path=folder/'place.hidden.params';text=path.read_text(encoding='utf-8');report_name=path.name\n   hits=re.findall(r'^place '+re.escape(name)+r' (\\w+)$',text,re.M)\n  elif stage=='route'and name=='post_route_opt':"
 
+PROFILE_READ_BEFORE=" log=folder.parent/(mode+'.console.log');text=log.read_text(encoding='utf-8',errors='replace')"
+PROFILE_READ_AFTER=" log=folder.parent/(mode+'.console.log')\n if(folder/'checkpoint.synthesis.json').is_file():\n  # The implementation process imports gate.db and never invokes read_hdl.\n  # Use its exact, checksum-linked synthesis process; reject a forged handoff.\n  from v3_checkpoint_flow import verify_receipt\n  verify_receipt(folder)\n  log=folder/'synthesis.console.log'\n text=log.read_text(encoding='utf-8',errors='replace')"
+
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def blob(root,name):return subprocess.check_output(['git','-C',str(root),'cat-file','blob',PARENT+':'+name]).decode('utf-8-sig')
 def transform(text,patches):
@@ -66,6 +69,7 @@ def validate(root):
   'safevision/tools/run_v3_board.py':transform(blob(root,'safevision/tools/run_v3_board.py'),[(RUN_BEFORE,RUN_AFTER)]),
   'safevision/tools/check_v3_board.py':transform(blob(root,'safevision/tools/check_v3_board.py'),[(CHECK_FILES_BEFORE,CHECK_FILES_AFTER),(CHECK_BEFORE,CHECK_AFTER)]),
   'safevision/tools/v3_sources.py':transform(blob(root,'safevision/tools/v3_sources.py'),[(SCOPE_BEFORE,SCOPE_AFTER),(SNAPSHOT_BEFORE,SNAPSHOT_AFTER),(HIDDEN_ALLOWED_BEFORE,HIDDEN_ALLOWED_AFTER),(HIDDEN_READ_BEFORE,HIDDEN_READ_AFTER)]),
+  'safevision/tools/v3_source_profiles.py':transform(blob(root,'safevision/tools/v3_source_profiles.py'),[(PROFILE_READ_BEFORE,PROFILE_READ_AFTER)]),
   FLOW+'v3_implementation_checkpoint.tcl':implementation_text(blob(root,FLOW+'v3_td_flow.tcl'))}
  for name,text in expected.items():
   if(root/name).read_text('utf-8-sig')!=text:raise ValueError('unreviewed checkpoint-flow change: '+name)

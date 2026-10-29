@@ -24,7 +24,7 @@ def replay(root,native):
  databases=[Path(row['path'])for row in record['gate']['reports']if PureWindowsPath(row['path']).name=='route.db']
  require(len(databases)==1,'missing unique native database identity')
  folder=databases[0].parent;run=folder.parent
- require(folder.name=='base'and run.parent==PREFIX and re.fullmatch('native[0-9]{2}',run.name),'unapproved native restoration path')
+ require(folder.name=='base'and run.parent==PREFIX and re.fullmatch('native[0-9]{2,3}',run.name),'unapproved native restoration path')
  created=[];owned={}
  def validate_directory(path):
   require(path.resolve().is_relative_to(PREFIX.resolve()),'restored path escaped workspace')
