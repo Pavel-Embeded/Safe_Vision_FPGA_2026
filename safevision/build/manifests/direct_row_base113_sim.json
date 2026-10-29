@@ -1,0 +1,21 @@
+{
+  "sources": [
+    "safevision/rtl/memory/v3_row_integrity.v",
+    "safevision/verification/models/v3_row_integrity_frozen_direct_memory.sv"
+  ],
+  "tops": [
+    "tb_v3_direct_row_base"
+  ],
+  "defines": [],
+  "assets": [
+    "safevision/verification/assets/direct_row_crc113.mem",
+    "safevision/verification/models/direct_row_lookup112.freeze.json"
+  ],
+  "generator_dependencies": [],
+  "generated_assets": [],
+  "strict_generated_inputs": 1,
+  "native_runner": "safevision/tools/run_v3_sim_flexible.py",
+  "timeouts": {
+    "tb_v3_direct_row_base": 600
+  }
+}

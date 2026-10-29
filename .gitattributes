@@ -6232,3 +6232,19 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/verification/models/v3_file_streamer_frozen_timeout.freeze.json -text
 
 /safevision/build/manifests/fs_timeout_pipeline_sim.json -text
+
+/safevision/verification/models/direct_row_lookup112.freeze.json -text
+
+/safevision/verification/models/v3_row_integrity_frozen_direct_memory.sv -text
+
+/safevision/verification/models/v3_row_integrity_frozen_direct_hd.sv -text
+
+/safevision/verification/assets/direct_row_crc113.mem -text
+
+/safevision/verification/unit/tb_v3_direct_row_base.sv -text
+
+/safevision/build/manifests/direct_row_base113_sim.json -text
+
+/safevision/verification/unit/tb_v3_direct_row_hd.sv -text
+
+/safevision/build/manifests/direct_row_hd113_sim.json -text
