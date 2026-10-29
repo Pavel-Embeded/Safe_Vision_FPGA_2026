@@ -6,7 +6,7 @@
 // verification and display lookup; lookup_valid is suppressed while verifying.
 module v3_row_integrity #(
  parameter integer ROW_WORDS=320,ROWS=480,BURST=64,
- parameter integer TIMEOUT=40000000
+ parameter integer TIMEOUT=40000000,DIRECT_LOOKUP=0
 )(input wire clk,rst_n,frame_begin,input wire[1:0] frame_slot,
  input wire top_down,accepted,input wire[31:0] write_addr,write_data,
  input wire verify_start,verify_allow,
@@ -15,7 +15,8 @@ module v3_row_integrity #(
  input wire rd_ack,rd_busy,rd_valid,input wire[31:0] rd_data,
  input wire[31:0] lookup_addr,output wire[31:0] lookup_crc,output reg lookup_valid,
  output reg[31:0] bad_addr,bad_expected,bad_actual,output wire[31:0] source_words,
- output reg[15:0] checked_rows);
+ output reg[15:0] checked_rows,
+ input wire[1:0] lookup_slot_index,input wire[9:0] lookup_row_index);
  `include "crc32_word.vh"
  localparam IDLE=0,RETIRE=1,REQUEST=2,COLLECT=3,CHECK=4,DONE=5;
  // Separate resident slots into power-of-two banks. At480 rows this
@@ -58,8 +59,15 @@ module v3_row_integrity #(
    addr[20:17]>=4'd10 ? 2'd2 : addr[20:17]>=4'd5 ? 2'd1 : 2'd0;
  else addr_slot=addr>=`SV_IMG3_BASE?3:addr>=`SV_IMG2_BASE?2:addr>=`SV_IMG1_BASE?1:0;
  end endfunction
- wire[1:0] source_slot=addr_slot(write_addr),query_slot=addr_slot(lookup_addr);
- wire[31:0] query_offset=lookup_addr-`SV_SLOT_BASE(query_slot);
+ // Slot pitch is512 source rows. Preserve even out-of-raster row aliases
+ // produced by the10-bit cache descriptor; bank4 still rejects exactly.
+ localparam integer USE_DIRECT=DIRECT_LOOKUP&&ROW_WORDS==320&&ROWS==480&&
+  `SV_IMG0_BASE==32'h00000000&&`SV_IMG1_BASE==32'h000a0000&&
+  `SV_IMG2_BASE==32'h00140000&&`SV_IMG3_BASE==32'h001e0000;
+ wire[2:0] direct_slot_sum={1'b0,lookup_slot_index}+{2'b0,lookup_row_index[9]};
+ wire[1:0] source_slot=addr_slot(write_addr),legacy_query_slot=addr_slot(lookup_addr);
+ wire[1:0] query_slot=USE_DIRECT?direct_slot_sum[1:0]:legacy_query_slot;
+ wire[31:0] query_offset=lookup_addr-`SV_SLOT_BASE(legacy_query_slot);
  wire[31:0] wanted=(source_first)?base+(top_down?0:(ROWS-1)*ROW_WORDS*4):expected_addr;
  wire source_beat=building && accepted && !fault && write_addr==wanted && source_slot==slot_q;
  wire signature_write=source_beat && column==ROW_WORDS-1;
@@ -82,7 +90,7 @@ module v3_row_integrity #(
  // rather than dividing its address again; arbitrary source addresses retain
  // the full32-bit wanted/slot checks and can never write a signature.
  wire[9:0] source_row=(source_first)?(top_down?0:ROWS-1):producer_row;
- wire[9:0] query_row;
+ wire[9:0] legacy_query_row;
  wire query_divisible;
  generate if(ODD==5 && OFFSET_BITS-LOW<=12)begin:exact_five
   // 5*3277 = 1 modulo4096. For an in-range row r<ROWS<=480,
@@ -92,13 +100,15 @@ module v3_row_integrity #(
   // This fuses quotient/remainder/range logic into one short DSP path;
   // RAM read and lookup_valid retain their original single-edge latency.
   (* dsp_style="yes" *) wire[11:0] inverse_row=query_high*12'd3277;
-  assign query_row=inverse_row[9:0];
+  assign legacy_query_row=inverse_row[9:0];
   assign query_divisible=inverse_row<ROWS;
  end else begin:generic_divisor
-  assign query_row=query_high/ODD;
+  assign legacy_query_row=query_high/ODD;
   assign query_divisible=query_high%ODD==0;
  end endgenerate
- wire query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_divisible;
+ wire legacy_query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_divisible;
+ wire query_ok=USE_DIRECT?(!direct_slot_sum[2]&&lookup_row_index[8:0]<ROWS):legacy_query_ok;
+ wire[9:0] query_row=USE_DIRECT?{1'b0,lookup_row_index[8:0]}:legacy_query_row;
  // The write-enable includes source_slot==slot_q, so selecting slot_q
  // here is exactly equal on EVERY memory-write edge, including invalid
  // source-address cases (which never assert signature_write).

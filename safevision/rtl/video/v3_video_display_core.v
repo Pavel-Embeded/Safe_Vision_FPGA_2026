@@ -29,7 +29,8 @@ module v3_video_display_core #(
  // Appended optional ports preserve all legacy positional connections.
  input wire cache_write_clk,cache_write_rst_n,
  input wire font_request,input wire[8:0] font_index,output wire[7:0] font_word,
- input wire font_index_hi,output wire[8:0] font_word9
+ input wire font_index_hi,output wire[8:0] font_word9,
+ output wire[1:0] lookup_slot_index,output wire[9:0] lookup_row_index
 );
  localparam integer CFG_W=HANDBOOK_PROFILE?99:96,DESC_W=HANDBOOK_PROFILE?26:24;
  localparam HA=HD?1280:640,HF=HD?110:16,HS=HD?40:96,HB=HD?220:48;
@@ -180,6 +181,7 @@ module v3_video_display_core #(
   .rows_ready(rows_ready),.sample_valid(sample_valid),.rd_req(rd_req),.rd_addr(rd_addr),.rd_len(rd_len),
   .rd_ack(rd_ack),.rd_busy(rd_busy),.rd_data(rd_data),.rd_valid(rd_valid),
   .lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),
+  .lookup_slot_index(lookup_slot_index),.lookup_row_index(lookup_row_index),
   .fault(cache_fault),.dma_busy(dma_busy),.dma_progress(dma_progress));
  (* async_reg="true" *) reg fault_s1,fault_s2,fault_p1,fault_p2,present_s1,present_s2;
  always @(posedge sys_clk or negedge sys_rst_n)begin

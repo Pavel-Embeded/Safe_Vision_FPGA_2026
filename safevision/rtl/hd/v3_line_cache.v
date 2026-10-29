@@ -15,7 +15,8 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
  output reg rd_req,output reg[31:0] rd_addr,output wire[15:0] rd_len,
  input wire rd_ack,rd_busy,rd_valid,input wire[31:0] rd_data,
  output reg[31:0] lookup_addr,input wire[31:0] lookup_crc,input wire lookup_valid,
- output reg fault,output wire dma_busy,output wire dma_progress
+ output reg fault,output wire dma_busy,output wire dma_progress,
+ output wire[1:0] lookup_slot_index,output wire[9:0] lookup_row_index
 );
  `include "crc32_word.vh"
  localparam integer DESC_W=HANDBOOK_PROFILE?26:24;
@@ -42,6 +43,8 @@ module v3_line_cache #(parameter integer TIMEOUT=4000000,PACKED_ROWS=0,HANDBOOK_
  wire[1:0] memory_scale=HANDBOOK_PROFILE?descriptor_extended[25:24]:0;reg[2:0] state;reg first_half_announced;
  localparam IDLE=0,SELECT=1,QUERY1=2,QUERY2=3,ISSUE=4,READ=5,RETIRE=6,REPLY=7;
  reg[2:0] item,bank;reg[1:0] slot;reg[9:0] row;
+ // These registers and lookup_addr change on the same SELECT edge.
+ assign lookup_slot_index=slot;assign lookup_row_index=row;
  reg[1:0] tag_slot[0:7];reg[9:0] tag_row[0:7];reg[7:0] tag_valid;
  reg[8:0] word_column;reg[6:0] burst_count;reg[31:0] crc,expected,timer;
  // Dual-stream order is A0,B0,A1,B1: publish the nearer row for BOTH

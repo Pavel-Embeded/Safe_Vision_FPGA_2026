@@ -180,13 +180,15 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
   guard_slot_q<=source_slot;guard_top_q<=source_top_down;
   guard_write_addr_q<=mem_addr;guard_write_data_q<=mem_wdata;guard_read_data_q<=verify_data;
  end
- v3_row_integrity #(.TIMEOUT(50000000)) row_guard(.clk(mem_clk),.rst_n(mem_media_rst_n),
+ wire[1:0] lookup_slot_index;wire[9:0] lookup_row_index;
+ v3_row_integrity #(.DIRECT_LOOKUP(1),.TIMEOUT(50000000)) row_guard(.clk(mem_clk),.rst_n(mem_media_rst_n),
  .frame_begin(guard_begin_q),.frame_slot(guard_slot_q),.top_down(guard_top_q),
  .accepted(guard_accept_q),.write_addr(guard_write_addr_q),.write_data(guard_write_data_q),
  .verify_start(guard_verify_q),.verify_allow(write_drained),.verify_done(guard_done),.verify_pass(guard_pass),
  .fault(guard_fault),.approved(approved),.rd_req(verify_req),.rd_addr(verify_addr),.rd_len(verify_len),
  .rd_ack(verify_ack),.rd_busy(verify_busy),.rd_valid(guard_valid_q),.rd_data(guard_read_data_q),
  .lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),
+ .lookup_slot_index(lookup_slot_index),.lookup_row_index(lookup_row_index),
  .bad_addr(guard_bad_addr),.bad_expected(guard_expected),.bad_actual(guard_actual),.source_words(guard_words),.checked_rows(guard_rows));
 
  wire dma_busy,dma_progress;
@@ -328,6 +330,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  .underflows(video_underflows),.dma_busy(dma_busy),.dma_progress(dma_progress),
  .rd_req(rd_req),.rd_addr(rd_addr),.rd_len(rd_len),.rd_ack(rd_ack),.rd_busy(rd_busy),.rd_data(rd_data),.rd_valid(rd_valid),
  .lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),
+ .lookup_slot_index(lookup_slot_index),.lookup_row_index(lookup_row_index),
  .raw_x(raw_x),.raw_y(raw_y),.raw_de(raw_de),.raw_hs(raw_hs),.raw_vs(raw_vs),.frame_start(raw_fs),
  .rgb(rgb),.hs(out_hs),.vs(out_vs),.de(out_de),.x(out_x),.y(out_y));
  // Predict five columns from the existing final raster. The visible strip

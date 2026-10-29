@@ -1,0 +1,178 @@
+{
+  "parent_commit": "521c9c295766e71d836f392ef9a16e6b8e65fcee",
+  "files": {
+    "safevision/rtl/video/v3_line_cache.v": {
+      "original_sha256": "0665a48b06b88132a2cda3c0bf92fea4694363849494196e7a8aa9f3439ad905",
+      "current_sha256": "e6bdf7c3c7af6e6e37283825723d79c5472320497983e01683928b9da9012b3d",
+      "patches": [
+        {
+          "before": "output reg fault,output wire dma_busy,output wire dma_progress\n);",
+          "after": "output reg fault,output wire dma_busy,output wire dma_progress,\n output wire[1:0] lookup_slot_index,output wire[9:0] lookup_row_index\n);",
+          "occurrences": 1
+        },
+        {
+          "before": "reg[2:0] item,bank;reg[1:0] slot;reg[9:0] row;",
+          "after": "reg[2:0] item,bank;reg[1:0] slot;reg[9:0] row;\n // These registers and lookup_addr change on the same SELECT edge.\n assign lookup_slot_index=slot;assign lookup_row_index=row;",
+          "occurrences": 1
+        }
+      ]
+    },
+    "safevision/rtl/video/v3_video_display_core.v": {
+      "original_sha256": "9a295511b4d4e07e3a499912347df5f647472ad38cbe595e6d8b69af4c8969df",
+      "current_sha256": "0638514c104865861f4602b524f13b62cdc3c411ed181d934b92e920216e9e04",
+      "patches": [
+        {
+          "before": "input wire font_index_hi,output wire[8:0] font_word9\n);",
+          "after": "input wire font_index_hi,output wire[8:0] font_word9,\n output wire[1:0] lookup_slot_index,output wire[9:0] lookup_row_index\n);",
+          "occurrences": 1
+        },
+        {
+          "before": ".lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),",
+          "after": ".lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),\n  .lookup_slot_index(lookup_slot_index),.lookup_row_index(lookup_row_index),",
+          "occurrences": 1
+        }
+      ]
+    },
+    "safevision/rtl/hd/v3_line_cache.v": {
+      "original_sha256": "f4f87f6fb77a1f4b4c65ec53471438eace8af55d3878cd2a423033186e590695",
+      "current_sha256": "eed1494db2acf6ad36238c56f00802f3e44ff009c7726b7f0e366b68d7548758",
+      "patches": [
+        {
+          "before": "output reg fault,output wire dma_busy,output wire dma_progress\n);",
+          "after": "output reg fault,output wire dma_busy,output wire dma_progress,\n output wire[1:0] lookup_slot_index,output wire[9:0] lookup_row_index\n);",
+          "occurrences": 1
+        },
+        {
+          "before": "reg[2:0] item,bank;reg[1:0] slot;reg[9:0] row;",
+          "after": "reg[2:0] item,bank;reg[1:0] slot;reg[9:0] row;\n // These registers and lookup_addr change on the same SELECT edge.\n assign lookup_slot_index=slot;assign lookup_row_index=row;",
+          "occurrences": 1
+        }
+      ]
+    },
+    "safevision/rtl/hd/v3_video_display_core.v": {
+      "original_sha256": "d6bee164cd6f4ef4ce5bef4ef5a18b7c873999b856d77044f5448b27481f1233",
+      "current_sha256": "6848ee0e745f76e5af227f622e19c7166b76fd8b3691b7d494bf0ebbf583441b",
+      "patches": [
+        {
+          "before": "input wire font_index_hi,output wire[8:0] font_word9\n);",
+          "after": "input wire font_index_hi,output wire[8:0] font_word9,\n output wire[1:0] lookup_slot_index,output wire[9:0] lookup_row_index\n);",
+          "occurrences": 1
+        },
+        {
+          "before": ".lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),",
+          "after": ".lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),\n  .lookup_slot_index(lookup_slot_index),.lookup_row_index(lookup_row_index),",
+          "occurrences": 1
+        }
+      ]
+    },
+    "safevision/rtl/memory/v3_row_integrity.v": {
+      "original_sha256": "ef3840a00b74e7940591e40f53aa68fcae9022a2dc192ed2ee5973cb9a2c0b66",
+      "current_sha256": "4b92e5d334fae965a3f33dd0455d6e502b6fd54a13f6c4767841f0419690a85f",
+      "patches": [
+        {
+          "before": "parameter integer TIMEOUT=40000000",
+          "after": "parameter integer TIMEOUT=40000000,DIRECT_LOOKUP=0",
+          "occurrences": 1
+        },
+        {
+          "before": "output reg[15:0] checked_rows);",
+          "after": "output reg[15:0] checked_rows,\n input wire[1:0] lookup_slot_index,input wire[9:0] lookup_row_index);",
+          "occurrences": 1
+        },
+        {
+          "before": "wire[1:0] source_slot=addr_slot(write_addr),query_slot=addr_slot(lookup_addr);",
+          "after": "// Slot pitch is512 source rows. Preserve even out-of-raster row aliases\n // produced by the10-bit cache descriptor; bank4 still rejects exactly.\n localparam integer USE_DIRECT=DIRECT_LOOKUP&&ROW_WORDS==320&&ROWS==480&&\n  `SV_IMG0_BASE==32'h00000000&&`SV_IMG1_BASE==32'h000a0000&&\n  `SV_IMG2_BASE==32'h00140000&&`SV_IMG3_BASE==32'h001e0000;\n wire[2:0] direct_slot_sum={1'b0,lookup_slot_index}+{2'b0,lookup_row_index[9]};\n wire[1:0] source_slot=addr_slot(write_addr),legacy_query_slot=addr_slot(lookup_addr);\n wire[1:0] query_slot=USE_DIRECT?direct_slot_sum[1:0]:legacy_query_slot;",
+          "occurrences": 1
+        },
+        {
+          "before": "query_offset=lookup_addr-`SV_SLOT_BASE(query_slot);",
+          "after": "query_offset=lookup_addr-`SV_SLOT_BASE(legacy_query_slot);",
+          "occurrences": 1
+        },
+        {
+          "before": "wire[9:0] query_row",
+          "after": "wire[9:0] legacy_query_row",
+          "occurrences": 1
+        },
+        {
+          "before": "assign query_row=",
+          "after": "assign legacy_query_row=",
+          "occurrences": 2
+        },
+        {
+          "before": " wire query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_divisible;",
+          "after": " wire legacy_query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_divisible;\n wire query_ok=USE_DIRECT?(!direct_slot_sum[2]&&lookup_row_index[8:0]<ROWS):legacy_query_ok;\n wire[9:0] query_row=USE_DIRECT?{1'b0,lookup_row_index[8:0]}:legacy_query_row;",
+          "occurrences": 1
+        }
+      ],
+      "reference": "safevision/verification/models/v3_row_integrity_frozen_direct_memory.sv",
+      "reference_module": "v3_row_integrity_frozen_direct_memory",
+      "reference_sha256": "ae9a0b6aae1d95c9194ea07b11d814ef5500abe3d485ea23b5c8df1bba91b360"
+    },
+    "safevision/rtl/hd/v3_row_integrity.v": {
+      "original_sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368",
+      "current_sha256": "06690b9841f2469a86309539312bdaa0f0811c212798be8028b8a82816c2d47a",
+      "patches": [
+        {
+          "before": "parameter integer TIMEOUT=40000000",
+          "after": "parameter integer TIMEOUT=40000000,DIRECT_LOOKUP=0",
+          "occurrences": 1
+        },
+        {
+          "before": "output reg[15:0] checked_rows);",
+          "after": "output reg[15:0] checked_rows,\n input wire[1:0] lookup_slot_index,input wire[9:0] lookup_row_index);",
+          "occurrences": 1
+        },
+        {
+          "before": "wire[1:0] source_slot=addr_slot(write_addr),query_slot=addr_slot(lookup_addr);",
+          "after": "// Slot pitch is512 source rows. Preserve even out-of-raster row aliases\n // produced by the10-bit cache descriptor; bank4 still rejects exactly.\n localparam integer USE_DIRECT=DIRECT_LOOKUP&&ROW_WORDS==320&&ROWS==480&&\n  `SV_IMG0_BASE==32'h00000000&&`SV_IMG1_BASE==32'h000a0000&&\n  `SV_IMG2_BASE==32'h00140000&&`SV_IMG3_BASE==32'h001e0000;\n wire[2:0] direct_slot_sum={1'b0,lookup_slot_index}+{2'b0,lookup_row_index[9]};\n wire[1:0] source_slot=addr_slot(write_addr),legacy_query_slot=addr_slot(lookup_addr);\n wire[1:0] query_slot=USE_DIRECT?direct_slot_sum[1:0]:legacy_query_slot;",
+          "occurrences": 1
+        },
+        {
+          "before": "query_offset=lookup_addr-`SV_SLOT_BASE(query_slot);",
+          "after": "query_offset=lookup_addr-`SV_SLOT_BASE(legacy_query_slot);",
+          "occurrences": 1
+        },
+        {
+          "before": "wire[9:0] query_row",
+          "after": "wire[9:0] legacy_query_row",
+          "occurrences": 1
+        },
+        {
+          "before": "assign query_row=",
+          "after": "assign legacy_query_row=",
+          "occurrences": 2
+        },
+        {
+          "before": " wire query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_multiple;",
+          "after": " wire legacy_query_ok=query_offset<ROWS*ROW_WORDS*4 && query_offset[LOW-1:0]==0 && query_multiple;\n wire query_ok=USE_DIRECT?(!direct_slot_sum[2]&&lookup_row_index[8:0]<ROWS):legacy_query_ok;\n wire[9:0] query_row=USE_DIRECT?{1'b0,lookup_row_index[8:0]}:legacy_query_row;",
+          "occurrences": 1
+        },
+        {
+          "before": "generate if(ODD==5)begin:bounded_inverse5",
+          "after": "generate if(!USE_DIRECT&&ODD==5)begin:bounded_inverse5",
+          "occurrences": 1
+        }
+      ],
+      "reference": "safevision/verification/models/v3_row_integrity_frozen_direct_hd.sv",
+      "reference_module": "v3_row_integrity_frozen_direct_hd",
+      "reference_sha256": "9174013a310c3b89ad3a49ef2c283cd88aa72c3f0182f25871f170f7b01852ee"
+    },
+    "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v": {
+      "original_sha256": "b2c5f544031d9dd00e0fd60ca29dbc77e9cff4b7ebcca7e39b66fb0f8af9431d",
+      "current_sha256": "41f14b76382af3bc1c16f0aa7f4ef43776e96dc28ccbfe327f901780a60415ea",
+      "patches": [
+        {
+          "before": "v3_row_integrity #(.TIMEOUT(50000000)) row_guard(",
+          "after": "wire[1:0] lookup_slot_index;wire[9:0] lookup_row_index;\n v3_row_integrity #(.DIRECT_LOOKUP(1),.TIMEOUT(50000000)) row_guard(",
+          "occurrences": 1
+        },
+        {
+          "before": ".lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),",
+          "after": ".lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),\n .lookup_slot_index(lookup_slot_index),.lookup_row_index(lookup_row_index),",
+          "occurrences": 2
+        }
+      ]
+    }
+  }
+}
