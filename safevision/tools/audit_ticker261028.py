@@ -354,6 +354,8 @@ def audit(root,regression,ticker,board,controls):
  top=(root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v').read_text('utf-8-sig')
  decimal_reallocation="decimal_product=number*4'd10;"in(root/'safevision/rtl/control/v3_command_parser_catalog.v').read_text('utf-8-sig')
  if decimal_reallocation:allowed.add('safevision/rtl/control/v3_command_parser_catalog.v')
+ request_boundary='(* keep="true" *) wire[3:0] requests=found&~fallback&slot_fill&sector_room;'in(root/'safevision/rtl/storage/v3_wav_source.v').read_text('utf-8-sig')
+ if request_boundary:allowed.add('safevision/rtl/storage/v3_wav_source.v')
  direct_lookup=top.count('.DIRECT_LOOKUP(1)')==1
  if direct_lookup:allowed|={'safevision/rtl/video/v3_line_cache.v','safevision/rtl/memory/v3_row_integrity.v','safevision/rtl/hd/v3_line_cache.v','safevision/rtl/hd/v3_row_integrity.v'}
  direct_pointer=top.count('.DIRECT_RING_COMPARE(TICKER_ENABLE)')==1
@@ -532,8 +534,14 @@ def audit(root,regression,ticker,board,controls):
  if decimal_reallocation:
   extra,decimal_controls,decimal_proof=decimal_dsp(root,controls.parent);additions+=extra
   production_profile.update(decimal_dsp_reallocation=True,decimal_accumulator_bits=24,decimal_public_bits=186,decimal_added_latency=0)
+ request_proof=None
+ if request_boundary:
+  from check_audio_request_boundary import check as request_check
+  request_proof=request_check(root)
+  require(request_proof==read(controls.parent/'request_boundary_numeric/result.json')and request_proof['accepted']and request_proof['request_priority_cases']==64 and request_proof['verilog_operators_state_and_interface_unchanged']and request_proof['added_latency_cycles']==0 and not request_proof['clock_reset_constraints_changed'],'audio request complete-source/priority proof differs')
+  production_profile['audio_request_boundary']=True
  compatibility=dict(production_selected=False,scope='Alternate16character shared-font library parameters; production retains the complete32character bitmap',positive_top=stop,semantic_controls=['shared_font_wrong_address','shared_font_wrong_byte','shared_band_state_advance'])
- return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,decimal_dsp_proof=decimal_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
+ return dict(accepted=True,physical_inputs=len(sources),production_profile=production_profile,production_changes=sorted(changes),production_additions=sorted(new),preserved_positive_tops=303,added_positive_tops=len(additions),total_positive_tops=303+len(additions),preserved_semantic_controls=221,added_semantic_controls=29+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls),total_semantic_controls=250+len(packed_controls)+len(pointer_controls)+len(header_controls)+len(fs_controls)+len(direct_controls)+len(decimal_controls),positive=checked,negative=negatives,additions=additions,shared_port_compatibility=compatibility,packed_font_controls=packed_controls,packed_font_proof=packed_proof,audio_ring_pointer_proof=pointer_proof,bmp_header_pipeline_proof=header_proof,fs_timeout_pipeline_proof=fs_proof,direct_row_lookup_proof=direct_proof,decimal_dsp_proof=decimal_proof,audio_request_boundary_proof=request_proof,geometry_controls=geometry_controls,live_geometry_control=live_control,source_wait_controls=wait_controls,source_wait_coverage=wait_coverage,integer_domain=numeric,geometry_width=width_proof,source_sha256=sources,fresh_native_simulation=True,hardware_verified=False)
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,default=ROOT)
  for key in ('regression','ticker','board','controls','output'):ap.add_argument('--'+key,type=Path,required=True)
