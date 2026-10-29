@@ -4,6 +4,12 @@ module tb_v3_decimal_dsp_miter;
  wire[6:0] catalog_id,oid;wire cv,ocv,q,oq,pv,opv;wire[7:0] target,otarget,code,ocode;wire[95:0] name,oname;wire signed[31:0] value,ovalue;wire[31:0] rejected,orejected;
  v3_command_parser_catalog #(.TIMEOUT(10000),.CATALOG_FILE("v3_command_catalog.mem")) dut(clk,rst,rv,data,cv,target,name,value,q,pv,code,rejected,catalog_id);
  v3_command_parser_decimal_frozen #(.TIMEOUT(10000),.CATALOG_FILE("v3_command_catalog.mem")) reference(clk,rst,rv,data,ocv,otarget,oname,ovalue,oq,opv,ocode,orejected,oid);
+ wire[4:0] timeout_done;wire[31:0] timeout_errors[0:4];genvar timeout_case;
+ generate for(timeout_case=0;timeout_case<5;timeout_case++)begin:timeout_contract
+  localparam integer LIMIT=timeout_case==0?1:(timeout_case==1?2:(timeout_case==2?3:(timeout_case==3?17:100)));
+  parser_timeout_contract #(.TIMEOUT(LIMIT)) t(.clk(clk),.start(rst),.done(timeout_done[timeout_case]),.errors(timeout_errors[timeout_case]));
+ end endgenerate
+ integer errors=0,comparisons=0,commands=0,replies=0,i,k;reg[31:0] seed=32'h8fd47c21;
  wire[185:0] d_public={cv,target,name,value,q,pv,code,rejected,catalog_id};
  wire[185:0] g_public={ocv,otarget,oname,ovalue,oq,opv,ocode,orejected,oid};
  integer public_comparisons=0,data_errors=0,driver_errors=0;
@@ -15,12 +21,6 @@ module tb_v3_decimal_dsp_miter;
  end endtask
  always @(posedge clk)begin #2;compare_public();end
  always @(negedge clk)begin #2;compare_public();end
- wire[4:0] timeout_done;wire[31:0] timeout_errors[0:4];genvar timeout_case;
- generate for(timeout_case=0;timeout_case<5;timeout_case++)begin:timeout_contract
-  localparam integer LIMIT=timeout_case==0?1:(timeout_case==1?2:(timeout_case==2?3:(timeout_case==3?17:100)));
-  parser_timeout_contract #(.TIMEOUT(LIMIT)) t(.clk(clk),.start(rst),.done(timeout_done[timeout_case]),.errors(timeout_errors[timeout_case]));
- end endgenerate
- integer errors=0,comparisons=0,commands=0,replies=0,i,k;reg[31:0] seed=32'h8fd47c21;
  function bit known(input[95:0] n);begin case(n)
   96'h00000000000000414c504841,
   96'h00000000000000004155544f,
