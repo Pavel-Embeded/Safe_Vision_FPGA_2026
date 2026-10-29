@@ -274,16 +274,23 @@ def audit(root,regression,ticker,board,controls):
  header_phase='wire header_late=(mstate==H_HEAD)'in(root/'safevision/rtl/media/bmp_parser.v').read_text('utf-8-sig')
  require(header_phase,'reviewed header phase not selected')
  allowed|={'safevision/rtl/media/bmp_parser.v','safevision/tools/gen_v3_cdc.py',str(FLOW/'v3_cdc.sdc').replace('\\','/'),str(FLOW/'v3_cdc_audit.tcl').replace('\\','/')}
+ checkpoint=(root/FLOW/'v3_implementation_checkpoint.tcl').is_file()
+ if checkpoint:
+  from v3_checkpoint_flow import validate
+  require(validate(root)['accepted'],'checkpoint source transform differs')
+  allowed.add('safevision/tools/run_v3_board.py')
  packed='.PACKED_EXTERNAL(1)'in top
  selected=top.count('.EXTERNAL_FONT(1)')==1 and top.count('.SHARED_TICKER(TICKER_ENABLE)')==1 and top.count('.SHARED_PACKED_FONT(TICKER_ENABLE)')==1 and top.count('.PACKED_EXTERNAL(1)')==1 and '.EXTERNAL_FONT(0)'not in top and '.SHARED_TICKER(0)'not in top if packed else top.count('.EXTERNAL_FONT(0)')==1 and top.count('.SHARED_TICKER(0)')==1 and '.EXTERNAL_FONT(1)'not in top and '.SHARED_TICKER(TICKER_ENABLE)'not in top
  require(selected and top.count('.MESSAGE_CHARS(32)')==1 and '.MESSAGE_CHARS(16)'not in top and '.WIDTH(HDMI_STATUS_W)'in top and '.PIXEL_LATENCY(5),.SOURCE_AHEAD(5),.CLIP_INPUT(0)'in top and 'b_query_group0 <= b_query_packed'in top and 'cmd_value==101||cmd_value==102'not in top,'32character/shared-status/lookahead/packed-reply production profile differs')
  production_profile=dict(font_storage='lossless_shared_fft_dp9'if packed else'dedicated_ram9k',message_characters=32,period_pixels=1024,fft_font_sharing=packed,video_latency_clocks=21,source_ahead_pixels=5)
+ if checkpoint:production_profile.update(implementation_processes=2,serialized_synthesis_checkpoint=True)
  require('.REGISTERED_RESIDENT_READY(TICKER_ENABLE)'in top,'resident readiness profile not selected by the production flag')
  require(top.count('.SOURCE_PROGRESS_AWARE(TICKER_ENABLE)')==1 and top.count('source_progress_mem<={source_progress_mem[1:0],player_progress[0]};')==1 and top.count('source_byte_progress=source_progress_mem[2]^source_progress_mem[1]')==1 and '.source_progress(source_byte_progress)'in top,'production accepted-byte progress path differs')
  new={'safevision/rtl/video/v3_scrolling_ticker.v','safevision/assets/fonts/v3_ticker16.mem','safevision/assets/fonts/v3_ticker16.provenance.json'}|{str(FLOW/n).replace('\\','/')for n in ('ticker_enable.v','base/v3_ticker16.mem','hd/v3_ticker16.mem')}
  new|={'safevision/assets/fonts/v3_spectrum_ticker.mem','safevision/assets/fonts/v3_spectrum_ticker.provenance.json','safevision/assets/fonts/v3_ticker_shared16.mem'}|{str(FLOW/n).replace('\\','/')for n in ('base/v3_spectrum_ticker.mem','hd/v3_spectrum_ticker.mem')}
  if packed:new|={'safevision/assets/fonts/v3_spectrum_ticker32.mem','safevision/assets/fonts/v3_spectrum_ticker32.provenance.json','safevision/rtl/include/v3_ticker_packed32.vh','safevision/rtl/include/v3_ticker_byte32.vh','safevision/tools/build_ticker_shared32_lossless.py'}|{str(FLOW/n).replace('\\','/')for n in('base/v3_spectrum_ticker32.mem','hd/v3_spectrum_ticker32.mem')}
  new.add('safevision/tools/check_bmp_header_phase.py')
+ if checkpoint:new|={'safevision/tools/v3_checkpoint_flow.py',str(FLOW/'v3_implementation_checkpoint.tcl').replace('\\','/')}
  require(set(old)<=set(sources)and set(sources)-set(old)==new,'unreviewed production dependency added/removed')
  changes={n for n,h in old.items()if sources[n]!=h}
  optional={str(FLOW/'v3_build_parameters_base.tcl').replace('\\','/')}
