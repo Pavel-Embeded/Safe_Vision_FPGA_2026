@@ -3,7 +3,7 @@
 Only published bytes are restored. This command never invokes TD, a download
 tool or a serial port. Existing source/report directories are never overwritten.
 """
-import argparse,hashlib,json,os,re,shutil,sys
+import argparse,hashlib,json,os,re,shutil,subprocess,sys
 from pathlib import Path,PureWindowsPath,PurePosixPath
 from check_v3_board import check
 from run_v3_board import source_commit_binding
@@ -45,6 +45,16 @@ def replay(root,native):
   restore(source,{name:root/name for name in hardware})
   files={p.relative_to(native).as_posix():p for p in native.rglob('*')if p.is_file()}
   require(files,'native evidence folder is empty');restore(run,files)
+  if source in owned and (root/'safevision/tools/v3_checkpoint_flow.py').is_file():
+   # The new flow guard reconstructs tools from a frozen parent Git blob.
+   # A fresh physical-input restoration therefore needs read access to that
+   # existing object store. This plain metadata file changes no Git refs,
+   # checkout or index, and is deleted only with the directory created here.
+   gitdir=Path(subprocess.check_output(['git','-C',str(root),'rev-parse','--absolute-git-dir']).decode('utf-8').strip()).resolve()
+   require(gitdir.is_dir(),'frozen parent object store is unavailable')
+   marker=source/'.git';require(not marker.exists(),'existing Git metadata is never overwritten')
+   marker.write_text('gitdir: '+gitdir.as_posix()+'\n',encoding='utf-8',newline='\n')
+   owned[source]['.git']=sha(marker)
   require(snapshot(source)==hardware,'restored physical input closure differs')
   for report in record['gate']['reports']:
    original=Path(report['path']);require(original.parent==folder and sha(original)==report['sha256'],'approved native report/database changed')
