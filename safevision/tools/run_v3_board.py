@@ -21,12 +21,16 @@ def source_commit_binding(root,source_repo,ref,paths):
   if not row:continue
   meta,path=row.split(b'\t',1);parts=meta.split()
   if parts[1]==b'blob':blobs[path.decode('utf-8')]=parts[2].decode('ascii')
- errors=[]
+ errors=[];raw_matches=0;filtered_matches=0
  for name in paths:
   if name not in blobs:errors.append('uncommitted build dependency: '+name);continue
-  hashed=git('hash-object','--stdin','--path='+name,input=(root/name).read_bytes())
+  data=(root/name).read_bytes();algorithm=hashlib.sha256 if len(blobs[name])==64 else hashlib.sha1
+  raw=algorithm(b'blob '+str(len(data)).encode('ascii')+b'\0'+data).hexdigest()
+  if raw==blobs[name]:raw_matches+=1;continue
+  hashed=git('hash-object','--stdin','--path='+name,input=data)
   if hashed.returncode or hashed.stdout.decode('ascii').strip()!=blobs[name]:errors.append('build bytes differ from source commit: '+name)
- return {'verified':not errors,'commit':commit,'source_repository':str(source_repo),'dependencies_compared':len(paths),'errors':errors}
+  else:filtered_matches+=1
+ return {'verified':not errors,'commit':commit,'source_repository':str(source_repo),'dependencies_compared':len(paths),'raw_blob_matches':raw_matches,'git_filter_matches':filtered_matches,'errors':errors}
 def invoke(exe,tcl,log,env,cwd=None):
 
 
