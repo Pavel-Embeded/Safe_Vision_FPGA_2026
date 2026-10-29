@@ -7,7 +7,7 @@
 // commit_valid is retained until commit_ready. slot/generation change atomically.
 // Only matching-generation samples can reach the output; mismatches drain at
 // AUDIO clock speed. A missing/invalid WAV selects the same ROM as a quiet fallback.
-module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_SERVICE=0,MEDIA_RESET_INCLUDES_GLOBAL=0,HANDBOOK_PROFILE=0,PREINDEXED=0,DIRECT_RING_COMPARE=0)(
+module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_SERVICE=0,MEDIA_RESET_INCLUDES_GLOBAL=0,HANDBOOK_PROFILE=0,PREINDEXED=0,DIRECT_RING_COMPARE=0,PREFILL_PIPELINE=DIRECT_RING_COMPARE)(
  input wire ref_clk,mem_clk,audio_clk,pixel_clk,sys_clk,rst_n,media_reset,
  input wire external_service_ready,output wire[444:0] core_cmd,input wire[836:0] core_rsp,
  input wire mounted,cache_ready,input wire [63:0] cache_keys,input wire [7:0] sec_per_clus,
@@ -48,7 +48,7 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
  always @(posedge audio_clk or posedge media_reset_any)if(media_reset_any)ar<=0;else ar<={ar[0],1'b1};
  wire ref_rst_n=rr[1],mem_rst_n=mr[1];
  wire [127:0] source_data,ingress_data;wire [3:0] source_valid,source_ready,ingress_valid,ingress_ready;
- wire [3:0] room,fill;wire [8:0] ingress_wlevel[0:3];wire [3:0] fb_ref;
+ wire [3:0] room,fill,admission_fill;wire [8:0] ingress_wlevel[0:3];wire [3:0] fb_ref;
  wire index_ref;wire [63:0] ring_levels;wire [3:0] ring_prefetched;
  wire [63:0] ref_levels;wire ref_levels_valid,ref_levels_ready;
  wire [63:0] ref_level_cache=ref_levels;
@@ -68,13 +68,24 @@ module v3_audio_system #(parameter integer SAMPLE_DIV=256,PREFETCH=800,EXTERNAL_
    .partial(global_ingress_partial),.fill(fill[g]));
   assign room[g]=global_sector_room;
  end endgenerate
+ // The admission predicate is one REF cycle old in production. The source
+ // services only one sector at a time; sector_room remains a CURRENT-cycle
+ // hard capacity check at Q_CHOOSE. No PCM data, tag or handshake is delayed.
+ generate if(PREFILL_PIPELINE)begin:registered_prefill
+  (* preserve="true",keep="true" *) reg[3:0] value;
+  always @(posedge ref_clk or negedge ref_rst_n)
+   if(!ref_rst_n)value<=0;else value<=fill;
+  assign admission_fill=value;
+ end else begin:direct_prefill
+  assign admission_fill=fill;
+ end endgenerate
 
  v3_wav_source #(.EXTERNAL_SERVICE(EXTERNAL_SERVICE),.PREINDEXED(PREINDEXED)) source(
  .media_descriptor_valid(media_descriptor_valid),.media_descriptor_ready(media_descriptor_ready),
  .media_descriptor_slot(media_descriptor_slot),.media_descriptor(media_descriptor),.media_descriptor_found(media_descriptor_found),
  .external_service_ready(external_service_ready),.core_cmd(core_cmd),.core_rsp(core_rsp),.clk(ref_clk),.rst_n(ref_rst_n),.mounted(mounted),.cache_ready(cache_ready),
  .cache_keys(cache_keys),.sec_per_clus(sec_per_clus),.fat_start_lba(fat_start_lba),.data_start_lba(data_start_lba),
- .root_dir_lba(root_dir_lba),.root_clus(root_clus),.total_clus(total_clus),.slot_fill(fill),.sector_room(room),
+ .root_dir_lba(root_dir_lba),.root_clus(root_clus),.total_clus(total_clus),.slot_fill(admission_fill),.sector_room(room),
  .pcm_data(source_data),.pcm_valid(source_valid),.pcm_ready(source_ready),.index_done(index_ref),.fallback(fb_ref),
  .rd_en(rd_en),.rd_addr(rd_addr),.rd_len(rd_len),.rd_ready(rd_ready),.data(data),.data_valid(data_valid),
  .data_ready(data_ready),.data_last(data_last),.rd_done(rd_done),.timeout_err(timeout_err),.crc16_err(crc16_err),
