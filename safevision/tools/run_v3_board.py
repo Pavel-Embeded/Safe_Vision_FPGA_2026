@@ -72,7 +72,19 @@ def main():
    'source_unchanged':False,'bit_generated':False,'hardware_verified':False,'created_at_utc':datetime.now(timezone.utc).isoformat()}
   manifest=folder/'build.manifest.json';save(manifest,record)
   try:
-   route_exit,text=invoke(exe,root/FLOW/(mode+'.tcl'),out/(mode+'.console.log'),env,cwd=folder)
+   if a.synth_only:
+    route_exit,text=invoke(exe,root/FLOW/(mode+'.tcl'),out/(mode+'.console.log'),env,cwd=folder)
+   else:
+    from v3_checkpoint_flow import create_receipt
+    synthesis_env=env.copy();synthesis_env['SAFEVISION_V3_SYNTH_ONLY']='1'
+    synthesis_exit,synthesis_text=invoke(exe,root/FLOW/(mode+'.tcl'),folder/'synthesis.console.log',synthesis_env,cwd=folder)
+    if synthesis_exit or 'V3 TD SYNTHESIZED'not in synthesis_text:raise RuntimeError('missing normal synthesis checkpoint completion')
+    checkpoint_hash=hashlib.sha256((folder/'gate.db').read_bytes()).hexdigest()
+    implementation_env=env.copy();implementation_env['SAFEVISION_BOARD_MODE']=mode
+    route_exit,text=invoke(exe,root/FLOW/'v3_implementation_checkpoint.tcl',out/(mode+'.console.log'),implementation_env,cwd=folder)
+    (folder/'implementation.console.log').write_bytes((out/(mode+'.console.log')).read_bytes())
+    record['checkpoint_handoff']=create_receipt(folder,record['source_commit'],checkpoint_hash)
+    save(manifest,record)
    marker='V3 TD SYNTHESIZED' if a.synth_only else 'V3 TD ROUTED'
    if marker not in text:raise RuntimeError('missing normal TD completion marker')
    version=re.search(r'Tang Dynasty,\s*(V[0-9.]+)',text)

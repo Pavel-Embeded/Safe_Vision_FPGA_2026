@@ -118,6 +118,7 @@ def media_bram_locations(text,expected):
 
 def check(folder,repo):
  errors=[];files=['route.timing','route.check','route.area','route.exceptions','constraint.objects.tsv','route.derived.sdc','route.db','route.netlist.v','gate.hidden.params','gate.netlist.v','route.clocks','route.hidden.params','final_sta.tcl','final_sta.manifest.json','after_clock_report.check','after_clock_report.timing','after_clock_report.exceptions','inprocess.route.timing','inprocess.route.check','inprocess.route.exceptions']
+ files.extend(('checkpoint.synthesis.json','synthesis.console.log','implementation.console.log','gate.db'))
  from v3_sources import build_parameters,required_media_bram_locations
  mode=folder.name if folder.name in ('base','hd') else None
  required_bram=required_media_bram_locations(repo,mode)
@@ -128,6 +129,9 @@ def check(folder,repo):
   if not (folder/name).is_file() or not (folder/name).stat().st_size:errors.append('missing/nonempty report: '+name)
  result={'status':'FAIL','gate_accepted':False,'timing_passed':False,'errors':errors}
  if errors:return result
+ from v3_checkpoint_flow import verify_receipt
+ try:result['checkpoint_handoff']=verify_receipt(folder)
+ except (ValueError,KeyError,OSError)as ex:errors.append(str(ex));return result
  integrity=json.loads((folder/'final_sta.manifest.json').read_text(encoding='utf-8'))
  if not integrity.get('accepted') or integrity.get('caller_route_process_exit_code')!=0 or integrity.get('sta_process_exit_code')!=0:errors.append('missing/failed real route and fresh-STA integrity evidence')
  frozen=integrity.get('database_and_constraint_sha256_after',{})
