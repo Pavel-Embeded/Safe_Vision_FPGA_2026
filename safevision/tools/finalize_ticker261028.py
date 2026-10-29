@@ -34,6 +34,10 @@ def main():
   design=source_commit_binding(root,root,record['source_commit'],hardware);require(design['verified'],'design commit mismatch')
   gate=check(folder,frozen);require(gate['gate_accepted']and gate['timing_passed']and gate['status']=='PASS','strict native timing gate failed: '+str(gate['errors']))
   save(out/'base.gate.json',gate)
+  checkpoint_control=out/'source_profile_controls'
+  subprocess.run([sys.executable,'-B',str(root/'safevision/tools/test_v3_checkpoint_profile.py'),'--source',str(frozen),'--native',str(folder),'--output',str(checkpoint_control)],check=True)
+  checkpoint_verdict=read(checkpoint_control/'verification.json')
+  require(checkpoint_verdict['accepted']and len(checkpoint_verdict['controls'])==7 and all(row['rejected']for row in checkpoint_verdict['controls']),'native source-order/checkpoint controls failed')
   subprocess.run([sys.executable,'-B',str(root/'safevision/tools/test_ticker_rom261028.py'),'--netlist',str(folder/'gate.netlist.v'),'--repo',str(root),'--output',str(out/'rom.controls.json')],check=True)
   rom=read(out/'rom.controls.json');require(rom['accepted']and len(rom['controls'])==5 and all(c['rejected']for c in rom['controls']),'mapped ROM rejection controls failed')
   # The original full gate and original absolute path attestations are kept.
@@ -48,6 +52,7 @@ def main():
   names|={'safevision/tools/audit_ticker261028.py','safevision/tools/ticker_evidence_archive.py','safevision/tools/finalize_ticker261028.py','safevision/tools/test_ticker_rom261028.py','safevision/tools/build_ticker_font.py','safevision/tools/host/exercise_ticker261028.ps1',a.archive.resolve().relative_to(root).as_posix()}
   names|={'safevision/tools/audit_ticker_uart261028.py','safevision/tools/verify_ticker_ci.py','safevision/tools/replay_ticker_native261028.py','safevision/tools/ticker_host_profile261028.py','safevision/tools/check_ticker_offline261028.py'}
   names.add('safevision/tools/host/burn_ticker261028_sram.ps1')
+  names.add('safevision/tools/test_v3_checkpoint_profile.py')
   names|={'safevision/tools/build_ticker_shared_font.py','safevision/tools/check_shape_space261028.py'}
   if functional.get('packed_font_proof'):
    names|={'safevision/tools/build_ticker_shared32_lossless.py','safevision/tools/test_lossless_shared32_controls.py','safevision/verification/models/v3_scrolling_ticker_frozen_packed32.freeze.json','safevision/verification/models/v3_scrolling_ticker_frozen_packed32.sv'}
