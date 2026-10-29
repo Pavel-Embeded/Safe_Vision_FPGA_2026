@@ -1,0 +1,57 @@
+{
+  "accepted": true,
+  "scope": "Actual native ordered compilation and checksum-linked synthesis/implementation handoff; timing approval is separate",
+  "positive": {
+    "accepted": true,
+    "mode": "base",
+    "ordered_hdl_count": 114,
+    "native_log_sha256": "88c3b81ff30a9890f2582f42f4ccc0ba7ab845240d9e11fb54d9634c0ab2f9d4"
+  },
+  "controls": [
+    {
+      "name": "wrong_order",
+      "rejected": true,
+      "reason": "native ordered HDL inputs differ from GUI/shared source profile"
+    },
+    {
+      "name": "missing_read_hdl",
+      "rejected": true,
+      "reason": "missing/ambiguous actual native read_hdl command"
+    },
+    {
+      "name": "duplicate_read_hdl",
+      "rejected": true,
+      "reason": "missing/ambiguous actual native read_hdl command"
+    },
+    {
+      "name": "unlinked_synth",
+      "rejected": true,
+      "reason": "checkpoint native completion differs: synthesis.console.log"
+    },
+    {
+      "name": "wrong_import",
+      "rejected": true,
+      "reason": "implementation did not import serialized checkpoint"
+    },
+    {
+      "name": "changed_gate",
+      "rejected": true,
+      "reason": "checkpoint bytes differ"
+    },
+    {
+      "name": "wrong_commit",
+      "rejected": true,
+      "reason": "checkpoint source commit differs"
+    }
+  ],
+  "source_validator": {
+    "accepted": true,
+    "physical_function_changed": false,
+    "constraint_changed": false,
+    "exact_original_implementation_tail_retained": true,
+    "stages": 2
+  },
+  "source_profiles_sha256": "ba651fcddec5969fc6311c1a046734bb64fef614bad5197b56b92361b5529935",
+  "checkpoint_helper_sha256": "aa17a091f0859deecc24dbc31c405cee78fbdb8db699504741404496a697aff5",
+  "original_native_untouched": true
+}

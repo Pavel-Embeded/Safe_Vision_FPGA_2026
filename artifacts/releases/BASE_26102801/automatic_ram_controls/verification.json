@@ -1,0 +1,96 @@
+{
+  "accepted": true,
+  "scope": "Exact source identity and isolated refusal controls; all routed setup/hold/recovery/removal remain independently mandatory",
+  "positive": {
+    "accepted": true,
+    "scope": "Only internal RAM placement is automatic; exact proven BASE SDRAM-OE location and all parent board/clock/SDC/IO budgets remain frozen.",
+    "parent_commit": "a17618d3c56be0fc827c53fdbf808aef823a5a65",
+    "baseline_commit": "09faac2e8fa718c9f92ef4a5013b68003ec8afe6",
+    "adc_sha256": "fb8795f1c002371b8fc4fbab96f690cf34441f8ae02084ddadab0c90cd385c28",
+    "unchanged_timing_and_pin_sha256": {
+      "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v": "4ec8202b045f058cf014017437e3167f6d4f7ae195ff4eb17f0227c385e6e891",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.ipc": "8f22407866987c1d7a569de91c421fccc33429d2f98a1615dacc345193b74c70",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.provenance.json": "b2b25b874560bb50d2e527960ce96a47f99ca746b0b91e3cd94be4acca9cea40",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_v3_memory_pll.v": "188361d9f5a9ad7f6721e9dbd47cae2a0df0d97c74b12487eddd418a2feab219",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_hd_pll.v": "44e28474683a4c7ddd2777d709859603c30deda0c19842967707b234785960b1",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_video_vga_pll.v": "68e55f0a221d445703fb4104f6f08b6357b9f3370fb12ef1ef5c31df4ad50b62",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/io_budget.json": "32224f34c341aeaf6a3b5e7816eb875887d2fbf06e21e30693dcfac4ccfa0d3f",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/pll50_check.sdc": "7fb21aed0231a68f650954db59f7b60209b012eec256b4ad9602835e00f5f06e",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/pll50_check.tcl": "b97b19f45ad7ed9e0bc44ced0d8ff1c3c280f03d9096a8de9a5db10603a53f1a",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board.adc": "4a068c3132512704ad09f8291e7b0875312fa10c70cc1960964a5388b923c766",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board.sdc": "9caa890b7115bbf4804365b76d08f6a391a5039039e0b38cf9e8bccd63298dd4",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc": "074fde62b53fb4b5f238e7ceecfff447d1d5d46282398c946617e773687efc7a",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl": "3159d757cb389eb450f37fa4ef1fbae1100c8488cd2b2dec6b197a2d0a33fcc6",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/reset_sync.v": "0ace3c2d5da5ea15547a8f9c66a2f1bc28de31cb33b146ec750bd6771f6f69e9",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_mem_activity_tag.v": "7e9a26e289a315d0392c29a345864ac4d40da787d46921215d0a03a11b35e204",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_phy_reset_fanout.v": "548c31966f8bc87ab6a86c054ab5cc0cd84fcc56cc00f81d9455ab26d506493d",
+      "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/clock/v3_related_status_capture.v": "5074e13f0f1dfe9c5e55734102b03fda46efe74deb0d57646a2d379ccd068d7f",
+      "safevision/tools/configure_v3_pll.py": "caf11ebf9a336350f7e333316f86d59ded549b41969d654eec60be82f3ed6bd6",
+      "safevision/tools/run_v3_pll.py": "8a5d50a5514e337aca004edefb293cb28382cf7b6626e3feb19a9bafde99bfa0"
+    },
+    "tool_sha256": "12f03b9a98dfe66ff57530d419e71856b98a17481c6fff12553f9e535fea1042",
+    "expected_fixed_ram_locations": 0,
+    "board_pins_unchanged": true,
+    "timing_constraints_or_clocks_changed": false,
+    "hardware_verified": false
+  },
+  "controls": [
+    {
+      "name": "wrong_oe_location",
+      "rejected": true,
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_physical_base.adc",
+      "original_sha256": "fb8795f1c002371b8fc4fbab96f690cf34441f8ae02084ddadab0c90cd385c28",
+      "mutant_sha256": "954229aca80b4e95265d8628bd7ce2862c5e0a957e4ea71b0d7f3dec50e0d93a",
+      "reason": "automatic RAM mode is not the exact proven BASE OE-only placement file"
+    },
+    {
+      "name": "missing_oe",
+      "rejected": true,
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_physical_base.adc",
+      "original_sha256": "fb8795f1c002371b8fc4fbab96f690cf34441f8ae02084ddadab0c90cd385c28",
+      "mutant_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "automatic RAM mode is not the exact proven BASE OE-only placement file"
+    },
+    {
+      "name": "added_fixed_ram",
+      "rejected": true,
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_physical_base.adc",
+      "original_sha256": "fb8795f1c002371b8fc4fbab96f690cf34441f8ae02084ddadab0c90cd385c28",
+      "mutant_sha256": "8dabb46ff7cb9e3e8568c6a02a31ad1e98a6adb1551efbc7c461825831ec4d72",
+      "reason": "automatic RAM mode is not the exact proven BASE OE-only placement file"
+    },
+    {
+      "name": "masked_timing_path",
+      "rejected": true,
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board.sdc",
+      "original_sha256": "9caa890b7115bbf4804365b76d08f6a391a5039039e0b38cf9e8bccd63298dd4",
+      "mutant_sha256": "2c2f4025fd142ec13332d53e9dee368728dc56431494bd212862d73b99ce6856",
+      "reason": "board pin, clock, timing budget or CDC audit changed: safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board.sdc"
+    },
+    {
+      "name": "moved_board_clock_pin",
+      "rejected": true,
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board.adc",
+      "original_sha256": "4a068c3132512704ad09f8291e7b0875312fa10c70cc1960964a5388b923c766",
+      "mutant_sha256": "a5ee420f5c4412bb355c80aa2aa6cf59541c3672d4b5f22b398e26fa839d0ffb",
+      "reason": "board pin, clock, timing budget or CDC audit changed: safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_board.adc"
+    },
+    {
+      "name": "changed_clock_source_bytes",
+      "rejected": true,
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v",
+      "original_sha256": "4ec8202b045f058cf014017437e3167f6d4f7ae195ff4eb17f0227c385e6e891",
+      "mutant_sha256": "304b8cdeee0098833ad3217c63412290591c478d9c24c6b6e15042962dc86cdd",
+      "reason": "board pin, clock, timing budget or CDC audit changed: safevision/platform/anlogic_eg4s20_hx4s20c/ip/pll/sv_audio_pll.v"
+    },
+    {
+      "name": "changed_io_budget_bytes",
+      "rejected": true,
+      "target": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/io_budget.json",
+      "original_sha256": "32224f34c341aeaf6a3b5e7816eb875887d2fbf06e21e30693dcfac4ccfa0d3f",
+      "mutant_sha256": "52b65bd9ae07fe3e509f373936befcc75f17bf66fc7d5d1cdf8466f5e7701b77",
+      "reason": "board pin, clock, timing budget or CDC audit changed: safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/io_budget.json"
+    }
+  ],
+  "original_project_unchanged": true
+}

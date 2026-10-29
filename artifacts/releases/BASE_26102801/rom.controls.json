@@ -1,0 +1,79 @@
+{
+  "accepted": true,
+  "native_netlist_sha256": "553966ed144a198edf90503554decf4144dee515cd3ea925011b406067665cd0",
+  "mapped_roms": [
+    {
+      "asset": "font8x16_compact.mem",
+      "mapped_instance": "\\video/graphics/ramread2_syn_5",
+      "bytes_compared": 1024,
+      "parity_bits_compared": 1024,
+      "logical_bits": 8192,
+      "payload_sha256": "2bfc5f37105fcb5d9bfebde3a9d6e372a4e57b7c5325f912d8a0e8249048cf07"
+    },
+    {
+      "asset": "v3_four_features_text.mem",
+      "mapped_instance": "\\video/graphics/ramread0_syn_5",
+      "bytes_compared": 1024,
+      "parity_bits_compared": 1024,
+      "logical_bits": 9216,
+      "payload_sha256": "95183f6a005dfaa12bfabf81623e6413385472753e039ae4089f509d7d3276a5"
+    },
+    {
+      "asset": "v3_command_catalog.mem",
+      "mapped_instance": "\\uart/g_catalog$parser/ramread0_syn_5",
+      "bytes_compared": 1024,
+      "parity_bits_compared": 1024,
+      "logical_bits": 8192,
+      "payload_sha256": "78fb8c5bc72a97f90a9985dda1cd21daa1b73f472d2e81d0ac7cbfb7f7b32d66"
+    },
+    {
+      "asset": "v3_spectrum_twiddle.mem",
+      "mapped_instance": "\\video/graphics/spectrum$analyzer/ramread0_syn_6",
+      "bytes_compared": 1024,
+      "parity_bits_compared": 1024,
+      "logical_bits": 2048,
+      "quarter_wave_coefficients": 128,
+      "zero_padding_words": 384,
+      "layout": "shared_dp9_coefficient_display",
+      "mutable_display_words": 128,
+      "unused_zero_words": 640,
+      "payload_sha256": "d1d0729c4ea76878c56e6490cae7d0626a974704246694fe3e0ab7d5f167a2f4"
+    },
+    {
+      "asset": "v3_ticker16.mem",
+      "mapped_instance": "\\scrolling$ticker/ramread0_syn_5",
+      "bytes_compared": 1024,
+      "parity_bits_compared": 1024,
+      "logical_bits": 8192,
+      "zero_padding_words": 0,
+      "payload_sha256": "894217511bdb1352babe30c1e559fd396631d7ce941fdff197bee25d5abbd0ee"
+    }
+  ],
+  "controls": [
+    {
+      "name": "flipped_data_bit",
+      "rejected": true,
+      "reason": "mapped ticker ROM missing/corrupt/duplicated"
+    },
+    {
+      "name": "flipped_font_ninth_bit",
+      "rejected": true,
+      "reason": "mapped ticker ROM missing/corrupt/duplicated"
+    },
+    {
+      "name": "wrong_port_width",
+      "rejected": true,
+      "reason": "mapped ticker ROM missing/corrupt/duplicated"
+    },
+    {
+      "name": "missing_ticker_ram",
+      "rejected": true,
+      "reason": "mapped ticker ROM missing/corrupt/duplicated"
+    },
+    {
+      "name": "duplicate_ticker_ram",
+      "rejected": true,
+      "reason": "mapped ticker ROM missing/corrupt/duplicated"
+    }
+  ]
+}

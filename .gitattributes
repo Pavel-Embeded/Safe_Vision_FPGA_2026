@@ -6253,3 +6253,6 @@ evidence/v3/handbook_26101802/research_01/** -text
 /safevision/verification/models/decimal_dsp135.freeze.json -text
 /safevision/verification/unit/tb_v3_decimal_dsp_miter.sv -text
 /safevision/build/manifests/decimal_dsp_miter_sim.json -text
+
+# Byte-exact current qualification, programming and UART evidence.
+/artifacts/releases/BASE_26102801/** -text

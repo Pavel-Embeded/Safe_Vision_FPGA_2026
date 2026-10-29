@@ -1,0 +1,66 @@
+{
+  "accepted": true,
+  "scope": "Source-identity refusal controls. HDL semantic detection remains the unchanged frozen regression inventory.",
+  "positive": {
+    "accepted": true,
+    "parent_commit": "5fdf4778f19a8a1ac8a29faf1030fc2ad77922cf",
+    "parent_parser_sha256": "d0896f4bf0b7fcc77096f4459d2e4d6fa45adeaf667d02274740f27b08ab53b6",
+    "source_sha256": "927b69d5cdbd152a68d88dcf489773bccb936c425ca00dccc007abd6db613e04",
+    "retained_classes": [
+      "reject_header",
+      "reject_chunk_format",
+      "reject_format",
+      "reject_tail",
+      "reject_body_state"
+    ],
+    "verilog_operators_state_interface_and_mutation_anchors_unchanged": true,
+    "register_bits_added": 0,
+    "latency_cycles_added": 0,
+    "hardware_verified": false
+  },
+  "controls": [
+    {
+      "name": "missing_reject_header",
+      "rejected": true,
+      "mutant_sha256": "bcc45fb29d449d2c7aa043182702b93472d39694ceda58fc4c36811ff7974a85",
+      "reason": "change beyond the five synthesis attributes"
+    },
+    {
+      "name": "missing_reject_chunk_format",
+      "rejected": true,
+      "mutant_sha256": "eb7e5a57d425de4d01e3076c565716bf31a15879b689f7c7522a557823d3da6e",
+      "reason": "change beyond the five synthesis attributes"
+    },
+    {
+      "name": "missing_reject_format",
+      "rejected": true,
+      "mutant_sha256": "fe9d7961b9a1cfc391c65bb1d1fa4d546e65a98dcda027abf27beb6c0195f878",
+      "reason": "change beyond the five synthesis attributes"
+    },
+    {
+      "name": "missing_reject_tail",
+      "rejected": true,
+      "mutant_sha256": "c8eb4f88463353fe29d9e69d619555e6d0577788a7f2a2b40874150a43c556c0",
+      "reason": "change beyond the five synthesis attributes"
+    },
+    {
+      "name": "missing_reject_body_state",
+      "rejected": true,
+      "mutant_sha256": "f37b9f542aa53c70d6082c536925356c4299013cea40d88ba02cbe6511dca1b0",
+      "reason": "change beyond the five synthesis attributes"
+    },
+    {
+      "name": "lost_tail_error",
+      "rejected": true,
+      "mutant_sha256": "c3ef9bcec94b43e072554961266cde010543600c5ad55e1b39294ec8ec5a5172",
+      "reason": "change beyond the five synthesis attributes"
+    },
+    {
+      "name": "pcm_not_suppressed",
+      "rejected": true,
+      "mutant_sha256": "b3eba542fe7b944741e5250730408e4add35cf5f59295207b80f8cc904cd6068",
+      "reason": "change beyond the five synthesis attributes"
+    }
+  ],
+  "original_project_unchanged": true
+}

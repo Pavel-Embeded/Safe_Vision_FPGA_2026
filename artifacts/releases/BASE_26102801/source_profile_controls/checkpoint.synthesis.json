@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "method": "fresh synthesis / serialized gate.db / fresh implementation",
+  "source_commit": "75b34e6ca2fa3517b521ccc08c6d0f4d3ea72079",
+  "synthesis_database_sha256_before": "e4133a79aad8eac2d035bf1fc6fc1d7a5ec2e8346591ac191dd55cc657dea545",
+  "synthesis_database_sha256_after": "e4133a79aad8eac2d035bf1fc6fc1d7a5ec2e8346591ac191dd55cc657dea545",
+  "synthesis_console_sha256": "88c3b81ff30a9890f2582f42f4ccc0ba7ab845240d9e11fb54d9634c0ab2f9d4",
+  "implementation_console_sha256": "aa65901ac0601f28a0faba1f5e8a10b64e0214dbd5fba38f42b1f148e38b15fc",
+  "synthesis_process_exit": 0,
+  "implementation_process_exit": 0
+}

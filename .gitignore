@@ -107,3 +107,7 @@ __pycache__/
 !artifacts/releases/BASE_26102301_6a957b0/**/*.bit
 !artifacts/releases/BASE_26102301_6a957b0/**/*.log
 !artifacts/releases/BASE_26102301_6a957b0/*.bit
+
+# Approved BASE with retained successful history and raw verification.
+!/artifacts/releases/BASE_26102801/
+!/artifacts/releases/BASE_26102801/**
