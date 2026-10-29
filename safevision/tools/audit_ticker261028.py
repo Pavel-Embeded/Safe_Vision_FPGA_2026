@@ -402,6 +402,7 @@ def audit(root,regression,ticker,board,controls):
  new={'safevision/rtl/video/v3_scrolling_ticker.v','safevision/assets/fonts/v3_ticker16.mem','safevision/assets/fonts/v3_ticker16.provenance.json'}|{str(FLOW/n).replace('\\','/')for n in ('ticker_enable.v','base/v3_ticker16.mem','hd/v3_ticker16.mem')}
  new|={'safevision/assets/fonts/v3_spectrum_ticker.mem','safevision/assets/fonts/v3_spectrum_ticker.provenance.json','safevision/assets/fonts/v3_ticker_shared16.mem'}|{str(FLOW/n).replace('\\','/')for n in ('base/v3_spectrum_ticker.mem','hd/v3_spectrum_ticker.mem')}
  if packed or dedicated_profile:new|={'safevision/assets/fonts/v3_spectrum_ticker32.mem','safevision/assets/fonts/v3_spectrum_ticker32.provenance.json','safevision/rtl/include/v3_ticker_packed32.vh','safevision/rtl/include/v3_ticker_byte32.vh','safevision/tools/build_ticker_shared32_lossless.py'}|{str(FLOW/n).replace('\\','/')for n in('base/v3_spectrum_ticker32.mem','hd/v3_spectrum_ticker32.mem')}
+ if dedicated_profile:new.discard('safevision/tools/build_ticker_shared32_lossless.py')
  new.add('safevision/tools/check_bmp_header_phase.py')
  if checkpoint:new|={'safevision/tools/v3_checkpoint_flow.py',str(FLOW/'v3_implementation_checkpoint.tcl').replace('\\','/')}
  require(set(old)<=set(sources)and set(sources)-set(old)==new,'unreviewed production dependency added/removed')
@@ -425,7 +426,7 @@ def audit(root,regression,ticker,board,controls):
   else:require(locations==expected,'reviewed BASE six-RAM layout differs')
   require(not required_media_bram_locations(root,'hd'),'HD layout changed')
   production_profile['base_media_bram_locations']=locations
- require(len(sources)==(224 if packed or dedicated_profile else 217)+int(header_phase)+2*int(checkpoint),'current physical inventory changed')
+ require(len(sources)==(224 if packed else 223 if dedicated_profile else 217)+int(header_phase)+2*int(checkpoint),'current physical inventory changed')
  summary=read(regression/'summary.json');require(summary.get('complete')and summary.get('accepted'),'full native campaign incomplete/failed')
  expected_jobs={('legacy','a'),('legacy','b')}|{('positive',r['top'])for r in matrix['positive']if not r['legacy']}|{('negative',r['mutation'])for r in matrix['negative']}
  require({(r['kind'],r['name'])for r in summary['records']}==expected_jobs,'native campaign inventory differs')
