@@ -6256,3 +6256,6 @@ evidence/v3/handbook_26101802/research_01/** -text
 
 # Byte-exact current qualification, programming and UART evidence.
 /artifacts/releases/BASE_26102801/** -text
+
+/evidence/repository_cleanup_261026/retained_source_261028/** -text
+/evidence/repository_cleanup_261026/duplicates_261026.original.json -text

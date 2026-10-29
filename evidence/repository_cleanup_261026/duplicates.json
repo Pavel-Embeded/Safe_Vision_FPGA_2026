@@ -46681,14 +46681,14 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc",
-      "retained": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/796e3d3982141525af3ca2eceec2f96dd0b11e71/v3_cdc.sdc",
       "git_blob": "796e3d3982141525af3ca2eceec2f96dd0b11e71",
       "bytes": 4834,
       "sha256": "ca96441240908e738afdbbdaa657538f2ce12f1aa9f358c6e8d6eb157143de65"
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl",
-      "retained": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/f4beabd55cfa646dabcd764dc67c97aca663bc50/v3_cdc_audit.tcl",
       "git_blob": "f4beabd55cfa646dabcd764dc67c97aca663bc50",
       "bytes": 7094,
       "sha256": "8c7dee8afee913c3ccc51ca85d4560c8a8e5a6bfea74d2a751b34918f9af353f"
@@ -46716,7 +46716,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
-      "retained": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/eb78f33a12030554cd87bccd66cdcd6f9b6934dd/bmp_frame_sink.v",
       "git_blob": "eb78f33a12030554cd87bccd66cdcd6f9b6934dd",
       "bytes": 20723,
       "sha256": "326fdf53c66a42a33f0412433f234891a2c52d42e76391706866582e062ae456"
@@ -46863,7 +46863,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/audio/v3_pcm_ring.v",
-      "retained": "safevision/rtl/audio/v3_pcm_ring.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/e0741990fcec720d2f5182566c456f4dbcb0d98c/v3_pcm_ring.v",
       "git_blob": "e0741990fcec720d2f5182566c456f4dbcb0d98c",
       "bytes": 4598,
       "sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8"
@@ -47080,7 +47080,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/hd/v3_line_cache.v",
-      "retained": "safevision/rtl/hd/v3_line_cache.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/4e4bb80fe96ab49ea3a915d897065da3a9d9fd74/v3_line_cache.v",
       "git_blob": "4e4bb80fe96ab49ea3a915d897065da3a9d9fd74",
       "bytes": 18381,
       "sha256": "f4f87f6fb77a1f4b4c65ec53471438eace8af55d3878cd2a423033186e590695"
@@ -47094,7 +47094,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/hd/v3_row_integrity.v",
-      "retained": "safevision/rtl/hd/v3_row_integrity.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/572e113f7647d80c463a4944dab46aa8e3fcc98e/v3_row_integrity.v",
       "git_blob": "572e113f7647d80c463a4944dab46aa8e3fcc98e",
       "bytes": 16484,
       "sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368"
@@ -47206,7 +47206,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/memory/frame_writer.v",
-      "retained": "safevision/rtl/memory/frame_writer.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/df413877d2cf7fd2a565b7139142c0aeb9ecdeec/frame_writer.v",
       "git_blob": "df413877d2cf7fd2a565b7139142c0aeb9ecdeec",
       "bytes": 21538,
       "sha256": "98982e6a361feacb42a9417f0bdfc3a97dd9d106e3a764660edf58c920587964"
@@ -47374,7 +47374,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
-      "retained": "safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/9c568c38c6fdc505cb2d64fcdedac579e341b256/bmp_frame_write_bridge.v",
       "git_blob": "9c568c38c6fdc505cb2d64fcdedac579e341b256",
       "bytes": 3229,
       "sha256": "7dc0a6f16ee63d23975382b0e3fcca8f7b0df6655a69ed66a3f461b2fefaac99"
@@ -47906,7 +47906,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/tools/gen_v3_cdc.py",
-      "retained": "safevision/tools/gen_v3_cdc.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/0b79fe4f495cf9bf6dd253999b7cfa24899c6094/gen_v3_cdc.py",
       "git_blob": "0b79fe4f495cf9bf6dd253999b7cfa24899c6094",
       "bytes": 6149,
       "sha256": "e0f74251ead0d4334ff6df2f93a8d8c9ec2a568a6b7a78376ece14fdf9f0c426"
@@ -48375,7 +48375,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/tools/run_v3_board.py",
-      "retained": "safevision/tools/run_v3_board.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/9e98673dafeb303f8b024ee56f2439dcba6943fd/run_v3_board.py",
       "git_blob": "9e98673dafeb303f8b024ee56f2439dcba6943fd",
       "bytes": 8966,
       "sha256": "226861323b0a15376873bfdecddbe1928330de07d203829754c7676ec5f42ddc"
@@ -48459,7 +48459,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/tools/v3_final_sta.py",
-      "retained": "safevision/tools/v3_final_sta.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a/v3_final_sta.py",
       "git_blob": "7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a",
       "bytes": 8504,
       "sha256": "675f81bfb06c854cd1b5a92c2322b27b77e3e49a2921469849adaa3b783486e1"
@@ -48480,7 +48480,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/tools/v3_source_profiles.py",
-      "retained": "safevision/tools/v3_source_profiles.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/1f48f341037bdca90c0d649be1996f9f8908bf8c/v3_source_profiles.py",
       "git_blob": "1f48f341037bdca90c0d649be1996f9f8908bf8c",
       "bytes": 2872,
       "sha256": "f9e935d8463adf13197f1b8e398258534a989bf84fd3220086caa92df1d8b186"
@@ -98089,14 +98089,14 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc",
-      "retained": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/796e3d3982141525af3ca2eceec2f96dd0b11e71/v3_cdc.sdc",
       "git_blob": "796e3d3982141525af3ca2eceec2f96dd0b11e71",
       "bytes": 4834,
       "sha256": "ca96441240908e738afdbbdaa657538f2ce12f1aa9f358c6e8d6eb157143de65"
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl",
-      "retained": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/f4beabd55cfa646dabcd764dc67c97aca663bc50/v3_cdc_audit.tcl",
       "git_blob": "f4beabd55cfa646dabcd764dc67c97aca663bc50",
       "bytes": 7094,
       "sha256": "8c7dee8afee913c3ccc51ca85d4560c8a8e5a6bfea74d2a751b34918f9af353f"
@@ -98124,7 +98124,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
-      "retained": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/eb78f33a12030554cd87bccd66cdcd6f9b6934dd/bmp_frame_sink.v",
       "git_blob": "eb78f33a12030554cd87bccd66cdcd6f9b6934dd",
       "bytes": 20723,
       "sha256": "326fdf53c66a42a33f0412433f234891a2c52d42e76391706866582e062ae456"
@@ -98271,7 +98271,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/audio/v3_pcm_ring.v",
-      "retained": "safevision/rtl/audio/v3_pcm_ring.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/e0741990fcec720d2f5182566c456f4dbcb0d98c/v3_pcm_ring.v",
       "git_blob": "e0741990fcec720d2f5182566c456f4dbcb0d98c",
       "bytes": 4598,
       "sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8"
@@ -98488,7 +98488,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/hd/v3_line_cache.v",
-      "retained": "safevision/rtl/hd/v3_line_cache.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/4e4bb80fe96ab49ea3a915d897065da3a9d9fd74/v3_line_cache.v",
       "git_blob": "4e4bb80fe96ab49ea3a915d897065da3a9d9fd74",
       "bytes": 18381,
       "sha256": "f4f87f6fb77a1f4b4c65ec53471438eace8af55d3878cd2a423033186e590695"
@@ -98502,7 +98502,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/hd/v3_row_integrity.v",
-      "retained": "safevision/rtl/hd/v3_row_integrity.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/572e113f7647d80c463a4944dab46aa8e3fcc98e/v3_row_integrity.v",
       "git_blob": "572e113f7647d80c463a4944dab46aa8e3fcc98e",
       "bytes": 16484,
       "sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368"
@@ -98614,7 +98614,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/memory/frame_writer.v",
-      "retained": "safevision/rtl/memory/frame_writer.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/df413877d2cf7fd2a565b7139142c0aeb9ecdeec/frame_writer.v",
       "git_blob": "df413877d2cf7fd2a565b7139142c0aeb9ecdeec",
       "bytes": 21538,
       "sha256": "98982e6a361feacb42a9417f0bdfc3a97dd9d106e3a764660edf58c920587964"
@@ -98782,7 +98782,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
-      "retained": "safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/9c568c38c6fdc505cb2d64fcdedac579e341b256/bmp_frame_write_bridge.v",
       "git_blob": "9c568c38c6fdc505cb2d64fcdedac579e341b256",
       "bytes": 3229,
       "sha256": "7dc0a6f16ee63d23975382b0e3fcca8f7b0df6655a69ed66a3f461b2fefaac99"
@@ -99314,7 +99314,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/tools/gen_v3_cdc.py",
-      "retained": "safevision/tools/gen_v3_cdc.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/0b79fe4f495cf9bf6dd253999b7cfa24899c6094/gen_v3_cdc.py",
       "git_blob": "0b79fe4f495cf9bf6dd253999b7cfa24899c6094",
       "bytes": 6149,
       "sha256": "e0f74251ead0d4334ff6df2f93a8d8c9ec2a568a6b7a78376ece14fdf9f0c426"
@@ -99783,7 +99783,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/tools/run_v3_board.py",
-      "retained": "safevision/tools/run_v3_board.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/9e98673dafeb303f8b024ee56f2439dcba6943fd/run_v3_board.py",
       "git_blob": "9e98673dafeb303f8b024ee56f2439dcba6943fd",
       "bytes": 8966,
       "sha256": "226861323b0a15376873bfdecddbe1928330de07d203829754c7676ec5f42ddc"
@@ -99867,7 +99867,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/tools/v3_final_sta.py",
-      "retained": "safevision/tools/v3_final_sta.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a/v3_final_sta.py",
       "git_blob": "7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a",
       "bytes": 8504,
       "sha256": "675f81bfb06c854cd1b5a92c2322b27b77e3e49a2921469849adaa3b783486e1"
@@ -99888,7 +99888,7 @@
     },
     {
       "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/tools/v3_source_profiles.py",
-      "retained": "safevision/tools/v3_source_profiles.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/1f48f341037bdca90c0d649be1996f9f8908bf8c/v3_source_profiles.py",
       "git_blob": "1f48f341037bdca90c0d649be1996f9f8908bf8c",
       "bytes": 2872,
       "sha256": "f9e935d8463adf13197f1b8e398258534a989bf84fd3220086caa92df1d8b186"

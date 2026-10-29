@@ -1,0 +1,242 @@
+{
+  "schema": 1,
+  "accepted": true,
+  "baseline_commit": "09faac2e8fa718c9f92ef4a5013b68003ec8afe6",
+  "original_ledger": "duplicates_261026.original.json",
+  "original_ledger_sha256": "e6b5099b8bb45c9cf53e841b71f94eda808ad4af2720cefbd77f7ac4dc6900be",
+  "active_ledger_sha256": "706931e2c8dd41335cd18c0800a54d0e5572d3acb61156df46840fd8889e5297",
+  "moved_references": [
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc",
+      "previous_retained": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/796e3d3982141525af3ca2eceec2f96dd0b11e71/v3_cdc.sdc",
+      "git_blob": "796e3d3982141525af3ca2eceec2f96dd0b11e71",
+      "current_source_blob": "237374ceffa74074ce406057000b45adb92479fe"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl",
+      "previous_retained": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/f4beabd55cfa646dabcd764dc67c97aca663bc50/v3_cdc_audit.tcl",
+      "git_blob": "f4beabd55cfa646dabcd764dc67c97aca663bc50",
+      "current_source_blob": "bd1e34e78f2c7667f868787a0067a73e056a2bc1"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+      "previous_retained": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/eb78f33a12030554cd87bccd66cdcd6f9b6934dd/bmp_frame_sink.v",
+      "git_blob": "eb78f33a12030554cd87bccd66cdcd6f9b6934dd",
+      "current_source_blob": "095659d47aab8e0912559a90c1bc4496e9ede792"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/audio/v3_pcm_ring.v",
+      "previous_retained": "safevision/rtl/audio/v3_pcm_ring.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/e0741990fcec720d2f5182566c456f4dbcb0d98c/v3_pcm_ring.v",
+      "git_blob": "e0741990fcec720d2f5182566c456f4dbcb0d98c",
+      "current_source_blob": "be22fa14aa76759e198d9f2fe61cfb31d902406c"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/hd/v3_line_cache.v",
+      "previous_retained": "safevision/rtl/hd/v3_line_cache.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/4e4bb80fe96ab49ea3a915d897065da3a9d9fd74/v3_line_cache.v",
+      "git_blob": "4e4bb80fe96ab49ea3a915d897065da3a9d9fd74",
+      "current_source_blob": "bdd9a74451c35eba0796b5bdd959bc982be84639"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/hd/v3_row_integrity.v",
+      "previous_retained": "safevision/rtl/hd/v3_row_integrity.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/572e113f7647d80c463a4944dab46aa8e3fcc98e/v3_row_integrity.v",
+      "git_blob": "572e113f7647d80c463a4944dab46aa8e3fcc98e",
+      "current_source_blob": "a58c7e6e57049f9e551856f588caafa8a4b83e71"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/memory/frame_writer.v",
+      "previous_retained": "safevision/rtl/memory/frame_writer.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/df413877d2cf7fd2a565b7139142c0aeb9ecdeec/frame_writer.v",
+      "git_blob": "df413877d2cf7fd2a565b7139142c0aeb9ecdeec",
+      "current_source_blob": "b3ae5d4b0dedda05057cd62fcf05150e32e61237"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
+      "previous_retained": "safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/9c568c38c6fdc505cb2d64fcdedac579e341b256/bmp_frame_write_bridge.v",
+      "git_blob": "9c568c38c6fdc505cb2d64fcdedac579e341b256",
+      "current_source_blob": "409188a26b401242342da9dbdd2d57ef8f41450d"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/tools/gen_v3_cdc.py",
+      "previous_retained": "safevision/tools/gen_v3_cdc.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/0b79fe4f495cf9bf6dd253999b7cfa24899c6094/gen_v3_cdc.py",
+      "git_blob": "0b79fe4f495cf9bf6dd253999b7cfa24899c6094",
+      "current_source_blob": "058f152e22c4b2dfe8bfdb95a1e483ffde08fce2"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/tools/run_v3_board.py",
+      "previous_retained": "safevision/tools/run_v3_board.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/9e98673dafeb303f8b024ee56f2439dcba6943fd/run_v3_board.py",
+      "git_blob": "9e98673dafeb303f8b024ee56f2439dcba6943fd",
+      "current_source_blob": "30776876f5343ec149cd8491e33d96fc8e00ebc6"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/tools/v3_final_sta.py",
+      "previous_retained": "safevision/tools/v3_final_sta.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a/v3_final_sta.py",
+      "git_blob": "7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a",
+      "current_source_blob": "e734c26087440d02855cc994df06f6a9da1c83bd"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee/source/safevision/tools/v3_source_profiles.py",
+      "previous_retained": "safevision/tools/v3_source_profiles.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/1f48f341037bdca90c0d649be1996f9f8908bf8c/v3_source_profiles.py",
+      "git_blob": "1f48f341037bdca90c0d649be1996f9f8908bf8c",
+      "current_source_blob": "cdc3491604045e79066fa5d503c6ee7078c6d862"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc",
+      "previous_retained": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc.sdc",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/796e3d3982141525af3ca2eceec2f96dd0b11e71/v3_cdc.sdc",
+      "git_blob": "796e3d3982141525af3ca2eceec2f96dd0b11e71",
+      "current_source_blob": "237374ceffa74074ce406057000b45adb92479fe"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl",
+      "previous_retained": "safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/v3_cdc_audit.tcl",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/f4beabd55cfa646dabcd764dc67c97aca663bc50/v3_cdc_audit.tcl",
+      "git_blob": "f4beabd55cfa646dabcd764dc67c97aca663bc50",
+      "current_source_blob": "bd1e34e78f2c7667f868787a0067a73e056a2bc1"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+      "previous_retained": "safevision/platform/anlogic_eg4s20_hx4s20c/rtl/bmp_frame_sink.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/eb78f33a12030554cd87bccd66cdcd6f9b6934dd/bmp_frame_sink.v",
+      "git_blob": "eb78f33a12030554cd87bccd66cdcd6f9b6934dd",
+      "current_source_blob": "095659d47aab8e0912559a90c1bc4496e9ede792"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/audio/v3_pcm_ring.v",
+      "previous_retained": "safevision/rtl/audio/v3_pcm_ring.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/e0741990fcec720d2f5182566c456f4dbcb0d98c/v3_pcm_ring.v",
+      "git_blob": "e0741990fcec720d2f5182566c456f4dbcb0d98c",
+      "current_source_blob": "be22fa14aa76759e198d9f2fe61cfb31d902406c"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/hd/v3_line_cache.v",
+      "previous_retained": "safevision/rtl/hd/v3_line_cache.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/4e4bb80fe96ab49ea3a915d897065da3a9d9fd74/v3_line_cache.v",
+      "git_blob": "4e4bb80fe96ab49ea3a915d897065da3a9d9fd74",
+      "current_source_blob": "bdd9a74451c35eba0796b5bdd959bc982be84639"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/hd/v3_row_integrity.v",
+      "previous_retained": "safevision/rtl/hd/v3_row_integrity.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/572e113f7647d80c463a4944dab46aa8e3fcc98e/v3_row_integrity.v",
+      "git_blob": "572e113f7647d80c463a4944dab46aa8e3fcc98e",
+      "current_source_blob": "a58c7e6e57049f9e551856f588caafa8a4b83e71"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/memory/frame_writer.v",
+      "previous_retained": "safevision/rtl/memory/frame_writer.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/df413877d2cf7fd2a565b7139142c0aeb9ecdeec/frame_writer.v",
+      "git_blob": "df413877d2cf7fd2a565b7139142c0aeb9ecdeec",
+      "current_source_blob": "b3ae5d4b0dedda05057cd62fcf05150e32e61237"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
+      "previous_retained": "safevision/rtl/top/safevision_core/bmp_frame_write_bridge.v",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/9c568c38c6fdc505cb2d64fcdedac579e341b256/bmp_frame_write_bridge.v",
+      "git_blob": "9c568c38c6fdc505cb2d64fcdedac579e341b256",
+      "current_source_blob": "409188a26b401242342da9dbdd2d57ef8f41450d"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/tools/gen_v3_cdc.py",
+      "previous_retained": "safevision/tools/gen_v3_cdc.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/0b79fe4f495cf9bf6dd253999b7cfa24899c6094/gen_v3_cdc.py",
+      "git_blob": "0b79fe4f495cf9bf6dd253999b7cfa24899c6094",
+      "current_source_blob": "058f152e22c4b2dfe8bfdb95a1e483ffde08fce2"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/tools/run_v3_board.py",
+      "previous_retained": "safevision/tools/run_v3_board.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/9e98673dafeb303f8b024ee56f2439dcba6943fd/run_v3_board.py",
+      "git_blob": "9e98673dafeb303f8b024ee56f2439dcba6943fd",
+      "current_source_blob": "30776876f5343ec149cd8491e33d96fc8e00ebc6"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/tools/v3_final_sta.py",
+      "previous_retained": "safevision/tools/v3_final_sta.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a/v3_final_sta.py",
+      "git_blob": "7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a",
+      "current_source_blob": "e734c26087440d02855cc994df06f6a9da1c83bd"
+    },
+    {
+      "removed": "artifacts/releases/BASE_MEDIA_ALIAS_261022_34462ee_WINFIX1/source/safevision/tools/v3_source_profiles.py",
+      "previous_retained": "safevision/tools/v3_source_profiles.py",
+      "retained": "evidence/repository_cleanup_261026/retained_source_261028/1f48f341037bdca90c0d649be1996f9f8908bf8c/v3_source_profiles.py",
+      "git_blob": "1f48f341037bdca90c0d649be1996f9f8908bf8c",
+      "current_source_blob": "cdc3491604045e79066fa5d503c6ee7078c6d862"
+    }
+  ],
+  "original_objects": {
+    "796e3d3982141525af3ca2eceec2f96dd0b11e71": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/796e3d3982141525af3ca2eceec2f96dd0b11e71/v3_cdc.sdc",
+      "bytes": 4834,
+      "sha256": "ca96441240908e738afdbbdaa657538f2ce12f1aa9f358c6e8d6eb157143de65"
+    },
+    "f4beabd55cfa646dabcd764dc67c97aca663bc50": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/f4beabd55cfa646dabcd764dc67c97aca663bc50/v3_cdc_audit.tcl",
+      "bytes": 7094,
+      "sha256": "8c7dee8afee913c3ccc51ca85d4560c8a8e5a6bfea74d2a751b34918f9af353f"
+    },
+    "eb78f33a12030554cd87bccd66cdcd6f9b6934dd": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/eb78f33a12030554cd87bccd66cdcd6f9b6934dd/bmp_frame_sink.v",
+      "bytes": 20723,
+      "sha256": "326fdf53c66a42a33f0412433f234891a2c52d42e76391706866582e062ae456"
+    },
+    "e0741990fcec720d2f5182566c456f4dbcb0d98c": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/e0741990fcec720d2f5182566c456f4dbcb0d98c/v3_pcm_ring.v",
+      "bytes": 4598,
+      "sha256": "36cbbfebea60a616f8325f8cb58b254017ed72102bb7bc0221c688574bd75dc8"
+    },
+    "4e4bb80fe96ab49ea3a915d897065da3a9d9fd74": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/4e4bb80fe96ab49ea3a915d897065da3a9d9fd74/v3_line_cache.v",
+      "bytes": 18381,
+      "sha256": "f4f87f6fb77a1f4b4c65ec53471438eace8af55d3878cd2a423033186e590695"
+    },
+    "572e113f7647d80c463a4944dab46aa8e3fcc98e": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/572e113f7647d80c463a4944dab46aa8e3fcc98e/v3_row_integrity.v",
+      "bytes": 16484,
+      "sha256": "24e42ac7abbe8837d2eb86b12f874bf4634b337d3dfb1a3387dc9fca58b95368"
+    },
+    "df413877d2cf7fd2a565b7139142c0aeb9ecdeec": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/df413877d2cf7fd2a565b7139142c0aeb9ecdeec/frame_writer.v",
+      "bytes": 21538,
+      "sha256": "98982e6a361feacb42a9417f0bdfc3a97dd9d106e3a764660edf58c920587964"
+    },
+    "9c568c38c6fdc505cb2d64fcdedac579e341b256": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/9c568c38c6fdc505cb2d64fcdedac579e341b256/bmp_frame_write_bridge.v",
+      "bytes": 3229,
+      "sha256": "7dc0a6f16ee63d23975382b0e3fcca8f7b0df6655a69ed66a3f461b2fefaac99"
+    },
+    "0b79fe4f495cf9bf6dd253999b7cfa24899c6094": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/0b79fe4f495cf9bf6dd253999b7cfa24899c6094/gen_v3_cdc.py",
+      "bytes": 6149,
+      "sha256": "e0f74251ead0d4334ff6df2f93a8d8c9ec2a568a6b7a78376ece14fdf9f0c426"
+    },
+    "9e98673dafeb303f8b024ee56f2439dcba6943fd": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/9e98673dafeb303f8b024ee56f2439dcba6943fd/run_v3_board.py",
+      "bytes": 8966,
+      "sha256": "226861323b0a15376873bfdecddbe1928330de07d203829754c7676ec5f42ddc"
+    },
+    "7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/7ed661d088d0d9e83e5bed8ee3f2c203d8ffb20a/v3_final_sta.py",
+      "bytes": 8504,
+      "sha256": "675f81bfb06c854cd1b5a92c2322b27b77e3e49a2921469849adaa3b783486e1"
+    },
+    "1f48f341037bdca90c0d649be1996f9f8908bf8c": {
+      "path": "evidence/repository_cleanup_261026/retained_source_261028/1f48f341037bdca90c0d649be1996f9f8908bf8c/v3_source_profiles.py",
+      "bytes": 2872,
+      "sha256": "f9e935d8463adf13197f1b8e398258534a989bf84fd3220086caa92df1d8b186"
+    }
+  },
+  "removed_paths_and_counts_unchanged": true,
+  "current_rtl_and_constraints_changed_by_this_operation": false
+}
