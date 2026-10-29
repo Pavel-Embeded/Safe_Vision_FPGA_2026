@@ -1009,7 +1009,7 @@
                 </PlaceProperty>
                 <RouteProperty>
                     <effort>routability</effort>
-                    <timing>greedy</timing>
+                    <timing>off</timing>
                     <fix_hold>on</fix_hold>
                     <post_route_opt>ultra</post_route_opt>
                 </RouteProperty>
