@@ -24,12 +24,12 @@ module tb_v3_read_alignment_long #(parameter integer STRICT_BURST=1,RD_LAT=20,FA
  reg stream_compare=0;integer stream_received=0,stream_start_cycle=0,stream_cycles=0;
  always @(negedge clk)if(stream_compare&&rv)begin
    if(stream_received>=4096||dout!==32'h9abc0000+stream_received)
-     begin $display("[FAIL] stream prefetch order/data mismatch index=%0d got=%08x",stream_received,dout); $finish; end 
+     begin $display("[FAIL] stream prefetch order/data mismatch index=%0d got=%08x",stream_received,dout); $finish; end
    stream_received=stream_received+1;
  end
  task check(input  ok,input [4095:0] name);
- begin begin ok = (ok === 1'b1); checks=checks+1;if(!ok)begin errors=errors+1;$display("[FAIL] %s",name);end
- else $display("[PASS] %s",name);end  end endtask
+ begin  ok = (ok === 1'b1); checks=checks+1;if(!ok)begin errors=errors+1;$display("[FAIL] %s",name);end
+ else $display("[PASS] %s",name);  end endtask
  always @(posedge clk)begin
   cycles=cycles+1;
   base_sr<=read_valid[RD_LAT-1];sr<=base_sr; if(read_valid[RD_LAT-1]) sd<=mem[read_addr[RD_LAT-1][14:0]];
@@ -39,9 +39,9 @@ module tb_v3_read_alignment_long #(parameter integer STRICT_BURST=1,RD_LAT=20,FA
   if(aw&&!last_w && cycles-last_cmd<17)gap_bad=gap_bad+1;
   if(ar&&!last_r && cycles-last_cmd<17)gap_bad=gap_bad+1;
   if(aw)begin
-   if(wr_count>=32)begin $display("[FAIL] model burst overflow"); $finish; end 
+   if(wr_count>=32)begin $display("[FAIL] model burst overflow"); $finish; end
    pending_addr[wr_count]=wa;pending_data[wr_count]=wd;pending_dm[wr_count]=dm;
-   if(wr_count>0&&wa!==pending_addr[wr_count-1]+1)begin $display("[FAIL] nonconsecutive hardware write"); $finish; end 
+   if(wr_count>0&&wa!==pending_addr[wr_count-1]+1)begin $display("[FAIL] nonconsecutive hardware write"); $finish; end
    wr_count=wr_count+1;
   end
   if(last_w&&!aw)begin
@@ -55,22 +55,22 @@ module tb_v3_read_alignment_long #(parameter integer STRICT_BURST=1,RD_LAT=20,FA
   last_w=aw;last_r=ar;
  end
  task write_word(input integer a,input [31:0] d,input [3:0] mask);
- integer n;begin begin
+ integer n;begin
   @(negedge clk);req=1;wr=1;addr=a;data=d;strb=mask;
   n=0;@(posedge clk);while(ready!==1'b1&&n<5000)begin @(posedge clk);n=n+1;end
-  if(n==5000)begin $display("[FAIL] write handshake timeout at %h",a); $finish; end 
+  if(n==5000)begin $display("[FAIL] write handshake timeout at %h",a); $finish; end
   @(negedge clk);req=0;
- end  end endtask
+   end endtask
  task read_word(input integer a,output [31:0] d);
- integer n;begin begin
+ integer n;begin
   @(negedge clk);req=1;wr=0;addr=a;
   n=0;@(posedge clk);while(ready!==1'b1&&n<5000)begin @(posedge clk);n=n+1;end
-  if(n==5000)begin $display("[FAIL] read handshake timeout at %h",a); $finish; end 
+  if(n==5000)begin $display("[FAIL] read handshake timeout at %h",a); $finish; end
   @(negedge clk);req=0;n=0;
   while(rv!==1'b1&&n<5000)begin @(negedge clk);n=n+1;end
-  if(n==5000)begin $display("[FAIL] read response timeout at %h",a); $finish; end 
+  if(n==5000)begin $display("[FAIL] read response timeout at %h",a); $finish; end
   d=dout;@(negedge clk);
- end  end endtask
+   end endtask
  reg [31:0] v,lfsr=32'h1aceb00c,gold[0:63];integer a,t,byte_i;
  integer k,n,mismatch=0;
  initial begin
@@ -96,7 +96,7 @@ module tb_v3_read_alignment_long #(parameter integer STRICT_BURST=1,RD_LAT=20,FA
   for(k=0;k<4096;k=k+1)begin
    addr=12000+k;n=0;
    @(posedge clk);while(ready!==1'b1&&n<5000)begin @(posedge clk);n=n+1;end
-   if(n==5000)begin $display("[FAIL] stream handshake timeout"); $finish; end 
+   if(n==5000)begin $display("[FAIL] stream handshake timeout"); $finish; end
    @(negedge clk);
   end
   req=0;stream_cycles=cycles-stream_start_cycle;repeat(3)@(negedge clk);stream_compare=0;
@@ -109,12 +109,12 @@ module tb_v3_read_alignment_long #(parameter integer STRICT_BURST=1,RD_LAT=20,FA
    j=0;
    while(j<16&&!(dut.state==3&&dut.contiguous_refill))begin
     read_word(17000+j,v);
-    if(v!==32'h13570000+j)begin $display("[FAIL] prefetch cancellation setup mismatch"); $finish; end 
+    if(v!==32'h13570000+j)begin $display("[FAIL] prefetch cancellation setup mismatch"); $finish; end
     j=j+1;
    end
    check(dut.state==3&&dut.contiguous_refill,"read prefetch is in flight with a partially drained previous bank");
    @(negedge clk);req=1;wr=1;addr=18000;data=32'hdeadbeef;strb=15;
-   @(posedge clk);if(ready)begin $display("[FAIL] write unexpectedly accepted during physical read"); $finish; end 
+   @(posedge clk);if(ready)begin $display("[FAIL] write unexpectedly accepted during physical read"); $finish; end
    @(negedge clk);req=0;
    mismatch=0;
    for(k=j;k<64;k=k+1)begin
@@ -150,7 +150,7 @@ module tb_v3_read_alignment_long #(parameter integer STRICT_BURST=1,RD_LAT=20,FA
   for(k=0;k<64;k=k+1)begin
     addr=7000+k;data=32'h34560000+k;n=0;
     @(posedge clk);while(ready!==1'b1&&n<5000)begin @(posedge clk);n=n+1;end
-    if(n==5000)begin $display("[FAIL] continuous write timeout"); $finish; end 
+    if(n==5000)begin $display("[FAIL] continuous write timeout"); $finish; end
     @(negedge clk);
   end
   req=0;mismatch=0;

@@ -57,20 +57,20 @@ module tb_video_timing;
                             input integer tick,
                             input [31:0] got,
                             input [31:0] expected);
-        begin begin
+        begin
             errors = errors + 1;
             $display("FAIL %0s cycle=%0d got=%08h expected=%08h",
                      mode_name, tick, got, expected);
             if (errors >= 8)
-                begin $display("[FAIL] Too many video_timing mismatches"); $finish; end 
-        end
+                begin $display("[FAIL] Too many video_timing mismatches"); $finish; end
+
      end endtask
 
 
     task automatic check_vga(input integer tick);
         reg [11:0] ex, ey;
         reg [31:0] got, expected;
-        begin begin
+        begin
             ex = tick % 800;
             ey = (tick / 800) % 525;
             got = {vga_x, vga_y, vga_hs, vga_vs, vga_de,
@@ -84,13 +84,13 @@ module tb_video_timing;
                         (ex >= 640), (ey >= 480)};
             checked_vga = checked_vga + 1;
             if (got !== expected) mismatch("VGA", tick, got, expected);
-        end
+
      end endtask
 
     task automatic check_hd(input integer tick);
         reg [11:0] ex, ey;
         reg [31:0] got, expected;
-        begin begin
+        begin
             ex = tick % 1650;
             ey = (tick / 1650) % 750;
             got = {hd_x, hd_y, hd_hs, hd_vs, hd_de,
@@ -104,13 +104,13 @@ module tb_video_timing;
                         (ex >= 1280), (ey >= 720)};
             checked_hd = checked_hd + 1;
             if (got !== expected) mismatch("HD720", tick, got, expected);
-        end
+
      end endtask
 
     task automatic check_tiny(input integer tick);
         reg [11:0] ex, ey;
         reg [31:0] got, expected;
-        begin begin
+        begin
             ex = tick % 5;
             ey = (tick / 5) % 3;
             got = {tiny_x, tiny_y, tiny_hs, tiny_vs, tiny_de,
@@ -125,30 +125,30 @@ module tb_video_timing;
                         (ex >= 3), (ey >= 2)};
             checked_tiny = checked_tiny + 1;
             if (got !== expected) mismatch("TINY", tick, got, expected);
-        end
+
      end endtask
 
     task automatic check_reset;
-        begin begin
+        begin
             if ({vga_x, vga_y, vga_hs, vga_vs, vga_de,
                  vga_line, vga_frame, vga_active,
                  vga_hblank, vga_vblank} !==
                 {12'd0, 12'd0, 1'b1, 1'b1, 1'b0,
                  1'b0, 1'b0, 1'b0, 1'b1, 1'b1})
-                begin $display("[FAIL] VGA asynchronous reset outputs incorrect"); $finish; end 
+                begin $display("[FAIL] VGA asynchronous reset outputs incorrect"); $finish; end
             if ({hd_x, hd_y, hd_hs, hd_vs, hd_de,
                  hd_line, hd_frame, hd_active,
                  hd_hblank, hd_vblank} !==
                 {12'd0, 12'd0, 1'b0, 1'b0, 1'b0,
                  1'b0, 1'b0, 1'b0, 1'b1, 1'b1})
-                begin $display("[FAIL] HD asynchronous reset outputs incorrect"); $finish; end 
+                begin $display("[FAIL] HD asynchronous reset outputs incorrect"); $finish; end
             if ({tiny_x, tiny_y, tiny_hs, tiny_vs, tiny_de,
                  tiny_line, tiny_frame, tiny_active,
                  tiny_hblank, tiny_vblank} !==
                 {12'd0, 12'd0, 1'b0, 1'b1, 1'b0,
                  1'b0, 1'b0, 1'b0, 1'b1, 1'b1})
-                begin $display("[FAIL] Tiny asynchronous reset outputs incorrect"); $finish; end 
-        end
+                begin $display("[FAIL] Tiny asynchronous reset outputs incorrect"); $finish; end
+
      end endtask
 
     initial begin
@@ -184,7 +184,7 @@ module tb_video_timing;
         end
 
         if (errors != 0)
-            begin $display("[FAIL] video_timing had %0d mismatches", errors); $finish; end 
+            begin $display("[FAIL] video_timing had %0d mismatches", errors); $finish; end
         $display("PASS tb_video_timing: VGA=%0d HD720=%0d TINY=%0d checked pixel periods; mid-scan async reset passed",
                  checked_vga, checked_hd, checked_tiny);
         $finish;

@@ -3,10 +3,10 @@ module tb_v3_hud_palette192;
  reg clk=0,rst=0,on=0,valid=0;always #5 clk=~clk;
  reg[15:0]fg=0,bg=0;wire[15:0]pixel;wire ov;
  v3_hud_palette224 dut(clk,rst,valid,on,fg,bg,pixel,ov);
- function[15:0]reference(input[15:0]f,b,input  en);integer r,g,bl,a;begin begin en = (en === 1'b1); a=en ? 224:0;
+ function[15:0]reference(input[15:0]f,b,input  en);integer r,g,bl,a;begin  en = (en === 1'b1); a=en ? 224:0;
  r=(f[15:11]*a+b[15:11]*(255-a)+127)/255;g=(f[10:5]*a+b[10:5]*(255-a)+127)/255;bl=(f[4:0]*a+b[4:0]*(255-a)+127)/255;
- reference={v_cast_s5(r),v_cast_s6(g),v_cast_s5(bl)};end  end endfunction
- function[15:0]colour(input integer c);begin begin case(c)0:colour=16'hffff;1:colour=16'h07e0;2:colour=16'h7bef;3:colour=16'h05bf;4:colour=16'hffe0;5:colour=16'hf800;default:colour=0;endcase end  end endfunction
+ reference={v_cast_s5(r),v_cast_s6(g),v_cast_s5(bl)};  end endfunction
+ function[15:0]colour(input integer c);begin  case(c)0:colour=16'hffff;1:colour=16'h07e0;2:colour=16'h7bef;3:colour=16'h05bf;4:colour=16'hffe0;5:colour=16'hf800;default:colour=0;endcase   end endfunction
  reg[15:0]q[0:2];reg[2:0]vq=0;integer errors=0,comparisons=0,i,c,b,m;
  always@(posedge clk)begin
  if(!rst)begin for(i=0;i<3;i = i + 1)q[i]=0;vq=0;end
@@ -22,6 +22,6 @@ module tb_v3_hud_palette192;
  $display("[TB] tb_v3_hud_palette192 done errors=%0d comparisons=%0d",errors,comparisons);$finish;end
  initial begin #20000000;$display("[FAIL] HUD palette watchdog errors=1");$finish;end
 
-function signed [4:0] v_cast_s5; input signed [4:0] value; begin begin v_cast_s5=value; end  end endfunction
-function signed [5:0] v_cast_s6; input signed [5:0] value; begin begin v_cast_s6=value; end  end endfunction
+function signed [4:0] v_cast_s5; input signed [4:0] value; begin  v_cast_s5=value;   end endfunction
+function signed [5:0] v_cast_s6; input signed [5:0] value; begin  v_cast_s6=value;   end endfunction
 endmodule

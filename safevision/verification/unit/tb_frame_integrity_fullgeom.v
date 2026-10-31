@@ -47,7 +47,7 @@ module tb_fullgeom;
 
 
     task drive_frame;
-        begin begin
+        begin
             @(posedge clk);
             frame_slot <= 1; frame_begin <= 1; @(posedge clk); frame_begin <= 0;
             cur_addr = SLOT1 + (top_down  ?  0 : (WORDS-ROW_WORDS)*4);
@@ -68,7 +68,7 @@ module tb_fullgeom;
             end
             @(posedge clk); accepted <= 0;
             repeat (4) @(posedge clk);
-        end
+
      end endtask
 
 
@@ -95,10 +95,10 @@ module tb_fullgeom;
             drive_frame;
             @(posedge clk); verify_start <= 1; @(posedge clk); verify_start <= 0;
             fork : waitdone
-                begin : v_branch_1 begin : w1  wait (verify_done == 1'b1); end disable waitdone; end 
-                begin : v_branch_2 begin : w2  #60_000_000; end disable waitdone; end 
+                begin : v_branch_1 begin : w1  wait (verify_done == 1'b1); end disable waitdone; end
+                begin : v_branch_2 begin : w2  #60_000_000; end disable waitdone; end
             join
-            
+
             repeat (4) @(posedge clk);
 
             $display("");

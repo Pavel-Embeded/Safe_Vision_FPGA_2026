@@ -4,8 +4,8 @@ module tb_v3_geometry_stages;
  reg rst=0,valid=0,sof=0,td=0;reg[15:0] width=1,height=1;
  v3_bmp_normalizer #(.FLEX_PIXELS(1)) dut(.clk(clk),.rst_n(rst),.din(8'h5a),.din_valid(valid),.din_sof(sof),.din_eof(1'b0),.width(width),.height(height),.top_down(td),.pixel_ready(1'b1),.bpp(8'd24));
  integer errors=0,comparisons=0,w,h,sgn,boundary,vectors=0;
- task ck(input  okay,input [4095:0] message);begin begin okay = (okay === 1'b1); comparisons = comparisons + 1;if(!okay)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s w=%0d h=%0d s=%0d",message,w,h,sgn);end end  end endtask
- task size(input integer iw,ih,input  orientation);reg wide;integer numerator,divisor;begin begin
+ task ck(input  okay,input [4095:0] message);begin  okay = (okay === 1'b1); comparisons = comparisons + 1;if(!okay)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s w=%0d h=%0d s=%0d",message,w,h,sgn);end   end endtask
+ task size(input integer iw,ih,input  orientation);reg wide;integer numerator,divisor;begin
   orientation = (orientation === 1'b1); if(ih>=1&&ih<=16384)begin
    vectors = vectors + 1;wide=iw*480>=ih*640;numerator=wide ? ih*640:iw*480;divisor=wide ? iw:ih;
    @(negedge clk);rst=0;valid=0;sof=0;width=iw;height=orientation ? -ih:ih;td=orientation;
@@ -21,7 +21,7 @@ module tb_v3_geometry_stages;
    ck(dut.geometry_scratch==numerator&&dut.geometry_divisor==divisor,"full original numerator and divisor survive the split");
    ck(dut.store_x==0&&!dut.pixel_valid&&!dut.error,"setup emits no pixels and starts the quotient at zero");
   end
- end  end endtask
+   end endtask
  initial begin
   repeat(3)@(negedge clk);
   for(sgn=0;sgn<2;sgn = sgn + 1)begin

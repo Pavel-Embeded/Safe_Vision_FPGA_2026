@@ -8,7 +8,7 @@ module tb_v3_frame_safe_integration;
  .media_reset(1'b0),.cfg_valid(1'b0),.cfg_data(99'd0),.cache_valid(4'hf),.next_request(1'b0),.safety_active(1'b0),
  .media_ready(1'b0),.media_ready_generation(8'd0),.rd_ack(1'b0),.rd_busy(1'b0),.rd_data(32'd0),.rd_valid(1'b0),
  .lookup_crc(32'd0),.lookup_valid(1'b0),.x(x),.y(y),.rgb(rgb),.de(de));
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s",msg);end end  end endtask
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s",msg);end   end endtask
  always@(negedge clk)begin
   if(!rst)begin lx=0;ly=0;cycle=0;end
   else begin cycle = cycle + 1;if(lx==31)begin lx=0;ly=(ly==5) ? 0:ly+1;end else lx = lx + 1;end
@@ -26,7 +26,7 @@ module tb_v3_frame_safe_integration;
   end
  end end
  task normal_frame;
-  begin begin request=0;wait(!d.frame_safe_raw&&!d.frame_safe_output);wait(de&&x==0&&y==0&&rgb==24'h0000ff);end
+  begin  request=0;wait(!d.frame_safe_raw&&!d.frame_safe_output);wait(de&&x==0&&y==0&&rgb==24'h0000ff);
   end endtask
  initial begin
 

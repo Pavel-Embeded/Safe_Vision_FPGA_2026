@@ -10,12 +10,12 @@ module tb_v3_audio_prefill_compare;
  v3_audio_prefill_compare #(.LIMIT(-1)) g(r,w,p,fill[6]);
  integer i,j,k,errors=0,comparisons=0;reg[31:0] total,rng=32'habc629ef;reg[6:0] expected;
  task probe(input[15:0] ring_value,input[9:0] words,input  partial);
- begin begin partial = (partial === 1'b1); r=ring_value;w=words;p=partial;
+ begin  partial = (partial === 1'b1); r=ring_value;w=words;p=partial;
   total={16'd0,ring_value}+(({22'd0,words}+2)/3)+partial;
   expected={total<32'hffffffff,total<32'd0,total<32'd65537,total<32'd65536,total<32'd128,total<32'd640,total<32'd928};
   #0.001;comparisons=comparisons+7;
   if(fill!==expected)begin errors=errors+1;if(errors<10)$display("[FAIL] prefill r=%0d words=%0d partial=%0d expected=%b actual=%b",r,w,p,expected,fill);end
- end  end endtask
+   end endtask
  initial begin
   for(i=0;i<1024;i=i+1)for(j=0;j<1024;j=j+1)begin probe(i,j,0);probe(i,j,1);end
   for(i=65520;i<65536;i=i+1)for(j=0;j<1024;j=j+1)begin probe(i,j,0);probe(i,j,1);end

@@ -30,11 +30,11 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
  integer errors=0,comparisons=0,steps=0,i,xx,yy,ph,frame,source_column;
  reg want_panel,want_text,want_edge;
  localparam PERIOD=(WIDTH-128)+32*16;
- task ck(input  okay,input [4095:0] message);begin begin
+ task ck(input okay,input [4095:0] message);begin
   okay = (okay === 1'b1); comparisons = comparisons + 1;
   if(!okay)begin errors = errors + 1;if(errors<15)$display("[FAIL] %s phase=%0d x=%0d y=%0d t=%t",message,model_position,x,y,$time);end
- end  end endtask
- task tick(input integer px,py,input  active,start_frame);begin begin
+ end endtask
+ task tick(input integer px,py,input active,start_frame);begin
   active = (active === 1'b1); start_frame = (start_frame === 1'b1); @(negedge clk);x=px;y=py;de=active;fs=start_frame;
 
 
@@ -69,15 +69,15 @@ module ticker_raster_case #(parameter WIDTH=640,HEIGHT=480,STEP=2,FULL_RASTER=1,
    short_checks = short_checks + 1;
   end
   steps = steps + 1;
- end  end endtask
- task reset_async;begin begin
+ end endtask
+ task reset_async;begin
   @(negedge clk);rst_n=0;fs=0;de=0;#2;
   ck(panel===0&&dot===0&&edge_bit===0,"asynchronous pixel reset immediately blanks all ticker outputs");
   model_position=0;model_divider=0;model_frames=0;model_loops=0;
   consecutive=0;previous_x=0;previous_y=0;
   for(i=0;i<21;i=i+1)begin qp[i]=0;qt[i]=0;qe[i]=0;end
   repeat(2)@(negedge clk);rst_n=1;
- end  end endtask
+ end endtask
  initial begin
   $readmemb("pixels.mem",reference_pixels);
   for(i=0;i<21;i=i+1)begin qp[i]=0;qt[i]=0;qe[i]=0;end

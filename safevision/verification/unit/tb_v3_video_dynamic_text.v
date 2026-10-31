@@ -10,9 +10,9 @@ module tb_v3_video_dynamic_text_model #(parameter HD=0)();
   .cfg_data(cfg),.cache_valid(cache),.underflows(uf),.active_slot(slot),.generation(gen),.busy(busy),.safety_active(safe),
   .osd_rgb565(osd),.emergency_rgb565(em),.hud_rgb565(hud),.safe_rgb565(),.osd_alpha(oa),.emergency_alpha(ea),.hud_alpha(ha));
  reg[7:0] font[0:4095];integer errors=0,comparisons=0,n,i;
- function[7:0] hexchar(input integer value);begin begin hexchar=value<10 ? 48+value:55+value;end  end endfunction
+ function[7:0] hexchar(input integer value);begin  hexchar=value<10 ? 48+value:55+value;  end endfunction
  task character(input integer code,column,top,layer,input  selected);
-  integer row,col;reg dot,good;begin begin
+  integer row,col;reg dot,good;begin
    selected = (selected === 1'b1); for(row=0;row<16;row=row+1)for(col=0;col<8;col=col+1)begin
     @(negedge clk);x=8+column*8+col;y=top+row;repeat(4)@(posedge clk);#1;
     dot= ((font[code*16+row][7-col]) === 1'b1);
@@ -24,10 +24,10 @@ module tb_v3_video_dynamic_text_model #(parameter HD=0)();
     comparisons=comparisons+1;
     if(!good)begin errors=errors+1;if(errors<8)$display("[FAIL] HD=%0d code=%h xy=%0d,%0d layer=%0d",HD,code,x,y,layer);end
    end
-  end
+
   end endtask
  task word(input[63:0] text,input integer length,column,top,layer,input  selected);
-  integer k;begin begin selected = (selected === 1'b1); for(k=0;k<length;k=k+1)character(text[(7-k)*8+:8],column+k,top,layer,selected);end
+  integer k;begin  selected = (selected === 1'b1); for(k=0;k<length;k=k+1)character(text[(7-k)*8+:8],column+k,top,layer,selected);
   end endtask
  initial begin
   $readmemh("font8x16.mem",font);cfg[55]=1;cfg[78:71]=200;cfg[69]=1;cfg[68]=1;

@@ -15,15 +15,15 @@ module tb_v3_lba_dual883;
  integer errors=0,comparisons=0,k,n,coverage_count[0:255][0:1],reset_count=0;
  reg[31:0] random_state=32'h8c75a2d1;
  function[31:0] mathematical_lba(input[31:0] dc,fc,origin,input[7:0] factor,input  selected);
-  reg[63:0] wide;reg[31:0] cluster;begin begin
+  reg[63:0] wide;reg[31:0] cluster;begin
    selected = (selected === 1'b1); cluster=selected ? dc:fc;
    wide=({32'd0,cluster}-64'd2)*{56'd0,factor}+{32'd0,origin};
    mathematical_lba=(factor!=0&&((factor&(factor-8'd1))==0)) ? wide[31:0]:origin;
-  end
+
   end endfunction
- task check(input  ok,input [4095:0] message);begin begin
+ task check(input  ok,input [4095:0] message);begin
   ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s k=%0d spc=%0d owner=%b",message,k,spc,owner);end
- end  end endtask
+   end endtask
  always @(posedge clk or negedge rst)begin
   if(!rst)begin valid_first<=0;valid_second<=0;owner_first<=0;owner_second<=0;end
   else begin

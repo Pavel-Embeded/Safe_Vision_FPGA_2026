@@ -11,9 +11,9 @@ module tb_v3_handbook_board;
  defparam dut.video.STATUS_TEXT_FILE="v3_handbook_status_text.mem";
  reg cv=0,query=0;reg[7:0]dest=65;reg[6:0]id=0;reg signed[31:0]value=0;
  integer errors=0,comparisons=0,i;reg[98:0]saved;
- task ck(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s",message);end end  end endtask
+ task ck(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s",message);end   end endtask
  task command(input[7:0]d,input[6:0]k,input integer v,input  ask,input integer want);
-  begin begin ask = (ask === 1'b1); @(negedge dut.sys_clk);dest=d;id=k;value=v;query=ask;cv=1;
+  begin  ask = (ask === 1'b1); @(negedge dut.sys_clk);dest=d;id=k;value=v;query=ask;cv=1;
    @(negedge dut.sys_clk);cv=0;
    if(d!=66)begin
     ck(!dut.controls_reply,"control endpoint has no premature unregistered ACK");
@@ -22,7 +22,7 @@ module tb_v3_handbook_board;
    ck((d==66 ? dut.b_reply:dut.controls_reply)&&(d==66 ? dut.b_reply_code:dut.controls_reply_code)==0,"production numeric catalog endpoint ACK");
    if(ask)ck((d==66 ? dut.b_reply_value:dut.controls_reply_value)==want,"production query readback");
    repeat(4)@(negedge dut.sys_clk);
-  end
+
   end endtask
  initial begin
   repeat(10)@(negedge clk);rst_n=1;wait(dut.sys_rst_n&&dut.config_rst_n);repeat(8)@(negedge dut.sys_clk);
@@ -45,5 +45,5 @@ module tb_v3_handbook_board;
  end
  initial begin #1000000;$display("[FAIL] production profile watchdog errors=1");$finish;end
 
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
 endmodule

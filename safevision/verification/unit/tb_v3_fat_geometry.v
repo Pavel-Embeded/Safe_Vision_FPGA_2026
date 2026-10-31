@@ -16,13 +16,13 @@ module tb_v3_fat_geometry;
  v3_file_streamer vfs(.clk(clk),.rst_n(rst),.start(1'b0),.stream_enable(1'b1));
  fat32_directory_scanner ds(.clk(clk),.rst_n(rst),.scan_en(1'b0));
  reg[7:0] sector[0:511];integer errors=0,comparisons=0,i,j,s,n,t;reg[31:0] delta,expected,seed=32'h938ca152;
- task check(input condition,input [4095:0] label);begin begin
+ task check(input condition,input [4095:0] label);begin
   comparisons=comparisons+1;if(!condition)begin errors=errors+1;if(errors<6)$display("[FAIL] %s",label);end
- end  end endtask
+   end endtask
  task put32(input integer off,input[31:0] value);begin begin
-  begin : v_loop_1 integer k; for( k=0;k<4;k=k+1)sector[off+k]=value[k*8+:8]; end 
+  begin : v_loop_1 integer k; for( k=0;k<4;k=k+1)sector[off+k]=value[k*8+:8]; end
  end  end endtask
- task exercise(input integer sectors,fats,input legal);begin begin
+ task exercise(input integer sectors,fats,input legal);begin
   for(i=0;i<512;i=i+1)sector[i]=0;
   sector[11]=0;sector[12]=2;sector[13]=sectors;sector[14]=32;sector[16]=fats;
   put32(32,32'h01000000);put32(36,32'd129);put32(44,32'd131);
@@ -39,7 +39,7 @@ module tb_v3_fat_geometry;
    check(clusters==(32'h01000000-(32+fats*129))/sectors,"cluster count equals independent division");
    check(bps==512&&spc==sectors&&nfat==fats&&root==131&&fat==32,"mounted raw fields preserved");
   end else check(bad&&!done,"invalid geometry cannot reach specialization");
- end  end endtask
+   end endtask
  initial begin
   for(s=1;s<=128;s=s*2)begin
    for(n=1;n<=2;n=n+1)exercise(s,n,1);

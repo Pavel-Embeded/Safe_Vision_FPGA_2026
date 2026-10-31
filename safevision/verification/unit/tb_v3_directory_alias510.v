@@ -16,7 +16,7 @@ module tb_v3_directory_alias510;
  .idx_clear(clear_index),.idx_commit(commit_index),.idx_done(index_done),.file_cnt(file_count),.file_valid(file_valid),.insufficient(),.err_code(),.err_detail(),
  .cursor_key(16'd0),.sel_key(selected_key),.sel_slot(select_slot),.sel_first_clus(selected_cluster),.sel_size(),.sel_valid(select_valid),.sel_wav_first_clus(wav_cluster),.sel_wav_size(),.sel_wav_valid(wav_valid),.bmp_seen(),.wav_seen());
  reg holding=0;reg[175:0]held;
- task check(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] %s round%0d entry%0d",msg,round,received);end end  end endtask
+ task check(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] %s round%0d entry%0d",msg,round,received);end   end endtask
  always @(negedge clk)begin cycle=cycle+1;ready=(cycle%17>4);end
  always @(posedge clk)begin
   rdone<=0;

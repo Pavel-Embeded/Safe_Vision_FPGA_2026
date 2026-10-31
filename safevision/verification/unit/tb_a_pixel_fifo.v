@@ -14,16 +14,16 @@ module tb_a_pixel_fifo;
       .rd_data(dout),.rd_valid(valid),.empty(empty),.almost_empty(ae),.rd_pixels(pixels));
     always @(posedge wc)if(!rst)begin
         if(we&&ready&&!full)begin expected[tail]=din[15:0];expected[tail+1]=din[31:16];tail=tail+2;wr=wr+1;end
-        if(words>63)begin $display("[FAIL] FIFO write count exceeds capacity"); $finish; end 
+        if(words>63)begin $display("[FAIL] FIFO write count exceeds capacity"); $finish; end
     end
     always @(posedge rc)if(!rst)begin
         if(re&&!empty&&valid)begin
-            if(head>=tail)begin $display("[FAIL] FIFO output without accepted input"); $finish; end 
-            if(dout!==expected[head])begin $display("[FAIL] FIFO order/halfword head=%0d got=%h expected=%h",head,dout,expected[head]); $finish; end 
+            if(head>=tail)begin $display("[FAIL] FIFO output without accepted input"); $finish; end
+            if(dout!==expected[head])begin $display("[FAIL] FIFO order/halfword head=%0d got=%h expected=%h",head,dout,expected[head]); $finish; end
             head=head+1;rd=rd+1;checks=checks+1;
         end
-        if(valid!==!empty)begin $display("[FAIL] FIFO FWFT valid/empty contract"); $finish; end 
-        if(pixels>126)begin $display("[FAIL] FIFO read count exceeds capacity"); $finish; end 
+        if(valid!==!empty)begin $display("[FAIL] FIFO FWFT valid/empty contract"); $finish; end
+        if(pixels>126)begin $display("[FAIL] FIFO read count exceeds capacity"); $finish; end
     end
     always @(negedge wc)if(!rst)begin
         ticks=ticks+1;
@@ -34,22 +34,22 @@ module tb_a_pixel_fifo;
     end
     always @(negedge rc)if(!rst)re=(phase==2) ? ((0 + (($unsigned($random)) % ((4)-(0)+1)))!=0):(phase==3);
     task reset_epoch;
-        begin begin rst=1;we=0;re=0;#23;head=0;tail=0;wr=0;rd=0;ticks=0;rst=0;repeat(10)@(negedge wc);end
+        begin  rst=1;we=0;re=0;#23;head=0;tail=0;wr=0;rd=0;ticks=0;rst=0;repeat(10)@(negedge wc);
      end endtask
     initial begin
         reset_epoch();phase=1;
         wait(full);repeat(10)@(negedge wc);
-        if(tail!=126||!af)begin $display("[FAIL] FIFO capacity/full wrong tail=%0d af=%b",tail,af); $finish; end 
+        if(tail!=126||!af)begin $display("[FAIL] FIFO capacity/full wrong tail=%0d af=%b",tail,af); $finish; end
         phase=3;wait(empty);repeat(12)@(negedge rc);
-        if(head!=tail||pixels!=0||!ae)begin $display("[FAIL] FIFO drain/empty count"); $finish; end 
+        if(head!=tail||pixels!=0||!ae)begin $display("[FAIL] FIFO drain/empty count"); $finish; end
         phase=2;wait(ticks>=7000);phase=3;wait(empty);repeat(12)@(negedge rc);
-        if(head!=tail||checks<3000)begin $display("[FAIL] FIFO random/wrap coverage"); $finish; end 
+        if(head!=tail||checks<3000)begin $display("[FAIL] FIFO random/wrap coverage"); $finish; end
         phase=1;repeat(25)@(negedge wc);reset_epoch();
         phase=2;wait(ticks>=7000);phase=3;wait(empty);repeat(12)@(negedge rc);
-        if(head!=tail)begin $display("[FAIL] FIFO reset epoch stale data"); $finish; end 
+        if(head!=tail)begin $display("[FAIL] FIFO reset epoch stale data"); $finish; end
         $display("PASS tb_a_pixel_fifo: checks=%0d actual TD FIFO/RAM, async clocks, 32/16 low-first, capacity126, stalls, wrap, counts, reset",checks);$finish;
     end
     initial begin #300000;begin $display("[FAIL] FIFO watchdog"); $finish; end end
 
-function signed [15:0] v_cast_s16; input signed [15:0] value; begin begin v_cast_s16=value; end  end endfunction
+function signed [15:0] v_cast_s16; input signed [15:0] value; begin  v_cast_s16=value;   end endfunction
 endmodule

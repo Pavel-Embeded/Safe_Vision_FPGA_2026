@@ -73,7 +73,7 @@ module tb_clock_reset_ctrl;
     task automatic check;
         input condition;
         input [4095:0] label;
-        begin begin
+        begin
             if (condition === 1'b1) begin
                 passes = passes + 1;
                 $display("[PASS] %0s", label);
@@ -81,12 +81,12 @@ module tb_clock_reset_ctrl;
                 errors = errors + 1;
                 $display("[FAIL] %0s at %0t, resets=%09b", label, $time, resets);
             end
-        end
+
      end endtask
 
     function automatic  reset_at;
         input integer index;
-        begin begin
+        begin
             case (index)
                 R_SYS:           reset_at = sys_rst_n;
                 R_MEM:           reset_at = mem_rst_n;
@@ -99,21 +99,21 @@ module tb_clock_reset_ctrl;
                 R_HDMI_SERIAL:   reset_at = hdmi_serial_rst_n;
                 default:         reset_at = 1'bx;
             endcase
-        end
+
      end endfunction
 
     task automatic domain_edge;
         input integer domain;
-        begin begin
+        begin
             case (domain)
                 SYS:    @(posedge sys_clk);
                 MEM:    @(posedge mem_clk);
                 PIXEL:  @(posedge pixel_clk);
                 SERIAL: @(posedge serial_clk);
                 AUDIO:  @(posedge audio_clk);
-                default: begin $display("[FAIL] Invalid clock domain %0d", domain); $finish; end 
+                default: begin $display("[FAIL] Invalid clock domain %0d", domain); $finish; end
             endcase
-        end
+
      end endtask
 
 
@@ -121,7 +121,7 @@ module tb_clock_reset_ctrl;
         input integer domain;
         input integer reset_index;
         input [4095:0] label;
-        begin begin
+        begin
             domain_edge(domain);
             #0.1;
             check(reset_at(reset_index) === 1'b0,
@@ -130,11 +130,11 @@ module tb_clock_reset_ctrl;
             #0.1;
             check(reset_at(reset_index) === 1'b1,
                   {label, " released at second edge"});
-        end
+
      end endtask
 
     task automatic expect_all_two_edges;
-        begin begin
+        begin
             fork
                 expect_two_edges(SYS,    R_SYS,           "sys");
                 expect_two_edges(MEM,    R_MEM,           "mem");
@@ -146,7 +146,7 @@ module tb_clock_reset_ctrl;
                 expect_two_edges(PIXEL,  R_HDMI_PIXEL,    "HDMI pixel");
                 expect_two_edges(SERIAL, R_HDMI_SERIAL,   "HDMI serial");
             join
-        end
+
      end endtask
 
     initial begin : stimulus
@@ -292,13 +292,13 @@ module tb_clock_reset_ctrl;
               "reset_sync asynchronously reasserts both outputs");
 
         $display("clock/reset checks: %0d pass, %0d fail", passes, errors);
-        if (errors != 0) begin $display("[FAIL] tb_clock_reset_ctrl failed"); $finish; end 
+        if (errors != 0) begin $display("[FAIL] tb_clock_reset_ctrl failed"); $finish; end
         $finish;
     end
 
     initial begin
         #100_000;
-        begin $display("[FAIL] tb_clock_reset_ctrl watchdog timeout"); $finish; end 
+        begin $display("[FAIL] tb_clock_reset_ctrl watchdog timeout"); $finish; end
     end
 
 endmodule

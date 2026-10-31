@@ -13,12 +13,12 @@ module tb_v3_bmp_bounds;
   if(out_valid)output_bytes=output_bytes+1;
  end
  task put32(input integer addr,input[31:0] value);begin begin
-  begin : v_loop_1 integer k; for( k=0;k<4;k=k+1)header[addr+k]=value[k*8+:8]; end 
+  begin : v_loop_1 integer k; for( k=0;k<4;k=k+1)header[addr+k]=value[k*8+:8]; end
  end  end endtask
- task check(input  condition,input [4095:0] label);begin begin
+ task check(input  condition,input [4095:0] label);begin
   condition = (condition === 1'b1); comparisons = comparisons + 1;if(!condition)begin errors = errors + 1;if(errors<6)$display("[FAIL] %s offset=%h file_size=%h got_bad=%b expected_bad=%b",label,offset,length,observed_bad,!expected);end
- end  end endtask
- task run_case(input[31:0] off,sz);begin begin
+   end endtask
+ task run_case(input[31:0] off,sz);begin
   offset=off;length=sz;file_size=sz;
   expected=off>=54&&({32'd0,off}+64'd921600)<={32'd0,sz};
   @(negedge clk);rst=0;valid=0;eof=0;repeat(3)@(negedge clk);
@@ -33,7 +33,7 @@ module tb_v3_bmp_bounds;
   check(seen==1,"header produces exactly one validation event");
   check(observed_bad===!expected,"32bit file fields checked against independent 64bit extent oracle");
   if(!expected)check(output_bytes==0,"invalid wrapped or short extent publishes no bytes");
- end  end endtask
+   end endtask
  initial begin
   run_case(54,921654);run_case(54,921653);run_case(53,921654);
   run_case(32'hfffffff0,921654);run_case(32'hffffffff,32'hffffffff);

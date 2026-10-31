@@ -17,10 +17,10 @@ module tb_ab_storage_contract;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 

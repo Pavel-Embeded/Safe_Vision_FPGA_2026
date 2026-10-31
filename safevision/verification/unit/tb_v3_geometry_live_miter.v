@@ -20,9 +20,9 @@ module tb_v3_geometry_live_miter;
  integer since_reset=0,max_flex_without_reset=0,max_legacy_without_reset=0;
  reg saw_done=0,saw_error=0,was_stalled=0;reg[37:0] held_output;
  reg[31:0] random_state=32'h7ab40c35;
- task ck(input  ok,input [4095:0] message);begin begin
+ task ck(input  ok,input [4095:0] message);begin
   ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<16)$display("[FAIL] %s case=%0d mode=%0d sent=%0d state=%0d/%0d",message,case_id,flex_mode,sent,state[flex_mode],rstate[flex_mode]);end
- end  end endtask
+   end endtask
  always@(negedge clk)begin
   random_state={random_state[30:0],random_state[31]^random_state[21]^random_state[1]^random_state[0]};
   out_ready=!force_stall&&(random_state[3:0]!=0)&&(random_state[6:4]!=1);
@@ -42,19 +42,19 @@ module tb_v3_geometry_live_miter;
   ck(public_bus[1]===reference_bus[1],"all62FLEX public bits agree on every cycle, including invalid output cycles");
   ck(public_bus[0]===reference_bus[0],"all62legacy public bits agree on every cycle");
  end
- function[7:0] payload(input integer pos);integer row,col,channel;begin begin
+ function[7:0] payload(input integer pos);integer row,col,channel;begin
   row=pos/stride;col=pos%stride;channel=col%(frame_bits/8);
   if(pos>=total)payload=8'hd3;
   else if(col>=frame_w*(frame_bits/8))payload=8'had;
   else if(channel==3)payload=8'ha5;
   else payload=(case_id*31+(col/(frame_bits/8))*17+row*29+channel*47)&255;
- end  end endfunction
- task setup_case(input integer wi,he,bits,input  td);begin begin
+   end endfunction
+ task setup_case(input integer wi,he,bits,input  td);begin
   td = (td === 1'b1); @(negedge clk);valid=0;sof=0;eof=0;force_stall=0;
   frame_w=wi;frame_h=he;frame_bits=bits;width=wi;height=td ? -he:he;top_down=td;bpp=bits;
   stride=((wi*(bits/8)+3)/4)*4;total=stride*he;sent=0;pixels=0;saw_done=0;saw_error=0;case_id = case_id + 1;
- end  end endtask
- task drive_bytes(input integer count);reg pending,take;begin begin
+   end endtask
+ task drive_bytes(input integer count);reg pending,take;begin
   pending= ((0) === 1'b1);
   while(sent<count&&!saw_done)begin
    @(negedge clk);
@@ -66,47 +66,47 @@ module tb_v3_geometry_live_miter;
    if(take)begin sent = sent + 1;pending= ((0) === 1'b1);end
   end
   @(negedge clk);valid=0;sof=0;eof=0;
- end  end endtask
- task finish_case(input  want_error);begin begin
+   end endtask
+ task finish_case(input  want_error);begin
   want_error = (want_error === 1'b1); wait(saw_done);repeat(3)@(negedge clk);
   ck(saw_error===want_error,"completion error class matches supplied stream");
   ck(state[flex_mode]==0&&!pv[flex_mode],"completion returns to idle without a lingering pixel");
- end  end endtask
- task image(input integer wi,he,bits,input  td);begin begin
+   end endtask
+ task image(input integer wi,he,bits,input  td);begin
   td = (td === 1'b1); setup_case(wi,he,bits,td);drive_bytes(total);finish_case(0);
   ck(sent==total&&pixels==307200,"complete stream emits exactly one canonical frame");
   full_frames = full_frames + 1;since_reset = since_reset + 1;
   if(flex_mode&&since_reset>max_flex_without_reset)max_flex_without_reset=since_reset;
   if(!flex_mode&&since_reset>max_legacy_without_reset)max_legacy_without_reset=since_reset;
   $display("[PASS] public-cycle miter complete mode%0d %0dx%0d %0dbpp td%0d noresetframes%0d",flex_mode,wi,he,bits,td,since_reset);
- end  end endtask
- task invalid_size(input integer wi,he,input  td);begin begin
+   end endtask
+ task invalid_size(input integer wi,he,input  td);begin
   td = (td === 1'b1); setup_case(wi,he,24,td);@(negedge clk);valid=1;sof=1;eof=0;data=8'h57;
   @(posedge clk);#0.002;@(negedge clk);valid=0;sof=0;
   finish_case(1);ck(code[flex_mode]==`ERR_MEDIA_INVALID&&detail[flex_mode]==`DET_BMP_SIZE,"invalid dimensions retain precise diagnostics");
   ck(pixels==0,"invalid dimensions emit no pixels");invalid_sizes = invalid_sizes + 1;
- end  end endtask
- task invalid_tail(input integer wi,he,bits,count,input  td);begin begin
+   end endtask
+ task invalid_tail(input integer wi,he,bits,count,input  td);begin
   td = (td === 1'b1); setup_case(wi,he,bits,td);drive_bytes(count);finish_case(1);
   ck(code[flex_mode]==`ERR_MEDIA_INVALID&&detail[flex_mode]==`DET_BMP_TRUNC,"early/late EOF retain truncation diagnostics");invalid_eofs = invalid_eofs + 1;
- end  end endtask
- task asynchronous_reset;begin begin
+   end endtask
+ task asynchronous_reset;begin
   @(negedge clk);#2;rst_n=0;valid=0;sof=0;eof=0;was_stalled=0;since_reset=0;
   #0.001;
   ck(public_bus[1]===reference_bus[1]&&public_bus[0]===reference_bus[0],"asynchronous reset immediately agrees with the frozen parent");
   ck(pixel[flex_mode]===16'd0&&!pv[flex_mode]&&x[flex_mode]==0&&y[flex_mode]==479&&state[flex_mode]==0&&!bad[flex_mode]&&!done[flex_mode],"asynchronous reset restores all observable reset values before another clock");
   async_checks = async_checks + 1;#7;rst_n=1;force_stall=0;@(negedge clk);
- end  end endtask
- task abort_setup(input  second_edge);begin begin
+   end endtask
+ task abort_setup(input  second_edge);begin
   second_edge = (second_edge === 1'b1); setup_case(37,23,24,1);@(negedge clk);valid=1;sof=1;eof=0;data=8'h83;
   @(posedge clk);#0.002;ck(state[1]==1,"SOF enters the unchanged geometry state");
   if(second_edge)begin @(posedge clk);#0.002;ck(state[1]==14,"first setup edge enters the unchanged decision state");end
   asynchronous_reset();
- end  end endtask
- task abort_stalled_output;begin begin
+   end endtask
+ task abort_stalled_output;begin
   setup_case(1,1,24,1);force_stall=1;drive_bytes(total);
   wait(pv[1]);repeat(11)@(posedge clk);ck(!out_ready&&pv[1],"reset recovery is exercised during an actual held pixel");asynchronous_reset();
- end  end endtask
+   end endtask
  initial begin
   repeat(3)@(negedge clk);checking=1;asynchronous_reset();
   image(3,2,24,0);image(2,3,32,1);image(17,13,24,1);image(1,1,32,0);image(16384,1,24,1);image(1,16384,32,0);

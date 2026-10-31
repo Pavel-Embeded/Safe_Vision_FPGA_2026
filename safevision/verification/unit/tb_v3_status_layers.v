@@ -13,13 +13,13 @@ module tb_v3_status_layers;
   .hud_rgb565(hud),.safe_rgb565(srgb),.osd_alpha(oa),.emergency_alpha(ea),.hud_alpha(ha));
  reg[7:0] font[0:4095];integer errors=0,comparisons=0,c,r,b,k;
  reg[511:0] line_text;reg[7:0] ch;reg dot = 1'b0;
- task check(input  good,input [4095:0] message);begin begin
+ task check(input  good,input [4095:0] message);begin
   good = (good === 1'b1); comparisons = comparisons + 1;if(!good)begin if(errors<8)$display("[FAIL] %s x=%0d y=%0d",message,x,y);errors = errors + 1;end
- end  end endtask
- task point(input integer xx,yy);begin begin
+   end endtask
+ task point(input integer xx,yy);begin
   @(negedge clk);x=xx;y=yy;de=1;
   repeat(4)@(posedge clk);#1;
- end  end endtask
+   end endtask
  initial begin
   $readmemh("font8x16.mem",font);cfg[86:79]=128;cfg[78:71]=160;
   cfg[54:48]=50;cfg[39:8]=32'h89abcdef;

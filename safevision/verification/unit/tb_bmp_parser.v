@@ -19,14 +19,14 @@ module tb_bmp_parser;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) begin
                 $display("[PASS] %0s", name);
             end else begin
                 $display("[FAIL] %0s", name);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 
@@ -132,7 +132,7 @@ module tb_bmp_parser;
     end
 
     task clear_mon;
-        begin begin
+        begin
             out_n = 0;
             out_sof_n = 0;
             out_eof_n = 0;
@@ -147,7 +147,7 @@ module tb_bmp_parser;
             chk_comp= 32'd0;
             chk_off = 32'd0;
             chk_td  = 1'b0;
-        end
+
      end endtask
 
 
@@ -162,7 +162,7 @@ module tb_bmp_parser;
         input [15:0] bpp;
         input [31:0] comp;
         input integer npix;
-        begin begin
+        begin
             for (i = 0; i < 8192; i = i + 1) src_mem[i] = 8'h00;
             src_mem[0] = sig0;
             src_mem[1] = sig1;
@@ -194,12 +194,12 @@ module tb_bmp_parser;
             for (i = 0; i < npix; i = i + 1)
                 src_mem[offbits + i] = (8'hA0 + i) & 8'hFF;
             src_len = offbits + npix;
-        end
+
      end endtask
 
     task run_bmp;
         input [31:0] fsz;
-        begin begin
+        begin
             clear_mon;
             bp_file_size = fsz;
             @(posedge clk); src_go = 1'b1;
@@ -217,7 +217,7 @@ module tb_bmp_parser;
                 wait_cnt = wait_cnt + 1;
             end
             repeat (10) @(posedge clk);
-        end
+
      end endtask
 
 

@@ -1,6 +1,6 @@
 # SafeVision FPGA 2026
 
-SafeVision 是基于安路 EG4S20BG256 的视听信息终端。FPGA 从 TF 卡读取图片和音频，完成帧缓存、图像处理、HDMI 输出及故障恢复。当前成品配置为 BASE，输出 640×480、约 60 Hz，适用于站内指引、公共展陈和应急提示。
+SafeVision 使用安路 EG4S20BG256，从 TF 卡读取图片和音频，经 SDRAM 缓存后输出到 HDMI。BASE 输出为 640×480、约 60 Hz，可用于站内指引、公共展陈和应急提示。
 
 ![Source checks](https://github.com/Pavel-Embeded/Safe_Vision_FPGA_2026/actions/workflows/source-checks.yml/badge.svg?branch=main)
 
@@ -14,9 +14,9 @@ SafeVision 是基于安路 EG4S20BG256 的视听信息终端。FPGA 从 TF 卡�
 - 显示启动秒数、运行状态、中文滚动提示和音频频谱。
 - 监测媒体、缓存及显示通路；故障时输出安全画面和报警音，并执行有次数限制的恢复流程。
 
-板上版本 `26102801` 已完成图片、声音、频谱、字幕、菜单和断电重启验收。
+已验收的 Flash 固件为 `26102801`，对应构建源码 `75b34e6`。图片、声音、频谱、字幕、菜单及真实断电重启均已在开发板上确认。源码整理、仿真和综合的记录见[验证说明](docs/verification.md)。
 
-设计 RTL、HDL 参考模型和测试平台统一采用 Verilog-2005。构建、数据生成及串口辅助工具使用 Python、PowerShell 和 Tcl。本次迁移保留了四份厂商受保护 IP 的原有字节，由 TD 工程加载。
+RTL、HDL 参考模型和测试平台使用 Verilog-2005。构建、数据生成和串口工具使用 Python、PowerShell、Tcl。四份厂商受保护 IP 由 TD 工程加载，并按原始文件校验值核对。
 
 ## 工程目录
 
@@ -30,7 +30,7 @@ SafeVision 是基于安路 EG4S20BG256 的视听信息终端。FPGA 从 TF 卡�
 | `safevision/tools/` | 构建、检查、仿真和串口工具 |
 | `.github/workflows/` | GitHub 自动检查 |
 
-原始构建日志、位流及 Flash 恢复包按版本归档，生成目录放在仓库外。
+构建输出放在仓库外。每份固件归档保存原始日志、位流和 Flash 恢复文件。
 
 ## 开始使用
 

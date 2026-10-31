@@ -9,10 +9,10 @@ module setting_case88 #(parameter HD=0)(output reg done,output integer errors,co
  .pixel_clk(clk),.pixel_rst_n(rst),.raw_x(x),.raw_y(y),.raw_de(de),.frame_start(fs),.cfg_data(cfg),.cache_valid(4'hf),.underflows(32'd0),.active_slot(2'd0),.generation(8'd0),.busy(1'b0),.safety_active(1'b0),.hud_rgb565(rgb),.hud_alpha(alpha));
  integer setting=0,vu=0,h,k,v,ix,iy,e;reg check_pixels=0;reg be,bf,ve,vf,caption;
  reg[15:0]cr[0:3];reg[7:0]ca[0:3];
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] setting HD=%0d %s x=%0d y=%0d level=%0d",HD,msg,x,y,setting);end end  end endtask
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] setting HD=%0d %s x=%0d y=%0d level=%0d",HD,msg,x,y,setting);end   end endtask
 
  function  glyph(input signed [7:0] ch,input integer row,col);
-  reg [4095:0] bitmap;begin begin
+  reg [4095:0] bitmap;begin
    case(ch)
     "V":bitmap="10001100011000110001100010101000100";
     "O":bitmap="01110100011000110001100011000101110";
@@ -21,16 +21,16 @@ module setting_case88 #(parameter HD=0)(output reg done,output integer errors,co
     default:bitmap="00000000000000000000000000000000000";
    endcase
    glyph= ((row>=0&&row<7&&col>=0&&col<5&&v_string_char(bitmap,row*5+col)=="1") === 1'b1);
-  end
+
   end endfunction
  function  label_at(input integer px,py);
-  integer row,col;begin begin row=py-(H-60);col=px-(W-81);
+  integer row,col;begin  row=py-(H-60);col=px-(W-81);
    label_at= ((glyph("V",row,col)||glyph("O",row,col-6)||glyph("L",row,col-12)) === 1'b1);
    col=px-(W-42);label_at= ((label_at||glyph("V",row,col)||glyph("U",row,col-6)) === 1'b1);
-  end
+
   end endfunction
  always @(posedge clk)begin
-  begin : v_loop_1 integer q; for( q=3;q>0;q = q - 1)begin cr[q]=cr[q-1];ca[q]=ca[q-1];end end 
+  begin : v_loop_1 integer q; for( q=3;q>0;q = q - 1)begin cr[q]=cr[q-1];ca[q]=ca[q-1];end end
   h=H-70-y;
   be=de&&x>=W-86&&x<=W-60&&y>=H-171&&y<=H-69&&(x==W-86||x==W-60||y==H-171||y==H-69);
   bf=de&&x>W-86&&x<W-60&&h>=1&&h<=100&&h<=setting&&(h==100||h%10!=0);
@@ -41,15 +41,15 @@ module setting_case88 #(parameter HD=0)(output reg done,output integer errors,co
   ca[0]=(caption||be||bf||ve||vf) ? 224:0;
   #1;if(check_pixels)begin ck(rgb===cr[3],"independent VOL+VU/caption RGB and four-clock alignment");ck(alpha===ca[3],"independent border/fill/text alpha");end
  end
- task capture(input integer gain,eng);begin begin
+ task capture(input integer gain,eng);begin
   check_pixels=0;@(negedge clk);de=0;x=0;y=0;cfg=0;cfg[67:61]=gain;cfg[54:48]=eng;fs=1;
   setting=gain>100 ? 100:gain;vu=((eng>100 ? 100:eng)*setting)/100;
   @(negedge clk);fs=0;cfg[67:61]=127-gain;cfg[54:48]=0;
   repeat(115)@(negedge clk);ck(d.setting_level==setting,"clamped frame snapshot persists despite mid-frame input changes");
   ck(d.volume_columns.column.level==vu,"original gain-dependent VU remains exact");
   check_pixels=1;
- end  end endtask
- task point(input integer px,py);begin begin @(negedge clk);x=px;y=py;de=1;end  end endtask
+   end endtask
+ task point(input integer px,py);begin  @(negedge clk);x=px;y=py;de=1;  end endtask
  initial begin
   repeat(4)@(negedge clk);rst=1;
   for(v=0;v<128;v = v + 1)begin
@@ -66,8 +66,8 @@ module setting_case88 #(parameter HD=0)(output reg done,output integer errors,co
   rst=0;#1;ck(d.setting_level==0,"reset clears explicit setting column");done=1;
  end
 
-function integer v_string_length; input[4095:0] value; integer k; begin begin v_string_length=0; for(k=0;k<512;k=k+1)if(value[k*8+:8]!=0)v_string_length=k+1; end  end endfunction
-function[7:0] v_string_char; input[4095:0] value; input integer index; integer n; begin begin n=v_string_length(value); if((index>=0&&index<n)===1'b1)v_string_char=value[(n-1-index)*8+:8];else v_string_char=0; end  end endfunction
+function integer v_string_length; input[4095:0] value; integer k; begin  v_string_length=0; for(k=0;k<512;k=k+1)if(value[k*8+:8]!=0)v_string_length=k+1;   end endfunction
+function[7:0] v_string_char; input[4095:0] value; input integer index; integer n; begin  n=v_string_length(value); if((index>=0&&index<n)===1'b1)v_string_char=value[(n-1-index)*8+:8];else v_string_char=0;   end endfunction
 endmodule
 module setting_top88;
  wire a,b;wire signed [31:0] ea,eb,ca,cb;

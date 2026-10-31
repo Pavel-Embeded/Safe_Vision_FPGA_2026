@@ -2,7 +2,7 @@
 module tb_v3_controls_pipeline_equivalence;
  reg clk=0,rst_n=0;always #5 clk=~clk;
  reg[31:0]rng=32'hc1261801;integer k,errors=0,comparisons=0;
- function[31:0]rand32; input v_unused; begin begin rng=rng*1664525+1013904223;rand32=rng;end  end endfunction
+ function[31:0]rand32; input v_unused; begin  rng=rng*1664525+1013904223;rand32=rng;  end endfunction
  reg  next_async=0;
  reg  auto_async=0;
  reg  emergency_async=0;

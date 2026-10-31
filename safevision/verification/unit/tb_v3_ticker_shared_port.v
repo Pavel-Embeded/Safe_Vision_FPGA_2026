@@ -33,9 +33,9 @@ module tb_v3_ticker_shared_port;
  integer errors=0,comparisons=0,phase,px,py,source_column,i,j,k;
  integer font_reads=0,stalled_band_writes=0,spectrum_checks=0,last_sequence=0;reg[4:0] saved_band_state;reg blocked_before_edge;
  reg[8:0] expected_ram;
- task ck(input  okay,input [4095:0] message);begin begin
+ task ck(input  okay,input [4095:0] message);begin
   okay = (okay === 1'b1); comparisons = comparisons + 1;if(!okay)begin errors = errors + 1;if(errors<15)$display("[FAIL] %s phase=%0d x=%0d y=%0d",message,phase,x,y);end
- end  end endtask
+   end endtask
  always @(posedge clk)if(rst)begin
   expected_access=ram_request;expected_word=0;
   if(ram_request)begin
@@ -54,7 +54,7 @@ module tb_v3_ticker_shared_port;
    for(k=0;k<32;k = k + 1)ck(a.spectrum_ram[{a.display_bank,v_cast_s5(k)}]===b.spectrum_ram[{b.display_bank,v_cast_s5(k)}],"all32 published levels and held peaks equal the unshared analyzer");
   end
  end
- task pixel(input integer xx,yy,input  active);reg v,dot;begin begin
+ task pixel(input integer xx,yy,input  active);reg v,dot;begin
   active = (active === 1'b1); @(negedge clk);x=xx;y=yy;de=active;fs=0;
   v=active&&xx>=120&&xx<632&&yy>=456&&yy<476;
   source_column=xx-(632-phase);dot=0;
@@ -62,7 +62,7 @@ module tb_v3_ticker_shared_port;
   @(posedge clk);#0.002;
   expected_text={expected_text[3:0],dot};expected_panel={expected_panel[3:0],v};expected_edge={expected_edge[3:0],v&&yy==456};
   ck(text_pixel===expected_text[4]&&panel===expected_panel[4]&&edge_pixel===expected_edge[4],"five-clock Chinese pixels, panel and border align under real FFT arbitration");
- end  end endtask
+   end endtask
  initial begin
   $readmemb("pixels.mem",pixels);$readmemh("v3_spectrum_twiddle.mem",coefficient);
   repeat(5)@(negedge clk);rst=1;
@@ -87,5 +87,5 @@ module tb_v3_ticker_shared_port;
  end
  initial begin #2000000000;$display("[FAIL] shared-font watchdog errors=1");$finish;end
 
-function signed [4:0] v_cast_s5; input signed [4:0] value; begin begin v_cast_s5=value; end  end endfunction
+function signed [4:0] v_cast_s5; input signed [4:0] value; begin  v_cast_s5=value;   end endfunction
 endmodule

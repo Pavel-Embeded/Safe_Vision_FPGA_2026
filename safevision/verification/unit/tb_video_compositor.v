@@ -23,7 +23,7 @@ module compositor_case #(parameter N=1,O=4,E=0)(output reg done);
    wv=want[8]&&(|want[2:0]);if(!want[8])begin wrgb=0;wl=0;end
    #0.1;
    if({x,y,hs,vs,de,ls,fs,afs,hb,vb}!==want[34:3]||rgb!==wrgb||pv!==wv||layer!==wl)
-      begin $display("[FAIL] compositor N/O/E=%0d/%0d/%0d seq=%0d tags=%h/%h rgb=%h/%h layer=%0d/%0d",N,O,E,seq,{x,y,hs,vs,de,ls,fs,afs,hb,vb},want[34:3],rgb,wrgb,layer,wl); $finish; end 
+      begin $display("[FAIL] compositor N/O/E=%0d/%0d/%0d seq=%0d tags=%h/%h rgb=%h/%h layer=%0d/%0d",N,O,E,seq,{x,y,hs,vs,de,ls,fs,afs,hb,vb},want[34:3],rgb,wrgb,layer,wl); $finish; end
    checks=checks+1;
   end
  end
@@ -35,9 +35,9 @@ module compositor_case #(parameter N=1,O=4,E=0)(output reg done);
   done=1;$display("compositor N/O/E=%0d/%0d/%0d checks=%0d",N,O,E,checks);
  end
 
-function signed [2:0] v_cast_s3; input signed [2:0] value; begin begin v_cast_s3=value; end  end endfunction
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
-function signed [11:0] v_cast_s12; input signed [11:0] value; begin begin v_cast_s12=value; end  end endfunction
+function signed [2:0] v_cast_s3; input signed [2:0] value; begin  v_cast_s3=value;   end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
+function signed [11:0] v_cast_s12; input signed [11:0] value; begin  v_cast_s12=value;   end endfunction
 endmodule
 module tb_video_compositor;
  wire a,b,c;

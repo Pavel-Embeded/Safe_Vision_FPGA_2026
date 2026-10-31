@@ -8,8 +8,8 @@ module tb_v3_parser_compact;
  integer errors=0,comparisons=0,commands=0,i,j,n,before_commands,accept_expected;
  reg signed[31:0] expect_value;reg expect_query;reg[7:0] expect_target;reg[95:0] expect_name;
  reg known_frame=0;reg [4095:0] body;reg[31:0] random_state=32'h1cd873a9;
- task ck;input condition;input[511:0] message;begin begin comparisons=comparisons+1;
-  if(!condition)begin errors=errors+1;if(errors<20)$display("[FAIL] %s body=%s val=%0d expected=%0d",message,body,value,expect_value);end end  end endtask
+ task ck;input condition;input[511:0] message;begin  comparisons=comparisons+1;
+  if(!condition)begin errors=errors+1;if(errors<20)$display("[FAIL] %s body=%s val=%0d expected=%0d",message,body,value,expect_value);end   end endtask
  always @(posedge clk)begin #1;
   if(rst_n)begin
    ck(cv===cv0 && rv===rv0 && rejected===rejected0 && (!rv||reply===reply0),"cycle-exact valid/reply/rejection reference");
@@ -19,8 +19,8 @@ module tb_v3_parser_compact;
    end
   end
  end
- function[7:0] hexchar;input[3:0] n;begin begin hexchar=n<10 ? 48+n:55+n;end  end endfunction
- task byte_in;input[7:0] c;begin begin data=c;valid=1;@(negedge clk);valid=0;@(negedge clk);end  end endtask
+ function[7:0] hexchar;input[3:0] n;begin  hexchar=n<10 ? 48+n:55+n;  end endfunction
+ task byte_in;input[7:0] c;begin  data=c;valid=1;@(negedge clk);valid=0;@(negedge clk);  end endtask
  task frame;input [4095:0] text;input corrupt_checksum;input integer accepted;begin begin
   body=text;before_commands=commands;byte_in(36);
   begin : v_local_1  reg[7:0] checksum;integer k;checksum=0;
@@ -55,7 +55,7 @@ module tb_v3_parser_compact;
  end
  initial begin #5000000;$display("[FAIL] global timeout");$finish;end
 
-function[4095:0] v_format_brightness; input integer value; begin begin $sformat(v_format_brightness,"A:BRIGHT=%0d",value); end  end endfunction
-function integer v_string_length; input[4095:0] value; integer k; begin begin v_string_length=0; for(k=0;k<512;k=k+1)if(value[k*8+:8]!=0)v_string_length=k+1; end  end endfunction
-function[7:0] v_string_char; input[4095:0] value; input integer index; integer n; begin begin n=v_string_length(value); if((index>=0&&index<n)===1'b1)v_string_char=value[(n-1-index)*8+:8];else v_string_char=0; end  end endfunction
+function[4095:0] v_format_brightness; input integer value; begin  $sformat(v_format_brightness,"A:BRIGHT=%0d",value);   end endfunction
+function integer v_string_length; input[4095:0] value; integer k; begin  v_string_length=0; for(k=0;k<512;k=k+1)if(value[k*8+:8]!=0)v_string_length=k+1;   end endfunction
+function[7:0] v_string_char; input[4095:0] value; input integer index; integer n; begin  n=v_string_length(value); if((index>=0&&index<n)===1'b1)v_string_char=value[(n-1-index)*8+:8];else v_string_char=0;   end endfunction
 endmodule

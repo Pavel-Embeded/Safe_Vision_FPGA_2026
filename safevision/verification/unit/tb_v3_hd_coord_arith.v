@@ -11,11 +11,11 @@ module tb_v3_hd_coord_arith;
   #1;checks = checks + (2);
   if(q19!==refq[19]||q20!==refq[20])begin errors = errors + 1;if(errors<16)$display("[FAIL] raster coordinate delay got=%h/%h expected=%h/%h t=%0t",q19,q20,refq[19],refq[20],$time);end
  end
- task reset(input integer phase);begin begin
+ task reset(input integer phase);begin
   @(posedge clk);#(phase);rst_n=0;#1;checks = checks + 1;
   if(q19!==0||q20!==0)begin errors = errors + 1;$display("[FAIL] async reset coordinates");end
   repeat(3)@(negedge clk);#2;rst_n=1;
- end  end endtask
+   end endtask
  initial begin
   for(k=0;k<21;k = k + 1)refq[k]=0;
   repeat(3)@(negedge clk);#2;rst_n=1;

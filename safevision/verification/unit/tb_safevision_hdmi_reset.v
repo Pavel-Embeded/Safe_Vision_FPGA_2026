@@ -17,7 +17,7 @@ module tb_safevision_hdmi_reset;
  always @(posedge dut.pixel_clk) begin
   #0.2;
   if(dut.edid_trig===1'b1)begin
-   if(dut.tx_reset!==1'b0)begin $display("[FAIL] EDID trigger during transmitter reset"); $finish; end 
+   if(dut.tx_reset!==1'b0)begin $display("[FAIL] EDID trigger during transmitter reset"); $finish; end
    triggers=triggers+1;
   end
  end
@@ -25,45 +25,45 @@ module tb_safevision_hdmi_reset;
 
  task settling_then_trigger;
   integer i;
-  begin begin
+  begin
    for(i=1;i<=100000;i=i+1)begin
     @(posedge dut.pixel_clk);#0.5;checks=checks+1;
     if(dut.edid_trig !== (i==100000))
-     begin $display("[FAIL] EDID settling/trigger cycle=%0d trig=%b",i,dut.edid_trig); $finish; end 
+     begin $display("[FAIL] EDID settling/trigger cycle=%0d trig=%b",i,dut.edid_trig); $finish; end
    end
    repeat(20)begin @(posedge dut.pixel_clk);#0.5;
-    if(dut.edid_trig!==0)begin $display("[FAIL] EDID trigger repeated after settling"); $finish; end 
+    if(dut.edid_trig!==0)begin $display("[FAIL] EDID trigger repeated after settling"); $finish; end
    end
-  end
+
   end endtask
  task queue_reset;
-  begin begin
+  begin
    @(negedge dut.pixel_clk);force dut.hdmi_resync=1'b1;
    repeat(1)begin @(posedge dut.pixel_clk);#0.5;
-    if(dut.edid_trig!==0)begin $display("[FAIL] EDID not suppressed during reset"); $finish; end 
+    if(dut.edid_trig!==0)begin $display("[FAIL] EDID not suppressed during reset"); $finish; end
    end
    @(negedge dut.pixel_clk);release dut.hdmi_resync;
-  end
+
   end endtask
  initial begin
   #200;rst_n=1;
   wait(dut.pixel_rst_n===1'b1);@(negedge dut.pixel_clk);
   settling_then_trigger;
-  if(triggers!=1)begin $display("[FAIL] initial EDID event count"); $finish; end 
+  if(triggers!=1)begin $display("[FAIL] initial EDID event count"); $finish; end
   queue_reset;settling_then_trigger;
-  if(triggers!=2)begin $display("[FAIL] resync did not re-read EDID"); $finish; end 
+  if(triggers!=2)begin $display("[FAIL] resync did not re-read EDID"); $finish; end
   queue_reset;
   repeat(50000)begin @(posedge dut.pixel_clk);#0.5;
-   if(dut.edid_trig!==0)begin $display("[FAIL] early EDID during interrupted settling"); $finish; end 
+   if(dut.edid_trig!==0)begin $display("[FAIL] early EDID during interrupted settling"); $finish; end
   end
   queue_reset;settling_then_trigger;
-  if(triggers!=3)begin $display("[FAIL] pending EDID epoch not restarted"); $finish; end 
+  if(triggers!=3)begin $display("[FAIL] pending EDID epoch not restarted"); $finish; end
   @(negedge clk);rst_n=0;
   repeat(10)@(posedge clk);
   @(negedge clk);rst_n=1;
   wait(dut.pixel_rst_n===1'b1);@(negedge dut.pixel_clk);
   settling_then_trigger;
-  if(triggers!=4)begin $display("[FAIL] KEY1 reset EDID count"); $finish; end 
+  if(triggers!=4)begin $display("[FAIL] KEY1 reset EDID count"); $finish; end
   $display("[PASS] HDMI top EDID reset/re-read/interrupted settling/KEY1 checks=%0d triggers=%0d",checks,triggers);
   $finish;
  end

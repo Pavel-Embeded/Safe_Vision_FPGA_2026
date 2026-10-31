@@ -29,18 +29,18 @@ module tb_v3_packed_readback_261023;
   .lookup_addr(lookup_addr),.lookup_crc(lookup_crc),.lookup_valid(lookup_valid),
   .raw_x(raw_x),.raw_y(raw_y),.raw_de(raw_de),.raw_hs(raw_hs),.raw_vs(raw_vs),.frame_start(frame_start),
   .x(x),.y(y),.rgb(rgb),.hs(hs),.vs(vs),.de(de));
- function[31:0] slot_base(input integer slot);begin begin slot_base=slot*32'h000a0000;end  end endfunction
- function integer address_slot(input[31:0] a);begin begin address_slot=a/32'h000a0000;end  end endfunction
+ function[31:0] slot_base(input integer slot);begin  slot_base=slot*32'h000a0000;  end endfunction
+ function integer address_slot(input[31:0] a);begin  address_slot=a/32'h000a0000;  end endfunction
  function[15:0] source_pixel(input integer slot,input integer px,input integer py);
-  begin begin source_pixel={v_cast_s5((px+slot*7+py)%32),v_cast_s6((px/2+py+slot*11)%64),v_cast_s5((py/3+px/5+slot*13)%32)};end
+  begin  source_pixel={v_cast_s5((px+slot*7+py)%32),v_cast_s6((px/2+py+slot*11)%64),v_cast_s5((py/3+px/5+slot*13)%32)};
   end endfunction
  function[31:0] source_word(input[31:0] a);
-  integer s,o,py,px;begin begin s=address_slot(a);o=a-slot_base(s);py=o/1280;px=(o%1280)/2;
-   source_word={source_pixel(s,px+1,py),source_pixel(s,px,py)};end
+  integer s,o,py,px;begin  s=address_slot(a);o=a-slot_base(s);py=o/1280;px=(o%1280)/2;
+   source_word={source_pixel(s,px+1,py),source_pixel(s,px,py)};
   end endfunction
  function[31:0] crcword(input[31:0] initial_crc,input[31:0] d);
-  reg[31:0] c;integer b;begin begin c=initial_crc^d;
-   for(b=0;b<32;b=b+1)c=c[0] ? (c>>1)^32'hedb88320:c>>1;crcword=c;end
+  reg[31:0] c;integer b;begin  c=initial_crc^d;
+   for(b=0;b<32;b=b+1)c=c[0] ? (c>>1)^32'hedb88320:c>>1;crcword=c;
   end endfunction
  reg[31:0] crcs[0:1919];integer s,r,c;reg[31:0] state;
  initial begin for(s=0;s<4;s=s+1)for(r=0;r<480;r=r+1)begin state=32'hffffffff;
@@ -90,18 +90,18 @@ module tb_v3_packed_readback_261023;
  integer expected_generation=1;
  integer errors=0,comparisons=0,frames=0,commits=0;
  always @(posedge sys)begin if(commit)commits<=commits+1;if(response_started)responses<=responses+1;if(request_accepted)accepts<=accepts+1;end
- task update_cfg;begin begin @(negedge sys);while(!cfg_ready)@(negedge sys);cfg_valid=1;
-  @(negedge sys);cfg_valid=0;end  end endtask
- task request_next;begin begin @(negedge sys);next_request=1;@(negedge sys);next_request=0;end  end endtask
- task wait_frame;begin begin @(posedge pix);while(!(raw_x==0&&raw_y==0))@(posedge pix);end  end endtask
+ task update_cfg;begin  @(negedge sys);while(!cfg_ready)@(negedge sys);cfg_valid=1;
+  @(negedge sys);cfg_valid=0;  end endtask
+ task request_next;begin  @(negedge sys);next_request=1;@(negedge sys);next_request=0;  end endtask
+ task wait_frame;begin  @(posedge pix);while(!(raw_x==0&&raw_y==0))@(posedge pix);  end endtask
  function[15:0] blend(input[15:0] f,b,input integer alpha);
-  integer rr,gg,bb;begin begin rr=(f[15:11]*alpha+b[15:11]*(255-alpha)+127)/255;
+  integer rr,gg,bb;begin  rr=(f[15:11]*alpha+b[15:11]*(255-alpha)+127)/255;
    gg=(f[10:5]*alpha+b[10:5]*(255-alpha)+127)/255;
-   bb=(f[4:0]*alpha+b[4:0]*(255-alpha)+127)/255;blend={v_cast_s5(rr),v_cast_s6(gg),v_cast_s5(bb)};end
+   bb=(f[4:0]*alpha+b[4:0]*(255-alpha)+127)/255;blend={v_cast_s5(rr),v_cast_s6(gg),v_cast_s5(bb)};
   end endfunction
  function[15:0] sampled(input integer slot,ox,oy,input  bilinear);
   integer xx,yy,fx,fy,nx,ny,rt,rb,rr,gt,gb,gg,bt,bb,bv;
-  reg[15:0] p00,p10,p01,p11;begin begin
+  reg[15:0] p00,p10,p01,p11;begin
    bilinear = (bilinear === 1'b1); fx=0;fy=0;
    case(cfg[97:96])
     0:begin xx=ox-(HA-640)/2;yy=oy-(VA-480)/2;end
@@ -119,7 +119,7 @@ module tb_v3_packed_readback_261023;
     bt=(p00[4:0]*(256-fx)+p10[4:0]*fx+128)/256;bb=(p01[4:0]*(256-fx)+p11[4:0]*fx+128)/256;bv=(bt*(256-fy)+bb*fy+128)/256;
     sampled={v_cast_s5(rr),v_cast_s6(gg),v_cast_s5(bv)};
    end
-  end
+
   end endfunction
  reg[7:0] font[0:4095];initial $readmemh("font8x16.mem",font);
  integer ref_x=0,ref_y=0,ref_ticks=0,ref_count=0,ref_fps=0,ref_blink_count=0;
@@ -154,16 +154,16 @@ module tb_v3_packed_readback_261023;
   end
   timing_cycles=timing_cycles+1;
  end
- function[7:0] hex_ascii(input integer n);begin begin hex_ascii=n<10 ? 48+n:55+n;end  end endfunction
+ function[7:0] hex_ascii(input integer n);begin  hex_ascii=n<10 ? 48+n:55+n;  end endfunction
  function[7:0] dec_ascii(input integer n,input integer place);
-  begin begin dec_ascii=place==2 ? 48+n/100:place==1 ? 48+(n/10)%10:48+n%10;end
+  begin  dec_ascii=place==2 ? 48+n/100:place==1 ? 48+(n/10)%10:48+n%10;
   end endfunction
 
 
  function[15:0] normal_golden(input[15:0] background,input integer xx,yy,slot,gen,fps);
   reg[511:0] text;reg[7:0] code,bits;integer oy,len,category,row,index,period,brightness,energy;
   reg enabled,dot,panel,selected,border,bar_edge,bar_fill;reg[15:0] result,front;
-  begin begin
+  begin
    oy=0;len=0;category=2;row=0;enabled= ((0) === 1'b1);text=0;dot= ((0) === 1'b1);
    if(yy>=8&&yy<24)begin oy=8;len=37;enabled= ((1) === 1'b1);
     text=HD ? "SAFEVISION HD   SLOT 1 GEN 000 FPS 00                           ":
@@ -248,11 +248,11 @@ module tb_v3_packed_readback_261023;
    if((dot&&category==2)||bar_edge||bar_fill)begin front=dot&&category==2 ? 16'hffff:bar_fill ? 16'h07e0:16'h7bef;
     result=blend(front,result,224);end
    normal_golden=result;
-  end
+
   end endfunction
  function[15:0] safe_golden(input integer xx,yy,input  blink);
   integer dx,dy,oy,ox,len,index,scaled_x,scaled_y;reg[255:0] text;reg[7:0] bits,code;reg dot,arrow,border;
-  begin begin blink = (blink === 1'b1); scaled_x=xx/2;scaled_y=yy/2;oy=0;ox=0;len=0;text=0;dot= ((0) === 1'b1);
+  begin  blink = (blink === 1'b1); scaled_x=xx/2;scaled_y=yy/2;oy=0;ox=0;len=0;text=0;dot= ((0) === 1'b1);
    if(scaled_y>=VA/8&&scaled_y<VA/8+16)begin oy=VA/8;ox=HA/4-36;len=9;text="EMERGENCY                       ";end
    else if(scaled_y>=VA/8+20&&scaled_y<VA/8+36)begin oy=VA/8+20;ox=HA/4-16;len=4;text="EXIT                            ";end
    else if(scaled_y>=VA*3/8&&scaled_y<VA*3/8+16)begin oy=VA*3/8;ox=HA/4-108;len=27;text="SAFE MODE - NEXT TO RECOVER     ";end
@@ -263,17 +263,17 @@ module tb_v3_packed_readback_261023;
     (xx>=HA/2-32&&xx<HA/2+96&&dy<=12)) === 1'b1);
    border= ((xx<4||xx>=HA-4||yy<4||yy>=VA-4) === 1'b1);
    safe_golden=dot ? 16'h07e0:border ? (blink ? 16'hf800:16'h7800):(arrow&&blink) ? 16'h07e0:16'h1800;
-  end
+
   end endfunction
  function  in_picture(input integer xx,yy);
-  integer ww,hh;begin begin
+  integer ww,hh;begin
    ww=cfg[97:96]==0 ? 640:cfg[97:96]==1 ? (HD ? 960:640):cfg[97:96]==2 ? 320:160;
    hh=cfg[97:96]==0 ? 480:cfg[97:96]==1 ? VA:cfg[97:96]==2 ? 240:120;
    in_picture= ((xx>=(HA-ww)/2&&xx<(HA+ww)/2&&yy>=(VA-hh)/2&&yy<(VA+hh)/2) === 1'b1);
-  end
+
   end endfunction
  function[15:0] adjusted_golden(input[15:0] p);
-  integer rr,gg,bb,offset,con;begin begin
+  integer rr,gg,bb,offset,con;begin
    offset=$signed(cfg[94:87]);con=cfg[86:79];
    rr={p[15:11],p[15:13]};gg={p[10:5],p[10:9]};bb={p[4:0],p[4:2]};
    rr=((rr-128)*con+16384+offset*128)>>>7;
@@ -281,11 +281,11 @@ module tb_v3_packed_readback_261023;
    bb=((bb-128)*con+16384+offset*128)>>>7;
    rr=rr<0 ? 0:rr>255 ? 255:rr;gg=gg<0 ? 0:gg>255 ? 255:gg;bb=bb<0 ? 0:bb>255 ? 255:bb;
    adjusted_golden={v_cast_s5(rr>>3),v_cast_s6(gg>>2),v_cast_s5(bb>>3)};
-  end
+
   end endfunction
  task compare_frame(input integer mode,input integer slot,input  bilinear,input  overlays);
   reg[15:0] expected;reg[23:0] expected_rgb;integer pixels,start_words;reg collecting;
-  begin begin bilinear = (bilinear === 1'b1); overlays = (overlays === 1'b1); pixels=0;collecting= ((0) === 1'b1);start_words=words;
+  begin  bilinear = (bilinear === 1'b1); overlays = (overlays === 1'b1); pixels=0;collecting= ((0) === 1'b1);start_words=words;
    while(!collecting)begin @(negedge pix);if(de&&x==0&&y==0)collecting= ((1) === 1'b1);end
    while(pixels<(HD ? 1280*720:640*480))begin
     if(de)begin
@@ -305,7 +305,7 @@ module tb_v3_packed_readback_261023;
    end
    if(mode==0&&!busy&&words-start_words>160000)begin $display("[FAIL] row reuse words=%0d",words-start_words);errors=errors+1;end
    frames=frames+1;$display("[PASS] full raster HD=%0d mode=%0d slot=%0d bilinear=%0d pixels=%0d words=%0d",HD,mode,slot,bilinear,pixels,words-start_words);
-  end
+
   end endtask
  integer wait_count;
 
@@ -333,7 +333,7 @@ module tb_v3_packed_readback_261023;
  end
  initial begin #2000000000;$display("[FAIL] video test timeout errors=1");$finish;end
 
-function signed [4:0] v_cast_s5; input signed [4:0] value; begin begin v_cast_s5=value; end  end endfunction
-function signed [5:0] v_cast_s6; input signed [5:0] value; begin begin v_cast_s6=value; end  end endfunction
-function signed [11:0] v_cast_s12; input signed [11:0] value; begin begin v_cast_s12=value; end  end endfunction
+function signed [4:0] v_cast_s5; input signed [4:0] value; begin  v_cast_s5=value;   end endfunction
+function signed [5:0] v_cast_s6; input signed [5:0] value; begin  v_cast_s6=value;   end endfunction
+function signed [11:0] v_cast_s12; input signed [11:0] value; begin  v_cast_s12=value;   end endfunction
 endmodule

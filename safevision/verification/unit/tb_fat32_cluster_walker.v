@@ -20,11 +20,11 @@ module tb_fat32_cluster_walker;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             total = total + 1;
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 
@@ -81,12 +81,12 @@ module tb_fat32_cluster_walker;
     task set_fat;
         input integer clus;
         input [31:0]  val;
-        begin begin
+        begin
             fat[clus*4 + 0] = val[7:0];
             fat[clus*4 + 1] = val[15:8];
             fat[clus*4 + 2] = val[23:16];
             fat[clus*4 + 3] = val[31:24];
-        end
+
      end endtask
 
 
@@ -94,7 +94,7 @@ module tb_fat32_cluster_walker;
     reg [31:0] lba_seen;
 
     task serve_ok;
-        begin begin
+        begin
             while (!sd_rd_en) @(negedge clk);
             lba_seen = sd_rd_addr;
             for (n = 0; n < 512; n = n + 1) begin
@@ -105,12 +105,12 @@ module tb_fat32_cluster_walker;
             end
             sd_data_valid = 1'b0;
             sd_data_last  = 1'b0;
-        end
+
      end endtask
 
 
     task serve_crc_err;
-        begin begin
+        begin
             while (!sd_rd_en) @(negedge clk);
             lba_seen      = sd_rd_addr;
             sd_err_code   = `ERR_SD_IO;
@@ -120,21 +120,21 @@ module tb_fat32_cluster_walker;
             sd_crc16_err  = 1'b0;
             sd_err_code   = `ERR_NONE;
             sd_err_detail = `DET_NONE;
-        end
+
      end endtask
 
     task pulse_rst_walk;
-        begin begin
+        begin
             @(negedge clk); rst_walk = 1'b1;
             @(negedge clk); rst_walk = 1'b0;
-        end
+
      end endtask
 
 
     task walk_and_wait;
         input [31:0] clus;
         input [1:0]  mode;
-        begin begin
+        begin
             @(negedge clk);
             cur_clus = clus;
             start    = 1'b1;
@@ -148,7 +148,7 @@ module tb_fat32_cluster_walker;
             wait (done == 1'b1);
             @(negedge clk);
             @(negedge clk);
-        end
+
      end endtask
 
 

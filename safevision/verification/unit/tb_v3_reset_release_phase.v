@@ -6,8 +6,8 @@ module tb_v3_reset_release_phase;
  reset_sync r0(clk,ar,rising);
  reset_sync #(.RELEASE_FALLING(1)) r1(clk,ar,falling);
  reset_sync #(.STAGES(3),.RELEASE_FALLING(1)) r2(clk,ar,falling3);
- task check(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons=comparisons+1;
-  if(!ok)begin errors=errors+1;$display("[FAIL] %s trial=%0d",msg,i);end end  end endtask
+ task check(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons=comparisons+1;
+  if(!ok)begin errors=errors+1;$display("[FAIL] %s trial=%0d",msg,i);end   end endtask
  initial begin
   for(i=0;i<100;i=i+1)begin
    ar=0;#0.001;check({rising,falling,falling3}===3'b000,"asynchronous assertion at arbitrary phase");

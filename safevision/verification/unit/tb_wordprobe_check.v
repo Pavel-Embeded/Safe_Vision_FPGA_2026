@@ -52,7 +52,7 @@ module tb_wordprobe_check;
     end
 
     task write_frame;
-        begin begin
+        begin
             frame_slot<=1; frame_begin<=1; @(posedge clk); frame_begin<=0;
             cur_addr=SLOT1+(WORDS-ROW_WORDS)*4; col=0;
             for(wcount=0;wcount<WORDS;wcount=wcount+1)begin
@@ -63,33 +63,33 @@ module tb_wordprobe_check;
                 else begin col=col+1; cur_addr=cur_addr+4; end
             end
             @(posedge clk); accepted<=0; repeat(4)@(posedge clk);
-        end
+
      end endtask
 
     task verify_and_wait;
         begin begin
             @(posedge clk); verify_start<=1; @(posedge clk); verify_start<=0;
-            fork : v_race_1 
-                begin : v_branch_1 begin wait(verify_done==1'b1); end disable v_race_1; end 
-                begin : v_branch_2 begin #80_000_000; end disable v_race_1; end 
+            fork : v_race_1
+                begin : v_branch_1 begin wait(verify_done==1'b1); end disable v_race_1; end
+                begin : v_branch_2 begin #80_000_000; end disable v_race_1; end
             join
             repeat(4)@(posedge clk);
         end
      end endtask
 
     task do_reset;
-        begin begin
+        begin
             rst_n<=0; accepted<=0; verify_start<=0; frame_begin<=0;
             repeat(6)@(posedge clk); rst_n<=1; repeat(3)@(posedge clk);
-        end
+
      end endtask
 
 
     task corrupt_block(input [31:0] blkbase);
         integer k;
-        begin begin
+        begin
             for(k=0;k<BLOCK_WORDS;k=k+1) mem[(blkbase>>2)+k] = mem[(blkbase>>2)+k] ^ 32'h0000_0001;
-        end
+
      end endtask
 
     initial begin

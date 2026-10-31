@@ -17,10 +17,10 @@ module tb_ab_frame_display #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_LEAD
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
     localparam integer W = 640;
@@ -32,11 +32,11 @@ module tb_ab_frame_display #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_LEAD
         input integer x;
         input integer y;
         reg [7:0] rr,gg,bb;
-        begin begin
+        begin
 
             rr=x[7:0]^y[7:0]; gg=x+y; bb=x*3;
             px24={rr,gg,bb};
-        end
+
      end endfunction
 
 
@@ -44,22 +44,22 @@ module tb_ab_frame_display #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_LEAD
         input integer x;
         input integer y;
         reg [23:0] p;
-        begin begin
+        begin
             p = px24(x, y);
             px565 = { p[23:19], p[15:10], p[7:3] };
-        end
+
      end endfunction
 
 
     function [23:0] expand565;
         input [15:0] p;
-        begin begin
+        begin
             expand565 = { p[15:11], p[15:13], p[10:5], p[10:9], p[4:0], p[4:2] };
-        end
+
      end endfunction
 
     reg [7:0] hdr [0:53];
-    initial begin : v_local_1 
+    initial begin : v_local_1
         integer i;
         for (i = 0; i < 54; i = i + 1) hdr[i] = 8'h00;
         hdr[0]  = 8'h42; hdr[1]  = 8'h4D;

@@ -17,7 +17,7 @@ module ring_pointer_lane #(parameter PW=4)(input wire clk,output reg done,output
  wire[127:0]read_status={reads[3],reads[2],reads[1],reads[0]};
  reg saved_wr;reg[31:0]saved_addr,saved_data;reg early_read;
  reg[31:0]memory[0:4*CAP-1];
- function automatic integer index_of(input[31:0]a);reg[31:0]offset;begin begin offset=a-32'h00280000;index_of=(offset>>16)*CAP+((offset&32'hffff)>>2);end  end endfunction
+ function automatic integer index_of(input[31:0]a);reg[31:0]offset;begin  offset=a-32'h00280000;index_of=(offset>>16)*CAP+((offset&32'hffff)>>2);  end endfunction
  genvar g;generate for(g=0;g<4;g = g + 1)begin:source
   assign data[g*32+:32]=32'ha5000000|(g<<20)|writes[g];
  end endgenerate
@@ -27,12 +27,12 @@ module ring_pointer_lane #(parameter PW=4)(input wire clk,output reg done,output
  v3_pcm_ring_frozen_pointer #(.PTR_W(PW),.PREFETCH(PF))original(
   .clk(clk),.rst_n(rst),.in_data(data),.in_valid(valid),.in_ready(ready[1]),.commit_valid(commit),.commit_slot(slot),.commit_generation(gen),.commit_ready(commit_ready[1]),.fallback(fallback),.prefetched(prefetched[1]),.levels(levels[1]),
   .out_data(out_data[1]),.out_valid(out_valid[1]),.out_ready(out_ready),.output_level(out_level),.req(req[1]),.wr(wr[1]),.addr(addr[1]),.wdata(wdata[1]),.len(len[1]),.ack(ack),.busy(busy),.rdata(rdata),.rvalid(rvalid),.overflow_count(overflow[1]));
- task ck(input  okay,input [4095:0] message);begin begin okay = (okay === 1'b1); comparisons = comparisons + 1;if(!okay)begin errors = errors + 1;if(errors<12)$display("[FAIL] PW=%0d %s cycle=%0d",PW,message,cycles);end end  end endtask
+ task ck(input  okay,input [4095:0] message);begin  okay = (okay === 1'b1); comparisons = comparisons + 1;if(!okay)begin errors = errors + 1;if(errors<12)$display("[FAIL] PW=%0d %s cycle=%0d",PW,message,cycles);end   end endtask
  reg held=0,held_req=0;reg[39:0]held_data;reg[64:0]held_command;
  always @(posedge clk)begin
   if(!rst)begin
    cycles=0;transactions=0;ack<=0;busy<=0;rvalid<=0;rdata<=0;countdown=0;ack_wait=0;
-   begin : v_loop_1 integer j; for( j=0;j<4;j = j + 1)begin writes[j]<=0;reads[j]<=0;end end 
+   begin : v_loop_1 integer j; for( j=0;j<4;j = j + 1)begin writes[j]<=0;reads[j]<=0;end end
    held=0;held_req=0;
   end else if(!done)begin
    cycles = cycles + 1;
@@ -44,7 +44,7 @@ module ring_pointer_lane #(parameter PW=4)(input wire clk,output reg done,output
     if(ready[0][j]&&valid[j])writes[j]<=writes[j]+1;
     ck(levels[0][j*16+:16]<=CAP,"all four occupancies stay within capacity");
     ck(prefetched[0][j]==(levels[0][j*16+:16]>=PF),"prefetch threshold retains exact occupancy semantics");
-   end end 
+   end end
    if(out_valid[0]&&out_ready)begin
     ck(out_data[0]==={gen,(32'ha5000000|(slot<<20)|reads[slot])},"every independent PCM payload, slot and generation matches");
     reads[slot]<=reads[slot]+1;
@@ -69,7 +69,7 @@ module ring_pointer_lane #(parameter PW=4)(input wire clk,output reg done,output
   out_ready=rst&&(cycles%31<23);
   out_level=cycles%257<11 ? 10'd255:10'd0;
  end
- task fill_and_drain(input integer epoch);begin begin
+ task fill_and_drain(input integer epoch);begin
   @(negedge clk);fallback=15;valid=15;
   while(!all_full)begin @(negedge clk);end
   @(negedge clk);valid=0;
@@ -85,7 +85,7 @@ module ring_pointer_lane #(parameter PW=4)(input wire clk,output reg done,output
   end
   repeat(50)@(negedge clk);
   ck(levels[0]==0&&overflow[0]==0,"all partitions empty and no overflow after a complete round");
- end  end endtask
+   end endtask
  initial begin
   for(i=0;i<4;i = i + 1)begin writes[i]=0;reads[i]=0;end
   repeat(5)@(negedge clk);rst=1;
@@ -101,7 +101,7 @@ module ring_pointer_lane #(parameter PW=4)(input wire clk,output reg done,output
   done=1;$display("[PASS] pointer lane PW=%0d capacity=%0d two wraps, full/empty, independent PCM and reset",PW,CAP);
  end
 
-function signed [15:0] v_cast_s16; input signed [15:0] value; begin begin v_cast_s16=value; end  end endfunction
+function signed [15:0] v_cast_s16; input signed [15:0] value; begin  v_cast_s16=value;   end endfunction
 endmodule
 module tb_v3_ring_pointer_compare;
  reg clk=0;always #5 clk=~clk;

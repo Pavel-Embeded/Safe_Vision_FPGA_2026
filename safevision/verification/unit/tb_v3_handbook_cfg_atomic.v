@@ -8,7 +8,7 @@ module tb_v3_handbook_cfg_atomic;
  .sys_clk(sys),.mem_clk(mem),.pixel_clk(pix),.sys_rst_n(rst),.mem_rst_n(rst),.pixel_rst_n(rst),
  .media_reset(1'b0),.cfg_valid(cvalid),.cfg_ready(ready),.cfg_data(cfg),.cache_valid(4'd0),.next_request(1'b0),.safety_active(1'b1),
  .media_ready(1'b0),.media_ready_generation(8'd0),.rd_ack(1'b0),.rd_busy(1'b0),.rd_data(32'd0),.rd_valid(1'b0),.lookup_crc(32'd0),.lookup_valid(1'b0));
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] %s",msg);end end  end endtask
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] %s",msg);end   end endtask
  always @(posedge pix)begin old_fs=fs;#1;
   if(rst)begin ck(d.cfg===observed||old_fs,"configuration never changes outside the permitted frame boundary");observed=d.cfg;end
   else observed=0;

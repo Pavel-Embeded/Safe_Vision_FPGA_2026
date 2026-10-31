@@ -15,18 +15,18 @@ module tb_bmp_frame_sink_drain;
  integer errors=0,checks=0,writes=0;
  always @(posedge mc)if(req)writes=writes+1;
  task check(input  condition,input [4095:0] name);
- begin begin condition = (condition === 1'b1); checks=checks+1;if(condition)$display("[PASS] %s",name);
- else begin errors=errors+1;$display("[FAIL] %s",name);end end  end endtask
+ begin  condition = (condition === 1'b1); checks=checks+1;if(condition)$display("[PASS] %s",name);
+ else begin errors=errors+1;$display("[FAIL] %s",name);end   end endtask
  task send_frame;
  integer k;
- begin begin
+ begin
    wait(mready);@(negedge wc);fa=1;repeat(10)@(negedge wc);
    for(k=0;k<153600;k=k+1)begin
      @(negedge wc);word={16'h1234,16'h5678};valid=1;
      @(posedge wc);while(!ready)@(posedge wc);
    end
    @(negedge wc);valid=0;
- end  end endtask
+   end endtask
  reg saved_sw,saved_fd;
  initial begin
    repeat(10)@(negedge mc);rst=1;
@@ -54,7 +54,7 @@ module tb_bmp_frame_sink_drain;
    check(!ok&&ec==8'hf1,"missing swap acknowledgement returns failure F1, never successful completion");
    check(fc==1,"failed swap does not increase successful frame count");
    $display("SINK DRAIN checks=%0d errors=%0d",checks,errors);
-   if(errors)begin $display("[FAIL] sink drain regression failed"); $finish; end 
+   if(errors)begin $display("[FAIL] sink drain regression failed"); $finish; end
    $display("[PASS] SINK DRAIN PASS");$finish;
  end
  initial begin #150000000;begin $display("[FAIL] sink drain watchdog state=%0d",state); $finish; end end

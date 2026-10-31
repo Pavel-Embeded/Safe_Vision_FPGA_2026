@@ -7,7 +7,7 @@ module tb_v3_handbook_hud;
  .cfg_data(cfg),.cache_valid(4'hf),.underflows(32'd0),.active_slot(2'd0),.generation(8'd1),.busy(busy),.safety_active(safe),
  .osd_rgb565(osd),.emergency_rgb565(em),.hud_rgb565(hud),.safe_rgb565(srgb),.osd_alpha(oa),.emergency_alpha(ea),.hud_alpha(ha));
  reg[7:0]font[0:4095];reg[511:0]text;reg[7:0]ch;integer errors=0,comparisons=0,c,b,r,m;reg dot = 1'b0;
- task line(input integer yy,length,input  is_menu,input[511:0]content);begin begin
+ task line(input integer yy,length,input  is_menu,input[511:0]content);begin
 
   is_menu = (is_menu === 1'b1); repeat(100)@(negedge clk);
   for(c=0;c<length;c = c + 1)for(r=1;r<15;r = r + (3))for(b=0;b<8;b = b + 1)begin
@@ -16,7 +16,7 @@ module tb_v3_handbook_hud;
    if(is_menu ? (oa!=160||osd!=(dot ? 16'hffff:16'h05bf)):(ha!=(dot ? 224:0)))begin
     errors = errors + 1;if(errors<10)$display("[FAIL] handbook glyph row=%0d char=%0d code=%h bit=%0d",yy,c,ch,b);end
   end
- end  end endtask
+   end endtask
  initial begin
   $readmemh("font8x16.mem",font);cfg[95]=1;cfg[94:87]=60;cfg[86:79]=128;cfg[78:71]=160;cfg[67:61]=70;cfg[7:0]=37;
   repeat(5)@(negedge clk);rst=1;

@@ -4,8 +4,8 @@ module tb_v3_energy_acr;
  wire[6:0] energy;wire update;audio_energy #(.LOG_N(3)) en(clk,rst,sv,l,r,energy,update);
  wire av;wire[19:0] cts,n;hdmi_acr acr(clk,rst,sv,av,cts,n);
  integer errors=0,i;
- task ck;input c;input [255:0] msg;begin begin
- if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end end  end endtask
+ task ck;input c;input [255:0] msg;begin
+ if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end   end endtask
  initial begin
  repeat(3)@(negedge clk);rst=1;sv=1;l=-32768;r=-32768;
  repeat(8)@(negedge clk);ck(update && energy==100,"negative full scale unsigned magnitude");

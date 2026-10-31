@@ -20,7 +20,7 @@ module dma_frame_case #(parameter integer BURST=16,STREAMING=0)(input wire clk,r
     assign mem_ready=(cycle%7!=1 && cycle%7!=2);
     function automatic [31:0] packed_pixels(input [31:0] a);
         reg [31:0] index;
-        begin begin index=(a-BASE)>>1;packed_pixels={(index[15:0]+16'd1),index[15:0]};end
+        begin  index=(a-BASE)>>1;packed_pixels={(index[15:0]+16'd1),index[15:0]};
      end endfunction
     video_read_dma #(.BURST_WORDS(BURST),.PIX_DEPTH(256),.LOW_WATER(192),.STREAMING(STREAMING)) dma(
         .clk(clk),.rst_n(rst_n),.start(start),.frame_base(BASE),.pix_fifo_level(level),
@@ -52,14 +52,14 @@ module dma_frame_case #(parameter integer BURST=16,STREAMING=0)(input wire clk,r
                 if(mem_wr)write_count=write_count+1;
                 else begin
                     if(mem_addr!==BASE+word_count*4 || word_count>=153600)
-                        begin $display("[FAIL] DMA BURST=%0d frame read address/count mismatch",BURST); $finish; end 
+                        begin $display("[FAIL] DMA BURST=%0d frame read address/count mismatch",BURST); $finish; end
                     word_count=word_count+1;
                 end
             end
             if(fifo_en) begin
                 if(pixel!==pixel_count[15:0] || pixel_count>=307200)
-                    begin $display("[FAIL] DMA BURST=%0d pixel=%0d got=%04h",BURST,pixel_count,pixel); $finish; end 
-                if(level>=256 && !consume)begin $display("[FAIL] DMA FIFO overflow BURST=%0d",BURST); $finish; end 
+                    begin $display("[FAIL] DMA BURST=%0d pixel=%0d got=%04h",BURST,pixel_count,pixel); $finish; end
+                if(level>=256 && !consume)begin $display("[FAIL] DMA FIFO overflow BURST=%0d",BURST); $finish; end
                 pixel_count=pixel_count+1;
             end
             case({fifo_en,consume})
@@ -69,7 +69,7 @@ module dma_frame_case #(parameter integer BURST=16,STREAMING=0)(input wire clk,r
             endcase
             if(done)begin
                 if(bytes!==614400 || pixel_count!=307200 || word_count!=153600 || write_count==0 || active)
-                    begin $display("[FAIL] DMA BURST=%0d frame completion/count/competing writer mismatch",BURST); $finish; end 
+                    begin $display("[FAIL] DMA BURST=%0d frame completion/count/competing writer mismatch",BURST); $finish; end
                 finished<=1;
                 $display("FRAME PASS BURST=%0d pixels=%0d reads=%0d competing-write-words=%0d",BURST,pixel_count,word_count,write_count);
             end

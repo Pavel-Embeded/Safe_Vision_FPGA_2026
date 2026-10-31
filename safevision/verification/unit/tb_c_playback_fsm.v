@@ -10,11 +10,11 @@ module tb_c_playback_fsm;
  .media_fault_severe(stim[13]),.confirm_stable(stim[14]),.recover_done(stim[15]),
  .recover_req(req),.recover_failed(fail),.state(state),.state_code(sc),.media_rst_active(mr),
  .recover_start(start),.commit_next(commit),.slot_index(slot),.video_mute(mute),.safe_req(safe),.auto_mode(auto));
- integer errors=0,i;task ck;input c;input[511:0] msg;begin begin
- if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end end  end endtask
- task tick;begin begin @(negedge clk);end  end endtask
- task reset;begin begin rst_n=0;stim=0;mount=0;four=0;req=0;fail=0;repeat(3)tick;rst_n=1;tick;end  end endtask
- task boot;begin begin reset;stim=1;tick;stim=0;mount=1;four=1;stim[2]=1;tick;stim=0;end  end endtask
+ integer errors=0,i;task ck;input c;input[511:0] msg;begin
+ if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end   end endtask
+ task tick;begin  @(negedge clk);  end endtask
+ task reset;begin  rst_n=0;stim=0;mount=0;four=0;req=0;fail=0;repeat(3)tick;rst_n=1;tick;  end endtask
+ task boot;begin  reset;stim=1;tick;stim=0;mount=1;four=1;stim[2]=1;tick;stim=0;  end endtask
  initial begin
  reset;ck(state==0 && mute,"BOOT mute");stim=1;tick;stim=0;ck(state==1,"BOOT to SCAN");
  stim[2]=1;tick;stim=0;ck(state==6 && safe,"incomplete scan cannot PRELOAD");

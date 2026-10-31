@@ -22,17 +22,17 @@ module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output 
  integer osd_pixels=0,overlap_pixels=0,epoch_checks=0,epoch;
  reg [7:0] font_reference[0:4095];initial $readmemh("font8x16.mem",font_reference);
  function [59:0] configuration(input integer kind);
- begin begin
+ begin
   case(kind)
    0:configuration={1'b1,2'd2,4'd5,4'd9,1'b1,v_cast_u12(OX+18),v_cast_u12(OY+20),24'h12ce45};
    1:configuration={1'b1,2'd3,4'd9,4'd13,1'b0,v_cast_u12(OX+20),v_cast_u12(OY+20),24'hff4500};
    2:configuration={1'b0,2'd0,4'd15,4'd15,1'b0,12'd4095,12'd4095,24'h0000ff};
    default:configuration=0;
   endcase
- end  end endfunction
+   end endfunction
  function [7:0] status_character(input integer index,input [59:0] packet);
  reg [71:0] mode_string;reg [303:0] message;reg [7:0] tens,ones;
- begin begin
+ begin
   case(packet[58:57])
    0:mode_string="IDLE     ";1:mode_string="NORMAL   ";
    2:mode_string="WARNING  ";3:mode_string="EMERGENCY";
@@ -41,26 +41,26 @@ module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output 
   ones=(packet[52:49]<10) ? 8'h30+packet[52:49]:8'h3f;
   message={"SAFEVISION MODE:",mode_string," FPS:",tens,ones," SD:",packet[48] ? 16'h4f4b:16'h2d2d};
   status_character=message[8*(37-index)+:8];
- end  end endfunction
+   end endfunction
  function font_dot(input integer px,py,input [59:0] packet);
  integer dx,dy,code;
- begin begin
+ begin
   dx=px-packet[47:36];dy=py-packet[35:24];font_dot=0;
   if(packet[59]&&dx>=0&&dx<304&&dy>=0&&dy<16)begin
    code=status_character(dx/8,packet);
    font_dot=(font_reference[code*16+dy]>>(7-(dx%8)))&1;
   end
- end  end endfunction
+   end endfunction
  task send_configuration(input [59:0] packet);
- begin begin
+ begin
   @(negedge sc);cfg_packet=packet;cfg_valid=1;
-  begin begin @(posedge sc); end while(!cfg_ready)begin @(posedge sc); end end 
+  begin begin @(posedge sc); end while(!cfg_ready)begin @(posedge sc); end end
   @(negedge sc);cfg_valid=0;
- end  end endtask
+   end endtask
  always @(posedge sc)begin
   if(!rst)cfg_tail=0;
   else if(cfg_valid&&cfg_ready)begin
-   if(cfg_tail>=128)begin $display("[FAIL] configuration scoreboard overflow"); $finish; end 
+   if(cfg_tail>=128)begin $display("[FAIL] configuration scoreboard overflow"); $finish; end
    cfg_queue[cfg_tail]=cfg_packet;cfg_tail=cfg_tail+1;
   end
  end
@@ -70,7 +70,7 @@ module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output 
    #0.1;
    if(dut.config_latched!==reference_config)begin
     if(cfg_head>=cfg_tail||dut.config_latched!==cfg_queue[cfg_head])
-     begin $display("[FAIL] atomic configuration/order HD=%0d head=%0d got=%h expected=%h",HD,cfg_head,dut.config_latched,cfg_queue[cfg_head]); $finish; end 
+     begin $display("[FAIL] atomic configuration/order HD=%0d head=%0d got=%h expected=%h",HD,cfg_head,dut.config_latched,cfg_queue[cfg_head]); $finish; end
     reference_config=cfg_queue[cfg_head];cfg_head=cfg_head+1;cfg_checks=cfg_checks+1;
    end
   end
@@ -100,7 +100,7 @@ module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output 
  .wr_req(wr_req),.wr_addr(32'h800000),.wr_data(32'h76543210),.wr_len(16'd4),.wr_ack(wr_ack),.wr_busy(wr_busy),
  .sd_req(1'b0),.sd_wr(1'b0),.sd_addr(32'd0),.sd_wdata(32'd0),.sd_len(16'd0),.sd_ack(),.sd_busy(),.sd_rdata(),.sd_rdata_valid(),
  .mem_req(mq),.mem_wr(mw),.mem_addr(ma),.mem_wdata(md),.mem_wstrb(strb),.mem_ready(mready),.mem_rdata(response),.mem_rdata_valid(response_valid),.wr_starve_cnt(),.rd_starve_cnt());
- function [15:0] pixel(input [31:0] a);reg [31:0] p;begin begin p=(a&32'h9ffff)>>1;pixel=(p*17)^(p>>9)^(a>>16)^16'h4b93;end  end endfunction
+ function [15:0] pixel(input [31:0] a);reg [31:0] p;begin  p=(a&32'h9ffff)>>1;pixel=(p*17)^(p>>9)^(a>>16)^16'h4b93;  end endfunction
  function [23:0] expand(input [15:0] p);begin expand={p[15:11],p[15:13],p[10:5],p[10:9],p[4:0],p[4:2]}; end endfunction
  reg [31:0] queued[0:511];integer due[0:511],head=0,tail=0;
  always @(posedge mc)begin
@@ -127,13 +127,13 @@ module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output 
    for(i=0;i<5;i=i+1)expected[i]=0;
   end else if(dut.prn&&!done)begin
    if(active_slot!=lastslot||active_gen!=lastgen)begin
-    if(!oldfs)begin $display("[FAIL] slot changed outside vblank HD=%0d",HD); $finish; end 
-    if(!((active_slot==1&&active_gen==8'h11)||(active_slot==2&&active_gen==8'h82)))begin $display("[FAIL] torn mailbox HD=%0d",HD); $finish; end 
+    if(!oldfs)begin $display("[FAIL] slot changed outside vblank HD=%0d",HD); $finish; end
+    if(!((active_slot==1&&active_gen==8'h11)||(active_slot==2&&active_gen==8'h82)))begin $display("[FAIL] torn mailbox HD=%0d",HD); $finish; end
     commits=commits+1;lastslot=active_slot;lastgen=active_gen;
    end
    oldfs=sfs;media=sde&&sx>=OX&&sx<OX+640&&sy>=OY&&sy<OY+480;
    if(media&&active_valid&&!reference_fault&&(!dut.armed||dut.fifo_empty||!dut.fifo_valid))begin
-    if(frame!=2)begin $display("[FAIL] unexpected underflow HD=%0d frame=%0d xy=%0d,%0d state=%0d level=%0d",HD,frame,sx,sy,fetch_state,level); $finish; end 
+    if(frame!=2)begin $display("[FAIL] unexpected underflow HD=%0d frame=%0d xy=%0d,%0d state=%0d level=%0d",HD,frame,sx,sy,fetch_state,level); $finish; end
     reference_fault=1;fault_count=fault_count+1;
    end
    want_rgb=0;want_valid=sde&&(!media||(active_valid&&!reference_fault));want_layer=want_valid ? 1:0;
@@ -150,8 +150,8 @@ module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output 
    if(sx==HT-1&&sy==VT-1)frame=frame+1;
    #0.1;
    if(epoch_checks>10&&{x,y,hs,vs,de,ls,fs,afs,hb,vb,rgb[23:0],pv,layer}!==expected[4])
-      begin $display("[FAIL] display HD=%0d frame=%0d xy=%0d,%0d rgb=%h expected=%h layer=%0d",HD,frame,x,y,rgb[23:0],expected[4][26:3],layer); $finish; end 
-   if(uc!==fault_count||ov!=0||miss!=0||swap_error)begin $display("[FAIL] display diagnostics HD=%0d uc=%0d/ref%0d ov=%0d miss=%0d swap=%b",HD,uc,fault_count,ov,miss,swap_error); $finish; end 
+      begin $display("[FAIL] display HD=%0d frame=%0d xy=%0d,%0d rgb=%h expected=%h layer=%0d",HD,frame,x,y,rgb[23:0],expected[4][26:3],layer); $finish; end
+   if(uc!==fault_count||ov!=0||miss!=0||swap_error)begin $display("[FAIL] display diagnostics HD=%0d uc=%0d/ref%0d ov=%0d miss=%0d swap=%b",HD,uc,fault_count,ov,miss,swap_error); $finish; end
    checks=checks+1;epoch_checks=epoch_checks+1;
   end
  end
@@ -162,9 +162,9 @@ module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output 
   wait(frame==2&&sy==OY+24&&sx==100);starvation=0;
   wait(frame==3&&sy==120&&sx==100);@(negedge sc);wrslot=2;wrgen=8'h82;fr=1;@(negedge sc);fr=0;
   wait(frame==5&&sy==H);repeat(8)@(negedge pc);
-  if(commits!=2||fault_count!=1||normal_pixels<900000||fault_pixels<200000||write_beats<100||emergency_pixels<100)begin $display("[FAIL] coverage HD=%0d commits=%0d faults=%0d pixels=%0d/%0d wr=%0d em=%0d",HD,commits,fault_count,normal_pixels,fault_pixels,write_beats,emergency_pixels); $finish; end 
+  if(commits!=2||fault_count!=1||normal_pixels<900000||fault_pixels<200000||write_beats<100||emergency_pixels<100)begin $display("[FAIL] coverage HD=%0d commits=%0d faults=%0d pixels=%0d/%0d wr=%0d em=%0d",HD,commits,fault_count,normal_pixels,fault_pixels,write_beats,emergency_pixels); $finish; end
   if(cfg_head!=9||cfg_tail!=9||cfg_checks!=9*(epoch+1)||osd_pixels<1000||overlap_pixels<100)
-   begin $display("[FAIL] stress coverage HD=%0d epoch=%0d cfg=%0d/%0d/%0d osd=%0d overlap=%0d",HD,epoch,cfg_head,cfg_tail,cfg_checks,osd_pixels,overlap_pixels); $finish; end 
+   begin $display("[FAIL] stress coverage HD=%0d epoch=%0d cfg=%0d/%0d/%0d osd=%0d overlap=%0d",HD,epoch,cfg_head,cfg_tail,cfg_checks,osd_pixels,overlap_pixels); $finish; end
   if(epoch==0)begin
    wait(frame==6&&sy==OY+13&&sx==OX+55);wait(rb);#1.137;rst=0;fr=0;
    wrslot=1;wrgen=8'h11;starvation=0;
@@ -173,7 +173,7 @@ module display_stress_case #(parameter HD=0, parameter real PHASE=0.731)(output 
   done=1;$display("stress HD=%0d checks=%0d normal=%0d emergency=%0d fault_pixels=%0d competing_write_beats=%0d commits=%0d cfg=%0d osd=%0d overlap=%0d epochs=2",HD,checks,normal_pixels,emergency_pixels,fault_pixels,write_beats,commits,cfg_checks,osd_pixels,overlap_pixels);
  end
 
-function [11:0] v_cast_u12; input [11:0] value; begin begin v_cast_u12=value; end  end endfunction
+function [11:0] v_cast_u12; input [11:0] value; begin  v_cast_u12=value;   end endfunction
 endmodule
 module tb_a_video_display_core_stress;
  wire a,b;display_stress_case #(.PHASE(0.731)) c0(a);display_stress_case #(.HD(1),.PHASE(2.137)) c1(b);

@@ -14,7 +14,7 @@ module emergency_graphics_case #(parameter integer HD=0)(output reg done);
  reg [23:0] golden[0:3];reg gv[0:3];integer checks=0,lit=0,i;
  function automatic [23:0] reference(input integer xx,yy,dd,ll,input  blink);
   integer z,dy,code,column,row;reg body,border_hit,dot;reg [23:0] fg,bg;
-  begin begin
+  begin
    blink = (blink === 1'b1); dy=yy>H/2 ? yy-H/2:H/2-yy;
    body= ((0) === 1'b1);
    if(dd==0||dd>=2)begin
@@ -36,7 +36,7 @@ module emergency_graphics_case #(parameter integer HD=0)(output reg done);
     dot= ((font[code*16+row][7-((xx-(W/2-16))%8)]) === 1'b1);
    end
    reference=(dot||border_hit||(body&&blink)) ? fg:bg;
-  end
+
   end endfunction
  integer period;
  always @(posedge clk or negedge rst)begin
@@ -53,7 +53,7 @@ module emergency_graphics_case #(parameter integer HD=0)(output reg done);
     else flash_count=flash_count+1;
    end
    #0.1;
-   if(valid!==gv[3]||rgb!==golden[3])begin $display("[FAIL] graphics HD=%0d x=%0d y=%0d rgb=%h expected=%h",HD,x,y,rgb,golden[3]); $finish; end 
+   if(valid!==gv[3]||rgb!==golden[3])begin $display("[FAIL] graphics HD=%0d x=%0d y=%0d rgb=%h expected=%h",HD,x,y,rgb,golden[3]); $finish; end
    checks=checks+1;if(valid&&rgb!=0)lit=lit+1;
   end
  end
@@ -72,7 +72,7 @@ module emergency_graphics_case #(parameter integer HD=0)(output reg done);
    end
   end
   @(negedge clk);de=0;active=0;repeat(8)@(negedge clk);
-  if(lit!=4*W*H)begin $display("[FAIL] graphics did not cover complete emergency DE"); $finish; end 
+  if(lit!=4*W*H)begin $display("[FAIL] graphics did not cover complete emergency DE"); $finish; end
   $display("PASS emergency graphics HD=%0d checks=%0d active_pixels=%0d BRAM font/4 directions/4 levels/blank/latency4",HD,checks,lit);done=1;
  end
 endmodule

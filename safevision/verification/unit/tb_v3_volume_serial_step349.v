@@ -25,8 +25,8 @@ module tb_v3_volume_serial_step349;
   $display("[TB] tb_v3_volume_serial_step349 done errors=%0d comparisons=%0d",errors,comparisons);$finish;
  end
 
-function signed [0:0] v_cast_s1; input signed [0:0] value; begin begin v_cast_s1=value; end  end endfunction
-function signed [6:0] v_cast_s7; input signed [6:0] value; begin begin v_cast_s7=value; end  end endfunction
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
-function [29:0] v_cast_u30; input [29:0] value; begin begin v_cast_u30=value; end  end endfunction
+function signed [0:0] v_cast_s1; input signed [0:0] value; begin  v_cast_s1=value;   end endfunction
+function signed [6:0] v_cast_s7; input signed [6:0] value; begin  v_cast_s7=value;   end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
+function [29:0] v_cast_u30; input [29:0] value; begin  v_cast_u30=value;   end endfunction
 endmodule

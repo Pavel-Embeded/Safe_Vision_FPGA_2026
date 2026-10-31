@@ -6,12 +6,12 @@ module tb_v3_video_constant224;
  v3_constant224_blend #(.EMERGENCY(1)) a(clk,rst,valid,enabled,foreground,back,emergency,ev);
  v3_constant224_blend b(clk,rst,valid,enabled,foreground,back,hud,hv);
  function[15:0] reference(input[15:0] f,b,input  on);
-  integer r,g,bl,alpha;begin begin on = (on === 1'b1); alpha=on ? 224:0;
+  integer r,g,bl,alpha;begin  on = (on === 1'b1); alpha=on ? 224:0;
    r=(f[15:11]*alpha+b[15:11]*(255-alpha)+127)/255;
    g=(f[10:5]*alpha+b[10:5]*(255-alpha)+127)/255;
    bl=(f[4:0]*alpha+b[4:0]*(255-alpha)+127)/255;
    reference={v_cast_s5(r),v_cast_s6(g),v_cast_s5(bl)};
-  end
+
   end endfunction
  reg[15:0] expected_em[0:2],expected_hud[0:2];reg[2:0] expected_valid=0;
  integer errors=0,comparisons=0,k,bg,color,mask;
@@ -44,6 +44,6 @@ module tb_v3_video_constant224;
  end
  initial begin #20000000;$display("[FAIL] constant224 timeout errors=1");$finish;end
 
-function signed [4:0] v_cast_s5; input signed [4:0] value; begin begin v_cast_s5=value; end  end endfunction
-function signed [5:0] v_cast_s6; input signed [5:0] value; begin begin v_cast_s6=value; end  end endfunction
+function signed [4:0] v_cast_s5; input signed [4:0] value; begin  v_cast_s5=value;   end endfunction
+function signed [5:0] v_cast_s6; input signed [5:0] value; begin  v_cast_s6=value;   end endfunction
 endmodule

@@ -11,7 +11,7 @@ module tb_v3_spi25_profile;
  time last_fall=0,last_rise=0,mosi_changed=0;reg have_fall=0,have_rise=0;
  spi_master #(.CLK_FREQ(50000000),.MID_REF_SAMPLE(1))dut(.clk(clk),.rst_n(rst_n),.clk_div(divider),.cs_n(1'b0),
  .tx_valid(tx_valid),.tx_data(tx),.tx_ready(ready),.rx_data(rx),.rx_valid(rx_valid),.busy(busy),.sclk(sclk),.mosi(mosi),.miso(miso));
- task check(input  ok,input[255:0]what);begin begin ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s time=%0t",what,$time);end end  end endtask
+ task check(input  ok,input[255:0]what);begin  ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s time=%0t",what,$time);end   end endtask
  always @(mosi)begin
   if(active && have_rise)check($time-last_rise>=7,"MOSI hold");
   mosi_changed=$time;
@@ -32,7 +32,7 @@ module tb_v3_spi25_profile;
 
   check(active && sclk && $time-last_rise==10,"sample edge phase");
  end
- task transfer(input integer d,input integer delay_ns,input[7:0]outbyte,input[7:0]inbyte,input  legal);begin begin
+ task transfer(input integer d,input integer delay_ns,input[7:0]outbyte,input[7:0]inbyte,input  legal);begin
   legal = (legal === 1'b1); wait(ready);@(negedge clk);divider=d;card_delay=delay_ns;half_ns=(d+1)*20;
   tx=outbyte;model=inbyte;bit_index=7;rises=0;falls=0;have_fall=0;have_rise=0;observed_tx=0;miso=inbyte[7];active=1;tx_valid=1;
   @(negedge clk);tx_valid=0;
@@ -42,7 +42,7 @@ module tb_v3_spi25_profile;
   check(rises==8 && falls==8,"eight bit clocks");check(observed_tx===outbyte,"MOSI byte order");
   if(legal)check(rx===inbyte,"MISO byte order and worst delay");else check(rx!==inbyte,"out of budget model detected");
   active=0;@(posedge clk);#1;check(!rx_valid,"single receive pulse");
- end  end endtask
+   end endtask
  initial begin
   repeat(4)@(negedge clk);rst_n=1;
 

@@ -22,13 +22,13 @@ module v3_command_parser_reference #(parameter integer TIMEOUT=10000000)(
 
  wire[23:0] decimal_next=number*24'd10+{20'd0,rx_data[3:0]};
  function [4:0] hex;
- input[7:0] c;begin begin
- if(c>=48&&c<=57)hex=c-48;else if(c>=65&&c<=70)hex=c-55;else hex=31;end  end endfunction
+ input[7:0] c;begin
+ if(c>=48&&c<=57)hex=c-48;else if(c>=65&&c<=70)hex=c-55;else hex=31;  end endfunction
  task reject;
- input[7:0] code;begin begin
+ input[7:0] code;begin
  state<=0;reply_valid<=1;reply_code<=code;
  if(rejected!=32'hffffffff)rejected<=rejected+1'b1;
- end  end endtask
+   end endtask
  always @(posedge clk or negedge rst_n)begin
   if(!rst_n)begin state<=0;checksum<=0;received<=0;timer<=0;number<=0;
    length<=0;names<=0;digit_seen<=0;negative<=0;argument<=0;dest<=0;token<=0;ask<=0;

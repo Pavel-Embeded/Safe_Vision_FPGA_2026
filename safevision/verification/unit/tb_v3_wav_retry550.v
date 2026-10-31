@@ -26,19 +26,19 @@ module tb_v3_wav_retry550;
      errors=errors+1;if(errors<10)$display("[FAIL] retried PCM phase%0d slot%0d n%0d got%h exp%h",phase,i,received[i],pcm[i*32+:32],gold[received[i]%600]);
     end
     received[i]<=received[i]+1;
-   end end 
+   end end
   end
  end
- always @(negedge clk)if(rst_n)begin : v_loop_2 integer i; for( i=0;i<4;i=i+1)pcm_ready[i]=cycles%(5+i)!=0; end 
+ always @(negedge clk)if(rst_n)begin : v_loop_2 integer i; for( i=0;i<4;i=i+1)pcm_ready[i]=cycles%(5+i)!=0; end
  task send_descriptors;begin begin
   begin : v_loop_3 integer s; for( s=0;s<4;s=s+1)begin
    descriptor_slot=s;descriptor_valid=1;while(!descriptor_ready)@(negedge clk);
    @(negedge clk);descriptor_valid=0;repeat(5)@(negedge clk);
-  end end 
+  end end
  end  end endtask
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s",message);end end  end endtask
+ task check(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s",message);end   end endtask
  initial begin
-  $readmemh("wav_retry_disk.mem",disk);$readmemh("wav_retry_pcm.mem",gold);begin : v_loop_4 integer i; for( i=0;i<4;i=i+1)received[i]=0; end 
+  $readmemh("wav_retry_disk.mem",disk);$readmemh("wav_retry_pcm.mem",gold);begin : v_loop_4 integer i; for( i=0;i<4;i=i+1)received[i]=0; end
   repeat(4)@(negedge clk);rst_n=1;send_descriptors();wait(indexed);
   check(found==15&&fallback==0,"all supplied primary descriptors committed before playback");
   guard=0;

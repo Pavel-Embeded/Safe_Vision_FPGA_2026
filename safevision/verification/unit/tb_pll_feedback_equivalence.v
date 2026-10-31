@@ -21,11 +21,11 @@ module pll_equiv_monitor #(
         #0.001;
         if (ready) begin
             if(before_clk !== after_clk)
-                begin $display("[FAIL] PLL edge equivalence id=%0d at %0t",ID,$time); $finish; end 
+                begin $display("[FAIL] PLL edge equivalence id=%0d at %0t",ID,$time); $finish; end
             if(last_edge>=0.0) begin
                 delta=$realtime-last_edge;
                 if(absr(delta-PERIOD_NS/2.0)>0.010)
-                    begin $display("[FAIL] PLL half period id=%0d got=%0.6f expected=%0.6f",ID,delta,PERIOD_NS/2.0); $finish; end 
+                    begin $display("[FAIL] PLL half period id=%0d got=%0.6f expected=%0.6f",ID,delta,PERIOD_NS/2.0); $finish; end
             end
             last_edge=$realtime;
             checks=checks+1;
@@ -59,16 +59,16 @@ module tb_pll_feedback_equivalence;
     end endgenerate
     always @(old_lock or new_lock) begin
         #0.001;
-        if(old_lock !== new_lock) begin $display("[FAIL] PLL lock/reset equivalence at %0t",$time); $finish; end 
+        if(old_lock !== new_lock) begin $display("[FAIL] PLL lock/reset equivalence at %0t",$time); $finish; end
     end
 
     always @(new_clk[1] or new_clk[2]) begin
         #0.001;
         if(ready && (new_clk[1]^new_clk[2]) !== 1'b1)
-            begin $display("[FAIL] System PLL memory phase no longer 180 degrees"); $finish; end 
+            begin $display("[FAIL] System PLL memory phase no longer 180 degrees"); $finish; end
     end
     task automatic exercise;
-        begin begin
+        begin
             repeat(10) @(negedge refclk);
             reset=0;
             wait(old_lock==4'b1111 && new_lock==4'b1111);
@@ -79,14 +79,14 @@ module tb_pll_feedback_equivalence;
             reset=1;
             #100;
             if(old_lock!==4'b0000 || new_lock!==4'b0000)
-                begin $display("[FAIL] PLL locks did not drop during reset"); $finish; end 
-        end
+                begin $display("[FAIL] PLL locks did not drop during reset"); $finish; end
+
      end endtask
     initial begin
         exercise();
         exercise();
         for(i=0;i<11;i=i+1) begin
-            if(counts[i]<500) begin $display("[FAIL] Insufficient clock coverage id=%0d count=%0d",i,counts[i]); $finish; end 
+            if(counts[i]<500) begin $display("[FAIL] Insufficient clock coverage id=%0d count=%0d",i,counts[i]); $finish; end
             total=total+counts[i];
         end
         $display("PASS tb_pll_feedback_equivalence: 4 PLLs, 11 clocks, %0d edge/half-period checks, 180-degree memory phase, two lock/reset cycles",total);
@@ -94,6 +94,6 @@ module tb_pll_feedback_equivalence;
     end
     initial begin
         #200000;
-        begin $display("[FAIL] PLL equivalence watchdog"); $finish; end 
+        begin $display("[FAIL] PLL equivalence watchdog"); $finish; end
     end
 endmodule

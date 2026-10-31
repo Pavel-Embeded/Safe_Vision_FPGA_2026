@@ -38,15 +38,15 @@ module tb_v3_shared_storage_spi25;
   if(player.ext_owner&&!service_ready)begin gap_cycles<=gap_cycles+1;if(core_rsp!==0)begin $display("[FAIL] ownership gap leaked old response"); $finish; end end
   if(service_ready&&!ready_seen)begin
    ready_seen<=1;
-   if(player.svc_d_scan_done||gap_cycles<1)begin $display("[FAIL] stale BMP scan_done survived WAV ownership handoff"); $finish; end 
+   if(player.svc_d_scan_done||gap_cycles<1)begin $display("[FAIL] stale BMP scan_done survived WAV ownership handoff"); $finish; end
   end
-  if(!service_ready&&wav.scan_start)begin $display("[FAIL] WAV scanned before shared service ready"); $finish; end 
+  if(!service_ready&&wav.scan_start)begin $display("[FAIL] WAV scanned before shared service ready"); $finish; end
   begin : v_loop_1 integer ag; for( ag=0;ag<4;ag=ag+1)if(audio_valid[ag]&&audio_ready[ag])begin
-   if(audio_pairs[ag*32+:32]!==audio_gold[ag*6000+audio_count[ag]%6000])begin $display("[FAIL] SPI shared WAV PCM slot=%0d idx=%0d got=%h exp=%h",ag,audio_count[ag],audio_pairs[ag*32+:32],audio_gold[ag*6000+audio_count[ag]%6000]); $finish; end 
+   if(audio_pairs[ag*32+:32]!==audio_gold[ag*6000+audio_count[ag]%6000])begin $display("[FAIL] SPI shared WAV PCM slot=%0d idx=%0d got=%h exp=%h",ag,audio_count[ag],audio_pairs[ag*32+:32],audio_gold[ag*6000+audio_count[ag]%6000]); $finish; end
    audio_count[ag]<=audio_count[ag]+1;audio_comparisons<=audio_comparisons+1;
-  end end 
+  end end
  end
- always @(negedge refclk)if(rst)begin : v_loop_2 integer ag; for( ag=0;ag<4;ag=ag+1)audio_ready[ag]=(refcycles%(7+ag)!=0); end 
+ always @(negedge refclk)if(rst)begin : v_loop_2 integer ag; for( ag=0;ag<4;ag=ag+1)audio_ready[ag]=(refcycles%(7+ag)!=0); end
  initial begin begin : v_loop_3 integer ag; for( ag=0;ag<4;ag=ag+1)audio_count[ag]=0; end $readmemh("lifecycle_pcm.mem",audio_gold);end
 
  sd_bmp_player #(.SHARED_SERVICE(1),.RESIDENT_CACHE(1),.GUARDED_CS(1),.MID_REF_SAMPLE(1),.CLK_HZ(50000000),.CLK_DIV_INIT(249),.CLK_DIV_FAST(0)) player(
@@ -114,11 +114,11 @@ module tb_v3_shared_storage_spi25;
    if(read_left==1)vbusy<=0;
   end
  end
- task check;input c;input[511:0] msg;begin begin
+ task check;input c;input[511:0] msg;begin
   if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end
- end  end endtask
+   end endtask
  initial begin
-  if(player.GUARDED_CS!=1)begin $display("[FAIL] production CS guard branch not enabled"); $finish; end 
+  if(player.GUARDED_CS!=1)begin $display("[FAIL] production CS guard branch not enabled"); $finish; end
   repeat(5)@(negedge clk);
   $readmemh("resident_card.mem",card.vol);
   for(i=0;i<8192;i=i+1)card.vol_used[i]=1;

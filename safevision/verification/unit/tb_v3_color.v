@@ -5,12 +5,12 @@ module tb_v3_color;
  integer errors=0,comparisons=0,i,seed=321,j;
  reg[15:0] reference,delayed;reg delayed_valid=0;
  function[7:0] channel;input integer value,contrast,brightness;integer z;
- begin begin z=((value-128)*contrast+128*128+brightness*128);if(z<0)z=0;else z=z/128;
- if(z>255)z=255;channel=z;end  end endfunction
+ begin  z=((value-128)*contrast+128*128+brightness*128);if(z<0)z=0;else z=z/128;
+ if(z>255)z=255;channel=z;  end endfunction
  function[15:0] model;input[15:0] pix;input integer con,bright;reg[7:0] r,g,bb;
- begin begin r=channel((pix[15:11]<<3)|(pix[15:11]>>2),con,bright);
+ begin  r=channel((pix[15:11]<<3)|(pix[15:11]>>2),con,bright);
  g=channel((pix[10:5]<<2)|(pix[10:5]>>4),con,bright);
- bb=channel((pix[4:0]<<3)|(pix[4:0]>>2),con,bright);model={r[7:3],g[7:2],bb[7:3]};end  end endfunction
+ bb=channel((pix[4:0]<<3)|(pix[4:0]>>2),con,bright);model={r[7:3],g[7:2],bb[7:3]};  end endfunction
  always @(posedge clk)begin
   reference=model(p,c,$signed(b));
   #1;if(vo)begin comparisons=comparisons+1;if(out!==delayed || !delayed_valid)begin

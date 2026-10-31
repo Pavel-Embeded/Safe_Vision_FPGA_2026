@@ -31,7 +31,7 @@ module tb_v3_lossless_shared32_fft;
  reg[8:0]expected_word;reg expected_access,blocked_before_edge;reg[4:0]saved_state;
  integer errors=0,comparisons=0,phase,px,py,column,i,k;
  integer font_reads=0,high_reads=0,highest_reads=0,contested=0,spectra=0,last_sequence=0,display_reads=0;
- task ck(input  okay,input [4095:0] message);begin begin okay = (okay === 1'b1); comparisons = comparisons + 1;if(!okay)begin errors = errors + 1;if(errors<15)$display("[FAIL] %s phase=%0d x=%0d y=%0d",message,phase,x,y);end end  end endtask
+ task ck(input  okay,input [4095:0] message);begin  okay = (okay === 1'b1); comparisons = comparisons + 1;if(!okay)begin errors = errors + 1;if(errors<15)$display("[FAIL] %s phase=%0d x=%0d y=%0d",message,phase,x,y);end   end endtask
  always @(posedge clk)if(rst)begin
   expected_access=ram_request;expected_word=initial_words[384+ram_index];
   if(ram_request)begin
@@ -50,7 +50,7 @@ module tb_v3_lossless_shared32_fft;
    for(k=0;k<32;k = k + 1)ck(a.spectrum_ram[{a.display_bank,v_cast_s5(k)}]===b.spectrum_ram[{b.display_bank,v_cast_s5(k)}],"all32levels and held peaks equal the frozen FFT");
   end
  end
- task pixel(input integer xx,yy,input  active);reg v,dot;begin begin
+ task pixel(input integer xx,yy,input  active);reg v,dot;begin
   active = (active === 1'b1); @(negedge clk);x=xx;y=yy;de=active;fs=0;
   v=active&&xx>=120&&xx<632&&yy>=456&&yy<476;
   column=xx-(632-phase);dot=0;
@@ -58,7 +58,7 @@ module tb_v3_lossless_shared32_fft;
   @(posedge clk);#0.002;
   expected_text={expected_text[3:0],dot};expected_panel={expected_panel[3:0],v};expected_edge={expected_edge[3:0],v&&yy==456};
   ck({text_pixel,panel,edge_pixel}==={expected_text[4],expected_panel[4],expected_edge[4]},"packed32pixels equal the independent original bitmap at the5clock interface");
- end  end endtask
+   end endtask
  initial begin
   $readmemh("v3_ticker16.mem",bitmap);$readmemh("v3_spectrum_ticker32.mem",initial_words);
   repeat(5)@(negedge clk);rst=1;
@@ -77,5 +77,5 @@ module tb_v3_lossless_shared32_fft;
  end
  initial begin #2000000000;$display("[FAIL] packed32FFT watchdog");$display("PASS tb_v3_lossless_shared32_fft errors=1 comparisons=%0d",comparisons);$finish;end
 
-function signed [4:0] v_cast_s5; input signed [4:0] value; begin begin v_cast_s5=value; end  end endfunction
+function signed [4:0] v_cast_s5; input signed [4:0] value; begin  v_cast_s5=value;   end endfunction
 endmodule

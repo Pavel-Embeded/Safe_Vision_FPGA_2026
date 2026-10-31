@@ -8,13 +8,12 @@ module tb_v3_spectrum539;
  reg[13:0] immutable[0:31];integer errors=0,comparisons=0,c,i,k,gotr,goti,want_r,want_i;integer volume_high,volume_low;
  integer old_peak,new_level,want_peak,rx,ry,relative,cx;reg[7:0] reference_char;reg expected_dot;reg was_ready;
  function[6:0] reference_height(input[18:0] magnitude);
-  integer bit_index,leading,fraction,scaled;begin begin
+  integer bit_index,leading,fraction,scaled;begin
    leading=0;for(bit_index=0;bit_index<19;bit_index = bit_index + 1)if(magnitude[bit_index])leading=bit_index;
    fraction=leading>=2 ? (magnitude>>(leading-2))&3:0;scaled=leading*4+fraction+12;
    reference_height=magnitude==0 ? 0:scaled>=64 ? 64:scaled;
-  end
   end endfunction
- function[14:0] reference_glyph(input[7:0] character);begin begin
+ function[14:0] reference_glyph(input[7:0] character);begin
   case(character)
    "0":reference_glyph=15'b111101101101111;"1":reference_glyph=15'b010110010010111;
    "2":reference_glyph=15'b110001010100111;"3":reference_glyph=15'b110001010001110;
@@ -27,13 +26,19 @@ module tb_v3_spectrum539;
    "k":reference_glyph=15'b100101110101101;"-":reference_glyph=15'b000000111000000;
    default:reference_glyph=0;
   endcase
- end  end endfunction
+ end endfunction
  function reference_dot(input[7:0] character,input integer horizontal,input integer vertical);
-  reg[14:0] bitmap;begin begin bitmap=reference_glyph(character);
+  reg[14:0] bitmap;begin bitmap=reference_glyph(character);
    reference_dot=horizontal>=0&&horizontal<6&&vertical>=0&&vertical<10 ? bitmap[14-(vertical/2)*3-horizontal/2]:0;
-  end
   end endfunction
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s case%0d bin%0d",message,c,k);end end  end endtask
+ task check(input ok,input [4095:0] message);begin
+  ok = (ok === 1'b1);
+  comparisons = comparisons + 1;
+  if(!ok)begin
+   errors = errors + 1;
+   if(errors<12)$display("[FAIL] %s case%0d bin%0d",message,c,k);
+  end
+ end endtask
  reg stream_enabled=1,feed_case=0;integer sample_phase=0,case_feed_index=0,background_index=0;
  integer stream_cycle=0,previous_sample_cycle=-1,ignored_computation_samples=0,continuous_samples=0;
  always @(negedge clk)begin
@@ -76,9 +81,9 @@ module tb_v3_spectrum539;
  end
 integer scan_x=0,scan_y=0;reg[31:0] noise_state=32'h537a1234;
  integer paused_states[0:31];integer monitored_accepts=0;
- function[8:0] reverse_sample(input[8:0] value);integer j;begin begin
+ function[8:0] reverse_sample(input[8:0] value);integer j;begin
   for(j=0;j<9;j = j + 1)reverse_sample[j]=value[8-j];
- end  end endfunction
+ end endfunction
  always @(negedge clk)if(scan_stress)begin
   noise_state={noise_state[30:0],noise_state[31]^noise_state[21]^noise_state[1]^noise_state[0]};
   if(dut.state==0||c%2==0)begin x=scan_x;y=scan_y;de=scan_x<640&&scan_y<480;end
@@ -124,7 +129,8 @@ integer scan_x=0,scan_y=0;reg[31:0] noise_state=32'h537a1234;
    for(i=0;i<512;i=i+1)begin
 
 
-    begin begin @(posedge clk); end while(!pcm_valid)begin @(posedge clk); end end 
+    @(posedge clk);
+    while(!pcm_valid)@(posedge clk);
     check(dut.state==0&&dut.sample_index==i,"every continuous real48k PCM sample accepted in order regardless of raster");
     #1;monitored_accepts = monitored_accepts + 1;
     check(dut.write_enable&&dut.write_address==reverse_sample(i[8:0])&&dut.write_data=={ {2{samples[c*512+i][15]}},samples[c*512+i],18'd0},"capture write bus preserves exact sample and address");
@@ -142,7 +148,8 @@ integer scan_x=0,scan_y=0;reg[31:0] noise_state=32'h537a1234;
    check(seq==c,"no publish before video frame boundary");
 
 
-   begin begin @(negedge clk); end while(!pcm_valid)begin @(negedge clk); end end 
+   @(negedge clk);
+   while(!pcm_valid)@(negedge clk);
    @(negedge clk);#1;frame_start=1;@(negedge clk);#1;frame_start=0;check(seq==c+1&&ready,"one frame commit per complete transform");
    for(k=0;k<32;k=k+1)begin
     new_level=dut.spectrum_ram[{dut.display_bank,k[4:0]}][13:7];old_peak=was_ready ? immutable[k][6:0]:0;

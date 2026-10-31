@@ -35,13 +35,13 @@ module tb_sdram_loopback;
     initial begin
         if (!$test$plusargs("SKIP_PATTERN_PROOF")) begin
             proof_addr = 21'd0; #1;
-            if (proof_pat !== 32'hA55A3CC3) begin $display("[FAIL] SIGNATURE_GOLDEN_ZERO_FAILED"); $finish; end 
+            if (proof_pat !== 32'hA55A3CC3) begin $display("[FAIL] SIGNATURE_GOLDEN_ZERO_FAILED"); $finish; end
             proof_addr = 21'd1; #1;
-            if (proof_pat !== 32'hA45B3DCB) begin $display("[FAIL] SIGNATURE_GOLDEN_ONE_FAILED"); $finish; end 
+            if (proof_pat !== 32'hA45B3DCB) begin $display("[FAIL] SIGNATURE_GOLDEN_ONE_FAILED"); $finish; end
             proof_addr = 21'h001000; #1;
-            if (proof_pat !== 32'hA5DA3CC3) begin $display("[FAIL] SIGNATURE_GOLDEN_HIGH_FAILED"); $finish; end 
+            if (proof_pat !== 32'hA5DA3CC3) begin $display("[FAIL] SIGNATURE_GOLDEN_HIGH_FAILED"); $finish; end
             proof_addr = 21'h100000; #1;
-            if (proof_pat !== 32'h255A3CC3) begin $display("[FAIL] SIGNATURE_GOLDEN_TOP_FAILED"); $finish; end 
+            if (proof_pat !== 32'h255A3CC3) begin $display("[FAIL] SIGNATURE_GOLDEN_TOP_FAILED"); $finish; end
 
 
             for (a = 0; a < 2097152; a = a + 1) begin
@@ -52,14 +52,14 @@ module tb_sdram_loopback;
                 high_byte = pattern[31:24] ^ 8'hA5 ^ low_byte;
                 recovered = {high_byte, mid_byte, low_byte[4:0]};
                 if (recovered !== a[20:0] || mid_byte[2:0] !== low_byte[7:5])
-                    begin $display("[FAIL] SIGNATURE_NOT_INJECTIVE addr=%h", a); $finish; end 
+                    begin $display("[FAIL] SIGNATURE_NOT_INJECTIVE addr=%h", a); $finish; end
                 if (a < 256) begin
                     seen_zero = seen_zero | ~pattern;
                     seen_one  = seen_one  |  pattern;
                 end
             end
             if (seen_zero !== 32'hFFFFFFFF || seen_one !== 32'hFFFFFFFF)
-                begin $display("[FAIL] CONTIGUOUS_DQ_COVERAGE_FAILED"); $finish; end 
+                begin $display("[FAIL] CONTIGUOUS_DQ_COVERAGE_FAILED"); $finish; end
 
 
             old_unique = 0;
@@ -74,7 +74,7 @@ module tb_sdram_loopback;
                     if (old_patterns[i] === old_patterns[j]) duplicate = 1;
                 if (!duplicate) old_unique = old_unique + 1;
             end
-            if (old_unique != 2) begin $display("[FAIL] OLD_PATTERN_NEGATIVE_CONTROL_FAILED unique=%0d", old_unique); $finish; end 
+            if (old_unique != 2) begin $display("[FAIL] OLD_PATTERN_NEGATIVE_CONTROL_FAILED unique=%0d", old_unique); $finish; end
             $display("PASS old-pattern negative control finds exactly two aliases");
             $display("PASS all 2097152 signatures invert; all DQ bits toggle");
         end
@@ -91,7 +91,7 @@ module tb_sdram_loopback;
 
     initial begin
         #100_000_000;
-        begin $display("[FAIL] LOOPBACK_TEST_TIMEOUT done=%b", done); $finish; end 
+        begin $display("[FAIL] LOOPBACK_TEST_TIMEOUT done=%b", done); $finish; end
     end
 endmodule
 
@@ -132,48 +132,48 @@ module sv_loopback_case #(
 
     function [7:0] hx;
         input [3:0] n;
-        begin begin hx = (n < 10)  ?  (8'h30 + n) : (8'h37 + n); end
+        begin  hx = (n < 10)  ?  (8'h30 + n) : (8'h37 + n);
      end endfunction
     function [15:0] hex8;
         input [7:0] v;
-        begin begin hex8 = {hx(v[7:4]),hx(v[3:0])}; end
+        begin  hex8 = {hx(v[7:4]),hx(v[3:0])};
      end endfunction
     function [47:0] hex24;
         input [23:0] v;
-        begin begin hex24 = {hx(v[23:20]),hx(v[19:16]),hx(v[15:12]),hx(v[11:8]),hx(v[7:4]),hx(v[3:0])}; end
+        begin  hex24 = {hx(v[23:20]),hx(v[19:16]),hx(v[15:12]),hx(v[11:8]),hx(v[7:4]),hx(v[3:0])};
      end endfunction
     function [31:0] hex16;
         input [15:0] v;
-        begin begin hex16 = {hx(v[15:12]),hx(v[11:8]),hx(v[7:4]),hx(v[3:0])}; end
+        begin  hex16 = {hx(v[15:12]),hx(v[11:8]),hx(v[7:4]),hx(v[3:0])};
      end endfunction
     function [63:0] hex32;
         input [31:0] v;
-        begin begin
+        begin
             hex32 = {hx(v[31:28]),hx(v[27:24]),hx(v[23:20]),hx(v[19:16]),
                      hx(v[15:12]),hx(v[11:8]),hx(v[7:4]),hx(v[3:0])};
-        end
+
      end endfunction
     function [79:0] hex40;
         input [39:0] v;
-        begin begin
+        begin
             hex40 = {hx(v[39:36]),hx(v[35:32]),hx(v[31:28]),hx(v[27:24]),hx(v[23:20]),
                      hx(v[19:16]),hx(v[15:12]),hx(v[11:8]),hx(v[7:4]),hx(v[3:0])};
-        end
+
      end endfunction
     function [20:0] addr_for;
         input integer index;
-        begin begin addr_for = (index << SHIFT) + ((LOWSTEP != 0)  ?  index : 0); end
+        begin  addr_for = (index << SHIFT) + ((LOWSTEP != 0)  ?  index : 0);
      end endfunction
     function [31:0] signature;
         input [20:0] address;
         reg [7:0] lo;
-        begin begin
+        begin
             lo = address[7:0];
             signature = {(8'hA5 ^ lo ^ address[20:13]),
                          (8'h5A ^ lo ^ address[12:5]),
                          (8'h3C ^ lo),
                          (8'hC3 ^ {address[4:0], address[7:5]})};
-        end
+
      end endfunction
 
     reg [8*190-1:0] expected;
@@ -192,7 +192,7 @@ module sv_loopback_case #(
             if (dut.st === 4'd6 || bytes_received != 190 || handshakes != 190)
                 begin $display("[FAIL] REPORT_STUCK case=%0d baud=%0d idx=%0d run=%b byte_valid=%b ready=%b handshakes=%0d bytes=%0d",
                        ID, UART_BAUD, dut.rpt_idx, dut.rpt_run, dut.rpt_byte_valid,
-                       dut.uart_tx_ready, handshakes, bytes_received); $finish; end 
+                       dut.uart_tx_ready, handshakes, bytes_received); $finish; end
         end
     end
     reg [31:0] expected_bad_addr;
@@ -235,16 +235,16 @@ module sv_loopback_case #(
             for (bytes_received = 0; bytes_received < 190; bytes_received = bytes_received + 1) begin
                 @(negedge txd);
                 #(BIT_NS / 2);
-                if (txd !== 1'b0) begin $display("[FAIL] UART_START_FAILED case=%0d", ID); $finish; end 
+                if (txd !== 1'b0) begin $display("[FAIL] UART_START_FAILED case=%0d", ID); $finish; end
                 #BIT_NS;
                 for (bit_index = 0; bit_index < 8; bit_index = bit_index + 1) begin
                     received[bit_index] = txd;
                     #BIT_NS;
                 end
-                if (txd !== 1'b1) begin $display("[FAIL] UART_STOP_FAILED case=%0d", ID); $finish; end 
+                if (txd !== 1'b1) begin $display("[FAIL] UART_STOP_FAILED case=%0d", ID); $finish; end
                 if (received !== expected[8*(189-bytes_received) +: 8])
                     begin $display("[FAIL] UART_BYTE_FAILED case=%0d byte=%0d got=%h want=%h",
-                           ID, bytes_received, received, expected[8*(189-bytes_received) +: 8]); $finish; end 
+                           ID, bytes_received, received, expected[8*(189-bytes_received) +: 8]); $finish; end
             end
         end
     end
@@ -252,7 +252,7 @@ module sv_loopback_case #(
     always @(posedge dut.ext_mem_clk) begin
         if (dut.rst_mem_n && dut.app_wr_en) begin
             if (dut.app_rd_en || !dut.sdr_init_done || dut.app_wr_dm !== 4'b0)
-                begin $display("[FAIL] APPLICATION_WRITE_PROTOCOL_FAILED case=%0d", ID); $finish; end 
+                begin $display("[FAIL] APPLICATION_WRITE_PROTOCOL_FAILED case=%0d", ID); $finish; end
             seen_zero <= seen_zero | ~dut.app_wr_din;
             seen_one  <= seen_one  |  dut.app_wr_din;
         end
@@ -263,27 +263,27 @@ module sv_loopback_case #(
         #1;
         if (FAULT_MODE == 4) begin
             if (led !== 4'd1 || dut.err_code !== 8'h01 || dut.wr_i !== 0 || dut.rd_i !== 0)
-                begin $display("[FAIL] INIT_TIMEOUT_FAILED"); $finish; end 
+                begin $display("[FAIL] INIT_TIMEOUT_FAILED"); $finish; end
         end else if (FAULT_MODE == 3) begin
             if (led !== 4'd2 || dut.err_code !== 8'h02 || dut.wr_i !== WORDS ||
                 dut.rd_i !== WORDS || dut.cap_cnt !== WORDS-1)
-                begin $display("[FAIL] READ_TIMEOUT_FAILED"); $finish; end 
+                begin $display("[FAIL] READ_TIMEOUT_FAILED"); $finish; end
         end else begin
             if (led !== ((EXPECT_BAD == 0)  ?  4'd8 : 4'd3) ||
                 dut.err_code !== ((EXPECT_BAD == 0)  ?  8'h00 : 8'h03) ||
                 dut.wr_i !== WORDS || dut.rd_i !== WORDS || dut.cap_cnt !== WORDS ||
                 dut.checked_cnt !== WORDS || dut.bad_cnt !== EXPECT_BAD)
-                begin $display("[FAIL] LOOPBACK_RESULT_FAILED case=%0d bad=%0d", ID, dut.bad_cnt); $finish; end 
+                begin $display("[FAIL] LOOPBACK_RESULT_FAILED case=%0d bad=%0d", ID, dut.bad_cnt); $finish; end
             wait(bytes_received == 190);
             if (handshakes != 190)
-                begin $display("[FAIL] UART_HANDSHAKE_COUNT_FAILED case=%0d accepted=%0d", ID, handshakes); $finish; end 
+                begin $display("[FAIL] UART_HANDSHAKE_COUNT_FAILED case=%0d accepted=%0d", ID, handshakes); $finish; end
             if (FAULT_MODE == 0 && SHIFT == 0 && WORDS >= 256 &&
                 (seen_zero !== 32'hFFFFFFFF || seen_one !== 32'hFFFFFFFF))
-                begin $display("[FAIL] ACTUAL_WRITE_DQ_COVERAGE_FAILED case=%0d", ID); $finish; end 
+                begin $display("[FAIL] ACTUAL_WRITE_DQ_COVERAGE_FAILED case=%0d", ID); $finish; end
         end
         repeat (20) @(posedge dut.ext_mem_clk);
         if ((FAULT_MODE == 3 || FAULT_MODE == 4) && bytes_received != 0)
-            begin $display("[FAIL] UNEXPECTED_TIMEOUT_REPORT case=%0d", ID); $finish; end 
+            begin $display("[FAIL] UNEXPECTED_TIMEOUT_REPORT case=%0d", ID); $finish; end
         $display("PASS loopback case=%0d words=%0d shift=%0d lowstep=%0d fault=%0d",
                  ID, WORDS, SHIFT, LOWSTEP, FAULT_MODE);
         done = 1'b1;
@@ -337,18 +337,18 @@ module sdram #(
             if (init_count < 8) init_count <= init_count + 1;
             if (init_count == 7 && FAULT_MODE != 4) Sdr_init_done <= 1;
             if ((App_wr_en || App_rd_en) && !Sdr_init_done)
-                begin $display("[FAIL] COMMAND_BEFORE_INIT"); $finish; end 
-            if (App_wr_en && App_rd_en) begin $display("[FAIL] OVERLAPPING_COMMANDS"); $finish; end 
+                begin $display("[FAIL] COMMAND_BEFORE_INIT"); $finish; end
+            if (App_wr_en && App_rd_en) begin $display("[FAIL] OVERLAPPING_COMMANDS"); $finish; end
             windex = (FAULT_MODE == 1  ?  (App_wr_addr & 21'h000FFF) : App_wr_addr) >> MODEL_SHIFT;
             rindex = (FAULT_MODE == 1  ?  (App_rd_addr & 21'h000FFF) : App_rd_addr) >> MODEL_SHIFT;
             if (App_wr_en) begin
-                if (windex >= 4096 || App_wr_dm !== 4'b0) begin $display("[FAIL] MODEL_WRITE_RANGE_OR_MASK"); $finish; end 
+                if (windex >= 4096 || App_wr_dm !== 4'b0) begin $display("[FAIL] MODEL_WRITE_RANGE_OR_MASK"); $finish; end
                 memory[windex] <= App_wr_din;
             end
             valid_pipe[0] <= App_rd_en && !(FAULT_MODE == 3 &&
                 App_rd_addr == (((MODEL_WORDS-1) << MODEL_SHIFT) + ((MODEL_SHIFT != 0)  ?  MODEL_WORDS-1 : 0)));
             if (App_rd_en) begin
-                if (rindex >= 4096) begin $display("[FAIL] MODEL_READ_RANGE"); $finish; end 
+                if (rindex >= 4096) begin $display("[FAIL] MODEL_READ_RANGE"); $finish; end
                 data_pipe[0] <= memory[rindex] ^ ((FAULT_MODE == 2)  ?  32'h80000000 : 32'd0);
             end
             for (i = 1; i < 7; i = i + 1) begin

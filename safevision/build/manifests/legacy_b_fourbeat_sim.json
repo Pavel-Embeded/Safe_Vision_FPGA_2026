@@ -1,4 +1,5 @@
 {
+  "native_runner": "safevision/tools/run_legacy_b_fourbeat_sim.py",
   "defines": [
     "SIM_FAST_TO"
   ],

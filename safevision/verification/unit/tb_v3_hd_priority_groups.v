@@ -3,9 +3,9 @@ module tb_v3_hd_priority_groups;
  reg clk=0,rst=0;always #5 clk=~clk;
  reg[10:0] stimulus=0,expected;integer i,k,errors=0,comparisons=0;
  v3_supervisor a(.clk(clk),.rst_n(rst));
- task check(input  ok,input [4095:0] message);begin begin
+ task check(input  ok,input [4095:0] message);begin
   ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] %s pending=%h expected=%h",message,stimulus,expected);end
- end  end endtask
+   end endtask
  initial begin
 
 

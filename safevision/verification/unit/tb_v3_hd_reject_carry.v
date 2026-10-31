@@ -2,7 +2,7 @@
 module tb_v3_hd_reject_carry;
  reg[15:0]a=0,b=0;reg[31:0]rng=32'h918356;integer k,j,errors=0,comparisons=0;
  v3_supervisor dut(.clk(1'b0),.rst_n(1'b0),.rejected_files(a));
- task check;begin begin #1;comparisons = comparisons + 1;if(dut.rejected_rise!==(a>b))begin errors = errors + 1;if(errors<7)$display("[FAIL] unsigned reject A=%h B=%h",a,b);end end  end endtask
+ task check;begin  #1;comparisons = comparisons + 1;if(dut.rejected_rise!==(a>b))begin errors = errors + 1;if(errors<7)$display("[FAIL] unsigned reject A=%h B=%h",a,b);end   end endtask
  initial begin
   force dut.rejected_old=b;
   for(k=0;k<65536;k = k + 1)begin

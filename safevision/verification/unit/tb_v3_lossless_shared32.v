@@ -24,21 +24,21 @@ module tb_v3_lossless_shared32;
    .trace_pixel(),.grid_pixel(),.colour(),.ready(),.spectrum_sequence(),.dominant_bin(),.peak_height(),
    .font_request(request[lane]),.font_index(index[lane]),.font_word(word8[lane]),.font_index_hi(index_hi[lane]),.font_word9(word9[lane]));
  end endgenerate
- task ck(input  okay,input [4095:0] message);begin begin
+ task ck(input  okay,input [4095:0] message);begin
   okay = (okay === 1'b1); comparisons = comparisons + 1;if(!okay)begin errors = errors + 1;if(errors<15)$display("[FAIL] %s cycle=%0d phase=%0d x=%0d y=%0d",message,cycles,pos[0],x,y);end
- end  end endtask
+   end endtask
  always @(posedge clk)begin #0.001;cycles = cycles + 1;
-  begin : v_loop_1 integer n; for( n=0;n<2;n = n + 1)ck({panel[n],text[n],edge_bit[n],pos[n],frames[n],loops[n]}==={rpanel[n],rtext[n],redge[n],rpos[n],rframes[n],rloops[n]},"every public pixel and counter equals the full frozen local32 parent"); end 
+  begin : v_loop_1 integer n; for( n=0;n<2;n = n + 1)ck({panel[n],text[n],edge_bit[n],pos[n],frames[n],loops[n]}==={rpanel[n],rtext[n],redge[n],rpos[n],rframes[n],rloops[n]},"every public pixel and counter equals the full frozen local32 parent"); end
   if(rst_n&&request[0])begin
    ck({index_hi[0],index[0]}<626,"all packed accesses stay inside the immutable glyph payload");
    if(index_hi[0])high_reads = high_reads + 1;
    if(word9[0][7])highest_bit_reads = highest_bit_reads + 1;
   end
  end
- task tick(input integer a,b,input  active,frame);begin begin
+ task tick(input integer a,b,input  active,frame);begin
   active = (active === 1'b1); frame = (frame === 1'b1); @(negedge clk);x=a;y=b;de=active;fs=frame;
- end  end endtask
- task advance;begin begin tick(0,0,0,1);tick(0,0,0,0);tick(0,0,0,1);tick(0,0,0,0);end  end endtask
+   end endtask
+ task advance;begin  tick(0,0,0,1);tick(0,0,0,0);tick(0,0,0,1);tick(0,0,0,0);  end endtask
  initial begin
   repeat(4)@(negedge clk);rst_n=1;
 

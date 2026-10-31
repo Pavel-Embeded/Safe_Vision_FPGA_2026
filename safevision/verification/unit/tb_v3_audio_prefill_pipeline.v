@@ -5,13 +5,13 @@ module tb_v3_audio_prefill_pipeline;
  reg[3:0] sampled=0;integer i,j;reg[31:0] rng=32'h17a62bd9;
  v3_audio_system #(.DIRECT_RING_COMPARE(1)) piped(.ref_clk(clk),.mem_clk(clk),.audio_clk(clk),.pixel_clk(clk),.sys_clk(clk),.rst_n(rst_n),.media_reset(media_reset),.mounted(1'b0),.cache_ready(1'b0),.media_descriptor_valid(1'b0));
  v3_audio_system #(.DIRECT_RING_COMPARE(0)) legacy(.ref_clk(clk),.mem_clk(clk),.audio_clk(clk),.pixel_clk(clk),.sys_clk(clk),.rst_n(rst_n),.media_reset(media_reset),.mounted(1'b0),.cache_ready(1'b0),.media_descriptor_valid(1'b0));
- task verify;input[3:0] expected;begin begin
+ task verify;input[3:0] expected;begin
   comparisons=comparisons+4;
   if(piped.source.slot_fill!==expected)begin errors = errors + 1;if(errors<5)$display("[FAIL] prefill admission epoch got=%b exp=%b",piped.source.slot_fill,expected);end
   if(legacy.source.slot_fill!==stimulus)begin errors = errors + 1;if(errors<5)$display("[FAIL] library direct path changed");end
   if(piped.source.sector_room!==capacity||legacy.source.sector_room!==capacity)begin errors = errors + 1;if(errors<5)$display("[FAIL] current hard FIFO credit was delayed");end
   if(piped.PREFILL_PIPELINE!=1||legacy.PREFILL_PIPELINE!=0)begin errors = errors + 1;if(errors<5)$display("[FAIL] production or library parameter differs");end
- end  end endtask
+   end endtask
  initial begin
   force piped.fill=stimulus;force legacy.fill=stimulus;
   force piped.room=capacity;force legacy.room=capacity;

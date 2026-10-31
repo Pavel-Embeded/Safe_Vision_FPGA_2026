@@ -66,20 +66,20 @@ module tb_c_emergency_fsm;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
     task ncyc;
         input integer n;
         integer k;
-        begin begin for (k = 0; k < n; k = k + 1) begin @(posedge clk); #1; end end
+        begin  for (k = 0; k < n; k = k + 1) begin @(posedge clk); #1; end
      end endtask
 
     task do_reset;
-        begin begin
+        begin
             rst_n = 1'b0;
             fire_in = 0; alarm_in = 0; media_fault = 0; media_ok = 1; fatal = 0;
             fault_code_in = 8'h00; confirm = 0; confirm_stable = 0;
@@ -89,7 +89,7 @@ module tb_c_emergency_fsm;
             repeat (4) @(posedge clk); #1;
             rst_n = 1'b1;
             ncyc(6);
-        end
+
      end endtask
 
     initial begin

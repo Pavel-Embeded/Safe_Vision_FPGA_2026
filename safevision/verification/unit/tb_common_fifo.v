@@ -19,7 +19,7 @@ module tb_common_fifo;
     task check;
         input         cond;
         input [511:0] name;
-        begin begin
+        begin
             if (cond) begin
                 pass_cnt = pass_cnt + 1;
                 $display("[PASS] %0s", name);
@@ -27,7 +27,7 @@ module tb_common_fifo;
                 errors = errors + 1;
                 $display("[FAIL] %0s", name);
             end
-        end
+
      end endtask
 
 
@@ -117,47 +117,47 @@ module tb_common_fifo;
 
     task fifo_push1;
         input [15:0] d;
-        begin begin
+        begin
             f_din = d;
             f_wr  = 1'b1;
             @(negedge clk);
             f_wr  = 1'b0;
-        end
+
      end endtask
 
 
     task fifo_pop1;
         output [15:0] d;
-        begin begin
+        begin
             d    = f_dout;
             f_rd = 1'b1;
             @(negedge clk);
             f_rd = 1'b0;
-        end
+
      end endtask
 
 
     task fifo_push_wait;
         input [15:0] d;
-        begin begin
+        begin
             while (f_afull) @(negedge clk);
             f_din = d;
             f_wr  = 1'b1;
             @(negedge clk);
             f_wr  = 1'b0;
-        end
+
      end endtask
 
 
     task fifo_pop_wait;
         output [15:0] d;
-        begin begin
+        begin
             while (f_empty) @(negedge clk);
             d    = f_dout;
             f_rd = 1'b1;
             @(negedge clk);
             f_rd = 1'b0;
-        end
+
      end endtask
 
 
@@ -230,7 +230,7 @@ module tb_common_fifo;
         input [7:0]  c;
         input [3:0]  s;
         input [31:0] t;
-        begin begin
+        begin
             @(negedge clk);
             er_push = 1'b1;
             er_code = c;
@@ -238,7 +238,7 @@ module tb_common_fifo;
             er_ts   = t;
             @(negedge clk);
             er_push = 1'b0;
-        end
+
      end endtask
 
 

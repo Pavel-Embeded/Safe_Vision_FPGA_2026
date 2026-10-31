@@ -16,10 +16,10 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
     task check;
         input         cond;
         input [4095:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
     localparam integer W = 640;
@@ -31,11 +31,11 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         input integer x;
         input integer y;
         reg [7:0] rr,gg,bb;
-        begin begin
+        begin
 
             rr=x[7:0]^y[7:0]; gg=x+y; bb=x*3;
             px24={rr,gg,bb};
-        end
+
      end endfunction
 
 
@@ -43,22 +43,22 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
         input integer x;
         input integer y;
         reg [23:0] p;
-        begin begin
+        begin
             p = px24(x, y);
             px565 = { p[23:19], p[15:10], p[7:3] };
-        end
+
      end endfunction
 
 
     function [23:0] expand565;
         input [15:0] p;
-        begin begin
+        begin
             expand565 = { p[15:11], p[15:13], p[10:5], p[10:9], p[4:0], p[4:2] };
-        end
+
      end endfunction
 
     reg [7:0] hdr [0:53];
-    initial begin : v_local_1 
+    initial begin : v_local_1
         integer i;
         for (i = 0; i < 54; i = i + 1) hdr[i] = 8'h00;
         hdr[0]  = 8'h42; hdr[1]  = 8'h4D;
@@ -351,7 +351,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
     initial $readmemh("font8x16.mem",glyph);
     function [23:0] emergency_expected(input integer xx,yy);
         integer cx,cy,dy,tx,ty,idx,ch;reg arrow_hit,border_hit,font_hit;
-        begin begin
+        begin
             cx=HD ? 640:320;cy=HD ? 360:240;tx=cx-16;ty=HD ? 180:120;
             dy=(yy>=cy) ? yy-cy:cy-yy;
             arrow_hit=(xx>=cx-96&&xx<=cx-32&&dy<=((xx-cx+96)/2))||
@@ -365,15 +365,15 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
                 font_hit=glyph[ch*16+yy-ty][7-((xx-tx)%8)];
             end
             emergency_expected=(arrow_hit||border_hit||font_hit) ? 24'h00ff00:24'h001008;
-        end
+
      end endfunction
     task control(input  level);
-        begin begin
+        begin
             level = (level === 1'b1); @(negedge clk_sys);ctrl_active=level;ctrl_valid=1;
-            begin begin @(posedge clk_sys); end while(!ctrl_ready)begin @(posedge clk_sys); end end 
+            begin begin @(posedge clk_sys); end while(!ctrl_ready)begin @(posedge clk_sys); end end
             @(negedge clk_sys);ctrl_valid=0;
             wait(em_active==level);
-        end
+
      end endtask
     always @(posedge clk_pix) if(rst_n&&em_applied)applied_count=applied_count+1;
 
@@ -386,21 +386,21 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
             pix_active_valid,pix_frame_fault,disp_de,disp_pixel_valid,disp_hs,disp_vs,
             disp_x,disp_y,disp_layer,pix_underflow[7:0],pix_missed[7:0]}:64'd0;
         #0.001;
-        if(pixel_debug!==want_pixel_debug)begin $display("[FAIL] PIXEL debug edge/field alignment"); $finish; end 
+        if(pixel_debug!==want_pixel_debug)begin $display("[FAIL] PIXEL debug edge/field alignment"); $finish; end
         if(rst_n)debug_checks=debug_checks+1;
     end
     always @(posedge clk_mem)begin
         want_mem_debug=u_display.mrn ? {mem_fetch_state,mem_dma_active,mem_dma_done,
             pix_fifo_level,mem_dma_bytes,arb_wr_busy,u_display.rd_starve_cnt[9:0]}:64'd0;
         #0.001;
-        if(mem_debug!==want_mem_debug)begin $display("[FAIL] MEM debug edge/field alignment"); $finish; end 
+        if(mem_debug!==want_mem_debug)begin $display("[FAIL] MEM debug edge/field alignment"); $finish; end
     end
     always @(posedge clk_sys)begin
         want_sys_debug=u_display.srn ? {8'd0,submitted_generation,2'd1,submitted_fi,
             fw_crc_ok,frame_ready,ctrl_valid,ctrl_ready,1'b0,u_display.cfg_ready,
             swap_state_o,swap_error,active_commit,fs_evt_b,ack_evt_b}:32'd0;
         #0.001;
-        if(sys_debug!==want_sys_debug)begin $display("[FAIL] SYS debug edge/field alignment"); $finish; end 
+        if(sys_debug!==want_sys_debug)begin $display("[FAIL] SYS debug edge/field alignment"); $finish; end
     end
 
     a_video_system_core #(
@@ -538,7 +538,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
     integer debug_fd=0,debug_rows=0;
     initial if($test$plusargs("WAVES"))begin
         debug_fd=$fopen("emergency_pixels.csv","w");
-        if(!debug_fd)begin $display("[FAIL] debug capture open"); $finish; end 
+        if(!debug_fd)begin $display("[FAIL] debug capture open"); $finish; end
         $fdisplay(debug_fd,"t_ns,x,y,de,layer,rgb,pixel_debug");
     end
     always @(negedge clk_pix)if(debug_fd!=0&&disp_de&&disp_layer==3)begin
@@ -551,7 +551,7 @@ module tb_a_video_system_core #(parameter integer HD=0, MUTATE_COLOR=0, SUBMIT_L
     reg capture_burst=0;
     initial if($test$plusargs("WAVES"))begin
         burst_fd=$fopen("read_burst.csv","w");
-        if(!burst_fd)begin $display("[FAIL] cannot create burst capture"); $finish; end 
+        if(!burst_fd)begin $display("[FAIL] cannot create burst capture"); $finish; end
         $fdisplay(burst_fd,"t_ns,req,ack,busy,addr,len,valid,data");
     end
     always @(posedge clk_mem)if(rst_n && burst_fd!=0)begin

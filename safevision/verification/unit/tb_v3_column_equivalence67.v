@@ -6,7 +6,7 @@ module tb_v3_column_equivalence67;
  v3_volume_column d(clk,rst_n,frame_start,energy,volume,x,y,de,ea,fa,ca,a,ba);
  v3_volume_column_reference67 reference(clk,rst_n,frame_start,energy,volume,x,y,de,eb,fb,cb,b,bb);
  always @(posedge clk or negedge rst_n)begin #1;comparisons = comparisons + 1;if({a,ba,ea,fa,ca}!=={b,bb,eb,fb,cb})begin errors = errors + 1;if(errors<8)$display("[FAIL] exact column level,busy,raster outputs a=%d b=%d ba=%b bb=%b",a,b,ba,bb);end end
- task ticks(input integer n);begin begin repeat(n)@(negedge clk);end  end endtask
+ task ticks(input integer n);begin  repeat(n)@(negedge clk);  end endtask
  initial begin
   ticks(3);rst_n=1;
   for(e=0;e<128;e = e + 1)for(v=0;v<128;v = v + 1)begin energy=e;volume=v;frame_start=1;ticks(1);frame_start=0;ticks(110);if(a!==v_cast_s7(((e>100 ? 100:e)*(v>100 ? 100:v))/100))begin errors = errors + 1;$display("[FAIL] independent saturated division");end end
@@ -19,5 +19,5 @@ module tb_v3_column_equivalence67;
   $display("PASS tb_v3_column_equivalence67 errors=%0d comparisons=%0d",errors,comparisons);$finish;
  end
 
-function signed [6:0] v_cast_s7; input signed [6:0] value; begin begin v_cast_s7=value; end  end endfunction
+function signed [6:0] v_cast_s7; input signed [6:0] value; begin  v_cast_s7=value;   end endfunction
 endmodule

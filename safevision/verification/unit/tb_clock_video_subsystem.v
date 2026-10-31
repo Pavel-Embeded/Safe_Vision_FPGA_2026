@@ -35,11 +35,11 @@ module tb_clock_measure #(
                 measured_period = t - last_rise;
                 if (abs_real(measured_period - EXPECT_NS) > TOLERANCE_NS)
                     begin $display("[FAIL] FAIL mode=%0d clock=%0d period=%0.4f expected=%0.4f ns",
-                           MODE, CLOCK_ID, measured_period, EXPECT_NS); $finish; end 
+                           MODE, CLOCK_ID, measured_period, EXPECT_NS); $finish; end
             end
             if (last_fall >= 0.0 && abs_real((t - last_fall) - EXPECT_NS/2.0) > TOLERANCE_NS)
                 begin $display("[FAIL] FAIL mode=%0d clock=%0d low=%0.4f expected=%0.4f ns",
-                       MODE, CLOCK_ID, t-last_fall, EXPECT_NS/2.0); $finish; end 
+                       MODE, CLOCK_ID, t-last_fall, EXPECT_NS/2.0); $finish; end
             if (last_fall >= 0.0) measured_low = t - last_fall;
             last_rise = t;
             rises = rises + 1;
@@ -55,7 +55,7 @@ module tb_clock_measure #(
             t = $realtime;
             if (last_rise >= 0.0 && abs_real((t - last_rise) - EXPECT_NS/2.0) > TOLERANCE_NS)
                 begin $display("[FAIL] FAIL mode=%0d clock=%0d high=%0.4f expected=%0.4f ns",
-                       MODE, CLOCK_ID, t-last_rise, EXPECT_NS/2.0); $finish; end 
+                       MODE, CLOCK_ID, t-last_rise, EXPECT_NS/2.0); $finish; end
             if (last_rise >= 0.0) measured_high = t - last_rise;
             last_fall = t;
             falls = falls + 1;
@@ -131,11 +131,11 @@ module tb_clock_video_probe #(
 
     task automatic check(input reg condition, input [8*96-1:0] label);
         begin if (condition !== 1'b1)
-            begin $display("[FAIL] FAIL mode=%0d %0s time=%0t", MODE, label, $time); $finish; end 
+            begin $display("[FAIL] FAIL mode=%0d %0s time=%0t", MODE, label, $time); $finish; end
      end endtask
 
     task automatic check_all_clocks;
-        begin begin
+        begin
             check(u_sys_measure.rises > 100 && u_mem_measure.rises > 100 &&
                   u_pixel_measure.rises > 100 && u_serial_measure.rises > 100 &&
                   u_audio_measure.rises > 100,
@@ -147,7 +147,7 @@ module tb_clock_video_probe #(
             check(abs_real(u_pixel_measure.measured_period -
                            5.0*u_serial_measure.measured_period) < 0.005,
                   "pixel and serial periods maintain real five-to-one ratio");
-        end
+
      end endtask
 
 
@@ -174,7 +174,7 @@ module tb_clock_video_probe #(
     end
 
     task automatic report_measurements;
-        begin begin
+        begin
             $display("MEASURE mode=%0d sys: period=%0.6f high=%0.6f low=%0.6f ns cycles=%0d", MODE,
                      u_sys_measure.measured_period, u_sys_measure.measured_high,
                      u_sys_measure.measured_low, u_sys_measure.rises);
@@ -192,7 +192,7 @@ module tb_clock_video_probe #(
                      u_audio_measure.measured_low, u_audio_measure.rises);
             check(ratio_windows > 100, "more than one hundred exact serial/pixel edge-count windows");
             $display("MEASURE mode=%0d serial/pixel: %0d consecutive pixel periods each contained exactly 5 serial rising edges", MODE, ratio_windows);
-        end
+
      end endtask
 
     integer start_index;
@@ -280,7 +280,7 @@ module tb_clock_video_subsystem;
     end
     initial begin
         #200_000;
-        begin $display("[FAIL] FAIL clock_video_subsystem watchdog"); $finish; end 
+        begin $display("[FAIL] FAIL clock_video_subsystem watchdog"); $finish; end
     end
 endmodule
 

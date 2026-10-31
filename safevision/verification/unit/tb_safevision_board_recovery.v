@@ -15,8 +15,8 @@ module tb_safevision_board_recovery;
    .HDMI_CLK_P(dc),.HDMI_DDC_SCL(ddc),.HDMI_DDC_SDA(sda));
  integer errors=0,checks=0,frames=0,accepted=0,expected_count=4,resyncs=0,scan_steps=0;
  task check(input  ok,input [4095:0] msg);
- begin begin ok = (ok === 1'b1); checks=checks+1;if(ok)$display("[PASS] %s",msg);
-   else begin errors=errors+1;$display("[FAIL] %s",msg);end end  end endtask
+ begin  ok = (ok === 1'b1); checks=checks+1;if(ok)$display("[PASS] %s",msg);
+   else begin errors=errors+1;$display("[FAIL] %s",msg);end   end endtask
  reg card_available=0,busy=0,swap_busy=0,fb_done=0,fb_event=0,sk_event=0;
  reg [1:0] sk_slot=2;reg sk_crc=1;
  reg [10:0] observed[0:3];
@@ -29,27 +29,27 @@ module tb_safevision_board_recovery;
 
  always @(posedge dut.sys_clk)if(dut.sys_rst_n&&dut.frame_ready)begin
    observed[frames]={dut.crc_sys,dut.slot_sys,dut.gen_sys};frames=frames+1;
-   if(frames>3)begin $display("[FAIL] Unexpected extra mailbox publication"); $finish; end 
+   if(frames>3)begin $display("[FAIL] Unexpected extra mailbox publication"); $finish; end
  end
  always @(posedge dut.pixel_clk)begin
    if(score_enable&&dut.axis_valid&&dut.axis_ready)begin
-     if(accepted>=expected_count)begin $display("[FAIL] Unexpected AXIS beat during bounded-stall test"); $finish; end 
+     if(accepted>=expected_count)begin $display("[FAIL] Unexpected AXIS beat during bounded-stall test"); $finish; end
      if({dut.axis_user,dut.axis_last,dut.axis_data}!==expected[accepted])
-       begin $display("[FAIL] AXIS ordering/tag mismatch beat=%0d",accepted); $finish; end 
+       begin $display("[FAIL] AXIS ordering/tag mismatch beat=%0d",accepted); $finish; end
      accepted=accepted+1;
    end
    if(watch_scan)begin
      if(dut.core.scan_x!==((previous_scan_x==799) ? 0:previous_scan_x+1))
-       begin $display("[FAIL] Native scan stopped or skipped during HDMI fault"); $finish; end 
+       begin $display("[FAIL] Native scan stopped or skipped during HDMI fault"); $finish; end
      scan_steps=scan_steps+1;
    end
    previous_scan_x=dut.core.scan_x;
    #0.001;if(dut.hdmi_resync)resyncs=resyncs+1;
  end
- task mem_edges(input integer n);begin begin repeat(n)@(posedge dut.mem_clk);#0.001;end  end endtask
+ task mem_edges(input integer n);begin  repeat(n)@(posedge dut.mem_clk);#0.001;  end endtask
  task pixel(input  de,input integer x,input integer y,input [23:0] rgb);
- begin begin de = (de === 1'b1); @(negedge dut.pixel_clk);video_de=de;video_x=x;video_y=y;video_rgb=rgb;
-   @(posedge dut.pixel_clk);#0.002;end  end endtask
+ begin  de = (de === 1'b1); @(negedge dut.pixel_clk);video_de=de;video_x=x;video_y=y;video_rgb=rgb;
+   @(posedge dut.pixel_clk);#0.002;  end endtask
 
 
  reg reset_watch_done=0;
@@ -150,7 +150,7 @@ module tb_safevision_board_recovery;
    @(negedge dut.pixel_clk);ready=1;
    for(i=0;i<12;i=i+1)begin
      pixel(1,300+i,3,24'h660000+i);
-     if(dut.axis_valid)begin $display("[FAIL] Mid-frame beat escaped recovery SOF fence"); $finish; end 
+     if(dut.axis_valid)begin $display("[FAIL] Mid-frame beat escaped recovery SOF fence"); $finish; end
    end
    check(dut.hdmi_queue_level==0&&dut.hdmi_dropped_frames==1,
      "receiver ready cannot restart an incomplete frame");
@@ -190,7 +190,7 @@ module tb_safevision_board_recovery;
    check(dut.player.restart===1&&dut.player.mem_ready===1,
      "common KEY1 reset restores INIT-only KEY2 retry and frame admission");
    release dut.btn_next_db;release dut.pl_fail_stage;
-   if(errors)begin $display("[FAIL] BOARD RECOVERY FAILED checks=%0d errors=%0d",checks,errors); $finish; end 
+   if(errors)begin $display("[FAIL] BOARD RECOVERY FAILED checks=%0d errors=%0d",checks,errors); $finish; end
    $display("[PASS] BOARD RECOVERY checks=%0d mailbox_frames=%0d AXIS_beats=%0d scan_edges=%0d",checks,frames,accepted,scan_steps);
    $finish;
  end

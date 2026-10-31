@@ -37,25 +37,25 @@ module tb_frame_writer_full_flag_equivalence;
     function automatic [15:0] crc_byte(input [15:0] prior,input [7:0] value);
         reg [15:0] c;
         integer b;
-        begin begin
+        begin
             c=prior^{value,8'h00};
             for(b=0;b<8;b=b+1)c=c[15] ? ((c<<1)^16'h1021):(c<<1);
             crc_byte=c;
-        end
+
      end endfunction
     function automatic [15:0] crc_word(input [15:0] prior,input [31:0] value);
         reg [15:0] c;
-        begin begin
+        begin
             c=crc_byte(prior,value[31:24]);c=crc_byte(c,value[23:16]);
             c=crc_byte(c,value[15:8]);crc_word=crc_byte(c,value[7:0]);
-        end
+
      end endfunction
     task automatic check(input  condition,input [4095:0] label);
-        begin begin
+        begin
             condition = (condition === 1'b1); checks=checks+1;
-            if(!condition)begin $display("[FAIL] [FAIL] %s at %t",label,$time); $finish; end 
+            if(!condition)begin $display("[FAIL] [FAIL] %s at %t",label,$time); $finish; end
             $display("[PASS] %s",label);
-        end
+
      end endtask
 
 
@@ -69,23 +69,23 @@ module tb_frame_writer_full_flag_equivalence;
     always @(posedge clk)begin
         if(rst_n&&phase_active)begin
             if(previous_stall&&(wr_req!==1'b1||wr_addr!==previous_addr||wr_data!==previous_data))
-                begin $display("[FAIL] [FAIL] write changed while stalled"); $finish; end 
+                begin $display("[FAIL] [FAIL] write changed while stalled"); $finish; end
             if(din_valid&&din_ready)begin
                 if(pixels_seen>=PIXELS||din!==pixel_at(pixels_seen))
-                    begin $display("[FAIL] [FAIL] pixel acceptance oracle n=%0d",pixels_seen); $finish; end 
+                    begin $display("[FAIL] [FAIL] pixel acceptance oracle n=%0d",pixels_seen); $finish; end
                 pixels_seen=pixels_seen+1;
             end
             if(wr_req&&wr_ready)begin
                 if(words_seen>=WORDS||wr_len!==16'd1||wr_addr!==(expected_base+words_seen*4)||
                    wr_data!=={pixel_at(words_seen*2+1),pixel_at(words_seen*2)})
-                    begin $display("[FAIL] [FAIL] write oracle word=%0d addr=%h data=%h",words_seen,wr_addr,wr_data); $finish; end 
+                    begin $display("[FAIL] [FAIL] write oracle word=%0d addr=%h data=%h",words_seen,wr_addr,wr_data); $finish; end
                 if((words_seen%1024)==0)expected_crc=crc_word(expected_crc,wr_data);
                 words_seen=words_seen+1;
             end
             if(wr_done)begin
                 done_seen=done_seen+1;
                 if(pixels_seen!=PIXELS||words_seen!=WORDS||crc_value!==expected_crc)
-                    begin $display("[FAIL] [FAIL] early completion or independent CRC mismatch"); $finish; end 
+                    begin $display("[FAIL] [FAIL] early completion or independent CRC mismatch"); $finish; end
             end
             previous_stall=wr_req&&!wr_ready;
             if(previous_stall)begin
@@ -99,12 +99,12 @@ module tb_frame_writer_full_flag_equivalence;
         #1;
         invariant_edges=invariant_edges+1;
         if(dut.frame_full !== (px_cnt==19'd307200))
-            begin $display("[FAIL] [FAIL] full flag/equality differ count=%0d flag=%b at %t",px_cnt,dut.frame_full,$time); $finish; end 
-        if(dut.frame_full&&din_ready)begin $display("[FAIL] [FAIL] ready remained high after full"); $finish; end 
+            begin $display("[FAIL] [FAIL] full flag/equality differ count=%0d flag=%b at %t",px_cnt,dut.frame_full,$time); $finish; end
+        if(dut.frame_full&&din_ready)begin $display("[FAIL] [FAIL] ready remained high after full"); $finish; end
     end
 
     task automatic begin_frame(input [1:0] selected,input [31:0] base,input [15:0] seed);
-        begin begin
+        begin
             @(negedge clk);phase_active=0;din_valid=0;
             slot_sel=selected;slot_base=base;pattern_seed=seed;expected_base=base;
             pixels_seen=0;words_seen=0;done_seen=0;expected_crc=0;previous_stall=0;
@@ -112,11 +112,11 @@ module tb_frame_writer_full_flag_equivalence;
             @(posedge clk);#2;
             check(px_cnt==0&&!dut.frame_full&&!wr_error,"accepted start clears counter and full together");
             @(negedge clk);start=0;
-        end
+
      end endtask
     task automatic send_pixels(input integer requested);
         integer n;
-        begin begin
+        begin
             n=0;
             @(negedge clk);din_valid=1;din=pixel_at(0);
             while(n<requested&&!wr_error)begin
@@ -126,17 +126,17 @@ module tb_frame_writer_full_flag_equivalence;
                 if(n<requested)din=pixel_at(n);else din_valid=0;
             end
             din_valid=0;
-        end
+
      end endtask
     task automatic pulse_reset;
-        begin begin
+        begin
             @(negedge clk);phase_active=0;din_valid=0;start=0;
             #1;rst_n=0;#1;
             check(px_cnt==0&&!dut.frame_full&&slot_valid==0,"asynchronous reset clears full/counter/slot-valid");
             repeat(4)@(negedge clk);
             rst_n=1;
             repeat(2)@(negedge clk);
-        end
+
      end endtask
 
     initial begin
@@ -184,6 +184,6 @@ module tb_frame_writer_full_flag_equivalence;
     end
     initial begin
         #100000000;
-        begin $display("[FAIL] [FAIL] full flag equivalence watchdog"); $finish; end 
+        begin $display("[FAIL] [FAIL] full flag equivalence watchdog"); $finish; end
     end
 endmodule

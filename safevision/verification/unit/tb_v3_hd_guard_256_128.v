@@ -35,10 +35,10 @@ module tb_v3_hd_guard_256_128;
    end
   end
  end
- function[31:0] pattern;input integer sl,row,col;begin begin pattern=(sl<<28)^(row<<16)^(col*32'h10204081);end  end endfunction
- task ck;input cond;input[511:0] msg;begin begin if(cond)$display("[PASS] %s",msg);else begin
-  errors=errors+1;$display("[FAIL] %s",msg);end end  end endtask
- task build;input integer sl;input direction;integer y,x,row;begin begin
+ function[31:0] pattern;input integer sl,row,col;begin  pattern=(sl<<28)^(row<<16)^(col*32'h10204081);  end endfunction
+ task ck;input cond;input[511:0] msg;begin  if(cond)$display("[PASS] %s",msg);else begin
+  errors=errors+1;$display("[FAIL] %s",msg);end   end endtask
+ task build;input integer sl;input direction;integer y,x,row;begin
   slot=sl;td=direction;begin_frame=1;@(negedge clk);begin_frame=0;
   ck(!approved[sl],"slot invalidated before source overwrite");
   for(y=0;y<256;y=y+1)begin row=direction ? y:255-y;
@@ -47,10 +47,10 @@ module tb_v3_hd_guard_256_128;
    end
   end
   accepted=0;@(negedge clk);ck(words==32768,"all source words accepted exactly once");
- end  end endtask
- task verify;begin begin start=1;@(negedge clk);start=0;guard=0;
- while(!done && guard<1000000)begin @(negedge clk);guard=guard+1;end end  end endtask
- task reset;begin begin rst=0;accepted=0;begin_frame=0;start=0;repeat(3)@(negedge clk);rst=1;repeat(3)@(negedge clk);end  end endtask
+   end endtask
+ task verify;begin  start=1;@(negedge clk);start=0;guard=0;
+ while(!done && guard<1000000)begin @(negedge clk);guard=guard+1;end   end endtask
+ task reset;begin  rst=0;accepted=0;begin_frame=0;start=0;repeat(3)@(negedge clk);rst=1;repeat(3)@(negedge clk);  end endtask
 
  always @(negedge clk)if(rst)begin
   comparisons=comparisons+1;

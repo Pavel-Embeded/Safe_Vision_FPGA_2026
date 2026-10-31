@@ -15,16 +15,16 @@ module tb_v3_handbook_controls;
  .brightness(bright),.brightness_pct(pct),.brightness_raw(raw),.contrast(contrast),.osd_alpha(alpha),.bilinear(bilinear),.fit(fit),.fade_enabled(fade),
  .volume(vol),.period_select(period),.menu(menu),.field(field),.auto_tick(tick),.scale_select(scale));
  always @(negedge clk)if(rst)begin if(tick)ticks = ticks + 1;if(next_req)nreq = nreq + 1;end
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s",msg);end end  end endtask
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s",msg);end   end endtask
  task cmd(input[7:0] dest,input[95:0] key,input signed[31:0] v,input  ask,input integer status,wanted);
-  begin begin ask = (ask === 1'b1); @(negedge clk);target=dest;name=key;value=v;query=ask;cv=1;
+  begin  ask = (ask === 1'b1); @(negedge clk);target=dest;name=key;value=v;query=ask;cv=1;
    @(posedge clk);#1;ck(!reply,"decoded command is captured before any reply");
    @(negedge clk);cv=0;
    @(posedge clk);#1;ck(reply&&code==status,"command reply at exactly one additional SYS edge");if(ask&&status==0)ck(result==wanted,"read back exact parameter");
-   @(negedge clk);end
+   @(negedge clk);
   end endtask
- task tap(input  inc);begin begin inc = (inc === 1'b1); @(negedge clk);if(inc)n=0;else a=0;repeat(12)@(negedge clk);
-  n=1;a=1;repeat(12)@(negedge clk);end  end endtask
+ task tap(input  inc);begin  inc = (inc === 1'b1); @(negedge clk);if(inc)n=0;else a=0;repeat(12)@(negedge clk);
+  n=1;a=1;repeat(12)@(negedge clk);  end endtask
  reg[63:0] retained;
  initial begin
   repeat(4)@(negedge clk);power_rst=1;rst=1;repeat(4)@(negedge clk);

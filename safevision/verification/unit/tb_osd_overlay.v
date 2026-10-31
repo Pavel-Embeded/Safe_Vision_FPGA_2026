@@ -19,7 +19,7 @@ module tb_osd_overlay;
     integer checks=0,i,j,dx,dy,index,row,random_seed=32'h13579246;
     reg [23:0] expected_rgb;reg [7:0] expected_code;reg inside_region;
     task sample;
-        begin begin
+        begin
             @(posedge clk);
             if(!rst_n) for(j=0;j<4;j = j + 1) q[j]={24'd0,24'd0,2'b11,5'b00000,2'b11};
             else begin
@@ -32,14 +32,14 @@ module tb_osd_overlay;
                 endcase
                 expected_rgb=tags[6] ? bg:0;
                 if(inside_region && (font[expected_code*16+dy] & (8'h80>>(dx%8)))) expected_rgb=fg;
-                if(idx!==index[7:0] || code!==expected_code) begin $display("[FAIL] OSD current text index"); $finish; end 
+                if(idx!==index[7:0] || code!==expected_code) begin $display("[FAIL] OSD current text index"); $finish; end
                 for(j=3;j>0;j = j - 1) q[j]=q[j-1];
                 q[0]={expected_rgb,x,y,tags};
             end
             #1;checks = checks + 1;
             if({rgb,xo,yo,ot} !== q[3])
-                begin $display("[FAIL] OSD latency/bit order/transparency sample=%d actual=%h expected=%h",checks,{rgb,xo,yo,ot},q[3]); $finish; end 
-        end
+                begin $display("[FAIL] OSD latency/bit order/transparency sample=%d actual=%h expected=%h",checks,{rgb,xo,yo,ot},q[3]); $finish; end
+
      end endtask
     initial begin
         $readmemh("font8x16.mem",font);sample();@(negedge clk);rst_n=1;sample();
@@ -63,10 +63,10 @@ module tb_osd_overlay;
         @(negedge clk);rst_n=1;ox=4095;oy=4095;x=0;y=0;len=255;en=1;tags=9'h1ff;repeat(5)sample();
         @(negedge clk);ox=0;oy=0;x=0;y=0;len=0;repeat(5)sample();
         #2;rst_n=0;#1;checks = checks + 1;
-        if({rgb,xo,yo,ot}!=={24'd0,24'd0,2'b11,5'b00000,2'b11}) begin $display("[FAIL] OSD async reset"); $finish; end 
+        if({rgb,xo,yo,ot}!=={24'd0,24'd0,2'b11,5'b00000,2'b11}) begin $display("[FAIL] OSD async reset"); $finish; end
         $display("PASS tb_osd_overlay: %0d bundles",checks);$finish;
     end
     initial begin #200000;begin $display("[FAIL] tb_osd_overlay watchdog"); $finish; end end
 
-function signed [31:0] v_cast_s32; input signed [31:0] value; begin begin v_cast_s32=value; end  end endfunction
+function signed [31:0] v_cast_s32; input signed [31:0] value; begin  v_cast_s32=value;   end endfunction
 endmodule

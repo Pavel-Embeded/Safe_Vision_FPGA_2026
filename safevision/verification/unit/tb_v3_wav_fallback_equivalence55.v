@@ -34,5 +34,5 @@ module tb_v3_wav_fallback_equivalence55;
   $display("[TB] tb_v3_wav_fallback_equivalence55 done errors=%0d comparisons=%0d masks=%h",errors,comparisons,coverage);$finish;
  end
 
-function signed [3:0] v_cast_s4; input signed [3:0] value; begin begin v_cast_s4=value; end  end endfunction
+function signed [3:0] v_cast_s4; input signed [3:0] value; begin  v_cast_s4=value;   end endfunction
 endmodule

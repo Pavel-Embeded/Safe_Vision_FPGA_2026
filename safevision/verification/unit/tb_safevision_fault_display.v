@@ -15,37 +15,37 @@ module tb_safevision_fault_display;
  reg[23:0] expected_color=24'h00ff00;
  always @(posedge dut.pixel_clk)if(dut.axis_valid&&dut.axis_ready)begin
   if(dut.axis_user)begin
-   if(started&&k!=307200)begin $display("[FAIL] Incomplete safety frame: %0d",k); $finish; end 
+   if(started&&k!=307200)begin $display("[FAIL] Incomplete safety frame: %0d",k); $finish; end
    started=1;k=0;
    expected_color=dut.safety_level==0 ? 24'h00ff00:(dut.safety_level==1 ? 24'hffff00:24'hff3030);
   end
   if(started)begin
-   if(dut.axis_last!==((k%640)==639))begin $display("[FAIL] Wrong EOL at pixel %0d",k); $finish; end 
+   if(dut.axis_last!==((k%640)==639))begin $display("[FAIL] Wrong EOL at pixel %0d",k); $finish; end
    if(k==0||k==639||k==306560||k==307199)begin
-    if(dut.axis_data!==expected_color)begin $display("[FAIL] Safety border mismatch %0d %06x %06x",k,dut.axis_data,expected_color); $finish; end 
+    if(dut.axis_data!==expected_color)begin $display("[FAIL] Safety border mismatch %0d %06x %06x",k,dut.axis_data,expected_color); $finish; end
     checks=checks+1;
    end
    if(k==6410)begin
-    if(dut.axis_data!==(dut.safety_level<2 ? 24'h001008:24'h180000))begin $display("[FAIL] Safety background mismatch"); $finish; end 
+    if(dut.axis_data!==(dut.safety_level<2 ? 24'h001008:24'h180000))begin $display("[FAIL] Safety background mismatch"); $finish; end
     checks=checks+1;
    end
    pixels=pixels+1;k=k+1;if(k==307200)frames=frames+1;
   end
  end
- task boundary;begin begin @(posedge dut.scan_frame_start);repeat(12)@(posedge dut.pixel_clk);end  end endtask
+ task boundary;begin  @(posedge dut.scan_frame_start);repeat(12)@(posedge dut.pixel_clk);  end endtask
  initial begin
   force dut.sdr_init_done=0;
   #200;rst_n=1;
   wait(frames==1);
-  if(dut.memory_ip.write_bursts||dut.memory_ip.read_bursts||!dut.safety_active)begin $display("[FAIL] Safety scene used external memory"); $finish; end 
+  if(dut.memory_ip.write_bursts||dut.memory_ip.read_bursts||!dut.safety_active)begin $display("[FAIL] Safety scene used external memory"); $finish; end
   @(negedge clk);manual=0;boundary;
-  if(!dut.safety_active||dut.safety_level!=1)begin $display("[FAIL] KEY3 safety level missing"); $finish; end 
+  if(!dut.safety_active||dut.safety_level!=1)begin $display("[FAIL] KEY3 safety level missing"); $finish; end
   wait(frames==2);manual=1;
   force dut.memory_error=1;boundary;
-  if(!dut.safety_active||dut.safety_level!=2)begin $display("[FAIL] Memory fault safety level missing"); $finish; end 
+  if(!dut.safety_active||dut.safety_level!=2)begin $display("[FAIL] Memory fault safety level missing"); $finish; end
   wait(frames==3);
-  if(dut.tx_reset||dut.hdmi_backpressure||dut.hdmi_dropped_frames)begin $display("[FAIL] Media fault reset or disrupted HDMI"); $finish; end 
-  if(dut.memory_ip.write_bursts||dut.memory_ip.read_bursts)begin $display("[FAIL] Safety rendering requires SDRAM"); $finish; end 
+  if(dut.tx_reset||dut.hdmi_backpressure||dut.hdmi_dropped_frames)begin $display("[FAIL] Media fault reset or disrupted HDMI"); $finish; end
+  if(dut.memory_ip.write_bursts||dut.memory_ip.read_bursts)begin $display("[FAIL] Safety rendering requires SDRAM"); $finish; end
   $display("[PASS] BOARD SAFETY frames=%0d pixels=%0d sample_checks=%0d: absent memory, KEY3, memory fault; complete SOF/EOL; no HDMI reset",frames,pixels,checks);$finish;
  end
  initial begin #100000000;begin $display("[FAIL] Safety display watchdog"); $finish; end end

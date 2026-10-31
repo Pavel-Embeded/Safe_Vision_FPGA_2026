@@ -7,7 +7,7 @@ module tb_v3_fifo_phase50;
  sv_fifo_phase_ip #(.DATA_WIDTH_W(16),.DATA_WIDTH_R(16),.ADDR_WIDTH_W(4),.ADDR_WIDTH_R(4),.AL_FULL_NUM(12),.AL_EMPTY_NUM(4)) dut(.rst(rst),.clkw(wc),.clkr(rc),.we(wa),.di(data),.re(ra),.dout(ad),.valid(av),.full_flag(af),.empty_flag(ae),.afull(aaf),.aempty(aae),.wrusedw(aw),.rdusedw(ar),.wr_rst_done(donea));
  a_pixel_fifo_phase49_reference #(.DATA_WIDTH_W(16),.DATA_WIDTH_R(16),.ADDR_WIDTH_W(4),.ADDR_WIDTH_R(4),.AL_FULL_NUM(12),.AL_EMPTY_NUM(4)) reference(.rst(rst),.clkw(wc),.clkr(rc),.we(wb),.di(data),.re(rb),.dout(bd),.valid(bv),.full_flag(bf),.empty_flag(be),.afull(baf),.aempty(bae),.wrusedw(bw),.rdusedw(br),.wr_rst_done(doneb));
  integer errors=0,comparisons=0,written=0,readn=0,total_wr=0,total_rd=0,k;reg[15:0]score[0:100000];
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s written=%0d read=%0d",message,written,readn);end end  end endtask
+ task check(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s written=%0d read=%0d",message,written,readn);end   end endtask
  always@(negedge wc)begin rngw=rngw*1664525+1013904223;wv<=!stop_write&&rngw[1:0]!=0;end
  always@(negedge rc)begin rngr=rngr*1664525+1013904223;ready<=draining||rngr[1:0]!=0;end
 

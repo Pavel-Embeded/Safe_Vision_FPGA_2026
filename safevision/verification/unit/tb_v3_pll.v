@@ -5,14 +5,14 @@ module tb_v3_pll;
  wire lock,sys,mem,shift;
  sv_v3_memory_pll dut(.refclk(refclk),.reset(reset),.extlock(lock),.clk0_out(sys),.clk1_out(mem),.clk2_out(shift));
  integer errors=0,comparisons=0,i;time a,b,last_mem;
- task check(input  ok,input [4095:0] label);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s a=%t b=%t",label,a,b);end end  end endtask
+ task check(input  ok,input [4095:0] label);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s a=%t b=%t",label,a,b);end   end endtask
  initial begin
  #100;reset=0;wait(lock===1);repeat(20)@(posedge sys);
  for(i=0;i<100;i = i + 1)begin @(posedge sys);a=$time;@(posedge sys);b=$time;check(b-a==10,"SYS100MHz exact period");end
  for(i=0;i<100;i = i + 1)begin @(posedge mem);a=$time;@(posedge mem);b=$time;check(b-a==20,"MEM50MHz exact period");end
  for(i=0;i<100;i = i + 1)begin @(posedge mem);a=$time;@(posedge shift);b=$time;check(b-a==8,"SDRAM50MHz rising edge +8ns from MEM");end
  check(lock===1,"PLL lock remains asserted under its official behavioral model");
- if(errors!=0)begin $display("[FAIL] PLL clock/phase contract errors=%0d comparisons=%0d",errors,comparisons); $finish; end 
+ if(errors!=0)begin $display("[FAIL] PLL clock/phase contract errors=%0d comparisons=%0d",errors,comparisons); $finish; end
  $display("[PASS] official PLL simulation frequencies and phase");
  $display("PASS tb_v3_pll comparisons=%0d errors=%0d",comparisons,errors);$finish;
  end

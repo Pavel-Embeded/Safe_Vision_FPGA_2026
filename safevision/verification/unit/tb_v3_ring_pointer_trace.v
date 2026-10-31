@@ -13,5 +13,5 @@ module tb_v3_ring_pointer_trace;
   $display("PASS tb_v3_ring_pointer_trace errors=%0d comparisons=%0d data_errors=%0d",errors+(!done),comparisons,errors);$finish;
  end
 
-function [15:0] v_cast_u16; input [15:0] value; begin begin v_cast_u16=value; end  end endfunction
+function [15:0] v_cast_u16; input [15:0] value; begin  v_cast_u16=value;   end endfunction
 endmodule

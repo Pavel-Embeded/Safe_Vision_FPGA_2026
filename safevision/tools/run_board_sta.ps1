@@ -22,15 +22,8 @@ if(@($Mode | Select-Object -Unique).Count -ne $Mode.Count){throw 'Duplicate boar
 foreach($m in $Mode){if($m -notin @('base','hd')){throw "Unknown board mode: $m"}}
 $tdExe=Join-Path $TdRoot 'bin/td_commands_prompt.exe'
 if(-not(Test-Path -LiteralPath $tdExe)){throw "TD executable missing: $tdExe"}
-$pythonExe=$Python
-if(-not(Test-Path -LiteralPath $pythonExe)){
- $command=Get-Command $Python -ErrorAction SilentlyContinue
-
-
- if($command -and $command.Source -notmatch '[\\/]WindowsApps[\\/]'){$pythonExe=$command.Source}
- elseif($Python -eq 'python'){$pythonExe=Join-Path $env:USERPROFILE '.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'}
-}
-if(-not(Test-Path -LiteralPath $pythonExe)){throw 'Python 3 is required. Pass -Python with its executable path.'}
+. (Join-Path $PSScriptRoot 'resolve_python.ps1')
+$pythonExe=Resolve-SafeVisionPython -Python $Python
 New-Item -ItemType Directory -Force -Path $RunDir | Out-Null
 $oldRepo=$env:SAFEVISION_REPO;$oldOut=$env:SAFEVISION_BOARD_OUT;$oldVendor=$env:SAFEVISION_HDMI_VENDOR
 $oldRoute=$env:SAFEVISION_APPROVED_ROUTE_DB;$oldCandidate=$env:SAFEVISION_APPROVED_BIT_FILE;$oldParam=$env:SAFEVISION_APPROVED_BIT_PARAM

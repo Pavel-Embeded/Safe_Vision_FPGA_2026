@@ -21,7 +21,7 @@ module tb_v3_ingress_credit;
   $display("[TB] tb_v3_ingress_credit done comparisons=%0d errors=%0d",checks,errors);$finish;
  end
 
-function [8:0] v_cast_u9; input [8:0] value; begin begin v_cast_u9=value; end  end endfunction
-function signed [10:0] v_cast_s11; input signed [10:0] value; begin begin v_cast_s11=value; end  end endfunction
+function [8:0] v_cast_u9; input [8:0] value; begin  v_cast_u9=value;   end endfunction
+function signed [10:0] v_cast_s11; input signed [10:0] value; begin  v_cast_s11=value;   end endfunction
 endmodule
 

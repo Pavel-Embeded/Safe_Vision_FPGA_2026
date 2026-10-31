@@ -14,7 +14,7 @@ module tb_v3_actual_directory510;
  .cursor_key(16'd0),.sel_key(selected_key),.sel_slot(select_slot),.sel_first_clus(selected_cluster),.sel_size(),.sel_valid(select_valid),.sel_wav_first_clus(wav_cluster),.sel_wav_size(),.sel_wav_valid(wav_valid),.bmp_seen(),.wav_seen());
  integer errors=0,comparisons=0,p=0,received=0,cycle=0,base=0,requests=0,pending_walk=0;reg sending=0;
  reg holding=0;reg[175:0]held;
- task check(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] %s entry%0d",msg,received);end end  end endtask
+ task check(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] %s entry%0d",msg,received);end   end endtask
  always @(negedge clk)begin cycle=cycle+1;ready=(cycle%31>9);end
  always @(posedge clk)begin
   rdone<=0;walking_done<=0;

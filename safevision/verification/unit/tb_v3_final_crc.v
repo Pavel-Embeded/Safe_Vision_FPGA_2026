@@ -7,8 +7,8 @@ module tb_v3_final_crc;
  always @(posedge u.cmdvalid)if(u.cmd==17 && u.card.o_arg==91)begin
   #1;u.card.crc_val=u.card.crc_val^16'h1;corruptions=corruptions+1;
  end
- task ck;input c;input[511:0] msg;begin begin
-  if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end end  end endtask
+ task ck;input c;input[511:0] msg;begin
+  if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end   end endtask
  initial begin
   @(posedge u.rst);
   while(u.rejected<5 && u.state!=10 && guard<50000000)begin @(negedge u.clk);guard=guard+1;end

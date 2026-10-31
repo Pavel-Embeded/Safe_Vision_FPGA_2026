@@ -17,14 +17,14 @@ module tb_file_index;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) begin
                 $display("[PASS] %0s", name);
             end else begin
                 $display("[FAIL] %0s", name);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 
@@ -68,19 +68,19 @@ module tb_file_index;
 
 
     task do_clear;
-        begin begin
+        begin
             @(posedge clk); idx_clear = 1'b1;
             @(posedge clk); idx_clear = 1'b0;
             repeat (3) @(posedge clk);
             done_cnt = 0;
-        end
+
      end endtask
 
     task push_ent;
         input [87:0] nm;
         input [31:0] clus;
         input [31:0] size;
-        begin begin
+        begin
             @(posedge clk);
             ent_name       = nm;
             ent_attr       = 8'h20;
@@ -90,15 +90,15 @@ module tb_file_index;
             @(posedge clk);
             ent_valid      = 1'b0;
             repeat (2) @(posedge clk);
-        end
+
      end endtask
 
     task do_commit;
-        begin begin
+        begin
             @(posedge clk); idx_commit = 1'b1;
             @(posedge clk); idx_commit = 1'b0;
             repeat (5) @(posedge clk);
-        end
+
      end endtask
 
 
@@ -108,13 +108,13 @@ module tb_file_index;
         input [31:0] exp_size;
         input        exp_valid;
         input [255:0] name;
-        begin begin
+        begin
             sel_slot = s;
             #1;
             check(sel_first_clus === exp_clus, name);
             check(sel_size === exp_size,       name);
             check(sel_valid === exp_valid,     name);
-        end
+
      end endtask
 
 

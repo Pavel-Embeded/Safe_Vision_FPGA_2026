@@ -7,9 +7,9 @@ module tb_v3_coords_fade;
  wire[1:0] cur,nxt;wire[7:0] alpha,gen;wire busy,commit,ready;
  fade_ctrl #(.FRAMES(32)) fc(clk,rst,fs,request,safety,target,valid_slots,cur,nxt,alpha,gen,busy,commit,ready);
  integer errors=0,i,j,expectedx,expectedy,checkx,checky;reg oldv=0;
- task ck;input c;input[255:0] msg;begin begin
- if(!c)begin errors=errors+1;if(errors<=5)$display("[FAIL] %s",msg);end end  end endtask
- task frame;begin begin fs=1;@(negedge clk);fs=0;@(negedge clk);end  end endtask
+ task ck;input c;input[255:0] msg;begin
+ if(!c)begin errors=errors+1;if(errors<=5)$display("[FAIL] %s",msg);end   end endtask
+ task frame;begin  fs=1;@(negedge clk);fs=0;@(negedge clk);  end endtask
  initial begin
  repeat(3)@(negedge clk);rst=1;
  for(j=0;j<720;j=j+1)for(i=0;i<960;i=i+1)begin

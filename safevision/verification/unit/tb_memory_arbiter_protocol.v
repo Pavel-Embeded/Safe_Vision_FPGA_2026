@@ -42,25 +42,25 @@ module tb_memory_arbiter_protocol;
             data_pipe[0]<=golden(mem_addr);
             for(i=1;i<4;i=i+1) data_pipe[i]<=data_pipe[i-1];
             if(stalled && (mem_req!==1'b1 || mem_addr!==held_addr || mem_wdata!==held_data || mem_wr!==held_wr || mem_wstrb!==held_strb))
-                begin $display("[FAIL] request changed while memory applied backpressure"); $finish; end 
+                begin $display("[FAIL] request changed while memory applied backpressure"); $finish; end
             stalled<=mem_req&&!mem_ready;
             held_addr<=mem_addr;held_data<=mem_wdata;held_wr<=mem_wr;held_strb<=mem_wstrb;
             if(fire) begin
                 if(!running || commands>=expected_len || mem_addr!==base+commands*4 || mem_wr!==expected_write)
-                    begin $display("[FAIL] accepted request count/address/mode mismatch: cmd=%0d addr=%08h",commands,mem_addr); $finish; end 
+                    begin $display("[FAIL] accepted request count/address/mode mismatch: cmd=%0d addr=%08h",commands,mem_addr); $finish; end
                 if(expected_write && (mem_wdata!==golden(base+commands*4) || mem_wstrb!==4'hf))
-                    begin $display("[FAIL] write word corrupted/repeated under backpressure"); $finish; end 
-                if(!expected_write && mem_wstrb!==0) begin $display("[FAIL] read has write strobes"); $finish; end 
+                    begin $display("[FAIL] write word corrupted/repeated under backpressure"); $finish; end
+                if(!expected_write && mem_wstrb!==0) begin $display("[FAIL] read has write strobes"); $finish; end
                 commands=commands+1;checks=checks+1;
             end
             if(rd_valid||sd_valid) begin
                 if(!running || expected_write || responses>=expected_len ||
                    (expected_ch==1 && (!rd_valid||sd_valid||rd_data!==golden(base+responses*4))) ||
                    (expected_ch==3 && (!sd_valid||rd_valid||sd_rdata!==golden(base+responses*4))))
-                    begin $display("[FAIL] response data/order/channel mismatch"); $finish; end 
+                    begin $display("[FAIL] response data/order/channel mismatch"); $finish; end
                 responses=responses+1;checks=checks+1;
             end
-            if(mem_valid && !(rd_valid||sd_valid)) begin $display("[FAIL] a legitimate memory response was lost"); $finish; end 
+            if(mem_valid && !(rd_valid||sd_valid)) begin $display("[FAIL] a legitimate memory response was lost"); $finish; end
         end
     end
 
@@ -70,7 +70,7 @@ module tb_memory_arbiter_protocol;
     end
     task automatic burst(input integer ch,input  iswrite,input integer len,input [31:0] addr,input  instant);
         integer watchdog;
-        begin begin
+        begin
             iswrite = (iswrite === 1'b1); instant = (instant === 1'b1); @(negedge clk);
             expected_ch=ch;expected_write=iswrite;expected_len=(len==0) ? 1:len;
             base=addr;commands=0;responses=0;running=1;zero_latency=instant;
@@ -86,13 +86,13 @@ module tb_memory_arbiter_protocol;
             watchdog=0;
             while((ch==1&&rd_busy)||(ch==2&&wr_busy)||(ch==3&&sd_busy)) begin
                 @(negedge clk);watchdog=watchdog+1;
-                if(watchdog>2000) begin $display("[FAIL] burst failed to complete"); $finish; end 
+                if(watchdog>2000) begin $display("[FAIL] burst failed to complete"); $finish; end
             end
             if(commands!=expected_len || responses!=(iswrite ? 0:expected_len))
-                begin $display("[FAIL] wrong exact burst length: commands=%0d responses=%0d",commands,responses); $finish; end 
+                begin $display("[FAIL] wrong exact burst length: commands=%0d responses=%0d",commands,responses); $finish; end
             running=0;bursts=bursts+1;
             repeat(5) @(negedge clk);
-        end
+
      end endtask
     initial begin
         repeat(5) @(negedge clk);rst_n=1;

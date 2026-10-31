@@ -9,11 +9,11 @@ module tb_v3_math;
  scaler_bilinear si(clk,rst,sv,1'b1,p00,p10,p01,p11,fx,fy,sq,sqv);
  reg [15:0] e0,e1,e2,se0,se1,se2;reg ev0=0,ev1=0,ev2=0;
  reg sev0=0,sev1=0,sev2=0;integer i,errors=0,checks=0;
- function integer distance;input [15:0] x,y;integer r,g,b;begin begin
+ function integer distance;input [15:0] x,y;integer r,g,b;begin
   r=$signed({1'b0,x[15:11]})-$signed({1'b0,y[15:11]});if(r<0)r=-r;
   g=$signed({1'b0,x[10:5]})-$signed({1'b0,y[10:5]});if(g<0)g=-g;
   b=$signed({1'b0,x[4:0]})-$signed({1'b0,y[4:0]});if(b<0)b=-b;
-  distance=(r>g) ? r:g;if(b>distance)distance=b;end  end endfunction
+  distance=(r>g) ? r:g;if(b>distance)distance=b;  end endfunction
  always @(posedge clk)begin
   e2=e1;e1=e0;e0=vectors[i][15:0];ev2=ev1;ev1=ev0;ev0=v;
   se2=se1;se1=se0;se0=scales[i<2048 ? i:0][15:0];sev2=sev1;sev1=sev0;sev0=sv;

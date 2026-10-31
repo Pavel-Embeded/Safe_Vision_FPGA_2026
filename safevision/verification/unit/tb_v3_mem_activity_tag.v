@@ -22,8 +22,8 @@ module mem_activity_case #(parameter integer PHASE=0)(output reg done,output int
    if(snapshot[31:1]!==0)begin errors=errors+1;$display("[FAIL] reserved token bits changed");end
   end
  end
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons=comparisons+1;
-  if(!ok)begin errors=errors+1;$display("[FAIL] phase=%0d %s produced=%0d observed=%0d",PHASE,msg,produced,observed);end end  end endtask
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons=comparisons+1;
+  if(!ok)begin errors=errors+1;$display("[FAIL] phase=%0d %s produced=%0d observed=%0d",PHASE,msg,produced,observed);end   end endtask
  initial begin
   #1;rst=1;#1;rst=0;
   for(epoch=0;epoch<4;epoch=epoch+1)begin

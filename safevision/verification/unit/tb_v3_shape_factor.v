@@ -4,7 +4,7 @@ module tb_v3_shape_factor;
  v3_bmp_normalizer #(.FLEX_PIXELS(1)) flex(.clk(1'b0),.rst_n(1'b0),.din(8'd0),.din_valid(1'b0),.din_sof(1'b0),.din_eof(1'b0),.width(width),.height(height),.top_down(top_down),.pixel_ready(1'b1),.bpp(8'd24));
  v3_bmp_normalizer #(.FLEX_PIXELS(0)) legacy(.clk(1'b0),.rst_n(1'b0),.din(8'd0),.din_valid(1'b0),.din_sof(1'b0),.din_eof(1'b0),.width(width),.height(height),.top_down(top_down),.pixel_ready(1'b1),.bpp(8'd24));
  integer errors=0,comparisons=0,w,h,k,sgn,boundary;integer equal_cases=0,wide_cases=0,tall_cases=0;
- task check_size(input integer iw,ih);reg expected;begin begin
+ task check_size(input integer iw,ih);reg expected;begin
   if(ih>=1&&ih<=16384)begin
    width=iw;height=top_down ? -ih:ih;#1;
    expected=iw*480>=ih*640;
@@ -13,7 +13,7 @@ module tb_v3_shape_factor;
    if(iw<=1920&&ih<=1080)begin comparisons = comparisons + 1;if(legacy.shape_wide!==expected)begin errors = errors + 1;if(errors<10)$display("[FAIL] legacy13-bit factor w=%0d h=%0d",iw,ih);end end
    if(iw*480==ih*640)equal_cases = equal_cases + 1;else if(expected)wide_cases = wide_cases + 1;else tall_cases = tall_cases + 1;
   end
- end  end endtask
+   end endtask
  initial begin
   for(sgn=0;sgn<2;sgn = sgn + 1)begin
    top_down=sgn;

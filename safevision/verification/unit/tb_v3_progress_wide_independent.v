@@ -8,13 +8,13 @@ module tb_v3_progress_wide_independent;
  always #10 refclk=~refclk;
  initial begin #7;forever #10 memclk=~memclk;end
  integer errors=0,comparisons=0;
- task ck(input  ok,input [4095:0] why);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;
+ task ck(input  ok,input [4095:0] why);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;
   if(!ok)begin errors = errors + 1;if(errors<20)$display("[FAIL] %s at %t",why,$time);end
- end  end endtask
+   end endtask
 
  function automatic[7:0] file_byte(input integer index);
   integer offset,sx,sy;
-  begin begin
+  begin
    file_byte=0;
    if(index<54)case(index)
     0:file_byte=8'h42;1:file_byte=8'h4d;
@@ -34,20 +34,20 @@ module tb_v3_progress_wide_independent;
      3:file_byte=8'hc3;
     endcase
    end
-  end
+
   end endfunction
 
 
  function automatic[15:0] expected_pixel(input integer x,y);
   integer sx;reg[7:0]r,g,b;
-  begin begin
+  begin
    expected_pixel=0;
    if(y==239)begin
     sx=(x*SW)/640;
     r=(sx*3+50*11+17)&255;g=(sx*5+50*7+31)&255;b=(sx*7+50*13+47)&255;
     expected_pixel={r[7:3],g[7:2],b[7:3]};
    end
-  end
+
   end endfunction
 
  integer input_index=0,cooldown=0,ref_cycles=0;
@@ -234,5 +234,5 @@ module tb_v3_progress_wide_independent;
   $display("PASS tb_v3_progress_wide_independent errors=1 comparisons=%0d",comparisons);$finish;
  end
 
-function signed [31:0] v_cast_s32; input signed [31:0] value; begin begin v_cast_s32=value; end  end endfunction
+function signed [31:0] v_cast_s32; input signed [31:0] value; begin  v_cast_s32=value;   end endfunction
 endmodule

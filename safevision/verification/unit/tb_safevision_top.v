@@ -13,10 +13,10 @@ module tb_safevision_top;
     task check;
         input        cond;
         input [4095:0] msg;
-        begin begin
+        begin
             if (cond) $display("[PASS] %s", msg);
             else begin $display("[FAIL] %s", msg); errors = errors + 1; end
-        end
+
      end endtask
 
 
@@ -62,7 +62,7 @@ module tb_safevision_top;
         output [7:0] b;
         output       ok;
         integer i;
-        begin begin
+        begin
             ok = 1'b0; b = 8'h00;
             @(negedge uart_txd);
             repeat (BIT_TICKS/2) @(posedge dut.mem_clk);
@@ -75,7 +75,7 @@ module tb_safevision_top;
                 repeat (BIT_TICKS) @(posedge dut.mem_clk);
                 ok = 1'b1;
             end
-        end
+
      end endtask
 
 
@@ -83,7 +83,7 @@ module tb_safevision_top;
     integer   line_len;
     task uart_get_line;
         integer n; reg [7:0] b; reg ok;
-        begin begin
+        begin
             line_len = 0;
 
             for (n = 0; n < 400; n = n + 1) begin
@@ -105,7 +105,7 @@ module tb_safevision_top;
                     end
                 end
             end
-        end
+
      end endtask
 
 
@@ -113,7 +113,7 @@ module tb_safevision_top;
         input [8*8-1:0] pat;
         input integer   plen;
         integer i, j, hit;
-        begin begin
+        begin
             find_str = -1;
             for (i = 0; i <= line_len - plen; i = i + 1) begin
                 hit = 1;
@@ -121,16 +121,16 @@ module tb_safevision_top;
                     if (line[i+j] !== pat[(plen-1-j)*8 +: 8]) hit = 0;
                 if (hit && find_str < 0) find_str = i;
             end
-        end
+
      end endfunction
 
     function [3:0] hexval;
         input [7:0] c;
-        begin begin
+        begin
             if (c >= 8'h30 && c <= 8'h39) hexval = c - 8'h30;
             else if (c >= 8'h41 && c <= 8'h46) hexval = c - 8'h37;
             else hexval = 4'hF;
-        end
+
      end endfunction
 
 
@@ -199,7 +199,7 @@ module tb_safevision_top;
         check(find_str(" ED=", 4) > 0, "T2l) status line has ' ED=' field (err_detail)");
 
 
-        begin : v_local_1 
+        begin : v_local_1
             integer ed_i;
             reg [7:0] e0, e1;
             ed_i = find_str(" ED=", 4);
@@ -213,7 +213,7 @@ module tb_safevision_top;
         check(find_str(" R1=", 4) > 0, "T2n) status line has ' R1=' field (SD R1 byte)");
         check(find_str(" SQ=", 4) > 0, "T2o) status line has ' SQ=' field (SD command index)");
 
-        begin : v_local_2 
+        begin : v_local_2
             integer i, sd_i, cd_i;
             sd_i = find_str(" SD=", 4);
             cd_i = find_str(" CARD=", 6);

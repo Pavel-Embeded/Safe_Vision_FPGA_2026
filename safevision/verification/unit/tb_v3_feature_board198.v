@@ -14,10 +14,10 @@ module feature_board198 #(parameter HD=0)(output reg done,output integer errors,
  reg[3:0] panel_frame[0:20];
  initial panel_file=$fopen("spectrum_panel_rgb888.mem","w");
  reg[23:0] q[0:20];reg[20:0] vq=0;reg[15:0] fg,p565;
- function[15:0]blend(input[15:0]f);integer r,g,b;begin begin
- r=(f[15:11]*224+127)/255;g=(f[10:5]*224+127)/255;b=(f[4:0]*224+127)/255;blend={v_cast_s5(r),v_cast_s6(g),v_cast_s5(b)};end  end endfunction
- function[23:0]expand(input[15:0]p);begin begin expand={p[15:11],p[15:13],p[10:5],p[10:9],p[4:0],p[4:2]};end  end endfunction
- task ck(input  ok,input [4095:0] m);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] HD%0d %s",HD,m);end end  end endtask
+ function[15:0]blend(input[15:0]f);integer r,g,b;begin
+ r=(f[15:11]*224+127)/255;g=(f[10:5]*224+127)/255;b=(f[4:0]*224+127)/255;blend={v_cast_s5(r),v_cast_s6(g),v_cast_s5(b)};  end endfunction
+ function[23:0]expand(input[15:0]p);begin  expand={p[15:11],p[15:13],p[10:5],p[10:9],p[4:0],p[4:2]};  end endfunction
+ task ck(input  ok,input [4095:0] m);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] HD%0d %s",HD,m);end   end endtask
  always@(posedge dut.pixel_clk)begin
   if(!dut.pixel_rst_n)begin vq=0;for(i=0;i<21;i = i + 1)begin q[i]=0;panel_frame[i]=0;end end
   else begin
@@ -53,8 +53,8 @@ module feature_board198 #(parameter HD=0)(output reg done,output integer errors,
   done=1;
  end
 
-function signed [4:0] v_cast_s5; input signed [4:0] value; begin begin v_cast_s5=value; end  end endfunction
-function signed [5:0] v_cast_s6; input signed [5:0] value; begin begin v_cast_s6=value; end  end endfunction
+function signed [4:0] v_cast_s5; input signed [4:0] value; begin  v_cast_s5=value;   end endfunction
+function signed [5:0] v_cast_s6; input signed [5:0] value; begin  v_cast_s6=value;   end endfunction
 endmodule
 module tb_v3_feature_board_base198;
  wire done;wire[31:0]e,c;feature_board198 dut(done,e,c);

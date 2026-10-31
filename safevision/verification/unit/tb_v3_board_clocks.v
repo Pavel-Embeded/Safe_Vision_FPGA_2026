@@ -10,14 +10,14 @@ module board_clock_case #(parameter HD=0,EXPECTED_HZ=25185185)(input clk,output 
  defparam dut.video.FONT_FILE="font8x16.mem";
  defparam dut.video.COMPACT_FONT_FILE="font8x16_compact.mem";
  defparam dut.video.STATUS_TEXT_FILE="v3_handbook_status_text.mem";
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons=comparisons+1;if(!ok)begin errors=errors+1;$display("[FAIL] HD=%0d %s",HD,message);end end  end endtask
+ task check(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons=comparisons+1;if(!ok)begin errors=errors+1;$display("[FAIL] HD=%0d %s",HD,message);end   end endtask
  realtime writer_edge=0;
  always @(posedge dut.pll_sys100_clk)writer_edge=$realtime;
 
  always @(posedge dut.cache_write_rst_n)begin #0.001;
   if(rst_n)check($realtime-writer_edge<0.002,"cache reset releases only on its own WRITE100 rising edge");
  end
- task check_cache_clocks;realtime a,b;begin begin
+ task check_cache_clocks;realtime a,b;begin
   check(dut.video.EXTERNAL_CACHE_WRITE==1,"production core explicitly selects external packed writer");
   @(posedge dut.video.cache.write_clk);a=$realtime;
   @(posedge dut.video.cache.write_clk);b=$realtime;
@@ -27,7 +27,7 @@ module board_clock_case #(parameter HD=0,EXPECTED_HZ=25185185)(input clk,output 
   @(posedge dut.mem_clk);#0.001;
   check(dut.pll_sys100_clk===1'b1&&$realtime-writer_edge<0.002,"MEM50 and WRITE100 rising edges are aligned phase-0 outputs");
   check(dut.video.cache.write_rst_n===dut.cache_write_rst_n,"core propagates the independent writer reset to the physical cache");
- end  end endtask
+   end endtask
  always @(posedge clk)begin #1;
   if(!done&&(dut.media_common_rst_n===1'b0||dut.media_common_rst_n===1'b1))
    check(dut.audio.media_reset_any===!dut.media_common_rst_n,"audio raw media reset includes the canonical global/media epoch");

@@ -27,12 +27,12 @@ module tb_v3_board_top;
   if(dut.writer_ack)writer_grants<=writer_grants+1;
   if(dut.rd_valid)video_words<=video_words+1;
  end
- task check(input  ok,input [4095:0] name);begin begin
- ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s t=%t",name,$time);end end  end endtask
+ task check(input  ok,input [4095:0] name);begin
+ ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s t=%t",name,$time);end   end endtask
  task mtick(input integer n);begin repeat(n)begin @(posedge dut.mem_clk);#1;end  end endtask
  task stick(input integer n);begin repeat(n)begin @(posedge dut.sys_clk);#1;end  end endtask
  task write_word(input  audio,input[31:0] address,input[31:0] value);
- integer wait_count;begin begin
+ integer wait_count;begin
  audio = (audio === 1'b1); @(negedge dut.mem_clk);
  if(audio)begin test_aaddr=address;test_adata=value;test_audio=1;end
  else begin test_waddr=address;test_wdata=value;test_writer=1;end
@@ -44,11 +44,11 @@ module tb_v3_board_top;
  while((audio ? dut.audio_busy:dut.writer_busy) && wait_count<1500)begin mtick(1);wait_count = wait_count + 1;end
  check(wait_count<1500,"burst retires after accepted physical transaction");
  mtick(120);check(dut.memory_ip.mem[address>>2]===value,"real adapter/App contract stores exact producer word");
- end  end endtask
- task receive_byte(output[7:0] data);integer k;begin begin
+   end endtask
+ task receive_byte(output[7:0] data);integer k;begin
  @(negedge txd);#(8680.56/2);check(txd===0,"ref-clock fatal UART start");
  for(k=0;k<8;k = k + 1)begin #8680.56;data[k]=txd;end
- #8680.56;check(txd===1,"ref-clock fatal UART stop");end  end endtask
+ #8680.56;check(txd===1,"ref-clock fatal UART stop");  end endtask
  reg[7:0] byte_rx;reg[11:0] x_before;integer w_before,a_before,read_before,pixel_count,pixel_stall,pixel_goal;reg blocked_once;
  initial begin
 

@@ -17,9 +17,9 @@ module tb_v3_directory_sv_names;
  integer round,slot,k,off,guard;
  reg sending=0;reg[31:0] random_state=32'h176ac359;reg[175:0] held;reg holding=0;
  reg[87:0] expected_names[0:15];reg[31:0] expected_first[0:15],expected_size[0:15];reg[15:0] expected_indices[0:15];
- task check(input  condition,input [4095:0] message);begin begin
+ task check(input  condition,input [4095:0] message);begin
   condition = (condition === 1'b1); comparisons = comparisons + 1;if(!condition)begin errors = errors + 1;if(errors<6)$display("[FAIL] %s round=%0d byte=%0d",message,round,byte_index);end
- end  end endtask
+   end endtask
  always @(negedge clk)begin
   random_state=random_state*32'd1664525+32'd1013904223;
   ent_ready=cycle%127>=23&&random_state[30];
@@ -98,5 +98,5 @@ module tb_v3_directory_sv_names;
  end
  initial begin #100000000;$display("[FAIL] directory compact timeout errors=1");$finish;end
 
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
 endmodule

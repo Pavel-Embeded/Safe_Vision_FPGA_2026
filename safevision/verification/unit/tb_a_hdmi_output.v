@@ -26,33 +26,33 @@ module hdmi_output_case #(parameter integer HD=0)(output reg done);
  end
  always @(posedge pc)if(rn&&!dut.tx_reset)begin
   if({dut.transmitter.I_audio_valid,dut.transmitter.I_audio_left_data,dut.transmitter.I_audio_right_data}
-    !=={av,left,right})begin $display("[FAIL] PCM24 port connection"); $finish; end 
+    !=={av,left,right})begin $display("[FAIL] PCM24 port connection"); $finish; end
   if({dut.transmitter.I_acr_valid,dut.transmitter.I_acr_cts,dut.transmitter.I_acr_n}
-    !=={acrv,cts,n})begin $display("[FAIL] ACR20 port connection"); $finish; end 
+    !=={acrv,cts,n})begin $display("[FAIL] ACR20 port connection"); $finish; end
   if(av)acount=acount+1;if(acrv)acr_count=acr_count+1;
  end
  task raster(input integer lines);
   integer xx,yy;
-  begin begin
+  begin
    for(yy=0;yy<lines;yy=yy+1)for(xx=0;xx<HT;xx=xx+1)begin
     @(negedge pc);x=xx;y=yy;de=(xx<WIDTH);rgb={v_cast_s8(xx),v_cast_s8(yy),v_cast_s8(xx+yy)};
    end
    @(negedge pc);de=0;
-  end
+
   end endtask
  initial begin
   repeat(10)@(negedge pc);rn=1;hpd=1;repeat(200)@(negedge pc);
   raster(3);hpd=0;repeat(15)@(negedge pc);
-  if(connected||!dut.tx_reset||dut.serial_rst_n)begin $display("[FAIL] HPD reset did not propagate"); $finish; end 
+  if(connected||!dut.tx_reset||dut.serial_rst_n)begin $display("[FAIL] HPD reset did not propagate"); $finish; end
   hpd=1;repeat(200)@(negedge pc);raster(HEIGHT);
   wait(dut.transmitter.completed==1);repeat(20)@(negedge pc);
-  if(overflow||drops!=0||!locked||acount<10||acr_count<10)begin $display("[FAIL] wrapper completion/fault/audio"); $finish; end 
-  if(dut.transmitter.accepted!=WIDTH*HEIGHT)begin $display("[FAIL] full frame count"); $finish; end 
+  if(overflow||drops!=0||!locked||acount<10||acr_count<10)begin $display("[FAIL] wrapper completion/fault/audio"); $finish; end
+  if(dut.transmitter.accepted!=WIDTH*HEIGHT)begin $display("[FAIL] full frame count"); $finish; end
   $display("PASS HDMI wrapper contract HD=%0d pixels=%0d PCM=%0d ACR=%0d HPD/reset actualPHY",HD,WIDTH*HEIGHT,acount,acr_count);
   done=1;
  end
 
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
 endmodule
 module tb_a_hdmi_output;
  wire a,b;hdmi_output_case #(.HD(0)) base(a);hdmi_output_case #(.HD(1)) hd(b);

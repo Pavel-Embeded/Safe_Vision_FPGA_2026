@@ -11,8 +11,13 @@
 `ifndef SAFEVISION_TICKER_ENABLE
 `define SAFEVISION_TICKER_ENABLE 0
 `endif
+`ifndef SAFEVISION_MEDIA_PIPELINE_PROFILE
+`define SAFEVISION_MEDIA_PIPELINE_PROFILE 0
+`endif
 module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
- parameter integer TICKER_ENABLE=`SAFEVISION_TICKER_ENABLE)(
+ parameter integer TICKER_ENABLE=`SAFEVISION_TICKER_ENABLE,
+ parameter integer MEDIA_PIPELINE_PROFILE=`SAFEVISION_MEDIA_PIPELINE_PROFILE,
+ parameter [31:0] FIRMWARE_ID=MEDIA_PIPELINE_PROFILE ? 32'h26102801 : 32'h26102301)(
  input wire clk,rst_n,btn_next,btn_auto,btn_emergency,uart_rxd,
  output reg uart_txd,output reg[3:0] led,
  output wire sd_ncs,sd_dclk,sd_mosi,input wire sd_miso,
@@ -108,7 +113,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  wire[31:0] ext_addr;wire[15:0] ext_len;wire[7:0] ext_data,ext_code,ext_detail;
  wire[7:0] sec_per_clus;wire[31:0] fat_start,data_start,root_lba,root_clus,total_clus;
  wire[444:0] fs_core_cmd;wire[836:0] fs_core_rsp;wire fs_service_ready;
- sd_bmp_player #(.REGISTERED_RESIDENT_READY(TICKER_ENABLE),.FLEX_FILES(1),.GUARDED_CS(1),.MID_REF_SAMPLE(1),.SHARED_SERVICE(1),.RESIDENT_CACHE(1),.CLK_HZ(50000000),.CLK_DIV_INIT(249),.CLK_DIV_FAST(0),.MOUNT_TO_N(100000000)) player(
+ sd_bmp_player #(.REGISTERED_RESIDENT_READY(MEDIA_PIPELINE_PROFILE),.FLEX_FILES(1),.GUARDED_CS(1),.MID_REF_SAMPLE(1),.SHARED_SERVICE(1),.RESIDENT_CACHE(1),.CLK_HZ(50000000),.CLK_DIV_INIT(249),.CLK_DIV_FAST(0),.MOUNT_TO_N(100000000)) player(
  .clk(clk),.rst_n(ref_media_rst_n),.cs_guard_rst_n(ref_rst_n),.run(1'b1),.btn_next(1'b0),.btn_auto(1'b0),.restart(1'b0),
  .sd_ncs(sd_ncs),.sd_dclk(sd_dclk),.sd_mosi(sd_mosi),.sd_miso(sd_miso),
  .px_word(px_word),.px_word_valid(px_valid),.px_word_ready(px_ready),.frame_active(frame_active),
@@ -139,7 +144,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  wire writer_accepted=writer_busy && mem_req && mem_wr && mem_ready;
  wire write_drained=adapter_idle && !writer_busy;
  bmp_frame_sink #(.FIFO_AW(8),.REQUIRE_WRITE_DRAIN(1),.REQUIRE_READBACK(1),.RESIDENT_LOAD(1),
- .SOURCE_PROGRESS_AWARE(TICKER_ENABLE),
+ .SOURCE_PROGRESS_AWARE(MEDIA_PIPELINE_PROFILE),
 
 
  .GAP_TIMEOUT(25000000),.WRITE_TO_N(25000000),.SWAP_TO_N(5000000)) sink(
@@ -352,7 +357,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  if(audio_commit_valid && audio_commit_ready)audio_commit_valid<=0;
  if(frame_commit)begin audio_commit_valid<=1;audio_commit_slot<=active_slot;audio_commit_gen<=generation;end
  end end
- v3_audio_system #(.DIRECT_RING_COMPARE(TICKER_ENABLE),.PREINDEXED(1),.EXTERNAL_SERVICE(1),.MEDIA_RESET_INCLUDES_GLOBAL(1),.HANDBOOK_PROFILE(1)) audio(.external_service_ready(fs_service_ready),.core_cmd(fs_core_cmd),.core_rsp(fs_core_rsp),
+ v3_audio_system #(.DIRECT_RING_COMPARE(MEDIA_PIPELINE_PROFILE),.PREINDEXED(1),.EXTERNAL_SERVICE(1),.MEDIA_RESET_INCLUDES_GLOBAL(1),.HANDBOOK_PROFILE(1)) audio(.external_service_ready(fs_service_ready),.core_cmd(fs_core_cmd),.core_rsp(fs_core_rsp),
  .media_descriptor_valid(media_descriptor_valid),.media_descriptor_ready(media_descriptor_ready),
  .media_descriptor_slot(media_descriptor_slot),.media_descriptor(media_descriptor),.media_descriptor_found(media_descriptor_found),
  .ref_clk(clk),.mem_clk(mem_clk),.audio_clk(audio_clk),.pixel_clk(pixel_clk),.sys_clk(sys_clk),
@@ -540,7 +545,7 @@ module safevision_v3_top #(parameter integer HD=`SAFEVISION_BOARD_HD,
  (* keep="true" *) wire[31:0] b_diag_payload2=({32{b_diag_low[2]}} & {20'd0,ref_status_sys[203:192]});
  (* keep="true" *) wire[31:0] b_diag_payload3=({32{b_diag_low[3]}} & ref_status_sys[79:48]) |
   ({32{b_diag_low[4]}} & {18'd0,energy,volume});
- (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & (TICKER_ENABLE?32'h26102801:32'h26102301));
+ (* keep="true" *) wire[31:0] b_diag_next0=({32{cmd_query || (b_diag_small && b_diag_low[0])}} & FIRMWARE_ID);
  (* keep="true" *) wire[31:0] b_diag_next1=b_diag_payload1 & {32{b_diag_payload_valid}};
 
 

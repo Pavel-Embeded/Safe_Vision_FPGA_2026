@@ -12,8 +12,8 @@ module tb_v3_guard_stage804;
  reg qbegin=0,qaccept=0,qverify=0,qrvalid=0,qtop=0;reg[1:0] qslot=0;reg[31:0] qaddr=0,qdata=0,qrdata=0;
  reg model_build=0,model_fault=0;integer words=0;reg[31:0] model_crc=32'hffffffff,signature=0,bad_address=0;
  integer errors=0,comparisons=0,k;reg check_signature=0;
- task check(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s",msg);end end  end endtask
- function[31:0] crc_word(input[31:0] old,input[31:0] data);reg[31:0] c;integer n;begin begin c=old^data;for(n=0;n<32;n = n + 1)c=c[0] ? (c>>1)^32'hedb88320:c>>1;crc_word=c;end  end endfunction
+ task check(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s",msg);end   end endtask
+ function[31:0] crc_word(input[31:0] old,input[31:0] data);reg[31:0] c;integer n;begin  c=old^data;for(n=0;n<32;n = n + 1)c=c[0] ? (c>>1)^32'hedb88320:c>>1;crc_word=c;  end endfunction
  always @(negedge dut.mem_media_rst_n)begin qbegin=0;qaccept=0;qverify=0;qrvalid=0;model_build=0;model_fault=0;words=0;model_crc=32'hffffffff;check_signature=0;end
  always @(posedge dut.mem_clk)begin
   if(dut.mem_media_rst_n)begin

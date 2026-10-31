@@ -88,7 +88,7 @@ module tb_top_stage5_sector_rd;
 
     task uart_rx_byte(output [7:0] b);
         integer k;
-        begin begin
+        begin
             @(negedge uart_txd);
             #(HALF_NS);
             #(BIT_NS);
@@ -96,7 +96,7 @@ module tb_top_stage5_sector_rd;
                 b[k] = uart_txd;
                 #(BIT_NS);
             end
-        end
+
      end endtask
 
 

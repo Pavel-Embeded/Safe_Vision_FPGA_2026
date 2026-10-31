@@ -174,14 +174,14 @@ module tb_mbr_parser;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) begin
                 $display("[PASS] %0s", name);
             end else begin
                 $display("[FAIL] %0s", name);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 
@@ -190,7 +190,7 @@ module tb_mbr_parser;
         input [7:0]  ptype;
         input [31:0] start_lba;
         input [31:0] secs;
-        begin begin
+        begin
             u_card.vol_zero(32'd0);
             if (sig_ok) begin
                 u_card.vol_set(32'd0, 16'd510, 8'h55);
@@ -199,12 +199,12 @@ module tb_mbr_parser;
             u_card.vol_set(32'd0, 16'd450, ptype);
             u_card.vol_set_le(32'd0, 16'd454, start_lba, 3'd4);
             u_card.vol_set_le(32'd0, 16'd458, secs,      3'd4);
-        end
+
      end endtask
 
 
     task run_mbr;
-        begin begin
+        begin
             mbr_start = 1'b1;
             @(posedge clk);
             #1;
@@ -212,7 +212,7 @@ module tb_mbr_parser;
             wait (parse_done === 1'b0);
             wait (parse_done === 1'b1);
             #1;
-        end
+
      end endtask
 
 

@@ -26,68 +26,68 @@ module writer_crc_case #(parameter integer STRIDE=1)(output reg done);
   end endfunction
  function automatic [15:0] crc_word(input [15:0] prior,input [31:0] data);
   reg [15:0] c;integer bitno;
-  begin begin c=prior;for(bitno=31;bitno>=0;bitno=bitno-1)
+  begin  c=prior;for(bitno=31;bitno>=0;bitno=bitno-1)
    c=(c<<1)^((c[15]^data[bitno]) ? 16'h1021:16'd0);
    crc_word=c;
-  end
+
   end endfunction
  always @(negedge clk)ready=rst_n&&(fast||(cycle%7>=3));
  always @(posedge clk)begin
   cycle=cycle+1;
   if(!rst_n)last_capture=-100;
   else begin
-   if(dut.crc_src_pend!==0&&dut.crc_src_pend!==1)begin $display("[FAIL] unknown CRC enable"); $finish; end 
+   if(dut.crc_src_pend!==0&&dut.crc_src_pend!==1)begin $display("[FAIL] unknown CRC enable"); $finish; end
 
    if(dut.crc_src_pend&&!(dut.state==0&&start))begin
-    if(cycle-last_capture<2)begin $display("[FAIL] CRC feedback captured on adjacent edges"); $finish; end 
+    if(cycle-last_capture<2)begin $display("[FAIL] CRC feedback captured on adjacent edges"); $finish; end
     if(last_capture>=0&&cycle-last_capture<min_gap)min_gap=cycle-last_capture;
     last_capture=cycle;updates=updates+1;
    end
    if(score&&wr_req&&ready)begin
     if(wr_len!==1||wr_addr!==base+words*4||
-       wr_data!=={pixel(words*2+1),pixel(words*2)})begin $display("[FAIL] write oracle stride=%0d word=%0d",STRIDE,words); $finish; end 
+       wr_data!=={pixel(words*2+1),pixel(words*2)})begin $display("[FAIL] write oracle stride=%0d word=%0d",STRIDE,words); $finish; end
     if(words%STRIDE==0)golden_crc=crc_word(golden_crc,wr_data);
     words=words+1;
    end
   end
  end
  task begin_frame;
-  begin begin @(negedge clk);start=1;
+  begin  @(negedge clk);start=1;
    @(negedge clk);start=0;
-  end
+
   end endtask
  task send_pixels(input integer count);
   integer n;reg take;
-  begin begin n=0;while(n<count)begin
+  begin  n=0;while(n<count)begin
    @(negedge clk);valid=1;din=pixel(n);
    @(posedge clk);take=valid&&din_ready;
    #0.2;if(take)n=n+1;
   end
   @(negedge clk);valid=0;
-  end
+
   end endtask
  task full_frame;
-  begin begin words=0;golden_crc=0;score=1;
+  begin  words=0;golden_crc=0;score=1;
    begin_frame;send_pixels(P);wait(wr_done===1);#0.2;
    if(words!=P/2||crc_ok!==1||crc_value!==golden_crc||
       wr_error!==0||px_cnt!==P||slot_valid[slot]!==1)
-    begin $display("[FAIL] frame/CRC oracle stride=%0d",STRIDE); $finish; end 
+    begin $display("[FAIL] frame/CRC oracle stride=%0d",STRIDE); $finish; end
    score=0;repeat(3)@(negedge clk);
-  end
+
   end endtask
  initial begin
   repeat(3)@(negedge clk);rst_n=1;
   full_frame;
 
   score=0;begin_frame;send_pixels(2);
-  if(dut.crc_src_pend!==1)begin $display("[FAIL] pending reset coverage"); $finish; end 
+  if(dut.crc_src_pend!==1)begin $display("[FAIL] pending reset coverage"); $finish; end
   rst_n=0;#0.2;
-  if(dut.crc_src_pend!==0||dut.crc_src!==0)begin $display("[FAIL] pending CRC not reset"); $finish; end 
+  if(dut.crc_src_pend!==0||dut.crc_src!==0)begin $display("[FAIL] pending CRC not reset"); $finish; end
   repeat(3)@(negedge clk);rst_n=1;
   slot=1;base=`SV_IMG1_BASE;seed=16'ha65c;fast=0;
   full_frame;
-  if(updates<2*((P/2+STRIDE-1)/STRIDE))begin $display("[FAIL] CRC update coverage"); $finish; end 
-  if(STRIDE==1&&min_gap!=3)begin $display("[FAIL] fastest pair cadence not exercised: %0d",min_gap); $finish; end 
+  if(updates<2*((P/2+STRIDE-1)/STRIDE))begin $display("[FAIL] CRC update coverage"); $finish; end
+  if(STRIDE==1&&min_gap!=3)begin $display("[FAIL] fastest pair cadence not exercised: %0d",min_gap); $finish; end
   $display("[PASS] CRC feedback stride=%0d updates=%0d min_capture_gap=%0d data/write/CRC/reset",STRIDE,updates,min_gap);
   done=1;
  end

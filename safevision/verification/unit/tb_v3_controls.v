@@ -13,11 +13,11 @@ module tb_v3_controls;
  .volume(volume),.period_select(period),.menu(menu),.field(field),.auto_tick(tick));
  integer errors=0,nexts=0,recoveries=0,ticks=0;
  always @(posedge clk)begin #1;if(next)nexts=nexts+1;if(recover)recoveries=recoveries+1;if(tick)ticks=ticks+1;end
- task ck;input cond;input[511:0] msg;begin begin
- if(cond)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end end  end endtask
- task waitn;input integer count;begin begin repeat(count)@(negedge clk);end  end endtask
+ task ck;input cond;input[511:0] msg;begin
+ if(cond)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end   end endtask
+ task waitn;input integer count;begin  repeat(count)@(negedge clk);  end endtask
  task command;input[7:0] t;input[95:0] nm;input signed[31:0] val;input q;
- begin begin target=t;name=nm;value=val;cq=q;cv=1;waitn(1);cv=0;end  end endtask
+ begin  target=t;name=nm;value=val;cq=q;cv=1;waitn(1);cv=0;  end endtask
  initial begin
  waitn(4);rst=1;waitn(12);ck(brightness==0 && contrast==128 && volume==80,"default configuration");
  n=0;waitn(1);n=1;waitn(1);n=0;waitn(1);n=1;waitn(12);ck(nexts==0,"button bounce rejected");

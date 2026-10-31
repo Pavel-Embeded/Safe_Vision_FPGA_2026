@@ -9,13 +9,13 @@ module control_clock_case776 #(parameter HD=0,HZ=50000000)(input clk,output reg 
  defparam dut.video.FONT_FILE="font8x16.mem";
  defparam dut.video.COMPACT_FONT_FILE="font8x16_compact.mem";
  defparam dut.video.STATUS_TEXT_FILE="v3_handbook_status_text.mem";
- task check(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons=comparisons+1;if(!ok)begin errors=errors+1;$display("[FAIL] HD=%0d %s",HD,msg);end end  end endtask
- function[7:0] expected_byte(input integer n);begin begin case(n)0:expected_byte=8'h55;1:expected_byte=8'ha6;default:expected_byte=8'h00;endcase end  end endfunction
- task send_byte(input[7:0] b);integer n;begin begin
+ task check(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons=comparisons+1;if(!ok)begin errors=errors+1;$display("[FAIL] HD=%0d %s",HD,msg);end   end endtask
+ function[7:0] expected_byte(input integer n);begin  case(n)0:expected_byte=8'h55;1:expected_byte=8'ha6;default:expected_byte=8'h00;endcase   end endfunction
+ task send_byte(input[7:0] b);integer n;begin
   rxd=0;#8680.555556;
   for(n=0;n<8;n=n+1)begin rxd=b[n];#8680.555556;end
   rxd=1;#17361.111112;
- end  end endtask
+   end endtask
  always @(posedge dut.sys_clk)begin #1;
   if(dut.sys_rst_n && dut.uart.byte_valid)begin
    check(received<3 && dut.uart.byte_rx===expected_byte(received),"real115200baud UART byte order and data");received=received+1;

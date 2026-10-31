@@ -20,14 +20,14 @@ module tb_file_streamer;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) begin
                 $display("[PASS] %0s", name);
             end else begin
                 $display("[FAIL] %0s", name);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 
@@ -194,13 +194,13 @@ module tb_file_streamer;
     end
 
     task clear_mon;
-        begin begin
+        begin
             got_n  = 0;
             mism   = 0;
             sof_n  = 0;
             eof_n  = 0;
             eof_at = 0;
-        end
+
      end endtask
 
 
@@ -218,17 +218,17 @@ module tb_file_streamer;
         input [31:0] totsec;
         input [31:0] fat2;
         input [31:0] fat3;
-        begin begin
+        begin
             u_card.mk_fat32_dbr(16'd512, 8'd4, 16'd1, 8'd1,
                                 32'd1, 32'd2, totsec, 1'b1);
             u_card.vol_zero(32'd1);
             u_card.vol_set_le(32'd1, 16'd8,  fat2, 3'd4);
             u_card.vol_set_le(32'd1, 16'd12, fat3, 3'd4);
-        end
+
      end endtask
 
     task do_mount;
-        begin begin
+        begin
             rd_sel = 1'b0;
             @(posedge clk); mnt_start = 1'b1;
             @(posedge clk); mnt_start = 1'b0;
@@ -239,13 +239,13 @@ module tb_file_streamer;
                 wait_cnt = wait_cnt + 1;
             end
             repeat (5) @(posedge clk);
-        end
+
      end endtask
 
     task do_stream;
         input [31:0] clus;
         input [31:0] fsize;
-        begin begin
+        begin
             rd_sel       = 1'b1;
             clear_mon;
             @(posedge clk); fs_first_clus = clus; fs_file_size = fsize; fs_start = 1'b1;
@@ -257,7 +257,7 @@ module tb_file_streamer;
                 wait_cnt = wait_cnt + 1;
             end
             repeat (10) @(posedge clk);
-        end
+
      end endtask
 
 

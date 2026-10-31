@@ -7,12 +7,12 @@ module tb_v3_hd_alpha_equivalence;
  v3_hd_alpha_reference reference(.clk(clk),.rst_n(rst),.valid_in(valid),.front(front),.back(back),.alpha(alpha),.pixel(gold),.valid_out(gv));
  integer errors=0,comparisons=0,math_checks=0,f,b,a,i,j;
  reg[15:0] e0=0,e1=0,e2=0;reg v0=0,v1=0,v2=0;reg[31:0] lfsr=32'h61a973e5;
- function[15:0] independent_pixel;input[15:0] fg,bg;input[7:0] al;integer r,g,bl;begin begin
+ function[15:0] independent_pixel;input[15:0] fg,bg;input[7:0] al;integer r,g,bl;begin
   r=(((fg>>11)&31)*al+((bg>>11)&31)*(255-al)+127)/255;
   g=(((fg>>5)&63)*al+((bg>>5)&63)*(255-al)+127)/255;
   bl=((fg&31)*al+(bg&31)*(255-al)+127)/255;
   independent_pixel={r[4:0],g[5:0],bl[4:0]};
- end  end endfunction
+   end endfunction
  always@(posedge clk or negedge rst)begin
   if(!rst)begin e0=0;e1=0;e2=0;v0=0;v1=0;v2=0;end
   else begin
@@ -23,10 +23,10 @@ module tb_v3_hd_alpha_equivalence;
    if(v2)begin math_checks=math_checks+1;if(pixel!==e2)begin errors=errors+1;if(errors<9)$display("[FAIL] independent full precision math");end end
   end
  end
- task random_cycle;begin begin
+ task random_cycle;begin
   lfsr={lfsr[30:0],lfsr[31]^lfsr[21]^lfsr[1]^lfsr[0]};
   front=lfsr[15:0];back=lfsr[31:16];alpha=lfsr[11:4];valid=lfsr[2];@(negedge clk);
- end  end endtask
+   end endtask
  initial begin
   repeat(3)@(negedge clk);rst=1;
 

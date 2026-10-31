@@ -12,7 +12,7 @@ module tb_font8x16_rom;
     osd_status_text text(.char_index(idx),.mode(mode),.fps_tens(tens),.fps_ones(ones),.sd_ok(ok),.char_code(code));
     reg [303:0] ref_text;
     task check(input  yes,input [4095:0] why);
-        begin begin yes = (yes === 1'b1); checks = checks + 1;if(!yes) begin $display("[FAIL] font/status: %s",why); $finish; end end
+        begin  yes = (yes === 1'b1); checks = checks + 1;if(!yes) begin $display("[FAIL] font/status: %s",why); $finish; end
      end endtask
     initial begin
         $readmemh("font8x16.mem",golden);

@@ -14,12 +14,12 @@ module tb_v3_index_minimum;
  .sel_slot(2'd0),.sel_first_clus(fc),.sel_size(sz),.sel_valid(selected),
  .sel_wav_first_clus(),.sel_wav_size(),.sel_wav_valid(),.bmp_seen(),.wav_seen());
  integer errors=0,comparisons=0,round,attempt,i,number,expected,cursor_number,legal,guard;
- function[15:0] bcd;input integer n;begin begin bcd=((n/1000)<<12)|(((n/100)%10)<<8)|(((n/10)%10)<<4)|(n%10);end  end endfunction
- function[87:0] filename;input integer n;reg[7:0] a,b,c,d;begin begin
+ function[15:0] bcd;input integer n;begin  bcd=((n/1000)<<12)|(((n/100)%10)<<8)|(((n/10)%10)<<4)|(n%10);  end endfunction
+ function[87:0] filename;input integer n;reg[7:0] a,b,c,d;begin
   a=48+n/1000;b=48+(n/100)%10;c=48+(n/10)%10;d=48+n%10;
-  filename={16'h5356,a,b,c,d,16'h2020,24'h424d50};end  end endfunction
- task ck;input condition;input[511:0] msg;begin begin comparisons=comparisons+1;
-  if(!condition)begin errors=errors+1;$display("[FAIL] %s round=%0d expected=%0d key=%h",msg,round,expected,key);end end  end endtask
+  filename={16'h5356,a,b,c,d,16'h2020,24'h424d50};  end endfunction
+ task ck;input condition;input[511:0] msg;begin  comparisons=comparisons+1;
+  if(!condition)begin errors=errors+1;$display("[FAIL] %s round=%0d expected=%0d key=%h",msg,round,expected,key);end   end endtask
  initial begin
   repeat(4)@(negedge clk);rst_n=1;
   for(round=0;round<12;round=round+1)begin

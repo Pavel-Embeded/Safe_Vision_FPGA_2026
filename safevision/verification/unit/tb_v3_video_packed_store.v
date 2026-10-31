@@ -15,10 +15,10 @@ module v3_packed_store_test #(parameter integer WRITE_PHASE=5)(output reg done);
   .b00(b00),.b10(b10),.b01(b01),.b11(b11),.pixel_fault(pixel_fault));
  integer errors=0,comparisons=0,completed_rows=0,generation=1,b,c,n;
  function[15:0] pixel_at(input integer stream,row,col);
-  begin begin pixel_at=v_cast_s16((generation*25173)^(stream*31973)^(row*9257)^(col*193));end
+  begin  pixel_at=v_cast_s16((generation*25173)^(stream*31973)^(row*9257)^(col*193));
   end endfunction
  always @(posedge mem)if(rst&&row_done)completed_rows=completed_rows+1;
- task fill;integer old_completed,t;begin begin
+ task fill;integer old_completed,t;begin
   for(b=0;b<8;b=b+1)begin
    old_completed=completed_rows;
    for(c=0;c<320;c=c+1)begin @(negedge mem);valid=1;bank=b;column=c;
@@ -28,8 +28,8 @@ module v3_packed_store_test #(parameter integer WRITE_PHASE=5)(output reg done);
    if(completed_rows!=old_completed+1)begin $display("[FAIL] missing/duplicate stored-row ACK bank=%0d",b);errors=errors+1;end
    if(serializer_fault)begin $display("[FAIL] continuous 32-bit ingress lost related-clock phase");errors=errors+1;end
   end
- end  end endtask
- task line(input integer row,width);integer col,next_col,next_row;reg[127:0] expected,observed;begin begin
+   end endtask
+ task line(input integer row,width);integer col,next_col,next_row;reg[127:0] expected,observed;begin
   @(negedge pix);cv=0;prepare=1;prepared=row;
   @(negedge pix);prepare=0;repeat(8)@(negedge pix);
   for(col=0;col<width;col=col+1)begin
@@ -44,7 +44,7 @@ module v3_packed_store_test #(parameter integer WRITE_PHASE=5)(output reg done);
    comparisons=comparisons+8;@(negedge pix);
   end
   cv=0;repeat(4)@(negedge pix);
- end  end endtask
+   end endtask
  initial begin
   #100;rst=1;fill();
   for(n=0;n<4;n=n+1)begin line(n,640);line(n,960);end
@@ -60,7 +60,7 @@ module v3_packed_store_test #(parameter integer WRITE_PHASE=5)(output reg done);
  end
  initial begin #2000000;$display("[FAIL] packed store timeout errors=1");$finish;end
 
-function signed [15:0] v_cast_s16; input signed [15:0] value; begin begin v_cast_s16=value; end  end endfunction
+function signed [15:0] v_cast_s16; input signed [15:0] value; begin  v_cast_s16=value;   end endfunction
 endmodule
 module tb_v3_video_packed_aligned;
  wire done;v3_packed_store_test #(.WRITE_PHASE(5)) t(done);

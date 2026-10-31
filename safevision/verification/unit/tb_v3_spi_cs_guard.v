@@ -18,7 +18,7 @@ module tb_v3_spi_cs_guard;
  spi_master #(.CLK_FREQ(50000000)) spi(.clk(clk),.rst_n(media_rst_n),.clk_div(owner ? rd_div:init_div),.cs_n(raw_cs),.tx_valid((owner ? rd_txv:init_txv)&&cs_ready),
  .tx_data(owner ? rd_txd:init_txd),.tx_ready(txready),.rx_data(rxd),.rx_valid(rxv),.busy(spi_busy),.sclk(sclk),.mosi(mosi),.miso(miso));
  sd_spi_card_model #(.VOL_SECTORS(1)) card(.sclk(sclk),.cs_n(sd_cs),.mosi(mosi),.miso(miso),.i_dead(dead));
- task check(input  c,input [4095:0] m);begin begin c = (c === 1'b1); checks = checks + 1;if(!c)begin errors = errors + 1;$display("[FAIL] %s t=%0t cs=%b raw=%b sclk=%b",m,$time,sd_cs,raw_cs,sclk);end end  end endtask
+ task check(input  c,input [4095:0] m);begin  c = (c === 1'b1); checks = checks + 1;if(!c)begin errors = errors + 1;$display("[FAIL] %s t=%0t cs=%b raw=%b sclk=%b",m,$time,sd_cs,raw_cs,sclk);end   end endtask
  always @(sd_cs)begin
   if(global_rst_n)begin
    check(sclk===0,"CS changes only while SCLK low");
@@ -42,8 +42,8 @@ module tb_v3_spi_cs_guard;
   check(data===((received+8'h11)&8'hff),"checked sector byte independent pattern");
   check(last==(received==511),"checked sector last exact");received = received + 1;
  end
- task launch_read;begin begin wait(rd_ready);@(negedge clk);received=0;rd_en=1;@(negedge clk);rd_en=0;end  end endtask
- task read_good;begin begin launch_read();wait(rd_done);#1;$display("[READ] bytes=%0d timeout=%b crc=%b error=%h/%h",received,timeout_err,crc_err,reader_code,reader_detail);check(!timeout_err&&!crc_err&&received==512,"complete CRC checked sector");wait(sd_cs);repeat(5)@(negedge clk);end  end endtask
+ task launch_read;begin  wait(rd_ready);@(negedge clk);received=0;rd_en=1;@(negedge clk);rd_en=0;  end endtask
+ task read_good;begin  launch_read();wait(rd_done);#1;$display("[READ] bytes=%0d timeout=%b crc=%b error=%h/%h",received,timeout_err,crc_err,reader_code,reader_detail);check(!timeout_err&&!crc_err&&received==512,"complete CRC checked sector");wait(sd_cs);repeat(5)@(negedge clk);  end endtask
  initial begin
   repeat(4)@(negedge clk);global_rst_n=1;media_rst_n=1;
   @(negedge clk);start=1;@(negedge clk);start=0;
@@ -55,7 +55,7 @@ module tb_v3_spi_cs_guard;
    launch_read();wait(sclk===1);#(phase);media_rst_n=0;aborts = aborts + 1;
    repeat(6)@(negedge clk);check(sd_cs&&sclk===0,"media abort drains CS at a safe quiet edge");
    media_rst_n=1;repeat(5)@(negedge clk);
-  end end 
+  end end
   read_good();
   check(aborts==20&&transactions>=24,"all abort phases and owner transitions exercised");
   $display("[PASS] CS electrical boundary assertions=%0d transactions=%0d aborts=%0d",checks,transactions,aborts);

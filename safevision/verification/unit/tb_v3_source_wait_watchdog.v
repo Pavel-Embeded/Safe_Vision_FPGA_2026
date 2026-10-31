@@ -17,9 +17,9 @@ module tb_v3_source_wait_watchdog;
   .swap_slot(),.swap_generation(),.swap_crc_ok(),.swap_busy(1'b0),.state_o(state),.err_code(ec),.err_detail(ed),
   .frame_cnt(frames),.px_written(),.write_drained(drained),.verify_done(vdone),.verify_pass(vpass),
   .source_begin(source_begin),.source_slot(),.source_top_down(),.source_progress(beat));
- task ck(input  condition,input [4095:0] message);begin begin
+ task ck(input  condition,input [4095:0] message);begin
   condition = (condition === 1'b1); comparisons = comparisons + 1;if(!condition)begin errors = errors + 1;if(errors<18)$display("[FAIL] case%0d %s state=%0d ec=%h/%h writes=%0d",case_id,message,state,ec,ed,writes);end
- end  end endtask
+   end endtask
  function[31:0] pattern(input integer index);begin pattern=32'h12345678^(index*32'h00010003); end endfunction
  always @(posedge clk)begin
   if(!rst)begin writes=0;beats=0;end
@@ -31,7 +31,7 @@ module tb_v3_source_wait_watchdog;
    if(dut.source_wait_credit)ck(state==1&&dut.fa_sync[2]&&drained&&!req&&!dut.sk_valid&&dut.fifo_empty,"source credit requires an active, empty and physically drained writer");
   end
  end
- task fresh;begin begin
+ task fresh;begin
   @(negedge clk);rst=0;active=0;pv=0;heartbeat_enable=0;manual_hint=0;ack_enable=1;last_hold=0;drained=1;vdone=1;vpass=1;
   repeat(8)@(negedge clk);rst=1;guard=0;
   while(!memready&&guard<200)begin @(negedge clk);guard = guard + 1;end
@@ -39,20 +39,20 @@ module tb_v3_source_wait_watchdog;
   @(negedge wrclk);active=1;guard=0;
   while(state!=1&&guard<20)begin @(negedge clk);guard = guard + 1;end
   ck(state==1,"frame arms the write state");
- end  end endtask
- task word(input integer index);begin begin
+   end endtask
+ task word(input integer index);begin
   @(negedge wrclk);data=pattern(index);pv=1;guard=0;
   @(posedge wrclk);
   while(!ready&&guard<1000)begin @(posedge wrclk);guard = guard + 1;end
   ck(ready,"source word is accepted once under FIFO backpressure");
   @(negedge wrclk);pv=0;
- end  end endtask
- task timeout_expected(input [4095:0] reason);begin begin
+   end endtask
+ task timeout_expected(input [4095:0] reason);begin
   basebeats=beats;guard=0;
   while(ec==0&&guard<LIMIT+40)begin @(negedge clk);guard = guard + 1;end
   ck(ec!=0,reason);ck(!okay&&!swap&&frames==0,"a stalled or partial frame is never published");
   if(heartbeat_enable)ck(beats>basebeats+4,"raw source events continued throughout the protected fault");
- end  end endtask
+   end endtask
  initial begin
 
   case_id=1;fresh();heartbeat_enable=1;repeat(LIMIT*3)@(negedge clk);

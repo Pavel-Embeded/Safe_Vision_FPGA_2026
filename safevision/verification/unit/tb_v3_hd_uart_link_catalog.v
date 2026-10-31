@@ -18,11 +18,11 @@ module tb_v3_hd_uart_link_catalog;
  integer errors=0,enqueued=0,received=0,commands=0,i,j,guard,rxstate=0,bytes_sent=0;
  integer want_code[0:255],want_kind[0:255],want_src[0:255];reg[31:0] want_value[0:255];
  reg [4095:0] body="";reg[7:0] rxsum=0,rxcheck=0;integer gotcode,gotsrc;reg[31:0] gotvalue;
- function[7:0] hx;input[3:0] n;begin begin hx=n<10 ? 48+n:55+n;end  end endfunction
- function[3:0] unhex;input[7:0] c;begin begin unhex=c<=57 ? c-48:c-55;end  end endfunction
- task ck;input c;input[511:0] msg;begin begin if(!c)begin errors=errors+1;$display("[FAIL] %s",msg);end end  end endtask
- task expect_reply;input integer kind,src,status;input[31:0] val;begin begin
- want_kind[enqueued]=kind;want_src[enqueued]=src;want_code[enqueued]=status;want_value[enqueued]=val;enqueued=enqueued+1;end  end endtask
+ function[7:0] hx;input[3:0] n;begin  hx=n<10 ? 48+n:55+n;  end endfunction
+ function[3:0] unhex;input[7:0] c;begin  unhex=c<=57 ? c-48:c-55;  end endfunction
+ task ck;input c;input[511:0] msg;begin  if(!c)begin errors=errors+1;$display("[FAIL] %s",msg);end   end endtask
+ task expect_reply;input integer kind,src,status;input[31:0] val;begin
+ want_kind[enqueued]=kind;want_src[enqueued]=src;want_code[enqueued]=status;want_value[enqueued]=val;enqueued=enqueued+1;  end endtask
  always @(posedge clk)begin #1;
   if(cmd)begin commands=commands+1;ck(target==65 && name=="BRIGHT" && value==-128 && !q && catalog_id==5,"command delivered atomically");end
   if(decoded_valid)case(rxstate)
@@ -41,14 +41,14 @@ module tb_v3_hd_uart_link_catalog;
    end
   endcase
  end
- task byte_in;input[7:0] b;integer bitno;begin begin
+ task byte_in;input[7:0] b;integer bitno;begin
  rxd=0;repeat(32)@(negedge clk);for(bitno=0;bitno<8;bitno=bitno+1)begin
  rxd=b[bitno];repeat(32)@(negedge clk);end rxd=1;repeat(36)@(negedge clk);bytes_sent=bytes_sent+1;
- end  end endtask
- task send_command;input [4095:0] s;input corrupt;integer index;reg[7:0] sum;begin begin
+   end endtask
+ task send_command;input [4095:0] s;input corrupt;integer index;reg[7:0] sum;begin
  sum=0;byte_in(36);for(index=0;index<v_string_length(s);index=index+1)begin byte_in(v_string_char(s,index));sum=sum^v_string_char(s,index);end
  byte_in(42);byte_in(hx(sum[7:4]));byte_in(hx(sum[3:0]^(corrupt ? 1:0)));byte_in(13);byte_in(10);
- end  end endtask
+   end endtask
  initial begin
  repeat(4)@(negedge clk);rst=1;
  send_command("A:BRIGHT=-128",0);ck(commands==1,"one command from real serial input");
@@ -68,7 +68,7 @@ module tb_v3_hd_uart_link_catalog;
  while(!evtready)@(negedge clk);evt=1;@(negedge clk);evt=0;
 
 
- begin : v_loop_1 integer noise; for( noise=0;noise<1000;noise = noise + 1)byte_in(8'h55); end 
+ begin : v_loop_1 integer noise; for( noise=0;noise<1000;noise = noise + 1)byte_in(8'h55); end
  ck(commands==1 && bytes_sent>=1000,"1000 serial noise bytes never generate a spurious command");
  guard=0;while(received<enqueued && guard<1000000)begin @(negedge clk);guard=guard+1;end
  ck(received==108 && rxstate==0,"all queued replies and timestamped events consumed");
@@ -78,6 +78,6 @@ module tb_v3_hd_uart_link_catalog;
  end
  initial begin #12000000;$display("[FAIL] global timeout");$finish;end
 
-function integer v_string_length; input[4095:0] value; integer k; begin begin v_string_length=0; for(k=0;k<512;k=k+1)if(value[k*8+:8]!=0)v_string_length=k+1; end  end endfunction
-function[7:0] v_string_char; input[4095:0] value; input integer index; integer n; begin begin n=v_string_length(value); if((index>=0&&index<n)===1'b1)v_string_char=value[(n-1-index)*8+:8];else v_string_char=0; end  end endfunction
+function integer v_string_length; input[4095:0] value; integer k; begin  v_string_length=0; for(k=0;k<512;k=k+1)if(value[k*8+:8]!=0)v_string_length=k+1;   end endfunction
+function[7:0] v_string_char; input[4095:0] value; input integer index; integer n; begin  n=v_string_length(value); if((index>=0&&index<n)===1'b1)v_string_char=value[(n-1-index)*8+:8];else v_string_char=0;   end endfunction
 endmodule

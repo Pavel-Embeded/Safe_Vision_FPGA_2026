@@ -3,7 +3,7 @@ module tb_v3_waveform193;
  reg clk=0,rst=0,fs=0,pv=0,de=0;reg[23:0] pcm=0;reg[11:0] x=0,y=0;always #5 clk=~clk;
  wire tr,grid,ready;integer errors=0,comparisons=0,i,j,k,a,b,ya,yb,pat;integer values[0:255];
  v3_pcm_waveform dut(clk,rst,fs,pv,pcm,x,y,de,tr,grid,ready);
- task ck(input  ok,input [4095:0] m);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] %s",m);end end  end endtask
+ task ck(input  ok,input [4095:0] m);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] %s",m);end   end endtask
  initial begin
   repeat(4)@(negedge clk);rst=1;
   for(pat=0;pat<6;pat = pat + 1)begin
@@ -31,5 +31,5 @@ module tb_v3_waveform193;
  end
  initial begin #10000000;$display("[FAIL] waveform watchdog errors=1");$finish;end
 
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
 endmodule

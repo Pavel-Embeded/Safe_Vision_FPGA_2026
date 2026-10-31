@@ -3,7 +3,7 @@ module tb_v3_mbr_parser_storage257;
  reg clk=0;always #5 clk=~clk;reg rst_n=0,start=0,sd_rd_ready=0,sd_data_valid=0,sd_data_last=0,sd_rd_done=0,sd_timeout_err=0,sd_crc16_err=0;
  reg[7:0]sd_data=0,sd_err_code=0,sd_err_detail=0;reg[7:0] bytes[0:511];
  integer errors=0,comparisons=0,trial,k,j,limit,waits;reg[31:0]random_q=32'h71a22384;reg[31:0]v;
- function[31:0]rnd(input[31:0]a);reg[31:0]b;begin begin b=a^(a<<13);b=b^(b>>17);rnd=b^(b<<5);end  end endfunction
+ function[31:0]rnd(input[31:0]a);reg[31:0]b;begin  b=a^(a<<13);b=b^(b>>17);rnd=b^(b<<5);  end endfunction
  wire[0:0] a_parse_done;
  wire[0:0] b_parse_done;
  wire[0:0] a_has_mbr;

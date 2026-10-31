@@ -2,7 +2,7 @@
 module tb_v3_file_lba_equivalence;
  reg clk=0,rst_n=0;always #5 clk=~clk;
  integer errors=0,comparisons=0,k,j;reg[31:0]rng=32'hfa261801;
- function[31:0]rand32; input v_unused; begin begin rng=rng*1664525+1013904223;rand32=rng;end  end endfunction
+ function[31:0]rand32; input v_unused; begin  rng=rng*1664525+1013904223;rand32=rng;  end endfunction
  reg  context_load=0;
  reg [135:0] context_in=0;
  wire [135:0] a_context_out,b_context_out;

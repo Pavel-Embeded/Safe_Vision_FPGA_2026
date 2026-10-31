@@ -125,23 +125,23 @@ module progress_supervisor_case561 #(parameter HD=0,HZ=1000)(output reg done,out
   .err_ts(reference_err_ts));end endgenerate
 
  integer boot_events=0,cycles=0,i,guard;reg[31:0]random_state=32'h51951;
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<18)$display("[FAIL] supervisor HD%0d HZ%0d %s t%0t state%0d",HD,HZ,message,$time,opt_recovery_state);end end  end endtask
+ task check(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<18)$display("[FAIL] supervisor HD%0d HZ%0d %s t%0t state%0d",HD,HZ,message,$time,opt_recovery_state);end   end endtask
  task tick(input integer n);begin repeat(n)begin @(posedge clk);#2;end  end endtask
  always @(posedge clk)begin
   if(!rst_n)boot_events=0;
   else if(opt_err_push&&opt_err_src==6)boot_events=boot_events+1;
   #1;if(rst_n)check(legacy_pack===reference_pack,"default0 exactly matches frozen pre-change supervisor on every public output and edge");
  end
- task reset;begin begin
+ task reset;begin
   @(negedge clk);rst_n=0;manual_safe=0;request=0;cached=0;failed=0;integrity=0;bus=0;fatal=0;
   frame_hb=1;mem_hb=0;media_hb=0;memory_active=0;media_active=0;vu=0;au=0;drops=0;rejected=0;fallback=0;
   tick(3);@(negedge clk);rst_n=1;
- end  end endtask
- task reach_wait;begin begin
+   end endtask
+ task reach_wait;begin
   @(negedge clk);request=1;tick(1);@(negedge clk);request=0;
   guard=0;while(opt_recovery_state!=4&&guard<160)begin tick(1);guard=guard+1;end
   check(opt_recovery_state==4&&opt_recovery_busy&&!opt_media_reset,"finite reset/settle enters released self-test WAIT");
- end  end endtask
+   end endtask
  initial begin
   reset();
   for(i=0;i<800;i=i+1)begin
@@ -205,15 +205,15 @@ module progress_recovery_case561 #(parameter TIMEOUT=7)(output reg done_all,outp
   .clk(clk),.rst_n(rst_n),.request(request),.done(completed),.failed(failed),.fatal(fatal),.progress(progress),
   .busy(busy),.media_reset(media_reset),.rescan_start(rescan),.recovered(recovered),.safe_latched(safe),.attempts(attempts),.state(state));
  integer i,j,guard,reset_count,settle_count,scans=0;
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<18)$display("[FAIL] direct recovery T%0d %s t%0t state%0d",TIMEOUT,message,$time,state);end end  end endtask
+ task check(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<18)$display("[FAIL] direct recovery T%0d %s t%0t state%0d",TIMEOUT,message,$time,state);end   end endtask
  task tick(input integer n);begin repeat(n)begin @(posedge clk);#2;end  end endtask
- task reset;begin begin @(negedge clk);rst_n=0;request=0;completed=0;failed=0;fatal=0;progress=0;tick(3);@(negedge clk);rst_n=1;end  end endtask
- task reach_wait;begin begin
+ task reset;begin  @(negedge clk);rst_n=0;request=0;completed=0;failed=0;fatal=0;progress=0;tick(3);@(negedge clk);rst_n=1;  end endtask
+ task reach_wait;begin
   @(negedge clk);request=1;tick(1);@(negedge clk);request=0;reset_count=0;settle_count=0;guard=0;
   while(state!=4&&guard<20)begin if(state==1)reset_count=reset_count+1;if(state==2)settle_count=settle_count+1;tick(1);guard=guard+1;end
   check(state==4&&busy&&!media_reset&&safe,"request enters finite reset/settle then released WAIT");
   check(reset_count==2&&settle_count==3&&rescan,"reset and settle exact cycle counts; single rescan entry");
- end  end endtask
+   end endtask
  initial begin
   reset();reach_wait();
   for(i=0;i<140;i=i+1)begin

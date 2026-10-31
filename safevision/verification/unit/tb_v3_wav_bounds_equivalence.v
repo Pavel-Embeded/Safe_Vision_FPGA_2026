@@ -8,10 +8,10 @@ module tb_v3_wav_bounds_equivalence;
  v3_wav_bounds_reference reference(.clk(clk),.rst_n(rst),.start(start),.context_load(load),.context_enable(enable),.context_in(ctx),.context_out(bc),.first_clus(32'd2),.file_size(size),.track_id(8'd0),.din(din),.din_valid(dv),.din_eof(eof),.din_ready(br),.sample(bsample),.pcm_valid(bv),.pcm_ready(ready),.wav_error(be));
  integer comparisons=0,errors=0,k;reg[31:0] r=32'h753c4ab1,t=32'h18397455,u=32'h19a92371,a,l;
  reg[63:0] assembled64,limit64;reg want_pad,want_size,want_overflow;
- task check(input  ok,input [4095:0] message);begin begin
+ task check(input  ok,input [4095:0] message);begin
   ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<9)$display("[FAIL] %s k=%0d ctx=%h size=%h din=%h",message,k,ctx,size,din);end
- end  end endtask
- task compare;begin begin check({ac,ar,asample,av,ae}==={bc,br,bsample,bv,be},"exact context,ready,PCM,error same edge");end  end endtask
+   end endtask
+ task compare;begin  check({ac,ar,asample,av,ae}==={bc,br,bsample,bv,be},"exact context,ready,PCM,error same edge");  end endtask
  initial begin
   #2;compare();#11;rst=1;
   for(k=0;k<200000;k = k + 1)begin

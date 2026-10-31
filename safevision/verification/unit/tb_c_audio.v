@@ -16,10 +16,10 @@ module tb_c_audio;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 
@@ -54,11 +54,11 @@ module tb_c_audio;
 
 
     task sched_tick;
-        begin begin
+        begin
             @(posedge clk); #1;
             while (sample_tick !== 1'b1) begin @(posedge clk); #1; end
             @(posedge clk); #1;
-        end
+
      end endtask
 
 
@@ -66,7 +66,7 @@ module tb_c_audio;
     task measure_period;
         output integer n;
         integer c;
-        begin begin
+        begin
             @(posedge clk); #1;
             while (sample_tick !== 1'b1) begin @(posedge clk); #1; end
             c = 0;
@@ -76,7 +76,7 @@ module tb_c_audio;
                 c = c + 1;
             end
             n = c + 1;
-        end
+
      end endtask
 
 
@@ -124,11 +124,11 @@ module tb_c_audio;
     );
 
     task do_sample;
-        begin begin
+        begin
             a_valid_in = 1'b1;
             @(posedge clk); #1;
             a_valid_in = 1'b0;
-        end
+
      end endtask
 
 

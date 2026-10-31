@@ -6,9 +6,9 @@ module v3_hd_stream_budget_test #(parameter integer MEM_MHZ=50,MODE=0,READ_LAT=4
  localparam integer IW=MODE==0 ? 640:MODE==1 ? 960:MODE==2 ? 320:160;
  localparam integer IH=MODE==0 ? 480:MODE==1 ? 720:MODE==2 ? 240:120;
  localparam integer LEFT=(1280-IW)/2,TOP=(720-IH)/2,STEP=MODE==2 ? 2:MODE==3 ? 4:1;
- function integer source_y(input integer oy);begin begin
+ function integer source_y(input integer oy);begin
   source_y=oy<TOP ? 0:oy>=TOP+IH ? 479:MODE==1 ? (oy-TOP)*2/3:(oy-TOP)*STEP;
- end  end endfunction
+   end endfunction
  reg mem=0,pix=0,audio=0,rst=0; reg sys=0; always #5 sys=~sys;
  always #(500.0/MEM_MHZ)mem=~mem;
  always #6.734006734 pix=~pix;
@@ -43,7 +43,7 @@ module v3_hd_stream_budget_test #(parameter integer MEM_MHZ=50,MODE=0,READ_LAT=4
  sv_async_fifo #(.WIDTH(40),.AW(8)) pcm(.rst(!rst),.wr_clk(mem),.rd_clk(audio),
  .wr_data(samples),.wr_valid(sample_push),.wr_ready(sample_room),.wr_level(fifo_wlevel),
  .rd_data(audio_data),.rd_valid(audio_valid),.rd_ready(audio_pop),.rd_level(fifo_rlevel));
- function[31:0] pcm_at(input integer slot,index);begin begin pcm_at={v_cast_s16(slot*4096+index),v_cast_u16(32'hc357^index)};end  end endfunction
+ function[31:0] pcm_at(input integer slot,index);begin  pcm_at={v_cast_s16(slot*4096+index),v_cast_u16(32'hc357^index)};  end endfunction
  always @*begin
   for(wi=0;wi<4;wi=wi+1)begin
    ingress[wi*32+:32]=pcm_at(wi,written[wi]);
@@ -99,33 +99,33 @@ module v3_hd_stream_budget_test #(parameter integer MEM_MHZ=50,MODE=0,READ_LAT=4
  v3_hd_pressure_app_model #(.REFRESH_CYCLES(MEM_MHZ*78/10),.READ_LAT(READ_LAT)) physical(.clk(mem),.rst(!rst),
  .wr_en(we),.rd_en(re),.wr_addr(wa),.rd_addr(ra),.wr_data(wd),.wr_dm(dm),
  .initialized(init),.ref_valid(refresh),.busy(physical_busy),.valid(rv),.data(rr));
- function[15:0] image_at(input integer slot,row,col);begin begin
+ function[15:0] image_at(input integer slot,row,col);begin
   image_at=v_cast_u16((slot*16381)^(row*73)^(col*193)^32'h59a6);
- end  end endfunction
- function[31:0] word_at(input integer slot,row,col);begin begin
+   end endfunction
+ function[31:0] word_at(input integer slot,row,col);begin
   word_at={image_at(slot,row,col*2+1),image_at(slot,row,col*2)};
- end  end endfunction
+   end endfunction
  function[31:0] checksum(input integer slot,row);
-  integer c,b;reg[31:0] v;begin begin v=32'hffffffff;
+  integer c,b;reg[31:0] v;begin  v=32'hffffffff;
    for(c=0;c<320;c=c+1)begin v=v^word_at(slot,row,c);
     for(b=0;b<32;b=b+1)v=v[0] ? (v>>1)^32'hedb88320:v>>1;
    end checksum=~v;
-  end
+
   end endfunction
  integer lookup_slot,lookup_row;
  always @(posedge mem)begin
-  begin : v_loop_1 integer k; for( k=0;k<4;k=k+1)if(rst&&ingress_ready[k]&&ingress_valid[k])written[k]<=written[k]+1; end 
+  begin : v_loop_1 integer k; for( k=0;k<4;k=k+1)if(rst&&ingress_ready[k]&&ingress_valid[k])written[k]<=written[k]+1; end
   lookup_slot=lookup_addr/32'ha0000;lookup_row=(lookup_addr%32'ha0000)/1280;
   lookup_valid<=rst&&lookup_slot<2&&lookup_row<480;
   if(lookup_slot<2&&lookup_row<480)lookup_crc<=signatures[lookup_slot*480+lookup_row];
  end
- task prime;integer t;begin begin
+ task prime;integer t;begin
   @(negedge pix);descriptor={SCALE,2'd0,2'd1,1'b1,10'd0,v_cast_s9(MODE>=2 ? 0:1)};request=1;
   while(!request_ready)@(negedge pix);
   @(negedge pix);request=0;t=0;
   while(!primed&&t<50000)begin @(negedge pix);t=t+1;end
   if(!primed)begin errors=errors+1;$display("[FAIL] initial rows not primed fault=%b",fault);end
- end  end endtask
+   end endtask
  integer row,col,slot,srcrow,srcx,future,nextx,nextr,timer;
  reg[127:0] expected,observed;
  initial begin:run_test
@@ -182,10 +182,10 @@ module v3_hd_stream_budget_test #(parameter integer MEM_MHZ=50,MODE=0,READ_LAT=4
  end
  initial begin #100000000;if(!done)begin errors = errors + 1;$display("[FAIL] bounded shared memory timeout");done=1;end end
 
-function signed [8:0] v_cast_s9; input signed [8:0] value; begin begin v_cast_s9=value; end  end endfunction
-function signed [9:0] v_cast_s10; input signed [9:0] value; begin begin v_cast_s10=value; end  end endfunction
-function [15:0] v_cast_u16; input [15:0] value; begin begin v_cast_u16=value; end  end endfunction
-function signed [15:0] v_cast_s16; input signed [15:0] value; begin begin v_cast_s16=value; end  end endfunction
+function signed [8:0] v_cast_s9; input signed [8:0] value; begin  v_cast_s9=value;   end endfunction
+function signed [9:0] v_cast_s10; input signed [9:0] value; begin  v_cast_s10=value;   end endfunction
+function [15:0] v_cast_u16; input [15:0] value; begin  v_cast_u16=value;   end endfunction
+function signed [15:0] v_cast_s16; input signed [15:0] value; begin  v_cast_s16=value;   end endfunction
 endmodule
 module tb_v3_hd_stream_budget_0_lat4;
  wire done;v3_hd_stream_budget_test #(.MODE(0),.READ_LAT(4)) t(done);

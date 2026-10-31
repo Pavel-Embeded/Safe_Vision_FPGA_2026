@@ -18,6 +18,8 @@ python -m pip install -r requirements-dev.txt
 
 所有命令从仓库根目录执行。TD、XSim 的运行目录使用英文路径，并放在仓库外。目录已有构建结果时，换一个新目录运行。
 
+PowerShell 构建入口从 PATH 查找 Python，也可通过 `-Python` 指定解释器路径。
+
 ## 源码和语言检查
 
 ```powershell
@@ -61,6 +63,20 @@ python -B safevision/tools/run_v3_board.py --mode base --bitgen --run-dir D:/sv_
 脚本先执行功能回归，再核对提交与实际输入。综合和实现分别由新的 TD 进程完成，最终时序也在新的进程中复核。所选模式全部通过资源、约束和时序检查后才生成位流。
 
 默认 TD 目录为 `D:/Anlogic/TD_6.2.1_Engineer_6.2.168.116`，可用 `--td-root` 修改。HD 使用 `--mode hd`；每份输出按自己的构建记录验收。
+
+顶层通过 `MEDIA_PIPELINE_PROFILE` 选择媒体通路的配套流水设置，`TICKER_ENABLE` 控制字幕相关逻辑，`FIRMWARE_ID` 提供串口版本标识。编译清单中的配置文件给出当前取值；修改参数组合后，重新运行对应模式的回归和 TD 构建。
+
+资源策略使用 `SV-RES-EG4S20` 修订 2，配置和校验器共同约束以下要求：
+
+| 编号 | 要求 |
+| --- | --- |
+| `SV-RES-001` | 固定 EG4S20BG256 的实际容量；一个 RAM32K 按四个 RAM9K 物理单元计算 |
+| `SV-RES-002` | LUT、寄存器、RAM 目标为 70%、65%、75%，硬门槛为 100%、80%、100% |
+| `SV-TIM-001` | 通过厂商原生布局布线 |
+| `SV-TIM-002` | 全部角落的 setup、hold、recovery、removal 检查通过 |
+| `SV-FUNC-001` | 保留全部功能 |
+
+资源报告还核对 DSP、PLL 的用量和器件容量。综合通过只确认综合结果及资源，位流生成仍须通过实现、约束和时序检查。
 
 ## 提交约定
 

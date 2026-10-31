@@ -8,33 +8,33 @@ module tb_v3_hd_audio_ingress;
  reg[31:0] expected[0:2047];integer head=0,tail=0,checks=0;reg stalled=0;reg[31:0] last_value;
  always @(posedge wc)if(!rst&&valid&&ready)begin expected[tail]=data;tail=tail+1;end
  always @(posedge rc)if(!rst)begin
-  if(stalled&&(!rv||out!==last_value))begin $display("[FAIL] ingress pair changed under backpressure"); $finish; end 
+  if(stalled&&(!rv||out!==last_value))begin $display("[FAIL] ingress pair changed under backpressure"); $finish; end
   stalled=rv&&!re;last_value=out;
   if(rv&&re)begin
-   if(head>=tail||out!==expected[head])begin $display("[FAIL] ingress stereo framing/order idx=%0d got=%h expected=%h",head,out,expected[head]); $finish; end 
+   if(head>=tail||out!==expected[head])begin $display("[FAIL] ingress stereo framing/order idx=%0d got=%h expected=%h",head,out,expected[head]); $finish; end
    head=head+1;checks=checks+1;
   end
  end
  task send(input integer n);
-  begin begin @(negedge wc);data=32'ha5c30000+n;valid=1;@(posedge wc);while(!ready)@(posedge wc);@(negedge wc);valid=0;end
+  begin  @(negedge wc);data=32'ha5c30000+n;valid=1;@(posedge wc);while(!ready)@(posedge wc);@(negedge wc);valid=0;
   end endtask
  task reset_epoch;
-  begin begin rst=1;valid=0;read_clock=1;re=0;#100;head=0;tail=0;stalled=0;rst=0;repeat(10)@(negedge wc);end
+  begin  rst=1;valid=0;read_clock=1;re=0;#100;head=0;tail=0;stalled=0;rst=0;repeat(10)@(negedge wc);
   end endtask
  initial begin
   reset_epoch();@(negedge rc);read_clock=0;
-  begin : v_loop_1 integer k; for( k=0;k<126;k=k+1)send(k); end 
+  begin : v_loop_1 integer k; for( k=0;k<126;k=k+1)send(k); end
   wait(!dut.holding);repeat(5)@(negedge wc);
-  if(!room||dut.words!=252)begin $display("[FAIL] precondition full-sector reservation words=%0d room=%b",dut.words,room); $finish; end 
+  if(!room||dut.words!=252)begin $display("[FAIL] precondition full-sector reservation words=%0d room=%b",dut.words,room); $finish; end
 
-  begin : v_loop_2 integer k; for( k=126;k<254;k=k+1)send(k); end 
+  begin : v_loop_2 integer k; for( k=126;k<254;k=k+1)send(k); end
   wait(!dut.holding);repeat(5)@(negedge wc);
-  if(dut.words!=508||room||pairs!=254)begin $display("[FAIL] 128pair sector capacity was reduced words=%0d pairs=%0d",dut.words,pairs); $finish; end 
+  if(dut.words!=508||room||pairs!=254)begin $display("[FAIL] 128pair sector capacity was reduced words=%0d pairs=%0d",dut.words,pairs); $finish; end
   read_clock=1;re=1;wait(head>=100);re=0;repeat(20)@(negedge rc);re=1;wait(head==tail);
 
-  fork : v_race_1  begin : v_branch_1 begin send(300);end disable v_race_1; end  begin : v_branch_2 begin wait(dut.holding&&dut.write_part);rst=1;end disable v_race_1; end  join 
+  fork : v_race_1  begin : v_branch_1 begin send(300);end disable v_race_1; end  begin : v_branch_2 begin wait(dut.holding&&dut.write_part);rst=1;end disable v_race_1; end  join
   reset_epoch();re=1;
-  begin : v_loop_3 integer k; for( k=0;k<200;k=k+1)send(k+400); end 
+  begin : v_loop_3 integer k; for( k=0;k<200;k=k+1)send(k+400); end
   wait(head==tail);repeat(10)@(negedge rc);
   $display("[PASS] one TD16x512 FIFO reserves128stereo pairs at252words, lossless order/backpressure/halfpacket epoch");
   $display("PASS tb_v3_hd_audio_ingress errors=0 comparisons=%0d",checks);$finish;

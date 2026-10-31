@@ -20,11 +20,11 @@ module tb_v3_hd_supervisor_windows;
  .err_push(b[53]),.err_code(b[61:54]),.err_src(b[65:62]),.err_level(b[68:66]),.err_ts(b[100:69]));
 
 
- task compare;begin begin comparisons = comparisons + 1;
+ task compare;begin  comparisons = comparisons + 1;
   if(a[100:0]!==b[100:0] || (rst && dut.pending_alert!==dut.pending))begin errors = errors + 1;
    if(errors<9)$display("[FAIL] alert same-edge got=%h want=%h pending=%h alert=%h",a[100:0],b[100:0],dut.pending,dut.pending_alert);
   end
- end  end endtask
+   end endtask
 
 
  always @(posedge clk)if(rst && golden.window_done)begin

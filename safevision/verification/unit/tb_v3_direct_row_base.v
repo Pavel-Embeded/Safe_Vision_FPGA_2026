@@ -105,16 +105,16 @@ module tb_v3_direct_row_base;
  integer slot,row,col,k,wait_cycles,selected,index,queries=0,verified_frames=0;
  reg manual_queries=0,finished=0;reg wanted_valid;
  reg [63:0]  comparisons=0;
- function[31:0] word_at;input[31:0] address;begin begin
+ function[31:0] word_at;input[31:0] address;begin
   word_at=32'h93a57ce1^(address*32'h01020411)^(address>>3);
- end  end endfunction
- task compare_public;begin begin
+   end endfunction
+ task compare_public;begin
   comparisons=comparisons+1;
   if(d_public!==g_public)begin
    errors=errors+1;data_errors=data_errors+1;
    if(data_errors<=4)$display("[FAIL] complete row-guard public interface differs time=%0t",$time);
   end
- end  end endtask
+   end endtask
  always @(posedge clk)begin
   if(rst_n)compare_public;
   #1;if(rst_n)compare_public;
@@ -138,12 +138,12 @@ module tb_v3_direct_row_base;
    end
   end
  end
- task finish_test;begin begin
+ task finish_test;begin
   finished=1;
   if(errors==0)$display("[PASS] four full source/readback frames and all4096cache-address aliases;14ports233bits before/after each edge");
   $display("PASS tb_v3_direct_row_base errors=%0d comparisons=%0d data_errors=%0d driver_errors=%0d gold_errors=%0d queries=%0d verified_frames=%0d public_bits=233",errors,comparisons,data_errors,driver_errors,gold_errors,queries,verified_frames);
   $finish;
- end  end endtask
+   end endtask
  initial begin
   $readmemh("direct_row_crc113.mem",row_expected);
   repeat(4)@(negedge clk);rst_n=1;

@@ -13,9 +13,9 @@ module tb_safevision_memory_display #(parameter integer HD=0,RD_LAT=4,WR_LOAD=0)
   .HDMI_DDC_SCL(scl),.HDMI_DDC_SDA(sda));
  defparam dut.memory_ip.RD_LAT=RD_LAT;
  function [15:0] pixel(input integer x,y);
-  reg[7:0]r,g,b;begin begin r=x^y;g=x+y;b=(x*3)^(y*5)^((x>>8)<<6)^((y>>8)<<5);pixel={r[7:3],g[7:2],b[7:3]};end
+  reg[7:0]r,g,b;begin  r=x^y;g=x+y;b=(x*3)^(y*5)^((x>>8)<<6)^((y>>8)<<5);pixel={r[7:3],g[7:2],b[7:3]};
   end endfunction
- function [23:0] expand(input[15:0]p);begin begin expand={p[15:11],p[15:13],p[10:5],p[10:9],p[4:0],p[4:2]};end  end endfunction
+ function [23:0] expand(input[15:0]p);begin  expand={p[15:11],p[15:13],p[10:5],p[10:9],p[4:0],p[4:2]};  end endfunction
  integer i,x,y,k=0,frames=0,compared=0;reg compare=0;
  localparam integer CW=HD ? 1280:640,CH=HD ? 720:480,OX=HD ? 320:0,OY=HD ? 120:0;
  reg[23:0]expected;
@@ -28,7 +28,7 @@ module tb_safevision_memory_display #(parameter integer HD=0,RD_LAT=4,WR_LOAD=0)
   while(!stop_load)begin
    @(negedge dut.mem_clk);write_addr=`SV_IMG0_BASE+write_index*4;
    write_data=32'hfeca0000+write_index;write_req=1;
-   begin begin @(posedge dut.mem_clk); end while(!dut.prod_wr_ack)begin @(posedge dut.mem_clk); end end 
+   begin begin @(posedge dut.mem_clk); end while(!dut.prod_wr_ack)begin @(posedge dut.mem_clk); end end
    @(negedge dut.mem_clk);write_req=0;
 
    wait(!dut.prod_wr_busy);write_offers=write_offers+1;write_index=write_index+1;
@@ -50,7 +50,7 @@ module tb_safevision_memory_display #(parameter integer HD=0,RD_LAT=4,WR_LOAD=0)
   wait(dut.sk_state==4'd1);
   for(write_index=0;write_index<153600;write_index=write_index+1)begin
    @(negedge clk);stream_word=32'hfeca0000+write_index;stream_valid=1;
-   begin begin @(posedge clk); end while(!dut.pl_px_word_ready)begin @(posedge clk); end end 
+   begin begin @(posedge clk); end while(!dut.pl_px_word_ready)begin @(posedge clk); end end
    @(negedge clk);stream_valid=0;write_offers=write_offers+1;
   end
   stream_done=1;
@@ -60,8 +60,8 @@ module tb_safevision_memory_display #(parameter integer HD=0,RD_LAT=4,WR_LOAD=0)
   if(compare)begin
    x=k%CW;y=k/CW;
    expected=(x>=OX&&x<OX+640&&y>=OY&&y<OY+480) ? expand(pixel(x-OX,y-OY)):24'd0;
-   if(dut.axis_data!==expected)begin $display("[FAIL] HD=%0d display mismatch (%0d,%0d) got=%06x expected=%06x",HD,x,y,dut.axis_data,expected); $finish; end 
-   if(dut.axis_last!==(x==CW-1))begin $display("[FAIL] Wrong EOL"); $finish; end 
+   if(dut.axis_data!==expected)begin $display("[FAIL] HD=%0d display mismatch (%0d,%0d) got=%06x expected=%06x",HD,x,y,dut.axis_data,expected); $finish; end
+   if(dut.axis_last!==(x==CW-1))begin $display("[FAIL] Wrong EOL"); $finish; end
    if(x>=OX&&x<OX+640&&y>=OY&&y<OY+480)compared=compared+1;
    k=k+1;
    if(k==CW*CH)begin frames=frames+1;compare=0;
@@ -80,14 +80,14 @@ module tb_safevision_memory_display #(parameter integer HD=0,RD_LAT=4,WR_LOAD=0)
   if(WR_LOAD)begin
    if(WR_LOAD==2)begin wait(stream_done);wait(dut.sk_px_written==307200);end
    stop_load=1;wait(!dut.prod_wr_req&&!dut.prod_wr_busy&&dut.adapter_write_idle);
-   if(write_offers<1000||dut.memory_ip.stored_words!=write_offers)begin $display("[FAIL] Concurrent write loss offers=%0d stored=%0d",write_offers,dut.memory_ip.stored_words); $finish; end 
+   if(write_offers<1000||dut.memory_ip.stored_words!=write_offers)begin $display("[FAIL] Concurrent write loss offers=%0d stored=%0d",write_offers,dut.memory_ip.stored_words); $finish; end
    for(i=0;i<write_offers;i=i+1)
-    if(dut.memory_ip.mem[(`SV_IMG0_BASE>>2)+i]!==32'hfeca0000+i)begin $display("[FAIL] Concurrent write data mismatch at %0d",i); $finish; end 
+    if(dut.memory_ip.mem[(`SV_IMG0_BASE>>2)+i]!==32'hfeca0000+i)begin $display("[FAIL] Concurrent write data mismatch at %0d",i); $finish; end
    $display("[PASS] CONCURRENT SD-RATE WRITE HD=%0d words=%0d bytes=%0d U=%0d O=%0d",HD,write_offers,write_offers*4,dut.underflows,dut.overflows);
   end
   if(dut.underflows||dut.overflows||dut.memory_error||dut.adapter_fault||dut.memory_ip.protocol_errors||dut.hdmi_backpressure)
-   begin $display("[FAIL] HD=%0d bandwidth/contract failure U=%0d O=%0d mem=%b",HD,dut.underflows,dut.overflows,dut.memory_error); $finish; end 
-  if(compared!=921600)begin $display("[FAIL] Incomplete pixel comparison"); $finish; end 
+   begin $display("[FAIL] HD=%0d bandwidth/contract failure U=%0d O=%0d mem=%b",HD,dut.underflows,dut.overflows,dut.memory_error); $finish; end
+  if(compared!=921600)begin $display("[FAIL] Incomplete pixel comparison"); $finish; end
   $display("[PASS] MEMORY BANDWIDTH HD=%0d clocks=50MHz/8ns frames=%0d pixels=%0d underflows=0 overflows=0 physical_read_bursts=%0d",HD,frames,compared,dut.memory_ip.read_bursts);$finish;
  end
  initial begin #120000000;begin $display("[FAIL] Memory display watchdog HD=%0d frames=%0d active=%b safety=%b U=%0d O=%0d state=%0d level=%0d DMA=%0d memory_fault=%b",HD,frames,dut.active,dut.safety_active,dut.underflows,dut.overflows,dut.core.display.mem_fetch_state,dut.core.display.mem_fifo_pixels,dut.core.display.mem_dma_bytes,dut.memory_error); $finish; end end

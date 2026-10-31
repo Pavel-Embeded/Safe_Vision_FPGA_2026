@@ -18,7 +18,7 @@ module tb_wav_parser;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             checks=checks+1;
             if (cond) begin
                 $display("[PASS] %0s", name);
@@ -26,7 +26,7 @@ module tb_wav_parser;
                 $display("[FAIL] %0s", name);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 
@@ -116,29 +116,29 @@ module tb_wav_parser;
     end
 
     task wav_clear_mon;
-        begin begin
+        begin
             w_n = 0; w_hd_n = 0; w_end_n = 0;
-        end
+
      end endtask
 
     task wr_le16;
         input integer pos;
         input [15:0]  v;
-        begin begin
+        begin
             w_mem[pos]   = v[7:0];
             w_mem[pos+1] = v[15:8];
-        end
+
      end endtask
 
     task wr_le32;
         input integer pos;
         input [31:0]  v;
-        begin begin
+        begin
             w_mem[pos]   = v[7:0];
             w_mem[pos+1] = v[15:8];
             w_mem[pos+2] = v[23:16];
             w_mem[pos+3] = v[31:24];
-        end
+
      end endtask
 
 
@@ -148,7 +148,7 @@ module tb_wav_parser;
         input integer unk_size;
         input         bad_riff;
         integer p;
-        begin begin
+        begin
             for (i = 0; i < 1024; i = i + 1) w_mem[i] = 8'h00;
 
             w_mem[0] = bad_riff  ?  8'h58 : 8'h52;
@@ -197,12 +197,12 @@ module tb_wav_parser;
 
             w_len = p + 24;
             wr_le32(4, w_len - 8);
-        end
+
      end endtask
 
     task wav_run;
         input integer maxc;
-        begin begin
+        begin
             wav_clear_mon;
             wav_file_size = w_len;
 
@@ -217,7 +217,7 @@ module tb_wav_parser;
                 wc = wc + 1;
             end
             repeat (40) @(posedge clk);
-        end
+
      end endtask
 
 

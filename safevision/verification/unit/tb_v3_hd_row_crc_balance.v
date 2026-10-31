@@ -7,12 +7,12 @@ module tb_v3_hd_row_crc_balance;
  .request_valid(1'b0),.request_data(24'd0),.response_ready(1'b0),.sx(10'd0),.sy(10'd0),
  .coord_valid(1'b0),.scale_select(2'd0),.current_slot(2'd0),.target_slot(2'd0),.dual_needed(1'b0),
  .rd_ack(1'b0),.rd_busy(1'b0),.rd_valid(1'b0),.rd_data(data),.lookup_crc(32'd0),.lookup_valid(1'b0));
- task check;begin begin
+ task check;begin
   v=state^data;
   for(i=0;i<32;i=i+1)if(v[0])v=(v>>1)^32'hedb88320;else v=v>>1;
   expected=v;#1;comparisons = comparisons + 1;
   if(dut.row_crc_next!==expected)begin errors = errors + 1;if(errors<6)$display("[FAIL] CRC state=%h data=%h actual=%h expected=%h",state,data,dut.row_crc_next,expected);end
- end  end endtask
+   end endtask
  initial begin
   force dut.crc=state;
   for(k=0;k<32;k=k+1)begin state=1<<k;data=0;check();state=0;data=1<<k;check();end

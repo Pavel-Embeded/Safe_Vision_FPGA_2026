@@ -29,9 +29,9 @@ module tb_v3_source_wait_legacy;
   .mem_ready(omr),.frame_done(ofd),.last_frame_ok(ookay),.wr_req(osreq),.wr_addr(osa),.wr_data(osdata),.wr_len(oslen),.wr_ready(sack),
   .swap_toggle(oswap),.swap_slot(osslot),.swap_generation(ogen),.swap_crc_ok(oscrc),.swap_busy(1'b0),.state_o(oss),.err_code(ose),.err_detail(osdetail),
   .frame_cnt(oframes),.px_written(ospx),.write_drained(1'b1),.verify_done(1'b1),.verify_pass(1'b1),.source_begin(),.source_slot(),.source_top_down());
- task ck(input  condition,input [4095:0] message);begin begin
+ task ck(input  condition,input [4095:0] message);begin
   condition = (condition === 1'b1); comparisons = comparisons + 1;if(!condition)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s cycle=%0d",message,cycle);end
- end  end endtask
+   end endtask
  always @(negedge clk)begin
   cycle = cycle + 1;
   random_state={random_state[30:0],random_state[31]^random_state[21]^random_state[1]^random_state[0]};

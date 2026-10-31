@@ -13,15 +13,15 @@ module tb_v3_decimal_dsp_miter;
  wire[185:0] d_public={cv,target,name,value,q,pv,code,rejected,catalog_id};
  wire[185:0] g_public={ocv,otarget,oname,ovalue,oq,opv,ocode,orejected,oid};
  integer public_comparisons=0,data_errors=0,driver_errors=0;
- task compare_public;begin begin
+ task compare_public;begin
   public_comparisons = public_comparisons + 1;
   if(d_public!==g_public)begin errors = errors + 1;data_errors = data_errors + 1;
    if(data_errors<7)$display("[FAIL] full decimal parser public interface differs got=%h expected=%h",d_public,g_public);
   end
- end  end endtask
+   end endtask
  always @(posedge clk)begin #2;compare_public();end
  always @(negedge clk)begin #2;compare_public();end
- function  known(input[95:0] n);begin begin case(n)
+ function  known(input[95:0] n);begin  case(n)
   96'h00000000000000414c504841,
   96'h00000000000000004155544f,
   96'h000000004241444552524f52,
@@ -64,23 +64,23 @@ module tb_v3_decimal_dsp_miter;
   96'h00000000000000004d454e55,
   96'h000000005343414c4553454c:
 
-  known= ((1) === 1'b1);default:known= ((0) === 1'b1);endcase end  end endfunction
- task ck(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<9)$display("[FAIL] %s",message);end end  end endtask
+  known= ((1) === 1'b1);default:known= ((0) === 1'b1);endcase   end endfunction
+ task ck(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<9)$display("[FAIL] %s",message);end   end endtask
  always @(posedge clk)begin #1;
   ck({cv,pv,rejected}==={ocv,opv,orejected},"cycle-exact valid/reply/rejection-count behavior");
   if(cv)begin commands = commands + 1;ck({target,value,q}==={otarget,ovalue,oq},"target, full signed value and query match original");
    ck(known(oname) ? name===oname:name===0,"all known names exact; every unknown canonicalized without false recognition");end
   if(pv)begin replies = replies + 1;ck(code===ocode,"identical malformed-packet reply code");end
  end
- task emit(input[7:0] byte_value);begin begin
+ task emit(input[7:0] byte_value);begin
   @(negedge clk);data=byte_value;rv=1;@(negedge clk);rv=0;
   repeat(96)begin seed=seed*1664525+1013904223;data=seed[7:0];@(negedge clk);end
- end  end endtask
- function[7:0] hex(input[3:0] n);begin begin hex=n<10 ? 48+n:55+n;end  end endfunction
- task frame(input [4095:0] body,input  corrupt);reg[7:0] crc;integer n;begin begin
+   end endtask
+ function[7:0] hex(input[3:0] n);begin  hex=n<10 ? 48+n:55+n;  end endfunction
+ task frame(input [4095:0] body,input  corrupt);reg[7:0] crc;integer n;begin
   corrupt = (corrupt === 1'b1); crc=0;emit(36);for(n=0;n<v_string_length(body);n = n + 1)begin crc=crc^v_string_char(body,n);emit(v_string_char(body,n));end
   if(corrupt)crc=crc^1;emit(42);emit(hex(crc[7:4]));emit(hex(crc[3:0]));emit(13);emit(10);repeat(90)@(negedge clk);
- end  end endtask
+   end endtask
  reg [4095:0] random_name;
  initial begin
   repeat(4)@(negedge clk);rst=1;
@@ -252,9 +252,9 @@ module tb_v3_decimal_dsp_miter;
  end
  initial begin #20000000;driver_errors = driver_errors + 1;$display("[FAIL] catalog oracle watchdog errors=1");$finish;end
 
-function [7:0] v_cast_u8; input [7:0] value; begin begin v_cast_u8=value; end  end endfunction
-function integer v_string_length; input[4095:0] value; integer k; begin begin v_string_length=0; for(k=0;k<512;k=k+1)if(value[k*8+:8]!=0)v_string_length=k+1; end  end endfunction
-function[7:0] v_string_char; input[4095:0] value; input integer index; integer n; begin begin n=v_string_length(value); if((index>=0&&index<n)===1'b1)v_string_char=value[(n-1-index)*8+:8];else v_string_char=0; end  end endfunction
+function [7:0] v_cast_u8; input [7:0] value; begin  v_cast_u8=value;   end endfunction
+function integer v_string_length; input[4095:0] value; integer k; begin  v_string_length=0; for(k=0;k<512;k=k+1)if(value[k*8+:8]!=0)v_string_length=k+1;   end endfunction
+function[7:0] v_string_char; input[4095:0] value; input integer index; integer n; begin  n=v_string_length(value); if((index>=0&&index<n)===1'b1)v_string_char=value[(n-1-index)*8+:8];else v_string_char=0;   end endfunction
 endmodule
 
 
@@ -271,7 +271,7 @@ module parser_timeout_contract #(parameter integer TIMEOUT=2)(input wire clk,sta
    if(errors<3)$display("[FAIL] exact timer deadline T=%0d",TIMEOUT);errors=errors+1;
   end
  end end
- task emit(input[7:0]b);begin begin @(negedge clk);rv=1;data=b;@(negedge clk);rv=0;end  end endtask
+ task emit(input[7:0]b);begin  @(negedge clk);rv=1;data=b;@(negedge clk);rv=0;  end endtask
  initial begin
   wait(start);@(negedge clk);rst=1;
   for(n=0;n<128;n = n + 1)begin

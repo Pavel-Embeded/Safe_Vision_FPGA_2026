@@ -7,13 +7,13 @@ module tb_v3_thirds_scaler;
  scaler_bilinear control(clk,rst_n,valid_in,bilinear,p00,p10,p01,p11,fx,fy,original,original_valid);
  integer errors=0,comparisons=0,a,b,f,i;reg[31:0] seed=32'hf24391cd;
  reg[15:0] expected0=0,expected1=0,expected2=0;reg[2:0] val=0;
- function integer lerp(input integer aa,bb,ff);begin begin lerp=(aa*(256-ff)+bb*ff+128)/256;end  end endfunction
+ function integer lerp(input integer aa,bb,ff);begin  lerp=(aa*(256-ff)+bb*ff+128)/256;  end endfunction
  function[15:0] rgb(input[15:0] q00,q10,q01,q11,input integer xx,yy);
- integer rr,gg,bb;begin begin
+ integer rr,gg,bb;begin
  rr=lerp(lerp(q00[15:11],q10[15:11],xx),lerp(q01[15:11],q11[15:11],xx),yy);
  gg=lerp(lerp(q00[10:5],q10[10:5],xx),lerp(q01[10:5],q11[10:5],xx),yy);
  bb=lerp(lerp(q00[4:0],q10[4:0],xx),lerp(q01[4:0],q11[4:0],xx),yy);
- rgb={rr[4:0],gg[5:0],bb[4:0]};end  end endfunction
+ rgb={rr[4:0],gg[5:0],bb[4:0]};  end endfunction
  always @(posedge clk)begin
  if(!rst_n)begin expected0=0;expected1=0;expected2=0;val=0;end
  else begin
@@ -25,7 +25,7 @@ module tb_v3_thirds_scaler;
   errors=errors+1;if(errors<12)$display("[FAIL] thirds pipeline p=%h old=%h independent=%h",pixel,original,expected2);
  end
  end
- task step;begin begin @(negedge clk);end  end endtask
+ task step;begin  @(negedge clk);  end endtask
  initial begin
  repeat(4)step;rst_n=1;bilinear=1;valid_in=1;
  for(a=0;a<64;a=a+1)for(b=0;b<64;b=b+1)for(f=0;f<3;f=f+1)begin

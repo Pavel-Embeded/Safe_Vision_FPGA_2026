@@ -16,5 +16,5 @@ module tb_v3_uptime193;
  end
  initial begin #1000000;$display("[FAIL] uptime watchdog errors=1");$finish;end
 
-function signed [3:0] v_cast_s4; input signed [3:0] value; begin begin v_cast_s4=value; end  end endfunction
+function signed [3:0] v_cast_s4; input signed [3:0] value; begin  v_cast_s4=value;   end endfunction
 endmodule

@@ -18,8 +18,8 @@ module tb_v3_keys_osd_hd194;
   .uptime_bcd(uptime),.wave_pcm_valid(1'b0),.wave_pcm_left(24'd0),.hud_rgb565(hbase),.hud_alpha(abase),.safe_rgb565(sbase));
  reg[7:0] font[0:1023];integer errors=0,comparisons=0,c,r,col,expected;
  initial $readmemh("font8x16_compact.mem",font);
- task ck(input  ok,input [4095:0] m);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s",m);end end  end endtask
- task glyph(input integer row,index,code);begin begin
+ task ck(input  ok,input [4095:0] m);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s",m);end   end endtask
+ task glyph(input integer row,index,code);begin
   for(r=0;r<16;r = r + 1)for(col=0;col<8;col = col + 1)begin
    @(negedge clk);de=1;x=8+index*8+col;y=row+r;repeat(5)@(posedge clk);#1;
    expected=r!=0&&r!=15 ? ((font[{v_cast_s7(code),v_cast_s3((r-1)/2)}]>>(7-col))&1):0;
@@ -28,8 +28,8 @@ module tb_v3_keys_osd_hd194;
    if(expected)ck(hbase==16'hffff,"parameter/timestamp glyph white");
    if(row==696)ck(sbase==(expected ? 16'hffff:16'd0),"uptime white glyph and dark backing also visible in SAFE layer");
   end
- end  end endtask
- task tap_inc;begin begin @(negedge clk);n=0;repeat(12)@(negedge clk);n=1;repeat(100)@(negedge clk);end  end endtask
+   end endtask
+ task tap_inc;begin  @(negedge clk);n=0;repeat(12)@(negedge clk);n=1;repeat(100)@(negedge clk);  end endtask
  initial begin
   repeat(5)@(negedge clk);power_rst=1;rst=1;repeat(100)@(negedge clk);
   ck(pct==80&&contrast==128,"defaults");glyph(56,4,"0");glyph(56,5,"8");glyph(56,6,"0");glyph(56,13,"1");glyph(56,14,"2");glyph(56,15,"8");
@@ -44,6 +44,6 @@ module tb_v3_keys_osd_hd194;
  end
  initial begin #10000000;$display("[FAIL] key OSD watchdog errors=1");$finish;end
 
-function signed [2:0] v_cast_s3; input signed [2:0] value; begin begin v_cast_s3=value; end  end endfunction
-function signed [6:0] v_cast_s7; input signed [6:0] value; begin begin v_cast_s7=value; end  end endfunction
+function signed [2:0] v_cast_s3; input signed [2:0] value; begin  v_cast_s3=value;   end endfunction
+function signed [6:0] v_cast_s7; input signed [6:0] value; begin  v_cast_s7=value;   end endfunction
 endmodule

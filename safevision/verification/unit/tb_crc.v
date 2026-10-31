@@ -12,11 +12,11 @@ module tb_crc;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             total = total + 1;
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 
@@ -41,27 +41,27 @@ module tb_crc;
 
     task feed16;
         input [7:0] b;
-        begin begin
+        begin
             c16_data = b;
             #1;
             c16_acc = c16_out;
-        end
+
      end endtask
 
     task feed7;
         input [7:0] b;
-        begin begin
+        begin
             c7_data = b;
             #1;
             c7_acc = c7_out;
-        end
+
      end endtask
 
 
     task crc7_of_frame;
         input  [7:0] b0, b1, b2, b3, b4;
         output [6:0] res;
-        begin begin
+        begin
             c7_acc = 7'h00;
             feed7(b0);
             feed7(b1);
@@ -69,7 +69,7 @@ module tb_crc;
             feed7(b3);
             feed7(b4);
             res = c7_acc;
-        end
+
      end endtask
 
     reg [7:0]  crc7_val;

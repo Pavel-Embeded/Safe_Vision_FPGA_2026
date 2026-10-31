@@ -38,49 +38,49 @@ module tb_c_fault_manager;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
     task ncyc;
         input integer n;
         integer k;
-        begin begin for (k = 0; k < n; k = k + 1) begin @(posedge clk); #1; end end
+        begin  for (k = 0; k < n; k = k + 1) begin @(posedge clk); #1; end
      end endtask
 
     task do_reset;
-        begin begin
+        begin
             rst_n = 1'b0;
             err_push = 0; err_code = 8'h00; err_level = 3'd0;
             wdt_timeout = 0; wdt_reason = 8'h00; media_fatal = 0; recover_ack = 0;
             repeat (3) @(posedge clk); #1;
             rst_n = 1'b1; ncyc(2);
-        end
+
      end endtask
 
     task push_err;
         input [7:0] c;
         input [2:0] l;
-        begin begin
+        begin
             @(negedge clk); err_push = 1; err_code = c; err_level = l;
             @(posedge clk); #1; err_push = 0; err_code = 8'h00; err_level = 3'd0;
-        end
+
      end endtask
 
     task pulse_ra;
-        begin begin @(negedge clk); recover_ack = 1; @(posedge clk); #1; recover_ack = 0; end
+        begin  @(negedge clk); recover_ack = 1; @(posedge clk); #1; recover_ack = 0;
      end endtask
 
     task pulse_mfatal;
-        begin begin @(negedge clk); media_fatal = 1; @(posedge clk); #1; media_fatal = 0; end
+        begin  @(negedge clk); media_fatal = 1; @(posedge clk); #1; media_fatal = 0;
      end endtask
 
     task pulse_wdt;
         input [7:0] r;
-        begin begin @(negedge clk); wdt_timeout = 1; wdt_reason = r;
-              @(posedge clk); #1; wdt_timeout = 0; wdt_reason = 8'h00; end
+        begin  @(negedge clk); wdt_timeout = 1; wdt_reason = r;
+              @(posedge clk); #1; wdt_timeout = 0; wdt_reason = 8'h00;
      end endtask
 
     integer trial;

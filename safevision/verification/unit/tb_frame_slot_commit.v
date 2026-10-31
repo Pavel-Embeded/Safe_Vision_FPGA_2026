@@ -17,21 +17,21 @@ module tb_frame_slot_commit;
    previous_fs=fs;phase<=fs ? 0:phase+1;
    if(fs&&dut.pending)begin
     expected_base=`SV_SLOT_BASE(slot);
-    if(nextbase!==expected_base||!nextvalid)begin $display("[FAIL] same-edge prefetch uses old base"); $finish; end 
+    if(nextbase!==expected_base||!nextvalid)begin $display("[FAIL] same-edge prefetch uses old base"); $finish; end
    end
    #0.1;
    if(commit)begin
     commits=commits+1;
-    if(!previous_fs||!valid||{active_slot,active_gen,afi}!=={slot,gen,fi}||base!==expected_base)begin $display("[FAIL] slot commit/mailbox tear"); $finish; end 
+    if(!previous_fs||!valid||{active_slot,active_gen,afi}!=={slot,gen,fi}||base!==expected_base)begin $display("[FAIL] slot commit/mailbox tear"); $finish; end
    end
    if(invalid)invalids=invalids+1;
   end
  end
- task reset_epoch;begin begin
+ task reset_epoch;begin
   @(negedge bc);rst=0;req=0;slot=0;gen=0;fi=0;crc=1;
   repeat(6)@(negedge bc);rst=1;repeat(6)@(negedge ac);
-  if(valid||ack||commit)begin $display("[FAIL] common reset epoch failed"); $finish; end 
- end  end endtask
+  if(valid||ack||commit)begin $display("[FAIL] common reset epoch failed"); $finish; end
+   end endtask
  integer before_ack,before_commit,before_invalid;
  initial begin
   reset_epoch;
@@ -46,13 +46,13 @@ module tb_frame_slot_commit;
    @(negedge bc);req=~req;
    if(!crc)begin
     wait(invalids==before_invalid+1);repeat(80)@(negedge ac);
-    if(acks!=before_ack||commits!=before_commit)begin $display("[FAIL] invalid CRC committed/acked"); $finish; end 
+    if(acks!=before_ack||commits!=before_commit)begin $display("[FAIL] invalid CRC committed/acked"); $finish; end
    end else begin
     wait(acks==before_ack+1);repeat(4)@(negedge bc);
-    if(commits!=before_commit+1)begin $display("[FAIL] request lost/duplicate commit"); $finish; end 
+    if(commits!=before_commit+1)begin $display("[FAIL] request lost/duplicate commit"); $finish; end
    end
   end
-  if(commits!=109||invalids!=11||acks!=109)begin $display("[FAIL] slot coverage totals %0d/%0d/%0d",commits,invalids,acks); $finish; end 
+  if(commits!=109||invalids!=11||acks!=109)begin $display("[FAIL] slot coverage totals %0d/%0d/%0d",commits,invalids,acks); $finish; end
 
 
   for(n=0;n<300;n=n+1)begin
@@ -60,9 +60,9 @@ module tb_frame_slot_commit;
    @(negedge bc);slot=n%2;gen=n[7:0];fi=n%2;crc=1;
    @(negedge bc);req=~req;
    wait(acks==before_ack+1);repeat(4)@(negedge bc);
-   if(commits!=before_commit+1||active_gen!==n[7:0])begin $display("[FAIL] generation rollover lost/duplicate/incorrect commit"); $finish; end 
+   if(commits!=before_commit+1||active_gen!==n[7:0])begin $display("[FAIL] generation rollover lost/duplicate/incorrect commit"); $finish; end
   end
-  if(commits!=409||invalids!=11||acks!=409)begin $display("[FAIL] rollover coverage totals %0d/%0d/%0d",commits,invalids,acks); $finish; end 
+  if(commits!=409||invalids!=11||acks!=409)begin $display("[FAIL] rollover coverage totals %0d/%0d/%0d",commits,invalids,acks); $finish; end
   $display("PASS tb_frame_slot_commit: 409 atomic vblank commits/acks, 11 CRC rejects, 300 sequential generation values including 255->0, same-edge base and in-flight common reset");$finish;
  end
  initial begin #400000;begin $display("[FAIL] slot timeout"); $finish; end end

@@ -20,7 +20,7 @@ module tb_v3_wav_context730;
  .timeout_err(1'b0),.crc16_err(1'b0),.err_code(8'd0),.err_detail(8'd0),.external_service_ready(1'b1),.core_cmd(cmd),.core_rsp(rsp),
  .media_descriptor_valid(descriptor_valid),.media_descriptor_ready(descriptor_ready),.media_descriptor_slot(descriptor_slot),.media_descriptor(descriptor),.media_descriptor_found(1'b1));
  v3_shared_fs_service #(.FLEX_FILES(1)) svc(.clk(clk),.rst_n(rst_n),.sec_per_clus(8'd1),.fat_start_lba(32'd1),.data_start_lba(32'd16),.root_dir_lba(32'd16),.root_clus(32'd2),.total_clus(32'd1000),.core_cmd(cmd),.core_rsp(rsp),.name_address(8'd0),.name_data(),.name_length());
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<20)$display("[FAIL] %s",message);end end  end endtask
+ task check(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<20)$display("[FAIL] %s",message);end   end endtask
  always @(posedge clk)begin
   if(!rst_n)begin ready<=1;dv<=0;last<=0;done<=0;reading<=0;cycles<=0;end
   else begin
@@ -32,7 +32,7 @@ module tb_v3_wav_context730;
    else if(reading&&!dv&&cycles%5!=0)begin data<=disk[lba*512+cnt];dv<=1;last<=cnt==511;end
    begin : v_loop_1 integer i; for( i=0;i<4;i = i + 1)if(valid[i]&&pcm_ready[i])begin
     check(pcm[i*32+:32]===gold[i*300+received[i]%300],"independent per-track stereo data and EOF loop");received[i]<=received[i]+1;
-   end end 
+   end end
    if(d.state==6&&d.context_index==0)begin
     saved_context[d.active]=d.export_context;saves[d.active] = saves[d.active] + 1;
     if(d.wp.state==2&&d.wp.index==6)partial_saved[d.active]=1;
@@ -41,15 +41,15 @@ module tb_v3_wav_context730;
    check(fallback==0,"no per-slot fallback for valid cross-boundary files");
   end
  end
- always @(negedge clk)if(rst_n)begin : v_loop_2 integer i; for( i=0;i<4;i = i + 1)pcm_ready[i]=cycles%(5+i)!=0; end 
+ always @(negedge clk)if(rst_n)begin : v_loop_2 integer i; for( i=0;i<4;i = i + 1)pcm_ready[i]=cycles%(5+i)!=0; end
  initial begin
   $readmemh("wav730_disk.mem",disk);$readmemh("wav730_pcm.mem",gold);
-  begin : v_loop_3 integer i; for( i=0;i<4;i = i + 1)begin received[i]=0;restores[i]=0;saves[i]=0;saved_context[i]=0;end end 
+  begin : v_loop_3 integer i; for( i=0;i<4;i = i + 1)begin received[i]=0;restores[i]=0;saves[i]=0;saved_context[i]=0;end end
   repeat(4)@(negedge clk);rst_n=1;
-  begin : v_loop_4 integer s; for( s=0;s<4;s = s + 1)begin descriptor_slot=s;descriptor_valid=1;while(!descriptor_ready)@(negedge clk);@(negedge clk);descriptor_valid=0;repeat(5)@(negedge clk);end end 
+  begin : v_loop_4 integer s; for( s=0;s<4;s = s + 1)begin descriptor_slot=s;descriptor_valid=1;while(!descriptor_ready)@(negedge clk);@(negedge clk);descriptor_valid=0;repeat(5)@(negedge clk);end end
   wait(indexed);$display("[TRACE] found=%h fallback=%h received_mask=%h",found,fallback,d.preindexed_received);check(found==15,"four preindexed descriptors accepted");
   while(!(received[0]>=600&&received[1]>=600&&received[2]>=600&&received[3]>=600)&&guard<3000000)begin @(negedge clk);guard = guard + 1;end
-  begin : v_loop_5 integer i; for( i=0;i<4;i = i + 1)begin check(received[i]>=600,"two full exact PCM loops per track");check(saves[i]>100&&restores[i]>100,"real per-track context swapping across many sectors");end end 
+  begin : v_loop_5 integer i; for( i=0;i<4;i = i + 1)begin check(received[i]>=600,"two full exact PCM loops per track");check(saves[i]>100&&restores[i]>100,"real per-track context swapping across many sectors");end end
   check(partial_saved==15,"every track saved in middle of length field at byte512");
   check(d.CTX_WORDS==20&&d.CTX_BITS==313,"production extended context geometry");
   if(errors==0)$display("[PASS] four distinct WAVs, split 32-bit odd-length fields, context RAM atomicity, exact stereo PCM, backpressure, EOF loops");

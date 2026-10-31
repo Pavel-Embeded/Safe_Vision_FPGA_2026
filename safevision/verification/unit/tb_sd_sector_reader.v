@@ -167,14 +167,14 @@ module tb_sd_sector_reader;
     task check;
         input        cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) begin
                 $display("[PASS] %0s", name);
             end else begin
                 $display("[FAIL] %0s", name);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
     initial begin

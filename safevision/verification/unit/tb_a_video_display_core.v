@@ -29,7 +29,7 @@ module display_case #(parameter HD=0)(output reg done);
  .wr_req(wr_req),.wr_addr(32'h800000),.wr_data(32'h76543210),.wr_len(16'd4),.wr_ack(wr_ack),.wr_busy(wr_busy),
  .sd_req(1'b0),.sd_wr(1'b0),.sd_addr(32'd0),.sd_wdata(32'd0),.sd_len(16'd0),.sd_ack(),.sd_busy(),.sd_rdata(),.sd_rdata_valid(),
  .mem_req(mq),.mem_wr(mw),.mem_addr(ma),.mem_wdata(md),.mem_wstrb(strb),.mem_ready(mready),.mem_rdata(response),.mem_rdata_valid(response_valid),.wr_starve_cnt(),.rd_starve_cnt());
- function [15:0] pixel(input [31:0] a);reg [31:0] p;begin begin p=(a&32'h9ffff)>>1;pixel=(p*17)^(p>>9)^(a>>16)^16'h4b93;end  end endfunction
+ function [15:0] pixel(input [31:0] a);reg [31:0] p;begin  p=(a&32'h9ffff)>>1;pixel=(p*17)^(p>>9)^(a>>16)^16'h4b93;  end endfunction
  function [23:0] expand(input [15:0] p);begin expand={p[15:11],p[15:13],p[10:5],p[10:9],p[4:0],p[4:2]}; end endfunction
  reg [31:0] queued[0:511];integer due[0:511],head=0,tail=0;
  always @(posedge mc)begin
@@ -56,13 +56,13 @@ module display_case #(parameter HD=0)(output reg done);
    for(i=0;i<5;i=i+1)expected[i]=0;
   end else if(dut.prn&&!done)begin
    if(active_slot!=lastslot||active_gen!=lastgen)begin
-    if(!oldfs)begin $display("[FAIL] slot changed outside vblank HD=%0d",HD); $finish; end 
-    if(!((active_slot==1&&active_gen==8'h11)||(active_slot==2&&active_gen==8'h82)))begin $display("[FAIL] torn mailbox HD=%0d",HD); $finish; end 
+    if(!oldfs)begin $display("[FAIL] slot changed outside vblank HD=%0d",HD); $finish; end
+    if(!((active_slot==1&&active_gen==8'h11)||(active_slot==2&&active_gen==8'h82)))begin $display("[FAIL] torn mailbox HD=%0d",HD); $finish; end
     commits=commits+1;lastslot=active_slot;lastgen=active_gen;
    end
    oldfs=sfs;media=sde&&sx>=OX&&sx<OX+640&&sy>=OY&&sy<OY+480;
    if(media&&active_valid&&!reference_fault&&(!dut.armed||dut.fifo_empty||!dut.fifo_valid))begin
-    if(frame!=2)begin $display("[FAIL] unexpected underflow HD=%0d frame=%0d xy=%0d,%0d state=%0d level=%0d",HD,frame,sx,sy,fetch_state,level); $finish; end 
+    if(frame!=2)begin $display("[FAIL] unexpected underflow HD=%0d frame=%0d xy=%0d,%0d state=%0d level=%0d",HD,frame,sx,sy,fetch_state,level); $finish; end
     reference_fault=1;fault_count=fault_count+1;
    end
    want_rgb=0;want_valid=sde&&(!media||(active_valid&&!reference_fault));want_layer=want_valid ? 1:0;
@@ -75,8 +75,8 @@ module display_case #(parameter HD=0)(output reg done);
    if(sx==HT-1&&sy==VT-1)frame=frame+1;
    #0.1;
    if(checks>10&&{x,y,hs,vs,de,ls,fs,afs,hb,vb,rgb[23:0],pv,layer}!==expected[4])
-      begin $display("[FAIL] display HD=%0d frame=%0d xy=%0d,%0d rgb=%h expected=%h layer=%0d",HD,frame,x,y,rgb[23:0],expected[4][26:3],layer); $finish; end 
-   if(uc!==fault_count||ov!=0||miss!=0||swap_error)begin $display("[FAIL] display diagnostics HD=%0d uc=%0d/ref%0d ov=%0d miss=%0d swap=%b",HD,uc,fault_count,ov,miss,swap_error); $finish; end 
+      begin $display("[FAIL] display HD=%0d frame=%0d xy=%0d,%0d rgb=%h expected=%h layer=%0d",HD,frame,x,y,rgb[23:0],expected[4][26:3],layer); $finish; end
+   if(uc!==fault_count||ov!=0||miss!=0||swap_error)begin $display("[FAIL] display diagnostics HD=%0d uc=%0d/ref%0d ov=%0d miss=%0d swap=%b",HD,uc,fault_count,ov,miss,swap_error); $finish; end
    checks=checks+1;
   end
  end
@@ -86,7 +86,7 @@ module display_case #(parameter HD=0)(output reg done);
   wait(frame==2&&sy==OY+24&&sx==100);starvation=0;
   wait(frame==3&&sy==120&&sx==100);@(negedge sc);wrslot=2;wrgen=8'h82;fr=1;@(negedge sc);fr=0;
   wait(frame==5&&sy==H);repeat(8)@(negedge pc);
-  if(commits!=2||fault_count!=1||normal_pixels<900000||fault_pixels<200000||write_beats<100||emergency_pixels<100)begin $display("[FAIL] coverage HD=%0d commits=%0d faults=%0d pixels=%0d/%0d wr=%0d em=%0d",HD,commits,fault_count,normal_pixels,fault_pixels,write_beats,emergency_pixels); $finish; end 
+  if(commits!=2||fault_count!=1||normal_pixels<900000||fault_pixels<200000||write_beats<100||emergency_pixels<100)begin $display("[FAIL] coverage HD=%0d commits=%0d faults=%0d pixels=%0d/%0d wr=%0d em=%0d",HD,commits,fault_count,normal_pixels,fault_pixels,write_beats,emergency_pixels); $finish; end
   done=1;$display("display HD=%0d checks=%0d normal=%0d emergency=%0d fault_pixels=%0d competing_write_beats=%0d commits=%0d",HD,checks,normal_pixels,emergency_pixels,fault_pixels,write_beats,commits);
  end
 endmodule

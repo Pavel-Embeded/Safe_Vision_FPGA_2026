@@ -82,9 +82,9 @@ module tb_v3_resident;
    if(read_left==1)vbusy<=0;
   end
  end
- task check;input c;input[511:0] msg;begin begin
+ task check;input c;input[511:0] msg;begin
   if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end
- end  end endtask
+   end endtask
  initial begin
   repeat(5)@(negedge clk);
   $readmemh("resident_card.mem",card.vol);

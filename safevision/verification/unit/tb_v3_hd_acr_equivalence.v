@@ -7,7 +7,7 @@ module tb_v3_hd_acr_equivalence;
   if({a,ac,an}!=={b,bc,bn})begin errors = errors + 1;if(errors<6)$display("[FAIL] ACR cycle-exact mismatch a=%h b=%h",{a,ac,an},{b,bc,bn});end
   if(a)valids = valids + 1;
  end
- task reset;begin begin @(negedge clk);rst=0;sv=0;repeat(3)@(negedge clk);rst=1;end  end endtask
+ task reset;begin  @(negedge clk);rst=0;sv=0;repeat(3)@(negedge clk);rst=1;  end endtask
  initial begin
   reset;
   for(k=0;k<150000;k = k + 1)begin @(negedge clk);rng=rng*1664525+1013904223;sv=rng[0]||rng[5:1]==0;end

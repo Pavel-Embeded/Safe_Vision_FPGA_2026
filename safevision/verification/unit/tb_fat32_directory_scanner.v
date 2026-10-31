@@ -19,14 +19,14 @@ module tb_fat32_directory_scanner;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) begin
                 $display("[PASS] %0s", name);
             end else begin
                 $display("[FAIL] %0s", name);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 
@@ -221,17 +221,17 @@ module tb_fat32_directory_scanner;
         input [31:0] totsec;
         input [31:0] fat2;
         input [31:0] fat3;
-        begin begin
+        begin
             u_card.mk_fat32_dbr(16'd512, 8'd4, 16'd1, 8'd1,
                                 32'd1, 32'd2, totsec, 1'b1);
             u_card.vol_zero(32'd1);
             u_card.vol_set_le(32'd1, 16'd8,  fat2, 3'd4);
             u_card.vol_set_le(32'd1, 16'd12, fat3, 3'd4);
-        end
+
      end endtask
 
     task do_mount;
-        begin begin
+        begin
             rd_sel = 1'b0;
             @(posedge clk); mnt_start = 1'b1;
             @(posedge clk); mnt_start = 1'b0;
@@ -242,11 +242,11 @@ module tb_fat32_directory_scanner;
                 wait_cnt = wait_cnt + 1;
             end
             repeat (5) @(posedge clk);
-        end
+
      end endtask
 
     task do_scan;
-        begin begin
+        begin
             rd_sel = 1'b1;
             got_n  = 0;
             @(posedge clk); scan_start = 1'b1;
@@ -258,7 +258,7 @@ module tb_fat32_directory_scanner;
                 wait_cnt = wait_cnt + 1;
             end
             repeat (10) @(posedge clk);
-        end
+
      end endtask
 
 

@@ -11,10 +11,10 @@ module tb_v3_video_control;
   .busy(busy),.initialized(initialized),.direct_target(direct),.commit_toggle(commit),
   .next_done_toggle(next_done),.presentation_fault(fault));
  integer errors=0,comparisons=0,n,k;reg[1:0] previous,expected_slot;reg[7:0] previous_gen;reg done_before;
- task frame;begin begin @(negedge clk);fs=1;@(negedge clk);fs=0;repeat(2)@(negedge clk);end  end endtask
- task next;begin begin @(negedge clk);request=1;@(negedge clk);request=0;end  end endtask
- task check(input  ok,input[255:0] message);begin begin ok = (ok === 1'b1); comparisons=comparisons+1;
-  if(!ok)begin $display("[FAIL] %s current=%d target=%d gen=%d alpha=%d",message,current,target,generation,alpha);errors=errors+1;end end  end endtask
+ task frame;begin  @(negedge clk);fs=1;@(negedge clk);fs=0;repeat(2)@(negedge clk);  end endtask
+ task next;begin  @(negedge clk);request=1;@(negedge clk);request=0;  end endtask
+ task check(input  ok,input[255:0] message);begin  ok = (ok === 1'b1); comparisons=comparisons+1;
+  if(!ok)begin $display("[FAIL] %s current=%d target=%d gen=%d alpha=%d",message,current,target,generation,alpha);errors=errors+1;end   end endtask
  initial begin
   #30;rst=1;frame();ready=1;ready_gen=target_gen;frame();
   check(initialized&&current==0&&generation==1&&!next_done,"initial presentation separate NEXT");

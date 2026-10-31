@@ -45,14 +45,14 @@ module tb_top_stage6_fat32_mount;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) begin
                 $display("[PASS] %0s", name);
             end else begin
                 $display("[FAIL] %0s", name);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 
@@ -125,7 +125,7 @@ module tb_top_stage6_fat32_mount;
 
     task uart_rx_byte(output [7:0] b);
         integer k;
-        begin begin
+        begin
             @(negedge uart_txd);
             #(HALF_NS);
             #(BIT_NS);
@@ -133,7 +133,7 @@ module tb_top_stage6_fat32_mount;
                 b[k] = uart_txd;
                 #(BIT_NS);
             end
-        end
+
      end endtask
 
 
@@ -149,7 +149,7 @@ module tb_top_stage6_fat32_mount;
         input integer n;
         integer k;
         reg ok;
-        begin begin
+        begin
             ok = 1'b1;
             for (k = 1; k < n; k = k + 1) begin
                 if (rep_bits[8*(MAXB-1-k) -: 8] == 8'h0A)
@@ -157,13 +157,13 @@ module tb_top_stage6_fat32_mount;
                         ok = 1'b0;
             end
             crlf_okf = ok;
-        end
+
      end endfunction
 
 
     task mbr_set_card0;
         integer q;
-        begin begin
+        begin
             for (q = 0; q < 512; q = q + 1) u_card.sector[q] = 8'h00;
             u_card.sector[450] = 8'h0C;
             u_card.sector[454] = 8'h10;
@@ -176,12 +176,12 @@ module tb_top_stage6_fat32_mount;
             u_card.sector[461] = 8'h00;
             u_card.sector[510] = 8'h55;
             u_card.sector[511] = 8'hAA;
-        end
+
      end endtask
 
     task mk_vol;
         integer q2;
-        begin begin
+        begin
 
             u_card.mk_fat32_dbr(16'd512, 8'd1, 16'd32, 8'd2, 32'd1, 32'd2, 32'd48, 1'b1);
 
@@ -197,7 +197,7 @@ module tb_top_stage6_fat32_mount;
             u_card.mk_dir_entry(32'd34, 16'd64, "SV0003  BMP", 8'h20, 32'd7, 32'h000E1036);
             for (q2 = 3; q2 < 16; q2 = q2 + 1)
                 u_card.vol_set(32'd34, q2*32, 8'hE5);
-        end
+
      end endtask
 
 
@@ -205,10 +205,10 @@ module tb_top_stage6_fat32_mount;
         input integer start;
         input integer cnt;
         integer k;
-        begin begin
+        begin
             for (k = start; k < cnt; k = k + 1)
                 $write("%c", rep_bits[8*(MAXB-1-k) -: 8]);
-        end
+
      end endtask
 
 

@@ -10,8 +10,8 @@ module tb_v3_multires193;
   .out_data(pdata),.out_valid(pv),.out_ready(pr),.out_sof(sof),.out_eof(peof));
  v3_bmp_normalizer dut(.clk(clk),.rst_n(rst),.din(pdata),.din_valid(pv),.din_ready(pr),.din_sof(sof),.din_eof(peof),
   .width(w),.height(h),.top_down(td),.pixel(pixel),.pixel_valid(ov),.pixel_ready(outr),.x(ox),.y(oy),.done(done),.error(error));
- function[7:0] colour(input integer x,y,c);begin begin case(c)0:colour=(x*17+y*5+7)%256;1:colour=(x*3+y*29+31)%256;default:colour=(x*11+y*7+53)%256;endcase end  end endfunction
- function[7:0] file_byte(input integer n);integer z,row,col,c,hh;begin begin
+ function[7:0] colour(input integer x,y,c);begin  case(c)0:colour=(x*17+y*5+7)%256;1:colour=(x*3+y*29+31)%256;default:colour=(x*11+y*7+53)%256;endcase   end endfunction
+ function[7:0] file_byte(input integer n);integer z,row,col,c,hh;begin
   hh=sgn ? -ih:ih;file_byte=0;
   if(n<54)case(n)
    0:file_byte="B";1:file_byte="M";
@@ -24,7 +24,7 @@ module tb_v3_multires193;
   else if(n<54+stride*ih)begin z=n-54;row=z/stride;col=z%stride;
    if(col<iw*3)begin c=col%3;file_byte=colour(col/3,sgn ? row:ih-1-row,c);end else file_byte=8'had;
   end else file_byte=8'hfa;
- end  end endfunction
+   end endfunction
  always@(negedge clk)if(rst)outr=($time/10)%11!=2&&($time/10)%17!=3;
  always@(posedge clk)if(rst)begin
   if(done)last_done=1;
@@ -45,18 +45,18 @@ module tb_v3_multires193;
    pixels = pixels + 1;
   end
  end
- task image(input integer wi,he,neg);begin begin
+ task image(input integer wi,he,neg);begin
   @(negedge clk);rst=0;valid=0;eof=0;repeat(5)@(negedge clk);iw=wi;ih=he;sgn=neg;stride=((iw*3+3)/4)*4;sz=54+stride*ih+7;file_size=sz;pixels=0;last_done=0;stalled=0;rst=1;
   for(p=0;p<sz;p = p + 1)begin
    @(negedge clk);data=file_byte(p);valid=1;eof=p==sz-1;
-   begin begin @(posedge clk); end while(!ready)begin @(posedge clk); end end 
+   begin begin @(posedge clk); end while(!ready)begin @(posedge clk); end end
    @(negedge clk);valid=0;eof=0;
    if(p%257==5)repeat(3)@(negedge clk);
   end
   wait(last_done);repeat(5)@(negedge clk);comparisons = comparisons + 1;
   if(pixels!=307200)begin errors = errors + 1;$display("[FAIL] image output size%0d",pixels);end
   $display("[CASE] %0dx%0d topdown%0d output%0d errors=%0d",iw,ih,sgn,pixels,errors);
- end  end endtask
+   end endtask
  initial begin
   image(1,1,0);image(1,1,1);image(3,2,0);image(3,2,1);image(319,241,0);image(319,241,1);
   image(641,479,0);image(641,479,1);image(640,480,0);image(640,480,1);
@@ -66,7 +66,7 @@ module tb_v3_multires193;
  end
  initial begin #1000000000;$display("[FAIL] multires watchdog errors=1");$finish;end
 
-function [4:0] v_cast_u5; input [4:0] value; begin begin v_cast_u5=value; end  end endfunction
-function [5:0] v_cast_u6; input [5:0] value; begin begin v_cast_u6=value; end  end endfunction
-function signed [9:0] v_cast_s10; input signed [9:0] value; begin begin v_cast_s10=value; end  end endfunction
+function [4:0] v_cast_u5; input [4:0] value; begin  v_cast_u5=value;   end endfunction
+function [5:0] v_cast_u6; input [5:0] value; begin  v_cast_u6=value;   end endfunction
+function signed [9:0] v_cast_s10; input signed [9:0] value; begin  v_cast_s10=value;   end endfunction
 endmodule

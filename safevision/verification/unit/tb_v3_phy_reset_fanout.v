@@ -4,7 +4,7 @@ module tb_v3_phy_reset_fanout;
  wire reference;wire[3:0] actual;integer i,errors=0,comparisons=0;
  reset_sync old(.clk(clk),.async_rst_n(ar),.rst_n(reference));
  v3_phy_reset_fanout dut(.clk(clk),.async_rst_n(ar),.lane_rst_n(actual));
- task check(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons=comparisons+1;if(!ok)begin errors=errors+1;if(errors<10)$display("[FAIL] %s trial=%0d",msg,i);end end  end endtask
+ task check(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons=comparisons+1;if(!ok)begin errors=errors+1;if(errors<10)$display("[FAIL] %s trial=%0d",msg,i);end   end endtask
  initial begin
   for(i=0;i<100;i=i+1)begin
    ar=0;#0.001;check(actual===4'd0 && reference===0,"all lanes asynchronously assert");

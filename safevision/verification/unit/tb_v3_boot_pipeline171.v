@@ -11,7 +11,7 @@ v3_boot_reference171 original(.clk(clk),.rst_n(rst),.start(start),.sd_rd_ready(r
  always@(posedge clk)begin #0.01;comparisons = comparisons + 1;
   if(a!==b)begin errors = errors + 1;if(errors<8)$display("[FAIL] boot public edge mismatch sector=%0d byte=%0d a=%h b=%h",k,n,a,b);end
  end
- task word(input integer off,input[31:0] v);begin begin for(j=0;j<4;j = j + 1)sector[off+j]=v>>(j*8);end  end endtask
+ task word(input integer off,input[31:0] v);begin  for(j=0;j<4;j = j + 1)sector[off+j]=v>>(j*8);  end endtask
  initial begin
  repeat(4)@(negedge clk);rst=1;
  for(k=0;k<2048;k = k + 1)begin

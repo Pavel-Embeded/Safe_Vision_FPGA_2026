@@ -59,7 +59,7 @@ module tb_v3_bmp_extent_pipeline;
     if(gold_bad[lane])rejected_headers[lane]=rejected_headers[lane]+1;
     else accepted_headers[lane]=accepted_headers[lane]+1;
    end
-  end end 
+  end end
  end
  reg[7:0] header[0:53];integer c,k,total,last_header;
  reg[31:0] wi,he,offset,dib,bf;reg[15:0] bits;
@@ -94,7 +94,7 @@ module tb_v3_bmp_extent_pipeline;
    signed_height=$signed(he);rows=signed_height<0 ? -signed_height:signed_height;
    extent=((v_cast_u64(wi)*(bits/8)+3)/4)*4*rows;
    bf=v_cast_u32(v_cast_u64(offset)+extent);file_size=bf;
-   begin : v_loop_3 integer b; for( b=0;b<54;b=b+1)header[b]=0; end 
+   begin : v_loop_3 integer b; for( b=0;b<54;b=b+1)header[b]=0; end
    header[0]="B";header[1]="M";header[26]=1;header[28]=bits[7:0];header[29]=bits[15:8];
    le32(2,bf);le32(10,offset);le32(14,dib);le32(18,wi);le32(22,he);
    case(index_%32)
@@ -109,7 +109,7 @@ module tb_v3_bmp_extent_pipeline;
   end endtask
  task push(input[7:0] value,input  last,input integer gap);
   integer waited;
-  begin begin
+  begin
    last = (last === 1'b1); @(negedge clk);valid=0;eof=0;
    repeat(gap)@(negedge clk);
    waited=0;
@@ -117,13 +117,13 @@ module tb_v3_bmp_extent_pipeline;
    if(all_gold_ready!==1'b1)begin errors=errors+1;driver_errors=driver_errors+1;$display("[FAIL] frozen reference driver timeout");end
    data=value;valid=1;eof=last;
    @(posedge clk);#2;
-  end
+
   end endtask
  task reset_now;
-  begin begin @(negedge clk);valid=0;eof=0;rst_n=0;repeat(3)@(negedge clk);rst_n=1;end
+  begin  @(negedge clk);valid=0;eof=0;rst_n=0;repeat(3)@(negedge clk);rst_n=1;
   end endtask
  initial begin
-  begin : v_loop_4 integer lane; for( lane=0;lane<4;lane=lane+1)begin accepted_headers[lane]=0;rejected_headers[lane]=0;end end 
+  begin : v_loop_4 integer lane; for( lane=0;lane<4;lane=lane+1)begin accepted_headers[lane]=0;rejected_headers[lane]=0;end end
   reset_now();
   for(c=0;c<2048;c=c+1)begin
    @(negedge clk);valid=0;eof=0;make_case(c);
@@ -142,14 +142,14 @@ module tb_v3_bmp_extent_pipeline;
    errors=errors+phase_failures[lane];phase_error_total=phase_error_total+phase_failures[lane];
    if(lane>=2&&phase_checks[lane]==0)begin errors=errors+1;$display("[FAIL] late phase coverage missing");end
    if(accepted_headers[lane]==0||rejected_headers[lane]==0)begin errors=errors+1;$display("[FAIL] acceptance/rejection coverage missing");end
-  end end 
+  end end
   if(!errors)$display("[PASS] complete frozen parser public interface; four parameter profiles; one byte per clock, stalls, early EOF and async reset; carry and DIB borrow boundaries");
   $display("PASS tb_v3_bmp_extent_pipeline errors=%0d comparisons=%0d data_errors=%0d driver_errors=%0d phase_errors=%0d cases=2048",errors,comparisons,data_errors,driver_errors,phase_error_total);
   $finish;
  end
  initial begin #1000000000;$display("[FAIL] parser miter watchdog errors=1");$finish;end
 
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
-function [31:0] v_cast_u32; input [31:0] value; begin begin v_cast_u32=value; end  end endfunction
-function [63:0] v_cast_u64; input [63:0] value; begin begin v_cast_u64=value; end  end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
+function [31:0] v_cast_u32; input [31:0] value; begin  v_cast_u32=value;   end endfunction
+function [63:0] v_cast_u64; input [63:0] value; begin  v_cast_u64=value;   end endfunction
 endmodule

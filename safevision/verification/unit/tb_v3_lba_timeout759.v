@@ -15,7 +15,7 @@ module tb_v3_lba_timeout759;
  .wk_busy(1'b0),.wk_done(wdone),.wk_next_clus(32'd3),.wk_eoc(1'b0),.wk_error(1'b0),.wk_err_code(8'd0),.wk_err_detail(8'd0),
  .sd_rd_ready(1'b1),.sd_data(data),.sd_data_valid(dv),.sd_data_ready(dr),.sd_data_last(last),.sd_rd_done(ddone),.sd_timeout_err(1'b0),.sd_crc16_err(1'b0),.sd_err_code(8'd0),.sd_err_detail(8'd0),
  .sd_rd_en(den),.scan_done(dend),.dir_bad(dbad),.err_code(dcode),.err_detail(ddetail),.name_address(8'd0),.external_lba(32'h11223344),.external_timeout_count(dtimer),.external_lba_valid(1'b0),.lba_request(dreq));
- task check(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s",msg);end end  end endtask
+ task check(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s",msg);end   end endtask
  always @(posedge clk)if(rst&&den)drequests = drequests + 1;
  initial begin
   repeat(3)@(negedge clk);rst=1;fstart=1;@(negedge clk);fstart=0;guard=0;

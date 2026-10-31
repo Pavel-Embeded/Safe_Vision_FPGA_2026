@@ -16,10 +16,10 @@ module tb_sdr_pat_gen;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 
@@ -27,7 +27,7 @@ module tb_sdr_pat_gen;
         input  [20:0] a;
         input  [2:0]  m;
         output [31:0] p;
-        begin begin addr = a; mode = m; #1; p = pat; end
+        begin  addr = a; mode = m; #1; p = pat;
      end endtask
 
     reg [31:0] sp [0:1023];

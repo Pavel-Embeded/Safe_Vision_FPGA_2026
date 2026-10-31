@@ -7,8 +7,8 @@ module tb_v3_event_fifo;
  .clk(clk),.rst_n(rst_n),.wr_en(w),.din(din),.full(f0),.almost_full(af0),.rd_en(r),.dout(d0),.empty(e0),.almost_empty(ae0),.data_count(n0));
  reg[43:0] model[0:7];integer head=0,tail=0,queued=0,errors=0,comparisons=0,i,phase;
  reg wf,rf;reg[31:0] random_state=32'h8a914f62;
- task ck;input c;input[511:0] msg;begin begin comparisons=comparisons+1;
- if(!c)begin errors=errors+1;if(errors<20)$display("[FAIL] %s cnt=%0d/%0d head=%h/%h ref=%h",msg,count,queued,dout,model[head],d0);end end  end endtask
+ task ck;input c;input[511:0] msg;begin  comparisons=comparisons+1;
+ if(!c)begin errors=errors+1;if(errors<20)$display("[FAIL] %s cnt=%0d/%0d head=%h/%h ref=%h",msg,count,queued,dout,model[head],d0);end   end endtask
  always @(posedge clk)begin
   if(!rst_n)begin head=0;tail=0;queued=0;end
   else begin
@@ -21,7 +21,7 @@ module tb_v3_event_fifo;
    queued=queued+wf-rf;
   end
  end
- task cycle;input wr,rd;begin begin w=wr;r=rd;din=din+44'h13579bdf01;@(negedge clk);end  end endtask
+ task cycle;input wr,rd;begin  w=wr;r=rd;din=din+44'h13579bdf01;@(negedge clk);  end endtask
  initial begin
   repeat(3)@(negedge clk);rst_n=1;
 

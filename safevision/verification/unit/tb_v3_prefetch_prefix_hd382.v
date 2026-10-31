@@ -3,13 +3,13 @@ module tb_v3_prefetch_prefix_hd382;
  reg[31:0] address=0,expected;reg[6:0] step=0;reg high_zero=0,high_ones=0;
  integer errors=0,comparisons=0,h,n,k,low;reg[31:0] rng=32'h512723fe;
  sdram_app_adapter d(.clk(1'b0),.rst_n(1'b0));
- task check;begin begin
+ task check;begin
   high_zero=address[31:21]==0;high_ones=address[31:21]==11'h7ff;
   expected=address+step;#1;comparisons = comparisons + 1;
   if(d.prefetch_sum[20:0]!==expected[20:0]||d.next_prefetch_in_range!==(expected<32'h200000))begin
    errors = errors + 1;if(errors<7)$display("[FAIL] prefix addr=%h step=%d low=%h range=%b expected=%h",address,step,d.prefetch_sum[20:0],d.next_prefetch_in_range,expected);
   end
- end  end endtask
+   end endtask
  initial begin
   force d.rfbase=address[20:0];force d.rfbase_high_zero=high_zero;force d.rfbase_high_ones=high_ones;force d.read_words=step;
 

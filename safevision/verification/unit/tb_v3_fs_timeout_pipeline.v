@@ -92,7 +92,7 @@ v3_file_streamer_frozen_timeout #(.EXTERNAL_LBA(P),.EXTERNAL_TIMER(P),.DIRECT_RE
   end
  end
  end endgenerate
- task reset_all;begin begin @(negedge clk);rst_n=0;start=0;context_load=0;repeat(3)@(negedge clk);rst_n=1;end  end endtask
+ task reset_all;begin  @(negedge clk);rst_n=0;start=0;context_load=0;repeat(3)@(negedge clk);rst_n=1;  end endtask
  initial begin
   ready=1;stream_enable=1;context_enable=1;sd_rd_ready=1;sd_data_valid=1;external_lba_valid=1;external_lba=128;
   first_clus=2;sec_per_clus=4;fat_start_lba=8;data_start_lba=128;total_clus=65536;wk_next_clus=3;

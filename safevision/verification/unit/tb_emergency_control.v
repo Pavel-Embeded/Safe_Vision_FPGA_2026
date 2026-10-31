@@ -27,19 +27,19 @@ module emergency_control_case #(parameter integer POLICY=0,parameter real HALF=6
         else begin
             edge_fs=fs;#0.1;
             if(applied)begin
-                if(get>=put||{active,dir,level}!==expected[get])begin $display("[FAIL] atomic/order POLICY=%0d got=%0d put=%0d",POLICY,get,put); $finish; end 
-                if(POLICY==0&&!edge_fs)begin $display("[FAIL] frame policy changed outside vblank"); $finish; end 
+                if(get>=put||{active,dir,level}!==expected[get])begin $display("[FAIL] atomic/order POLICY=%0d got=%0d put=%0d",POLICY,get,put); $finish; end
+                if(POLICY==0&&!edge_fs)begin $display("[FAIL] frame policy changed outside vblank"); $finish; end
                 get=get+1;total=total+1;
-            end else if({active,dir,level}!==previous)begin $display("[FAIL] control changed without apply"); $finish; end 
+            end else if({active,dir,level}!==previous)begin $display("[FAIL] control changed without apply"); $finish; end
             previous={active,dir,level};
         end
     end
     task send(input [4:0] value);
-      begin begin
+      begin
         @(negedge sclk);payload=value;valid=1;
-        begin begin @(posedge sclk); end while(!ready)begin @(posedge sclk); end end 
+        begin begin @(posedge sclk); end while(!ready)begin @(posedge sclk); end end
         @(negedge sclk);valid=0;
-      end
+
      end endtask
     integer i,epoch;
     initial begin
@@ -50,7 +50,7 @@ module emergency_control_case #(parameter integer POLICY=0,parameter real HALF=6
       for(epoch=0;epoch<2;epoch=epoch+1)begin
         for(i=0;i<256;i=i+1)send(i*13+epoch*7);
         wait(get==put&&!pending);repeat(8)@(posedge pclk);
-        if(put!=256||get!=256)begin $display("[FAIL] missing/duplicate emergency request"); $finish; end 
+        if(put!=256||get!=256)begin $display("[FAIL] missing/duplicate emergency request"); $finish; end
         if(epoch==0)begin #2.1;rst=0;#41;rst=1;end
       end
       $display("PASS emergency control policy=%0d half=%0.3f accepted/applied=%0d/%0d two epochs all 32 payloads",POLICY,HALF,put,get);

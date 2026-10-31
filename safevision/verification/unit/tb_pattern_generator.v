@@ -7,7 +7,7 @@ module tb_pattern_generator;
     function [23:0] expected(input integer px,py,w,h,m,input  dir);
         integer xx,dy,segment;
         reg inside_arrow;
-        begin begin
+        begin
             dir = (dir === 1'b1); expected=0;
             if(rst_n && de && px<w && py<h) begin
                 case(m)
@@ -29,15 +29,15 @@ module tb_pattern_generator;
                     default: expected=0;
                 endcase
             end
-        end
+
      end endfunction
     integer checks=0,m,i,j,d;
     task verify;
-        begin begin #1;
+        begin  #1;
             checks = checks + (2);
             if(base !== expected(x,y,640,480,sel,right) || hd !== expected(x,y,1280,720,sel,right))
-                begin $display("[FAIL] pattern m=%d dir=%b x=%d y=%d base=%h hd=%h",sel,right,x,y,base,hd); $finish; end 
-        end
+                begin $display("[FAIL] pattern m=%d dir=%b x=%d y=%d base=%h hd=%h",sel,right,x,y,base,hd); $finish; end
+
      end endtask
     initial begin
         for(m=0;m<6;m = m + 1) begin

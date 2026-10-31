@@ -10,16 +10,16 @@ module v3_priority_serial_oracle #(parameter integer RAMP=240,COUNT=262144,
  integer errors=0,comparisons=0,reference_gain=0,reference_error=0;
  integer i,c,phase,total,step;reg[23:0] gl,gr;reg[256:0] gains_seen=0;
  reg[31:0] rng=32'h94e17a26;
- function[31:0] random32;input[31:0] value;reg[31:0] x;begin begin
-  x=value^(value<<13);x=x^(x>>17);random32=x^(x<<5);end  end endfunction
+ function[31:0] random32;input[31:0] value;reg[31:0] x;begin
+  x=value^(value<<13);x=x^(x>>17);random32=x^(x<<5);  end endfunction
  function[23:0] blend;input[23:0] wav,tone;input integer g;
-  reg signed[63:0] a,b,z;begin begin
+  reg signed[63:0] a,b,z;begin
    a=$signed(wav);b=$signed(tone);z=(a*(256-g)+b*g)>>>8;blend=z[23:0];
-  end  end endfunction
- task ck;input condition;input[511:0] message_text;begin begin
+    end endfunction
+ task ck;input condition;input[511:0] message_text;begin
   comparisons=comparisons+1;
   if(!condition)begin errors=errors+1;if(errors<=5)$display("[FAIL PRIORITY_SERIAL] %0s i=%0d gain=%0d state=%0d",message_text,i,gain,d.state);end
- end  end endtask
+   end endtask
  initial begin
   repeat(4)@(negedge clk);rst_n=1;
   for(i=0;i<COUNT;i=i+1)begin

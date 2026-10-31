@@ -10,17 +10,17 @@ module setting_wave_control_case198 #(parameter HD=0)(output reg done,output int
  defparam dut.video.STATUS_TEXT_FILE="v3_handbook_status_text.mem";
  reg cv=0,ask=0;reg[7:0]dest=67;reg[6:0]id=33;reg signed[31:0]value=0;
  integer k,v;reg[6:0]eng=20;
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] real raster HD=%0d %s volume=%d cfg=%d setting=%d scope_ready=%b",HD,msg,dut.volume,dut.video.cfg[67:61],dut.video.graphics.decimal_digits[4],dut.video.graphics.spectrum_ready);end end  end endtask
- task setvolume(input integer vol);begin begin
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] real raster HD=%0d %s volume=%d cfg=%d setting=%d scope_ready=%b",HD,msg,dut.volume,dut.video.cfg[67:61],dut.video.graphics.decimal_digits[4],dut.video.graphics.spectrum_ready);end   end endtask
+ task setvolume(input integer vol);begin
   @(negedge dut.sys_clk);dest=67;id=33;value=vol;ask=0;cv=1;
   @(negedge dut.sys_clk);cv=0;@(negedge dut.sys_clk);ck(dut.controls_reply&&dut.controls_reply_code==0,"production C:VOL endpoint accepted");
   repeat(4)@(negedge dut.sys_clk);ck(dut.volume==vol,"actual SYS control register");
- end  end endtask
- task diag;begin begin
+   end endtask
+ task diag;begin
   @(negedge dut.sys_clk);dest=66;id=36;value=100;ask=0;cv=1;
   @(negedge dut.sys_clk);cv=0;ck(dut.b_reply&&dut.b_reply_code==0,"read-only DIAG100 accepted");
   ck(dut.b_reply_value==((eng<<7)|v),"DIAG100 captures live pre-volume energy and volume on original edge");repeat(4)@(negedge dut.sys_clk);
- end  end endtask
+   end endtask
  initial begin
   repeat(10)@(negedge clk);rst=1;wait(dut.sys_rst_n&&dut.config_rst_n);repeat(8)@(negedge dut.sys_clk);
   force dut.cmd_valid=cv;force dut.cmd_target=dest;force dut.cmd_catalog_id=id;force dut.cmd_value=value;force dut.cmd_query=ask;force dut.energy=eng;

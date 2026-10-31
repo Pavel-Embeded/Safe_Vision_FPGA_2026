@@ -10,8 +10,8 @@ module tb_v3_recovery_events;
  wire [3:0] typ;wire [15:0] value;wire valid,full;wire [15:0] drops;wire [31:0] stamp;
  error_report er(clk,rst,push,code,src,ts,typ,value,valid,full,ready,stamp,drops);
  integer errors=0,n,j;task ck;input c;input [255:0] msg;
- begin begin if(!c)begin errors=errors+1;$display("[FAIL] %s",msg);end else $display("[PASS] %s",msg);end  end endtask
- task tick;begin begin @(negedge clk);end  end endtask
+ begin  if(!c)begin errors=errors+1;$display("[FAIL] %s",msg);end else $display("[PASS] %s",msg);  end endtask
+ task tick;begin  @(negedge clk);  end endtask
  initial begin
   repeat(3)tick;rst=1;tick;
   for(n=0;n<8;n=n+1)begin push=1;code=n+1;src=n;ts=100+n;tick;end push=0;

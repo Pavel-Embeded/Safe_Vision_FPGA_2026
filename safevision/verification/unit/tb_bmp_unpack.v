@@ -22,14 +22,14 @@ module tb_bmp_unpack;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) begin
                 $display("[PASS] %0s", name);
             end else begin
                 $display("[FAIL] %0s", name);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 
@@ -153,25 +153,25 @@ module tb_bmp_unpack;
     end
 
     task clear_mon;
-        begin begin
+        begin
             c1_n = 0; c2_n = 0;
             m1_sof = 0; m1_eof = 0; m1_done = 0;
             m2_sof = 0; m2_eof = 0; m2_done = 0;
             m1_last_pix = 16'h0000; m2_last_pix = 16'h0000;
             m1_last_x = 10'd0; m1_last_y = 10'd0;
             m2_last_x = 10'd0; m2_last_y = 10'd0;
-        end
+
      end endtask
 
     task src_clear;
-        begin begin
+        begin
             for (i = 0; i < 4096; i = i + 1) src_mem[i] = 8'h00;
-        end
+
      end endtask
 
     task bmp_run;
         input integer maxc;
-        begin begin
+        begin
             @(posedge clk); src_go = 1'b1;
             @(posedge clk); src_go = 1'b0;
             wc = 0;
@@ -180,18 +180,18 @@ module tb_bmp_unpack;
                 wc = wc + 1;
             end
             repeat (40) @(posedge clk);
-        end
+
      end endtask
 
 
     task put_pix;
         input integer p;
         input [7:0]   b, g, r;
-        begin begin
+        begin
             src_mem[p]     = b;
             src_mem[p + 1] = g;
             src_mem[p + 2] = r;
-        end
+
      end endtask
 
 

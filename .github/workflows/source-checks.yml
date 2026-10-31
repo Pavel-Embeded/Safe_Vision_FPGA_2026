@@ -21,6 +21,21 @@ jobs:
           python-version: '3.12'
       - run: python -B safevision/tools/check_source_tree.py
       - run: python -B -m unittest discover -s safevision/verification/python -v
+      - run: python -B safevision/tools/check_v3_resource_contract_selftest.py --output "$RUNNER_TEMP/resource-contract.json"
+      - run: python -B safevision/tools/check_v3_ram_policy_selftest.py > "$RUNNER_TEMP/ram-policy.json"
       - run: sudo apt-get update && sudo apt-get install -y iverilog
       - run: python -B safevision/tools/check_verilog.py --compile --elaborate --run-dir "$RUNNER_TEMP/verilog-2005"
       - run: python -B safevision/tools/check_source_tree.py --simulate --engine iverilog --suite ticker261028 --suite spectrum539 --top tb_v3_ticker_clip --top tb_v3_spectrum539 --output "$RUNNER_TEMP/simulation"
+      - run: python -B safevision/tools/check_source_tree.py --simulate --engine iverilog --suite board_profiles --output "$RUNNER_TEMP/profiles"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: source-verification-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/verilog-2005
+            ${{ runner.temp }}/simulation
+            ${{ runner.temp }}/profiles
+            ${{ runner.temp }}/resource-contract.json
+            ${{ runner.temp }}/ram-policy.json
+          if-no-files-found: error
+          retention-days: 30

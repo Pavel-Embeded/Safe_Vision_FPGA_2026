@@ -15,11 +15,11 @@ module tb_sdram_app_adapter;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             total = total + 1;
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 
@@ -154,7 +154,7 @@ module tb_sdram_app_adapter;
         input [31:0] a;
         input [31:0] d;
         integer g;
-        begin begin
+        begin
             @(negedge clk);
             rq <= 1'b1; rw <= 1'b1; ra <= a; rwd <= d; rstrb <= 4'hF;
             g = 0;
@@ -163,14 +163,14 @@ module tb_sdram_app_adapter;
             if (g >= 5000) to_rdy = to_rdy + 1;
             rq <= 1'b0;
             @(negedge clk);
-        end
+
      end endtask
 
     task rd_word;
         input  [31:0] a;
         output [31:0] d;
         integer g;
-        begin begin
+        begin
             @(negedge clk);
             rq <= 1'b1; rw <= 1'b0; ra <= a;
             g = 0;
@@ -183,7 +183,7 @@ module tb_sdram_app_adapter;
             if (g >= 5000) to_rvl = to_rvl + 1;
             d = rd;
             @(negedge clk);
-        end
+
      end endtask
 
 

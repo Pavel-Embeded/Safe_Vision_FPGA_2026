@@ -8,8 +8,8 @@ module tb_v3_flexible_bmp542;
  reg[15:0] expected[0:2457599];reg[63:0] cases[0:7];
  integer errors=0,comparisons=0,c=0,pos=0,pixels=0,cycle=0,w,h,top,bits,offset,stride,full_height;
  reg holding=0;reg[37:0] held;
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s case%0d pos%0d xy%0d,%0d",message,c,pos,x,y);end end  end endtask
- function[7:0] byte_at;input integer n;integer u,row,col,channel,sx,sy,value;begin begin
+ task check(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s case%0d pos%0d xy%0d,%0d",message,c,pos,x,y);end   end endtask
+ function[7:0] byte_at;input integer n;integer u,row,col,channel,sx,sy,value;begin
   byte_at=0;
   if(n>=offset)begin
    u=n-offset;row=u/stride;col=u%stride;channel=col%(bits/8);sx=col/(bits/8);sy=top ? row:h-1-row;
@@ -31,7 +31,7 @@ module tb_v3_flexible_bmp542;
    26:byte_at=1;28:byte_at=bits;
    default:byte_at=0;
   endcase
- end  end endfunction
+   end endfunction
  always @(negedge clk)begin cycle=cycle+1;pr=cycle%19>=5;end
  always @(posedge clk)if(rst_n)begin
   if(holding)check(pv&&{pixel,x,y,ps,pe}===held,"complete output word and coordinates stable under backpressure");

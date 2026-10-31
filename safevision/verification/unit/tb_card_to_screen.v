@@ -18,10 +18,10 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 
@@ -49,7 +49,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
 
 
     reg [7:0] bmp_hdr [0:53];
-    initial begin : v_local_1 
+    initial begin : v_local_1
         integer k;
         for (k = 0; k < 54; k = k + 1) bmp_hdr[k] = 8'h00;
         bmp_hdr[0]  = 8'h42; bmp_hdr[1]  = 8'h4D;
@@ -69,7 +69,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
 
     function [7:0] sector_byte;
         input integer k;
-        begin begin
+        begin
             case (k)
                 450:     sector_byte = 8'h0C;
                 454:     sector_byte = VOL_BASE[7:0];
@@ -84,14 +84,14 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
                 511:     sector_byte = 8'hAA;
                 default: sector_byte = (k & 32'hFF) + 32'h11;
             endcase
-        end
+
      end endfunction
 
 
     function [7:0] filebyte;
         input integer j;
         integer n,x,y,c;
-        begin begin
+        begin
             if(j<54)filebyte=bmp_hdr[j];
             else begin
                 n=(j-54)/3;x=n%W;y=n/W;c=(j-54)%3;
@@ -101,24 +101,24 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
                     default:filebyte=(x*13+y*19+131)&255;
                 endcase
             end
-        end
+
      end endfunction
     function [7:0] pixbyte;
         input integer j;
-        begin begin pixbyte=filebyte(54+j);end
+        begin  pixbyte=filebyte(54+j);
      end endfunction
 
     function [15:0] exp565;
         input integer n;
         integer b3;
         reg [7:0] bb, gg, rr;
-        begin begin
+        begin
             b3 = n * 3;
             bb = pixbyte(b3);
             gg = pixbyte(b3 + 1);
             rr = pixbyte(b3 + 2);
             exp565 = { rr[7:3], gg[7:2], bb[7:3] };
-        end
+
      end endfunction
 
 
@@ -447,7 +447,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
 
 
     task mbr_set_card0;
-        begin begin
+        begin
 
 
             u_card.sector[450] = 8'h0C;
@@ -461,12 +461,12 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
             u_card.sector[461] = 8'h00;
             u_card.sector[510] = 8'h55;
             u_card.sector[511] = 8'hAA;
-        end
+
      end endtask
 
     task build_volume;
         integer c, k;
-        begin begin
+        begin
 
             u_card.mk_fat32_dbr(16'd512, SPC, RSVD, NFAT, FATSZ, ROOTCLUS, TOTSEC, 1'b1);
 
@@ -494,7 +494,7 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
             end
 
             mbr_set_card0;
-        end
+
      end endtask
 
 
@@ -719,14 +719,14 @@ module tb_card_to_screen #(parameter integer ENABLE_DISPLAY=0, MUTATE_LBA=0,CLK_
     end
 
     task report;
-        begin begin
+        begin
             $display("============================================");
             if (errors == 0) $display("  ALL PASS (stream=%0d bytes, pix=%0d)", fst_got, pix_n);
             else             $display("  FAILED: %0d check(s)", errors);
             $display("  stream bytes=%0d mismatch=%0d first_bad=%0d", fst_got, fst_mism, fst_first_bad);
             $display("  pixels=%0d bad=%0d", pix_n, pix_bad);
             $display("============================================");
-        end
+
      end endtask
 
 endmodule

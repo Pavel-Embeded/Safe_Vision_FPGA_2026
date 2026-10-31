@@ -14,12 +14,12 @@ module tb_v3_memory_path_observer;
  .verify_start(start),.physical_read_valid(rv),.physical_read_data(rd),.host_read_valid(hv),.host_read_data(hd),
  .source_or(),.write_or(),.raw_or(wrong_ro),.host_or(),.source_count(),.write_count(),.raw_count(),.host_count());
  integer errors=0,comparisons=0,i;
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;
   if(!ok)begin errors = errors + 1;$display("[FAIL] %s",msg);end
   else $display("[PASS] %s",msg);
- end  end endtask
- task tick;begin begin @(posedge clk);#1;@(negedge clk);end  end endtask
- task reset_epoch;begin begin rst_n=0;sa=0;pw=0;start=0;rv=0;hv=0;tick();rst_n=1;tick();end  end endtask
+   end endtask
+ task tick;begin  @(posedge clk);#1;@(negedge clk);  end endtask
+ task reset_epoch;begin  rst_n=0;sa=0;pw=0;start=0;rv=0;hv=0;tick();rst_n=1;tick();  end endtask
  initial begin
   reset_epoch();
 

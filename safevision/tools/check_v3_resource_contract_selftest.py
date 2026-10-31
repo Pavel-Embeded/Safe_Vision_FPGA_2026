@@ -19,7 +19,7 @@ def main():
  area='\n'.join('#%s %d out of %d 0.00%%'%x for x in [('lut',17010,19600),('reg',13125,19600),('bram',51,64),('bram32k',0,16),('dsp',26,29),('pll',3,4)])
  ck('approved 86.8 percent LUT passes area only',resource_gate(area,policy)['accepted'])
  ck('legacy policy retained separately',not resource_gate(area)['accepted'])
- for name,old,new in [('lut',17010,19601),('reg',13125,15681),('bram',51,55),('bram32k',0,2),('dsp',26,30),('pll',3,2)]:
+ for name,old,new in [('lut',17010,19601),('reg',13125,15681),('bram',51,65),('bram32k',0,4),('dsp',26,30),('pll',3,2)]:
   ck('reject '+name+' limit violation',not resource_gate(area.replace('#%s %d '%(name,old),'#%s %d '%(name,new)),policy)['accepted'])
  ck('reject spoofed report device capacity',not resource_gate(area.replace('out of  19600','out of  30000').replace('out of 19600','out of 30000'),policy)['accepted'])
  for key,value in [('physical_capacity',{'lut':30000}),('hard_caps_percent',{'lut':101,'reg':80,'ram':85}),('requires_all_corner_setup_hold_recovery_removal',False),('requires_successful_native_placement_routing',False),('feature_reduction_permitted',True)]:
@@ -37,8 +37,10 @@ def main():
   ck('reject command ROM corruption',rejects(lambda:catalog_check(root)));rom.write_bytes(orig)
   controls=root/'safevision/rtl/control/v3_user_controls.v';original_controls=controls.read_bytes();top=root/'safevision/platform/anlogic_eg4s20_hx4s20c/rtl/safevision_top/safevision_v3_top.v';original_top=top.read_bytes()
   controls.write_bytes(original_controls.replace(b"CTRL_ID_BRIGHT=7'd5;",b"CTRL_ID_BRIGHT=7'd127;"));ck('reject incorrect control catalog ID',rejects(lambda:catalog_check(root)));controls.write_bytes(original_controls)
-  assert original_top.count(b'v3_user_controls #(.BOARD_CATALOG(1),')==1
-  top.write_bytes(original_top.replace(b'v3_user_controls #(.BOARD_CATALOG(1),',b'v3_user_controls #(.BOARD_CATALOG(0),'));ck('reject lost board control catalog mode',rejects(lambda:catalog_check(root)));top.write_bytes(original_top)
+  control_mode=b'.UI_TIMEBASE(1),.BOARD_CATALOG(1),.SYSTEM_SAFE_ENABLE(1)'
+  assert original_top.count(control_mode)==1
+  top.write_bytes(original_top.replace(control_mode,b'.UI_TIMEBASE(1),.BOARD_CATALOG(0),.SYSTEM_SAFE_ENABLE(1)'));ck('reject lost board control catalog mode',rejects(lambda:catalog_check(root)));top.write_bytes(original_top)
+  assert original_top.count(b'.catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66)')==1
   top.write_bytes(original_top.replace(b'.catalog_id(cmd_catalog_id),.command_valid(cmd_valid && cmd_target!=66)',b".catalog_id(7'd0),.command_valid(cmd_valid && cmd_target!=66)"));ck('reject lost board control ID connection',rejects(lambda:catalog_check(root)));top.write_bytes(original_top)
   controls.write_text(controls.read_text(encoding='utf-8')+'\n// command_name=="NEWCOMMAND"\n',encoding='utf-8')
   ck('detect future command absent from finite catalog',rejects(lambda:catalog_check(root)))

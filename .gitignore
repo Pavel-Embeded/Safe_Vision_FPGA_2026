@@ -1,4 +1,6 @@
 /safevision/build/out/
+/artifacts/
+/evidence/
 /safevision/verification/work*/
 /safevision/**/*_Runs/
 /safevision/platform/**/generated/

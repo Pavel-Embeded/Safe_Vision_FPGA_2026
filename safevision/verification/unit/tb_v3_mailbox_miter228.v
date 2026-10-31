@@ -8,7 +8,7 @@ module mailbox_case228 #(parameter W=103,SC=5,DC=7)(output reg done,output integ
  video_cdc_mailbox220_reference #(.WIDTH(W)) oracle(s,rst,data,valid,rr,d,rst,rd,rv,ready);
  reg[W-1:0] queue[0:100000];integer head=0,tail=0,scount=0,dcount=0,epoch,cycle;
  reg[31:0] random_s=32'h5a341cd7,random_d=32'h8dc21345;
- function[31:0] next_random(input[31:0] x);reg[31:0] y;begin begin y=x^(x<<13);y=y^(y>>17);next_random=y^(y<<5);end  end endfunction
+ function[31:0] next_random(input[31:0] x);reg[31:0] y;begin  y=x^(x<<13);y=y^(y>>17);next_random=y^(y<<5);  end endfunction
  always@(negedge s)begin
   random_s=next_random(random_s);scount = scount + 1;
   if(!rst||!running)begin valid=0;data=0;end

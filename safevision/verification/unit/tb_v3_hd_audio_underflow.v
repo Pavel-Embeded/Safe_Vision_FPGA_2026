@@ -35,7 +35,7 @@ module tb_v3_hd_audio_underflow;
 
  task commit;
 
-  begin begin @(negedge sc);cv=1;wait(cr);@(negedge sc);cv=0;end
+  begin  @(negedge sc);cv=1;wait(cr);@(negedge sc);cv=0;
 
   end endtask
 
@@ -45,21 +45,21 @@ module tb_v3_hd_audio_underflow;
 
   #100;rst_n=1;repeat(20)@(posedge sc);commit();base=ticks;
 
-  wait(ticks>=base+780);if(under!=0)begin $display("[FAIL] unprimed generation false underflow"); $finish; end 
+  wait(ticks>=base+780);if(under!=0)begin $display("[FAIL] unprimed generation false underflow"); $finish; end
 
   wait(ticks>=base+850);repeat(20)@(posedge sc);
 
-  if(under<20||under>60)begin $display("[FAIL] failed priming must become true underflow %0d",under); $finish; end 
+  if(under<20||under>60)begin $display("[FAIL] failed priming must become true underflow %0d",under); $finish; end
 
   prior=under;generation=2;commit();base=ticks;wait(ticks>=base+100);
 
-  if(under>prior+5)begin $display("[FAIL] new generation did not restart bounded priming"); $finish; end 
+  if(under>prior+5)begin $display("[FAIL] new generation did not restart bounded priming"); $finish; end
 
   alarm=1;wait(ticks>=base+400);prior=pairs;mreset=1;
 
   wait(ticks>=base+700);
 
-  if(d.u_priority.gain!=256||pairs<prior+250||nonzero<250||over!=0)begin $display("[FAIL] alarm/cadence interrupted by media reset"); $finish; end 
+  if(d.u_priority.gain!=256||pairs<prior+250||nonzero<250||over!=0)begin $display("[FAIL] alarm/cadence interrupted by media reset"); $finish; end
 
   $display("[PASS] first/new generation bounded priming, true timeout underflow, alarm survives media reset");
 

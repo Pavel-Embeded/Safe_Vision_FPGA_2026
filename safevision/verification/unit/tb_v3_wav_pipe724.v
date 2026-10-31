@@ -13,7 +13,7 @@ module tb_v3_wav_pipe724;
 
  function[33:0] consistent_bound(input[110:0] f,input[31:0] file_bytes);
   reg[31:0] lim,w;reg[63:0] sum,mask;reg carry,gt;integer st,idx,n;
-  begin begin
+  begin
    st=f[108:105];idx=f[104:101];w=f[100:69];
    lim=32'h13579bdf;carry=1;gt=0;
    if((st==1||st==2)&&idx>=5&&idx<=7)begin
@@ -24,14 +24,14 @@ module tb_v3_wav_pipe724;
     carry=(sum>>n)!=0;gt=(sum&mask)>({32'd0,lim}&mask);
    end
    consistent_bound={lim,carry,gt};
-  end
+
   end endfunction
- task check(input  ok,input [4095:0] message);begin begin
+ task check(input  ok,input [4095:0] message);begin
   ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<9)$display("[FAIL] %s k=%0d ctx=%h size=%h din=%h",message,k,ctx,size,din);end
- end  end endtask
- task compare;begin begin check({ac,ar,asample,av,ae}==={bc,br,bsample,bv,be},"exact context,ready,PCM,error same edge");end  end endtask
+   end endtask
+ task compare;begin  check({ac,ar,asample,av,ae}==={bc,br,bsample,bv,be},"exact context,ready,PCM,error same edge");  end endtask
  reg[31:0] directed_a,directed_limit;integer ai,li,jj;
- task exercise_size(input[31:0] value,input[31:0] payload_limit);begin begin
+ task exercise_size(input[31:0] value,input[31:0] payload_limit);begin
   @(negedge clk);load=1;enable=0;start=0;dv=0;eof=0;ready=0;size=0;
   ctx={1'b0,1'b0,4'd2,4'd4,32'h4b4e554a,payload_limit+32'd4,32'd0,2'd0,1'b0,1'b1,1'b1};
   bound_in=consistent_bound(ctx,size);
@@ -42,7 +42,7 @@ module tb_v3_wav_pipe724;
 
    if(jj==1)begin @(negedge clk);enable=0;dv=0;@(posedge clk);#1;compare();end
   end
- end  end endtask
+   end endtask
  initial begin
   #2;compare();#11;rst=1;
   for(ai=0;ai<14;ai = ai + 1)begin

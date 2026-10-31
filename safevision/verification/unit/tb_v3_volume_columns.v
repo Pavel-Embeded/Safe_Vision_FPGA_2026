@@ -17,16 +17,16 @@ module volume_column_case #(parameter HD=0)(output reg done,output integer error
  .cache_valid(4'hf),.underflows(32'd0),.active_slot(2'd0),.generation(8'd0),.busy(1'b0),.safety_active(1'b0),.hud_rgb565(rgb),.hud_alpha(alpha));
  integer e,v,k,n,ix,iy,h,expected,stable;reg ee,ff;reg[1:0]cc;
  reg[15:0]cr[0:3];reg[7:0]ca[0:3];reg pipeline_checks=0;
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] HD=%0d %s",HD,msg);end end  end endtask
- task snapshot(input integer a,b);begin begin
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<8)$display("[FAIL] HD=%0d %s",HD,msg);end   end endtask
+ task snapshot(input integer a,b);begin
   @(negedge clk);x=0;y=0;de=0;en=a;vol=b;cfg[54:48]=a;cfg[67:61]=b;fs=1;
   @(negedge clk);fs=0;en=0;vol=0;
   n=0;while(busy&&n<112)begin @(negedge clk);n = n + 1;end
   expected=((a>100 ? 100:a)*(b>100 ? 100:b))/100;
   ck(!busy,"bounded serial gain/division completion");ck(lev===expected[6:0],"independent exact gain including input clamps");
- end  end endtask
+   end endtask
  always@(posedge clk)begin
-  begin : v_loop_1 integer q; for( q=3;q>0;q = q - 1)begin cr[q]=cr[q-1];ca[q]=ca[q-1];end end 
+  begin : v_loop_1 integer q; for( q=3;q>0;q = q - 1)begin cr[q]=cr[q-1];ca[q]=ca[q-1];end end
   h=H-70-y;
   ee=de&&x>=W-49&&x<=W-23&&y>=H-171&&y<=H-69&&(x==W-49||x==W-23||y==H-171||y==H-69);
   ff=de&&x>W-49&&x<W-23&&h>=1&&h<=100&&h<=expected&&(h==100||h%10!=0);

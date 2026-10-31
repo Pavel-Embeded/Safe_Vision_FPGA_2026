@@ -32,16 +32,16 @@ module tb_c_input_sync;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
     task ncyc;
         input integer n;
         integer k;
-        begin begin for (k = 0; k < n; k = k + 1) begin @(posedge clk); #1; end end
+        begin  for (k = 0; k < n; k = k + 1) begin @(posedge clk); #1; end
      end endtask
 
 
@@ -49,7 +49,7 @@ module tb_c_input_sync;
         input  integer n;
         output integer c;
         integer k;
-        begin begin
+        begin
             c = 0; prev_press = 0;
             for (k = 0; k < n; k = k + 1) begin
                 @(posedge clk); #1;
@@ -62,7 +62,7 @@ module tb_c_input_sync;
                 end
                 prev_press = press;
             end
-        end
+
      end endtask
 
     initial begin

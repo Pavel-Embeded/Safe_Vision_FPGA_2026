@@ -34,32 +34,32 @@ module sd_clock_param_case #(parameter integer CLK_HZ=125_000_000)(output reg do
       if(rst_n && previous_edge>0 && previous_phase==init_done)begin
         period_ns=$realtime-previous_edge;
         if(!init_done)begin
-          if(period_ns<2499.9)begin $display("[FAIL] initialization clock exceeds400kHz CLK_HZ=%0d",CLK_HZ); $finish; end 
+          if(period_ns<2499.9)begin $display("[FAIL] initialization clock exceeds400kHz CLK_HZ=%0d",CLK_HZ); $finish; end
           init_periods=init_periods+1;
         end else begin
-          if(period_ns<39.9)begin $display("[FAIL] data clock exceeds25MHz CLK_HZ=%0d",CLK_HZ); $finish; end 
+          if(period_ns<39.9)begin $display("[FAIL] data clock exceeds25MHz CLK_HZ=%0d",CLK_HZ); $finish; end
           data_periods=data_periods+1;
         end
       end
       previous_phase=init_done;previous_edge=$realtime;
     end
     always @(posedge clk)if(rst_n && sector_valid)begin
-      if(sector_data!==v_cast_s8((bytes&255)+17))begin $display("[FAIL] sector mismatch"); $finish; end 
+      if(sector_data!==v_cast_s8((bytes&255)+17))begin $display("[FAIL] sector mismatch"); $finish; end
       bytes=bytes+1;
     end
     initial begin
       repeat(4)@(negedge clk);rst_n=1;
       @(negedge clk);start=1;@(negedge clk);start=0;
       wait(init_done || init_error);
-      if(init_error || init_div!==INIT_DIV || rd_div!==FAST_DIV)begin $display("[FAIL] divider/init mismatch"); $finish; end 
+      if(init_error || init_div!==INIT_DIV || rd_div!==FAST_DIV)begin $display("[FAIL] divider/init mismatch"); $finish; end
       wait(ready);@(negedge clk);rd_en=1;@(negedge clk);rd_en=0;
       wait(sector_done);@(negedge clk);
-      if(bytes!=512 || to_error || crc_error || init_periods<74 || data_periods<4096)begin $display("[FAIL] incomplete SD clock/sector test"); $finish; end 
+      if(bytes!=512 || to_error || crc_error || init_periods<74 || data_periods<4096)begin $display("[FAIL] incomplete SD clock/sector test"); $finish; end
       $display("[PASS] SD clk=%0d init_div=%0d fast_div=%0d bytes=%0d init_edges=%0d data_edges=%0d",CLK_HZ,INIT_DIV,FAST_DIV,bytes,init_periods,data_periods);
       done=1;
     end
 
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
 endmodule
 module tb_sd_clock_params;
     wire d50,d100,d125;

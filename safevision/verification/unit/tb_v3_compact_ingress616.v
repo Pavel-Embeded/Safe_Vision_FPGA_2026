@@ -21,8 +21,8 @@ module tb_v3_ingress_credit616;
   $display("[TB] tb_v3_ingress_credit616 done comparisons=%0d errors=%0d",checks,errors);$finish;
  end
 
-function [8:0] v_cast_u9; input [8:0] value; begin begin v_cast_u9=value; end  end endfunction
-function signed [10:0] v_cast_s11; input signed [10:0] value; begin begin v_cast_s11=value; end  end endfunction
+function [8:0] v_cast_u9; input [8:0] value; begin  v_cast_u9=value;   end endfunction
+function signed [10:0] v_cast_s11; input signed [10:0] value; begin  v_cast_s11=value;   end endfunction
 endmodule
 
 module ingress_transfer616 #(parameter integer AW=9,CHECK_GOLD=0,parameter TOPNAME="tb_v3_ingress_compact616");
@@ -39,66 +39,66 @@ module ingress_transfer616 #(parameter integer AW=9,CHECK_GOLD=0,parameter TOPNA
   wire[3:0] gr,gv;wire[127:0] gd;wire[8:0] gp;wire[10:0] gw;wire gro,gpa;
   v3_pcm_ingress_shared_fifo_original616 gold(.rst(rst),.wr_clk(wc),.rd_clk(rc),.wr_data(data),.wr_valid(valid),.wr_ready(gr),.wr_pairs(gp),.wr_words(gw),.wr_partial(gpa),.sector_room(gro),.rd_data(gd),.rd_valid(gv),.rd_ready(rd_ready));
   always @(negedge wc)if(!rst&&dut.wr_rst_n)begin
-   if({ready,pairs,words,partial,room}!=={gr,gp,gw,gpa,gro})begin $display("[FAIL] default legacy write interface differs"); $finish; end 
+   if({ready,pairs,words,partial,room}!=={gr,gp,gw,gpa,gro})begin $display("[FAIL] default legacy write interface differs"); $finish; end
   end
   always @(negedge rc)if(!rst&&dut.rd_rst_n)begin
-   if(rv!==gv||((|rv)&&out!==gd))begin $display("[FAIL] default legacy read interface differs"); $finish; end 
+   if(rv!==gv||((|rv)&&out!==gd))begin $display("[FAIL] default legacy read interface differs"); $finish; end
   end
  end endgenerate
  always @(posedge wc)if(!rst&&valid!=0&&ready!=0)begin
-  if(ready!==valid)begin $display("[FAIL] write ready tag mismatch"); $finish; end 
+  if(ready!==valid)begin $display("[FAIL] write ready tag mismatch"); $finish; end
   expected_data[tail]=data[31:0];
-  begin : v_loop_1 integer j; for( j=0;j<4;j = j + 1)if(valid[j])begin expected_data[tail]=data[j*32+:32];expected_track[tail]=j;end end 
+  begin : v_loop_1 integer j; for( j=0;j<4;j = j + 1)if(valid[j])begin expected_data[tail]=data[j*32+:32];expected_track[tail]=j;end end
   tail=tail+1;
  end
  always @(negedge rc)begin cycle=cycle+1;rd_ready=reader_on&&cycle%19>=7 ? (cycle%5==0 ? 4'b0101:4'hf):4'd0;end
  always @(posedge rc)if(!rst)begin
-  if(stalled&&{rv,out}!==held)begin $display("[FAIL] read payload/tag changed under backpressure"); $finish; end 
+  if(stalled&&{rv,out}!==held)begin $display("[FAIL] read payload/tag changed under backpressure"); $finish; end
   stalled=(rv!=0)&&((rv&rd_ready)==0);held={rv,out};if(stalled)stalls = stalls + 1;
   if((rv&rd_ready)!=0)begin
-   if(head>=tail||rv!==(4'b1<<expected_track[head])||out!=={4{expected_data[head]}})begin $display("[FAIL] tag/data order head=%0d tail=%0d rv=%h expectedtag=%0d out=%h expected=%h",head,tail,rv,expected_track[head],out[31:0],expected_data[head]); $finish; end 
+   if(head>=tail||rv!==(4'b1<<expected_track[head])||out!=={4{expected_data[head]}})begin $display("[FAIL] tag/data order head=%0d tail=%0d rv=%h expectedtag=%0d out=%h expected=%h",head,tail,rv,expected_track[head],out[31:0],expected_data[head]); $finish; end
    head = head + 1;checks = checks + 1;
   end
  end else stalled=0;
  task automatic send(input integer n);
-  integer t;begin begin
+  integer t;begin
    t=n%4;@(negedge wc);data=0;data[t*32+:32]=sample(n);valid=4'b1<<t;
    @(posedge wc);while(ready==0)@(posedge wc);
    @(negedge wc);valid=0;
-  end
+
   end endtask
  task automatic reset_epoch;
-  begin begin rst=1;valid=0;reader_on=0;read_clock=1;#100;head=0;tail=0;stalled=0;epoch = epoch + 1;rst=0;repeat(12)@(negedge wc);end
+  begin  rst=1;valid=0;reader_on=0;read_clock=1;#100;head=0;tail=0;stalled=0;epoch = epoch + 1;rst=0;repeat(12)@(negedge wc);
   end endtask
  initial begin
   reset_epoch();@(negedge rc);read_clock=0;
-  begin : v_loop_2 integer n; for( n=0;n<INITIAL_PAIRS;n = n + 1)send(n); end 
+  begin : v_loop_2 integer n; for( n=0;n<INITIAL_PAIRS;n = n + 1)send(n); end
   repeat(8)@(negedge wc);
-  if(words!=3*INITIAL_PAIRS||!room||partial)begin $display("[FAIL] reservation boundary words=%0d expected=%0d room=%b",words,3*INITIAL_PAIRS,room); $finish; end 
-  begin : v_loop_3 integer n; for( n=INITIAL_PAIRS;n<INITIAL_PAIRS+128;n = n + 1)send(n); end 
+  if(words!=3*INITIAL_PAIRS||!room||partial)begin $display("[FAIL] reservation boundary words=%0d expected=%0d room=%b",words,3*INITIAL_PAIRS,room); $finish; end
+  begin : v_loop_3 integer n; for( n=INITIAL_PAIRS;n<INITIAL_PAIRS+128;n = n + 1)send(n); end
   repeat(8)@(negedge wc);
-  if(words!=3*(INITIAL_PAIRS+128)||room||partial)begin $display("[FAIL] full384-word sector failed words=%0d",words); $finish; end 
+  if(words!=3*(INITIAL_PAIRS+128)||room||partial)begin $display("[FAIL] full384-word sector failed words=%0d",words); $finish; end
   checks = checks + (128);
-  begin : v_loop_4 integer n; for( n=INITIAL_PAIRS+128;n<WHOLE_PAIRS;n = n + 1)send(n); end 
+  begin : v_loop_4 integer n; for( n=INITIAL_PAIRS+128;n<WHOLE_PAIRS;n = n + 1)send(n); end
   fork
    begin send(WHOLE_PAIRS);end
    begin
     repeat(50)@(negedge wc);
-    if(ready!=0||words!=(1<<AW)-1)begin $display("[FAIL] full queue did not hold source with bounded level words=%0d ready=%h",words,ready); $finish; end 
-    if(AW==9&&!partial)begin $display("[FAIL] missing actual partial-packet full stall"); $finish; end 
+    if(ready!=0||words!=(1<<AW)-1)begin $display("[FAIL] full queue did not hold source with bounded level words=%0d ready=%h",words,ready); $finish; end
+    if(AW==9&&!partial)begin $display("[FAIL] missing actual partial-packet full stall"); $finish; end
     read_clock=1;reader_on=1;
    end
   join
   wait(head==tail);repeat(12)@(negedge wc);
-  if(words!=0)begin $display("[FAIL] queue failed to drain"); $finish; end 
-  fork : v_race_1 
-   begin : v_branch_1 begin send(6000);end disable v_race_1; end 
-   begin : v_branch_2 begin wait(dut.write_part==1);rst=1;end disable v_race_1; end 
-  join 
+  if(words!=0)begin $display("[FAIL] queue failed to drain"); $finish; end
+  fork : v_race_1
+   begin : v_branch_1 begin send(6000);end disable v_race_1; end
+   begin : v_branch_2 begin wait(dut.write_part==1);rst=1;end disable v_race_1; end
+  join
   reset_epoch();reader_on=1;
-  begin : v_loop_5 integer n; for( n=0;n<1800;n = n + 1)begin send(n);repeat(n%3)@(negedge wc);end end 
+  begin : v_loop_5 integer n; for( n=0;n<1800;n = n + 1)begin send(n);repeat(n%3)@(negedge wc);end end
   wait(head==tail);repeat(20)@(negedge wc);
-  if(words!=0||partial||stalls<10)begin $display("[FAIL] transfer coverage/drain words=%0d partial=%b stalls=%0d",words,partial,stalls); $finish; end 
+  if(words!=0||partial||stalls<10)begin $display("[FAIL] transfer coverage/drain words=%0d partial=%b stalls=%0d",words,partial,stalls); $finish; end
   $display("[PASS] actual TD FIFO AW%0d full512byte sector,full stall,tag order,clock mismatch,backpressure,wrap,midpacket reset and legacy miter=%0d checks=%0d stalls=%0d",AW,CHECK_GOLD,checks,stalls);
   $display("[TB] %s done comparisons=%0d errors=0",TOPNAME,checks);$finish;
  end
@@ -128,20 +128,20 @@ module tb_v3_ingress_prefill616;
  integer sent[0:3],got[0:3],max_count[0:3],checks=0,sectors[0:3];integer selected=0;reg run_source=1,source_stopped=0;
  reg stalled=0;reg[39:0] held;
  function automatic [31:0] value(input integer slot,index);begin value=32'h65000000+(slot<<20)+index; end endfunction
- always @(posedge wc)if(rst_w_n&&(|source_ready))begin : v_loop_6 integer t; for( t=0;t<4;t = t + 1)if(source_ready[t])sent[t] = sent[t] + 1; end 
+ always @(posedge wc)if(rst_w_n&&(|source_ready))begin : v_loop_6 integer t; for( t=0;t<4;t = t + 1)if(source_ready[t])sent[t] = sent[t] + 1; end
  always @(negedge mc)ore=cycle%13!=0&&cycle%7!=0;
  always @(posedge mc)begin
   ack<=0;rv<=0;cycle<=cycle+1;
   if(rst_m_n)begin
-   if(stalled&&(!ov||out!==held))begin $display("[FAIL] ring output changed under backpressure"); $finish; end 
+   if(stalled&&(!ov||out!==held))begin $display("[FAIL] ring output changed under backpressure"); $finish; end
    stalled<=ov&&!ore;held<=out;
    begin : v_loop_7 integer t; for( t=0;t<4;t = t + 1)begin
-    if(levels[t*16+:16]>1440)begin $display("[FAIL] bounded prefill exceeded slot=%0d level=%0d",t,levels[t*16+:16]); $finish; end 
+    if(levels[t*16+:16]>1440)begin $display("[FAIL] bounded prefill exceeded slot=%0d level=%0d",t,levels[t*16+:16]); $finish; end
     if(levels[t*16+:16]>max_count[t])max_count[t]=levels[t*16+:16];
-   end end 
-   if(overflow!=0)begin $display("[FAIL] ring overflow"); $finish; end 
+   end end
+   if(overflow!=0)begin $display("[FAIL] ring overflow"); $finish; end
    if(!busy&&req&&cycle%11!=0&&cycle%17!=0)begin
-    if(len!=1||addr<32'h280000||addr>=32'h2c0000||addr[1:0]!=0)begin $display("[FAIL] ring address/length"); $finish; end 
+    if(len!=1||addr<32'h280000||addr>=32'h2c0000||addr[1:0]!=0)begin $display("[FAIL] ring address/length"); $finish; end
     ack<=1;busy<=1;lat_addr<=addr;lat_data<=wd;lat_wr<=wr;delay<=1+cycle%9;
    end else if(busy)begin
     if(delay!=0)delay<=delay-1;
@@ -149,24 +149,24 @@ module tb_v3_ingress_prefill616;
    end
    if(cv&&cr)begin active=cs;expected_generation=generation;end
    if(ov&&ore)begin
-    if(out[39:32]!==expected_generation||out[31:0]!==value(active,got[active]))begin $display("[FAIL] integrated ring data/generation slot=%0d index=%0d got=%h",active,got[active],out); $finish; end 
+    if(out[39:32]!==expected_generation||out[31:0]!==value(active,got[active]))begin $display("[FAIL] integrated ring data/generation slot=%0d index=%0d got=%h",active,got[active],out); $finish; end
     got[active] = got[active] + 1;checks = checks + 1;
    end
   end else stalled<=0;
  end
  task automatic send_pair(input integer slot,index);
-  begin begin @(negedge wc);source_data=0;source_data[slot*32+:32]=value(slot,index);source_valid=4'b1<<slot;@(posedge wc);while(source_ready==0)@(posedge wc);@(negedge wc);source_valid=0;end
+  begin  @(negedge wc);source_data=0;source_data[slot*32+:32]=value(slot,index);source_valid=4'b1<<slot;@(posedge wc);while(source_ready==0)@(posedge wc);@(negedge wc);source_valid=0;
   end endtask
  task automatic commit(input integer slot,gen);
-  begin begin @(negedge mc);cs=slot;generation=gen;cv=1;@(posedge mc);while(!cr)@(posedge mc);@(negedge mc);cv=0;end
+  begin  @(negedge mc);cs=slot;generation=gen;cv=1;@(posedge mc);while(!cr)@(posedge mc);@(negedge mc);cv=0;
   end endtask
  initial begin
-  begin : v_loop_8 integer t; for( t=0;t<4;t = t + 1)begin sent[t]=0;got[t]=0;max_count[t]=0;sectors[t]=0;end end 
+  begin : v_loop_8 integer t; for( t=0;t<4;t = t + 1)begin sent[t]=0;got[t]=0;max_count[t]=0;sectors[t]=0;end end
   #100;rst=0;wait(rst_w_n&&rst_m_n&&ref_valid);
   while(run_source)begin
    if(fill[selected]&&sector_room)begin
     sectors[selected] = sectors[selected] + 1;
-    begin : v_loop_9 integer n; for( n=0;n<128;n = n + 1)send_pair(selected,sent[selected]); end 
+    begin : v_loop_9 integer n; for( n=0;n<128;n = n + 1)send_pair(selected,sent[selected]); end
    end else repeat(5)@(negedge wc);
    selected=(selected+1)%4;
   end
@@ -176,12 +176,12 @@ module tb_v3_ingress_prefill616;
   wait(&prefetched);checks = checks + (4);
   commit(0,1);wait(got[0]>=256);commit(3,2);wait(got[3]>=256);commit(1,3);wait(got[1]>=256);commit(2,4);wait(got[2]>=256);
   run_source=0;wait(source_stopped);
-  begin : v_loop_10 integer t; for( t=0;t<4;t = t + 1)begin commit(t,10+t);wait(got[t]==sent[t]);end end 
+  begin : v_loop_10 integer t; for( t=0;t<4;t = t + 1)begin commit(t,10+t);wait(got[t]==sent[t]);end end
   repeat(100)@(negedge wc);
-  if(fifo_words!=0||fifo_partial||overflow!=0)begin $display("[FAIL] final integrated queue not empty"); $finish; end 
+  if(fifo_words!=0||fifo_partial||overflow!=0)begin $display("[FAIL] final integrated queue not empty"); $finish; end
   begin : v_loop_11 integer t; for( t=0;t<4;t = t + 1)begin
-   if(got[t]!=sent[t]||sent[t]<800||sectors[t]<7||max_count[t]<800||max_count[t]>1440)begin $display("[FAIL] four-track coverage slot=%0d sent=%0d got=%0d max=%0d sectors=%0d",t,sent[t],got[t],max_count[t],sectors[t]); $finish; end 
-  end end 
+   if(got[t]!=sent[t]||sent[t]<800||sectors[t]<7||max_count[t]<800||max_count[t]>1440)begin $display("[FAIL] four-track coverage slot=%0d sent=%0d got=%0d max=%0d sectors=%0d",t,sent[t],got[t],max_count[t],sectors[t]); $finish; end
+  end end
   $display("[PASS] AW9 actual tagged FIFO + production ring + CDC levels + exact prefill;4tracks over800pairs each,384word sectors,refresh/grant/backpressure,ordered generations and complete drain");
   $display("[TB] tb_v3_ingress_prefill616 done comparisons=%0d errors=0 sent=%0d/%0d/%0d/%0d max=%0d/%0d/%0d/%0d",checks,sent[0],sent[1],sent[2],sent[3],max_count[0],max_count[1],max_count[2],max_count[3]);$finish;
  end
@@ -195,8 +195,8 @@ module tb_v3_audio_depth616;
  v3_audio_system #(.PREINDEXED(1)) flex(.ref_clk(clk),.mem_clk(clk),.audio_clk(clk),.pixel_clk(clk),.sys_clk(clk),.rst_n(1'b0),.media_reset(1'b1),.media_descriptor_valid(1'b0));
  initial begin
   #100;
-  if(legacy.ingress_shared.AW!=10||flex.ingress_shared.AW!=9)begin $display("[FAIL] audio parameter depth selection"); $finish; end 
-  if(legacy.ingress_shared.q.u_fifo.ADDR_WIDTH_W!=10||legacy.ingress_shared.q.u_fifo.ADDR_WIDTH_R!=10||flex.ingress_shared.q.u_fifo.ADDR_WIDTH_W!=9||flex.ingress_shared.q.u_fifo.ADDR_WIDTH_R!=9)begin $display("[FAIL] vendor FIFO geometry not bound to selected depth"); $finish; end 
+  if(legacy.ingress_shared.AW!=10||flex.ingress_shared.AW!=9)begin $display("[FAIL] audio parameter depth selection"); $finish; end
+  if(legacy.ingress_shared.q.u_fifo.ADDR_WIDTH_W!=10||legacy.ingress_shared.q.u_fifo.ADDR_WIDTH_R!=10||flex.ingress_shared.q.u_fifo.ADDR_WIDTH_W!=9||flex.ingress_shared.q.u_fifo.ADDR_WIDTH_R!=9)begin $display("[FAIL] vendor FIFO geometry not bound to selected depth"); $finish; end
   force legacy.global_ingress_words=32'hffffffff;
   force flex.global_ingress_words=32'hffffffff;
   force legacy.global_ingress_pairs=32'hffffffff;

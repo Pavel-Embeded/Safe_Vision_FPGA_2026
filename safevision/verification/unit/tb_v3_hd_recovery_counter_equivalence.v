@@ -13,22 +13,22 @@ module recovery_counter_case #(parameter R=2,S=2,T=17,A=3)(output reg done_case,
    errors = errors + 1;if(errors<9)$display("[FAIL] recovery counter R=%0d S=%0d T=%0d got=%b want=%b",R,S,T,{b0,m0,s0,r0,l0,a0,st0},{b1,m1,s1,r1,l1,a1,st1});
   end
  end
- task reset_epoch;begin begin
+ task reset_epoch;begin
   @(negedge clk);#2;rst=0;request=0;done=0;failed=0;fatal=0;#3;rst=1;
- end  end endtask
- task begin_request;integer guard;begin begin
+   end endtask
+ task begin_request;integer guard;begin
   @(negedge clk);request=1;@(negedge clk);request=0;guard=0;
   while(st0!=4&&guard<R+S+10)begin @(negedge clk);guard = guard + 1;end
   if(st0!=4)begin errors = errors + 1;$display("[FAIL] WAIT not reached errors=1");end
- end  end endtask
- task accelerate_native_timeout;begin begin
+   end endtask
+ task accelerate_native_timeout;begin
   if(T>100000)begin
 
 
    force golden.timer=T-3;force dut.wait_timer=T-3;
    @(posedge clk);@(negedge clk);release golden.timer;release dut.wait_timer;
   end
- end  end endtask
+   end endtask
  integer n,k,guard;reg[31:0]noise=32'h89abcdef^T;
  initial begin
   #41;rst=1;

@@ -107,14 +107,14 @@ module tb_mem_roundtrip;
 
 
     task write_word(input [31:0] a);
-        begin begin
+        begin
             wr_addr = a; wr_data = dataof(a); wr_req = 1'b1;
             @(posedge clk);
             while (!(wr_busy && mem_req && mem_wr && mem_ready)) @(posedge clk);
             wr_req = 1'b0;
             @(posedge clk);
             wr_words = wr_words + 1;
-        end
+
      end endtask
 
 
@@ -123,7 +123,7 @@ module tb_mem_roundtrip;
     reg [31:0] bad_got, bad_exp;
 
     task read_block(input [31:0] a);
-        begin begin
+        begin
             sd_addr = a; sd_len = BLOCK; sd_req = 1'b1;
             @(posedge clk);
             while (!sd_ack) @(posedge clk);
@@ -134,7 +134,7 @@ module tb_mem_roundtrip;
                 got[k] = sd_rdata;
             end
             while (sd_busy) @(posedge clk);
-        end
+
      end endtask
 
     integer n;

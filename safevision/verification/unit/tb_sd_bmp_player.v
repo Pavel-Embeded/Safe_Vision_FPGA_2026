@@ -36,23 +36,23 @@ module tb_sd_bmp_player;
     function [23:0] px24;
         input integer x;
         input integer y;
-        begin begin
+        begin
             px24 = { (x[7:0] ^ y[7:0]), (x[9:0] + y[9:0]) & 8'hFF, (x[9:0]*3) & 8'hFF };
-        end
+
      end endfunction
 
     function [15:0] px565;
         input integer x;
         input integer y;
         reg [23:0] p;
-        begin begin
+        begin
             p = px24(x, y);
             px565 = { p[23:19], p[15:10], p[7:3] };
-        end
+
      end endfunction
 
     reg [7:0] bmp_hdr [0:53];
-    initial begin : v_local_1 
+    initial begin : v_local_1
         integer i;
         for (i = 0; i < 54; i = i + 1) bmp_hdr[i] = 8'h00;
         bmp_hdr[0]  = 8'h42; bmp_hdr[1] = 8'h4D;
@@ -77,7 +77,7 @@ module tb_sd_bmp_player;
         input integer j;
         integer p, n, c, r, x, y;
         reg [23:0] pxv;
-        begin begin
+        begin
             if (j < 54) filebyte = bmp_hdr[j];
             else begin
                 p = j - 54;
@@ -89,15 +89,15 @@ module tb_sd_bmp_player;
                 pxv = px24(x, y);
                 filebyte = (c == 0)  ?  pxv[7:0] : (c == 1)  ?  pxv[15:8] : pxv[23:16];
             end
-        end
+
      end endfunction
 
 
     function [15:0] exp565_k;
         input integer k;
-        begin begin
+        begin
             exp565_k = px565(k % W, k / W);
-        end
+
      end endfunction
 
 
@@ -109,10 +109,10 @@ module tb_sd_bmp_player;
     task check;
         input        cond;
         input [4095:0] msg;
-        begin begin
+        begin
             if (cond) $display("[PASS] %s", msg);
             else begin $display("[FAIL] %s", msg); errors = errors + 1; end
-        end
+
      end endtask
 
 
@@ -166,7 +166,7 @@ module tb_sd_bmp_player;
 
 
     task mbr_set_card0;
-        begin begin
+        begin
             u_card.sector[450] = 8'h0C;
             u_card.sector[454] = VOL_BASE[7:0];
             u_card.sector[455] = VOL_BASE[15:8];
@@ -178,12 +178,12 @@ module tb_sd_bmp_player;
             u_card.sector[461] = 8'h00;
             u_card.sector[510] = 8'h55;
             u_card.sector[511] = 8'hAA;
-        end
+
      end endtask
 
     task build_volume;
         integer c, s, o, j;
-        begin begin
+        begin
             u_card.mk_fat32_dbr(16'd512, SPC, RSVD, NFAT, FATSZ, ROOTCLUS, TOTSEC, 1'b1);
 
             u_card.vol_zero(VOL_FAT_LBA);
@@ -206,7 +206,7 @@ module tb_sd_bmp_player;
                 end
             end
             mbr_set_card0;
-        end
+
      end endtask
 
 
@@ -276,7 +276,7 @@ module tb_sd_bmp_player;
         input [31:0] base_word;
         input [4095:0] label;
         integer nn, kk, b;
-        begin begin
+        begin
             b = 0;
             for (nn = 0; nn < FRAME_PIX/2; nn = nn + 1) begin
                 kk = nn*2;
@@ -294,7 +294,7 @@ module tb_sd_bmp_player;
                 $display("[FAIL] %s : %0d / %0d words differ", label, b, FRAME_PIX/2);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 

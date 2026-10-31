@@ -8,8 +8,8 @@ module tb_v3_aux_mux;
  .verify_ack(vack),.verify_busy(vbusy),.verify_valid(vvalid),.verify_data(vdata),.audio_req(ar),.audio_wr(aw),
  .audio_addr(aa),.audio_wdata(wd),.audio_len(16'd1),.audio_ack(aack),.audio_busy(abusy),.audio_valid(avalid),.audio_data(adata),
  .sd_req(sreq),.sd_wr(swr),.sd_addr(saddr),.sd_wdata(swdata),.sd_len(slen),.sd_ack(ack),.sd_busy(busy),.sd_valid(valid),.sd_data(rd));
- task tick;begin begin @(posedge clk);#1;end  end endtask
- task check(input  ok,input [4095:0] name);begin begin ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s",name);end end  end endtask
+ task tick;begin  @(posedge clk);#1;  end endtask
+ task check(input  ok,input [4095:0] name);begin  ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s",name);end   end endtask
  initial begin
  repeat(3)tick();@(negedge clk);rst_n=1;vr=1;ar=1;aw=1;tick();check(sreq && !swr && saddr==va && slen==64,"verify wins simultaneous request");
  repeat(4)begin tick();check(sreq && !aack && vbusy,"request retained while arbiter unavailable");end

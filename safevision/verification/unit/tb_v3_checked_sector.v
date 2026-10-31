@@ -19,8 +19,8 @@ module tb_v3_checked_sector;
  .o_cmd(cmd),.o_arg(),.o_acmd41_arg(),.o_cmd_cnt(),.o_acmd41_cnt(),.o_cmd_valid(cv));
 
  always @(posedge cv)if(cmd==17 && corrupt)begin #1;card.crc_val=card.crc_val^16'h1;injected=injected+1;end
- task ck;input c;input[511:0] msg;begin begin checks=checks+1;
- if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end end  end endtask
+ task ck;input c;input[511:0] msg;begin  checks=checks+1;
+ if(c)$display("[PASS] %s",msg);else begin errors=errors+1;$display("[FAIL] %s",msg);end   end endtask
  always @(posedge clk)if(rst)begin
   if(valid && !cs)begin errors=errors+1;$display("[FAIL] published before CRC/CS transaction completion");end
   if(stalled && (!valid || data!==stalled_data || last!==stalled_last))begin errors=errors+1;$display("[FAIL] stalled output changed");end
@@ -30,7 +30,7 @@ module tb_v3_checked_sector;
    count=count+1;
   end
  end
- task transaction;input bad;begin begin
+ task transaction;input bad;begin
   while(!ready)@(negedge clk);count=0;corrupt=bad;en=1;@(negedge clk);en=0;
   guard=0;while(!done && guard<100000)begin @(negedge clk);guard=guard+1;end
   ck(done,"bounded checked-sector completion");
@@ -40,7 +40,7 @@ module tb_v3_checked_sector;
   end else begin ck(!crc && !to && ec==0,"successful checked sector clears previous error");
    ck(count==512,"all 512 bytes delivered exactly once through backpressure");end
   repeat(8)@(negedge clk);
- end  end endtask
+   end endtask
  initial begin
  repeat(5)@(negedge clk);rst=1;transaction(0);transaction(1);transaction(0);
  ck(injected==1,"exactly one faulty card transaction injected");

@@ -7,7 +7,7 @@ module handbook_coords_case #(parameter HD=0)(output reg done,output integer err
  scaler_coords #(.HD(HD),.HANDBOOK_PROFILE(1)) dut(clk,rst,de,x,y,fit,mode,valid,sx,sy,fx,fy);
  integer m,xx,yy,w,h,ox,oy,ew,eh,ex,ey,efx,efy,i;
  reg ev[0:1];reg[9:0]esx[0:1],esy[0:1];reg[7:0]efxx[0:1],efyy[0:1];
- task point(input integer px,py);begin begin
+ task point(input integer px,py);begin
   @(negedge clk);x=px;y=py;de=1;
   ev[1]=ev[0];esx[1]=esx[0];esy[1]=esy[0];efxx[1]=efxx[0];efyy[1]=efyy[0];
   ev[0]=px>=ox&&py>=oy&&px<ox+ew&&py<oy+eh;
@@ -18,7 +18,7 @@ module handbook_coords_case #(parameter HD=0)(output reg done,output integer err
   @(posedge clk);#1;comparisons = comparisons + 1;
   if(valid!==ev[1]||(valid&&{sx,sy,fx,fy}!=={esx[1],esy[1],efxx[1],efyy[1]}))begin
    errors = errors + 1;if(errors<8)$display("[FAIL] coordinates HD=%0d mode=%0d xy=%0d,%0d got=%d,%d expected=%d,%d",HD,m,px,py,sx,sy,esx[1],esy[1]);end
- end  end endtask
+   end endtask
  initial begin
   ev[0]=0;ev[1]=0;for(i=0;i<2;i = i + 1)begin esx[i]=0;esy[i]=0;efxx[i]=0;efyy[i]=0;end
   repeat(3)@(negedge clk);rst=1;w=HD ? 1280:640;h=HD ? 720:480;

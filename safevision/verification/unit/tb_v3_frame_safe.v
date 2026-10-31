@@ -23,7 +23,7 @@ module v3_frame_safe_test #(parameter integer HD=0);
   end
  end
  task wait_normal;
-  begin begin req=0;wait(!rawsafe&&!safe);wait(tags[20][26]&&!output_safe&&tags[20][23:0]==0);end
+  begin  req=0;wait(!rawsafe&&!safe);wait(tags[20][26]&&!output_safe&&tags[20][23:0]==0);
   end endtask
  initial begin repeat(4)@(negedge clk);rst=1;
   for(trial=0;trial<100;trial = trial + 1)begin
@@ -44,7 +44,7 @@ module v3_frame_safe_test #(parameter integer HD=0);
   $finish;
  end
 
-function signed [11:0] v_cast_s12; input signed [11:0] value; begin begin v_cast_s12=value; end  end endfunction
+function signed [11:0] v_cast_s12; input signed [11:0] value; begin  v_cast_s12=value;   end endfunction
 endmodule
 module tb_v3_frame_safe_base;v3_frame_safe_test #(.HD(0)) t();endmodule
 module tb_v3_frame_safe_hd;v3_frame_safe_test #(.HD(1)) t();endmodule

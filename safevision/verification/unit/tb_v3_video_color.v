@@ -5,20 +5,20 @@ module tb_v3_video_color;
  wire[15:0] pixel;wire output_valid;
  color_adjust dut(clk,rst,valid,input_pixel,brightness,contrast,pixel,output_valid);
  function integer channel(input integer expanded,bright,gain);
-  integer numerator;begin begin
+  integer numerator;begin
    numerator=(expanded-128)*gain+(bright+128)*128;
 
 
    channel=numerator<0 ? 0:numerator>=255*128 ? 255:numerator/128;
-  end
+
   end endfunction
  function[15:0] reference(input[15:0] p,input integer bright,gain);
-  integer r,g,b;begin begin
+  integer r,g,b;begin
    r=channel((p[15:11]*8)+(p[15:11]/4),bright,gain);
    g=channel((p[10:5]*4)+(p[10:5]/16),bright,gain);
    b=channel((p[4:0]*8)+(p[4:0]/4),bright,gain);
    reference={v_cast_s5(r/8),v_cast_s6(g/4),v_cast_s5(b/8)};
-  end
+
   end endfunction
  reg[15:0] expected0=0,expected1=0;reg[1:0] expected_valid=0;
  integer errors=0,comparisons=0,bright,gain,value;
@@ -50,6 +50,6 @@ module tb_v3_video_color;
  end
  initial begin #200000000;$display("[FAIL] color test timeout errors=1");$finish;end
 
-function signed [4:0] v_cast_s5; input signed [4:0] value; begin begin v_cast_s5=value; end  end endfunction
-function signed [5:0] v_cast_s6; input signed [5:0] value; begin begin v_cast_s6=value; end  end endfunction
+function signed [4:0] v_cast_s5; input signed [4:0] value; begin  v_cast_s5=value;   end endfunction
+function signed [5:0] v_cast_s6; input signed [5:0] value; begin  v_cast_s6=value;   end endfunction
 endmodule

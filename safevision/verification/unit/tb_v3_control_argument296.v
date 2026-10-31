@@ -6,7 +6,7 @@ module tb_v3_control_argument296;
  .clk(clk),.rst_n(rst),.config_rst_n(rst),.next_async(1'b1),.auto_async(1'b1),.emergency_async(1'b1),
  .command_valid(1'b0),.command_target(8'd65),.command_name(96'd0),.command_value(value),.command_query(1'b0),.catalog_id(7'd5),
  .cached(1'b0),.transition_busy(1'b0),.frame_commit(1'b0),.system_safe(1'b0));
- task check(input[31:0]input_value);begin begin
+ task check(input[31:0]input_value);begin
   @(negedge clk);value=input_value;signed_value=$signed(input_value);
 
 
@@ -20,7 +20,7 @@ module tb_v3_control_argument296;
   end
   if(br)begin comparisons = comparisons + 1;if(dut.bright_percent_eff!==pct)begin errors = errors + 1;$display("[FAIL] signed offset-to-percent changed");end end
   if(vo)begin comparisons = comparisons + 1;if(dut.percent_offset_eff!==offset)begin errors = errors + 1;$display("[FAIL] percent-to-offset changed");end end
- end  end endtask
+   end endtask
  initial begin
   #31;rst=1;
 
@@ -34,6 +34,6 @@ module tb_v3_control_argument296;
   $display("[TB] tb_v3_control_argument296 done errors=%0d comparisons=%0d",errors,comparisons);$finish;
  end
 
-function signed [8:0] v_cast_s9; input signed [8:0] value; begin begin v_cast_s9=value; end  end endfunction
-function signed [22:0] v_cast_s23; input signed [22:0] value; begin begin v_cast_s23=value; end  end endfunction
+function signed [8:0] v_cast_s9; input signed [8:0] value; begin  v_cast_s9=value;   end endfunction
+function signed [22:0] v_cast_s23; input signed [22:0] value; begin  v_cast_s23=value;   end endfunction
 endmodule

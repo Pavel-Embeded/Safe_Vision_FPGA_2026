@@ -16,11 +16,11 @@ module tb_framebuffer_loopback_core;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             total = total + 1;
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 

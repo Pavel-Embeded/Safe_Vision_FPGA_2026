@@ -6,7 +6,7 @@ module tb_v3_video_fraction_domain;
  scaler_coords #(.HD(1)) hd(.clk(clk),.rst_n(rst),.de(de),.x(x),.y(y),.fit(fit),.scale_select(2'd0),.valid(hv),.sx(hx),.sy(hy),.fx(hf),.fy(hg));
  scaler_coords #(.HD(0)) base(.clk(clk),.rst_n(rst),.de(de),.x(x),.y(y),.fit(fit),.scale_select(2'd0),.valid(bv),.sx(bx),.sy(by),.fx(bf),.fy(bg));
  reg[36:0] eh0=0,eh1=0,eb0=0,eb1=0;integer a,b,errors=0,comparisons=0,pixels=0;
- function  legal_fraction(input[7:0] f);begin begin legal_fraction= ((f==0||f==85||f==170) === 1'b1);end  end endfunction
+ function  legal_fraction(input[7:0] f);begin  legal_fraction= ((f==0||f==85||f==170) === 1'b1);  end endfunction
  always @(posedge clk)begin
   if(!rst)begin eh0=0;eh1=0;eb0=0;eb1=0;end
   else begin
@@ -30,11 +30,11 @@ module tb_v3_video_fraction_domain;
   end
  end
  task raster(input integer ha,va,ht,vt,input  mode);
-  integer row,col;begin begin mode = (mode === 1'b1); fit=mode;
+  integer row,col;begin  mode = (mode === 1'b1); fit=mode;
    for(row=0;row<vt;row=row+1)for(col=0;col<ht;col=col+1)begin
     x=col;y=row;de=col<ha&&row<va;@(negedge clk);
    end
-  end
+
   end endtask
  initial begin
   repeat(4)@(negedge clk);rst=1;
@@ -45,7 +45,7 @@ module tb_v3_video_fraction_domain;
  end
  initial begin #100000000;$display("[FAIL] timeout errors=1");$finish;end
 
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
-function [9:0] v_cast_u10; input [9:0] value; begin begin v_cast_u10=value; end  end endfunction
-function signed [9:0] v_cast_s10; input signed [9:0] value; begin begin v_cast_s10=value; end  end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
+function [9:0] v_cast_u10; input [9:0] value; begin  v_cast_u10=value;   end endfunction
+function signed [9:0] v_cast_s10; input signed [9:0] value; begin  v_cast_s10=value;   end endfunction
 endmodule

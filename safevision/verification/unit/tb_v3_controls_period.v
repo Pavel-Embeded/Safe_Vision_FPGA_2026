@@ -9,8 +9,8 @@ module tb_v3_controls_period;
  .period_select(period),.auto_tick(auto_tick));
  always @(posedge clk)begin #1;if(auto_tick)ticks = ticks + 1;end
  task waitn(input integer n);begin repeat(n)@(negedge clk); end endtask
- task command(input[95:0] nm,input[31:0] v);begin begin name=nm;value=v;cv=1;waitn(1);cv=0;end  end endtask
- task check(input  ok,input [4095:0] label);begin begin ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s ticks=%0d seconds=%0d",label,ticks,dut.seconds);end else $display("[PASS] %s",label);end  end endtask
+ task command(input[95:0] nm,input[31:0] v);begin  name=nm;value=v;cv=1;waitn(1);cv=0;  end endtask
+ task check(input  ok,input [4095:0] label);begin  ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s ticks=%0d seconds=%0d",label,ticks,dut.seconds);end else $display("[PASS] %s",label);  end endtask
  initial begin
  waitn(4);rst_n=1;waitn(8);command("PERIOD",30);command("AUTO",1);
  guard=0;while(dut.seconds!=10 && guard<1200)begin waitn(1);guard = guard + 1;end

@@ -7,7 +7,7 @@ module tb_v3_lba_pipeline747;
  v3_shared_fs_service #(.FLEX_FILES(0)) old_path(.clk(clk),.rst_n(rst),.sec_per_clus(spc),.fat_start_lba(32'd1),.data_start_lba(base),.root_dir_lba(32'd16),.root_clus(32'd2),.total_clus(32'hfffffff),.core_cmd(cmd),.core_rsp(rsp0),.name_address(8'd0),.name_data(),.name_length());
  v3_shared_fs_service #(.FLEX_FILES(1)) new_path(.clk(clk),.rst_n(rst),.sec_per_clus(spc),.fat_start_lba(32'd1),.data_start_lba(base),.root_dir_lba(32'd16),.root_clus(32'd2),.total_clus(32'hfffffff),.core_cmd(cmd),.core_rsp(rsp1),.name_address(8'd0),.name_data(),.name_length());
  integer errors=0,comparisons=0,k,guard;reg seen0,seen1;reg[31:0]random_value=32'hc58a03b1,expected;reg[63:0]wide;
- task check(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<16)$display("[FAIL] %s k=%0d first=%h base=%h spc=%0d",msg,k,first,base,spc);end end  end endtask
+ task check(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<16)$display("[FAIL] %s k=%0d first=%h base=%h spc=%0d",msg,k,first,base,spc);end   end endtask
  initial begin
   check(new_path.fs.PIPELINED_LBA==1&&new_path.ds.PIPELINED_LBA==1,"production file and directory pipeline enabled");
   for(k=0;k<4096;k = k + 1)begin

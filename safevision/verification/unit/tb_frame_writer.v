@@ -27,19 +27,19 @@ module tb_frame_writer;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             total = total + 1;
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 
     function [15:0] pix_of;
         input integer n;
-        begin begin
+        begin
             pix_of = 16'h1000 + (n & 12'hFFF);
-        end
+
      end endfunction
 
 
@@ -156,14 +156,14 @@ module tb_frame_writer;
     task do_start;
         input [1:0]  sel;
         input [31:0] base;
-        begin begin
+        begin
             @(negedge clk);
             fw_slot  = sel;
             fw_base  = base;
             fw_start = 1'b1;
             @(negedge clk);
             fw_start = 1'b0;
-        end
+
      end endtask
 
 
@@ -171,7 +171,7 @@ module tb_frame_writer;
         input integer n;
         input integer base_idx;
         integer k;
-        begin begin
+        begin
             for (k = 0; k < n; k = k + 1) begin
                 @(negedge clk);
                 fw_din       = pix_of(base_idx + k);
@@ -181,20 +181,20 @@ module tb_frame_writer;
             end
             @(negedge clk);
             fw_din_valid = 1'b0;
-        end
+
      end endtask
 
 
     task wait_result;
         input integer maxc;
         integer c;
-        begin begin
+        begin
             c = 0;
             while (!fw_wr_done && !fw_wr_error && (c < maxc)) begin
                 @(negedge clk);
                 c = c + 1;
             end
-        end
+
      end endtask
 
 
@@ -206,7 +206,7 @@ module tb_frame_writer;
         integer      idx, k;
         reg   [31:0] widx, got, exp;
         reg   [15:0] lo, hi;
-        begin begin
+        begin
             idx  = y * FRAME_W + x;
             k    = idx / 2;
             widx = (base >> 2) + k;
@@ -215,7 +215,7 @@ module tb_frame_writer;
             hi   = pix_of(k * 2 + 1);
             exp  = {hi, lo};
             check(got === exp, name);
-        end
+
      end endtask
 
 

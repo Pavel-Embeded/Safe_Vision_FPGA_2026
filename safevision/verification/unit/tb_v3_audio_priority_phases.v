@@ -46,7 +46,7 @@ module v3_audio_priority_phase_scenario #(
  always @(posedge ac)if(rst_n)begin
   aedges<=aedges+1;
   if(d.tick)begin
-   if(last_audio!=0&&aedges-last_audio!=256)begin $display("[FAIL] 48k divider period"); $finish; end 
+   if(last_audio!=0&&aedges-last_audio!=256)begin $display("[FAIL] 48k divider period"); $finish; end
    last_audio<=aedges;
   end
  end
@@ -61,12 +61,12 @@ module v3_audio_priority_phase_scenario #(
    if(search_first&&l=={gold[slot*2000][15:0],8'd0}&&r=={gold[slot*2000][31:16],8'd0})begin search_first<=0;checking<=1;seen<=1;end
    if(checking)begin
     if(l!=={gold[slot*2000+seen%2000][15:0],8'd0}||r!=={gold[slot*2000+seen%2000][31:16],8'd0})
-      begin $display("[FAIL] full audio PCM slot=%0d idx=%0d got=%h,%h exp=%h",slot,seen,l,r,gold[slot*2000+seen%2000]); $finish; end 
+      begin $display("[FAIL] full audio PCM slot=%0d idx=%0d got=%h,%h exp=%h",slot,seen,l,r,gold[slot*2000+seen%2000]); $finish; end
     seen<=seen+1;
    end
   end
   if(av)begin acrs<=acrs+1;
-   if(n!=6144||cts!=expected_cts||cts<CTS_MIN||cts>CTS_MAX)begin $display("[FAIL] measured HDMI ACR N=%0d CTS=%0d",n,cts); $finish; end 
+   if(n!=6144||cts!=expected_cts||cts<CTS_MIN||cts>CTS_MAX)begin $display("[FAIL] measured HDMI ACR N=%0d CTS=%0d",n,cts); $finish; end
   end
  end
 
@@ -76,9 +76,9 @@ module v3_audio_priority_phase_scenario #(
  integer reference_gain=0,reference_error=0,total_gain,step_gain;
  reg[4:0] reset_phases=0,commit_phases=0,alarm_phases=0;
  function[23:0] full_blend;input[23:0] wav,tone;input integer g;
-  reg signed[63:0] wa,to,answer;begin begin
+  reg signed[63:0] wa,to,answer;begin
    wa=$signed(wav);to=$signed(tone);answer=(wa*(256-g)+to*g)>>>8;full_blend=answer[23:0];
-  end  end endfunction
+    end endfunction
  always@(posedge ac)begin
   if(!d.audio_global_rst_n)begin qw=0;qr=0;qn=0;reference_gain=0;reference_error=0;priority_cycle=0;end
   else begin
@@ -90,34 +90,34 @@ module v3_audio_priority_phase_scenario #(
     queued_l[qw]=full_blend(d.wav_l,d.tone_l,reference_gain);
     queued_r[qw]=full_blend(d.wav_r,d.tone_r,reference_gain);
     due[qw]=priority_cycle+5;qw=(qw+1)%8;qn=qn+1;
-    if(qn>1)begin $display("[FAIL] serial priority scheduling overlap"); $finish; end 
+    if(qn>1)begin $display("[FAIL] serial priority scheduling overlap"); $finish; end
    end
    #0.001;
    if(d.mix_valid)begin
     if(qn==0||priority_cycle!=due[qr]||d.mix_l!==queued_l[qr]||d.mix_r!==queued_r[qr])
-     begin $display("[FAIL] priority epoch/SAFE pipeline changed captured pair cycle=%0d due=%0d count=%0d got=%h,%h expected=%h,%h",priority_cycle,due[qr],qn,d.mix_l,d.mix_r,queued_l[qr],queued_r[qr]); $finish; end 
+     begin $display("[FAIL] priority epoch/SAFE pipeline changed captured pair cycle=%0d due=%0d count=%0d got=%h,%h expected=%h,%h",priority_cycle,due[qr],qn,d.mix_l,d.mix_r,queued_l[qr],queued_r[qr]); $finish; end
     qr=(qr+1)%8;qn=qn-1;priority_comparisons=priority_comparisons+2;
-   end else if(qn!=0&&priority_cycle>=due[qr])begin $display("[FAIL] priority missing output at exact capture latency"); $finish; end 
+   end else if(qn!=0&&priority_cycle>=due[qr])begin $display("[FAIL] priority missing output at exact capture latency"); $finish; end
   end
  end
  integer injected_phase;
  task commit;
-  begin begin @(negedge sc);tv=1;wait(mready&&mg==gen);@(negedge sc);cv=1;wait(cr);@(negedge sc);cv=0;tv=0;end
+  begin  @(negedge sc);tv=1;wait(mready&&mg==gen);@(negedge sc);cv=1;wait(cr);@(negedge sc);cv=0;tv=0;
   end endtask
  initial begin
   $readmemh("audio_disk.mem",disk);$readmemh("audio_pcm.mem",gold);
   #100;rst_n=1;commit();
 
   search_first=1;wait(checking);wait(seen>=1200);checking=0;
-  if(under!=0)begin $display("[FAIL] false underflow in primed/commit window %0d",under); $finish; end 
+  if(under!=0)begin $display("[FAIL] false underflow in primed/commit window %0d",under); $finish; end
   $display("[INFO] generation=%0d stereo_pairs=%0d underflows=%0d",gen,seen,under);
   slot=3;gen=2;commit();
   search_first=1;wait(checking);wait(seen>=1200);checking=0;
-  if(under!=0)begin $display("[FAIL] false underflow in primed/commit window %0d",under); $finish; end 
+  if(under!=0)begin $display("[FAIL] false underflow in primed/commit window %0d",under); $finish; end
   $display("[INFO] generation=%0d stereo_pairs=%0d underflows=%0d",gen,seen,under);
   alarm=1;repeat(500*256)@(posedge ac);
   media_reset=1;repeat(300*256)@(posedge ac);
-  if(d.u_priority.gain!=256||over!=0||acrs<20)begin $display("[FAIL] independent alarm/HDMI reset boundary"); $finish; end 
+  if(d.u_priority.gain!=256||over!=0||acrs<20)begin $display("[FAIL] independent alarm/HDMI reset boundary"); $finish; end
   media_reset=0;alarm=0;slot=0;gen=3;commit();
   search_first=1;wait(checking);wait(seen>=300);checking=0;
 
@@ -135,7 +135,7 @@ module v3_audio_priority_phase_scenario #(
    search_first=1;wait(checking);wait(seen>=16);checking=0;
   end
   if(reset_phases!=31||commit_phases!=31||alarm_phases!=31||priority_comparisons<5000)
-   begin $display("[FAIL] phase injection or independent priority queue coverage incomplete"); $finish; end 
+   begin $display("[FAIL] phase injection or independent priority queue coverage incomplete"); $finish; end
   $display("[PASS] five-phase user commit/mediareset/alarm requests, captured full PCM24 queue, old queued pair never relabeled, later HDMI/CTS checked");
   $display("[INFO] priority_channel_comparisons=%0d reset_phases=%h commit_phases=%h alarm_phases=%h",priority_comparisons,reset_phases,commit_phases,alarm_phases);
   $display("[PASS] stereo full-scale, 4-domain FIFO, 48k, target800pairs, generation switch, alarm mediareset, energy/CTS");

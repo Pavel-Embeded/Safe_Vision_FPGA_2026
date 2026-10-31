@@ -23,10 +23,10 @@ module tb_v3_supervisor;
  .fault_valid(fault_valid),.fatal_latched(fatal_q),.fault_ts(ts),.err_push(err_push),.err_code(err_code),
  .err_src(err_src),.err_level(err_level),.err_ts(evt_ts));
  task tick(input integer n);begin repeat(n)begin @(posedge clk);#1;end  end endtask
- task check(input  ok,input [4095:0] name);begin begin ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s t=%t state=%d code=%h",name,$time,recovery_state,code);end end  end endtask
- task restart;begin begin @(negedge clk);rst_n=0;cached=1;manual_safe=0;request=0;media_failed=0;integrity=0;bus_fault=0;fatal=0;
- frame_enable=1;memory_active=0;media_active=0;vu=0;au=0;hd=0;bad=0;fallback=0;tick(3);@(negedge clk);rst_n=1;tick(6);end  end endtask
- task recover;integer guard;begin begin
+ task check(input  ok,input [4095:0] name);begin  ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s t=%t state=%d code=%h",name,$time,recovery_state,code);end   end endtask
+ task restart;begin  @(negedge clk);rst_n=0;cached=1;manual_safe=0;request=0;media_failed=0;integrity=0;bus_fault=0;fatal=0;
+ frame_enable=1;memory_active=0;media_active=0;vu=0;au=0;hd=0;bad=0;fallback=0;tick(3);@(negedge clk);rst_n=1;tick(6);  end endtask
+ task recover;integer guard;begin
  @(negedge clk);request=1;tick(1);@(negedge clk);request=0;
  guard=0;while(!reset_media && guard<20)begin tick(1);guard = guard + 1;end
  check(reset_media,"finite reset asserted");@(negedge clk);cached=0;media_failed=0;integrity=0;bus_fault=0;
@@ -34,7 +34,7 @@ module tb_v3_supervisor;
  check(recovery_state==4 && !reset_media,"reset released before self-test wait");
  @(negedge clk);cached=1;tick(8);
  check(!safe && !fault_valid && !recovery_busy && attempts==0,"self-test recovered and cleared paired latches");
- end  end endtask
+   end endtask
  initial begin
  restart();tick(60);check(!safe && !fault_valid,"idle media and memory watchdogs disarmed");
  @(negedge clk);bad=1;tick(5);check(fault_level==1 && !safe,"bad BMP warning allows playback");

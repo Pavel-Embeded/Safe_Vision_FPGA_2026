@@ -46,20 +46,20 @@ module tb_frame_integrity #(parameter integer ACK_FIRST=0,RESPONSE_GAP=2,SOURCE_
    end
    if(rst_n&&we&&compare_pixels)begin
      if(pixel!==(pixels[0] ? (32'h76540000+(pixels/2))>>16:(32'h76540000+(pixels/2))&16'hffff))
-       begin $display("[FAIL] unverified/wrong pixel %0d: %04x",pixels,pixel); $finish; end 
+       begin $display("[FAIL] unverified/wrong pixel %0d: %04x",pixels,pixel); $finish; end
      pixels=pixels+1;
    end
  end
  task check(input  okay,input [4095:0] label);
-   begin begin okay = (okay === 1'b1); checks=checks+1;if(!okay)begin $display("[FAIL] %s",label); $finish; end $display("[PASS] %s",label);
- end  end endtask
+   begin  okay = (okay === 1'b1); checks=checks+1;if(!okay)begin $display("[FAIL] %s",label); $finish; end $display("[PASS] %s",label);
+   end endtask
  task reset_all;
-   begin begin @(negedge clk);rst_n=0;begin_frame=0;accepted=0;verify_start=0;dma_start=0;drop=0;phase=1;
-     compare_pixels=0;pixels=0;fifo_level=0;repeat(5)@(negedge clk);rst_n=1;repeat(3)@(negedge clk);end
+   begin  @(negedge clk);rst_n=0;begin_frame=0;accepted=0;verify_start=0;dma_start=0;drop=0;phase=1;
+     compare_pixels=0;pixels=0;fifo_level=0;repeat(5)@(negedge clk);rst_n=1;repeat(3)@(negedge clk);
   end endtask
  task build(input  bottom,input  which_slot,input integer count);
    integer j,k;reg [31:0] base;
-   begin begin bottom = (bottom === 1'b1); which_slot = (which_slot === 1'b1); td=HEADER_LATE ? bottom:!bottom;slot={1'b0,which_slot};base=which_slot ? 32'h000a0000:0;
+   begin  bottom = (bottom === 1'b1); which_slot = (which_slot === 1'b1); td=HEADER_LATE ? bottom:!bottom;slot={1'b0,which_slot};base=which_slot ? 32'h000a0000:0;
      begin_frame=1;@(negedge clk);begin_frame=0;
      if(HEADER_LATE)begin repeat(5)@(negedge clk);td=!bottom;repeat(3)@(negedge clk);end
      for(j=0;j<count;j=j+1)begin
@@ -67,14 +67,14 @@ module tb_frame_integrity #(parameter integer ACK_FIRST=0,RESPONSE_GAP=2,SOURCE_
        memory[(which_slot ? 128:0)+k]=wd;@(negedge clk);
        accepted=0;repeat(SOURCE_GAP+(j%3)*SOURCE_GAP)@(negedge clk);
      end accepted=0;repeat(3)@(negedge clk);
-   end
+
   end endtask
  task verify_frame;
-   begin begin verify_start=1;@(negedge clk);verify_start=0;wait(done||gfault);@(negedge clk);end
+   begin  verify_start=1;@(negedge clk);verify_start=0;wait(done||gfault);@(negedge clk);
   end endtask
  task play;
-   begin begin phase=2;pixels=0;compare_pixels=1;dma_start=1;@(negedge clk);dma_start=0;
-     wait(ddone||dfault);play_completed=ddone;repeat(3)@(negedge clk);compare_pixels=0;end
+   begin  phase=2;pixels=0;compare_pixels=1;dma_start=1;@(negedge clk);dma_start=0;
+     wait(ddone||dfault);play_completed=ddone;repeat(3)@(negedge clk);compare_pixels=0;
   end endtask
  integer n,corrupt;
  initial begin

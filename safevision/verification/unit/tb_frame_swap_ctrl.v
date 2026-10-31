@@ -21,7 +21,7 @@ module tb_frame_swap_ctrl;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) begin
                 passes = passes + 1;
                 $display("[PASS] %0s", name);
@@ -29,7 +29,7 @@ module tb_frame_swap_ctrl;
                 errors = errors + 1;
                 $display("[FAIL] %0s", name);
             end
-        end
+
      end endtask
 
 

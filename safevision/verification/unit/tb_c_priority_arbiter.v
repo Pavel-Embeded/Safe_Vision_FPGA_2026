@@ -19,20 +19,20 @@ module tb_c_priority_arbiter;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
     task try;
         input [255:0] name;
         input         exp_valid;
         input [1:0]   exp_code;
-        begin begin
+        begin
             #1;
             check((valid === exp_valid) && (evt_code === exp_code), name);
-        end
+
      end endtask
 
     integer k;

@@ -35,23 +35,23 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
         input integer x;
         input integer y;
         reg [7:0] red,green,blue;
-        begin begin
+        begin
 
 
             red=x^y;green=x+y;
             blue=(x*3)^(y*5)^((x>>8)<<6)^((y>>8)<<5);
             px24={red,green,blue};
-        end
+
      end endfunction
 
     function [15:0] px565;
         input integer x;
         input integer y;
         reg [23:0] p;
-        begin begin
+        begin
             p = px24(x, y);
             px565 = { p[23:19], p[15:10], p[7:3] };
-        end
+
      end endfunction
 
     function [23:0] image_mask24(input integer image_id);
@@ -73,7 +73,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
      end endfunction
     reg file_pattern=0;
     reg [7:0] bmp_hdr [0:53];
-    initial begin : v_local_1 
+    initial begin : v_local_1
         integer i;
         for (i = 0; i < 54; i = i + 1) bmp_hdr[i] = 8'h00;
         bmp_hdr[0]  = 8'h42; bmp_hdr[1] = 8'h4D;
@@ -103,7 +103,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
         input integer image_id;
         integer p, n, c, r, x, y;
         reg [23:0] pxv;
-        begin begin
+        begin
             if (j < 54) filebyte = bmp_hdr[j];
             else begin
                 p = j - 54;
@@ -115,19 +115,19 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
                 pxv = px24(x, y) ^ image_mask24(image_id) ^ (file_pattern  ?  24'hffffff : 24'd0);
                 filebyte = (c == 0)  ?  pxv[7:0] : (c == 1)  ?  pxv[15:8] : pxv[23:16];
             end
-        end
+
      end endfunction
 
 
     function [15:0] exp565_k;
         input integer k;
-        begin begin
+        begin
             exp565_k = px565(k % W, k / W);
-        end
+
      end endfunction
 
     task mbr_set_card0;
-        begin begin
+        begin
             u_card.sector[450] = 8'h0C;
             u_card.sector[454] = VOL_BASE[7:0];
             u_card.sector[455] = VOL_BASE[15:8];
@@ -139,12 +139,12 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
             u_card.sector[461] = 8'h00;
             u_card.sector[510] = 8'h55;
             u_card.sector[511] = 8'hAA;
-        end
+
      end endtask
 
     task build_volume;
         integer c, s, o, j, image_id, first_cluster, last_cluster, file_lba;
-        begin begin
+        begin
             u_card.mk_fat32_dbr(16'd512, SPC, RSVD, NFAT, FATSZ, ROOTCLUS, TOTSEC, 1'b1);
 
 
@@ -175,7 +175,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
             end
             end
             mbr_set_card0;
-        end
+
      end endtask
 
 
@@ -194,10 +194,10 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
  .o_cmd(),.o_arg(),.o_acmd41_arg(),.o_cmd_cnt(),.o_acmd41_cnt(),.o_cmd_valid());
  integer errors=0,checks=0;reg test_done=0;
  task check(input  cond,input [4095:0] name);
- begin begin cond = (cond === 1'b1); checks=checks+1;if(cond)$display("[PASS] %s",name);
- else begin errors=errors+1;$display("[FAIL] %s",name);end end  end endtask
+ begin  cond = (cond === 1'b1); checks=checks+1;if(cond)$display("[PASS] %s",name);
+ else begin errors=errors+1;$display("[FAIL] %s",name);end   end endtask
  function [23:0] rgb565(input [15:0] p);
- begin begin rgb565={{p[15:11],p[15:13]},{p[10:5],p[10:9]},{p[4:0],p[4:2]}};end  end endfunction
+ begin  rgb565={{p[15:11],p[15:13]},{p[10:5],p[10:9]},{p[4:0],p[4:2]}};  end endfunction
  integer publish_count=0,unsafe_publish=0,active_writes=0;
  reg pub_d=0;
  always @(posedge dut.mem_clk)if(dut.mem_rst_n)begin
@@ -222,10 +222,10 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
  reg axis_slot=0;reg [7:0] axis_generation=0;reg injecting_fault=0,recovered_epoch=0;
  reg compare_axis=0;
  always @(posedge dut.mem_clk)if(dut.mem_rst_n&&dut.integrity_fault&&!injecting_fault)
-   begin $display("[FAIL] unexpected source/readback integrity fault: words=%0d blocks=%0d bad=%08x expected=%08x actual=%08x direction=%b",dut.integrity_words,dut.integrity_blocks,dut.integrity_bad_addr,dut.integrity_expected,dut.integrity_actual,dut.integrity_top_down); $finish; end 
+   begin $display("[FAIL] unexpected source/readback integrity fault: words=%0d blocks=%0d bad=%08x expected=%08x actual=%08x direction=%b",dut.integrity_words,dut.integrity_blocks,dut.integrity_bad_addr,dut.integrity_expected,dut.integrity_actual,dut.integrity_top_down); $finish; end
  always @(posedge dut.pixel_clk)if(dut.pixel_rst_n&&dut.active&&!injecting_fault&&
     (dut.underflows!=0||dut.overflows!=0||dut.frame_fault))
-   begin $display("[FAIL] healthy playback failed: HD=%0d RD_LAT=%0d U=%0d O=%0d fault=%b",HD,RD_LAT,dut.underflows,dut.overflows,dut.frame_fault); $finish; end 
+   begin $display("[FAIL] healthy playback failed: HD=%0d RD_LAT=%0d U=%0d O=%0d fault=%b",HD,RD_LAT,dut.underflows,dut.overflows,dut.frame_fault); $finish; end
  reg [15:0] expected_p;reg [23:0] expected_rgb;
  always @(posedge dut.pixel_clk)if(dut.axis_valid&&dut.axis_ready)begin
    if(dut.axis_user)begin
@@ -258,14 +258,14 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
  end
  task cmp_mem(input integer base,input integer image_id,input  inverted,input [4095:0] name);
  integer j,bad;reg [31:0] expected;
- begin begin inverted = (inverted === 1'b1); bad=0;for(j=0;j<FRAME_PIX/2;j=j+1)begin
+ begin  inverted = (inverted === 1'b1); bad=0;for(j=0;j<FRAME_PIX/2;j=j+1)begin
    expected={exp565_k(j*2+1)^image_mask565(image_id),exp565_k(j*2)^image_mask565(image_id)};
    if(inverted)expected=~expected;
    if(dut.memory_ip.mem[base+j]!==expected)begin
      if(bad==0)$display("[DIAG] memory word=%0d got=%08x expected=%08x",j,dut.memory_ip.mem[base+j],expected);
      bad=bad+1;
    end
- end check(bad==0,name);end  end endtask
+ end check(bad==0,name);  end endtask
  integer before_frames,auto_count;
  reg [31:0] previous_underflows=0;
  always @(posedge dut.pixel_clk)if(dut.underflows!=previous_underflows)begin
@@ -345,7 +345,7 @@ module tb_safevision_card_display #(parameter integer HD=0,SD_HALF_NS=10,RD_LAT=
    check(unsafe_publish==0&&active_writes==0&&dut.memory_ip.protocol_errors==0,
          "ownership and physical memory contract remain valid across reset");
    $display("CARD DISPLAY HD=%0d SD_HALF_NS=%0d RD_LAT=%0d TOP_DOWN=%0d checks=%0d errors=%0d checked_frames=%0d post_reset_frames=%0d distinct_images=4 write_bursts=%0d read_bursts=%0d publishes=%0d undrained_publishes=%0d",HD,SD_HALF_NS,RD_LAT,BMP_TOP_DOWN,checks,errors,full_frames,full_frames-before_frames,dut.memory_ip.write_bursts,dut.memory_ip.read_bursts,publish_count,unsafe_publish);
-   if(errors)begin $display("[FAIL] CARD DISPLAY FAILED"); $finish; end 
+   if(errors)begin $display("[FAIL] CARD DISPLAY FAILED"); $finish; end
    test_done=1;$display("[PASS] CARD DISPLAY PASS");$finish;
  end
  initial begin #(64'd8000000000);begin $display("[FAIL] CARD DISPLAY watchdog: player=%0d ec=%02x sink=%0d px=%0d frames=%0d active=%b fault=%b",dut.pl_state,dut.pl_ec,dut.sk_state,dut.sk_px_written,dut.pl_frame_cnt,dut.active,dut.frame_fault); $finish; end end

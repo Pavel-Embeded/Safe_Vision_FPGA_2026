@@ -9,10 +9,10 @@ module priority_difference_case #(parameter integer N=240,COMPARE_OLD=1)(output 
  integer step,g=0,remainder=0,next_gain,i;reg[31:0] seed=32'h7195aa23+N;
  reg[23:0] expected_l,expected_r;reg expected_valid;
  reg signed[63:0] wide_l,wide_r,swl,swr,stl,str;
- task ck;input condition;input[511:0] label_text;begin begin
+ task ck;input condition;input[511:0] label_text;begin
   comparisons=comparisons+1;
   if(!condition)begin errors=errors+1;if(errors<8)$display("[FAIL] N=%0d %s gain=%0d/%0d l=%h/%h r=%h/%h",N,label_text,gain,g,ol,expected_l,orr,expected_r);end
- end  end endtask
+   end endtask
  always @(posedge clk)begin
   if(!rst_n)begin g=0;remainder=0;expected_l=0;expected_r=0;expected_valid=0;end
   else begin
@@ -32,9 +32,9 @@ module priority_difference_case #(parameter integer N=240,COMPARE_OLD=1)(output 
      "independent signed 64bit convex mixture, full-range saturation and valid timing");
   if(COMPARE_OLD)ck(ov===rv&&gain===rg&&ol===rl&&orr===rr,"original implementation cycle-exact equivalence");
  end
- task random_word;output[23:0] value;begin begin
+ task random_word;output[23:0] value;begin
   seed=seed^(seed<<13);seed=seed^(seed>>17);seed=seed^(seed<<5);value=seed[23:0];
- end  end endtask
+   end endtask
  initial begin
   repeat(4)@(negedge clk);rst_n=1;
   for(i=0;i<120000;i=i+1)begin

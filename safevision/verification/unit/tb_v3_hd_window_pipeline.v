@@ -15,15 +15,15 @@ module tb_v3_hd_window_pipeline;
  reg[15:0] previous_rejected=0;reg[3:0] previous_fallback=0;reg[7:0] first_code=0;
  reg raw_v,raw_a,window;reg[7:0] want_code;reg[3:0] want_src;reg[2:0] want_level;reg[31:0] want_ts;
  integer wt=0,k,i,selected,errors=0,comparisons=0,windows=0,raw_v_events=0,raw_a_events=0,v_grants=0,a_grants=0;
- task check(input  ok,input [4095:0] what);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<9)$display("[FAIL] %s k=%0d pending=%h events=%h got=%h/%h/%h/%h want=%h/%h/%h/%h",what,k,pending_model,events,ec,es,el,et,want_code,want_src,want_level,want_ts);end end  end endtask
- task reset_model;begin begin
+ task check(input  ok,input [4095:0] what);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<9)$display("[FAIL] %s k=%0d pending=%h events=%h got=%h/%h/%h/%h want=%h/%h/%h/%h",what,k,pending_model,events,ec,es,el,et,want_code,want_src,want_level,want_ts);end   end endtask
+ task reset_model;begin
   pending_model=0;grant=0;ms=0;previous_ms=0;vlimit=8;alimit=8;wt=0;
   previous_mf=0;previous_inf=0;previous_bf=0;delayed_v=0;delayed_a=0;
   previous_rejected=0;previous_fallback=0;first_code=0;
   for(i=0;i<11;i=i+1)stamp[i]=0;
- end  end endtask
- task choose_grant;begin begin grant=0;for(i=10;i>=0;i=i-1)if(pending_model[i])grant=11'd1<<i;end  end endtask
- task outputs;begin begin
+   end endtask
+ task choose_grant;begin  grant=0;for(i=10;i>=0;i=i-1)if(pending_model[i])grant=11'd1<<i;  end endtask
+ task outputs;begin
   choose_grant();selected=-1;for(i=0;i<11;i=i+1)if(grant[i])selected=i;
   check(push===(|pending_model),"public valid follows independent pending queue");
   check(dut.priority_q===grant,"current mathematical first-set grant");
@@ -42,7 +42,7 @@ module tb_v3_hd_window_pipeline;
    check(ec===want_code&&es===want_src&&el===want_level&&et===want_ts,"original observation timestamp, code, source and severity");
    if(selected==3)v_grants = v_grants + 1;if(selected==4)a_grants = a_grants + 1;
   end
- end  end endtask
+   end endtask
  initial begin
   reset_model();#12;@(negedge clk);rst=1;
   for(k=0;k<300000;k=k+1)begin

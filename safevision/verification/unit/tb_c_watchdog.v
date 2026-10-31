@@ -30,29 +30,29 @@ module tb_c_watchdog;
     task check;
         input         cond;
         input [255:0] name;
-        begin begin
+        begin
             if (cond) $display("[PASS] %0s", name);
             else begin $display("[FAIL] %0s", name); errors = errors + 1; end
-        end
+
      end endtask
 
 
     task step;
         input fh, mh, ph;
-        begin begin
+        begin
             @(negedge clk);
             frame_heartbeat = fh; mem_heartbeat = mh; progress_token = ph;
             @(posedge clk); #1;
-        end
+
      end endtask
 
     task do_reset;
-        begin begin
+        begin
             rst_n = 1'b0; recover_ack = 1'b0;
             frame_heartbeat = 0; mem_heartbeat = 0; progress_token = 0;
             repeat (3) @(posedge clk); #1;
             rst_n = 1'b1;
-        end
+
      end endtask
 
     initial begin

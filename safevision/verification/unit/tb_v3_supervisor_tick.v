@@ -12,9 +12,9 @@ module tb_v3_supervisor_tick;
  .memory_active(active),.media_active(1'b0),.video_underflows(32'd0),.audio_underflows(32'd0),
  .hdmi_drops(32'd0),.rejected_files(16'd0),.audio_fallback(4'd0),
  .err_push(push),.err_code(code),.err_src(src));
- task tick;begin begin @(posedge clk);#1;end  end endtask
- task check(input  ok,input [4095:0] name);begin begin ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s phase=%0d elapsed=%0d",name,p,elapsed);end end  end endtask
- task restart;begin begin @(negedge clk);rst_n=0;active=0;heartbeat=0;repeat(3)tick();@(negedge clk);rst_n=1;end  end endtask
+ task tick;begin  @(posedge clk);#1;  end endtask
+ task check(input  ok,input [4095:0] name);begin  ok = (ok === 1'b1); checks = checks + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s phase=%0d elapsed=%0d",name,p,elapsed);end   end endtask
+ task restart;begin  @(negedge clk);rst_n=0;active=0;heartbeat=0;repeat(3)tick();@(negedge clk);rst_n=1;  end endtask
  initial begin
 
   for(p=0;p<10;p = p + 1)begin

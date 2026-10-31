@@ -5,31 +5,31 @@ module tb_v3_audio_sample_fifo;
  reg[39:0] data=0;wire ready,rv;wire[39:0] out;
  v3_pcm_sample_fifo dut(.rst(rst),.wr_clk(wc),.rd_clk(rc),.wr_data(data),.wr_valid(valid),.wr_ready(ready),.rd_data(out),.rd_valid(rv),.rd_ready(1'b1));
  reg[39:0] expected[0:8191];integer tail=0,head=0,checks=0,cycles=0;
- function[39:0] value(input integer n);begin begin value={v_cast_s8(n*31),v_cast_u16(n*72131+32'h8001),v_cast_u16(n*91247+32'h7fff)};end  end endfunction
+ function[39:0] value(input integer n);begin  value={v_cast_s8(n*31),v_cast_u16(n*72131+32'h8001),v_cast_u16(n*91247+32'h7fff)};  end endfunction
  always @(posedge wc)if(!rst)begin
   cycles<=cycles+1;
   if(valid&&ready)begin expected[tail]=data;tail=tail+1;end
  end
  always @(negedge wc)if(!rst)begin data=value(tail);valid=produce;end
  always @(posedge rc)if(!rst&&rv)begin
-  if(head>=tail||out!==expected[head])begin $display("[FAIL] packet order/framing epoch idx=%0d got=%h expected=%h tail=%0d",head,out,expected[head],tail); $finish; end 
+  if(head>=tail||out!==expected[head])begin $display("[FAIL] packet order/framing epoch idx=%0d got=%h expected=%h tail=%0d",head,out,expected[head],tail); $finish; end
   head=head+1;checks=checks+1;
  end
- task reset_epoch;begin begin rst=1;valid=0;read_clock=1;#100;head=0;tail=0;cycles=0;data=value(0);rst=0;end  end endtask
+ task reset_epoch;begin  rst=1;valid=0;read_clock=1;#100;head=0;tail=0;cycles=0;data=value(0);rst=0;  end endtask
  initial begin
   reset_epoch();wait(tail>=100);@(negedge rc);read_clock=0;
   repeat(1800)@(negedge wc);
-  if(ready)begin $display("[FAIL] packet FIFO failed to apply group backpressure"); $finish; end 
+  if(ready)begin $display("[FAIL] packet FIFO failed to apply group backpressure"); $finish; end
   read_clock=1;wait(head>=200);
 
   wait(dut.holding&&dut.write_part==1);reset_epoch();wait(head>=200);
   produce=0;wait(!valid);wait(head==tail);repeat(20)@(negedge rc);
-  if(head!=tail)begin $display("[FAIL] packet stale tail after drain"); $finish; end 
+  if(head!=tail)begin $display("[FAIL] packet stale tail after drain"); $finish; end
   $display("[PASS] lossless40bit generation+stereo via3x16 TD FIFO async clocks full group reservation stalls wrap midgroup reset");
   $display("PASS tb_v3_audio_sample_fifo errors=0 comparisons=%0d",checks);$finish;
  end
  initial begin #1000000;begin $display("[FAIL] packet watchdog"); $finish; end end
 
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
-function [15:0] v_cast_u16; input [15:0] value; begin begin v_cast_u16=value; end  end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
+function [15:0] v_cast_u16; input [15:0] value; begin  v_cast_u16=value;   end endfunction
 endmodule

@@ -14,10 +14,10 @@ module tb_v3_diag_alias156;
  reg injected_event=0,evt_consume=0;reg[43:0] injected_payload=0;integer event_i;
  integer alias_k;reg[31:0] alias_rng=32'h476af291;
  reg[31:0] expected[0:15];reg[63:0] settings_before;
- task ck(input  condition,input [4095:0] message);begin begin condition = (condition === 1'b1); comparisons = comparisons + 1;
+ task ck(input  condition,input [4095:0] message);begin  condition = (condition === 1'b1); comparisons = comparisons + 1;
   if(!condition)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s selector=%h actual=%h t=%t",message,selector,dut.b_reply_value,$time);end
- end  end endtask
- task command(input signed[31:0] bank,input  ask,input[7:0] code,input[31:0] wanted);begin begin
+   end endtask
+ task command(input signed[31:0] bank,input  ask,input[7:0] code,input[31:0] wanted);begin
   ask = (ask === 1'b1); @(negedge dut.sys_clk);selector=bank;query=ask;cv=1;
   @(negedge dut.sys_clk);cv=0;wait_count=0;
   while(!dut.b_reply && wait_count<200)begin @(negedge dut.sys_clk);wait_count = wait_count + 1;end
@@ -26,7 +26,7 @@ module tb_v3_diag_alias156;
   if(code==3)ck(dut.b_reply_value===32'd0,"invalid full-width selector keeps original zero payload without a low-bit alias");
   @(negedge dut.sys_clk);repeat(8)@(negedge dut.sys_clk);
   ck(!dut.b_reply,"no duplicate reply");
- end  end endtask
+   end endtask
  initial begin
   force dut.err_push=injected_event;force dut.err_ts=injected_payload[43:12];
   force dut.err_code=injected_payload[11:4];force dut.err_src=injected_payload[3:0];
@@ -102,6 +102,6 @@ module tb_v3_diag_alias156;
  end
  initial begin #1000000;$display("[FAIL] board diagnostic watchdog errors=1");$finish;end
 
-function signed [3:0] v_cast_s4; input signed [3:0] value; begin begin v_cast_s4=value; end  end endfunction
-function signed [7:0] v_cast_s8; input signed [7:0] value; begin begin v_cast_s8=value; end  end endfunction
+function signed [3:0] v_cast_s4; input signed [3:0] value; begin  v_cast_s4=value;   end endfunction
+function signed [7:0] v_cast_s8; input signed [7:0] value; begin  v_cast_s8=value;   end endfunction
 endmodule

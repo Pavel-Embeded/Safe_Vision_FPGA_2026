@@ -26,7 +26,7 @@ module volume_column_vblank_case #(parameter HD=0)(output reg done,output intege
  else if(x==HT-1)begin x<=0;y<=y==VT-1 ? 0:y+1'b1;end else x<=x+1'b1;
  integer frame=-1,expected=0,h,i;reg ee,ff;reg[3:0]roi;
  reg[15:0]cr[0:3];reg[7:0]ca[0:3];reg valid_compare=0;
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<6)$display("[FAIL] actual raster HD=%0d %s x=%0d y=%0d",HD,msg,x,y);end end  end endtask
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<6)$display("[FAIL] actual raster HD=%0d %s x=%0d y=%0d",HD,msg,x,y);end   end endtask
  always@(negedge clk)if(rst&&frame>=0&&x==1&&y==H/2)begin cfg[67:61]=100;cfg[54:48]=100;end
  always@(posedge clk)begin
   if(rst&&fs)begin

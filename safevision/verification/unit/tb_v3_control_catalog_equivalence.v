@@ -48,14 +48,14 @@ module tb_v3_control_catalog_equivalence;
  v3_user_controls_reference #(.CLK_HZ(32),.DEBOUNCE(2)) reference(
  .clk(clk),.rst_n(rst_n),.next_async(next_async),.auto_async(auto_async),.emergency_async(emergency_async),.command_valid(command_valid),.command_target(command_target),.command_name(command_name),.command_value(command_value),.command_query(command_query),.cached(cached),.transition_busy(transition_busy),.frame_commit(frame_commit),
  .next_request(e_next_request),.auto_enabled(e_auto_enabled),.safety(e_safety),.recover_request(e_recover_request),.reply_valid(e_reply_valid),.reply_code(e_reply_code),.reply_value(e_reply_value),.brightness(e_brightness),.contrast(e_contrast),.osd_alpha(e_osd_alpha),.bilinear(e_bilinear),.fit(e_fit),.fade_enabled(e_fade_enabled),.volume(e_volume),.period_select(e_period_select),.menu(e_menu),.field(e_field),.auto_tick(e_auto_tick));
- task sample;begin begin
+ task sample;begin
   @(posedge clk);#0.001;comparisons=comparisons+5;
   if({a_next_request,a_auto_enabled,a_safety,a_recover_request,a_reply_valid,a_reply_code,a_reply_value,a_brightness,a_contrast,a_osd_alpha,a_bilinear,a_fit,a_fade_enabled,a_volume,a_period_select,a_menu,a_field,a_auto_tick}!=={e_next_request,e_auto_enabled,e_safety,e_recover_request,e_reply_valid,e_reply_code,e_reply_value,e_brightness,e_contrast,e_osd_alpha,e_bilinear,e_fit,e_fade_enabled,e_volume,e_period_select,e_menu,e_field,e_auto_tick})begin errors=errors+1;if(errors<10)$display("[FAIL] controls differ cycle=%0d name=%s value=%0d valid=%0b query=%0b bright=%h/%h contrast=%h/%h reply=%h/%h state=%h/%h",i,command_name,command_value,command_valid,command_query,a_brightness,e_brightness,a_contrast,e_contrast,{a_reply_valid,a_reply_code,a_reply_value},{e_reply_valid,e_reply_code,e_reply_value},{a_next_request,a_auto_enabled,a_safety,a_recover_request,a_osd_alpha,a_bilinear,a_fit,a_fade_enabled,a_volume,a_period_select,a_menu,a_field,a_auto_tick},{e_next_request,e_auto_enabled,e_safety,e_recover_request,e_osd_alpha,e_bilinear,e_fit,e_fade_enabled,e_volume,e_period_select,e_menu,e_field,e_auto_tick});end
   if(dut.value_bright_ok!==(command_value>=-128 && command_value<=127))begin errors=errors+1;if(errors<10)$display("[FAIL] exact predicate value_bright_ok value=%0d",command_value);end
   if(dut.value_byte_ok!==(command_value>=0 && command_value<=255))begin errors=errors+1;if(errors<10)$display("[FAIL] exact predicate value_byte_ok value=%0d",command_value);end
   if(dut.value_bit_ok!==(command_value>=0 && command_value<=1))begin errors=errors+1;if(errors<10)$display("[FAIL] exact predicate value_bit_ok value=%0d",command_value);end
   if(dut.value_volume_ok!==(command_value>=0 && command_value<=100))begin errors=errors+1;if(errors<10)$display("[FAIL] exact predicate value_volume_ok value=%0d",command_value);end
- end  end endtask
+   end endtask
  initial begin
   repeat(4)@(negedge clk);rst_n=1;
 
@@ -170,5 +170,5 @@ module tb_v3_control_catalog_equivalence;
  end
  initial begin #12000000;$display("[FAIL] controls oracle watchdog errors=1");$finish;end
 
-function signed [15:0] v_cast_s16; input signed [15:0] value; begin begin v_cast_s16=value; end  end endfunction
+function signed [15:0] v_cast_s16; input signed [15:0] value; begin  v_cast_s16=value;   end endfunction
 endmodule

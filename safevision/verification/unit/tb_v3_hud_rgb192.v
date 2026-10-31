@@ -9,13 +9,13 @@ module hud_rgb_case192 #(parameter HD=0)(output reg done,output integer errors,c
  defparam dut.uart.g_catalog.parser.CATALOG_FILE="v3_command_catalog.mem";
  defparam dut.video.COMPACT_FONT_FILE="font8x16_compact.mem";
  defparam dut.video.STATUS_TEXT_FILE="v3_handbook_status_text.mem";
- function[15:0] blend(input[15:0]f,b,input  en);integer r,g,bl,a;begin begin
+ function[15:0] blend(input[15:0]f,b,input  en);integer r,g,bl,a;begin
  en = (en === 1'b1); a=en ? 224:0;r=(f[15:11]*a+b[15:11]*(255-a)+127)/255;
  g=(f[10:5]*a+b[10:5]*(255-a)+127)/255;bl=(f[4:0]*a+b[4:0]*(255-a)+127)/255;
- blend={v_cast_s5(r),v_cast_s6(g),v_cast_s5(bl)};end  end endfunction
- function[23:0]expand(input[15:0]p);begin begin expand={p[15:11],p[15:13],p[10:5],p[10:9],p[4:0],p[4:2]};end  end endfunction
- function[15:0]colour(input integer c);begin begin case(c)0:colour=16'hffff;1:colour=16'h07e0;2:colour=16'h7bef;3:colour=16'h05bf;4:colour=16'hffe0;default:colour=16'hf800;endcase end  end endfunction
- function[15:0]background(input integer c);begin begin case(c)0:background=0;1:background=16'hffff;2:background=16'h7bef;3:background=16'hf800;4:background=16'h07e0;5:background=16'h001f;6:background=16'ha55a;default:background=16'h5aa5;endcase end  end endfunction
+ blend={v_cast_s5(r),v_cast_s6(g),v_cast_s5(bl)};  end endfunction
+ function[23:0]expand(input[15:0]p);begin  expand={p[15:11],p[15:13],p[10:5],p[10:9],p[4:0],p[4:2]};  end endfunction
+ function[15:0]colour(input integer c);begin  case(c)0:colour=16'hffff;1:colour=16'h07e0;2:colour=16'h7bef;3:colour=16'h05bf;4:colour=16'hffe0;default:colour=16'hf800;endcase   end endfunction
+ function[15:0]background(input integer c);begin  case(c)0:background=0;1:background=16'hffff;2:background=16'h7bef;3:background=16'hf800;4:background=16'h07e0;5:background=16'h001f;6:background=16'ha55a;default:background=16'h5aa5;endcase   end endfunction
  reg[15:0]q[0:2];reg[2:0]vq=0;reg[23:0]expected_rgb;integer i,c,b,m;
  always@(posedge dut.pixel_clk)begin
   if(dut.pixel_rst_n!==1'b1)begin for(i=0;i<3;i = i + 1)q[i]=0;vq=0;expected_rgb=0;end
@@ -45,8 +45,8 @@ module hud_rgb_case192 #(parameter HD=0)(output reg done,output integer errors,c
   repeat(40)@(negedge dut.pixel_clk);done=1;
  end
 
-function signed [4:0] v_cast_s5; input signed [4:0] value; begin begin v_cast_s5=value; end  end endfunction
-function signed [5:0] v_cast_s6; input signed [5:0] value; begin begin v_cast_s6=value; end  end endfunction
+function signed [4:0] v_cast_s5; input signed [4:0] value; begin  v_cast_s5=value;   end endfunction
+function signed [5:0] v_cast_s6; input signed [5:0] value; begin  v_cast_s6=value;   end endfunction
 endmodule
 `ifdef HD_HUD_RGB_SOURCE
 module tb_v3_hud_rgb_hd192;

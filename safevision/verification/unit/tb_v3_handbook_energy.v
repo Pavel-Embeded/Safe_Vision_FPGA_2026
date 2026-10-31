@@ -4,7 +4,7 @@ module tb_v3_handbook_energy;
  wire[6:0]energy;wire update;audio_energy #(.HANDBOOK_PROFILE(1)) d(clk,rst,sv,l,r,energy,update);
  integer errors=0,comparisons=0,count=0,golden=0,raw,level,delta,k,i,amplitude,blocks=0;reg [63:0]  sum=0;
  reg[31:0]rng=32'h10242618;reg expect_update;
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s",msg);end end  end endtask
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s",msg);end   end endtask
  always@(posedge clk)begin
   expect_update=0;
   if(!rst)begin count=0;sum=0;golden=0;end
@@ -19,11 +19,11 @@ module tb_v3_handbook_energy;
   #0.001;if(rst)begin ck(update===expect_update,"exact1024 accepted sample window");ck(energy===golden,"independent integer left-channel/gain/attack/release reference");end
  end
  task block(input integer magnitude);
-  begin begin for(i=0;i<1024;i = i + 1)begin
+  begin  for(i=0;i<1024;i = i + 1)begin
    @(negedge clk);rng=rng*1664525+1013904223;
    sv=0;r=rng[31:16];repeat(rng[1:0])@(negedge clk);
    sv=1;l=(i%2==0) ? -magnitude:magnitude;
-  end @(negedge clk);sv=0;end
+  end @(negedge clk);sv=0;
   end endtask
  initial begin repeat(4)@(negedge clk);rst=1;
   block(0);ck(energy==0,"manual silence=0");

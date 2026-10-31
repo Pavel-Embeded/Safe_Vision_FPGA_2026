@@ -8,12 +8,12 @@ module tb_v3_ring_pointer_count300;
  integer w[0:3],r[0:3],expected[0:3];reg[31:0]random_state=32'h875ac124;
  v3_pcm_ring dut(.clk(clk),.rst_n(rst),.in_data(128'd0),.in_valid(4'd0),.commit_valid(1'b0),.commit_slot(2'd0),.commit_generation(8'd0),.fallback(4'd0),.out_ready(1'b0),.output_level(10'd0),.ack(ack),.busy(busy),.rdata(32'd0),.rvalid(rv),.levels(levels),.prefetched(pre));
  task verify;
-  begin begin for(k=0;k<4;k = k + 1)begin
+  begin  for(k=0;k<4;k = k + 1)begin
    comparisons = comparisons + 1;
    if(levels[k*16+:16]!==v_cast_s16(expected[k])||pre[k]!==v_cast_u1(expected[k]>=800))begin
     errors = errors + 1;if(errors<8)$display("[FAIL] pointer induction owner%0d slot%0d expected%0d level%0d",owner,k,expected[k],levels[k*16+:16]);
    end
-  end end
+  end
   end endtask
  initial begin
   #1;rst=1;
@@ -42,8 +42,8 @@ module tb_v3_ring_pointer_count300;
   $display("[TB] tb_v3_ring_pointer_count300 done errors=%0d comparisons=%0d",errors,comparisons);$finish;
  end
 
-function [0:0] v_cast_u1; input [0:0] value; begin begin v_cast_u1=value; end  end endfunction
-function signed [1:0] v_cast_s2; input signed [1:0] value; begin begin v_cast_s2=value; end  end endfunction
-function signed [14:0] v_cast_s15; input signed [14:0] value; begin begin v_cast_s15=value; end  end endfunction
-function signed [15:0] v_cast_s16; input signed [15:0] value; begin begin v_cast_s16=value; end  end endfunction
+function [0:0] v_cast_u1; input [0:0] value; begin  v_cast_u1=value;   end endfunction
+function signed [1:0] v_cast_s2; input signed [1:0] value; begin  v_cast_s2=value;   end endfunction
+function signed [14:0] v_cast_s15; input signed [14:0] value; begin  v_cast_s15=value;   end endfunction
+function signed [15:0] v_cast_s16; input signed [15:0] value; begin  v_cast_s16=value;   end endfunction
 endmodule

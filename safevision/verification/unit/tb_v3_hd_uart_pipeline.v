@@ -14,15 +14,15 @@ module tb_v3_hd_uart_pipeline;
  end
  task byte_in(input[7:0] b);begin begin
   @(negedge clk);rxd=0;repeat(32)@(negedge clk);
-  begin : v_loop_1 integer i; for( i=0;i<8;i = i + 1)begin rxd=b[i];repeat(32)@(negedge clk);end end 
+  begin : v_loop_1 integer i; for( i=0;i<8;i = i + 1)begin rxd=b[i];repeat(32)@(negedge clk);end end
   rxd=1;repeat(32)@(negedge clk);
  end  end endtask
- task send_command;begin begin
+ task send_command;begin
 
   byte_in("$");byte_in("C");byte_in(":");byte_in("N");byte_in("E");byte_in("X");byte_in("T");byte_in("=");byte_in("1");
   byte_in("*");byte_in("7");byte_in("2");byte_in(13);byte_in(10);
   byte_in("$");byte_in("Z");byte_in(13);byte_in(10);
- end  end endtask
+   end endtask
  initial begin
   #22;rst=1;
   for(epoch=0;epoch<3;epoch = epoch + 1)begin

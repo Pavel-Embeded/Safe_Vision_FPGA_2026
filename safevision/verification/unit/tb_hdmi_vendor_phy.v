@@ -14,13 +14,13 @@ module hdmi_phy_fixture #(parameter integer HD=0)(output reg done);
         .O_tmds_ch0_p(q[0]),.O_tmds_ch1_p(q[1]),.O_tmds_ch2_p(q[2]),.O_tmds_clk_p(q[3]));
     function [9:0] word_value(input integer n,lane);
         reg [9:0] v;
-        begin begin v=(n*73+lane*137)^((n>>3)*19);word_value=v;end
+        begin  v=(n*73+lane*137)^((n>>3)*19);word_value=v;
      end endfunction
     reg capture=0;reg [3:0] captured[0:10999];integer used=0;
     always @(serial_clk)begin
         #0.2;
         if(capture)begin
-            if(used>=11000)begin $display("[FAIL] capture overflow"); $finish; end 
+            if(used>=11000)begin $display("[FAIL] capture overflow"); $finish; end
             captured[used]=q;used=used+1;
         end
     end
@@ -48,7 +48,7 @@ module hdmi_phy_fixture #(parameter integer HD=0)(output reg done);
                 end
                 if(good)matched=offset;
             end
-            if(matched<0)begin $display("[FAIL] official PHY bit sequence mismatch HD=%0d epoch=%0d",HD,epoch); $finish; end 
+            if(matched<0)begin $display("[FAIL] official PHY bit sequence mismatch HD=%0d epoch=%0d",HD,epoch); $finish; end
             $display("PASS actual vendor PHY HD=%0d epoch=%0d offset=%0d bits=40960",HD,epoch,matched);
         end
         done=1;

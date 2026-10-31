@@ -11,7 +11,7 @@ module tb_v3_video_decimal;
   .safe_rgb565(),.osd_alpha(oa),.emergency_alpha(),.hud_alpha(ha));
  reg[7:0] font[0:4095];integer errors=0,comparisons=0,value,place,row,bitno;
  task digits(input integer number,first_column,top,input  hud_layer,selected);
-  integer digit,character,xx,yy;reg dot;begin begin
+  integer digit,character,xx,yy;reg dot;begin
    hud_layer = (hud_layer === 1'b1); selected = (selected === 1'b1); for(place=0;place<3;place=place+1)begin
     digit=place==0 ? number/100:place==1 ? (number/10)%10:number%10;character=48+digit;
 
@@ -26,7 +26,7 @@ module tb_v3_video_decimal;
      comparisons=comparisons+1;
     end
    end
-  end  end endtask
+    end endtask
  initial begin
   $readmemh("font8x16.mem",font);cfg[55]=1;cfg[78:71]=200;
   repeat(5)@(negedge clk);rst=1;

@@ -22,12 +22,12 @@ module packed_clock_case_261023 #(parameter integer WRONG_WRITE=0,PHASE=0)(
  always @(posedge wr)if(rst)write_edges = write_edges + 1;
  always @(posedge sys)if(rst)sys_edges = sys_edges + 1;
  function[15:0] p(input integer stream,row,x);
-  begin begin p=v_cast_s16((epoch*25173)^(stream*31973)^(row*9257)^(x*193));end
+  begin  p=v_cast_s16((epoch*25173)^(stream*31973)^(row*9257)^(x*193));
   end endfunction
- task require(input  ok,input [4095:0] message);begin begin
+ task require(input  ok,input [4095:0] message);begin
   ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] phase=%0d bad=%0d %s",PHASE,WRONG_WRITE,message);end
- end  end endtask
- task fill;integer b,c,old,t;begin begin
+   end endtask
+ task fill;integer b,c,old,t;begin
   for(b=0;b<8;b = b + 1)begin
    old=acks;
    for(c=0;c<320;c = c + 1)begin @(negedge mem);valid=1;bank=b;column=c;
@@ -36,8 +36,8 @@ module packed_clock_case_261023 #(parameter integer WRONG_WRITE=0,PHASE=0)(
    while(acks==old&&t<30)begin @(negedge mem);t = t + 1;end
    if(!WRONG_WRITE)require(acks==old+1&&!sf,"320 consecutive words produce exactly one complete row ACK");
   end
- end  end endtask
- task line(input integer row);integer x,nx,nr;reg[127:0] want,got;begin begin
+   end endtask
+ task line(input integer row);integer x,nx,nr;reg[127:0] want,got;begin
   @(negedge pix);coord=0;prepare=1;prepared=row;
   @(negedge pix);prepare=0;repeat(8)@(negedge pix);
   for(x=0;x<640;x = x + 1)begin
@@ -50,7 +50,7 @@ module packed_clock_case_261023 #(parameter integer WRONG_WRITE=0,PHASE=0)(
    @(negedge pix);
   end
   coord=0;repeat(4)@(negedge pix);
- end  end endtask
+   end endtask
  integer n;
  initial begin
   #100;rst=1;fill();for(n=0;n<4;n = n + 1)line(n);line(479);
@@ -76,7 +76,7 @@ module packed_clock_case_261023 #(parameter integer WRONG_WRITE=0,PHASE=0)(
  end
  initial begin #5000000;$display("[FAIL] packed clock watchdog errors=1");$finish;end
 
-function signed [15:0] v_cast_s16; input signed [15:0] value; begin begin v_cast_s16=value; end  end endfunction
+function signed [15:0] v_cast_s16; input signed [15:0] value; begin  v_cast_s16=value;   end endfunction
 endmodule
 module tb_v3_packed_clock_positive_261023;
  wire d0,d1;wire signed [31:0] e0,e1,c0,c1,n0,n1;

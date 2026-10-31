@@ -6,18 +6,18 @@ module tb_v3_bmp_header199;
   .check_done(checked),.check_error(bad),.err_detail(detail),.width(width),.height(height),.top_down(td),.out_ready(1'b1));
  reg[7:0] header[0:53];integer errors=0,comparisons=0,i,c,w,h,sz;reg[7:0] expected;
  task le32(input integer off,input[31:0] n);begin begin begin : v_loop_1 integer k; for( k=0;k<4;k = k + 1)header[off+k]=n>>(8*k); end end  end endtask
- task make(input integer wi,he);begin begin
+ task make(input integer wi,he);begin
   w=wi;h=he;sz=54+((wi*3+3)/4)*4*(he<0 ? -he:he);size=sz;
   for(i=0;i<54;i = i + 1)header[i]=0;header[0]="B";header[1]="M";header[26]=1;header[28]=24;
   le32(2,sz);le32(10,54);le32(14,40);le32(18,wi);le32(22,he);
- end  end endtask
- task run(input  want_bad,input[7:0] code);begin begin
+   end endtask
+ task run(input  want_bad,input[7:0] code);begin
   want_bad = (want_bad === 1'b1); rst=0;valid=0;repeat(4)@(negedge clk);rst=1;
   for(i=0;i<54;i = i + 1)begin @(negedge clk);data=header[i];valid=1;@(posedge clk);#1;
    if(i==53)begin comparisons = comparisons + (2);if(!checked||bad!==want_bad||(want_bad&&detail!==code))begin errors = errors + 1;$display("[FAIL] case%0d checked%b bad%b/%b detail%h/%h",c,checked,bad,want_bad,detail,code);end end
   end
   @(negedge clk);valid=0;
- end  end endtask
+   end endtask
  initial begin
   for(c=0;c<14;c = c + 1)begin
    case(c/2)0:make(1,1);1:make(3,2);2:make(320,240);3:make(640,480);4:make(641,479);5:make(1280,720);default:make(1920,1080);endcase
@@ -49,6 +49,6 @@ module tb_v3_bmp_header199;
  end
  initial begin #1000000;$display("[FAIL] BMP header watchdog errors=1");$finish;end
 
-function signed [15:0] v_cast_s16; input signed [15:0] value; begin begin v_cast_s16=value; end  end endfunction
+function signed [15:0] v_cast_s16; input signed [15:0] value; begin  v_cast_s16=value;   end endfunction
 endmodule
 

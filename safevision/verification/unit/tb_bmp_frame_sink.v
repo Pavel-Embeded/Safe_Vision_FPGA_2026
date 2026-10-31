@@ -25,20 +25,20 @@ module tb_bmp_frame_sink;
         input integer x;
         input integer y;
         reg[7:0] red,green,blue;
-        begin begin
+        begin
             red=x[7:0]^y[7:0];green=x[9:0]+y[9:0];blue=x[9:0]*3;
             px24 = {red,green,blue};
-        end
+
      end endfunction
 
     function [15:0] px565;
         input integer x;
         input integer y;
         reg [23:0] p;
-        begin begin
+        begin
             p = px24(x, y);
             px565 = { p[23:19], p[15:10], p[7:3] };
-        end
+
      end endfunction
 
 
@@ -46,20 +46,20 @@ module tb_bmp_frame_sink;
         input integer j;
         input integer td;
         integer x, r, y;
-        begin begin
+        begin
             x = j % W;
             r = j / W;
             y = td  ?  r : (H - 1 - r);
             file_px = px565(x, y);
-        end
+
      end endfunction
 
 
     function [15:0] raster_k;
         input integer k;
-        begin begin
+        begin
             raster_k = px565(k % W, k / W);
-        end
+
      end endfunction
 
 
@@ -71,10 +71,10 @@ module tb_bmp_frame_sink;
     task check;
         input        cond;
         input [4095:0] msg;
-        begin begin
+        begin
             if (cond) $display("[PASS] %s", msg);
             else begin $display("[FAIL] %s", msg); errors = errors + 1; end
-        end
+
      end endtask
 
 
@@ -153,7 +153,7 @@ module tb_bmp_frame_sink;
         input [4095:0] label;
         integer n, b;
         reg [31:0] got, exp;
-        begin begin
+        begin
             b = 0;
             for (n = 0; n < WORDS; n = n + 1) begin
                 got = mem[base_word + n];
@@ -170,7 +170,7 @@ module tb_bmp_frame_sink;
                 $display("[FAIL] %s : %0d / %0d words differ", label, b, WORDS);
                 errors = errors + 1;
             end
-        end
+
      end endtask
 
 
@@ -201,26 +201,26 @@ module tb_bmp_frame_sink;
     task start_feed;
         input integer n;
         input integer td;
-        begin begin
+        begin
             feed_idx = 0; feed_total = n; feed_td = td; feed_run = 1'b1;
-        end
+
      end endtask
 
     task wait_feed_done;
-        begin begin
+        begin
             while (!(feed_idx == feed_total && !feed_valid)) @(posedge wr_clk);
-        end
+
      end endtask
 
 
     task feed_frame;
         input integer npx;
         input integer td;
-        begin begin
+        begin
             feed_mode = 0;
             start_feed(npx, td);
             wait_feed_done();
-        end
+
      end endtask
 
 
@@ -229,24 +229,24 @@ module tb_bmp_frame_sink;
     task wait_frame_done;
         input integer limit;
         integer g;
-        begin begin
+        begin
             g = 0; fd_seen = 0;
             while (g < limit) begin
                 @(posedge clk);
                 if (frame_done != fd_d) begin fd_d = frame_done; fd_seen = 1; g = limit; end
                 else g = g + 1;
             end
-        end
+
      end endtask
 
 
     task wait_ready;
         input integer limit;
         integer g;
-        begin begin
+        begin
             g = 0;
             while (!mem_ready && g < limit) begin @(posedge clk); g = g + 1; end
-        end
+
      end endtask
 
 

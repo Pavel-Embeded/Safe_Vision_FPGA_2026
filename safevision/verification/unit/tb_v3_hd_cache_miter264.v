@@ -57,16 +57,16 @@ module tb_v3_hd_cache_miter264;
   end
  end
 
- function[31:0] word_at(input[31:0] address);begin begin word_at=32'h00123456^(address>>2)*32'h01020304;end  end endfunction
+ function[31:0] word_at(input[31:0] address);begin  word_at=32'h00123456^(address>>2)*32'h01020304;  end endfunction
  function[15:0] pixel_at(input integer slot,row,col);
-  reg[31:0] w;begin begin w=word_at(slot*32'ha0000+row*1280+(col/2)*4);pixel_at=col%2 ? w[31:16]:w[15:0];end
+  reg[31:0] w;begin  w=word_at(slot*32'ha0000+row*1280+(col/2)*4);pixel_at=col%2 ? w[31:16]:w[15:0];
   end endfunction
  function[31:0] row_crc(input[31:0] address);
-  integer w,b;reg[31:0] c,d;begin begin c=32'hffffffff;
+  integer w,b;reg[31:0] c,d;begin  c=32'hffffffff;
    for(w=0;w<320;w=w+1)begin d=word_at(address+w*4);c=c^d;
     for(b=0;b<32;b=b+1)c=c[0] ? (c>>1)^32'hedb88320:c>>1;end
    row_crc=~c;
-  end
+
   end endfunction
  reg[31:0] previous_lookup=32'hffffffff,address;integer remaining=0,count=0,stall=0;
  always @(posedge mem)begin
@@ -84,17 +84,17 @@ module tb_v3_hd_cache_miter264;
   end
  end
 
- task ask(input integer first_row);begin begin
+ task ask(input integer first_row);begin
   @(negedge pix);while(!ready)@(negedge pix);
   desc={current,target,dual,v_cast_s10(first_row),v_cast_s9(first_row==479 ? 479:first_row+1)};req=1;
   @(negedge pix);req=0;
- end  end endtask
- task wait_reply;integer timeout;begin begin timeout=0;
+   end endtask
+ task wait_reply;integer timeout;begin  timeout=0;
   while((!rv||reply[18])&&timeout<30000)begin @(negedge pix);timeout=timeout+1;end
   if(!rv||reply[18])begin $display("[FAIL] full descriptor reply timeout");errors=errors+1;end
   repeat(3)@(negedge pix);
- end  end endtask
- task check_pixels(input integer row);integer col,next_col,step;reg[127:0] expected,observed;begin begin
+   end endtask
+ task check_pixels(input integer row);integer col,next_col,step;reg[127:0] expected,observed;begin
 
 
   for(step=0;step<640;step=step+1)begin
@@ -110,7 +110,7 @@ module tb_v3_hd_cache_miter264;
    comparisons=comparisons+8;
   end
   @(negedge pix);cv=0;
- end  end endtask
+   end endtask
  initial begin
   #100;rst=1;ask(0);wait_reply();
   if(count!=1280||!primed)begin $display("[FAIL] first two streams rows count=%d primed=%b",count,primed);errors=errors+1;end
@@ -134,6 +134,6 @@ module tb_v3_hd_cache_miter264;
  end
  initial begin #20000000;$display("[FAIL] cache TB timeout errors=1");$finish;end
 
-function signed [8:0] v_cast_s9; input signed [8:0] value; begin begin v_cast_s9=value; end  end endfunction
-function signed [9:0] v_cast_s10; input signed [9:0] value; begin begin v_cast_s10=value; end  end endfunction
+function signed [8:0] v_cast_s9; input signed [8:0] value; begin  v_cast_s9=value;   end endfunction
+function signed [9:0] v_cast_s10; input signed [9:0] value; begin  v_cast_s10=value;   end endfunction
 endmodule

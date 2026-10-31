@@ -12,14 +12,14 @@ module tb_v3_flexible_bmp_bounds551;
  reg[7:0] headers[0:2051];reg[47:0] cases[0:37];
  integer errors=0,comparisons=0,c=0,pos=0,got_checks=0,forwarded=0;
  integer pcount=0,ncount=0,stride=0,limit=0,rows=0,cycle=0;reg saw_done=0,saw_error=0;
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s case%0d pos%0d",message,c,pos);end end  end endtask
+ task check(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;$display("[FAIL] %s case%0d pos%0d",message,c,pos);end   end endtask
  always @(posedge clk)begin
   if(rst_n&&cd)got_checks=got_checks+1;
   if(rst_n&&out_valid)forwarded=forwarded+1;
   if(nrst_n&&npv)pcount=pcount+1;
   if(nrst_n&&ndone)begin saw_done=1;saw_error=nerror;end
  end
- task normal_tail(input integer bits,input integer delivered_rows,input integer omit_bytes,input  want_error);begin begin
+ task normal_tail(input integer bits,input integer delivered_rows,input integer omit_bytes,input  want_error);begin
   want_error = (want_error === 1'b1); nrst_n=0;nvalid=0;nsof=0;neof=0;repeat(4)@(negedge clk);
   nw=2;nh=-16'd1000;ntd=1;nbpp=bits;stride=bits==24 ? 8:8;limit=delivered_rows*stride-omit_bytes;
   pcount=0;ncount=0;saw_done=0;saw_error=0;nrst_n=1;
@@ -34,7 +34,7 @@ module tb_v3_flexible_bmp_bounds551;
   if(want_error)check(nec==`ERR_MEDIA_INVALID&&ned==`DET_BMP_TRUNC,"early-EOF has exact truncation diagnostics");
   else check(pcount==307200,"valid image emits one entire canonical frame");
   $display("[PASS] BOUNDS551 tail %0dbpp rows%0d omit%0d expected_error%0d output_pixels%0d",bits,delivered_rows,omit_bytes,want_error,pcount);
- end  end endtask
+   end endtask
  initial begin
   $readmemh("headers.mem",headers);$readmemh("cases.mem",cases);
   for(c=0;c<38;c=c+1)begin

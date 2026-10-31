@@ -8,7 +8,7 @@ module tb_v3_supervisor_comparator;
  .frame_heartbeat(1'b1),.mem_heartbeat(1'b1),.progress_heartbeat(1'b1),.memory_active(1'b0),.media_active(1'b0),.video_underflows(sample),.audio_underflows(~sample),.hdmi_drops(32'd0),.rejected_files(16'd0),.audio_fallback(4'd0));
  task probe(input[31:0] value,previous);
   reg[31:0] delta_video,delta_audio;
-  begin begin sample=value;limit={1'b0,previous}+33'd8;
+  begin  sample=value;limit={1'b0,previous}+33'd8;
    delta_video=value-previous;delta_audio=(~value)-previous;
    expected_video=(value>=previous && delta_video>=8);
    expected_audio=((~value)>=previous && delta_audio>=8);
@@ -17,7 +17,7 @@ module tb_v3_supervisor_comparator;
    if(dut.video_threshold!==expected_video || dut.audio_threshold!==expected_audio)begin
     errors=errors+1;if(errors<10)$display("[FAIL] threshold sample=%08x previous=%08x limit=%09x",sample,previous,limit);
    end
-  end
+
   end endtask
  initial begin
   #1;rst_n=1;force dut.video_limit=limit;force dut.audio_limit=limit;

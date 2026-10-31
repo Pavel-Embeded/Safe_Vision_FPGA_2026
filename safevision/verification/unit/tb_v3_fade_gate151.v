@@ -7,7 +7,7 @@ v3_frame_fade_blend dut(clk,rst_n,valid,active,front,back,alpha,pixel,vo);
 v3_fade_reference151 reference(clk,rst_n,valid,active ? front:16'd0,back,active ? alpha:8'd0,gold,go);
 always@(posedge clk)begin #1;if(rst_n)begin comparisons = comparisons + 1;
 if({pixel,vo}!=={gold,go})begin errors = errors + 1;if(errors<8)$display("[FAIL] three-edge fade RGB/valid reference differs f=%h b=%h a=%h enable=%b",front,back,alpha,active);end end end
-task step;begin begin @(negedge clk);end  end endtask
+task step;begin  @(negedge clk);  end endtask
 initial begin
 repeat(4)step();rst_n=1;valid=1;
 

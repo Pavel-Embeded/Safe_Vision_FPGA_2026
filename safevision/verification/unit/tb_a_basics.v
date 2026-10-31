@@ -15,10 +15,10 @@ module tb_a_basics;
     reg meta=0,sync=0,meta_i=1,sync_i=1,last=0,rl=0,rli=1;
     reg et=0,er=0,ef=0,el1=0;
     task check(input  ok,input [4095:0] why);
-        begin begin ok = (ok === 1'b1); checks = checks + 1; if(!ok) begin $display("[FAIL] tb_a_basics: %s",why); $finish; end  end
+        begin  ok = (ok === 1'b1); checks = checks + 1; if(!ok) begin $display("[FAIL] tb_a_basics: %s",why); $finish; end
      end endtask
     task cycle;
-        begin begin
+        begin
             @(posedge clk);
             if(!rst_n) begin rc=0;rm=0;et=0;er=0;ef=0;last=0;meta=0;sync=0;meta_i=1;sync_i=1;rl=0;rli=1;el1=0;stable=0;stablei=0; end
             else begin
@@ -45,7 +45,7 @@ module tb_a_basics;
             check({rise,fall}==={er,ef},"edge pulse");
             check({level,level1,level_idle1}==={rl,el1,rli},"debounce synchronization/run length");
             check(mode===rm[1:0],"FSM priority/latching");
-        end
+
      end endtask
     integer i;
     initial begin

@@ -4,13 +4,13 @@ module tb_v3_pixel_response_tracker;
  reg[7:0]target=0,current=0,alpha=0;wire evt,toggle;
  v3_pixel_response_tracker d(clk,rst,req,cancel,valid,busy,direct,is_next,initialized,target,current,alpha,evt,toggle);
  integer errors=0,comparisons=0,k,events=0,old_events;reg expect_toggle=0;
- task ck(input  ok,input [4095:0] msg);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s",msg);end end  end endtask
- task cycle(input  want_event);begin begin
+ task ck(input  ok,input [4095:0] msg);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<10)$display("[FAIL] %s",msg);end   end endtask
+ task cycle(input  want_event);begin
   want_event = (want_event === 1'b1); #1;ck(evt===want_event,"only the intended request target can respond");
   @(posedge clk);#1;if(want_event)begin expect_toggle=!expect_toggle;events = events + 1;end
   ck(toggle===expect_toggle,"exactly one matching response toggle");@(negedge clk);
- end  end endtask
- task request;begin begin req=1;cycle(0);req=0;end  end endtask
+   end endtask
+ task request;begin  req=1;cycle(0);req=0;  end endtask
  initial begin
   repeat(3)@(negedge clk);rst=1;
 

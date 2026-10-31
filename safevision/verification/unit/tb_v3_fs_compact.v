@@ -27,14 +27,14 @@ module tb_v3_fs_compact;
  reg[135:0] contexts[0:3];reg[3:0] saved,finished;
  reg transaction=0;integer sd_index=0,sector_logical=0;
  integer cycle=0;reg[31:0] current_lba;
- function[7:0] pattern;input integer tr,position;begin begin
-  pattern=(position*13)^(position>>7)^(tr*89)^8'ha7;end  end endfunction
- function[31:0] cluster;input integer tr,logical_sector;begin begin
-  cluster=32'd17+tr*32'd1024+(logical_sector/spc)*32'd7;end  end endfunction
- task ck;input condition;input[511:0] label_text;begin begin
+ function[7:0] pattern;input integer tr,position;begin
+  pattern=(position*13)^(position>>7)^(tr*89)^8'ha7;  end endfunction
+ function[31:0] cluster;input integer tr,logical_sector;begin
+  cluster=32'd17+tr*32'd1024+(logical_sector/spc)*32'd7;  end endfunction
+ task ck;input condition;input[511:0] label_text;begin
   comparisons=comparisons+1;
   if(!condition)begin errors=errors+1;if(errors<10)$display("[FAIL] %s geom=%0d track=%0d count=%0d",label_text,spc,track,received[track]);end
- end  end endtask
+   end endtask
 
 
  always @(posedge clk)if(rst_n)begin

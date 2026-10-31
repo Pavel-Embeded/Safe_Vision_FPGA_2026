@@ -13,5 +13,5 @@ module tb_v3_sample_credit;
   $display("[TB] tb_v3_sample_credit done comparisons=%0d errors=%0d",comparisons,errors);$finish;
  end
 
-function signed [8:0] v_cast_s9; input signed [8:0] value; begin begin v_cast_s9=value; end  end endfunction
+function signed [8:0] v_cast_s9; input signed [8:0] value; begin  v_cast_s9=value;   end endfunction
 endmodule

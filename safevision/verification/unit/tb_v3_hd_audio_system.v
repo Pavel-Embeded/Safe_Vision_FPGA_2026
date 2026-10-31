@@ -41,7 +41,7 @@ module tb_v3_hd_audio_system;
  always @(posedge ac)if(rst_n)begin
   aedges<=aedges+1;
   if(d.tick)begin
-   if(last_audio!=0&&aedges-last_audio!=256)begin $display("[FAIL] 48k divider period"); $finish; end 
+   if(last_audio!=0&&aedges-last_audio!=256)begin $display("[FAIL] 48k divider period"); $finish; end
    last_audio<=aedges;
   end
  end
@@ -56,31 +56,31 @@ module tb_v3_hd_audio_system;
    if(search_first&&l=={gold[slot*2000][15:0],8'd0}&&r=={gold[slot*2000][31:16],8'd0})begin search_first<=0;checking<=1;seen<=1;end
    if(checking)begin
     if(l!=={gold[slot*2000+seen%2000][15:0],8'd0}||r!=={gold[slot*2000+seen%2000][31:16],8'd0})
-      begin $display("[FAIL] full audio PCM slot=%0d idx=%0d got=%h,%h exp=%h",slot,seen,l,r,gold[slot*2000+seen%2000]); $finish; end 
+      begin $display("[FAIL] full audio PCM slot=%0d idx=%0d got=%h,%h exp=%h",slot,seen,l,r,gold[slot*2000+seen%2000]); $finish; end
     seen<=seen+1;
    end
   end
   if(av)begin acrs<=acrs+1;
-   if(n!=6144||cts!=expected_cts||cts<74100||cts>74400)begin $display("[FAIL] measured HDMI ACR N=%0d CTS=%0d",n,cts); $finish; end 
+   if(n!=6144||cts!=expected_cts||cts<74100||cts>74400)begin $display("[FAIL] measured HDMI ACR N=%0d CTS=%0d",n,cts); $finish; end
   end
  end
  task commit;
-  begin begin @(negedge sc);tv=1;wait(mready&&mg==gen);@(negedge sc);cv=1;wait(cr);@(negedge sc);cv=0;tv=0;end
+  begin  @(negedge sc);tv=1;wait(mready&&mg==gen);@(negedge sc);cv=1;wait(cr);@(negedge sc);cv=0;tv=0;
   end endtask
  initial begin
   $readmemh("audio_disk.mem",disk);$readmemh("audio_pcm.mem",gold);
   #100;rst_n=1;commit();
 
   search_first=1;wait(checking);wait(seen>=1200);checking=0;
-  if(under!=0)begin $display("[FAIL] false underflow in primed/commit window %0d",under); $finish; end 
+  if(under!=0)begin $display("[FAIL] false underflow in primed/commit window %0d",under); $finish; end
   $display("[INFO] generation=%0d stereo_pairs=%0d underflows=%0d",gen,seen,under);
   slot=3;gen=2;commit();
   search_first=1;wait(checking);wait(seen>=1200);checking=0;
-  if(under!=0)begin $display("[FAIL] false underflow in primed/commit window %0d",under); $finish; end 
+  if(under!=0)begin $display("[FAIL] false underflow in primed/commit window %0d",under); $finish; end
   $display("[INFO] generation=%0d stereo_pairs=%0d underflows=%0d",gen,seen,under);
   alarm=1;repeat(500*256)@(posedge ac);
   media_reset=1;repeat(300*256)@(posedge ac);
-  if(d.u_priority.gain!=256||over!=0||acrs<20)begin $display("[FAIL] independent alarm/HDMI reset boundary"); $finish; end 
+  if(d.u_priority.gain!=256||over!=0||acrs<20)begin $display("[FAIL] independent alarm/HDMI reset boundary"); $finish; end
   media_reset=0;alarm=0;slot=0;gen=3;commit();
   search_first=1;wait(checking);wait(seen>=300);checking=0;
   $display("[PASS] stereo full-scale, 4-domain FIFO, 48k, target800pairs, generation switch, alarm mediareset, energy/CTS");

@@ -18,22 +18,22 @@ module tb_v3_ticker_board;
  reg cv=0,query=0;reg signed[31:0] selector=0;reg[6:0] catalog=36;
  reg[31:0] q0=0,q1=0,q2=0,q3=0,q4=0,packed_expected;integer basis;
  integer errors=0,comparisons=0,i,p,xx,yy,source_col;
- task ck(input  okay,input [4095:0] message);begin begin okay = (okay === 1'b1); comparisons = comparisons + 1;
+ task ck(input  okay,input [4095:0] message);begin  okay = (okay === 1'b1); comparisons = comparisons + 1;
   if(!okay)begin errors = errors + 1;if(errors<15)$display("[FAIL] %s x=%0d y=%0d phase=%0d t=%t",message,rx,ry,p,$time);end
- end  end endtask
- task frame_pulse;begin begin
+   end endtask
+ task frame_pulse;begin
   @(negedge dut.pixel_clk);rx=0;ry=480;rd=0;rf=1;
   @(negedge dut.pixel_clk);rf=0;
- end  end endtask
- task command(input integer bank,input  ask,input[7:0] code,input[31:0] expected);integer n;begin begin
+   end endtask
+ task command(input integer bank,input  ask,input[7:0] code,input[31:0] expected);integer n;begin
   ask = (ask === 1'b1); @(negedge dut.sys_clk);catalog=36;selector=bank;query=ask;cv=1;
   @(negedge dut.sys_clk);cv=0;n=0;
   while(!dut.b_reply&&n<200)begin @(negedge dut.sys_clk);n = n + 1;end
   ck(dut.b_reply&&dut.b_reply_code===code,"production diagnostic completion/code");
   if(code==0)ck(dut.b_reply_value===expected,"production diagnostic exact payload");
   repeat(10)@(negedge dut.sys_clk);ck(!dut.b_reply,"production reply has no duplicate");
- end  end endtask
- task pixel(input integer px,py,input  active);reg panel,text_bit;begin begin
+   end endtask
+ task pixel(input integer px,py,input  active);reg panel,text_bit;begin
   active = (active === 1'b1); @(negedge dut.pixel_clk);rx=px;ry=py;rd=active;rf=0;
   panel=active&&px>=120&&px<632&&py>=456&&py<476;
   source_col=px-(632-p);text_bit=0;
@@ -46,7 +46,7 @@ module tb_v3_ticker_board;
   ck(dut.out_de===wanted_xy[20][24],"original DE retains its raster latency");
   if(wanted_xy[20][24])ck({dut.out_x,dut.out_y}===wanted_xy[20][23:0],"reconstructed production coordinates match a legal full-width raster");
   ck(dut.rendered_rgb===wanted[20],"production RGB mux preserves image outside strip and aligns every glyph");
- end  end endtask
+   end endtask
  initial begin
   $readmemb("pixels.mem",pixels);
   repeat(10)@(negedge clk);rst_n=1;wait(dut.sys_rst_n&&dut.pixel_rst_n);
@@ -106,5 +106,5 @@ module tb_v3_ticker_board;
  end
  initial begin #20000000;$display("[FAIL] board ticker watchdog errors=1");$finish;end
 
-function signed [11:0] v_cast_s12; input signed [11:0] value; begin begin v_cast_s12=value; end  end endfunction
+function signed [11:0] v_cast_s12; input signed [11:0] value; begin  v_cast_s12=value;   end endfunction
 endmodule

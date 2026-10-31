@@ -8,16 +8,16 @@ module tb_v3_source_wait_writer;
   .clk(clk),.rst_n(rst),.start(start),.slot_sel(2'd0),.slot_base(32'd0),.din(din),.din_valid(valid),.din_ready(ready),
   .wr_req(req),.wr_addr(),.wr_data(),.wr_len(),.wr_ready(ack),.wr_done(done),.slot_valid(slots),.crc_ok(),.crc_value(),
   .px_cnt(pixels),.wr_error(error),.err_code(),.err_detail(),.source_progress(hint));
- task ck(input  good,input [4095:0] why);begin begin good = (good === 1'b1); comparisons = comparisons + 1;if(!good)begin errors = errors + 1;$display("[FAIL] %s",why);end end  end endtask
- task fresh;begin begin
+ task ck(input  good,input [4095:0] why);begin  good = (good === 1'b1); comparisons = comparisons + 1;if(!good)begin errors = errors + 1;$display("[FAIL] %s",why);end   end endtask
+ task fresh;begin
   @(negedge clk);rst=0;start=0;valid=0;hint=0;ack=1;repeat(4)@(negedge clk);rst=1;
   @(negedge clk);start=1;@(negedge clk);start=0;
- end  end endtask
- task pixel(input[15:0] value);begin begin
+   end endtask
+ task pixel(input[15:0] value);begin
   @(negedge clk);valid=1;din=value;@(posedge clk);
   while(!ready)@(posedge clk);
   @(negedge clk);valid=0;
- end  end endtask
+   end endtask
  initial begin
   fresh();hint=1;repeat(64)@(negedge clk);
   ck(!error&&pixels==0&&!done&&slots==0,"source-only credit extends a wait without accepting or publishing pixels");

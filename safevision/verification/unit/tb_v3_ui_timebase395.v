@@ -12,23 +12,23 @@ module tb_v3_ui_timebase395;
  .cached(1'b1),.transition_busy(1'b0),.frame_commit(1'b0),.system_safe(1'b0),
  .next_request(next),.auto_enabled(aut),.safety(safe),.recover_request(recover),.reply_valid(reply),.reply_code(code),.reply_value(answer),
  .brightness(bri),.contrast(con),.osd_alpha(alpha),.bilinear(bi),.fit(fit),.fade_enabled(fade),.volume(vol),.period_select(period),.menu(menu),.field(field),.auto_tick(atick),.brightness_pct(pct),.brightness_raw(raw),.scale_select(scale));
- task ck;input condition;input[511:0] label;begin begin comparisons = comparisons + 1;if(!condition)begin errors = errors + 1;$display("[FAIL] %s cycle%0d",label,cycles);end else $display("[PASS] %s",label);end  end endtask
- task ticks;input integer count;begin begin repeat(count)@(negedge clk);end  end endtask
- task set_period;input integer seconds;begin begin
+ task ck;input condition;input[511:0] label;begin  comparisons = comparisons + 1;if(!condition)begin errors = errors + 1;$display("[FAIL] %s cycle%0d",label,cycles);end else $display("[PASS] %s",label);  end endtask
+ task ticks;input integer count;begin  repeat(count)@(negedge clk);  end endtask
+ task set_period;input integer seconds;begin
   @(negedge clk);id=18;target=67;value=seconds;command=1;@(negedge clk);command=0;
   guard=0;while(!reply&&guard<20)begin @(negedge clk);guard = guard + 1;end
   ck(reply&&code==0,"UART period set acknowledged");ticks(8);
- end  end endtask
- task period_test;input integer seconds;begin begin
+   end endtask
+ task period_test;input integer seconds;begin
   start_cycle=cycles;set_period(seconds);guard=0;
   while(!atick&&guard<seconds*100000+500)begin @(negedge clk);guard = guard + 1;end
   first_tick=cycles;ck(atick&&first_tick-start_cycle>=seconds*100000&&first_tick-start_cycle<=seconds*100000+200,"initial autoplay period never early; <=2ms startup quantization");
   @(negedge clk);guard=0;while(!atick&&guard<seconds*100000+300)begin @(negedge clk);guard = guard + 1;end
   second_tick=cycles;ck(atick&&second_tick-first_tick==seconds*100000,"subsequent autoplay periods exact in SYS cycles");ticks(3);
- end  end endtask
- task release_both;begin begin bn=1;ba=1;guard=0;while(d.levels[1:0]!=0&&guard<2300)begin @(negedge clk);guard = guard + 1;end ticks(5);end  end endtask
- task short_next;begin begin bn=0;ticks(2500);bn=1;ticks(2300);end  end endtask
- task short_auto;begin begin ba=0;ticks(2500);ba=1;ticks(2300);end  end endtask
+   end endtask
+ task release_both;begin  bn=1;ba=1;guard=0;while(d.levels[1:0]!=0&&guard<2300)begin @(negedge clk);guard = guard + 1;end ticks(5);  end endtask
+ task short_next;begin  bn=0;ticks(2500);bn=1;ticks(2300);  end endtask
+ task short_auto;begin  ba=0;ticks(2500);ba=1;ticks(2300);  end endtask
  initial begin
   ticks(5);cfg_rst=1;rst=1;ticks(8);
   ck(d.UI_DIV==100&&d.UI_DEBOUNCE==21&&d.HOLD_LIMIT==1001&&d.CHORD_LIMIT==2001,"shared tick and conservative minimum debounce/hold limits");

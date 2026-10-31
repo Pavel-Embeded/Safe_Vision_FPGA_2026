@@ -41,7 +41,7 @@ module paired_rows_case275 #(parameter PHASE=0)(output reg done,output integer e
   done=1;
  end
 
-function [31:0] v_cast_u32; input [31:0] value; begin begin v_cast_u32=value; end  end endfunction
+function [31:0] v_cast_u32; input [31:0] value; begin  v_cast_u32=value;   end endfunction
 endmodule
 module tb_v3_paired_rows_miter275;
  wire d0,d1;wire signed [31:0] e0,e1,c0,c1;

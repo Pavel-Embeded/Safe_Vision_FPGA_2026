@@ -23,10 +23,10 @@ module hdmi_bridge_case #(parameter integer HD=0)(output reg done);
   if(stall>0)begin ready=0;stall=stall-1;end else ready=(cycle%601>=3);
  end
  always @(posedge clk)if(rst&&!done)begin
-  if(held&&!resync&&{user,last,data}!==held_value)begin $display("[FAIL] AXIS payload changed while stalled"); $finish; end 
+  if(held&&!resync&&{user,last,data}!==held_value)begin $display("[FAIL] AXIS payload changed while stalled"); $finish; end
   held=valid&&!ready;held_value={user,last,data};
   if(valid&&ready)begin
-   if(get>=put||{user,last,data}!==golden[get%1024])begin $display("[FAIL] HDMI packet ordering HD=%0d packet=%0d",HD,get); $finish; end 
+   if(get>=put||{user,last,data}!==golden[get%1024])begin $display("[FAIL] HDMI packet ordering HD=%0d packet=%0d",HD,get); $finish; end
    if(user)line=0;
    if(last)begin
     if(line==H-1)frames=frames+1;line=line+1;
@@ -38,15 +38,15 @@ module hdmi_bridge_case #(parameter integer HD=0)(output reg done);
   end
   #0.1;
   if(resync)begin put=0;get=0;wait_frame=1;held=0;line=0;end
-  if(level!==put-get)begin $display("[FAIL] HDMI queue accounting"); $finish; end 
+  if(level!==put-get)begin $display("[FAIL] HDMI queue accounting"); $finish; end
   if(frames>=2)begin
-   if(!fault||drops!=1||compared<2*W*H)begin $display("[FAIL] overflow/recovery coverage"); $finish; end 
+   if(!fault||drops!=1||compared<2*W*H)begin $display("[FAIL] overflow/recovery coverage"); $finish; end
    $display("PASS HDMI bridge HD=%0d compared=%0d complete_recovered_frames=%0d drops=%0d stable stalls/SOF/TLAST",HD,compared,frames,drops);done=1;
   end
  end
  initial begin #33;rst=1;end
 
-function [7:0] v_cast_u8; input [7:0] value; begin begin v_cast_u8=value; end  end endfunction
+function [7:0] v_cast_u8; input [7:0] value; begin  v_cast_u8=value;   end endfunction
 endmodule
 module tb_hdmi_video_bridge;
  wire [1:0] done;hdmi_bridge_case #(.HD(0)) a(done[0]);hdmi_bridge_case #(.HD(1)) b(done[1]);

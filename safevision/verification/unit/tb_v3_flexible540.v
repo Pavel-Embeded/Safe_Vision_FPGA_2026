@@ -9,8 +9,8 @@ module tb_v3_flexible540;
  v3_flexible_media_index idx(.clk(clk),.rst_n(rst_n),.idx_clear(clear),.idx_commit(commit),.cursor_key(cursor),.resident_slot(slot),.ent_name(en),.ent_attr(attr),.ent_first_clus(clus),.ent_size(size),.ent_index(ei),.ent_valid(ev),.ent_ready(er),.name_address(index_address),.name_data(name_data),.name_length(length),.rescan_request(rescan),.idx_done(done),.file_cnt(count),.file_valid(mask),.sel_key(key),.sel_first_clus(sc),.sel_size(ss),.sel_valid(valid),.sel_wav_first_clus(wsc),.sel_wav_size(wss),.sel_wav_valid(wav_valid),.bmp_seen(bc),.wav_seen(wc));
  reg[7:0] directory[0:4032-1];reg[15:0] expected_names[0:33*256-1];reg[8:0] expected_lengths[0:33-1];reg[79:0] expected[0:15-1];
  integer errors=0,comparisons=0,e,b,n,k,pass;reg[87:0] assembled;
- task check(input  ok,input [4095:0] message);begin begin ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s pass%0d entry%0d char%0d",message,pass,e,k);end end  end endtask
- task scan;begin begin
+ task check(input  ok,input [4095:0] message);begin  ok = (ok === 1'b1); comparisons = comparisons + 1;if(!ok)begin errors = errors + 1;if(errors<12)$display("[FAIL] %s pass%0d entry%0d char%0d",message,pass,e,k);end   end endtask
+ task scan;begin
   start=1;@(negedge clk);start=0;n=0;
   for(e=0;e<126;e=e+1)begin
    assembled=0;
@@ -28,7 +28,7 @@ module tb_v3_flexible540;
    end
   end
   commit=1;@(negedge clk);commit=0;
- end  end endtask
+   end endtask
  initial begin
   $readmemh("flexible_directory540.mem",directory);$readmemh("flexible_names540.mem",expected_names);$readmemh("flexible_lengths540.mem",expected_lengths);$readmemh("flexible_expected540.mem",expected);
   repeat(4)@(negedge clk);rst_n=1;
