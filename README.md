@@ -44,9 +44,9 @@ python -B safevision/tools/check_verilog.py --compile --elaborate --run-dir D:/s
 python -B safevision/tools/check_source_tree.py --simulate --output D:/sv_runs/base_regression
 ```
 
-第二条命令需要 Icarus Verilog；第三条命令默认使用 `D:/Xilinx/Vivado/2018.3/bin` 中的 XSim，可通过 `--xsim-bin` 指定其他位置。每次运行使用新的输出目录。
+第二条命令需要 Icarus Verilog；第三条命令默认使用我电脑里的 `D:/Xilinx/Vivado/2018.3/bin` 中的 XSim，可通过 `--xsim-bin` 指定其他位置。每次运行使用新的输出目录。
 
-BASE 的 TD 工程入口：
+TD 工程入口：
 
 ```text
 safevision/platform/anlogic_eg4s20_hx4s20c/project/v3_board_verify/base/safevision_v3_base.al
