@@ -12,7 +12,7 @@
 | `check_verilog.py --compile --elaborate` | Verilog-2005 语法及全部测试顶层展开 |
 | `run_v3_sim_flexible.py` | 字幕、任意名称媒体、缩放边界及频谱等回归 |
 | `run_v3_sim.py` | 模块、接口、时钟、控制和恢复回归 |
-| `run_legacy_b_fourbeat_sim.py` | 旧接口测试，按对应顶层的自然结束与断言日志验收 |
+| `run_legacy_b_fourbeat_sim.py` | 旧接口测试，按对应顶层的正常结束与断言日志验收 |
 | `run_v3_board.py` | TD 综合、资源检查、实现、时序与位流生成 |
 | `tools/host/` | 串口采集、配置与实板操作记录 |
 

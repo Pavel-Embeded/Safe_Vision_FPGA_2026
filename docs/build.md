@@ -16,7 +16,7 @@
 python -m pip install -r requirements-dev.txt
 ```
 
-所有命令从仓库根目录执行。TD、XSim 的运行目录使用英文路径，并放在仓库外。目录已有构建结果时，换一个新目录运行。
+所有命令从仓库根目录执行。TD、XSim 的运行目录只使用 ASCII 字符，并放在仓库外。目录已有构建结果时，换一个新目录运行。
 
 PowerShell 构建入口从 PATH 查找 Python，也可通过 `-Python` 指定解释器路径。
 
@@ -42,7 +42,7 @@ python -B safevision/tools/run_v3_sim_flexible.py --suite ticker_board261028 --r
 python -B safevision/tools/run_v3_sim.py --suite uart_link --run-dir D:/sv_runs/uart_link
 ```
 
-仿真同时检查结束标记、自然结束、有效检查项、错误计数及输入文件一致性。失败诊断会写出 `[FAIL]`，运行脚本据此返回失败。
+仿真同时检查结束标记、正常结束、有效检查项、错误计数及输入文件一致性。失败诊断会写出 `[FAIL]`，运行脚本据此返回失败。
 
 部分对照实验按固定历史提交核对源文件，应与对应归档一起使用。日常开发使用本页列出的检查和回归入口。
 
@@ -73,7 +73,7 @@ python -B safevision/tools/run_v3_board.py --mode base --bitgen --run-dir D:/sv_
 | `SV-RES-001` | 固定 EG4S20BG256 的实际容量；一个 RAM32K 按四个 RAM9K 物理单元计算 |
 | `SV-RES-002` | LUT、寄存器、RAM 目标为 70%、65%、75%，硬门槛为 100%、80%、100% |
 | `SV-TIM-001` | 通过厂商原生布局布线 |
-| `SV-TIM-002` | 全部角落的 setup、hold、recovery、removal 检查通过 |
+| `SV-TIM-002` | 所有工艺角的 setup、hold、recovery、removal 检查通过 |
 | `SV-FUNC-001` | 保留全部功能 |
 
 资源报告还核对 DSP、PLL 的用量和器件容量。综合通过只确认综合结果及资源，位流生成仍须通过实现、约束和时序检查。

@@ -2,7 +2,7 @@ import hashlib,importlib.util,json,os,re,subprocess,sys
 from pathlib import Path
 import argparse
 ROOT=Path(__file__).resolve().parents[2]
-parser=argparse.ArgumentParser(description='Standalone SDRAM probe, not the final application. No bitgen or GitHub upload.')
+parser=argparse.ArgumentParser(description='Run synthesis, placement, routing and final timing checks for the standalone SDRAM diagnostic.')
 parser.add_argument('--run-dir',required=True,type=Path);args=parser.parse_args()
 RUN=ROOT/'safevision/platform/anlogic_eg4s20_hx4s20c/project/m50p8_fixed_26101703'
 SRC=ROOT;OUT=args.run_dir.resolve();assert str(OUT).isascii()
